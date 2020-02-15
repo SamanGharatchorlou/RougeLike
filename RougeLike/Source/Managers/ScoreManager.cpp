@@ -20,6 +20,10 @@ void ScoreManager::handleEvent(Event event, EventData& data)
 
 		//mScore += enemyScore;
 
+		// blah blah
+
+		int a = 4;
+
 		printf("score is now %d\n", mScore);
 		break;
 	}
