@@ -40,6 +40,7 @@
     <ClCompile Include="Source\Audio\AudioManager.cpp" />
     <ClCompile Include="Source\Collisions\ColliderManager.cpp" />
     <ClCompile Include="Source\Events\Dispatcher.cpp" />
+    <ClCompile Include="Source\Graphics\Font.cpp" />
     <ClCompile Include="Source\Managers\ScoreManager.cpp" />
     <ClCompile Include="Source\Map\MapTile.cpp" />
     <ClCompile Include="Source\Map\ProceduralMap\TunnelGenerator.cpp" />
@@ -110,6 +111,7 @@
     <ClInclude Include="Source\Events\Dispatcher.h" />
     <ClInclude Include="Source\Events\Observer.h" />
     <ClInclude Include="Source\Game\GameData.h" />
+    <ClInclude Include="Source\Graphics\Font.h" />
     <ClInclude Include="Source\Managers\ScoreManager.h" />
     <ClInclude Include="Source\Map\Map.h" />
     <ClInclude Include="Source\Map\MapTile.h" />

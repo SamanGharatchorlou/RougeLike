@@ -23,6 +23,8 @@ FileManager::FileManager()
 	folderPaths[Image_Maps]			= std::string("Images\\Maps\\");
 	folderPaths[Image_Weapons]		= std::string("Images\\Weapons\\");
 
+	folderPaths[Font]				= std::string("Font\\");
+
 	folderPaths[Configs]			= std::string("Configs\\");
 	folderPaths[Config_UI]			= std::string("Configs\\UIMenus\\");
 	folderPaths[Config_Map]			= std::string("Configs\\Map\\");

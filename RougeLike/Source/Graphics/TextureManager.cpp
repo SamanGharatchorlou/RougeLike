@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "TextureManager.h"
 #include "Texture.h"
-
+#include "Font.h"
 
 TextureManager::TextureManager()
 {
@@ -35,6 +35,9 @@ void TextureManager::init(SDL_Renderer* setRenderer)
 	bool fails = 0;
 
 	DebugPrint(Log, "\n--- Loading Textures ---\n");
+
+	// FONTS
+	fails += !loadFont("LazyFont", fm->getFilePath(FileManager::Font, "lazy.ttf"));
 
 	// Load all weapon textures
 	fm->readFile(FileManager::Configs, "Weapons.txt", config);
@@ -73,6 +76,20 @@ bool TextureManager::loadTexture(std::string label, std::string fileName)
 		return false;
 }
 
+bool TextureManager::loadFont(std::string label, std::string fileName)
+{
+	Font *font = new Font(renderer);
+
+	if (font->loadFromFile(fileName))
+	{
+		fonts[label] = font;
+		DebugPrint(Log, "Sucessfully loaded font %s as %s\n", fileName.c_str(), label.c_str());
+		return true;
+	}
+	else
+		return false;
+}
+
 
 // what if I put an invalid texture path???
 Texture* TextureManager::getTexture(std::string label)
@@ -86,6 +103,22 @@ Texture* TextureManager::getTexture(std::string label)
 	else
 	{
 		DebugPrint(Warning, "No item in texture map with label: %s\n", label.c_str());
+		return nullptr;
+	}
+}
+
+// what if I put an invalid texture path???
+Font* TextureManager::getFont(std::string label)
+{
+	auto search = fonts.find(label);
+
+	if (search != fonts.end())
+	{
+		return search->second;
+	}
+	else
+	{
+		DebugPrint(Warning, "No item in font map with label: %s\n", label.c_str());
 		return nullptr;
 	}
 }

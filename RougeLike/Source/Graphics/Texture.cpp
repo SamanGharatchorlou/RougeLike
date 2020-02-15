@@ -8,6 +8,7 @@ Texture::Texture(SDL_Renderer* newRenderer) : renderer(newRenderer)
 	originalDimentions = VectorF();
 }
 
+
 Texture::~Texture()
 {
 	free();
@@ -63,6 +64,32 @@ bool Texture::loadFromFile(const std::string filePath)
 }
 
 
+bool Texture::loadFromText(const std::string font)
+{
+	//Loading success flag
+	bool success = true;
+
+	//Open the font
+	gFont = TTF_OpenFont(font.c_str(), 28);
+	if (gFont == nullptr)
+	{
+		printf("Failed to load font at '%s'! SDL_ttf Error: %s\n", font.c_str(), TTF_GetError());
+		success = false;
+	}
+	else
+	{
+		//Render text
+		SDL_Color textColor = { 0, 0, 0 };
+		if (!loadFromRenderedText("The quick brown fox jumps over the lazy dog", textColor))
+		{
+			printf("Failed to render text texture!\n");
+			success = false;
+		}
+	}
+
+	return success;
+}
+
 // free texture if it exists
 void Texture::free() const
 {
@@ -101,6 +128,22 @@ void Texture::render(const RectF rect) const
 }
 
 
+// Renders texture with the roation specified
+void Texture::render(const RectF rect, double rotation, VectorF aboutPoint) const
+{
+	// texture being displayed on the screen
+	SDL_Rect renderQuad = { static_cast<int>(rect.x1),
+						static_cast<int>(rect.y1),
+						static_cast<int>(rect.Width()),
+						static_cast<int>(rect.Height()) };
+
+	// rotate about this point
+	SDL_Point point = { aboutPoint.x, aboutPoint.y };
+
+	SDL_RenderCopyEx(renderer, texture, nullptr, &renderQuad, rotation, &point, SDL_FLIP_NONE);
+}
+
+
 // Renders part of the texture, e.g. a tile in a set
 void Texture::renderSubTexture(const Rect<int> rect, const Rect<int> subRect) const
 {
@@ -129,21 +172,6 @@ void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect) const
 	SDL_RenderCopyEx(renderer, texture, &subQuad, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
 }
 
-
-// Renders texture with the roation specified
-void Texture::render(const RectF rect, double rotation, VectorF aboutPoint) const
-{
-	// texture being displayed on the screen
-	SDL_Rect renderQuad = { static_cast<int>(rect.x1),
-						static_cast<int>(rect.y1),
-						static_cast<int>(rect.Width()),
-						static_cast<int>(rect.Height()) };
-
-	// rotate about this point
-	SDL_Point point = { aboutPoint.x, aboutPoint.y };
-
-	SDL_RenderCopyEx(renderer, texture, nullptr, &renderQuad, rotation, &point, SDL_FLIP_NONE);
-}
 
 // Renders part of the texture, e.g. a tile in a set with the roation specified
 void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, double rotation, VectorF aboutPoint) const
@@ -226,4 +254,42 @@ const Uint8 Texture::alpha() const
 	SDL_GetTextureAlphaMod(texture, &texAlpha);
 
 	return texAlpha;
+}
+
+bool Texture::loadFromRenderedText(std::string textureText, SDL_Color textColor)
+{
+	// remove any existing texture
+	free();
+
+	// final texture
+	SDL_Texture* tempTexture = nullptr;
+
+	//Render text surface
+	SDL_Surface* textSurface = TTF_RenderText_Solid(gFont, textureText.c_str(), textColor);
+
+	if (!textSurface)
+	{
+		DebugPrint(Warning, "Unable to render text surface for text: %s! SDL_ttf Error: %s\n", textureText.c_str(), TTF_GetError());
+	}
+	else
+	{
+		//Create texture from surface pixels
+		tempTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+
+		if (tempTexture == NULL)
+		{
+			printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+		}
+		else
+		{
+			originalDimentions = VectorF(static_cast<float>(textSurface->w), static_cast<float>(textSurface->h));
+		}
+
+		// loaded surface no longer needed
+		SDL_FreeSurface(textSurface);
+	}
+
+	// return sucess
+	texture = tempTexture;
+	return texture != nullptr;
 }

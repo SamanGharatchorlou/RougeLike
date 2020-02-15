@@ -17,6 +17,7 @@
 // TESTING
 #include "Map/Map.h"
 #include "Graphics/Texture.h"
+#include "Graphics/Font.h"
 
 GameState::GameState(GameData* gameData, GameController* gameController) : 
 	mGameData(gameData)
@@ -97,8 +98,6 @@ void GameState::slowUpdate(float dt)
 {
 	mPlayer.slowUpdate(dt);
 	mEnemies.slowUpdate(dt);
-
-	// printf("score: %d\n", mGameData->scoreManager->score());
 }
 
 void GameState::fastUpdate(float dt)
@@ -121,6 +120,12 @@ void GameState::render()
 	SDL_RenderClear(mGameData->renderer);
 
 	mGameData->renderManager->render();
+
+	Font* font = mGameData->textureManager->getFont("LazyFont");
+
+	SDL_Color textColor = { 255, 0, 0 };
+	font->setText("Test Test", textColor);
+	font->render(RectF(100, 100, 500, 300));
 
 	// update window surface
 	SDL_RenderPresent(mGameData->renderer);

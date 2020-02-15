@@ -15,6 +15,8 @@ public:
 		Image_Maps,
 		Image_Weapons,
 
+		Font,
+
 		map,
 
 		Configs,

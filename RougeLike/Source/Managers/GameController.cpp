@@ -24,7 +24,7 @@ GameController::GameController(const char* gameTitle) : quit(false)
 	// init SDL
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
 	{
-		DebugPrint(Warning, "SDL could not be initialised! SDL_Error: %s\n", SDL_GetError());
+		DebugPrint(Error, "SDL could not be initialised! SDL_Error: %s\n", SDL_GetError());
 	}
 	else
 	{
@@ -32,7 +32,7 @@ GameController::GameController(const char* gameTitle) : quit(false)
 
 		if (mGameData.window->get() == nullptr)
 		{
-			DebugPrint(Warning, "Window could not be created! SDL Error: %s\n", SDL_GetError());
+			DebugPrint(Error, "Window could not be created! SDL Error: %s\n", SDL_GetError());
 		}
 		else
 		{
@@ -41,20 +41,27 @@ GameController::GameController(const char* gameTitle) : quit(false)
 
 			if (!mGameData.renderer)
 			{
-				DebugPrint(Warning, "Renderer could not be created! SDL Image Error: %s\n", IMG_GetError());
+				DebugPrint(Error, "Renderer could not be created! SDL Image Error: %s\n", IMG_GetError());
 			}
 			else
 			{
 				// init PNG loader
 				if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
 				{
-					DebugPrint(Warning, "SDL Image was not initialised! SDL Image Error: %s\n", IMG_GetError());
+					DebugPrint(Error, "SDL Image was not initialised! SDL Image Error: %s\n", IMG_GetError());
+				}
+
+
+				//Initialize SDL_ttf
+				if (TTF_Init() == -1)
+				{
+					DebugPrint(Error, "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
 				}
 
 				// init audio mixer
 				if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 				{
-					DebugPrint(Warning, "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+					DebugPrint(Error, "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 				}
 
 				SDL_ShowCursor(SDL_DISABLE);

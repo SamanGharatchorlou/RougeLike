@@ -56,6 +56,7 @@
     <ClCompile Include="Source\Characters\Enemies\EnemyStates\EnemyDead.cpp" />
     <ClCompile Include="Source\Managers\ScoreManager.cpp" />
     <ClCompile Include="Source\Events\Dispatcher.cpp" />
+    <ClCompile Include="Source\Graphics\Font.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -128,5 +129,6 @@
     <ClInclude Include="Source\Managers\ScoreManager.h" />
     <ClInclude Include="Source\Events\Dispatcher.h" />
     <ClInclude Include="Source\Events\Observer.h" />
+    <ClInclude Include="Source\Graphics\Font.h" />
   </ItemGroup>
 </Project>
