@@ -67,6 +67,8 @@ public:
 
 	virtual const EnemyType type() const = 0;
 
+	Uint8& alpha() { return mAlpha; }
+
 	void setActive(bool active) { mIsActive = active; }
 	bool isActive() const { return mIsActive; }
 
@@ -88,6 +90,8 @@ protected:
 	SDL_RendererFlip mFlip;
 
 	EnemyPropertyBag* bag;
+
+	Uint8 mAlpha;
 
 	bool mIsActive;
 };

@@ -7,6 +7,7 @@
 #include "System/Files/AnimationReader.h"
 #include "System/Files/StatReader.h"
 
+#include "Graphics/Texture.h"
 
 #include "EnemyEnums.h"
 #include "EnemyPropertyBag.h"
@@ -18,7 +19,8 @@
 Enemy::Enemy(GameData* gameData) : 
 	mGameData(gameData),
 	bag(nullptr),
-	mIsActive(false)
+	mIsActive(false),
+	mAlpha(alphaMax)
 { }
 
 Enemy::~Enemy() 
@@ -48,6 +50,9 @@ void Enemy::init(std::string name)
 
 void Enemy::slowUpdate(float dt)
 {
+	// reset alpha for enemies sharing the same texture
+	mAnimator.getSpriteTexture()->setAlpha(alphaMax);
+
 	mStateMachine.processStateChanges();
 
 	mStateMachine.getActiveState().slowUpdate(dt);
@@ -80,6 +85,7 @@ void Enemy::render()
 	VectorF cameraPosition = mGameData->camera->toCameraCoords(mMovement.getPostion());
 	RectF rect = RectF(cameraPosition, mRect.Size());
 
+	mAnimator.getSpriteTexture()->setAlpha(mAlpha);
 	mAnimator.getSpriteTile()->render(rect, mFlip);
 
 #if DRAW_ENEMY_RECT
