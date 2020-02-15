@@ -7,7 +7,7 @@ public:
 	void addObserver(Observer* observer);
 	void removeObserver(Observer* observer);
 
-	void notify(Event type, EventData event);
+	void notify(Event type, EventData& event);
 
 private:
 	std::vector<Observer*> observers;

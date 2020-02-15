@@ -11,6 +11,7 @@ public:
 
 	void render(Rect<int>	targetRect) const;
 	void render(Rect<float> targetRect, SDL_RendererFlip flip) const;
+	void render(Rect<float> targetRect, SDL_RendererFlip flip, Uint8 alpha);
 
 	void setTexture(Texture* tex) { texture = tex; }
 	Texture* getTexture() const { return texture; }
