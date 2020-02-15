@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AnimationInfo>
+	<TextureName>Imp</TextureName> 
+	<TilesetInfo>
+		<TileSize x = "16" y ="12"></TileSize>
+		<TileCount x = "8" y = "1"></TileCount>
+	</TilesetInfo>
+	<Animations>
+		<Animation action = "Idle" start = "0" count = "4" rate = "0.25"></Animation>
+		<Animation action = "Run" start = "4" count = "4" rate = "0.1"></Animation>
+		<Animation action = "Hit" start = "5" count = "1" rate = "10.0"></Animation>
+		<Animation action = "Dead" start = "0" count = "3" rate = "0.5"></Animation>
+	</Animations>
+</AnimationInfo>

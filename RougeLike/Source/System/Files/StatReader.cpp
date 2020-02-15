@@ -1,0 +1,73 @@
+#include "pch.h"
+#include "StatReader.h"
+
+
+XMLValueMap StatReader::getStats(std::string config)
+{
+	std::string configFilePath = FileManager::Get()->getFilePath(FileManager::Config_Stats, config);
+
+	XMLParser parser;
+	parser.parseXML(configFilePath);
+
+	XMLValueMap valueMap;
+	value stat;
+	std::string name;
+
+	xmlNode rootNode = parser.getRootNode();
+	xmlNode node = rootNode->first_node();
+
+	while (node != nullptr)
+	{
+		name = node->name();
+
+		Attributes attributes = parser.getAttributes(node);
+
+		if (attributes.contains("type"))
+		{
+			std::string type = attributes.getString("type");
+
+			if (strcmp(type.c_str(), "int") == 0)
+			{
+				stat.i = std::stoi(node->value());
+			}
+			else if (strcmp(type.c_str(), "float") == 0)
+			{
+				stat.f = std::stof(node->value());
+			}
+			else
+			{
+				DebugPrint(Warning, "Unrecognised type %s, no value added\n", type.c_str());
+
+				node = node->next_sibling();
+				continue;
+			}
+
+			valueMap.add(name, stat);
+		}
+		else
+		{
+			DebugPrint(Warning,
+				"Attribute %s has no type attribute, no value added\n", name.c_str());
+		}
+
+		node = node->next_sibling();
+	}
+
+#if _DEBUG
+	int statCounter = 0;
+	xmlNode statNode = rootNode->first_node();
+	while (statNode != nullptr)
+	{
+		statCounter++;
+		statNode = statNode->next_sibling();
+	}
+
+	if (statCounter != valueMap.size())
+	{
+		DebugPrint(Log, "%d stats from the %s config file have not been added to the map\n", 
+			statCounter - valueMap.size(), config.c_str());
+	}
+#endif
+
+	return valueMap;
+}

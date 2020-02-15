@@ -1,0 +1,10 @@
+GreyBox
+OrangeElipse
+OrangeRectangle
+RedButton
+SelectedRedButton
+HealthBar
+GameCursor
+UICursor
+
+END

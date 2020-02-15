@@ -1,0 +1,41 @@
+#pragma once
+
+#include "Map/MapTile.h"
+
+class Map;
+
+using TileCost = std::pair<MapTile, int>;
+using Path = std::stack<Vector2D<int>>;
+
+class AIPathing
+{
+public:
+	AIPathing(Map* map);
+
+	Path findPath(VectorF start, VectorF end);
+
+	Vector2D<int> getTileIndex(VectorF position);
+	VectorF getTilePosition(Vector2D<int> tileIndex);
+
+private:
+	Path getPath(Vector2D<int> start, Vector2D<int> end, Grid<Vector2D<int>>& pathing);
+
+	inline int heuristic(Vector2D<int> from, Vector2D<int> to);
+	
+	struct GreaterThanByCost
+	{
+		bool operator ()(TileCost left, TileCost right)
+		{
+			return left.second > right.second;
+		};
+	};
+
+private:
+	Map* mMap;
+};
+
+
+inline int AIPathing::heuristic(Vector2D<int> from, Vector2D<int> to)
+{
+	return std::abs(from.x - to.x) + std::abs(from.y - to.y);
+}

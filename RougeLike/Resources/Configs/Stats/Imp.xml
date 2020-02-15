@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Stats>
+	<Health type = "float">100</Health>
+	<AttackDamage type = "float">10</AttackDamage>
+	<AttackSpeed type ="float">1</AttackSpeed>
+	<MovementSpeed type = "float">50</MovementSpeed>
+	<TackleChargeTime type = "float">1</TackleChargeTime>
+	<TackleDistance type = "float">2000</TackleDistance>
+	<TackleSpeed type = "float">100</TackleSpeed>
+	<SightRange type = "float">10000</SightRange>
+	<ChaseRange type = "float">200000</ChaseRange>
+	<HurtTime type = "float">0.125</HurtTime>
+	<AttentionTime type ="float">1</AttentionTime>
+	<Score type ="int">50></Score>
+</Stats>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Weapon>
+	<Name>weapon_big_hammer</Name>
+	<Damage>60</Damage>
+	<SwingSpeed>700</SwingSpeed>
+	<SwingAngle>250</SwingSpeed>
+	<PommelOffset x = "7" y = "-5"></PommelOffset>
+</Weapon>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu>
+	<layer>
+		<item type = "button" x = "0.375" y = "0.3" width = "0.25" height = "0.075" texture = "RedButton" textureSelected = "SelectedRedButton" action = "RESUME_GAME_1">Resume</item>
+		<item type = "button" x = "0.375" y = "0.6" width = "0.25" height = "0.075" texture = "RedButton" action = "QUIT_GAME_2">Quit Game</item>
+	</layer>
+	<layer>
+		<item type = "box" x = "0.325" y = "0.15" width = "0.35" height = "0.6" texture = "GreyBox"></item>
+	</layer>
+</menu>
