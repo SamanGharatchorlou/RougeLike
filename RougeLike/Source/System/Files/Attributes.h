@@ -22,7 +22,7 @@ public:
 	}
 
 
-	bool contains(std::string name)
+	bool contains(std::string name) const
 	{
 		return (bool)attributes.count(name);
 	}
@@ -34,6 +34,7 @@ public:
 		if (attributes[name].empty())
 			DebugPrint(Warning, "There is no attribute with the label: %s\n", name.c_str());
 #endif
+		std::string value = attributes[name];
 		return attributes[name];
 	}
 
@@ -59,7 +60,7 @@ public:
 	}
 
 
-	void log()
+	void log() const
 	{
 		DebugPrint(Log, "\nLoading level atrributes...\n");
 		for (auto iter = attributes.begin(); iter != attributes.end(); iter++)
@@ -70,7 +71,7 @@ public:
 	}
 
 
-	bool empty() { return attributes.empty(); }
+	bool empty() const { return attributes.empty(); }
 
 
 private:

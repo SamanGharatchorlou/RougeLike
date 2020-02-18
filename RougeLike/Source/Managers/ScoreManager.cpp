@@ -3,6 +3,9 @@
 
 void ScoreManager::handleEvent(Event event, EventData& data)
 {
+	hasChanged = false;
+	int currentScore = mScore;
+
 	switch (event)
 	{
 	case Event::None:
@@ -16,4 +19,6 @@ void ScoreManager::handleEvent(Event event, EventData& data)
 	default:
 		break;
 	}
+
+	hasChanged = (currentScore != mScore);
 }

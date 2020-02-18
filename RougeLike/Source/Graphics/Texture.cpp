@@ -63,33 +63,6 @@ bool Texture::loadFromFile(const std::string filePath)
 	return texture != nullptr;
 }
 
-
-bool Texture::loadFromText(const std::string font)
-{
-	//Loading success flag
-	bool success = true;
-
-	//Open the font
-	gFont = TTF_OpenFont(font.c_str(), 28);
-	if (gFont == nullptr)
-	{
-		printf("Failed to load font at '%s'! SDL_ttf Error: %s\n", font.c_str(), TTF_GetError());
-		success = false;
-	}
-	else
-	{
-		//Render text
-		SDL_Color textColor = { 0, 0, 0 };
-		if (!loadFromRenderedText("The quick brown fox jumps over the lazy dog", textColor))
-		{
-			printf("Failed to render text texture!\n");
-			success = false;
-		}
-	}
-
-	return success;
-}
-
 // free texture if it exists
 void Texture::free() const
 {
@@ -256,40 +229,3 @@ const Uint8 Texture::alpha() const
 	return texAlpha;
 }
 
-bool Texture::loadFromRenderedText(std::string textureText, SDL_Color textColor)
-{
-	// remove any existing texture
-	free();
-
-	// final texture
-	SDL_Texture* tempTexture = nullptr;
-
-	//Render text surface
-	SDL_Surface* textSurface = TTF_RenderText_Solid(gFont, textureText.c_str(), textColor);
-
-	if (!textSurface)
-	{
-		DebugPrint(Warning, "Unable to render text surface for text: %s! SDL_ttf Error: %s\n", textureText.c_str(), TTF_GetError());
-	}
-	else
-	{
-		//Create texture from surface pixels
-		tempTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
-
-		if (tempTexture == NULL)
-		{
-			printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
-		}
-		else
-		{
-			originalDimentions = VectorF(static_cast<float>(textSurface->w), static_cast<float>(textSurface->h));
-		}
-
-		// loaded surface no longer needed
-		SDL_FreeSurface(textSurface);
-	}
-
-	// return sucess
-	texture = tempTexture;
-	return texture != nullptr;
-}

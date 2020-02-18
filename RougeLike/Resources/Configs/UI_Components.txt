@@ -3,7 +3,8 @@ OrangeElipse
 OrangeRectangle
 RedButton
 SelectedRedButton
-HealthBar
+RedHealthBar
+BlackHealthBar
 GameCursor
 UICursor
 

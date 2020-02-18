@@ -29,11 +29,6 @@
     <ClCompile Include="Source\Characters\Enemies\EnemyManager.cpp" />
     <ClCompile Include="Source\Collisions\ColliderManager.cpp" />
     <ClCompile Include="Source\UI\UIManager.cpp" />
-    <ClCompile Include="Source\UI\Menus\Menu.cpp" />
-    <ClCompile Include="Source\UI\MenuDecoder.cpp" />
-    <ClCompile Include="Source\UI\UIButton.cpp" />
-    <ClCompile Include="Source\UI\Menus\GameMenu.cpp" />
-    <ClCompile Include="Source\UI\Menus\PauseMenu.cpp" />
     <ClCompile Include="Source\System\Window.cpp" />
     <ClCompile Include="Source\Map\Map.cpp" />
     <ClCompile Include="Source\Map\ProceduralMap\TunnelGenerator.cpp" />
@@ -57,6 +52,16 @@
     <ClCompile Include="Source\Managers\ScoreManager.cpp" />
     <ClCompile Include="Source\Events\Dispatcher.cpp" />
     <ClCompile Include="Source\Graphics\Font.cpp" />
+    <ClCompile Include="Source\UI\Elements\UIButton.cpp" />
+    <ClCompile Include="Source\UI\Elements\UIBox.cpp" />
+    <ClCompile Include="Source\UI\Elements\UITextBox.cpp" />
+    <ClCompile Include="Source\Graphics\Renderer.cpp" />
+    <ClCompile Include="Source\Graphics\Text.cpp" />
+    <ClCompile Include="Source\UI\ScreenDecoder.cpp" />
+    <ClCompile Include="Source\UI\Screens\GameScreen.cpp" />
+    <ClCompile Include="Source\UI\Screens\PauseScreen.cpp" />
+    <ClCompile Include="Source\UI\Screens\Screen.cpp" />
+    <ClCompile Include="Source\UI\Screens\UILayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -92,11 +97,6 @@
     <ClInclude Include="Source\Characters\Enemies\Imp.h" />
     <ClInclude Include="Source\Collisions\ColliderManager.h" />
     <ClInclude Include="Source\UI\UIManager.h" />
-    <ClInclude Include="Source\UI\Menus\Menu.h" />
-    <ClInclude Include="Source\UI\MenuDecoder.h" />
-    <ClInclude Include="Source\UI\UIButton.h" />
-    <ClInclude Include="Source\UI\Menus\GameMenu.h" />
-    <ClInclude Include="Source\UI\Menus\PauseMenu.h" />
     <ClInclude Include="Source\Characters\Attributes\Damage.h" />
     <ClInclude Include="Source\System\Window.h" />
     <ClInclude Include="Source\Map\Map.h" />
@@ -130,5 +130,16 @@
     <ClInclude Include="Source\Events\Dispatcher.h" />
     <ClInclude Include="Source\Events\Observer.h" />
     <ClInclude Include="Source\Graphics\Font.h" />
+    <ClInclude Include="Source\UI\Elements\UIBox.h" />
+    <ClInclude Include="Source\UI\Elements\UIButton.h" />
+    <ClInclude Include="Source\UI\Elements\UITextBox.h" />
+    <ClInclude Include="Source\Graphics\Renderer.h" />
+    <ClInclude Include="Source\Graphics\Text.h" />
+    <ClInclude Include="Source\UI\ScreenDecoder.h" />
+    <ClInclude Include="Source\UI\Screens\GameScreen.h" />
+    <ClInclude Include="Source\UI\Screens\PauseScreen.h" />
+    <ClInclude Include="Source\UI\Screens\Screen.h" />
+    <ClInclude Include="Source\UI\Elements\UIElement.h" />
+    <ClInclude Include="Source\UI\Screens\UILayer.h" />
   </ItemGroup>
 </Project>

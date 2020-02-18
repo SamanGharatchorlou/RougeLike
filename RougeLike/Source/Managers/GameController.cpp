@@ -3,6 +3,8 @@
 
 #include "States/GameState.h"
 
+#include "Graphics/Renderer.h"
+
 // GameData
 #include "System/Window.h"
 #include "Graphics/TextureManager.h"
@@ -37,7 +39,10 @@ GameController::GameController(const char* gameTitle) : quit(false)
 		else
 		{
 			// init window renderer
-			mGameData.renderer = mGameData.window->createRenderer();
+			SDL_Renderer* renderer = mGameData.window->createRenderer();
+
+			Renderer::Get()->create(renderer);
+			mGameData.renderer = renderer;
 
 			if (!mGameData.renderer)
 			{

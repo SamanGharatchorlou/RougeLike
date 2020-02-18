@@ -1,57 +1,95 @@
 #include "pch.h"
 #include "UIManager.h"
 
-#include "MenuDecoder.h"
+#include "UI/Screens/GameScreen.h"
+#include "UI/Screens/PauseScreen.h"
+
+#include "ScreenDecoder.h"
 #include "Game/GameData.h"
 
 
-UIManager::UIManager(GameData* gameData) : 
-	pauseMenu(gameData), gameMenu(gameData), activeMenu(&gameMenu) { }
+UIManager::UIManager(GameData* gameData) : mGameData(gameData) { }
 
-
-void UIManager::selectMenu(Screen menuScreen)
+UIManager::~UIManager()
 {
-	activeMenu->exit();
-
-	switch (menuScreen)
+	for (Screen* screen : screens)
 	{
-	//case UIManager::start:
-	//	break;
-	case UIManager::pause:
-		activeMenu = &pauseMenu;
-		break;
-	case UIManager::game:
-		activeMenu = &gameMenu;
-		break;
+		delete screen;
 	}
 
-	activeMenu->enter();
+	screens.clear();
 }
 
+
+void UIManager::selectScreen(Screen::Type screenType)
+{
+	activeScreen->exit();
+	activeScreen = nullptr;
+
+	for (Screen* screen : screens)
+	{
+		if (screen->type() == screenType)
+		{
+			activeScreen = screen;
+
+			activeScreen->enter();
+
+			break;
+		}
+	}
+
+	ASSERT(Error, activeScreen != nullptr, "No screen was selected, invalid screenType %d\n", screenType);
+}
 
 
 void UIManager::init()
 {
-	MenuDecoder menuDecoder;
+	ScreenDecoder screenDecoder(mGameData);
 
 	fs::path menuDirectoryPath = fs::current_path();
 	menuDirectoryPath /= "Resources/Configs/UIMenus";
 	ASSERT(Warning, fs::is_directory(menuDirectoryPath), "Path: %s is not a directory\n", menuDirectoryPath.string().c_str());
 
 	fs::path menuPath;
-	MenuAttributes attributes;
+	ScreenAttributes attributes;
 
 	// Pause Menu
-	menuPath = menuDirectoryPath / "PauseMenu.xml";
+	menuPath = menuDirectoryPath / "PauseScreen.xml";
 	ASSERT(Warning, menuPath.has_filename(), "File: %s does not exist\n", menuPath.string().c_str());
 
-	attributes = menuDecoder.getMenuAttributes(menuPath.string());
-	pauseMenu.init(attributes);
+	attributes = screenDecoder.getScreenAttributes(menuPath.string());
+	std::vector<UILayer*> pauseLayers = screenDecoder.buildUIScreenLayers(attributes);
+
+	screens.push_back(new PauseScreen(mGameData, pauseLayers));
 
 	// Game Menu
-	menuPath = menuDirectoryPath / "GameMenu.xml";	
+	menuPath = menuDirectoryPath / "GameScreen.xml";	
 	ASSERT(Warning, menuPath.has_filename(), "File: %s does not exist\n", menuPath.string().c_str());
 
-	attributes = menuDecoder.getMenuAttributes(menuPath.string());
-	gameMenu.init(attributes);
+	attributes = screenDecoder.getScreenAttributes(menuPath.string());
+	std::vector<UILayer*> gameLayers = screenDecoder.buildUIScreenLayers(attributes);
+	
+	screens.push_back(new GameScreen(mGameData, gameLayers));
+
+	// Default screen selection to... anything
+	activeScreen = screens[0];
+}
+
+
+UIElement* UIManager::find(std::string id)
+{
+	for (Screen* screen : screens)
+	{
+		for (UILayer* layer : screen->layers())
+		{
+			for (UIElement* element : layer->elements())
+			{
+				if (element->id() == id)
+					return element;
+			}
+		}
+	}
+
+	DebugPrint(Warning, "No element with the id %s was found\n", id.c_str());
+	return nullptr;
 }

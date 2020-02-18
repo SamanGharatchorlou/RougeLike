@@ -1,36 +1,31 @@
 #pragma once
 
-#include "Menus/PauseMenu.h"
-#include "Menus/GameMenu.h"
+#include "UI/Screens/Screen.h"
 
 struct GameData;
 
 class UIManager
 {
 public:
-	enum Screen
-	{
-		start,
-		pause,
-		game
-	};
-
-public:
 	UIManager(GameData* gameData);
+	~UIManager();
 
-	void selectMenu(Screen menu);
+	void selectScreen(Screen::Type screenType);
 
 	void init();
-	void handleInput() { activeMenu->handleInput(); }
-	void update() { activeMenu->update(); }
-	void render() { activeMenu->render(); }
+	void handleInput() { activeScreen->handleInput(); }
+	void update() { activeScreen->update(); }
+	void render() { activeScreen->render(); }
 
-	Menu* getActiveMenu() { return activeMenu; }
+	Screen* getActiveScreen() { return activeScreen; }
+
+	UIElement* find(std::string id);
 
 
 private:
-	Menu* activeMenu;
+	GameData* mGameData;
 
-	PauseMenu pauseMenu;
-	GameMenu gameMenu;
+	Screen* activeScreen;
+
+	std::vector<Screen*> screens;
 };

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Menu.h"
+#include "Screen.h"
 
 struct GameData;
 
-class PauseMenu : public Menu
+class PauseScreen : public Screen
 {
 public:
-	PauseMenu(GameData* gameData);
+	PauseScreen(GameData* gameData, std::vector<UILayer*> layers);
 
 	void enter() override { }
 	void exit() override;
@@ -15,6 +15,8 @@ public:
 
 	bool shouldQuitGame() { return mQuitGame; }
 	bool shouldResumeGame() { return mResumeGame; }
+
+	Type type() override { return Type::Pause; }
 
 private:
 	bool mResumeGame;

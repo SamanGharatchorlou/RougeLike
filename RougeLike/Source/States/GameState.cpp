@@ -14,10 +14,15 @@
 
 #include "Characters/Enemies/Enemy.h"
 
+
 // TESTING
 #include "Map/Map.h"
 #include "Graphics/Texture.h"
 #include "Graphics/Font.h"
+#include "UI/Elements/UIElement.h"
+#include "UI/Elements/UITextBox.h"
+
+
 
 GameState::GameState(GameData* gameData, GameController* gameController) : 
 	mGameData(gameData)
@@ -42,7 +47,7 @@ void GameState::init()
 	mGameData->camera->setupCamera(mGameData->map);
 
 	// UI
-	mGameData->uiManager->selectMenu(UIManager::game);
+	mGameData->uiManager->selectScreen(Screen::Game);
 
 	// Player
 	mPlayer.init();
@@ -98,6 +103,22 @@ void GameState::slowUpdate(float dt)
 {
 	mPlayer.slowUpdate(dt);
 	mEnemies.slowUpdate(dt);
+
+
+	// TESTING -- IT WORKS!!!!
+	//update the ui screen with the score
+	int score = mGameData->scoreManager->score();
+
+	std::string scoreString = "Score: " + std::to_string(score);
+
+	UIElement* element = mGameData->uiManager->find("Score");
+
+	if (element != nullptr && element->type() == UIElement::BasicText)
+	{
+		UIBasicText* text = static_cast<UIBasicText*>(element);
+
+		text->setText(scoreString);
+	}
 }
 
 void GameState::fastUpdate(float dt)
@@ -120,12 +141,6 @@ void GameState::render()
 	SDL_RenderClear(mGameData->renderer);
 
 	mGameData->renderManager->render();
-
-	Font* font = mGameData->textureManager->getFont("LazyFont");
-
-	SDL_Color textColor = { 255, 0, 0 };
-	font->setText("Test Test", textColor);
-	font->render(RectF(100, 100, 500, 300));
 
 	// update window surface
 	SDL_RenderPresent(mGameData->renderer);

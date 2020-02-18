@@ -10,7 +10,7 @@
 #include "Game/Cursor.h"
 
 #include "UI/UIManager.h"
-#include "UI/Menus/PauseMenu.h"
+#include "UI/Screens/PauseScreen.h"
 
 
 PauseState::PauseState(GameData* gameData, GameController* gameController) : 
@@ -19,19 +19,19 @@ PauseState::PauseState(GameData* gameData, GameController* gameController) :
 
 void PauseState::init() 
 {
-	mGameData->uiManager->selectMenu(UIManager::pause);
-	pauseMenu = static_cast<PauseMenu*>(mGameData->uiManager->getActiveMenu());
+	mGameData->uiManager->selectScreen(Screen::Pause);
+	pauseScreen = static_cast<PauseScreen*>(mGameData->uiManager->getActiveScreen());
 
 	mGameData->cursor->setTexture(mGameData->textureManager->getTexture("UICursor"));
 }
 
 void PauseState::slowUpdate(float dt)
 {
-	if (pauseMenu->shouldResumeGame())
+	if (pauseScreen->shouldResumeGame())
 	{
 		mGameController->getStateMachine()->popState();
 	}
-	else if (pauseMenu->shouldQuitGame())
+	else if (pauseScreen->shouldQuitGame())
 	{
 		mGameController->quitGame();
 	}
@@ -41,12 +41,14 @@ void PauseState::slowUpdate(float dt)
 void PauseState::handleInput()
 {
 	if (mGameData->inputManager->isPressed(Button::ESC) ||
-		mGameData->inputManager->isPressed(Button::QUIT))
+		mGameData->inputManager->isPressed(Button::QUIT) ||
+		pauseScreen->shouldQuitGame())
 	{
 		quitGame();
 	}
 
-	if (mGameData->inputManager->isPressed(Button::PAUSE))
+	if (mGameData->inputManager->isPressed(Button::PAUSE) ||
+		pauseScreen->shouldResumeGame())
 	{
 		resumeGame();
 	}
@@ -80,5 +82,5 @@ void PauseState::quitGame()
 void PauseState::resumeGame()
 {
 	mGameController->getStateMachine()->popState();
-	mGameData->uiManager->selectMenu(UIManager::game);
+	mGameData->uiManager->selectScreen(Screen::Game);
 }

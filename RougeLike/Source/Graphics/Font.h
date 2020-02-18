@@ -3,26 +3,30 @@
 class Font
 {
 public:
-	Font(SDL_Renderer* renderer);
+	Font() : mRenderer(nullptr), mTexture(nullptr), mFont(nullptr) { }
 	~Font();
 
-	bool loadFromFile(const std::string font);
+	void init(SDL_Renderer* renderer) { mRenderer = renderer; }
+	bool loadFromFile(std::string font, int ptSize);
 
-	void render(const Rect<int> rect) const;
-	void render(const RectF rect) const;
-	void render(const Rect<int> rect, SDL_RendererFlip flip) const;
-	void render(const RectF rect, double rotation, VectorF aboutPoint) const;
-
+	void render(const VectorF position) const;
 
 	//Creates image from font string
-	bool setText(std::string textureText, SDL_Color textColor);
-
-	VectorF originalDimentions;
-
+	void setColour(SDL_Color textColor) { colour = textColor; }
+	void setText(std::string textureText);
 
 private:
-	SDL_Renderer* renderer;
-	SDL_Texture* texture;
+	SDL_Renderer* mRenderer;
+	SDL_Texture* mTexture;
+	TTF_Font* mFont;
 
-	TTF_Font* gFont;
+	SDL_Color colour;
+
+	VectorF size;
+
+	// Forbid copy to prevent shared ownership of of gFont and
+	// it being destroyed by the destructor while still in use
+	Font(Font& font);
+	Font& operator = (const Font) { DebugPrint(Error, "Do no use!\n"); };
 };
+ 

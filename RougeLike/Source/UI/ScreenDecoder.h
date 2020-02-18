@@ -1,0 +1,41 @@
+#pragma once
+
+typedef std::vector<std::vector<Attributes>> ScreenAttributes;
+
+struct TextureManager;
+class UILayer;
+struct GameData;
+
+// This is only for enum
+#include "UI/Elements/UIButton.h"
+#include "UI/Elements/UITextBox.h"
+
+/*
+Decodes an XML formatted file into a UI built into layers, boxes, buttons, text etc.
+Note: The layers must be in order with the top layer first/at the top of the file
+*/
+class ScreenDecoder
+{
+public:
+	ScreenDecoder(GameData* gameData) : mGameData(gameData) { };
+	~ScreenDecoder() { }
+
+	ScreenAttributes getScreenAttributes(std::string config);
+	std::vector<UILayer*> buildUIScreenLayers(ScreenAttributes& attributes);
+
+private:
+	void fillElementData	(UIElement::Data& data,		Attributes& attributes);
+	void fillBoxData		(UIBox::Data& data,			Attributes& attributes);
+	void fillBasicTextData	(UIBasicText::Data& data,	Attributes& attributes);
+	void fillButtonData		(UIButton::Data& data,		Attributes& attributes);
+	void fillTextButtonData	(UITextButton::Data& data,	Attributes& attributes);
+
+	RectF generateRect(Attributes& attributes) const;
+
+	UIButton::Action getAction(std::string action);
+
+
+private:
+	GameData* mGameData;
+	XMLParser xmlParser;
+};

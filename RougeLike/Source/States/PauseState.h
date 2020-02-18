@@ -4,7 +4,7 @@
 
 class GameController;
 struct GameData;
-class PauseMenu;
+class PauseScreen;
 
 class PauseState : public State
 {
@@ -27,5 +27,5 @@ private:
 	GameController* mGameController;
 	GameData* mGameData;
 
-	PauseMenu* pauseMenu;
+	PauseScreen* pauseScreen;
 };

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen>
+	<layer>
+		<TextButton x_p = "0.375" y_p = "0.3" width_p = "0.25" height_p = "0.075" texture = "RedButton" textureSelected = "SelectedRedButton" action = "RESUME_GAME_1">
+			<text font = "lazy.ttf" ptSize = "56" r = "0" g = "255" b = "0" >Resume</text>
+		</TextButton>
+		<TextButton x_p = "0.375" y_p = "0.6" width_p = "0.25" height_p = "0.075" texture = "RedButton" action = "QUIT_GAME_2">
+			<text font = "lazy.ttf" ptSize = "56" r = "0" g = "255" b = "0" >Quit Game</text>
+		</TextButton>
+	</layer>
+	<layer>
+		<Box type = "Box" x_p = "0.325" y_p = "0.15" width_p = "0.35" height_p = "0.6" texture = "GreyBox"></Box>
+	</layer>
+</screen>

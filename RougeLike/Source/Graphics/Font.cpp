@@ -1,31 +1,27 @@
 #include "pch.h"
 #include "Font.h"
 
-Font::Font(SDL_Renderer* newRenderer) : renderer(newRenderer)
-{
-	texture = nullptr;
-	originalDimentions = VectorF();
-}
-
 
 Font::~Font()
 {
-	if (texture)
-		SDL_DestroyTexture(texture);
+	if (mTexture)
+		SDL_DestroyTexture(mTexture);
 
-	TTF_CloseFont(gFont);
+	if(mFont)
+		TTF_CloseFont(mFont);
 
 	DebugPrint(Log, "font destoryed\n");
 }
 
-bool Font::loadFromFile(const std::string font)
+
+bool Font::loadFromFile(std::string font, int ptSize)
 {
 	//Loading success flag
 	bool success = true;
 
 	//Open the font
-	gFont = TTF_OpenFont(font.c_str(), 28);
-	if (gFont == nullptr)
+	mFont = TTF_OpenFont(font.c_str(), ptSize);
+	if (mFont == nullptr)
 	{
 		printf("Failed to load font at '%s'! SDL_ttf Error: %s\n", font.c_str(), TTF_GetError());
 		success = false;
@@ -35,82 +31,48 @@ bool Font::loadFromFile(const std::string font)
 }
 
 
-// TODO: dont need half of this!!!
-// TODO: dont need half of this!!!
-bool Font::setText(std::string textureText, SDL_Color textColor)
+void Font::setText(std::string text)
 {
-	// final texture
-	SDL_Texture* tempTexture = nullptr;
-
-	//Render text surface
-	SDL_Surface* textSurface = TTF_RenderText_Solid(gFont, textureText.c_str(), textColor);
-
-	if (!textSurface)
+	if (mFont != nullptr)
 	{
-		DebugPrint(Warning, "Unable to render text surface for text: %s! SDL_ttf Error: %s\n", textureText.c_str(), TTF_GetError());
-	}
-	else
-	{
-		//Create texture from surface pixels
-		tempTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+		//Render text surface
+		SDL_Surface* textSurface = TTF_RenderText_Solid(mFont, text.c_str(), colour);
 
-		if (tempTexture == NULL)
+		if (!textSurface)
 		{
-			printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+			DebugPrint(Warning, "Unable to render text surface for text: %s! SDL_ttf Error: %s\n", text.c_str(), TTF_GetError());
 		}
 		else
 		{
-			originalDimentions = VectorF(static_cast<float>(textSurface->w), static_cast<float>(textSurface->h));
+			//Create texture from surface pixels
+			mTexture = SDL_CreateTextureFromSurface(mRenderer, textSurface);
+
+			if (mTexture == nullptr)
+			{
+				printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+			}
+			else
+			{
+				size = VectorF(static_cast<float>(textSurface->w), static_cast<float>(textSurface->h));
+			}
+
+			// loaded surface no longer needed
+			SDL_FreeSurface(textSurface);
 		}
-
-		// loaded surface no longer needed
-		SDL_FreeSurface(textSurface);
 	}
-
-	// return sucess
-	texture = tempTexture;
-	return texture != nullptr;
+	else
+	{
+		DebugPrint(Error, "Font has not beed loaded for text: %s, Call Font::loadFromFile first\n", text);
+		return;
+	}
 }
 
-void Font::render(const Rect<int> rect) const
+void Font::render(const VectorF position) const
 {
-	SDL_Rect renderQuad = { (rect.x1), (rect.y1),
-							(rect.Width()), (rect.Height()) };
+	SDL_Rect renderQuad = { static_cast<int>(position.x),
+							static_cast<int>(position.y),
+							static_cast<int>(size.x),
+							static_cast<int>(size.y) };
 
-	SDL_RenderCopyEx(renderer, texture, nullptr, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
-}
-
-void Font::render(const Rect<int> rect, SDL_RendererFlip flip) const
-{
-	SDL_Rect renderQuad = { (rect.x1), (rect.y1),
-							(rect.Width()), (rect.Height()) };
-
-	SDL_RenderCopyEx(renderer, texture, nullptr, &renderQuad, 0.0, NULL, flip);
-}
-
-
-void Font::render(const RectF rect) const
-{
-	SDL_Rect renderQuad = { static_cast<int>(rect.x1),
-							static_cast<int>(rect.y1),
-							static_cast<int>(rect.Width()),
-							static_cast<int>(rect.Height()) };
-
-	SDL_RenderCopyEx(renderer, texture, nullptr, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
-}
-
-
-// Renders texture with the roation specified
-void Font::render(const RectF rect, double rotation, VectorF aboutPoint) const
-{
-	// texture being displayed on the screen
-	SDL_Rect renderQuad = { static_cast<int>(rect.x1),
-						static_cast<int>(rect.y1),
-						static_cast<int>(rect.Width()),
-						static_cast<int>(rect.Height()) };
-
-	// rotate about this point
-	SDL_Point point = { aboutPoint.x, aboutPoint.y };
-
-	SDL_RenderCopyEx(renderer, texture, nullptr, &renderQuad, rotation, &point, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(mRenderer, mTexture, nullptr, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
 }

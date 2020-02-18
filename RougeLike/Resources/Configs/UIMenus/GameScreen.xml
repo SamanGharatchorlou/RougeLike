@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen>
+	<layer>
+		<BasicText id = "Score" x_p = "0.025" y_p = "0.025">
+			<text font = "lazy.ttf" ptSize = "32" r = "0" g = "255" b = "0" >Score: 0</text>
+		</BasicText>
+		<Box id = "RedHealth" x_p = "0.05" y_p = "0.95" width_p = "0.15" height_p = "0.025" texture = "RedHealthBar"></Box>
+	</layer>
+	<layer>
+		<Box id = "BlackHealth" x_p = "0.05" y_p = "0.95" width_p = "0.15" height_p = "0.025" texture = "BlackHealthBar"></Box>
+	</layer>
+</screen>

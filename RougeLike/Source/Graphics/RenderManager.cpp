@@ -28,7 +28,7 @@ void RenderManager::render()
 
 	mMap->renderLayerB();
 
-	mUIManager->render();
+ 	mUIManager->render();
 
 	mGameData->cursor->render();
 }

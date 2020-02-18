@@ -75,7 +75,7 @@ void TunnelGenerator::build()
 			else if (y + i == 0 || y + i == map.yCount() - 1)
 				continue;
 
-			//map[y + i][x].setRenderType(MapTile::Floor);
+			// ERROR: once I got y = 15 and i = 5 giving out of bounds access here
 			map[y + i][x].setType(MapTile::Floor);
 		}
 	}
