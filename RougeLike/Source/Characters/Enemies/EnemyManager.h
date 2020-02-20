@@ -41,6 +41,9 @@ public:
 	void render();
 
 private:
+	void deactivate(std::vector<Enemy*>::iterator& iter);
+
+private:
 	GameData* mGameData;
 
 	std::vector<EnemyObject> mEnemyPool;

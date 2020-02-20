@@ -116,17 +116,7 @@ void EnemyManager::slowUpdate(float dt)
 		// This needs to change to something else so the death anim can play
 		if (!enemy->isActive())
 		{
-			printf("enemy is dead, remove\n");
-			// Set the enemy in the pool to inactive to be cleaned
-			std::vector<EnemyObject>::iterator poolIter;
-			for (poolIter = mEnemyPool.begin(); poolIter != mEnemyPool.end(); poolIter++)
-			{
-				if (enemy == poolIter->first)
-					poolIter->second = ObjectStatus::Inactive;
-			}
-
-
-			iter = mActiveEnemies.erase(iter);
+			deactivate(iter);
 
 			if (iter == mActiveEnemies.end())
 				break;
@@ -179,3 +169,19 @@ void EnemyManager::render()
 		}
 	}
 }
+
+
+
+// --- Private Functions --- //
+void EnemyManager::deactivate(std::vector<Enemy*>::iterator& iter)
+{
+	// Find this enemy in the pool and deactivate inactive to be cleaned
+	for (std::vector<EnemyObject>::iterator poolIter = mEnemyPool.begin(); poolIter != mEnemyPool.end(); poolIter++)
+	{
+		if (*iter == poolIter->first)
+			poolIter->second = ObjectStatus::Inactive;
+	}
+
+	iter = mActiveEnemies.erase(iter);
+}
+

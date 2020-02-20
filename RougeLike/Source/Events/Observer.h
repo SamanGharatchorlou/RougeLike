@@ -9,19 +9,18 @@ enum class Event
 
 struct EventData
 {
-	EventData(Event type) : mType(type) { }
 	virtual ~EventData() { };
-
-	Event mType = Event::None;
 };
 
 
-class EnemyDeadData : public EventData
+struct EnemyDeadData : public EventData
 {
-public:
-	EnemyDeadData() : EventData(Event::EnemyDead) { }
-	~EnemyDeadData() { }
 	int score;
+};
+
+struct PlayerTakenDamage : public EventData
+{
+	int damage;
 };
 
 
