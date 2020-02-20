@@ -14,9 +14,12 @@ public:
 	void quitGame() { quit = true; }
 
 	StateMachine* getStateMachine() { return &mGameStateMachine; }
+	
+	void restartGame();
 
 private:
 	GameData mGameData;
+
 	StateMachine mGameStateMachine;
 
 	bool quit;

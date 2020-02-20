@@ -1,10 +1,11 @@
 #pragma once
 
 #include "UI/Screens/Screen.h"
+#include "Events/Observer.h"
 
 struct GameData;
 
-class UIManager
+class UIManager : public Observer
 {
 public:
 	UIManager(GameData* gameData);
@@ -18,6 +19,9 @@ public:
 	void render() { activeScreen->render(); }
 
 	Screen* getActiveScreen() { return activeScreen; }
+
+
+	void handleEvent(Event event, EventData& data);
 
 	UIElement* find(std::string id);
 

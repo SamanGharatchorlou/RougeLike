@@ -25,15 +25,20 @@ void PauseState::init()
 	mGameData->cursor->setTexture(mGameData->textureManager->getTexture("UICursor"));
 }
 
+
 void PauseState::slowUpdate(float dt)
 {
-	if (pauseScreen->shouldResumeGame())
+	if (pauseScreen->resumeGame())
 	{
-		mGameController->getStateMachine()->popState();
+		resumeGame();
 	}
-	else if (pauseScreen->shouldQuitGame())
+	else if (pauseScreen->quitGame())
 	{
-		mGameController->quitGame();
+		quitGame();
+	}
+	else if (pauseScreen->restartGame())
+	{
+		restartGame();
 	}
 }
 
@@ -41,14 +46,12 @@ void PauseState::slowUpdate(float dt)
 void PauseState::handleInput()
 {
 	if (mGameData->inputManager->isPressed(Button::ESC) ||
-		mGameData->inputManager->isPressed(Button::QUIT) ||
-		pauseScreen->shouldQuitGame())
+		mGameData->inputManager->isPressed(Button::QUIT))
 	{
 		quitGame();
 	}
 
-	if (mGameData->inputManager->isPressed(Button::PAUSE) ||
-		pauseScreen->shouldResumeGame())
+	if (mGameData->inputManager->isPressed(Button::PAUSE))
 	{
 		resumeGame();
 	}
@@ -68,19 +71,20 @@ void PauseState::render()
 }
 
 
-
-void PauseState::exit() 
-{
-}
-
-
 void PauseState::quitGame()
 {
 	mGameController->quitGame();
 }
 
+
 void PauseState::resumeGame()
 {
 	mGameController->getStateMachine()->popState();
 	mGameData->uiManager->selectScreen(Screen::Game);
+}
+
+
+void PauseState::restartGame()
+{
+	mGameController->restartGame();
 }

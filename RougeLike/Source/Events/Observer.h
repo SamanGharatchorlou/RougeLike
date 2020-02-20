@@ -3,7 +3,8 @@
 enum class Event
 {
 	None,
-	EnemyDead
+	EnemyDead,
+	UpdateScore,
 };
 
 
@@ -13,14 +14,22 @@ struct EventData
 };
 
 
-struct EnemyDeadData : public EventData
+struct EnemyDeadEvent : public EventData
 {
-	int score;
+	EnemyDeadEvent(int score) : mScore(score) { }
+	const int mScore;
 };
 
-struct PlayerTakenDamage : public EventData
+struct PlayerTakenDamageEvent : public EventData
 {
-	int damage;
+	PlayerTakenDamageEvent(int damage) : mDamage(damage) { }
+	const int mDamage;
+};
+
+struct UpdateScoreEvent : EventData
+{
+	UpdateScoreEvent(int score) : mScore(score) { }
+	const int mScore;
 };
 
 

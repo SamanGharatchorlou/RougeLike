@@ -141,6 +141,7 @@ void GameController::init()
 
 	// Score Manager
 	mGameData.scoreManager = new ScoreManager;
+	mGameData.scoreManager->addObserver(mGameData.uiManager);
 }
 
 
@@ -226,4 +227,17 @@ void GameController::run()
 	}
 
 	DebugPrint(Log, "Quitting Game\n");
+}
+
+
+void GameController::restartGame()
+{
+	// Remove all states
+	//while (mGameStateMachine.size() > 1)
+	//{
+	//	mGameStateMachine.popState();
+	//	mGameStateMachine.processStateChanges();
+	//}
+
+	//mGameStateMachine.addState(new GameState(&mGameData, this));
 }

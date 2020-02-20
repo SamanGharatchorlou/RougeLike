@@ -8,9 +8,7 @@ void EnemyDead::init()
 {
 	mEnemy->getAnimator()->selectAnimation("Dead");
 
-	EnemyDeadData event;
-	event.score = 50;
-
+	EnemyDeadEvent event(mEnemy->score());
 	mEnemy->notify(Event::EnemyDead, event);
 }
 

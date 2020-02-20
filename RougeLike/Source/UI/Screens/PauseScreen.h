@@ -13,12 +13,14 @@ public:
 	void exit() override;
 	void update() override;
 
-	bool shouldQuitGame() { return mQuitGame; }
-	bool shouldResumeGame() { return mResumeGame; }
+	bool quitGame() const { return mQuitGame; }
+	bool resumeGame() const { return mResumeGame; }
+	bool restartGame() const { return mRestartGame; }
 
 	Type type() override { return Type::Pause; }
 
 private:
 	bool mResumeGame;
 	bool mQuitGame;
+	bool mRestartGame;
 };

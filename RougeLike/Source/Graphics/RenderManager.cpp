@@ -20,16 +20,16 @@ RenderManager::RenderManager(GameData* gameData) :
 
 void RenderManager::render()
 {
-	//mMap->renderLayerA(mPlayer->getRect().Center().y);
+	mMap->renderLayerA(mPlayer->getRect().Center().y);
 
-	//mEnemies->render();
+	mEnemies->render();
 
-	//mPlayer->render();
+	mPlayer->render();
 
-	//mMap->renderLayerB();
+	mMap->renderLayerB();
 
- //	mUIManager->render();
+ 	mUIManager->render();
 
-	//mGameData->cursor->render();
+	mGameData->cursor->render();
 }
 

@@ -73,7 +73,6 @@ void GameState::init()
 	mEnemies.spawn(EnemyType::Imp, 35.0f);
 	mEnemies.spawn(EnemyType::Imp, 40.0f);
 	mEnemies.spawn(EnemyType::Imp, 42.0f);
-	mEnemies.spawn(EnemyType::Imp, 45.0f);
 }
 
 
