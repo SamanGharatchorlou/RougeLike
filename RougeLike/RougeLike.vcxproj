@@ -41,6 +41,7 @@
     <ClCompile Include="Source\Audio\Audio.cpp" />
     <ClCompile Include="Source\Audio\AudioManager.cpp" />
     <ClCompile Include="Source\Collisions\CollisionTracker.cpp" />
+    <ClCompile Include="Source\Collisions\EnemyCollider.cpp" />
     <ClCompile Include="Source\Events\Dispatcher.cpp" />
     <ClCompile Include="Source\Graphics\Font.cpp" />
     <ClCompile Include="Source\Graphics\Renderer.cpp" />
@@ -117,6 +118,7 @@
     <ClInclude Include="Source\Audio\Audio.h" />
     <ClInclude Include="Source\Audio\AudioManager.h" />
     <ClInclude Include="Source\Collisions\CollisionTracker.h" />
+    <ClInclude Include="Source\Collisions\EnemyCollider.h" />
     <ClInclude Include="Source\Events\Dispatcher.h" />
     <ClInclude Include="Source\Events\Observer.h" />
     <ClInclude Include="Source\Game\GameData.h" />

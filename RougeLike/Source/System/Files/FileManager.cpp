@@ -30,8 +30,8 @@ FileManager::FileManager()
 	folderPaths[Config_Map]				= std::string("Configs\\Map\\");
 	folderPaths[Config_Animations]		= std::string("Configs\\Animations\\");
 	folderPaths[Config_Weapons]			= std::string("Configs\\Weapons\\");
-	folderPaths[Config_Stats_Enemies]	= std::string("Configs\\Stats\\Enemies");
-	folderPaths[Config_Stats_Player]	= std::string("Configs\\Stats\\Player");
+	folderPaths[Config_Stats_Enemies]	= std::string("Configs\\Stats\\Enemies\\");
+	folderPaths[Config_Stats_Player]	= std::string("Configs\\Stats\\Player\\");
 }
 
 

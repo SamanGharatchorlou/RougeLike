@@ -47,7 +47,7 @@ void CollisionTracker::clearSubscriptions()
 }
 
 
-void CollisionTracker::update()
+void CollisionTracker::checkForCollisions()
 {
 	for (unsigned int j = 0; j < mBaseColliders.size(); j++)
 	{

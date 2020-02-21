@@ -10,14 +10,14 @@ class EnemyManager;
 class PlayerManager
 {
 public:
-	PlayerManager(GameData* gameData, EnemyManager* enemyManager);
+	PlayerManager(GameData* gameData);
 
 	Player* get() { return player; }
 	RectF* getRectRef();
 
 	std::vector<Collider*> getWeaponColliders();
 
-	void init();
+	void init(EnemyManager* enemyManager);
 	void preProcess();
 	void handleInput();
 	void slowUpdate(float dt);

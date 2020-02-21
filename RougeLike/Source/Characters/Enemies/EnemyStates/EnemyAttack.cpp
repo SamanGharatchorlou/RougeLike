@@ -14,10 +14,12 @@ EnemyAttack::EnemyAttack(Enemy* enemy) :
 
 void EnemyAttack::init()
 {
-	printf("attack\n");
 	mAttackDistance = 0.0f;
 	mHasAttacked = false;
 	mIsAttacking = false;
+
+	// TODO: adding
+	mEnemy->setActive(true);
 
 	mEnemy->getAnimator()->selectAnimation("Attack");
 	timer.restart();

@@ -7,25 +7,17 @@
 #include "Characters/Enemies/EnemyManager.h"
 
 
-PlayerManager::PlayerManager(GameData* gameData, EnemyManager* enemyManager) : mGameData(gameData), mEnemyManager(enemyManager)
+PlayerManager::PlayerManager(GameData* gameData) : mGameData(gameData)
 {
 	player = new Player(gameData);
 }
 
 
-void PlayerManager::init() 
+void PlayerManager::init(EnemyManager* enemyManager)
 {
+	mEnemyManager = enemyManager;
 	collisionTracker.addCollider(&player->getCollider());
 	player->init(); 
-}
-
-
-
-void PlayerManager::resolveCollisions(float dt)
-{
-	
-
-	
 }
 
 
@@ -42,6 +34,8 @@ void PlayerManager::slowUpdate(float dt)
 	player->slowUpdate(dt);
 
 	updateTrackedColliders();
+
+	collisionTracker.checkForCollisions();
 }
 
 
@@ -55,6 +49,12 @@ void PlayerManager::fastUpdate(float dt)
 
 
 // --- Private Functions --- //
+void PlayerManager::updateTrackedColliders()
+{
+	collisionTracker.clearSubscriptions();
+	collisionTracker.subscribe(mEnemyManager->getAttackingEnemyColliders());
+}
+
 void PlayerManager::resolveWallCollisions(float dt)
 {
 	RectF collisionRect = player->getCollider().getRectBase();

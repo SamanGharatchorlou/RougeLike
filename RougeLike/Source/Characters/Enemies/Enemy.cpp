@@ -107,42 +107,42 @@ void Enemy::replaceState(EnemyState state)
 	case EnemyState::Idle:
 		mStateMachine.replaceState(new EnemyIdle(this));
 
-		mState.pop;
+		mState.pop();
 		mState.push(EnemyState::Idle);
 		break;
 
 	case EnemyState::Run:
 		mStateMachine.replaceState(new EnemyRun(this));
 
-		mState.pop;
+		mState.pop();
 		mState.push(EnemyState::Run);
 		break;
 
 	case EnemyState::Patrol:
 		mStateMachine.replaceState(new EnemyPatrol(this));
 
-		mState.pop;
+		mState.pop();
 		mState.push(EnemyState::Patrol);
 		break;
 
 	case EnemyState::Alert:
 		mStateMachine.replaceState(new EnemyAlert(this));
 
-		mState.pop;
+		mState.pop();
 		mState.push(EnemyState::Alert);
 		break;
 
 	case EnemyState::Hit:
 		mStateMachine.replaceState(new EnemyHit(this));
 
-		mState.pop;
+		mState.pop();
 		mState.push(EnemyState::Hit);
 		break;
 
 	case EnemyState::Dead:
 		mStateMachine.replaceState(new EnemyDead(this));
 
-		mState.pop;
+		mState.pop();
 		mState.push(EnemyState::Dead);
 		break;
 

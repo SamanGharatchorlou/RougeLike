@@ -11,7 +11,7 @@ public:
 
 	void clearSubscriptions();
 
-	void update();
+	void checkForCollisions();
 
 private:
 	std::vector<Collider*> mBaseColliders;

@@ -51,7 +51,7 @@ void GameState::init()
 	mGameData->uiManager->selectScreen(Screen::Game);
 
 	// Player
-	mPlayer.init();
+	mPlayer.init(&mEnemies);
 	mGameData->camera->follow(mPlayer.getRectRef());
 
 	// Enemies

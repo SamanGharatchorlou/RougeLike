@@ -64,6 +64,7 @@
     <ClCompile Include="Source\Collisions\CollisionTracker.cpp" />
     <ClCompile Include="Source\Characters\Player\PlayerManager.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyPropertyBag.cpp" />
+    <ClCompile Include="Source\Collisions\EnemyCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -144,6 +145,7 @@
     <ClInclude Include="Source\UI\Screens\UILayer.h" />
     <ClInclude Include="Source\Collisions\CollisionTracker.h" />
     <ClInclude Include="Source\Characters\Player\PlayerManager.h" />
+    <ClInclude Include="Source\Collisions\EnemyCollider.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />
