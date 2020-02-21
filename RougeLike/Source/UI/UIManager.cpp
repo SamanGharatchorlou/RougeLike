@@ -93,3 +93,31 @@ UIElement* UIManager::find(std::string id)
 	DebugPrint(Warning, "No element with the id %s was found\n", id.c_str());
 	return nullptr;
 }
+
+
+
+void UIManager::handleEvent(Event event, EventData& data)
+{
+	switch (event)
+	{
+	case Event::UpdateScore:
+	{
+		UpdateScoreEvent scoreEvent = static_cast<UpdateScoreEvent&>(data);
+
+		std::string scoreString = "Score: " + std::to_string(scoreEvent.mScore);
+
+		UIElement* element = find("Score");
+
+		if (element != nullptr && element->type() == UIElement::BasicText)
+		{
+			UIBasicText* text = static_cast<UIBasicText*>(element);
+
+			text->setText(scoreString);
+		}
+
+		break;
+	}
+	default:
+		break;
+	}
+}

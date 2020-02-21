@@ -26,15 +26,13 @@ UIButton::UIButton(Data& data) :
 void UIButton::setPressed(bool isPressed) 
 { 
 	mIsPressed = isPressed; 
-
 	setTexture(isPressed ? mHighlighted : mDefault);
 }
 
 
 void UIButton::setReleased(bool isReleased) 
 { 
-	mIsReleased = isReleased; 
-	setTexture(isReleased ? mDefault : mHighlighted);
+	mIsReleased = isReleased;
 }
 
 

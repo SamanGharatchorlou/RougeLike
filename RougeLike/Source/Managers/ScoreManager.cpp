@@ -1,6 +1,15 @@
 #include "pch.h"
 #include "ScoreManager.h"
 
+void ScoreManager::update()
+{
+	if (hasChanged)
+	{
+		UpdateScoreEvent event(mScore);
+		notify(Event::UpdateScore, event);
+	}
+}
+
 void ScoreManager::handleEvent(Event event, EventData& data)
 {
 	hasChanged = false;
@@ -12,8 +21,8 @@ void ScoreManager::handleEvent(Event event, EventData& data)
 		break;
 	case Event::EnemyDead:
 	{
-		EnemyDeadData& deathData = static_cast<EnemyDeadData&>(data);
-		mScore += deathData.score;
+		EnemyDeadEvent& deathData = static_cast<EnemyDeadEvent&>(data);
+		mScore += deathData.mScore;
 		break;
 	}
 	default:

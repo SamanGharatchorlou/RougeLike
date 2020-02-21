@@ -17,11 +17,12 @@ public:
 	void fastUpdate(float dt) override { };
 	void handleInput() override;
 	void render() override;
-	void exit() override;
+	void exit() override { }
 
 private:
 	void quitGame();
 	void resumeGame();
+	void restartGame();
 
 private:
 	GameController* mGameController;

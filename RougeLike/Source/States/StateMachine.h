@@ -16,6 +16,8 @@ public:
 
 	State& getActiveState();
 
+	size_t size() { return states.size(); }
+
 private:
 	State* newState;
 	std::stack<State*> states;

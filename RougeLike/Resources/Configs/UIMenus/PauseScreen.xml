@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <screen>
 	<layer>
-		<TextButton x_p = "0.375" y_p = "0.3" width_p = "0.25" height_p = "0.075" texture = "RedButton" textureSelected = "SelectedRedButton" action = "RESUME_GAME_1">
+		<TextButton id = "ResumeGame" x_p = "0.375" y_p = "0.25" width_p = "0.25" height_p = "0.075" texture = "RedButton" textureSelected = "SelectedRedButton" action = "ResumeGame_1">
 			<text font = "lazy.ttf" ptSize = "56" r = "0" g = "255" b = "0" >Resume</text>
 		</TextButton>
-		<TextButton x_p = "0.375" y_p = "0.6" width_p = "0.25" height_p = "0.075" texture = "RedButton" action = "QUIT_GAME_2">
-			<text font = "lazy.ttf" ptSize = "56" r = "0" g = "255" b = "0" >Quit Game</text>
+		<TextButton id= "QuitGame" x_p = "0.375" y_p = "0.6" width_p = "0.25" height_p = "0.075" texture = "RedButton" textureSelected = "SelectedRedButton" action = "QuitGame_2">
+			<text font = "lazy.ttf" ptSize = "56" r = "0" g = "255" b = "0" >Quit</text>
+		</TextButton>
+				<TextButton id = "RestartGame" x_p = "0.375" y_p = "0.45" width_p = "0.25" height_p = "0.075" texture = "RedButton" textureSelected = "SelectedRedButton" action = "RestartGame_3">
+			<text font = "lazy.ttf" ptSize = "56" r = "0" g = "255" b = "0" >Restart</text>
 		</TextButton>
 	</layer>
 	<layer>

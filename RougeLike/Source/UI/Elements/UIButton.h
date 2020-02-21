@@ -12,6 +12,7 @@ public:
 		None_0,
 		ResumeGame_1,
 		QuitGame_2,
+		RestartGame_3,
 
 		COUNT
 	};

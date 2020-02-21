@@ -28,8 +28,7 @@ void UILayer::addElement(UIElement* element)
 }
 
 
-// TODO: change this to release, or make a onRelease version
-std::queue<UIButton::Action> UILayer::onPress(VectorF point)
+std::queue<UIButton::Action> UILayer::onRelease(VectorF point)
 {
 	std::queue<UIButton::Action> actions;
 
@@ -41,11 +40,44 @@ std::queue<UIButton::Action> UILayer::onPress(VectorF point)
 
 			if (button->isPointInBounds(point))
 			{
-				button->setPressed(true);
+				button->setPressed(false);
+				button->setReleased(true);
 				actions.push(button->getAction());
 			}
 		}
 	}
 
 	return actions;
+}
+
+
+void UILayer::onPress(VectorF point)
+{
+	for (UIElement* element : mElements)
+	{
+		if (element->isButton())
+		{
+			UIButton* button = static_cast<UIButton*>(element);
+
+			if (button->isPointInBounds(point))
+			{
+				button->setPressed(true);
+			}
+		}
+	}
+}
+
+
+void UILayer::resetButtons()
+{
+	for (UIElement* element : mElements)
+	{
+		if (element->isButton())
+		{
+			UIButton* button = static_cast<UIButton*>(element);
+
+			button->setPressed(false);
+			button->setReleased(false);
+		}
+	}
 }

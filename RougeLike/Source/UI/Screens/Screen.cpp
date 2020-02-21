@@ -23,12 +23,27 @@ void Screen::handleInput()
 {
 	ASSERT(Warning, mActions.empty(), "There are %d unhandled button action(s)", mActions.size());
 
-	if (mGameData->cursor->isPressed())
+	for (UILayer* layer : mLayers)
+	{
+		layer->resetButtons();
+	}
+
+	// Apply highlighted button textures
+	if (mGameData->cursor->isHeld() )
+	{
+		for (UILayer* layer : mLayers)
+		{
+			layer->onPress(mGameData->cursor->getPosition());
+		}
+	}
+
+	// Apply button actions
+	if (mGameData->cursor->isReleased())
 	{
 		for (UILayer* layer : mLayers)
 		{
 			// Get all actions for this layer
-			std::queue<UIButton::Action> layerActions = layer->onPress(mGameData->cursor->getPosition());
+			std::queue<UIButton::Action> layerActions = layer->onRelease(mGameData->cursor->getPosition());
 
 			// Merge into Screen actions (i.e. all layers)
 			while (!layerActions.empty())
@@ -39,6 +54,8 @@ void Screen::handleInput()
 		}
 	}
 }
+
+
 
 
 void Screen::render()

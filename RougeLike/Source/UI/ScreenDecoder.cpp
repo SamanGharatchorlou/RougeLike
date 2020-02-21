@@ -167,13 +167,15 @@ void ScreenDecoder::fillButtonData(UIButton::Data& data, Attributes& attributes)
 	// Box component
 	fillBoxData(data, attributes);
 
-	data.highlightedTexture = nullptr;
-
 	// Button may have 2 textures on/off
 	if (attributes.contains("textureSelected"))
 	{
-		std::string textureLabel = attributes.getString("texture");
+		std::string textureLabel = attributes.getString("textureSelected");
 		data.highlightedTexture = mGameData->textureManager->getTexture(textureLabel);
+	}
+	else
+	{
+		data.highlightedTexture = data.texture;
 	}
 
 	// Action

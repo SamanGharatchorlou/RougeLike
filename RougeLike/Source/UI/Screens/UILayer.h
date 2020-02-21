@@ -9,9 +9,11 @@ class UILayer
 public:
 	~UILayer();
 
+	void resetButtons();
 	void render();
 
-	std::queue<UIButton::Action> onPress(VectorF point);
+	void onPress(VectorF point);
+	std::queue<UIButton::Action> onRelease(VectorF point);
 
 	void addElement(UIElement* element);
 

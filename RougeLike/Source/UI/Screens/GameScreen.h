@@ -12,7 +12,7 @@ public:
 	//void render() override;
 
 	void enter() override {}
-	void update() override;
+	void update() override { }
 	void exit() override { }
 
 	Type type() override { return Type::Game; }
