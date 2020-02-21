@@ -33,13 +33,11 @@ EnemyManager::~EnemyManager()
 }
 
 
-void EnemyManager::subscribePlayerWeaponCollisions(Weapon* weapon)
+void EnemyManager::subscribe(std::vector<Collider*> colliders)
 {
-	std::vector<Collider*> weaponColliders = weapon->getColliders();
-
-	for (unsigned int i = 0; i < weaponColliders.size(); i++)
+	for (Collider* collider : colliders)
 	{
-		mCollisionManager.subscribe(weaponColliders[i]);
+		mCollisionManager.subscribe(collider);
 	}
 }
 
@@ -88,6 +86,8 @@ void EnemyManager::spawn(EnemyType type, float xPositionPercentage)
 			mEnemyPool[i].second = ObjectStatus::Active;
 			enemy->setActive(true);
 
+			enemy->setTarget(mTarget);
+
 			// subscribe to player weapon collisions
 			mCollisionManager.addCollider(enemy->getCollider());
 
@@ -110,7 +110,6 @@ void EnemyManager::slowUpdate(float dt)
 		Enemy* enemy = *iter;
 
 		enemy->slowUpdate(dt);
-
 
 		// Automatically clear out dead enemies
 		// This needs to change to something else so the death anim can play
@@ -170,6 +169,22 @@ void EnemyManager::render()
 	}
 }
 
+
+
+std::vector<Collider*> EnemyManager::getAttackingEnemyColliders()
+{
+	std::vector<Collider*> colliders;
+
+	for (Enemy* enemy : mActiveEnemies)
+	{
+		if (enemy->getState() == EnemyState::Attack)
+		{
+			colliders.push_back(enemy->getCollider());
+		}
+	}
+
+	return colliders;
+}
 
 
 // --- Private Functions --- //

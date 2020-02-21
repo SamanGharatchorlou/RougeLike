@@ -30,6 +30,4 @@ struct GameData
 	Map* map = nullptr;
 	Camera* camera = nullptr;
 	Cursor* cursor = nullptr;
-
-	Player* player = nullptr;
 };

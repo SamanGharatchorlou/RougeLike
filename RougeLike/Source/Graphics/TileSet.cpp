@@ -63,7 +63,8 @@ void Tileset::divideIntoTiles()
 Tile& Tileset::getTile(int index)
 {
 	int x = index % tileCount.x;
-	int y = std::floor(index / tileCount.x);
+	//int y = std::floor(index / tileCount.x);
+	int y = index / tileCount.x; // have I broken it?
 
 	ASSERT(Warning, x <= tileCount.x && y < tileCount.y,
 		"Animation index (%d, %d) out of sprite sheet bounds (%d, %d)\n",

@@ -32,12 +32,9 @@ void TextureManager::init(SDL_Renderer* setRenderer)
 
 	std::string config;
 	std::string textureFolder;
-	bool fails = 0;
+	int fails = 0;
 
 	DebugPrint(Log, "\n--- Loading Textures ---\n");
-
-	// FONTS
-	//fails += !loadFont("LazyFont", fm->getFilePath(FileManager::Font, "lazy.ttf"));
 
 	// Load all weapon textures
 	fm->readFile(FileManager::Configs, "Weapons.txt", config);
@@ -57,7 +54,10 @@ void TextureManager::init(SDL_Renderer* setRenderer)
 	fails += !loadTexture("Imp", fm->getFilePath(FileManager::Image_Enemies, "Imp.png"));
 	fails += !loadTexture("Tileset", fm->getFilePath(FileManager::Image_Maps, "tileset.png"));
 
-	DebugPrint(Log, " --- Texture Loading Complete - Failures: %d ---\n\n", fails);
+	if (!fails)
+		DebugPrint(Log, " --- Texture Loading Success: NO Failures ---\n\n");
+	else
+		DebugPrint(Log, " --- Texture Loading Complete: %d Failures ---\n\n", fails);
 }
 
 
@@ -131,7 +131,7 @@ int TextureManager::loadTextureConfigs(std::string textureFolder, std::string co
 	int end = 0;
 	int failCounter = 0;
 
-	for (int i = 0; i < config.length(); i++)
+	for (unsigned int i = 0; i < config.length(); i++)
 	{
 		char character = config[i];
 

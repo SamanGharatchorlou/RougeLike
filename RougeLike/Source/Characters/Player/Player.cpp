@@ -16,11 +16,8 @@ Player::Player(GameData* gameData) :
 	mGameData(gameData), 
 	mWeapon(gameData),
 	mFlip(SDL_FLIP_NONE)
-{ 
-	gameData->player = this;
-}
+{ }
 
-Player::~Player() { }
 
 void Player::init()
 {

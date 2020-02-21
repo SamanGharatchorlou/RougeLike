@@ -23,6 +23,7 @@
     <ClCompile Include="Source\Animations\Animator.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyManager.cpp" />
     <ClCompile Include="Source\Characters\Enemies\Enemy.cpp" />
+    <ClCompile Include="Source\Characters\Enemies\EnemyPropertyBag.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemySpawner.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyStates\EnemyAlert.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyStates\EnemyAttack.cpp" />
@@ -32,13 +33,14 @@
     <ClCompile Include="Source\Characters\Enemies\EnemyStates\EnemyPatrol.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyStates\EnemyRun.cpp" />
     <ClCompile Include="Source\Characters\Enemies\Imp.cpp" />
+    <ClCompile Include="Source\Characters\Player\PlayerManager.cpp" />
     <ClCompile Include="Source\Characters\Player\States\AttackState.cpp" />
     <ClCompile Include="Source\Characters\Weapons\Weapon.cpp" />
     <ClCompile Include="Source\Collisions\Collider.cpp" />
     <ClCompile Include="Source\Characters\Attributes\Movement.cpp" />
     <ClCompile Include="Source\Audio\Audio.cpp" />
     <ClCompile Include="Source\Audio\AudioManager.cpp" />
-    <ClCompile Include="Source\Collisions\ColliderManager.cpp" />
+    <ClCompile Include="Source\Collisions\CollisionTracker.cpp" />
     <ClCompile Include="Source\Events\Dispatcher.cpp" />
     <ClCompile Include="Source\Graphics\Font.cpp" />
     <ClCompile Include="Source\Graphics\Renderer.cpp" />
@@ -105,6 +107,7 @@
     <ClInclude Include="Source\Characters\Enemies\EnemyStates\EnemyStateHeaders.h" />
     <ClInclude Include="Source\Characters\Enemies\Imp.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyEnums.h" />
+    <ClInclude Include="Source\Characters\Player\PlayerManager.h" />
     <ClInclude Include="Source\Characters\Player\States\AttackState.h" />
     <ClInclude Include="Source\Characters\Weapons\Swing.h" />
     <ClInclude Include="Source\Characters\Weapons\Weapon.h" />
@@ -113,7 +116,7 @@
     <ClInclude Include="Source\Characters\Attributes\Movement.h" />
     <ClInclude Include="Source\Audio\Audio.h" />
     <ClInclude Include="Source\Audio\AudioManager.h" />
-    <ClInclude Include="Source\Collisions\ColliderManager.h" />
+    <ClInclude Include="Source\Collisions\CollisionTracker.h" />
     <ClInclude Include="Source\Events\Dispatcher.h" />
     <ClInclude Include="Source\Events\Observer.h" />
     <ClInclude Include="Source\Game\GameData.h" />
@@ -289,6 +292,7 @@
       <AdditionalUsingDirectories>$(SolutionDir)</AdditionalUsingDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

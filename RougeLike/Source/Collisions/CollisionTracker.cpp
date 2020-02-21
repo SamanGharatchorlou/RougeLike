@@ -1,16 +1,16 @@
 #include "pch.h"
 
-#include "ColliderManager.h"
+#include "CollisionTracker.h"
 #include "Collider.h"
 
 
-void ColliderManager::addCollider(Collider* collider)
+void CollisionTracker::addCollider(Collider* collider)
 {
 	mBaseColliders.push_back(collider);
 }
 
 
-void ColliderManager::subscribe(Collider* collider)
+void CollisionTracker::subscribe(Collider* collider)
 {
 	for (auto subbedCollider : mSubbedColliders)
 	{
@@ -24,14 +24,37 @@ void ColliderManager::subscribe(Collider* collider)
 }
 
 
-void ColliderManager::update()
+void CollisionTracker::subscribe(std::vector<Collider*> colliders)
+{
+	for (Collider* collider : colliders)
+	{
+		for (auto subbedCollider : mSubbedColliders)
+		{
+			if (subbedCollider == collider)
+			{
+				DebugPrint(Log, "Collider is already subscribed with the collider manager");
+			}
+		}
+
+		mSubbedColliders.push_back(collider);
+	}
+}
+
+
+void CollisionTracker::clearSubscriptions()
+{
+	mSubbedColliders.clear();
+}
+
+
+void CollisionTracker::update()
 {
 	for (unsigned int j = 0; j < mBaseColliders.size(); j++)
 	{
 		if (!mBaseColliders[j]->isActive())
 			continue;
 
-		for (int i = 0; i < mSubbedColliders.size(); i++)
+		for (unsigned int i = 0; i < mSubbedColliders.size(); i++)
 		{
 			if (!mSubbedColliders[i]->isActive())
 				continue;

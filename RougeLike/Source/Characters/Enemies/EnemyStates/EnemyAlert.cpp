@@ -19,13 +19,13 @@ void EnemyAlert::init()
 void EnemyAlert::slowUpdate(float dt)
 {
 	// Flip sprite half way
-	if (!mHasFlipped && timer.getSeconds() > mEnemy->attentionTime() / 2.0f)
+	if (!mHasFlipped && timer.getSeconds() > mEnemy->propertyBag().pAttentionTime.get() / 2.0f)
 	{
 		mHasFlipped = true;
 		mEnemy->getMovement().flipDirection();
 	}
 
-	if (timer.getSeconds() > mEnemy->attentionTime())
+	if (timer.getSeconds() > mEnemy->propertyBag().pAttentionTime.get())
 	{
 		mEnemy->replaceState(EnemyState::Run);
 		mEnemy->getMovement().flipDirection();

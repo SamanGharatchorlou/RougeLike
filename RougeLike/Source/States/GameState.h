@@ -3,7 +3,7 @@
 #include "State.h"
 
 #include "Map/Map.h"
-#include "Characters/Player/Player.h"
+#include "Characters/Player/PlayerManager.h"
 #include "Characters/Enemies/EnemyManager.h"
 
 class GameController;
@@ -31,6 +31,6 @@ private:
 	GameController* mGameController;
 	GameData* mGameData;
 
-	Player mPlayer;
+	PlayerManager mPlayer;
 	EnemyManager mEnemies;
 };

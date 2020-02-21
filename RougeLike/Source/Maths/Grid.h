@@ -162,7 +162,7 @@ void Grid<T>::clearAndSet(int x, int y, T value)
 		"Grid must have at least 1 column and 1 row, set with %d columns, %d rows\n", y, x);
 
 	std::vector<T> row(x, value);
-	for(unsigned int i = 0; i < y; i++ )
+	for(int i = 0; i < y; i++ )
 		data.push_back(row);
 }
 

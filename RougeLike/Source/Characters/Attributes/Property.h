@@ -11,7 +11,7 @@ class Property
 {
 public:
 	void set(T property) { mProperty = property; }
-	T& get() { return mProperty; }
+	const T& get() const { return mProperty; }
 
 private:
 	T mProperty;

@@ -34,5 +34,5 @@ void EnemyIdle::fastUpdate(float dt)
 bool EnemyIdle::canSeeTarget() const
 {
 	float distance = distanceSquared(mEnemy->targetRect().Center(), mEnemy->getMovement().getPostion());
-	return distance < mEnemy->sightRange();
+	return distance < mEnemy->propertyBag().pSightRange.get();
 }

@@ -2,7 +2,6 @@
 
 class Window;
 class Map;
-class Movement;
 
 class Camera
 {
@@ -12,8 +11,9 @@ public:
 
 	void setupCamera(Map* map);
 
-	// follow this movement object
-	void follow(Movement* movement);
+	// follow this object
+	void follow(RectF* rect);
+
 	void update();
 
 	void setViewport(VectorF viewport) { mRect.SetSize(viewport); }
@@ -43,7 +43,8 @@ public:
 private:
 	Vector2D<int> boundaries;
 
-	Movement* mMovement;
+	RectF* mFollowingRect;
+
 	RectF mRect;
 };
 

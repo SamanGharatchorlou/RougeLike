@@ -27,7 +27,6 @@
     <ClCompile Include="Source\Characters\Enemies\Enemy.cpp" />
     <ClCompile Include="Source\Characters\Enemies\Imp.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyManager.cpp" />
-    <ClCompile Include="Source\Collisions\ColliderManager.cpp" />
     <ClCompile Include="Source\UI\UIManager.cpp" />
     <ClCompile Include="Source\System\Window.cpp" />
     <ClCompile Include="Source\Map\Map.cpp" />
@@ -62,6 +61,9 @@
     <ClCompile Include="Source\UI\Screens\PauseScreen.cpp" />
     <ClCompile Include="Source\UI\Screens\Screen.cpp" />
     <ClCompile Include="Source\UI\Screens\UILayer.cpp" />
+    <ClCompile Include="Source\Collisions\CollisionTracker.cpp" />
+    <ClCompile Include="Source\Characters\Player\PlayerManager.cpp" />
+    <ClCompile Include="Source\Characters\Enemies\EnemyPropertyBag.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -95,7 +97,6 @@
     <ClInclude Include="Source\Characters\Enemies\Enemy.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyManager.h" />
     <ClInclude Include="Source\Characters\Enemies\Imp.h" />
-    <ClInclude Include="Source\Collisions\ColliderManager.h" />
     <ClInclude Include="Source\UI\UIManager.h" />
     <ClInclude Include="Source\Characters\Attributes\Damage.h" />
     <ClInclude Include="Source\System\Window.h" />
@@ -141,6 +142,8 @@
     <ClInclude Include="Source\UI\Screens\Screen.h" />
     <ClInclude Include="Source\UI\Elements\UIElement.h" />
     <ClInclude Include="Source\UI\Screens\UILayer.h" />
+    <ClInclude Include="Source\Collisions\CollisionTracker.h" />
+    <ClInclude Include="Source\Characters\Player\PlayerManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

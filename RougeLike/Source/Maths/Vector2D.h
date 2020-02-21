@@ -8,6 +8,9 @@ public:
 	Vector2D(T _x, T _y) : x(_x), y(_y) { }
 
 	template<class K>
+	Vector2D(K _x, K _y) : x((T)_x), y((T)_y) { }
+
+	template<class K>
 	Vector2D(Vector2D<K> vector) : x(static_cast<T>(vector.x)), y(static_cast<T>(vector.y)) { }
 
 	// Operator +

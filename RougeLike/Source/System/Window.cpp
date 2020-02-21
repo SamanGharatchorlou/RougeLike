@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Window.h"
 
-Window::Window(const char* title, float width, float height)
+Window::Window(const char* title, int width, int height)
 {
 	// create window
 	mWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,

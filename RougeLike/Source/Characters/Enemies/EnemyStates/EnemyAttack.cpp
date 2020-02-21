@@ -2,7 +2,7 @@
 #include "EnemyAttack.h"
 
 #include "Characters/Enemies/Enemy.h"
-
+#include "Characters/Enemies/EnemyPropertyBag.h"
 
 EnemyAttack::EnemyAttack(Enemy* enemy) :
 	mEnemy(enemy), 
@@ -25,7 +25,7 @@ void EnemyAttack::init()
 	VectorF direction = mEnemy->targetRect().Center() - mEnemy->getRect().Center();
 	mEnemy->getMovement().setDirection(direction);
 
-	mEnemy->getMovement().setSpeed(mEnemy->tackleSpeed());
+	mEnemy->getMovement().setSpeed(mEnemy->propertyBag().pTackleSpeed.get());
 }
 
 
@@ -68,20 +68,20 @@ void EnemyAttack::fastUpdate(float dt)
 
 void EnemyAttack::exit()
 {
-	mEnemy->getMovement().setSpeed(mEnemy->movementSpeed());
+	mEnemy->getMovement().setSpeed(mEnemy->propertyBag().pMovementSpeed.get());
 }
 
 
 // --- Private Functions ---
 bool EnemyAttack::beginMovement() const
 {
-	return !mIsAttacking && !mHasAttacked && (timer.getSeconds() > mEnemy->tackleChargeTime());
+	return !mIsAttacking && !mHasAttacked && (timer.getSeconds() > mEnemy->propertyBag().pTackleChargeTime.get());
 }
 
 
 bool EnemyAttack::returnMovement() const
 {
-	return mIsAttacking && !mHasAttacked && (mAttackDistance > mEnemy->tackleDistance());
+	return mIsAttacking && !mHasAttacked && (mAttackDistance > mEnemy->propertyBag().pTackleDistance.get());
 }
 
 

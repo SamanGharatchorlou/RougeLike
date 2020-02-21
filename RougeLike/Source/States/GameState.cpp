@@ -12,6 +12,7 @@
 #include "Game/Cursor.h"
 #include "Game/Camera.h"
 
+#include "Characters/Player/PlayerManager.h"
 #include "Characters/Enemies/Enemy.h"
 
 
@@ -51,18 +52,21 @@ void GameState::init()
 
 	// Player
 	mPlayer.init();
-	mGameData->camera->follow(&mPlayer.getMovement());
+	mGameData->camera->follow(mPlayer.getRectRef());
 
 	// Enemies
 	mEnemies.addEnemiesToPool(EnemyType::Imp, 10);
-	mEnemies.subscribePlayerWeaponCollisions(&mPlayer.getWeapon());
+	mEnemies.subscribe(mPlayer.getWeaponColliders());
+	mEnemies.setTarget(mPlayer.getRectRef());
 
 	// rendering
 	mGameData->renderManager->Set(mGameData->map);
-	mGameData->renderManager->Set(&mPlayer);
+	mGameData->renderManager->Set(mPlayer.get());
 	mGameData->renderManager->Set(&mEnemies);
 	mGameData->renderManager->Set(mGameData->uiManager);
 
+
+	// Test spawning
 	mEnemies.spawn(EnemyType::Imp, 5.0f);
 	mEnemies.spawn(EnemyType::Imp, 10.0f);
 	mEnemies.spawn(EnemyType::Imp, 15.0f);
@@ -78,7 +82,7 @@ void GameState::init()
 
 void GameState::preProcess()
 {
-	mPlayer.processStateChanges();
+	mPlayer.preProcess();
 }
 
 
@@ -97,33 +101,33 @@ void GameState::handleInput()
 	mPlayer.handleInput();
 	mGameData->uiManager->handleInput();
 }
-
+ 
 void GameState::slowUpdate(float dt)
 {
 	mPlayer.slowUpdate(dt);
 	mEnemies.slowUpdate(dt);
 
 
-	// TESTING -- IT WORKS!!!!
-	//update the ui screen with the score
-	int score = mGameData->scoreManager->score();
+	//// TESTING -- IT WORKS!!!!
+	////update the ui screen with the score
+	//int score = mGameData->scoreManager->score();
 
-	std::string scoreString = "Score: " + std::to_string(score);
+	//std::string scoreString = "Score: " + std::to_string(score);
 
-	UIElement* element = mGameData->uiManager->find("Score");
+	//UIElement* element = mGameData->uiManager->find("Score");
 
-	if (element != nullptr && element->type() == UIElement::BasicText)
-	{
-		UIBasicText* text = static_cast<UIBasicText*>(element);
+	//if (element != nullptr && element->type() == UIElement::BasicText)
+	//{
+	//	UIBasicText* text = static_cast<UIBasicText*>(element);
 
-		text->setText(scoreString);
-	}
+	//	text->setText(scoreString);
+	//}
 }
 
 void GameState::fastUpdate(float dt)
 {
 	// resolve collisions before any movement takes place!
-	mPlayer.resolveWallCollisions(dt);
+	//mPlayer.resolveCollisions(dt);
 
 	mPlayer.fastUpdate(dt);
 	mEnemies.fastUpdate(dt);

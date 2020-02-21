@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Collisions/ColliderManager.h"
+#include "Collisions/CollisionTracker.h"
 #include "EnemyEnums.h"
 #include "EnemySpawner.h"
 
@@ -29,12 +29,17 @@ public:
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
 
-	void subscribePlayerWeaponCollisions(Weapon* weapon);
+	void subscribe(std::vector<Collider*> colliders);
 
 	void addEnemiesToPool(EnemyType type, int count);
 
 	void spawn(EnemyType type, float xIndex);
+
+	void setTarget(RectF* rect) { mTarget = rect; }
+
 	Enemy* getEnemy(unsigned int index);
+
+	std::vector<Collider*> getAttackingEnemyColliders();
 
 	unsigned int size() { return mActiveEnemies.size(); }
 
@@ -49,7 +54,9 @@ private:
 	std::vector<EnemyObject> mEnemyPool;
 	std::vector<Enemy*> mActiveEnemies;
 
-	ColliderManager mCollisionManager;
+	CollisionTracker mCollisionManager;
 
 	EnemySpawner mSpawner;
+
+	RectF* mTarget;
 };

@@ -1,17 +1,14 @@
 #pragma once
 
+#include "Events/Dispatcher.h"
+
+#include "States/StateMachine.h"
 #include "Animations/Animator.h"
 #include "Collisions/Collider.h"
 
-#include "Characters/Attributes/Health.h"
-#include "Characters/Attributes/Damage.h"
+#include "EnemyPropertyBag.h"
 #include "Characters/Attributes/Movement.h"
-
-#include "States/StateMachine.h"
 #include "EnemyEnums.h"
-
-// Testing
-#include "Events/Dispatcher.h"
 
 struct GameData;
 class EnemyPropertyBag;
@@ -21,7 +18,7 @@ class Enemy : public Dispatcher
 {
 public:
 	Enemy(GameData* gameData);
-	~Enemy();
+	~Enemy() { }
 
 	void init(std::string name);
 	void slowUpdate(float dt);
@@ -46,22 +43,10 @@ public:
 
 	void		move(float dt);
 
-	Health&		health() const;
-	bool		isDead() const;
+	EnemyPropertyBag& propertyBag() { return bag; }
 
-	Damage&		damage() const;
-
-	float hurtTime() const;
-	float chaseRange() const;
-	float sightRange() const;
-	float attentionTime() const;
-	float movementSpeed() const;
-	float tackleSpeed() const;
-	float tackleDistance() const;
-	float tackleChargeTime() const;
-	int score() const;
-
-	const RectF		targetRect() const;
+	void setTarget(RectF* rect) { mTarget = rect; }
+	const RectF		targetRect() const { return *mTarget; }
 
 	void spawn(VectorF position);
 
@@ -72,10 +57,11 @@ public:
 	void setActive(bool active) { mIsActive = active; }
 	bool isActive() const { return mIsActive; }
 
+	EnemyState getState() const { return mState.top(); }
+
 
 private:
 	void initAnimations(std::string name);
-	void readAttributes(std::string name);
 
 
 protected:
@@ -89,9 +75,13 @@ protected:
 	RectF mRect; // world coords
 	SDL_RendererFlip mFlip;
 
-	EnemyPropertyBag* bag;
+	EnemyPropertyBag bag;
+
+	RectF* mTarget;
 
 	Uint8 mAlpha;
 
 	bool mIsActive;
+
+	std::stack<EnemyState> mState;
 };

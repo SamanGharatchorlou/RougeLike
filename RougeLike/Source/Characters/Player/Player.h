@@ -15,7 +15,7 @@ class Player //: public Actor
 {
 public:
 	Player(GameData* gameData);
-	~Player();
+	~Player() { }
 
 	void init();
 	void processStateChanges();

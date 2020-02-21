@@ -18,15 +18,15 @@ void Camera::setupCamera(Map* map)
 }
 
 
-void Camera::follow(Movement* movement)
+void Camera::follow(RectF* rect)
 {
-	mMovement = movement;
+	mFollowingRect = rect;
 }
 
 
 void Camera::update()
 {
-	VectorF translation = mMovement->getPostion() - mRect.Center();
+	VectorF translation = mFollowingRect->Center() - mRect.Center();
 
 	if (mRect.LeftPoint() + translation.x >= 0.0f &&
 		mRect.RightPoint() + translation.x <= boundaries.x)

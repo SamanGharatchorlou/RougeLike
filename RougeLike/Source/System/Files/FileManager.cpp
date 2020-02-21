@@ -14,23 +14,24 @@ FileManager* FileManager::Get()
 
 FileManager::FileManager()
 {
-	folderPaths[None]				= std::string("");
-	folderPaths[Root_Folder]		= std::string("\\Resources\\");
+	folderPaths[None]					= std::string("");
+	folderPaths[Root_Folder]			= std::string("\\Resources\\");
 
-	folderPaths[Image_UI]			= std::string("Images\\UI\\");
-	folderPaths[Image_Enemies]		= std::string("Images\\Enemies\\");
-	folderPaths[Image_Character]	= std::string("Images\\Character\\");
-	folderPaths[Image_Maps]			= std::string("Images\\Maps\\");
-	folderPaths[Image_Weapons]		= std::string("Images\\Weapons\\");
+	folderPaths[Image_UI]				= std::string("Images\\UI\\");
+	folderPaths[Image_Enemies]			= std::string("Images\\Enemies\\");
+	folderPaths[Image_Character]		= std::string("Images\\Character\\");
+	folderPaths[Image_Maps]				= std::string("Images\\Maps\\");
+	folderPaths[Image_Weapons]			= std::string("Images\\Weapons\\");
 
-	folderPaths[Font]				= std::string("Font\\");
+	folderPaths[Font]					= std::string("Font\\");
 
-	folderPaths[Configs]			= std::string("Configs\\");
-	folderPaths[Config_UI]			= std::string("Configs\\UIMenus\\");
-	folderPaths[Config_Map]			= std::string("Configs\\Map\\");
-	folderPaths[Config_Animations]	= std::string("Configs\\Animations\\");
-	folderPaths[Config_Weapons]		= std::string("Configs\\Weapons\\");
-	folderPaths[Config_Stats]		= std::string("Configs\\Stats\\");
+	folderPaths[Configs]				= std::string("Configs\\");
+	folderPaths[Config_UI]				= std::string("Configs\\UIMenus\\");
+	folderPaths[Config_Map]				= std::string("Configs\\Map\\");
+	folderPaths[Config_Animations]		= std::string("Configs\\Animations\\");
+	folderPaths[Config_Weapons]			= std::string("Configs\\Weapons\\");
+	folderPaths[Config_Stats_Enemies]	= std::string("Configs\\Stats\\Enemies");
+	folderPaths[Config_Stats_Player]	= std::string("Configs\\Stats\\Player");
 }
 
 

@@ -1,9 +1,13 @@
 #pragma once
 #include "Characters/Attributes/Property.h"
-
+#include "Characters/Attributes/Health.h"
+#include "Characters/Attributes/Damage.h"
 
 class EnemyPropertyBag
 {
+public:
+	void readAttributes(std::string name);
+
 public:
 	HealthProperty pHealth;
 	DamageProperty pDamage;

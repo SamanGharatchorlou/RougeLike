@@ -6,5 +6,5 @@ class XMLParser;
 class StatReader
 {
 public:
-	XMLValueMap getStats(std::string config);
+	XMLValueMap getStats(FileManager::Folder folder, std::string config);
 };

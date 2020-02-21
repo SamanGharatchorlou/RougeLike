@@ -3,7 +3,7 @@
 class Window
 {
 public:
-	Window(const char* title, float width, float height);
+	Window(const char* title, int width, int height);
 	~Window();
 
 	SDL_Renderer* createRenderer();

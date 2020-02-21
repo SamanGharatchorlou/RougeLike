@@ -30,7 +30,7 @@ GameController::GameController(const char* gameTitle) : quit(false)
 	}
 	else
 	{
-		mGameData.window = new Window(gameTitle, 1024.0f, 768.0f);
+		mGameData.window = new Window(gameTitle, 1024, 768);
 
 		if (mGameData.window->get() == nullptr)
 		{

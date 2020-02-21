@@ -5,7 +5,6 @@
 #include "Game/Camera.h"
 
 #include "System/Files/AnimationReader.h"
-#include "System/Files/StatReader.h"
 
 #include "Graphics/Texture.h"
 
@@ -18,16 +17,9 @@
 
 Enemy::Enemy(GameData* gameData) : 
 	mGameData(gameData),
-	bag(nullptr),
 	mIsActive(false),
 	mAlpha(alphaMax)
 { }
-
-Enemy::~Enemy() 
-{
-	delete bag;
-	bag = nullptr;
-}
 
 
 void Enemy::init(std::string name)
@@ -35,7 +27,7 @@ void Enemy::init(std::string name)
 	mFlip = SDL_FLIP_NONE;
 
 	initAnimations(name);
-	readAttributes(name);
+	bag.readAttributes(name);
 
 	// Size
 	VectorF size = mAnimator.getSpriteTile()->getRect().Size() * 2.0f;
@@ -45,7 +37,7 @@ void Enemy::init(std::string name)
 	mMovement.setPosition(mRect.TopLeft());
 
 	mCollider.init(&mRect);
-	mMovement.init(&mCollider, bag->pMovementSpeed.get());
+	mMovement.init(&mCollider, bag.pMovementSpeed.get());
 }
 
 void Enemy::slowUpdate(float dt)
@@ -94,13 +86,6 @@ void Enemy::render()
 }
 
 
-// enemy target - currently always the player
-const RectF Enemy::targetRect() const
-{
-	return mGameData->player->getRect();
-}
-
-
 void Enemy::spawn(VectorF position)
 {
 	addState(EnemyState::Patrol);
@@ -121,26 +106,44 @@ void Enemy::replaceState(EnemyState state)
 	{
 	case EnemyState::Idle:
 		mStateMachine.replaceState(new EnemyIdle(this));
+
+		mState.pop;
+		mState.push(EnemyState::Idle);
 		break;
 
 	case EnemyState::Run:
 		mStateMachine.replaceState(new EnemyRun(this));
+
+		mState.pop;
+		mState.push(EnemyState::Run);
 		break;
 
 	case EnemyState::Patrol:
 		mStateMachine.replaceState(new EnemyPatrol(this));
+
+		mState.pop;
+		mState.push(EnemyState::Patrol);
 		break;
 
 	case EnemyState::Alert:
 		mStateMachine.replaceState(new EnemyAlert(this));
+
+		mState.pop;
+		mState.push(EnemyState::Alert);
 		break;
 
 	case EnemyState::Hit:
 		mStateMachine.replaceState(new EnemyHit(this));
+
+		mState.pop;
+		mState.push(EnemyState::Hit);
 		break;
 
 	case EnemyState::Dead:
 		mStateMachine.replaceState(new EnemyDead(this));
+
+		mState.pop;
+		mState.push(EnemyState::Dead);
 		break;
 
 	case EnemyState::Attack:
@@ -157,14 +160,17 @@ void Enemy::addState(EnemyState state)
 	{
 	case EnemyState::Attack:
 		mStateMachine.addState(new EnemyAttack(this));
+		mState.push(EnemyState::Attack);
 		break;
 
 	case EnemyState::Hit:
 		mStateMachine.addState(new EnemyHit(this));
+		mState.push(EnemyState::Hit);
 		break;	
 	
 	case EnemyState::Patrol:
 		mStateMachine.addState(new EnemyPatrol(this));
+		mState.push(EnemyState::Patrol);
 		break;
 
 	case EnemyState::None:
@@ -176,78 +182,6 @@ void Enemy::addState(EnemyState state)
 		DebugPrint(Warning, "No enemy state set, no state was added\n");
 		break;
 	}
-}
-
-
-// -- Property Functions -- //
-Health&		Enemy::health() const			{ return bag->pHealth.get(); }
-bool		Enemy::isDead() const			{ return bag->pHealth.get().isDead(); }
-						    
-Damage&		Enemy::damage() const			{ return bag->pDamage.get(); }
-
-float		Enemy::hurtTime() const			{ return bag->pHurtTime.get(); }
-float		Enemy::chaseRange() const		{ return bag->pChaseRange.get(); }
-float		Enemy::sightRange() const		{ return bag->pSightRange.get(); }
-float		Enemy::attentionTime() const	{ return bag->pAttentionTime.get(); }
-float		Enemy::movementSpeed() const	{ return bag->pMovementSpeed.get(); }
-float		Enemy::tackleSpeed() const		{ return bag->pTackleSpeed.get(); }
-float		Enemy::tackleDistance() const	{ return bag->pTackleDistance.get(); }
-float		Enemy::tackleChargeTime() const { return bag->pTackleChargeTime.get(); }
-int			Enemy::score() const			{ return bag->pScore.get(); }
-
-
-// -- Private Functions -- //
-void Enemy::readAttributes(std::string name)
-{
-	// read properties
-	bag = new EnemyPropertyBag();
-
-	StatReader statReader;
-	XMLValueMap map = statReader.getStats(name);
-
-	// Health
-	Health health(map.getFloat("Health"));
-	bag->pHealth.set(health);
-
-	// Movement
-	float movementSpeed = map.getFloat("MovementSpeed");
-	bag->pMovementSpeed.set(movementSpeed);
-
-	// Damage
-	Damage damage(map.getFloat("AttackDamage"));
-	bag->pDamage.set(damage);
-
-	// Tackle Speed
-	float tackleSpeed = map.getFloat("TackleSpeed");
-	bag->pTackleSpeed.set(tackleSpeed);
-
-	// Tackle Distance
-	float tackleDistance = map.getFloat("TackleDistance");
-	bag->pTackleDistance.set(tackleDistance);
-
-	// Tackle Charge Time
-	float tackleChargeTime = map.getFloat("TackleChargeTime");
-	bag->pTackleChargeTime.set(tackleChargeTime);
-
-	// Sight Range
-	float sightRange = map.getFloat("SightRange");
-	bag->pSightRange.set(sightRange);
-
-	// Chase Range
-	float chaseRange = map.getFloat("ChaseRange");
-	bag->pChaseRange.set(chaseRange);
-
-	// Hurt time
-	float hurtTime = map.getFloat("HurtTime");
-	bag->pHurtTime.set(hurtTime);
-
-	// Attention Time
-	float attentionTime = map.getFloat("AttentionTime");
-	bag->pAttentionTime.set(attentionTime);
-
-	// Score
-	int score = map.getInt("Score");
-	bag->pScore.set(score);
 }
 
 

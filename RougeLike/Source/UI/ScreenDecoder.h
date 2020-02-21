@@ -2,7 +2,7 @@
 
 typedef std::vector<std::vector<Attributes>> ScreenAttributes;
 
-struct TextureManager;
+class TextureManager;
 class UILayer;
 struct GameData;
 

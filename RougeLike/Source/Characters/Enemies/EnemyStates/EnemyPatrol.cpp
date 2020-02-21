@@ -4,6 +4,7 @@
 
 #include "Characters/Enemies/Enemy.h"
 
+
 #include "Map/Map.h"
 
 
@@ -66,7 +67,7 @@ void EnemyPatrol::setPatrolPoint()
 bool EnemyPatrol::canSeeTarget() const
 {
 	float distance = distanceSquared(mEnemy->targetRect().Center(), mEnemy->getMovement().getPostion());
-	return distance < mEnemy->sightRange();
+	return distance < mEnemy->propertyBag().pSightRange.get();
 }
 
 

@@ -49,11 +49,11 @@ void Map::generateRandomTunnel(int y, int x)
 
 	populateTileRects();
 
-	for (int x = 0; x < xCount(); x++)
+	for (unsigned int x = 0; x < xCount(); x++)
 	{
 		bool floorAboveReached = false;
 
-		for (int y = 0; y < yCount(); y++)
+		for (unsigned int y = 0; y < yCount(); y++)
 		{
 			// query surronding tiles
 			MapTile::EdgeInfo info = getEdgeInfo(x, y);
@@ -165,9 +165,9 @@ void Map::renderLayerA(float yPoint)
 	Camera camera = *mGameData->camera;
 	Vector2D<int> size = mTileSize * mScale;
 
-	for (int y = 0; y < yCount(); y++)
+	for (unsigned int y = 0; y < yCount(); y++)
 	{
-		for (int x = 0; x < xCount(); x++)
+		for (unsigned int x = 0; x < xCount(); x++)
 		{
 			Rect<int> tileRect(Vector2D<int>(x, y) * size, size);
 
@@ -221,9 +221,9 @@ void Map::renderLayerB()
 	Camera camera = *mGameData->camera;
 	Vector2D<int> size = mTileSize * mScale;
 
-	for (int y = 0; y < yCount(); y++)
+	for (unsigned int y = 0; y < yCount(); y++)
 	{
-		for (int x = 0; x < xCount(); x++)
+		for (unsigned int x = 0; x < xCount(); x++)
 		{
 			Rect<int> tileRect(Vector2D<int>(x, y) * size, size);
 
@@ -463,7 +463,7 @@ Vector2D<int> Map::findYFloorTileRange(int xTileIndex)
 	while (floorCollisionTile(xTileIndex, ++yTileIndex)) { if (yTileIndex >= yCount() - 1) break; }
 
 	// remove last increment to keep within floor and minus one extra to prevent enemy moving behind the wall
-	yTileRange.y = clamp(yTileIndex - 2, yTileRange.x, yCount() - 2);
+	yTileRange.y = clamp(yTileIndex - 2, yTileRange.x, (int)yCount() - 2);
 
 	return yTileRange;
 }

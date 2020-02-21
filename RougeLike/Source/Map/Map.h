@@ -14,8 +14,8 @@ public:
 
 	void setScale(float scale);
 
-	int yCount() const { return mTileCount.y; }
-	int xCount() const { return mTileCount.x; }
+	unsigned int yCount() const { return mTileCount.y; }
+	unsigned int xCount() const { return mTileCount.x; }
 
 	const MapTile& getTile(Vector2D<int> index) const;
 	const MapTile& getTile(int x, int y) const;

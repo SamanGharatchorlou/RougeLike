@@ -20,7 +20,7 @@ void debugDrawRect(GameData* gameData, RectF rect, RenderColour colour)
 void debugDrawRects(GameData* gameData, std::vector<RectF> rects, RenderColour colour)
 {
 	SDL_SetRenderDrawColor(gameData->renderer, colour.r, colour.g, colour.b, colour.a);
-	for (int i = 0; i < rects.size(); i++)
+	for (unsigned int i = 0; i < rects.size(); i++)
 	{
 		RectF rectb = gameData->camera->toCameraCoords(rects[i]);
 		SDL_Rect renderQuadb = { static_cast<int>(rectb.x1),

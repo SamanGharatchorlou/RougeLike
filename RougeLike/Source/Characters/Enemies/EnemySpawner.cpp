@@ -15,7 +15,7 @@ void EnemySpawner::spawn(Enemy* enemy, float xPositionPercentage)
 
 	Vector2D<int> yTileRange = mMap->findYFloorTileRange(xTileIndex);
 
-	ASSERT(Warning, yTileRange.x > 0 && yTileRange.y < mMap->yCount(),
+	ASSERT(Warning, yTileRange.x > 0 && yTileRange.y < (int)mMap->yCount(),
 		"No valid tile was found to spawn enemy at x = %d\n", xTileIndex);
 
 	// Use [1] -1 becuase we don't want it to be hiding behind the wall

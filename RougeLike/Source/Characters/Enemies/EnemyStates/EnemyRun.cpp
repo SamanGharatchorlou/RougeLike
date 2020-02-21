@@ -98,10 +98,10 @@ bool EnemyRun::inAttackRange() const
 	VectorF currentPosition = mEnemy->getRect().Center();
 	VectorF nearestTargetSide = closestRectSide(currentPosition, mEnemy->targetRect());
 
-	return distanceSquared(currentPosition, nearestTargetSide) < (mEnemy->tackleDistance() * 0.8f);
+	return distanceSquared(currentPosition, nearestTargetSide) < (mEnemy->propertyBag().pTackleDistance.get() * 0.8f);
 }
 
 bool EnemyRun::inChaseRange() const
 {
-	return distanceSquared(mEnemy->targetRect().Center(), mEnemy->getMovement().getPostion()) < (mEnemy->chaseRange());
+	return distanceSquared(mEnemy->targetRect().Center(), mEnemy->getMovement().getPostion()) < (mEnemy->propertyBag().pChaseRange.get());
 }

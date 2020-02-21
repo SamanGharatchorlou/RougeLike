@@ -2,9 +2,9 @@
 #include "StatReader.h"
 
 
-XMLValueMap StatReader::getStats(std::string config)
+XMLValueMap StatReader::getStats(FileManager::Folder folder, std::string config)
 {
-	std::string configFilePath = FileManager::Get()->getFilePath(FileManager::Config_Stats, config);
+	std::string configFilePath = FileManager::Get()->getFilePath(folder, config);
 
 	XMLParser parser;
 	parser.parseXML(configFilePath);

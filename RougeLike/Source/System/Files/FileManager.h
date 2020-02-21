@@ -24,7 +24,8 @@ public:
 		Config_Map,
 		Config_Animations,
 		Config_Weapons,
-		Config_Stats,
+		Config_Stats_Enemies,
+		Config_Stats_Player,
 
 		count
 	};

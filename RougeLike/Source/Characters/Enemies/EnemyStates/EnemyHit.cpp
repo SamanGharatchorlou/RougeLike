@@ -19,25 +19,26 @@ void EnemyHit::init()
 
 	// Player to Enemy unit direction vector
 	VectorF enemyPosition = mEnemy->getMovement().getPostion();
-	VectorF source = mEnemy->getData()->player->getRect().Center();
+	VectorF source = mEnemy->targetRect().Center();
 	VectorF hitDirection = (enemyPosition - source).normalise();
 
 	mEnemy->getMovement().setDirection(hitDirection);
 
 	const Damage damage = mEnemy->getCollider()->getOtherColliderDamage();
-	mEnemy->health().takeDamage(damage.get());
-	printf("add HIT: enemy taking %f damage, health now %f\n", damage.get(), mEnemy->health().get());
+
+	Health newHealth = mEnemy->propertyBag().pHealth.get() - damage;
+
+	mEnemy->propertyBag().pHealth.set(newHealth);
 }
 
 void EnemyHit::slowUpdate(float dt)
 {
-	if (timer.getSeconds() > mEnemy->hurtTime())
+	if (timer.getSeconds() > mEnemy->propertyBag().pHurtTime.get())
 	{
-		//mEnemy->getStateMachine()->popState();
-
 		mEnemy->replaceState(EnemyState::Run);
 	}
-	if (mEnemy->health().isDead())
+
+	if (mEnemy->propertyBag().pHealth.get().isDead())
 	{
 		mEnemy->replaceState(EnemyState::Dead);
 	}
@@ -56,8 +57,6 @@ void EnemyHit::exit()
 	texture->setAlpha(alphaMax);
 
 	mEnemy->getCollider()->didCollide(false);
-	//mEnemy->getCollider()->setActive(true);
 
 	mEnemy->getMovement().setDirection(VectorF());
-	printf("exit hit\n");
 }

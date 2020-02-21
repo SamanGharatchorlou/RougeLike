@@ -111,7 +111,7 @@ void Texture::render(const RectF rect, double rotation, VectorF aboutPoint) cons
 						static_cast<int>(rect.Height()) };
 
 	// rotate about this point
-	SDL_Point point = { aboutPoint.x, aboutPoint.y };
+	SDL_Point point = { (int)aboutPoint.x, (int)aboutPoint.y };
 
 	SDL_RenderCopyEx(renderer, texture, nullptr, &renderQuad, rotation, &point, SDL_FLIP_NONE);
 }
@@ -159,7 +159,7 @@ void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, double
 	SDL_Rect subQuad = { subRect.x1, subRect.y1, subRect.Width(), subRect.Height() };
 
 	// rotate about this point
-	SDL_Point point = { aboutPoint.x, aboutPoint.y };
+	SDL_Point point = { (int)aboutPoint.x, (int)aboutPoint.y };
 
 	SDL_RenderCopyEx(renderer, texture, &subQuad, &renderQuad, rotation, &point, SDL_FLIP_NONE);
 }
@@ -194,7 +194,7 @@ void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, double
 	SDL_Rect subQuad = { subRect.x1, subRect.y1, subRect.Width(), subRect.Height() };
 
 	// rotate about this point
-	SDL_Point point = { aboutPoint.x, aboutPoint.y };
+	SDL_Point point = { (int)aboutPoint.x, (int)aboutPoint.y };
 
 	SDL_RenderCopyEx(renderer, texture, &subQuad, &renderQuad, rotation, &point, flip);
 }
