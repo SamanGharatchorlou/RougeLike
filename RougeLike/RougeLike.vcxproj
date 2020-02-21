@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -64,6 +64,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\States\GameState.cpp" />
     <ClCompile Include="Source\States\PauseState.cpp" />
@@ -163,6 +164,26 @@
     <ClInclude Include="Source\Maths\Helpers.h" />
     <ClInclude Include="Source\System\Files\XMLParser.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="libFLAC-8.dll" />
+    <None Include="libfreetype-6.dll" />
+    <None Include="libjpeg-9.dll" />
+    <None Include="libmodplug-1.dll" />
+    <None Include="libmpg123-0.dll" />
+    <None Include="libogg-0.dll" />
+    <None Include="libopus-0.dll" />
+    <None Include="libopusfile-0.dll" />
+    <None Include="libpng16-16.dll" />
+    <None Include="libtiff-5.dll" />
+    <None Include="libvorbis-0.dll" />
+    <None Include="libvorbisfile-3.dll" />
+    <None Include="libwebp-7.dll" />
+    <None Include="SDL2.dll" />
+    <None Include="SDL2_image.dll" />
+    <None Include="SDL2_mixer.dll" />
+    <None Include="SDL2_ttf.dll" />
+    <None Include="zlib1.dll" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{FF5B5A87-B341-4A93-BCBC-9DA5B7B55264}</ProjectGuid>
@@ -215,12 +236,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Users\Saman\Documents\Programming\Games\SDL\Libraries\SDL2-2.0.9\include;C:\Users\Saman\Documents\Programming\Games\SDL\Libraries\SDL2_ttf-2.0.15\include;C:\Users\Saman\Documents\Programming\Games\SDL\Libraries\SDL2_mixer-2.0.4\include;C:\Users\Saman\Documents\Programming\Games\SDL\Libraries\SDL2_image-2.0.4\include;C:\Users\Saman\Documents\Programming\Games\Libraries\rapidxml</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;C:\Users\Saman\Documents\Programming\Games\SDL\Libraries\SDL2-2.0.9\lib\x86;C:\Users\Saman\Documents\Programming\Games\SDL\Libraries\SDL2_ttf-2.0.15\lib\x86;C:\Users\Saman\Documents\Programming\Games\SDL\Libraries\SDL2_mixer-2.0.4\lib\x86;C:\Users\Saman\Documents\Programming\Games\SDL\Libraries\SDL2_image-2.0.4\lib\x86</LibraryPath>
+    <IncludePath>C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2_mixer-2.0.4\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2-2.0.10\include;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2_ttf-2.0.15\include;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2_image-2.0.5\include;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\rapidxml\Includes</IncludePath>
+    <LibraryPath>C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2-2.0.10\lib\x86;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2_ttf-2.0.15\lib\x86;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2_mixer-2.0.4\lib\x86;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2_image-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Users\Saman\Documents\Programming\Games\SDL\Libraries\SDL2-2.0.9\include;C:\Users\Saman\Documents\Programming\Games\SDL\Libraries\SDL2_ttf-2.0.15\include;C:\Users\Saman\Documents\Programming\Games\SDL\Libraries\SDL2_mixer-2.0.4\include;C:\Users\Saman\Documents\Programming\Games\SDL\Libraries\SDL2_image-2.0.4\include;C:\Users\Saman\Documents\Programming\Games\Libraries\rapidxml</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;C:\Users\Saman\Documents\Programming\Games\SDL\Libraries\SDL2-2.0.9\lib\x86;C:\Users\Saman\Documents\Programming\Games\SDL\Libraries\SDL2_ttf-2.0.15\lib\x86;C:\Users\Saman\Documents\Programming\Games\SDL\Libraries\SDL2_mixer-2.0.4\lib\x86;C:\Users\Saman\Documents\Programming\Games\SDL\Libraries\SDL2_image-2.0.4\lib\x86</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\rapidxml\Includes;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\Source;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2-2.0.10\include;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2_ttf-2.0.15\include;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2_mixer-2.0.4\include;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2_image-2.0.5\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2_ttf-2.0.15\lib\x86;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2_mixer-2.0.4\lib\x86;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2_image-2.0.5\lib\x86;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2-2.0.10\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -244,7 +269,13 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
