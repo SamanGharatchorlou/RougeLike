@@ -107,6 +107,7 @@ void GameState::slowUpdate(float dt)
 	mPlayer.slowUpdate(dt);
 	mEnemies.slowUpdate(dt);
 
+	mGameData->scoreManager->update();
 }
 
 void GameState::fastUpdate(float dt)
