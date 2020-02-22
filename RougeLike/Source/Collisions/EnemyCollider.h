@@ -5,7 +5,7 @@
 class EnemyCollider : public Collider
 {
 public:
-	EnemyCollder() : didAttack(false) { }
+	EnemyCollider() : didAttack(false) { }
 
 private:
 	bool didAttack;

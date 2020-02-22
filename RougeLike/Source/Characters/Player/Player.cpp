@@ -9,36 +9,35 @@
 #include "States/AttackState.h"
 
 #include "System/Files/AnimationReader.h"
-
 #include "Map/Map.h"
+
 
 Player::Player(GameData* gameData) : 
 	mGameData(gameData), 
 	mWeapon(gameData),
-	mFlip(SDL_FLIP_NONE)
+	mFlip(SDL_FLIP_NONE),
+	mState(PlayerState::None)
 { }
 
 
-void Player::init()
+void Player::init(std::string characterConfig)
 {
-	// Setup animations
-	initAnimations("Soldier.xml");
+	// Setup stats
+	propertyBag().readAttributes(characterConfig);
 
-	mState = PlayerState::None;
+	// init physics
+	physics.init(bag.pForce.get(), bag.pMaxVelocity.get(), bag.pDragFactor.get());
+
+	// Setup animations
+	initAnimations(characterConfig);
 
 	// Size
-	Vector2D<int> sizeI = mAnimator.getSpriteTile()->getRect().Size() * 2;
-	VectorF size(sizeI);
-
-	mRect = RectF(VectorF(size.x * 2.0f, mGameData->map->size().y / 2.0f), size);
+	VectorF size = mAnimator.getSpriteTile()->getRect().Size() * 2;
+	physics.setRect(RectF(VectorF(size.x * 2.0f, mGameData->map->size().y / 2.0f), size));
 
 	VectorF colliderScale = VectorF(1.0f, 0.2f); // only with walls
-	mCollider.init(&mRect, colliderScale);
+	mCollider.init(&physics.getRect(), colliderScale);
 	
-	// Movement
-	mMovement.init(&mCollider, 200.0f);
-	mMovement.setPosition(mRect.TopLeft());
-
 	// Weapon
 	mWeapon.selectWeapon("Katana");
 	mWeapon.setScale(1.5f);
@@ -54,20 +53,8 @@ void Player::processStateChanges()
 void Player::handleInput()
 {
 	InputManager& input = *mGameData->inputManager;
-	mMovement.resetDirection();
 
-	// Movement
-	if (input.isHeld(Button::UP))
-		mMovement.up();
-
-	if (input.isHeld(Button::DOWN))
-		mMovement.down();
-
-	if (input.isHeld(Button::LEFT))
-		mMovement.left();
-
-	if (input.isHeld(Button::RIGHT))
-		mMovement.right();
+	physics.handleInput(&input);
 
 	// Attack
 	if (input.isCursorPressed())
@@ -89,57 +76,39 @@ void Player::slowUpdate(float dt)
 
 void Player::fastUpdate(float dt)
 {
-	// Position
-	mMovement.fastUpdate(dt);
-	mRect.SetTopLeft(mMovement.getPostion());
+	physics.update(dt);
 
 	// Attack state
 	stateMachine.getActiveState().fastUpdate(dt);
 	
+	if (physics.isMoving())
+		mAnimator.setSpeedFactor(physics.relativeSpeed());
+	else
+		mAnimator.setSpeedFactor(1.0f);
+
 	mAnimator.fastUpdate(dt);
 
 	// Weapon
-	mWeapon.fastUpdate(mMovement.getPostion());
+	mWeapon.fastUpdate(getRect().TopLeft());
 }
 
-
-void Player::resolveWallCollisions(float dt)
-{
-	RectF collisionRect = mCollider.getRectBase();
-
-	bool restrictLeft = doesCollideLeft(collisionRect.TopLeft(), dt) || doesCollideLeft(collisionRect.BotLeft(), dt);
-	bool restrictRight = doesCollideRight(collisionRect.TopRight(), dt) || doesCollideRight(collisionRect.BotRight(), dt);
-
-	bool restrictUp = doesCollideTop(collisionRect.TopLeft(), dt) || doesCollideTop(collisionRect.TopRight(), dt);
-	bool restrictDown = doesCollideBot(collisionRect.BotLeft(), dt) || doesCollideBot(collisionRect.BotRight(), dt);
-
-	VectorF direction = mMovement.getDirection();
-
-	if(restrictLeft || restrictRight)
-		direction.x = 0.0f;
-
-	if (restrictUp || restrictDown)
-		direction.y = 0.0f;
-
-	mMovement.setDirection(direction);
-}
 
 
 
 void Player::render()
 {	
 	// Flip sprite
-	if (mFlip == SDL_FLIP_NONE && mMovement.getDirection().x < 0)
+	if (mFlip == SDL_FLIP_NONE && physics.direction().x < 0)
 	{
 		mFlip = SDL_FLIP_HORIZONTAL;
 	}
-	else if (mFlip == SDL_FLIP_HORIZONTAL && mMovement.getDirection().x > 0)
+	else if (mFlip == SDL_FLIP_HORIZONTAL && physics.direction().x > 0)
 	{
 		mFlip = SDL_FLIP_NONE;
 	}
 
 #if DRAW_PLAYER_RECT
-	debugDrawRect(mGameData, mRect, RenderColour(RenderColour::GREEN));
+	debugDrawRect(mGameData, getRect(), RenderColour(RenderColour::GREEN));
 	debugDrawRect(mGameData, mCollider.getRectBase(), RenderColour(RenderColour::BLUE));
 #endif
 #if DRAW_WEAPON_RECTS
@@ -147,7 +116,7 @@ void Player::render()
 #endif
 
 	// Character
-	RectF rect = mGameData->camera->toCameraCoords(mRect);
+	RectF rect = mGameData->camera->toCameraCoords(getRect());
 	mAnimator.getSpriteTile()->render(rect, mFlip);
 
 	// Weapon
@@ -157,7 +126,7 @@ void Player::render()
 
 void Player::updateState()
 {
-	PlayerState::actionState newState = mMovement.isMoving() ? PlayerState::Run : PlayerState::Idle;
+	PlayerState::actionState newState = physics.isMoving() ? PlayerState::Run : PlayerState::Idle;
 
 	if (mState != newState)
 	{
@@ -191,7 +160,7 @@ void Player::popState()
 void Player::initAnimations(std::string config)
 {
 	// config reader
-	AnimationReader reader(config, mGameData->textureManager);;
+	AnimationReader reader(config, mGameData->textureManager);
 
 	// Setup sprite sheet
 	TilesetData spriteSheetData = reader.readTilesetData();
@@ -221,86 +190,3 @@ void Player::selectAnimation(PlayerState::actionState state)
 		break;
 	}
 }
-
-
-bool Player::doesCollideLeft(VectorF point, float dt)
-{
-	MapTile currentTile = mGameData->map->getTile(point);
-	ASSERT(Warning, currentTile.collisionType() == MapTile::Floor,
-		"Player is not on a floor tile, tile at index %d,%d has a %d tile type", 
-		currentTile.index.x, currentTile.index.y, currentTile.collisionType());
-
-	// make sure left tile request is in bounds
-	if (mGameData->map->getIndex(currentTile).x < 1)
-		return false;
-
-	MapTile leftTile = mGameData->map->offsetTile(currentTile, -1, 0);
-
-	if (leftTile.hasCollisionType(MapTile::Right ^ MapTile::Wall))
-	{
-		float xFuturePosition = point.x + (mMovement.getMovementDistance().x * dt);
-		return xFuturePosition < leftTile.rect().RightPoint();
-	}
-
-	return false;
-}
-
-bool Player::doesCollideRight(VectorF point, float dt)
-{
-	MapTile currentTile = mGameData->map->getTile(point);
-	ASSERT(Warning, currentTile.collisionType() == MapTile::Floor,
-		"Player is not on a floor tile, tile at index %d,%d has a %d tile type",
-		currentTile.index.x, currentTile.index.y, currentTile.collisionType());
-
-	// make sure right tile request is in bounds
-	if (currentTile.rect().LeftPoint() >= mGameData->map->size().x)
-		return false;
-
-	MapTile rightTile = mGameData->map->offsetTile(currentTile, +1, 0);
-
-	if (rightTile.hasCollisionType(MapTile::Left ^ MapTile::Wall))
-	{
-		float xFuturePosition = point.x + (mMovement.getMovementDistance().x * dt);
-		return xFuturePosition > rightTile.rect().LeftPoint();
-	}
-
-	return false;
-}
-
-bool Player::doesCollideTop(VectorF point, float dt)
-{
-	MapTile currentTile = mGameData->map->getTile(point);	
-	ASSERT(Warning, currentTile.collisionType() == MapTile::Floor,
-		"Player is not on a floor tile, tile at index %d,%d has a %d tile type",
-		currentTile.index.x, currentTile.index.y, currentTile.collisionType());
-
-	MapTile upTile = mGameData->map->offsetTile(currentTile, 0, -1);
-
-	if (upTile.hasCollisionType(MapTile::Bot))
-	{
-		float yFuturePosition = point.y + (mMovement.getMovementDistance().y * dt);
-		return yFuturePosition < upTile.rect().BotPoint();
-	}
-
-	return false;
-}
-
-bool Player::doesCollideBot(VectorF point, float dt)
-{
-	MapTile currentTile = mGameData->map->getTile(point);
-	ASSERT(Warning, currentTile.collisionType() == MapTile::Floor,
-		"Player is not on a floor tile, tile at index %d,%d has a %d tile type",
-		currentTile.index.x, currentTile.index.y, currentTile.collisionType());
-
-	MapTile downTile = mGameData->map->offsetTile(currentTile, 0, +1);
-
-	if (downTile.hasCollisionType(MapTile::Top))
-	{
-		float yFuturePosition = point.y + (mMovement.getMovementDistance().y * dt);
-		return yFuturePosition > downTile.rect().TopPoint();
-	}
-
-	return false;
-}
-
-

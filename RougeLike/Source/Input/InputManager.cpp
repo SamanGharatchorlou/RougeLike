@@ -79,7 +79,7 @@ void InputManager::processInputEvent(SDL_Event event)
 	}
 }
 
-const Button& InputManager::getButton(Button::KEY key)
+const Button& InputManager::getButton(Button::Key key)
 {
 	for (Button& button : mButtons)
 	{
@@ -96,18 +96,19 @@ const Button& InputManager::getButton(Button::KEY key)
 void InputManager::bindDefaultButtons()
 {
 	int index = 0;
-	mButtons[index++].bindToKey(Button::NONE);
+	mButtons[index++].bindToKey(Button::None);
 
 	// Movement
-	mButtons[index++].bindToKey(Button::UP);
-	mButtons[index++].bindToKey(Button::DOWN);
-	mButtons[index++].bindToKey(Button::LEFT);
-	mButtons[index++].bindToKey(Button::RIGHT);
+	mButtons[index++].bindToKey(Button::Up);
+	mButtons[index++].bindToKey(Button::Down);
+	mButtons[index++].bindToKey(Button::Left);
+	mButtons[index++].bindToKey(Button::Right);
+
 
 	// Game state
-	mButtons[index++].bindToKey(Button::PAUSE);
-	mButtons[index++].bindToKey(Button::ESC);
-	mButtons[index++].bindToKey(Button::QUIT);
+	mButtons[index++].bindToKey(Button::Pause);
+	mButtons[index++].bindToKey(Button::Esc);
+	mButtons[index++].bindToKey(Button::Quit);
 
 	ASSERT(Warning, index < maxButtons, "Attempting to bind too many buttons, you need to increase the size of 'maxButtons'\n");
 }

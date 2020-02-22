@@ -45,13 +45,13 @@ void PauseState::slowUpdate(float dt)
 
 void PauseState::handleInput()
 {
-	if (mGameData->inputManager->isPressed(Button::ESC) ||
-		mGameData->inputManager->isPressed(Button::QUIT))
+	if (mGameData->inputManager->isPressed(Button::Esc) ||
+		mGameData->inputManager->isPressed(Button::Quit))
 	{
 		quitGame();
 	}
 
-	if (mGameData->inputManager->isPressed(Button::PAUSE))
+	if (mGameData->inputManager->isPressed(Button::Pause))
 	{
 		resumeGame();
 	}

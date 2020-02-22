@@ -88,12 +88,12 @@ void GameState::preProcess()
 
 void GameState::handleInput()
 {
-	if (mGameData->inputManager->isPressed(Button::ESC))
+	if (mGameData->inputManager->isPressed(Button::Esc))
 	{
 		mGameController->quitGame();
 	}
 	
-	if (mGameData->inputManager->isPressed(Button::PAUSE))
+	if (mGameData->inputManager->isPressed(Button::Pause))
 	{
 		mGameController->getStateMachine()->addState(new PauseState(mGameData, mGameController));
 	}
@@ -107,28 +107,10 @@ void GameState::slowUpdate(float dt)
 	mPlayer.slowUpdate(dt);
 	mEnemies.slowUpdate(dt);
 
-
-	//// TESTING -- IT WORKS!!!!
-	////update the ui screen with the score
-	//int score = mGameData->scoreManager->score();
-
-	//std::string scoreString = "Score: " + std::to_string(score);
-
-	//UIElement* element = mGameData->uiManager->find("Score");
-
-	//if (element != nullptr && element->type() == UIElement::BasicText)
-	//{
-	//	UIBasicText* text = static_cast<UIBasicText*>(element);
-
-	//	text->setText(scoreString);
-	//}
 }
 
 void GameState::fastUpdate(float dt)
 {
-	// resolve collisions before any movement takes place!
-	//mPlayer.resolveCollisions(dt);
-
 	mPlayer.fastUpdate(dt);
 	mEnemies.fastUpdate(dt);
 

@@ -1,30 +1,29 @@
 #pragma once
 #include "States/PlayerState.h" // TODO: only for enum actionstate type, could move it??
 
-#include "Characters/Attributes/Movement.h"
-
+#include "Characters/Attributes/Physics.h"
 #include "States/StateMachine.h"
 #include "Animations/Animator.h"
 #include "Collisions/Collider.h"
 #include "Characters/Weapons/Weapon.h"
 
+#include "PlayerPropertyBag.h"
+
 struct GameData;
 class Map;
 
-class Player //: public Actor
+class Player
 {
 public:
 	Player(GameData* gameData);
 	~Player() { }
 
-	void init();
+	void init(std::string characterConfig);
 	void processStateChanges();
 	void handleInput();
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
 	void render();
-
-	void resolveWallCollisions(float dt);
 
 	// Movement states
 	void updateState();
@@ -33,38 +32,33 @@ public:
 	void addState(PlayerState::actionState newState);
 	void popState();
 
-	Movement&		getMovement()	{ return mMovement; }
-	const Movement& getMovement() const { return mMovement; }
-
-	RectF&		getRect()		{ return mRect; }
+	RectF&		getRect()		{ return physics.getRect(); }
 	Collider&	getCollider()	{ return mCollider; }
 	Weapon&		getWeapon()		{ return mWeapon; }
+	Physics&	getPhysics()	{ return physics; }
 
+	PlayerPropertyBag& propertyBag() { return bag; }
 
 private:
 	// Animations
 	void selectAnimation(PlayerState::actionState state);
 	void initAnimations(std::string config);
 
-	// Wall collisions
-	bool doesCollideLeft(VectorF point, float dt);
-	bool doesCollideRight(VectorF point, float dt);
-	bool doesCollideTop(VectorF point, float dt);
-	bool doesCollideBot(VectorF point, float dt);
-
-
 private:
 	GameData* mGameData;
+
+	PlayerPropertyBag bag;
 
 	StateMachine stateMachine;
 	Animator mAnimator;
 	Collider mCollider;
 	Weapon mWeapon;
+	Physics physics;
 
-	Movement mMovement;
-	RectF mRect;
 	SDL_RendererFlip mFlip;
 
 	PlayerState::actionState mState;
+
+
 };
 

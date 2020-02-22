@@ -10,7 +10,7 @@ void Animator::init(Tileset spriteSheet, Animations animations)
 
 void Animator::slowUpdate(float dt)
 {
-	if (timer.getSeconds() >= mActiveAnimation.speed)
+	if (timer.getSeconds() >= mActiveAnimation.speed / speedFactor)
 	{
 		if (++animationIndex >= mActiveAnimation.startingIndex + mActiveAnimation.count)
 		{

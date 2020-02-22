@@ -17,58 +17,37 @@ private:
 	T mProperty;
 };
 
+// Shared
+class HealthProperty : public Property<Health> { };
 
-class TackleSpeedProperty : public Property<float>
-{
+// Player
+class ForceProperty : public Property<float> { };
 
-};
+class MaxVelocityProperty : public Property<float> { };
 
-class TackleDistanceProperty : public Property<float>
-{
+class DragFactorProperty : public Property<float> { };
 
-};
 
-class TackleChangeTimeProperty : public Property<float>
-{
 
-};
 
-class HealthProperty : public Property<Health>
-{
+// Enemy
+class MovementSpeedProperty : public Property<float> { };
 
-};
+class TackleSpeedProperty : public Property<float> { };
 
-class MovementSpeedProperty : public Property<float>
-{
+class TackleDistanceProperty : public Property<float> { };
 
-};
+class TackleChangeTimeProperty : public Property<float> { };
 
-class DamageProperty : public Property<Damage>
-{
 
-};
+class DamageProperty : public Property<Damage> { };
 
-class SightRangeProperty : public Property<float>
-{
+class SightRangeProperty : public Property<float> { };
 
-};
+class ChaseRangeProperty : public Property<float> { };
 
-class ChaseRangeProperty : public Property<float>
-{
+class HurtTimeProperty : public Property<float> { };
 
-};
+class AttentionTimeProperty : public Property<float> { };
 
-class HurtTimeProperty : public Property<float>
-{
-
-};
-
-class AttentionTimeProperty : public Property<float>
-{
-
-};
-
-class ScoreProperty : public Property<int>
-{
-
-};
+class ScoreProperty : public Property<int> { };

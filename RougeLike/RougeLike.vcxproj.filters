@@ -65,6 +65,8 @@
     <ClCompile Include="Source\Characters\Player\PlayerManager.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyPropertyBag.cpp" />
     <ClCompile Include="Source\Collisions\EnemyCollider.cpp" />
+    <ClCompile Include="Source\Characters\Attributes\Physics.cpp" />
+    <ClCompile Include="Source\Characters\Player\PlayerPropertyBag.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -146,6 +148,9 @@
     <ClInclude Include="Source\Collisions\CollisionTracker.h" />
     <ClInclude Include="Source\Characters\Player\PlayerManager.h" />
     <ClInclude Include="Source\Collisions\EnemyCollider.h" />
+    <ClInclude Include="Source\Characters\Attributes\Physics.h" />
+    <ClInclude Include="Source\Input\Button.h" />
+    <ClInclude Include="Source\Characters\Player\PlayerPropertyBag.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

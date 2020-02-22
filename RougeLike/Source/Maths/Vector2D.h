@@ -78,6 +78,14 @@ public:
 		return *this;
 	}
 
+	template<class K>
+	inline Vector2D<T>& operator *= (K scalar)
+	{
+		x *= scalar;
+		y *= scalar;
+		return *this;
+	}
+
 	// Operator /
 	template<class K>
 	inline Vector2D<T> operator / (Vector2D<K> vector) const
@@ -177,6 +185,11 @@ public:
 	inline T area() const
 	{
 		return x * y;
+	}
+
+	inline T magnitudeSquared() const
+	{
+		return (x * x) + (y * y);
 	}
 
 	// members
