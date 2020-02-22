@@ -39,6 +39,8 @@ public:
 
 	PlayerPropertyBag& propertyBag() { return bag; }
 
+	Health health; // TODO: move this into the property bag
+
 private:
 	// Animations
 	void selectAnimation(PlayerState::actionState state);

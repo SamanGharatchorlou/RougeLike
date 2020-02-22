@@ -7,6 +7,8 @@
 #include "ScreenDecoder.h"
 #include "Game/GameData.h"
 
+#include "Characters/Attributes/Damage.h"
+
 
 UIManager::UIManager(GameData* gameData) : mGameData(gameData) { }
 
@@ -113,6 +115,25 @@ void UIManager::handleEvent(Event event, EventData& data)
 			UIBasicText* text = static_cast<UIBasicText*>(element);
 
 			text->setText(scoreString);
+		}
+
+		break;
+	}
+	case Event::SetHealth:
+	{
+		SetHealthBarEvent event = static_cast<SetHealthBarEvent&>(data);
+
+		UIElement* element = find("RedHealth");
+
+		if (element != nullptr && element->type() == UIElement::BasicText)
+		{
+			UIBox* healthBar = static_cast<UIBox*>(element);
+
+			float width = healthBar->getRect().Width();
+
+			float healthPercentage = event.maxHealth.get() / event.health.get();
+
+			healthBar->getRect().SetWidth(width * healthPercentage);
 		}
 
 		break;

@@ -2,6 +2,8 @@
 #include "PlayerManager.h"
 
 #include "Game/GameData.h"
+#include "UI/UIManager.h"
+
 #include "Player.h"
 #include "Map/Map.h"
 #include "Characters/Enemies/EnemyManager.h"
@@ -10,6 +12,8 @@
 PlayerManager::PlayerManager(GameData* gameData) : mGameData(gameData)
 {
 	player = new Player(gameData);
+
+	addObserver(mGameData->uiManager);
 }
 
 
@@ -39,7 +43,20 @@ void PlayerManager::slowUpdate(float dt)
 
 	// implement collisions, player getting hit by the enemy
 	if (player->getCollider().hasCollided())
-		printf("has collided\n");
+	{
+		if (gotHit == false)
+		{
+			Damage damage = player->getCollider().getOtherColliderDamage();
+			Health maxHealth = player->propertyBag().pHealth.get();
+
+			player->health = player->health - damage;
+
+			SetHealthBarEvent event( maxHealth, player->propertyBag().pHealth.get());
+			notify(Event::SetHealth, event);
+
+			gotHit = true;
+		}
+	}
 }
 
 

@@ -57,19 +57,7 @@ RectF Collider::getRectBase() const
 bool Collider::doesIntersect(Collider* collider) const
 {
 	RectF thisRect = getRectBase();
-	RectF thatRect = collider->getRectBase();
-
-	bool xOverlaps = thisRect.LeftPoint() < thatRect.RightPoint() && thisRect.RightPoint() > thatRect.LeftPoint();
-	bool yOverlaps = thisRect.TopPoint() < thatRect.BotPoint() && thisRect.BotPoint() > thatRect.TopPoint();
-
-	return xOverlaps && yOverlaps;
-}
-
-
-bool Collider::doesIntersect(RectF rect) const
-{
-	RectF thisRect = getRectBase();
-	RectF thatRect = rect;
+	RectF thatRect = collider->getRect();
 
 	bool xOverlaps = thisRect.LeftPoint() < thatRect.RightPoint() && thisRect.RightPoint() > thatRect.LeftPoint();
 	bool yOverlaps = thisRect.TopPoint() < thatRect.BotPoint() && thisRect.BotPoint() > thatRect.TopPoint();

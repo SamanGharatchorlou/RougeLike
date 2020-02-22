@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<screen>
-	<layer>
-		<item type = "box" x = "0.05" y = "0.95" width = "0.15" height = "0.025" texture = "HealthBar"></item>
-	</layer>
-</screen>

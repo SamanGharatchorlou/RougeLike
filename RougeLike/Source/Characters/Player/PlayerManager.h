@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Collisions/CollisionTracker.h"
+#include "Events/Dispatcher.h"
 
 struct GameData;
 class Player;
 class Collider;
 class EnemyManager;
 
-class PlayerManager
+class PlayerManager : public Dispatcher
 {
 public:
 	PlayerManager(GameData* gameData);
@@ -23,6 +24,8 @@ public:
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
 
+	// testing
+	bool gotHit = false;
 
 private:
 	void resolveWallCollisions(float dt);

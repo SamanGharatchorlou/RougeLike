@@ -30,7 +30,4 @@ void ScoreManager::handleEvent(Event event, EventData& data)
 	}
 
 	hasChanged = (currentScore != mScore);
-
-	if (hasChanged)
-		printf("has changed\n");
 }

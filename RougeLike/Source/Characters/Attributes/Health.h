@@ -13,6 +13,7 @@ public:
 
 	bool isDead() const { return hp <= 0; }
 	void takeDamage(float damage) { hp -= damage; }
+	void takeDamage(Damage damage) { hp -= damage.get(); }
 
 	inline Health operator - (Damage damage) const
 	{

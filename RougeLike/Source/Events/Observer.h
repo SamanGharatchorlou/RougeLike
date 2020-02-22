@@ -1,9 +1,12 @@
 #pragma once
 
+#include "Characters/Attributes/Health.h"
+
 enum class Event
 {
 	None,
 	EnemyDead,
+	SetHealth,
 	UpdateScore,
 };
 
@@ -20,11 +23,14 @@ struct EnemyDeadEvent : public EventData
 	const int mScore;
 };
 
-struct PlayerTakenDamageEvent : public EventData
+
+struct SetHealthBarEvent : public EventData
 {
-	PlayerTakenDamageEvent(int damage) : mDamage(damage) { }
-	const int mDamage;
+	SetHealthBarEvent(Health maxHp, Health hp) : maxHealth(maxHp), health(hp) { }
+	const Health maxHealth;
+	const Health health;
 };
+
 
 struct UpdateScoreEvent : EventData
 {
