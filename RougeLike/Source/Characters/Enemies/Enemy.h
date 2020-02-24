@@ -14,7 +14,7 @@ struct GameData;
 class EnemyPropertyBag;
 
 
-class Enemy : public Dispatcher
+class Enemy
 {
 public:
 	Enemy(GameData* gameData);
@@ -25,13 +25,20 @@ public:
 	void fastUpdate(float dt);
 	void render();
 
+	// State handling
 	void addState(EnemyState state);
 	void popState() { mStateMachine.popState(); }
 	void replaceState(EnemyState state);
+	const EnemyState getState() const { return mState.top(); }
 
 	virtual void resolvePlayerWeaponCollisions() = 0;
 
 	const GameData* getData() { return mGameData; }
+
+	// Event handling
+	void pushEvent(const EventPacket event);
+	const EventPacket popEvent();
+	bool hasEvent() const { return events.size() > 0; }
 
 	void		setRect(RectF rect) { mRect = rect; }
 	RectF&		getRect() { return mRect; }
@@ -57,7 +64,6 @@ public:
 	void setActive(bool active) { mIsActive = active; }
 	bool isActive() const { return mIsActive; }
 
-	EnemyState getState() const { return mState.top(); }
 
 
 private:
@@ -84,4 +90,6 @@ protected:
 	bool mIsActive;
 
 	std::stack<EnemyState> mState;
+
+	std::queue<EventPacket> events;
 };

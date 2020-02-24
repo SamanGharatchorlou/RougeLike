@@ -13,6 +13,8 @@
 #include "Graphics/RenderManager.h"
 #include "UI/UIManager.h"
 #include "Managers/ScoreManager.h"
+#include "Characters/Player/PlayerManager.h"
+#include "Characters/Enemies/EnemyManager.h"
 
 #include "Map/Map.h"
 #include "Game/Camera.h"
@@ -42,7 +44,7 @@ GameController::GameController(const char* gameTitle) : quit(false)
 			SDL_Renderer* renderer = mGameData.window->createRenderer();
 
 			Renderer::Get()->create(renderer);
-			mGameData.renderer = renderer;
+			mGameData.renderer = renderer; // TODO: remove the renderer from game data, it is not a global?
 
 			if (!mGameData.renderer)
 			{
@@ -81,23 +83,7 @@ GameController::GameController(const char* gameTitle) : quit(false)
 // destory all SDL subsystems
 GameController::~GameController()
 {
-	// destroy renderer
-	SDL_DestroyRenderer(mGameData.renderer);
-	mGameData.renderer = nullptr;
-
-	// destory window
-	delete mGameData.window;
-
-	// managers
-	// ERROR: when there are no textures or audio files in the map gives error... why?
-	delete mGameData.textureManager;
-	delete mGameData.audioManager;
-	delete mGameData.inputManager;
-	delete mGameData.renderManager;
-	delete mGameData.uiManager;
-
-	delete mGameData.camera;
-	delete mGameData.cursor;
+	mGameData.free();
 
 	// quit SDL subsystems
 	Mix_Quit();
@@ -111,37 +97,7 @@ GameController::~GameController()
 
 void GameController::init()
 {
-	// Must be before cursor
-	mGameData.textureManager = new TextureManager();
-	mGameData.textureManager->init(mGameData.renderer);
-
-	mGameData.cursor = new Cursor();
-	mGameData.cursor->setSize(25.0f, 25.0f);
-
-	// Must be before UIManager
-	mGameData.camera = new Camera();
-	mGameData.camera->setViewport(1024, 768);
-
-	mGameData.map = new Map(&mGameData);
-
-	// Audio
-	mGameData.audioManager = new AudioManager();
-	mGameData.audioManager->init();
-
-	// Input
-	mGameData.inputManager = new InputManager(mGameData.cursor);
-	mGameData.inputManager->init();
-
-	// UI
-	mGameData.uiManager = new UIManager(&mGameData);
-	mGameData.uiManager->init();
-
-	// Renderer
-	mGameData.renderManager = new RenderManager(&mGameData);
-
-	// Score Manager
-	mGameData.scoreManager = new ScoreManager;
-	mGameData.scoreManager->addObserver(mGameData.uiManager);
+	mGameData.init();
 }
 
 

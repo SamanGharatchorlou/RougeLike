@@ -10,13 +10,17 @@ class UIManager;
 class Map;
 class Camera;
 class Cursor;
-class Player;
+class PlayerManager;
+class EnemyManager;
 
 class ScoreManager;
 
 
 struct GameData
 {
+	void init();
+	void free();
+
 	Window* window = nullptr;
 	SDL_Renderer* renderer = nullptr;
 
@@ -30,4 +34,8 @@ struct GameData
 	Map* map = nullptr;
 	Camera* camera = nullptr;
 	Cursor* cursor = nullptr;
+
+	PlayerManager* player = nullptr;
+	EnemyManager* enemies = nullptr;
 };
+

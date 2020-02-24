@@ -102,6 +102,16 @@ void UIManager::handleEvent(Event event, EventData& data)
 {
 	switch (event)
 	{
+		//testing
+	case Event::Print:
+	{
+		PrintEvent printEvent = static_cast<PrintEvent&>(data);
+
+		printf(printEvent.str.c_str());
+		break;
+	}
+
+
 	case Event::UpdateScore:
 	{
 		UpdateScoreEvent scoreEvent = static_cast<UpdateScoreEvent&>(data);

@@ -91,9 +91,6 @@ void EnemyManager::spawn(EnemyType type, float xPositionPercentage)
 			// subscribe to player weapon collisions
 			mCollisionManager.addCollider(enemy->getCollider());
 
-			// subscribe to sending score events
-			enemy->addObserver(mGameData->scoreManager);
-
 			return;
 		}
 	}
@@ -108,6 +105,15 @@ void EnemyManager::slowUpdate(float dt)
 	for (iter = mActiveEnemies.begin(); iter != mActiveEnemies.end(); iter++)
 	{
 		Enemy* enemy = *iter;
+
+		// handle all enemy messages
+		while (enemy->hasEvent())
+		{
+			EventPacket ep = enemy->popEvent();
+			notify(ep);
+
+			ep.free();
+		}
 
 		enemy->slowUpdate(dt);
 

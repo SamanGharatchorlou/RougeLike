@@ -198,3 +198,17 @@ void Enemy::initAnimations(std::string file)
 	Animations animationData = reader.readAnimationData();
 	mAnimator.init(spriteSheet, animationData);
 }
+
+
+void Enemy::pushEvent(const EventPacket event)
+{
+	events.push(event);
+}
+
+
+const EventPacket Enemy::popEvent()
+{
+	const EventPacket event = events.front();
+	events.pop();
+	return event;
+}

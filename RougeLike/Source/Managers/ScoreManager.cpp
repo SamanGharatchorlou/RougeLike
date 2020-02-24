@@ -31,3 +31,23 @@ void ScoreManager::handleEvent(Event event, EventData& data)
 
 	hasChanged = (currentScore != mScore);
 }
+
+void ScoreManager::handleEvent(const EventPacket eventPacket)
+{
+	hasChanged = false;
+	int currentScore = mScore;
+
+	switch (eventPacket.event)
+	{
+		//testing
+	case Event::Print:
+	{
+		const PrintEvent* printEvent = static_cast<const PrintEvent*>(eventPacket.data);
+
+		printf(printEvent->str.c_str());
+		break;
+	}
+	default:
+		break;
+	}
+}

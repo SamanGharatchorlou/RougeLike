@@ -7,6 +7,10 @@
 
 #include "Map/Map.h"
 
+// test
+#include "Input/InputManager.h"
+#include "Game/GameData.h"
+
 
 EnemyPatrol::EnemyPatrol(Enemy* enemy) : mEnemy(enemy)
 { }
@@ -35,6 +39,14 @@ void EnemyPatrol::slowUpdate(float dt)
 	if (canSeeTarget())
 	{
 		mEnemy->replaceState(EnemyState::Alert);
+	}
+
+	if (mEnemy->getData()->inputManager->isPressed(Button::Up))
+	{
+		PrintEvent* dataPtr = new PrintEvent(std::string("enemy print event\n"));
+
+		mEnemy->pushEvent(EventPacket(Event::Print, dataPtr));
+		printf("pressing\n");
 	}
 }
 

@@ -12,4 +12,5 @@
 	<HurtTime type = "float">0.125</HurtTime>
 	<AttentionTime type ="float">1</AttentionTime>
 	<Score type ="int">50></Score>
+	<Experience type = "int">100</Experience>
 </Stats>

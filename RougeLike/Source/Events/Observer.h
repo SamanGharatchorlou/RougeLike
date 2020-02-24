@@ -8,25 +8,52 @@ enum class Event
 	EnemyDead,
 	SetHealth,
 	UpdateScore,
+
+	// tesing
+	Print
 };
 
 
 struct EventData
 {
-	virtual ~EventData() { };
+	virtual ~EventData() = 0;
+};
+
+
+struct EventPacket
+{
+	EventPacket(const Event theEvent, const EventData* dataPtr) : event(theEvent), data(dataPtr) { }
+	~EventPacket() { }
+
+	void free();
+
+	const Event event;
+	const EventData* data;
+};
+
+
+// testing
+struct PrintEvent : public EventData
+{
+	PrintEvent(std::string printString) : str(printString) { }
+	~PrintEvent() { }
+	std::string str;
 };
 
 
 struct EnemyDeadEvent : public EventData
 {
-	EnemyDeadEvent(int score) : mScore(score) { }
+	EnemyDeadEvent(int score, int exp) : mScore(score), mExp(exp) { }
+	~EnemyDeadEvent() { }
 	const int mScore;
+	const int mExp;
 };
 
 
 struct SetHealthBarEvent : public EventData
 {
 	SetHealthBarEvent(Health maxHp, Health hp) : maxHealth(maxHp), health(hp) { }
+	~SetHealthBarEvent() { }
 	const Health maxHealth;
 	const Health health;
 };
@@ -35,6 +62,7 @@ struct SetHealthBarEvent : public EventData
 struct UpdateScoreEvent : EventData
 {
 	UpdateScoreEvent(int score) : mScore(score) { }
+	~UpdateScoreEvent() { }
 	const int mScore;
 };
 
@@ -42,5 +70,6 @@ struct UpdateScoreEvent : EventData
 struct Observer
 {
 	virtual ~Observer() = default;
-	virtual void handleEvent(Event event, EventData& data) = 0;
+	virtual void handleEvent(const Event event, EventData& data) = 0;
+	virtual void handleEvent(const EventPacket) = 0;
 };

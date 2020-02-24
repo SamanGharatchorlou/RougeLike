@@ -1,14 +1,15 @@
 #pragma once
 
+#include "Events/Dispatcher.h"
+
 #include "Collisions/CollisionTracker.h"
 #include "EnemyEnums.h"
 #include "EnemySpawner.h"
 
 struct GameData;
 class Enemy;
-class Weapon;
 
-class EnemyManager
+class EnemyManager : public Dispatcher
 {
 public:
 	enum ObjectStatus

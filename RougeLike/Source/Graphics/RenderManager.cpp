@@ -20,6 +20,8 @@ RenderManager::RenderManager(GameData* gameData) :
 
 void RenderManager::render()
 {
+	return;
+
 	mMap->renderLayerA(mPlayer->getRect().Center().y);
 
 	mEnemies->render();

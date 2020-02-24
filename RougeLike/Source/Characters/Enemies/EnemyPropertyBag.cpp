@@ -51,4 +51,8 @@ void EnemyPropertyBag::readAttributes(std::string name)
 	// Score
 	int score = map.getInt("Score");
 	pScore.set(score);
+
+	// Experience
+	int exp = map.getInt("Experience");
+	pExp.set(exp);
 }

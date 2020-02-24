@@ -21,7 +21,8 @@ public:
 	Screen* getActiveScreen() { return activeScreen; }
 
 
-	void handleEvent(Event event, EventData& data) override;
+	void handleEvent(const Event event, EventData& data) override;
+	void handleEvent(const EventPacket) override { }
 
 	UIElement* find(std::string id);
 

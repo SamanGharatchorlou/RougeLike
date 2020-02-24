@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Source\AI\AIPathing.cpp" />
     <ClCompile Include="Source\Animations\Animator.cpp" />
+    <ClCompile Include="Source\Characters\Attributes\Level.cpp" />
     <ClCompile Include="Source\Characters\Attributes\Physics.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyManager.cpp" />
     <ClCompile Include="Source\Characters\Enemies\Enemy.cpp" />
@@ -45,6 +46,8 @@
     <ClCompile Include="Source\Collisions\CollisionTracker.cpp" />
     <ClCompile Include="Source\Collisions\EnemyCollider.cpp" />
     <ClCompile Include="Source\Events\Dispatcher.cpp" />
+    <ClCompile Include="Source\Events\Observer.cpp" />
+    <ClCompile Include="Source\Game\GameData.cpp" />
     <ClCompile Include="Source\Graphics\Font.cpp" />
     <ClCompile Include="Source\Graphics\Renderer.cpp" />
     <ClCompile Include="Source\Graphics\Text.cpp" />
@@ -95,8 +98,10 @@
     <ClInclude Include="Source\AI\AIPathing.h" />
     <ClInclude Include="Source\Animations\Animator.h" />
     <ClInclude Include="Source\Characters\Attributes\Damage.h" />
+    <ClInclude Include="Source\Characters\Attributes\Level.h" />
     <ClInclude Include="Source\Characters\Attributes\Physics.h" />
     <ClInclude Include="Source\Characters\Attributes\Property.h" />
+    <ClInclude Include="Source\Characters\Attributes\StatManager.h" />
     <ClInclude Include="Source\Characters\Enemies\Enemy.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyManager.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyPropertyBag.h" />

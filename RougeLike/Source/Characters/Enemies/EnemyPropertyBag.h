@@ -30,6 +30,7 @@ public:
 
 	// Score
 	ScoreProperty pScore;
+	ExperienceProperty pExp;
 };
 
 

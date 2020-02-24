@@ -8,12 +8,20 @@
 #include "Map/Map.h"
 #include "Characters/Enemies/EnemyManager.h"
 
+#include "Characters/Attributes/Level.h"
+
+//temp test
+#include "Input/InputManager.h"
 
 PlayerManager::PlayerManager(GameData* gameData) : mGameData(gameData)
 {
 	player = new Player(gameData);
+}
 
-	addObserver(mGameData->uiManager);
+PlayerManager::~PlayerManager()
+{
+	delete player;
+	player = nullptr;
 }
 
 
@@ -68,6 +76,18 @@ void PlayerManager::fastUpdate(float dt)
 	resolveWallCollisions(dt);
 
 	player->fastUpdate(dt);
+}
+
+
+void PlayerManager::handleEvent(Event event, EventData& data)
+{
+	if (event == Event::EnemyDead)
+	{
+		EnemyDeadEvent eventData = static_cast<EnemyDeadEvent&>(data);
+
+		Level playerLevel = player->propertyBag().pLevel.get();
+		playerLevel.gainExp(eventData.mExp);
+	}
 }
 
 

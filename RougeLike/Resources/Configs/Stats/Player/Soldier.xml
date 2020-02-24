@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Stats>
+	<!-- Attributes -->
+	<Level type = "int">1</Level>
 	<Health type = "float">100</Health>
+	<Defence type = "float">10</Defence>
+	<AttackDamage type = "float">10</AttackDamage>
+	<AttackSpeed type = "float">1</AttackSpeed>
+	<MovementSpeed type = "float">1</MovementSpeed>
+
+	<!-- Movement -->
 	<Force type = "float">8000</Force>
-	<MaxVelocity type = "float">400</MaxVelocity>
+	<MaxVelocity type = "float">300</MaxVelocity>
 	<DragFactor type = "float">0.85</DragFactor>
 </Stats>

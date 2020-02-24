@@ -9,7 +9,9 @@ public:
 	ScoreManager() : mScore(0), hasChanged(false) { }
 
 	void update();
-	void handleEvent(Event event, EventData& data);
+
+	void handleEvent(const Event event, EventData& data) override;
+	void handleEvent(const EventPacket eventPacket) override;
 
 	int score() { return mScore; }
 

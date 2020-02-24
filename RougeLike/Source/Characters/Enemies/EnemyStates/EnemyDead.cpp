@@ -8,8 +8,11 @@ void EnemyDead::init()
 {
 	mEnemy->getAnimator()->selectAnimation("Dead");
 
-	EnemyDeadEvent event(mEnemy->propertyBag().pScore.get());
-	mEnemy->notify(Event::EnemyDead, event);
+	int score = mEnemy->propertyBag().pScore.get();
+	int exp = mEnemy->propertyBag().pExp.get();
+	EnemyDeadEvent* dataPtr = new EnemyDeadEvent(score, exp);
+
+	mEnemy->pushEvent(EventPacket(Event::EnemyDead, dataPtr));
 }
 
 void EnemyDead::slowUpdate(float dt)

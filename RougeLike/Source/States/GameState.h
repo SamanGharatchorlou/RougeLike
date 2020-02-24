@@ -2,10 +2,6 @@
 
 #include "State.h"
 
-#include "Map/Map.h"
-#include "Characters/Player/PlayerManager.h"
-#include "Characters/Enemies/EnemyManager.h"
-
 class GameController;
 struct GameData;
 
@@ -30,7 +26,4 @@ public:
 private:
 	GameController* mGameController;
 	GameData* mGameData;
-
-	PlayerManager mPlayer;
-	EnemyManager mEnemies;
 };
