@@ -8,6 +8,7 @@ void EnemyDead::init()
 {
 	mEnemy->getAnimator()->selectAnimation("Dead");
 
+	// Let everyone know he has died
 	int score = mEnemy->propertyBag().pScore.get();
 	int exp = mEnemy->propertyBag().pExp.get();
 	EnemyDeadEvent* dataPtr = new EnemyDeadEvent(score, exp);

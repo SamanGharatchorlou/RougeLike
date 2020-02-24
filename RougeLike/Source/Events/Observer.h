@@ -8,9 +8,6 @@ enum class Event
 	EnemyDead,
 	SetHealth,
 	UpdateScore,
-
-	// tesing
-	Print
 };
 
 
@@ -52,9 +49,8 @@ struct EnemyDeadEvent : public EventData
 
 struct SetHealthBarEvent : public EventData
 {
-	SetHealthBarEvent(Health maxHp, Health hp) : maxHealth(maxHp), health(hp) { }
+	SetHealthBarEvent(Health hp) : health(hp) { }
 	~SetHealthBarEvent() { }
-	const Health maxHealth;
 	const Health health;
 };
 

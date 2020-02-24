@@ -4,7 +4,7 @@
 
 class Map;
 
-using TileCost = std::pair<MapTile, int>;
+using TileCost = std::pair<const MapTile*, int>;
 using Path = std::stack<Vector2D<int>>;
 
 class AIPathing
@@ -14,8 +14,8 @@ public:
 
 	Path findPath(VectorF start, VectorF end);
 
-	Vector2D<int> getTileIndex(VectorF position);
-	VectorF getTilePosition(Vector2D<int> tileIndex);
+	Vector2D<int> getTileIndex(VectorF position) const;
+	VectorF getTilePosition(Vector2D<int> tileIndex) const;
 
 private:
 	Path getPath(Vector2D<int> start, Vector2D<int> end, Grid<Vector2D<int>>& pathing);

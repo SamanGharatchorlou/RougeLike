@@ -64,7 +64,7 @@ void Physics::update(float dt)
 
 	if (restrictedMovement[Direction::Right])
 	{
-
+		printf("restrict right\n");
 		mVelocity.x = clamp(mVelocity.x, -std::abs(mVelocity.x), 0.0f);
 	}
 

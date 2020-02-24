@@ -34,10 +34,10 @@ public:
 
 private:
 	void resolveWallCollisions(float dt);
-	bool doesCollideLeft(VectorF point, float dt);
-	bool doesCollideRight(VectorF point, float dt);
-	bool doesCollideTop(VectorF point, float dt);
-	bool doesCollideBot(VectorF point, float dt);
+	bool doesCollideLeft(const VectorF point, float dt) const;
+	bool doesCollideRight(const VectorF point, float dt) const;
+	bool doesCollideTop(const VectorF point, float dt) const;
+	bool doesCollideBot(const VectorF point, float dt) const;
 
 	void updateTrackedColliders();
 

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "EnemyRun.h"
 
+#include "Game/GameData.h"
 #include "Characters/Enemies/Enemy.h"
 
 

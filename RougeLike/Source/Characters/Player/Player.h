@@ -10,7 +10,6 @@
 #include "PlayerPropertyBag.h"
 
 struct GameData;
-class Map;
 
 class Player
 {
@@ -39,12 +38,12 @@ public:
 
 	PlayerPropertyBag& propertyBag() { return bag; }
 
-	Health health; // TODO: move this into the property bag
 
 private:
 	// Animations
 	void selectAnimation(PlayerState::actionState state);
 	void initAnimations(std::string config);
+#
 
 private:
 	GameData* mGameData;
@@ -60,7 +59,5 @@ private:
 	SDL_RendererFlip mFlip;
 
 	PlayerState::actionState mState;
-
-
 };
 

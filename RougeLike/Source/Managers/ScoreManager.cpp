@@ -8,29 +8,10 @@ void ScoreManager::update()
 		UpdateScoreEvent event(mScore);
 		notify(Event::UpdateScore, event);
 	}
-}
 
-void ScoreManager::handleEvent(Event event, EventData& data)
-{
 	hasChanged = false;
-	int currentScore = mScore;
-
-	switch (event)
-	{
-	case Event::None:
-		break;
-	case Event::EnemyDead:
-	{
-		EnemyDeadEvent& deathData = static_cast<EnemyDeadEvent&>(data);
-		mScore += deathData.mScore;
-		break;
-	}
-	default:
-		break;
-	}
-
-	hasChanged = (currentScore != mScore);
 }
+
 
 void ScoreManager::handleEvent(const EventPacket eventPacket)
 {
@@ -39,15 +20,16 @@ void ScoreManager::handleEvent(const EventPacket eventPacket)
 
 	switch (eventPacket.event)
 	{
-		//testing
-	case Event::Print:
+	case Event::EnemyDead:
 	{
-		const PrintEvent* printEvent = static_cast<const PrintEvent*>(eventPacket.data);
-
-		printf(printEvent->str.c_str());
+		const EnemyDeadEvent* deathData = static_cast<const EnemyDeadEvent*>(eventPacket.data);
+		mScore += deathData->mScore;
 		break;
 	}
 	default:
 		break;
 	}
+
+
+	hasChanged = (currentScore != mScore);
 }

@@ -37,6 +37,8 @@ void Enemy::init(std::string name)
 	mMovement.setPosition(mRect.TopLeft());
 
 	mCollider.init(&mRect);
+	mCollider.setDamage(propertyBag().pDamage.get());
+
 	mMovement.init(&mCollider, bag.pMovementSpeed.get());
 }
 

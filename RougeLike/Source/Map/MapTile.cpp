@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "MapTile.h"
 
-bool MapTile::hasRenderType(Type type)
+bool MapTile::hasRenderType(Type type) const 
 {
 	return (mRenderType &type) != MapTile::None;
 }
@@ -21,7 +21,7 @@ void MapTile::addCollisionType(Type type)
 	mCollisionType |= type;
 }
 
-bool MapTile::hasCollisionType(Type type)
+bool MapTile::hasCollisionType(Type type) const
 {
 	return (mCollisionType & type) != MapTile::None;
 }

@@ -10,37 +10,32 @@ std::stack<Vector2D<int>> AIPathing::findPath(VectorF startPosition, VectorF end
 {
 	Vector2D<int> startingIndex = mMap->getIndex(startPosition);
 	Vector2D<int> endIndex = mMap->getIndex(endPosition);
-	// debug
-	MapTile endTile = mMap->getTile(endIndex);
-
-	MapTile startTile = mMap->getTile(startingIndex);
 
 	// Lowest to highest path cost queue
 	std::priority_queue<TileCost, std::vector<TileCost>, GreaterThanByCost> frontier;
-	frontier.push(TileCost(startTile, 0));
+	frontier.push(TileCost(mMap->getTile(startingIndex), 0));
 
 	Grid<Vector2D<int>> cameFrom(mMap->yCount(), mMap->xCount(), Vector2D<int>(-1,-1));
 	Grid<int> cost(mMap->yCount(), mMap->xCount(), 0);
 
-	
 	// start search coming from nowhere with 0 cost
 	cameFrom[startingIndex] = Vector2D<int>(-1, -1);
 	cost[startingIndex] = 0;
 
-
 	while (!frontier.empty())
 	{
-		MapTile currentTile = frontier.top().first;
-		MapTile neighbours[4] = { mMap->offsetTile(currentTile, 0, -1),
-									mMap->offsetTile(currentTile, 1, 0),
-									mMap->offsetTile(currentTile, 0, 1),
-									mMap->offsetTile(currentTile, -1, 0) };
+		const MapTile* currentTile = frontier.top().first;
+		const MapTile* neighbours[4] = { 
+			mMap->offsetTile(currentTile, 0, -1),
+			mMap->offsetTile(currentTile, 1, 0),
+			mMap->offsetTile(currentTile, 0, 1),
+			mMap->offsetTile(currentTile, -1, 0) };
 
 		// Search all neighbours
 		for (unsigned int i = 0; i < 4; i++)
 		{
-			MapTile nextTile = *(neighbours + i);
-			if (nextTile.hasCollisionType(MapTile::Floor))
+			const MapTile* nextTile = *(neighbours + i);
+			if (nextTile->hasCollisionType(MapTile::Floor))
 			{
 				Vector2D<int> index = mMap->getIndex(nextTile);
 
@@ -98,12 +93,12 @@ Path AIPathing::getPath(Vector2D<int> start, Vector2D<int> finish, Grid<Vector2D
 
 
 // For Enemy class
-VectorF AIPathing::getTilePosition(Vector2D<int> tileIndex)
+VectorF AIPathing::getTilePosition(Vector2D<int> tileIndex) const
 {
 	return mMap->getTileRect(tileIndex).Center();
 }
 
-Vector2D<int> AIPathing::getTileIndex(VectorF position)
+Vector2D<int> AIPathing::getTileIndex(VectorF position) const
 {
 	return mMap->getIndex(position);
 }

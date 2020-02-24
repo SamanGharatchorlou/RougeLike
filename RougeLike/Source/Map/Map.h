@@ -17,24 +17,24 @@ public:
 	unsigned int yCount() const { return mTileCount.y; }
 	unsigned int xCount() const { return mTileCount.x; }
 
-	const MapTile& getTile(Vector2D<int> index) const;
-	const MapTile& getTile(int x, int y) const;
-	const MapTile& getTile(VectorF position) const;
+	const MapTile* getTile(Vector2D<int> index) const;
+	const MapTile* getTile(int x, int y) const;
+	const MapTile* getTile(VectorF position) const;
 
-	Vector2D<int> getIndex(VectorF position) const;
-	Vector2D<int> getIndex(MapTile tile) const;
-	Vector2D<int> getIndex(RectF rect) const;
+	Vector2D<int> getIndex(const VectorF position) const;
+	Vector2D<int> getIndex(const MapTile* tile) const;
+	Vector2D<int> getIndex(const RectF rect) const;
 
 	RectF getTileRect(Vector2D<int> index) const;
 	RectF getTileRect(int x, int y) const;
 	RectF getTileRect(int coords[2]) const;
 
-	VectorF getTileSize() { return mTileSize * mScale; }
+	VectorF getTileSize() const { return mTileSize * mScale; }
 
-	const MapTile& offsetTile(MapTile tile, int xOffset, int yOffset) const;
+	const MapTile* offsetTile(const MapTile* tile, int xOffset, int yOffset) const;
 
 	Vector2D<float> size() const;
-	float getScale() { return mScale; }
+	float getScale() const { return mScale; }
 
 	void renderLayerA(float yPoint);
 	void renderLayerB();

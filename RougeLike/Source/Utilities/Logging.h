@@ -10,7 +10,11 @@ enum PriorityLevel
 };
 
 
+#if _DEBUG
 #define ASSERT(...) DebugAssert(__LINE__, __FUNCTION__, __VA_ARGS__)
+#else
+#define ASSERT(...)
+#endif
 
 
 void DebugPrint(int priority, const char* format, ...); 

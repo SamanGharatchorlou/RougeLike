@@ -27,23 +27,24 @@ public:
 
 
 public:
-	MapTile() : mRenderType(Wall), mCollisionType(Wall), mRect(-1) { printf("creating Tile\n"); }
+	MapTile() : mRenderType(Wall), mCollisionType(Wall), mRect(-1) { }
 	MapTile(Type type) : mRenderType(type), mCollisionType(type), mRect(-1) { }
 	MapTile(RectF rect) : mRect(rect), mRenderType(Wall), mCollisionType(Wall) { }
 
 	RectF& rect() { return mRect; }
+	RectF rect() const { return mRect; }
 	void setRect(RectF rect) { mRect = rect; }
 
 	void setType(Type type) { mRenderType = type; mCollisionType = type; }
 
-	Type renderType() { return mRenderType; }
-	bool hasRenderType(Type type);
+	const Type renderType() const { return mRenderType; }
+	bool hasRenderType(Type type) const;
 	void setRenderType(Type type) { mRenderType = type; }
 	void addRenderType(Type type);
 	void removeRenderType(Type type);
 
-	Type collisionType() { return mCollisionType; }
-	bool hasCollisionType(Type type);
+	const Type collisionType() const { return mCollisionType; }
+	bool hasCollisionType(Type type) const;
 	void setCollisionType(Type type) { mCollisionType = type; }
 	void addCollisionType(Type type);
 	void removeCollisionType(Type type);

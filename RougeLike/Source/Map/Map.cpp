@@ -315,15 +315,15 @@ MapTile::EdgeInfo Map::getEdgeInfo(int x, int y)
 	return info;
 }
 
-Vector2D<int> Map::getIndex(VectorF position) const
+Vector2D<int> Map::getIndex(const VectorF position) const
 {
 	Vector2D<int> index(position.x / (mTileSize.x * mScale), position.y / (mTileSize.y * mScale));
 	return isValidPosition(position) ? index : Vector2D<int>(-1, -1);
 }
 
-Vector2D<int> Map::getIndex(MapTile tile) const
+Vector2D<int> Map::getIndex(const MapTile* tile) const
 {
-	VectorF position(tile.rect().TopLeft());
+	const VectorF position(tile->rect().TopLeft());
 	Vector2D<int> index(position.x / (mTileSize.x * mScale), position.y / (mTileSize.y * mScale));
 	return isValidPosition(position) ? index : Vector2D<int>(-1, -1);
 }
@@ -337,21 +337,21 @@ Vector2D<int> Map::getIndex(RectF rect) const
 }
 
 
-const MapTile& Map::getTile(Vector2D<int> index) const
+const MapTile* Map::getTile(const Vector2D<int> index) const
 {
-	return isValidIndex(index) ? mData.get(index) : MapTile(MapTile::None);
+	return isValidIndex(index) ? &mData.get(index) : nullptr;
 }
 
-const MapTile& Map::getTile(int x, int y) const
+const MapTile* Map::getTile(int x, int y) const
 {
-	return isValidIndex(Vector2D<int>(x,y)) ? mData.get(x,y) : MapTile(MapTile::None);
+	return isValidIndex(Vector2D<int>(x,y)) ? &mData.get(x,y) : nullptr;
 }
 
 
-const MapTile& Map::getTile(VectorF position) const 
+const MapTile* Map::getTile(VectorF position) const 
 {
 	Vector2D<int> tileIndex(position.x / (mTileSize.x * mScale), position.y / (mTileSize.y * mScale));
-	return isValidIndex(tileIndex) ? mData.get(tileIndex) : MapTile(MapTile::None);
+	return isValidIndex(tileIndex) ? &mData.get(tileIndex) : nullptr;
 }
 
 
@@ -385,12 +385,12 @@ RectF Map::getTileRect(int coords[2]) const
 }
 
 
-const MapTile& Map::offsetTile(MapTile tile, int xOffset, int yOffset) const
+const MapTile* Map::offsetTile(const MapTile* tile, int xOffset, int yOffset) const
 {
 	Vector2D<int> index = getIndex(tile);
 	index = index + Vector2D<int>(xOffset, yOffset);
 
-	return isValidIndex(index) ? getTile(index) : MapTile(MapTile::None);
+	return isValidIndex(index) ? getTile(index) : nullptr;
 }
 
 
@@ -452,18 +452,22 @@ bool Map::isValidPosition(VectorF position) const
 
 Vector2D<int> Map::findYFloorTileRange(int xTileIndex)
 {
-	int yTileIndex = 0;
-	Vector2D<int> yTileRange;
+	unsigned int yTileIndex = 0;
+	Vector2D<unsigned int> yTileRange;
 
 	while (wallCollisionTile(xTileIndex, ++yTileIndex)) {}
 
 	// highest point
 	yTileRange.x = yTileIndex;
 
-	while (floorCollisionTile(xTileIndex, ++yTileIndex)) { if (yTileIndex >= yCount() - 1) break; }
+	while (floorCollisionTile(xTileIndex, ++yTileIndex)) 
+	{ 
+		if (yTileIndex >= yCount() - 1) 
+			break; 
+	}
 
 	// remove last increment to keep within floor and minus one extra to prevent enemy moving behind the wall
-	yTileRange.y = clamp(yTileIndex - 2, yTileRange.x, (int)yCount() - 2);
+	yTileRange.y = clamp(yTileIndex - 2, yTileRange.x, yCount() - 2);
 
 	return yTileRange;
 }

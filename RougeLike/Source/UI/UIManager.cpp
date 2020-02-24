@@ -102,16 +102,6 @@ void UIManager::handleEvent(Event event, EventData& data)
 {
 	switch (event)
 	{
-		//testing
-	case Event::Print:
-	{
-		PrintEvent printEvent = static_cast<PrintEvent&>(data);
-
-		printf(printEvent.str.c_str());
-		break;
-	}
-
-
 	case Event::UpdateScore:
 	{
 		UpdateScoreEvent scoreEvent = static_cast<UpdateScoreEvent&>(data);
@@ -135,15 +125,14 @@ void UIManager::handleEvent(Event event, EventData& data)
 
 		UIElement* element = find("RedHealth");
 
-		if (element != nullptr && element->type() == UIElement::BasicText)
+		if (element != nullptr && element->type() == UIElement::Box)
 		{
 			UIBox* healthBar = static_cast<UIBox*>(element);
 
-			float width = healthBar->getRect().Width();
+			RectF rect = healthBar->getRect();
+			rect.SetWidth(rect.Width() * event.health.getPercentage());
 
-			float healthPercentage = event.maxHealth.get() / event.health.get();
-
-			healthBar->getRect().SetWidth(width * healthPercentage);
+			healthBar->setRect(rect);
 		}
 
 		break;

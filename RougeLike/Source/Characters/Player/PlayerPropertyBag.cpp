@@ -40,15 +40,15 @@ void PlayerPropertyBag::readAttributes(std::string name)
 	float defence = map.getFloat("Defence");
 	pDefence.set(defence);
 
-	// Defence
+	// Attack Damage
 	float attackDamage = map.getFloat("AttackDamage");
 	pAttackDmg.set(attackDamage);
 
-	// Defence
+	// Attack Speed
 	float attackSpeed = map.getFloat("AttackSpeed");
 	pAttackSpd.set(attackSpeed);
 
-	// Defence
+	// Movement Speed
 	float movementSpeed = map.getFloat("MovementSpeed");
 	pMovementSpd.set(movementSpeed);
 }
