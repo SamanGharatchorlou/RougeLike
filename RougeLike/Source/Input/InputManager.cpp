@@ -49,7 +49,7 @@ void InputManager::processInputEvent(SDL_Event event)
 		int x, y;
 		SDL_GetMouseState(&x, &y);
 
-		mCursor->setPosition(x, y);
+		mCursor->setPosition((float)x, (float)y);
 		mCursor->setMotion(true);
 	}
 	else if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP)

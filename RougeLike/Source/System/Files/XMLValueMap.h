@@ -4,6 +4,7 @@ union value
 {
 	int i;
 	float f;
+	char c[20];
 };
 
 using valueMap = std::unordered_map<std::string, value>;
@@ -35,6 +36,15 @@ public:
 			DebugPrint(Warning, "There is no value with the label: %s\n", name.c_str());
 #endif
 		return map[name].f;
+	}
+
+	char* getChar(std::string name)
+	{
+#if _DEBUG
+		if (map.count(name) == 0)
+			DebugPrint(Warning, "There is no value with the label: %s\n", name.c_str());
+#endif
+		return map[name].c;
 	}
 
 	unsigned int size() { return map.size(); }

@@ -70,6 +70,8 @@
     <ClCompile Include="Source\Characters\Attributes\Level.cpp" />
     <ClCompile Include="Source\Game\GameData.cpp" />
     <ClCompile Include="Source\Events\Observer.cpp" />
+    <ClCompile Include="Source\Characters\Attributes\StatManager.cpp" />
+    <ClCompile Include="Source\Characters\Weapons\Weaponstash.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -156,6 +158,8 @@
     <ClInclude Include="Source\Characters\Player\PlayerPropertyBag.h" />
     <ClInclude Include="Source\Characters\Attributes\Level.h" />
     <ClInclude Include="Source\Characters\Attributes\StatManager.h" />
+    <ClInclude Include="Source\Characters\Weapons\WeaponStash.h" />
+    <ClInclude Include="Source\Characters\Weapons\WeaponData.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

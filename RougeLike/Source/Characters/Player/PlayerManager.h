@@ -1,8 +1,10 @@
 #pragma once
 
-#include "Collisions/CollisionTracker.h"
 #include "Events/Dispatcher.h"
 #include "Events/Observer.h"
+
+#include "Collisions/CollisionTracker.h"
+#include "Characters/Weapons/WeaponStash.h"
 
 struct GameData;
 class Player;
@@ -15,6 +17,14 @@ public:
 	PlayerManager(GameData* gameData);
 	~PlayerManager();
 
+	void init();
+	void preProcess();
+	void handleInput();
+	void slowUpdate(float dt);
+	void fastUpdate(float dt);
+
+	void selectCharacter(const std::string& character);
+
 	Player* get() { return player; }
 	RectF* getRectRef();
 
@@ -23,11 +33,7 @@ public:
 	void handleEvent(const Event event, EventData& data) override;
 	void handleEvent(const EventPacket) override { }
 
-	void init(EnemyManager* enemyManager);
-	void preProcess();
-	void handleInput();
-	void slowUpdate(float dt);
-	void fastUpdate(float dt);
+
 
 	// testing
 	bool gotHit = false;
@@ -43,9 +49,10 @@ private:
 
 private:
 	GameData* mGameData;
-	EnemyManager* mEnemyManager;
 
 	Player* player;
+
+	WeaponStash weaponStash;
 
 	CollisionTracker collisionTracker;
 };

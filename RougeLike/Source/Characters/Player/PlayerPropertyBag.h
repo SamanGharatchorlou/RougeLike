@@ -20,7 +20,9 @@ public:
 	DefenceProperty pDefence;
 	AttackDamageProperty pAttackDmg;
 	AttackSpeedProperty pAttackSpd;
-	MovementSpeedPropert pMovementSpd;
+	MovementSpeedProperty pMovementSpd;
+
+	WeaponProperty pWeapon;
 };
 
 

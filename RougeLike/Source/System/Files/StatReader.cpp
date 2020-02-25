@@ -34,6 +34,17 @@ XMLValueMap StatReader::getStats(FileManager::Folder folder, std::string config)
 			{
 				stat.f = std::stof(node->value());
 			}
+			else if (strcmp(type.c_str(), "string") == 0)
+			{
+				const char* string = node->value();
+
+				ASSERT(Warning, strlen(string) < 20, 
+					"The %s attribute from %s is too big to fit into the union value char. \
+					It must be less than 20 characters, either reduce the text size or increase the value union data type\n", 
+					name, configFilePath);
+
+				strcpy_s(stat.c, string);
+			}
 			else
 			{
 				DebugPrint(Warning, "Unrecognised type %s, no value added\n", type.c_str());

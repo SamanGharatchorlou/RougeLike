@@ -23,6 +23,7 @@
     <ClCompile Include="Source\Animations\Animator.cpp" />
     <ClCompile Include="Source\Characters\Attributes\Level.cpp" />
     <ClCompile Include="Source\Characters\Attributes\Physics.cpp" />
+    <ClCompile Include="Source\Characters\Attributes\StatManager.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyManager.cpp" />
     <ClCompile Include="Source\Characters\Enemies\Enemy.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyPropertyBag.cpp" />
@@ -39,6 +40,7 @@
     <ClCompile Include="Source\Characters\Player\PlayerPropertyBag.cpp" />
     <ClCompile Include="Source\Characters\Player\States\AttackState.cpp" />
     <ClCompile Include="Source\Characters\Weapons\Weapon.cpp" />
+    <ClCompile Include="Source\Characters\Weapons\Weaponstash.cpp" />
     <ClCompile Include="Source\Collisions\Collider.cpp" />
     <ClCompile Include="Source\Characters\Attributes\Movement.cpp" />
     <ClCompile Include="Source\Audio\Audio.cpp" />
@@ -121,6 +123,8 @@
     <ClInclude Include="Source\Characters\Player\States\AttackState.h" />
     <ClInclude Include="Source\Characters\Weapons\Swing.h" />
     <ClInclude Include="Source\Characters\Weapons\Weapon.h" />
+    <ClInclude Include="Source\Characters\Weapons\WeaponData.h" />
+    <ClInclude Include="Source\Characters\Weapons\WeaponStash.h" />
     <ClInclude Include="Source\Collisions\Collider.h" />
     <ClInclude Include="Source\Characters\Attributes\Health.h" />
     <ClInclude Include="Source\Characters\Attributes\Movement.h" />

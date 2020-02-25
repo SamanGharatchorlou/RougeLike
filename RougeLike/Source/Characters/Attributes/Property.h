@@ -21,13 +21,15 @@ private:
 
 // Shared
 class HealthProperty : public Property<Health> { };
+class MovementSpeedProperty : public Property<float> { };
 
 // Player - Attributes
 class LevelProperty : public Property<Level> { };
 class DefenceProperty : public Property<float> { };
 class AttackDamageProperty : public Property<float> { };
 class AttackSpeedProperty : public Property<float> { };
-class MovementSpeedPropert : public Property<float> { };
+
+class WeaponProperty : public Property<std::string> { };
 
 // Player - Movement
 class ForceProperty : public Property<float> { };
@@ -35,9 +37,7 @@ class MaxVelocityProperty : public Property<float> { };
 class DragFactorProperty : public Property<float> { };
 
 
-
 // Enemy
-class MovementSpeedProperty : public Property<float> { };
 class TackleSpeedProperty : public Property<float> { };
 class TackleDistanceProperty : public Property<float> { };
 class TackleChangeTimeProperty : public Property<float> { };

@@ -16,6 +16,7 @@
 PlayerManager::PlayerManager(GameData* gameData) : mGameData(gameData)
 {
 	player = new Player(gameData);
+
 }
 
 PlayerManager::~PlayerManager()
@@ -25,12 +26,20 @@ PlayerManager::~PlayerManager()
 }
 
 
-void PlayerManager::init(EnemyManager* enemyManager)
+void PlayerManager::init()
 {
-	mEnemyManager = enemyManager;
-	collisionTracker.addCollider(&player->getCollider());
+	weaponStash.load(mGameData->textureManager);
 
-	player->init("Soldier.xml");
+	collisionTracker.addCollider(&player->getCollider());
+}
+
+
+void PlayerManager::selectCharacter(const std::string& character)
+{
+	player->init(character);
+
+	const WeaponData* weaponData = &weaponStash.getData(player->propertyBag().pWeapon.get());
+	player->equiptWeapon(weaponData);
 }
 
 
@@ -94,7 +103,7 @@ void PlayerManager::handleEvent(Event event, EventData& data)
 void PlayerManager::updateTrackedColliders()
 {
 	collisionTracker.clearSubscriptions();
-	collisionTracker.subscribe(mEnemyManager->getAttackingEnemyColliders());
+	collisionTracker.subscribe(mGameData->enemies->getAttackingEnemyColliders());
 }
 
 

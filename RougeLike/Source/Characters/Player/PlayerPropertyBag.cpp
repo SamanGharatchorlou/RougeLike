@@ -28,6 +28,10 @@ void PlayerPropertyBag::readAttributes(std::string name)
 
 	// -- Attributes -- //
 
+	// Weapon
+	const char* weaponName = map.getChar("Weapon");
+	pWeapon.set(weaponName);
+
 	// Level
 	Level level(map.getInt("Level"));
 	pLevel.set(level);

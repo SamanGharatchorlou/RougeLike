@@ -14,40 +14,65 @@
 
 
 
-
-Weapon::Weapon(GameData* gameData) : mGameData(gameData) { }
-
-
-void Weapon::selectWeapon(std::string weaponName)
-{
-	loadWeaponData(weaponName);
-
-	// couple the block rects and colliders
-	int blocks = 4;
-	for (int i = 0; i < blocks; i++)
+Weapon::Weapon(GameData* gameData) : 
+	mGameData(gameData)
+	, mOverrideCursorControl(false)
+	, mSwingDirection(-1)
+{ 
+	// 4 blocks seems to be a good number of blocks
+	unsigned int blocks = 4;
+	for (unsigned int i = 0; i < blocks; i++)
 	{
 		mBlockRects.push_back(RectF());
-		mBlockColliders.push_back(Collider(mDamage));
+		mBlockColliders.push_back(new Collider);
 	}
 
-	for (int i = 0; i < blocks; i++)
+	for (unsigned int i = 0; i < blocks; i++)
 	{
-		mBlockColliders[i].init(&mBlockRects[i]);
-		mBlockColliders[i].setActive(false);
+		mBlockColliders[i]->init(&mBlockRects[i]);
+		mBlockColliders[i]->setActive(false);
 	}
 }
 
+
+Weapon::~Weapon()
+{
+	for (Collider* collider : mBlockColliders)
+	{
+		delete collider;
+	}
+
+	mBlockRects.clear();
+	mBlockColliders.clear();
+}
+
+
+void Weapon::equipt(const WeaponData* data)
+{
+	mData = data;
+
+	for (Collider* collider : mBlockColliders)
+	{
+		collider->setDamage(mData->damage);
+	}
+
+	// TODO: where/what to do with this 1.5 scale factor
+	mRect.SetSize(mData->texture->originalDimentions * 1.5f);
+}
+
+
+
 void Weapon::fastUpdate(VectorF anchorPosition)
 {
-	// follow character
-	mRect.SetTopLeft(anchorPosition + mPommeloffset);
+	// Follow character
+	mRect.SetTopLeft(anchorPosition + mData->pommeloffset);
 
-	// follow cursor
+	// Follow cursor
 	if (!mOverrideCursorControl)
 	{
-		double offsetAngle = (mSwing.getAngle() / 2.0) * mSwing.getDirection();
+		double offsetAngle = (mData->swingArc / 2.0) * mSwingDirection;
 
-		// camera to cursor vector
+		// Camera to cursor vector
 		mDirection = (mGameData->cursor->getPosition() - mGameData->camera->toCameraCoords(mRect.BotCenter()));
 		mDirection = rotateVector(mDirection, offsetAngle);
 	}
@@ -59,17 +84,17 @@ void Weapon::fastUpdate(VectorF anchorPosition)
 void Weapon::render()
 {
 	VectorF aboutPoint(mRect.Width() / 2.0f, mRect.Height());
-	mTexture->render(mGameData->camera->toCameraCoords(mRect), getRotation(mDirection), aboutPoint);
+	mData->texture->render(mGameData->camera->toCameraCoords(mRect), getRotation(mDirection), aboutPoint);
 }
 
 
 void Weapon::rotate(double theta)
 {
-	mDirection = rotateVector(mDirection, theta * -mSwing.getDirection());
+	mDirection = rotateVector(mDirection, theta * -mSwingDirection);
 }
 
 
-// have this return blocks instead?
+// TODO: have this return blocks instead?
 void Weapon::updateWeaponBlocks()
 {
 	VectorF weaponVector = mDirection.normalise() * mRect.Height();
@@ -94,54 +119,11 @@ void Weapon::updateWeaponBlocks()
 	}
 }
 
-std::vector<Collider*> Weapon::getColliders()
-{
-	std::vector<Collider*> blockColliders;
-
-	for (unsigned int i = 0; i < mBlockColliders.size(); i++)
-	{
-		blockColliders.push_back(&mBlockColliders[i]);
-	}
-
-	return blockColliders;
-}
-
-
-void Weapon::loadWeaponData(std::string weaponName)
-{
-	std::string configFilePath = FileManager::Get()->getXMLFilePath(FileManager::Config_Weapons, weaponName);
-
-	XMLParser parser;
-	parser.parseXML(configFilePath);
-	xmlNode rootNode = parser.getRootNode();
-
-	std::string textureName = rootNode->first_node("Name")->value();
-	mTexture = mGameData->textureManager->getTexture(textureName);
-
-	// Get values
-	float damage = std::stof(rootNode->first_node("Damage")->value());
-	mDamage.set(damage);
-
-	double swingSpeed = std::stod(rootNode->first_node("SwingSpeed")->value());
-	double swingAngle = std::stod(rootNode->first_node("SwingAngle")->value());
-	mSwing = Swing(swingAngle, swingSpeed);
-
-	Attributes attributes = parser.getAttributes(rootNode->first_node("PommelOffset"));
-	float x = attributes.getFloat("x");
-	float y = attributes.getFloat("y");
-	mPommeloffset.set(x, y);
-}
-
-
-void Weapon::setScale(float scale)
-{
-	mRect.SetSize(mTexture->originalDimentions * scale);
-}
 
 void Weapon::setColliderActivite(bool isActive)
 {
 	for (unsigned int i = 0; i < mBlockColliders.size(); i++)
 	{
-		mBlockColliders[i].setActive(isActive);
+		mBlockColliders[i]->setActive(isActive);
 	}
 }

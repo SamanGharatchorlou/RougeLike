@@ -35,7 +35,7 @@ FileManager::FileManager()
 }
 
 
-std::string FileManager::getFolderPath(Folder folder)
+std::string FileManager::getFolderPath(Folder folder) const
 {
 	std::string buffer = "empty";
 
@@ -55,8 +55,8 @@ std::string FileManager::getFolderPath(Folder folder)
 }
 
 
-// get filepath with folder specified 
-std::string FileManager::getFilePath(Folder folder, std::string fileName)
+// Get filepath with folder specified 
+std::string FileManager::getFilePath(Folder folder, std::string fileName) const
 {
 	std::string buffer = "empty";
 
@@ -77,8 +77,8 @@ std::string FileManager::getFilePath(Folder folder, std::string fileName)
 }
 
 
-// get filepath with folder specified and xml extension added
-std::string FileManager::getXMLFilePath(Folder folder, std::string fileName)
+// Get filepath with folder specified and xml extension added
+std::string FileManager::getXMLFilePath(Folder folder, std::string fileName) const
 {
 	std::string buffer = "empty";
 
@@ -130,4 +130,14 @@ bool FileManager::readFile(Folder folder, std::string fileName, std::string& out
 	else
 		return false;
 
+}
+
+
+std::string FileManager::getFileName(std::string filePath) const
+{
+	char fileName[50];
+
+	errno_t error = _splitpath_s(filePath.c_str(), NULL, 0, NULL, 0, fileName, 50, NULL, 0);
+
+	return std::string(fileName);
 }

@@ -23,17 +23,17 @@ AttackState::AttackState(GameData* gameData, Player* player)
 void AttackState::fastUpdate(float dt)
 {
 	// weapon has completed its attack rotation
-	if (mRotationSum > mWeapon->getMaxSwingAngle())
+	if (mRotationSum > mWeapon->maxSwingAngle())
 	{
 		mPlayer->popState();
 	}
 	else
 	{
-		double theta = mWeapon->getSwingSpeed() * dt;
+		double theta = mWeapon->swingSpeed() * dt;
 		mRotationSum += theta;
 
-		if (mRotationSum > mWeapon->getMaxSwingAngle())
-			theta = mWeapon->getMaxSwingAngle() - mRotationSum;
+		if (mRotationSum > mWeapon->maxSwingAngle())
+			theta = mWeapon->maxSwingAngle() - mRotationSum;
 
 		mWeapon->rotate(theta);
 	}

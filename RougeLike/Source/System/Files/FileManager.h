@@ -34,12 +34,13 @@ public:
 public:
 	static FileManager* Get();
 
-	std::string getFolderPath(Folder folder);
-	std::string getFilePath(Folder folder, std::string fileName);
-	std::string getXMLFilePath(Folder folder, std::string fileName);
+	std::string getFolderPath(Folder folder) const;
+	std::string getFilePath(Folder folder, std::string fileName) const;
+	std::string getXMLFilePath(Folder folder, std::string fileName) const;
 
 	bool readFile(Folder folder, std::string fileName, std::string& outBuffer);
 
+	std::string getFileName(std::string filePath) const;
 
 private:
 	FileManager();

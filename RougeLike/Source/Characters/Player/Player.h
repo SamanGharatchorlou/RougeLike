@@ -17,12 +17,15 @@ public:
 	Player(GameData* gameData);
 	~Player() { }
 
-	void init(std::string characterConfig);
+	// TODO: change all 'std::string' parameters to 'const std::string&'
+	void init(const std::string& characterConfig);
 	void processStateChanges();
 	void handleInput();
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
 	void render();
+
+	void equiptWeapon(const WeaponData* data) { mWeapon.equipt(data); }
 
 	// Movement states
 	void updateState();
@@ -42,7 +45,7 @@ public:
 private:
 	// Animations
 	void selectAnimation(PlayerState::actionState state);
-	void initAnimations(std::string config);
+	void initAnimations(const std::string& config);
 #
 
 private:

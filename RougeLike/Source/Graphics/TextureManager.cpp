@@ -37,7 +37,7 @@ void TextureManager::init(SDL_Renderer* setRenderer)
 	DebugPrint(Log, "\n--- Loading Textures ---\n");
 
 	// Load all weapon textures
-	fm->readFile(FileManager::Configs, "Weapons.txt", config);
+	fm->readFile(FileManager::Configs, "WeaponTextures.txt", config);
 	textureFolder = fm->getFolderPath(FileManager::Image_Weapons);
 	fails += loadTextureConfigs(textureFolder, config);
 

@@ -20,7 +20,7 @@ Player::Player(GameData* gameData) :
 { }
 
 
-void Player::init(std::string characterConfig)
+void Player::init(const std::string& characterConfig)
 {
 	// Setup stats
 	propertyBag().readAttributes(characterConfig);
@@ -37,10 +37,6 @@ void Player::init(std::string characterConfig)
 
 	VectorF colliderScale = VectorF(1.0f, 0.2f); // only with walls
 	mCollider.init(&physics.getRect(), colliderScale);
-	
-	// Weapon
-	mWeapon.selectWeapon("Katana");
-	mWeapon.setScale(1.5f);
 }
 
 
@@ -157,7 +153,7 @@ void Player::popState()
 
 
 // -- Private Functions -- //
-void Player::initAnimations(std::string config)
+void Player::initAnimations(const std::string& config)
 {
 	// config reader
 	AnimationReader reader(config, mGameData->textureManager);
