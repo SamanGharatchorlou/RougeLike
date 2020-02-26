@@ -2,14 +2,10 @@
 #include "Weapon.h"
 
 #include "Game/GameData.h"
+#include "Game/Cursor.h"
 #include "Game/Camera.h"
 
 #include "Graphics/Texture.h"
-#include "Graphics/TextureManager.h"
-
-#include "Game/Cursor.h"
-#include "Characters/Attributes/Movement.h"
-
 #include "Collisions/Collider.h"
 
 

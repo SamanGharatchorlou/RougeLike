@@ -56,7 +56,7 @@ void Map::generateRandomTunnel(int y, int x)
 		for (unsigned int y = 0; y < yCount(); y++)
 		{
 			// query surronding tiles
-			MapTile::EdgeInfo info = getEdgeInfo(x, y);
+			const MapTile::EdgeInfo& info = getEdgeInfo(x, y);
 			MapTile& tile = mData[y][x];
 
 			if (info.hasEdge)
@@ -133,11 +133,6 @@ void Map::generateRandomTunnel(int y, int x)
 #endif
 }
 
-void Map::setScale(float scale) 
-{ 
-	mScale = scale; 
-}
-
 
 Vector2D<float> Map::size() const
 {
@@ -176,15 +171,10 @@ void Map::renderLayerA(float yPoint)
 				MapTile tile = mData[y][x];
 
 				// Render walls 'below/under' the player after the player 
-				if (tile.rect().Center().y >= yLayerA &&
-					!tile.hasRenderType(MapTile::Floor))
+				if (tile.rect().Center().y >= yLayerA && !tile.hasRenderType(MapTile::Floor))
 				{
 					continue;
 				}
-
-#if _DEBUG
-				tileRenderCounter++;
-#endif
 
 				tileRect = camera.toCameraCoords(tileRect);
 
@@ -192,7 +182,6 @@ void Map::renderLayerA(float yPoint)
 					wall->render(tileRect);
 				else
 					floor->render(tileRect);
-
 
 				if (mData[y][x].hasRenderType(MapTile::Left))
 					leftEdge->render(tileRect);
@@ -202,6 +191,10 @@ void Map::renderLayerA(float yPoint)
 
 				if (mData[y][x].hasRenderType((MapTile::Top ^ MapTile::Bot)))
 					botEdge->render(tileRect, SDL_FLIP_VERTICAL);
+
+#if _DEBUG
+				tileRenderCounter++;
+#endif
 			}
 		}
 	}
@@ -232,15 +225,10 @@ void Map::renderLayerB()
 				MapTile tile = mData[y][x];
 
 				// skip anything that would have been rendered in layer A
-				if (tile.rect().Center().y < yLayerA ||
-					tile.hasRenderType(MapTile::Floor))
+				if (tile.rect().Center().y < yLayerA || tile.hasRenderType(MapTile::Floor))
 				{
 					continue;
 				}
-
-#if _DEBUG
-				tileRenderCounter++;
-#endif
 
 				tileRect = camera.toCameraCoords(tileRect);
 
@@ -248,7 +236,6 @@ void Map::renderLayerB()
 					wall->render(tileRect);
 				else
 					floor->render(tileRect);
-
 
 				if (mData[y][x].hasRenderType(MapTile::Left))
 					leftEdge->render(tileRect);
@@ -258,6 +245,10 @@ void Map::renderLayerB()
 
 				if (mData[y][x].hasRenderType((MapTile::Top ^ MapTile::Bot)))
 					botEdge->render(tileRect, SDL_FLIP_VERTICAL);
+
+#if _DEBUG
+				tileRenderCounter++;
+#endif
 			}
 		}
 	}
@@ -272,26 +263,49 @@ void Map::renderLayerB()
 }
 
 
-#if DRAW_BINARY_MAP
-void Map::printBinaryMap()
+const MapTile* Map::offsetTile(const MapTile* tile, int xOffset, int yOffset) const
 {
-	int cols = mData.xCount();
-	int rows = mData.yCount();
+	Vector2D<int> index = getIndex(tile);
+	index = index + Vector2D<int>(xOffset, yOffset);
 
-	for (int y = 0; y < mData.yCount(); y++)
-	{
-		for (int x = 0; x < mData.xCount(); x++)
-		{
-			DebugPrint(Log, "%d ", mData[y][x].renderType());
-		}
-
-		DebugPrint(Log, "\n");
-	}
+	return isValidIndex(index) ? getTile(index) : nullptr;
 }
-#endif
 
 
-MapTile::EdgeInfo Map::getEdgeInfo(int x, int y)
+Vector2D<int> Map::findYFloorTileRange(int xTileIndex)
+{
+	unsigned int yTileIndex = 0;
+	Vector2D<unsigned int> yTileRange;
+
+	while (wallCollisionTile(xTileIndex, ++yTileIndex)) {}
+
+	// highest point
+	yTileRange.x = yTileIndex;
+
+	while (floorCollisionTile(xTileIndex, ++yTileIndex))
+	{
+		if (yTileIndex >= yCount() - 1)
+			break;
+	}
+
+	// remove last increment to keep within floor and minus one extra to prevent enemy moving behind the wall
+	yTileRange.y = clamp(yTileIndex - 2, yTileRange.x, yCount() - 2);
+
+	return yTileRange;
+}
+
+
+bool Map::inBounds(int x, int y) const
+{
+	bool xBounds = (x >= 0 && x < mTileCount.x);
+	bool yBounds = (y >= 0 && y < mTileCount.y);
+
+	return xBounds && yBounds;
+}
+
+
+// --- Getters --- //
+const MapTile::EdgeInfo Map::getEdgeInfo(int x, int y) const
 {
 	MapTile::EdgeInfo info;
 
@@ -315,20 +329,23 @@ MapTile::EdgeInfo Map::getEdgeInfo(int x, int y)
 	return info;
 }
 
-Vector2D<int> Map::getIndex(const VectorF position) const
+
+const Vector2D<int> Map::getIndex(const VectorF position) const
 {
 	Vector2D<int> index(position.x / (mTileSize.x * mScale), position.y / (mTileSize.y * mScale));
 	return isValidPosition(position) ? index : Vector2D<int>(-1, -1);
 }
 
-Vector2D<int> Map::getIndex(const MapTile* tile) const
+
+const Vector2D<int> Map::getIndex(const MapTile* tile) const
 {
 	const VectorF position(tile->rect().TopLeft());
 	Vector2D<int> index(position.x / (mTileSize.x * mScale), position.y / (mTileSize.y * mScale));
 	return isValidPosition(position) ? index : Vector2D<int>(-1, -1);
 }
 
-Vector2D<int> Map::getIndex(RectF rect) const
+
+const Vector2D<int> Map::getIndex(RectF rect) const
 {
 	if (isValidTile(rect))
 		return Vector2D<int>(rect.Center().x, rect.Center().y) / (mTileSize * mScale);
@@ -341,6 +358,7 @@ const MapTile* Map::getTile(const Vector2D<int> index) const
 {
 	return isValidIndex(index) ? &mData.get(index) : nullptr;
 }
+
 
 const MapTile* Map::getTile(int x, int y) const
 {
@@ -355,7 +373,7 @@ const MapTile* Map::getTile(VectorF position) const
 }
 
 
-RectF Map::getTileRect(Vector2D<int> index) const
+const RectF Map::getTileRect(Vector2D<int> index) const
 {
 	VectorF size = VectorF(mTileSize.x, mTileSize.y) * mScale;
 	VectorF position = VectorF(index.x, index.y) * size;
@@ -365,7 +383,7 @@ RectF Map::getTileRect(Vector2D<int> index) const
 }
 
 
-RectF Map::getTileRect(int x, int y) const
+const RectF Map::getTileRect(int x, int y) const
 {
 	VectorF size = VectorF(mTileSize.x, mTileSize.y) * mScale;
 	VectorF position = VectorF(x, y) * size;
@@ -375,7 +393,7 @@ RectF Map::getTileRect(int x, int y) const
 }
 
 
-RectF Map::getTileRect(int coords[2]) const
+const RectF Map::getTileRect(int coords[2]) const
 {
 	VectorF size = VectorF(mTileSize.x, mTileSize.y) * mScale;
 	VectorF position = VectorF(coords[0], coords[1]) * size;
@@ -383,16 +401,6 @@ RectF Map::getTileRect(int coords[2]) const
 
 	return isValidTile(rect) ? rect : RectF(-1);
 }
-
-
-const MapTile* Map::offsetTile(const MapTile* tile, int xOffset, int yOffset) const
-{
-	Vector2D<int> index = getIndex(tile);
-	index = index + Vector2D<int>(xOffset, yOffset);
-
-	return isValidIndex(index) ? getTile(index) : nullptr;
-}
-
 
 
 // -- Validity functions -- //
@@ -450,25 +458,23 @@ bool Map::isValidPosition(VectorF position) const
 #endif
 }
 
-Vector2D<int> Map::findYFloorTileRange(int xTileIndex)
+
+
+// --- Debugging --- //
+#if DRAW_BINARY_MAP
+void Map::printBinaryMap()
 {
-	unsigned int yTileIndex = 0;
-	Vector2D<unsigned int> yTileRange;
+	int cols = mData.xCount();
+	int rows = mData.yCount();
 
-	while (wallCollisionTile(xTileIndex, ++yTileIndex)) {}
+	for (int y = 0; y < mData.yCount(); y++)
+	{
+		for (int x = 0; x < mData.xCount(); x++)
+		{
+			DebugPrint(Log, "%d ", mData[y][x].renderType());
+		}
 
-	// highest point
-	yTileRange.x = yTileIndex;
-
-	while (floorCollisionTile(xTileIndex, ++yTileIndex)) 
-	{ 
-		if (yTileIndex >= yCount() - 1) 
-			break; 
+		DebugPrint(Log, "\n");
 	}
-
-	// remove last increment to keep within floor and minus one extra to prevent enemy moving behind the wall
-	yTileRange.y = clamp(yTileIndex - 2, yTileRange.x, yCount() - 2);
-
-	return yTileRange;
 }
-
+#endif

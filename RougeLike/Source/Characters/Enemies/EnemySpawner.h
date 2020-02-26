@@ -3,13 +3,10 @@
 class Map;
 class Enemy;
 
+// TODO: do I need this class?
+
 class EnemySpawner
 {
 public:
-	EnemySpawner(Map* map) : mMap(map) { }
-
-	void spawn(Enemy* enemy, float xPositionPercentage);
-
-private:
-	Map* mMap;
+	void spawn(Map* map, Enemy* enemy, int xPositionPercentage);
 };

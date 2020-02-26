@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Map/MapTile.h"
 
 class Map;
+class MapTile;
 
 using TileCost = std::pair<const MapTile*, int>;
 using Path = std::stack<Vector2D<int>>;
@@ -17,6 +17,7 @@ public:
 	Vector2D<int> getTileIndex(VectorF position) const;
 	VectorF getTilePosition(Vector2D<int> tileIndex) const;
 
+
 private:
 	Path getPath(Vector2D<int> start, Vector2D<int> end, Grid<Vector2D<int>>& pathing);
 
@@ -29,6 +30,7 @@ private:
 			return left.second > right.second;
 		};
 	};
+
 
 private:
 	Map* mMap;

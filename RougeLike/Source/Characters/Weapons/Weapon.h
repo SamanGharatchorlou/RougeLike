@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Swing.h"
 #include "WeaponData.h"
 
 struct GameData;
@@ -20,8 +19,6 @@ public:
 	const double getAngle() const { return getRotation(mDirection); }
 	const double maxSwingAngle() const { return mData->swingArc; }
 	const double swingSpeed() const { return mData->swingSpeed; }
-
-	void setScale(float scale);
 
 	const std::vector<Collider*> getColliders() const { return mBlockColliders; }
 	const std::vector<RectF> getRects() const { return mBlockRects; }

@@ -12,6 +12,9 @@ public:
 	float get() const { return hp; }
 	float getPercentage() const { return hp / maxHp; }
 
+	float getMax() const { return maxHp; }
+	void increaseMax(float health) { hp += health; maxHp += health; }
+
 	bool isDead() const { return hp <= 0; }
 	void takeDamage(float damage) { hp -= damage; }
 	void takeDamage(Damage damage) { hp -= damage.get(); }

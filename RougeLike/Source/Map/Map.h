@@ -3,7 +3,7 @@
 
 struct GameData;
 
-// TODO: replace name with TileMap
+
 class Map
 {
 public:
@@ -12,8 +12,6 @@ public:
 	void generateRandomTunnel(int y, int x);
 	void populateTileRects();
 
-	void setScale(float scale);
-
 	unsigned int yCount() const { return mTileCount.y; }
 	unsigned int xCount() const { return mTileCount.x; }
 
@@ -21,43 +19,41 @@ public:
 	const MapTile* getTile(int x, int y) const;
 	const MapTile* getTile(VectorF position) const;
 
-	Vector2D<int> getIndex(const VectorF position) const;
-	Vector2D<int> getIndex(const MapTile* tile) const;
-	Vector2D<int> getIndex(const RectF rect) const;
+	const Vector2D<int> getIndex(const VectorF position) const;
+	const Vector2D<int> getIndex(const MapTile* tile) const;
+	const Vector2D<int> getIndex(const RectF rect) const;
 
-	RectF getTileRect(Vector2D<int> index) const;
-	RectF getTileRect(int x, int y) const;
-	RectF getTileRect(int coords[2]) const;
+	const RectF getTileRect(Vector2D<int> index) const;
+	const RectF getTileRect(int x, int y) const;
+	const RectF getTileRect(int coords[2]) const;
 
-	VectorF getTileSize() const { return mTileSize * mScale; }
+	const VectorF getTileSize() const { return mTileSize * mScale; }
 
 	const MapTile* offsetTile(const MapTile* tile, int xOffset, int yOffset) const;
 
 	Vector2D<float> size() const;
+
+	void setScale(float scale) { mScale = scale; }
 	float getScale() const { return mScale; }
 
 	void renderLayerA(float yPoint);
 	void renderLayerB();
 
+	Vector2D<int> findYFloorTileRange(int xTileIndex);
+
+	bool wallRenderTile(int x, int y) const { return mData.get(y,x).renderType() >= MapTile::Wall; }
+	bool floorRenderTile(int x, int y) const { return mData.get(y, x).renderType() == MapTile::Floor; }
+	bool wallCollisionTile(int x, int y) const { return mData.get(y, x).collisionType() >= MapTile::Wall; }
+	bool floorCollisionTile(int x, int y) const { return mData.get(y, x).collisionType() == MapTile::Floor; }
+
+	bool inBounds(int x, int y) const;
+
+	const MapTile::EdgeInfo getEdgeInfo(int x, int y) const;
+
 #if DRAW_BINARY_MAP
 	void printBinaryMap();
 #endif
 
-	Vector2D<int> findYFloorTileRange(int xTileIndex);
-
-	bool wallRenderTile(int x, int y) { return mData[y][x].renderType() >= MapTile::Wall; }
-	bool floorRenderTile(int x, int y) { return mData[y][x].renderType() == MapTile::Floor; }
-
-	bool wallCollisionTile(int x, int y) { return mData[y][x].collisionType() >= MapTile::Wall; }
-	bool floorCollisionTile(int x, int y) { return mData[y][x].collisionType() == MapTile::Floor; }
-
-	bool inBounds(int x, int y) { return ((x >= 0 && x < mTileCount.x) && (y >= 0 && y < mTileCount.y)); }
-
-	MapTile::EdgeInfo getEdgeInfo(int x, int y);
-
-#if _DEBUG
-	Grid <MapTile>& getData() { return mData; }
-#endif
 
 private:
 	// TODO: make these annoymous?

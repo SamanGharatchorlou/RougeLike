@@ -13,26 +13,27 @@ public:
 	~InputManager() { }
 
 	void init();
-	void processInputEvent(SDL_Event event);
+	void processInputEvent(SDL_Event& event);
 	void update();
 
 	// Buttons
-	const Button& getButton(Button::Key key);
+	const Button& getButton(Button::Key key) const;
 
-	bool isHeld(Button::Key key) { return getButton(key).isHeld(); }
-	bool isPressed(Button::Key key) { return getButton(key).isPressed(); }
-	bool isReleased(Button::Key key) { return getButton(key).isReleased(); }
+	bool isHeld(Button::Key key) const { return getButton(key).isHeld(); }
+	bool isPressed(Button::Key key) const { return getButton(key).isPressed(); }
+	bool isReleased(Button::Key key) const { return getButton(key).isReleased(); }
 
-	int getHeldFrames(Button::Key key) { return getButton(key).getHeldFrames(); }
+	int getHeldFrames(Button::Key key) const { return getButton(key).getHeldFrames(); }
 
 	// Cursor
-	bool isCursorPressed();
-	bool isCursorReleased();
-	bool isCursorHeld();
+	bool isCursorPressed() const;
+	bool isCursorReleased() const;
+	bool isCursorHeld() const;
 
 
 private:
 	void bindDefaultButtons();
+
 
 private:
 	Button mButtons[maxButtons];

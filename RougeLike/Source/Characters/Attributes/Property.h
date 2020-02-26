@@ -13,6 +13,12 @@ public:
 	void set(T property) { mProperty = property; }
 	T& get() { return mProperty; }
 
+	Property& operator += (Property propertry)
+	{
+		T = T + propertry.get();
+		return *this;
+	}
+
 private:
 	T mProperty;
 };
@@ -29,12 +35,20 @@ class DefenceProperty : public Property<float> { };
 class AttackDamageProperty : public Property<float> { };
 class AttackSpeedProperty : public Property<float> { };
 
-class WeaponProperty : public Property<std::string> { };
+// Player - Level up rate
+class HealthUpRate : public Property<float> { };
+class DefenceUpRate : public Property<float> { };
+class AttackDamageUpRate : public Property<float> { };
+class AttackSpeedUpRate : public Property<float> { };
+class MovementSpeedUpRate : public Property<float> { };
 
 // Player - Movement
 class ForceProperty : public Property<float> { };
 class MaxVelocityProperty : public Property<float> { };
 class DragFactorProperty : public Property<float> { };
+
+// Player - Other
+class WeaponProperty : public Property<std::string> { };
 
 
 // Enemy

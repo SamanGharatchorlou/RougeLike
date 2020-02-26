@@ -5,11 +5,12 @@
 
 #include "Collisions/CollisionTracker.h"
 #include "Characters/Weapons/WeaponStash.h"
+#include "Characters/Attributes/StatManager.h"
 
 struct GameData;
 class Player;
 class Collider;
-class EnemyManager;
+
 
 class PlayerManager : public Dispatcher, public Observer
 {
@@ -51,6 +52,8 @@ private:
 	GameData* mGameData;
 
 	Player* player;
+
+	StatManager statManager;
 
 	WeaponStash weaponStash;
 

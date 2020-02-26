@@ -16,7 +16,7 @@ void InputManager::update()
 #if _DEBUG
 	if ((mCursor->isHeld() || mCursor->isPressed()) && mCursor->isReleased())
 	{
-		DebugPrint(Warning, "Cursor is being pressed and released at the same time?\n");
+		DebugPrint(Warning, "Cursor is being pressed and released at the same time\n");
 	}
 #endif
 
@@ -29,7 +29,7 @@ void InputManager::update()
 #if _DEBUG
 		if ( (button.isHeld() || button.isPressed()) && button.isReleased())
 		{
-			DebugPrint(Warning, "Button key %d is being pressed and released at the same time?\n", button.getKey());
+			DebugPrint(Warning, "Button key %d is being pressed and released at the same time\n", button.getKey());
 		}
 #endif
 		button.setPressed(false);
@@ -41,7 +41,7 @@ void InputManager::update()
 }
 
 
-void InputManager::processInputEvent(SDL_Event event)
+void InputManager::processInputEvent(SDL_Event& event)
 {
 	// Mouse events
 	if (event.type == SDL_MOUSEMOTION)
@@ -79,18 +79,18 @@ void InputManager::processInputEvent(SDL_Event event)
 	}
 }
 
-const Button& InputManager::getButton(Button::Key key)
+
+const Button& InputManager::getButton(Button::Key key) const
 {
-	for (Button& button : mButtons)
+	for (unsigned int i = 0; i < maxButtons; i++)
 	{
-		if (button.isKey(key))
-			return button;
+		if (mButtons[i].isKey(key))
+			return mButtons[i];
 	}
 
 	DebugPrint(Warning, "Button for key %d not found, return button with KEY: NONE\n", key);
 	return mButtons[0];
 }
-
 
 
 void InputManager::bindDefaultButtons()
@@ -113,18 +113,7 @@ void InputManager::bindDefaultButtons()
 	ASSERT(Warning, index < maxButtons, "Attempting to bind too many buttons, you need to increase the size of 'maxButtons'\n");
 }
 
-
-bool InputManager::isCursorPressed()
-{
-	return mCursor->isPressed();
-}
-
-bool InputManager::isCursorReleased()
-{
-	return mCursor->isReleased();
-}
-
-bool InputManager::isCursorHeld()
-{
-	return mCursor->isHeld();
-}
+// Cursor
+bool InputManager::isCursorPressed() const { return mCursor->isPressed(); }
+bool InputManager::isCursorReleased() const { return mCursor->isReleased(); }
+bool InputManager::isCursorHeld() const { return mCursor->isHeld(); }

@@ -10,13 +10,12 @@
 
 #include "Characters/Attributes/Level.h"
 
-//temp test
-#include "Input/InputManager.h"
 
 PlayerManager::PlayerManager(GameData* gameData) : mGameData(gameData)
 {
 	player = new Player(gameData);
 
+	statManager.init(&player->propertyBag());
 }
 
 PlayerManager::~PlayerManager()
@@ -65,7 +64,7 @@ void PlayerManager::slowUpdate(float dt)
 		{
 			Damage damage = player->getCollider().getOtherColliderDamage();
 			Health& hp = player->propertyBag().pHealth.get();
-				hp.takeDamage(damage);
+			hp.takeDamage(damage);
 
 			SetHealthBarEvent event( hp );
 			notify(Event::SetHealth, event);
@@ -93,8 +92,10 @@ void PlayerManager::handleEvent(Event event, EventData& data)
 	{
 		EnemyDeadEvent eventData = static_cast<EnemyDeadEvent&>(data);
 
-		Level playerLevel = player->propertyBag().pLevel.get();
-		playerLevel.gainExp(eventData.mExp);
+		//Level playerLevel = player->propertyBag().pLevel.get();
+		//playerLevel.gainExp(eventData.mExp);
+
+		statManager.gainExp(eventData.mExp);
 	}
 }
 

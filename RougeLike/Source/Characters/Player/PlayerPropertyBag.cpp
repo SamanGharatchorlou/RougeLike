@@ -11,6 +11,11 @@ void PlayerPropertyBag::readAttributes(std::string name)
 	XMLValueMap map = statReader.getStats(FileManager::Config_Stats_Player, name);
 
 
+	// Weapon
+	const char* weaponName = map.getChar("Weapon");
+	pWeapon.set(weaponName);
+
+
 	// -- Movement -- //
 
 	// Force
@@ -27,10 +32,6 @@ void PlayerPropertyBag::readAttributes(std::string name)
 
 
 	// -- Attributes -- //
-
-	// Weapon
-	const char* weaponName = map.getChar("Weapon");
-	pWeapon.set(weaponName);
 
 	// Level
 	Level level(map.getInt("Level"));
@@ -55,4 +56,27 @@ void PlayerPropertyBag::readAttributes(std::string name)
 	// Movement Speed
 	float movementSpeed = map.getFloat("MovementSpeed");
 	pMovementSpd.set(movementSpeed);
+
+
+	// -- Attribute Level up rates -- //
+	
+	// Health up rate
+	float healthUp = map.getFloat("HealthUpRate");
+	pHealthUp.set(healthUp);
+
+	// Defence up rate
+	float defenceUp = map.getFloat("DefenceUpRate");
+	pDefenceUp.set(defenceUp);
+
+	// Attack Damage up rate
+	float attackDmgUp = map.getFloat("AttackDamageUpRate");
+	pAttackDmgUp.set(attackDmgUp);
+
+	// Attack Speed up rate
+	float attackSpdUp = map.getFloat("AttackSpeedUpRate");
+	pAttackSpdUp.set(attackSpdUp);
+
+	// Movement Speed up rate
+	float movementSpdUp = map.getFloat("MovementSpeedUpRate");
+	pMovementSpdUp.set(movementSpdUp);
 }

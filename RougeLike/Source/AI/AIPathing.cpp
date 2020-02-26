@@ -3,6 +3,7 @@
 
 #include "Map/Map.h"
 
+
 AIPathing::AIPathing(Map* map) : mMap(map) { }
 
 
@@ -77,7 +78,6 @@ std::stack<Vector2D<int>> AIPathing::findPath(VectorF startPosition, VectorF end
 }
 
 
-
 Path AIPathing::getPath(Vector2D<int> start, Vector2D<int> finish, Grid<Vector2D<int>>& pathing)
 {
 	Path path;
@@ -97,6 +97,7 @@ VectorF AIPathing::getTilePosition(Vector2D<int> tileIndex) const
 {
 	return mMap->getTileRect(tileIndex).Center();
 }
+
 
 Vector2D<int> AIPathing::getTileIndex(VectorF position) const
 {

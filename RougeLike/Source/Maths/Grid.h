@@ -36,52 +36,9 @@ public:
 	}
 
 #if _DEBUG
-	void printBinaryMap(T zero, T one) const
-	{
-		for (int y = 0; y < yCount(); y++)
-		{
-			for (int x = 0; x < xCount(); x++)
-			{
-				if(data[y][x] == zero)
-					DebugPrint(Log, "0 ");
-				else if(data[y][x] == one)
-					DebugPrint(Log, "1 ");
-
-			}
-
-			DebugPrint(Log, "\n");
-		}
-	}
-
-	void printBinaryMap(T zero) const
-	{
-		for (int y = 0; y < yCount(); y++)
-		{
-			for (int x = 0; x < xCount(); x++)
-			{
-				if (data[y][x] == zero)
-					DebugPrint(Log, "0 ");
-				else
-					DebugPrint(Log, "1 ");
-
-			}
-
-			DebugPrint(Log, "\n");
-		}
-	}
-
-	void printMap() const
-	{
-		for (int y = 0; y < yCount(); y++)
-		{
-			for (int x = 0; x < xCount(); x++)
-			{
-				DebugPrint(Log, "%d ", (int)data[y][x]);
-			}
-
-			DebugPrint(Log, "\n");
-		}
-	}
+	void printBinaryMap(T zero, T one) const;
+	void printBinaryMap(T zero) const;
+	void printMap() const;
 #endif
 
 private:
@@ -172,3 +129,60 @@ void Grid<T>::clear()
 {
 	data.clear();
 }
+
+
+// --- Debugging --- //
+#if _DEBUG
+
+template<class T>
+void Grid<T>::printBinaryMap(T zero, T one) const
+{
+	for (int y = 0; y < yCount(); y++)
+	{
+		for (int x = 0; x < xCount(); x++)
+		{
+			if (data[y][x] == zero)
+				DebugPrint(Log, "0 ");
+			else if (data[y][x] == one)
+				DebugPrint(Log, "1 ");
+
+		}
+
+		DebugPrint(Log, "\n");
+	}
+}
+
+
+template<class T>
+void Grid<T>::printBinaryMap(T zero) const
+{
+	for (int y = 0; y < yCount(); y++)
+	{
+		for (int x = 0; x < xCount(); x++)
+		{
+			if (data[y][x] == zero)
+				DebugPrint(Log, "0 ");
+			else
+				DebugPrint(Log, "1 ");
+
+		}
+
+		DebugPrint(Log, "\n");
+	}
+}
+
+
+template<class T>
+void Grid<T>::printMap() const
+{
+	for (int y = 0; y < yCount(); y++)
+	{
+		for (int x = 0; x < xCount(); x++)
+		{
+			DebugPrint(Log, "%d ", (int)data[y][x]);
+		}
+
+		DebugPrint(Log, "\n");
+	}
+}
+#endif

@@ -1,22 +1,15 @@
 #include "pch.h"
-
 #include "Characters/Enemies/EnemyManager.h"
 
 #include "Game/GameData.h"
 #include "Game/Camera.h"
-#include "Characters/Weapons/Weapon.h"
 
-// testing
-#include "Managers/ScoreManager.h"
-#include "Events/Observer.h"
+#include "EnemySpawner.h"
 
 #include "Characters/Enemies/Imp.h"
 
 
-EnemyManager::EnemyManager(GameData* gameData) : 
-	mGameData(gameData),
-	mSpawner(gameData->map)
-{ }
+EnemyManager::EnemyManager(GameData* gameData) : mGameData(gameData) { }
 
 
 EnemyManager::~EnemyManager()
@@ -42,10 +35,10 @@ void EnemyManager::subscribe(std::vector<Collider*> colliders)
 }
 
 
-void EnemyManager::addEnemiesToPool(EnemyType type, int count)
+void EnemyManager::addEnemiesToPool(EnemyType type, unsigned int count)
 {
 	// TODO: how to do a cheaper copy, no need to open and read files everytime... 
-	for (int i = 0; i < count; i++)
+	for (unsigned int i = 0; i < count; i++)
 	{
 		EnemyObject enemyObject;
 		enemyObject.second = ObjectStatus::Available;
@@ -69,7 +62,7 @@ void EnemyManager::addEnemiesToPool(EnemyType type, int count)
 }
 
 
-void EnemyManager::spawn(EnemyType type, float xPositionPercentage)
+void EnemyManager::spawn(EnemyType type, unsigned int xPositionPercentage)
 {
 	// Find available enemy to spawn
 	for (unsigned int i = 0; i < mEnemyPool.size(); i++)
@@ -80,8 +73,10 @@ void EnemyManager::spawn(EnemyType type, float xPositionPercentage)
 			Enemy* enemy = mEnemyPool[i].first;
 
 			// Add new active enemy to list and spawn around index x
+			EnemySpawner spawner;
+			spawner.spawn(mGameData->map, enemy, xPositionPercentage);
+
 			mActiveEnemies.push_back(enemy);
-			mSpawner.spawn(enemy, xPositionPercentage);
 
 			mEnemyPool[i].second = ObjectStatus::Active;
 			enemy->setActive(true);
@@ -157,14 +152,14 @@ void EnemyManager::fastUpdate(float dt)
 }
 
 
-Enemy* EnemyManager::getEnemy(unsigned int index)
+Enemy* EnemyManager::getEnemy(unsigned int index) const 
 {
 	ASSERT(Warning, index <= mActiveEnemies.size(), "Enemy index out of bounds\n");
 	return mActiveEnemies[index];
 }
 
 
-void EnemyManager::render()
+void EnemyManager::render() const
 {
 	for (Enemy* enemy : mActiveEnemies)
 	{
@@ -177,7 +172,7 @@ void EnemyManager::render()
 
 
 
-std::vector<Collider*> EnemyManager::getAttackingEnemyColliders()
+std::vector<Collider*> EnemyManager::getAttackingEnemyColliders() const
 {
 	std::vector<Collider*> colliders;
 

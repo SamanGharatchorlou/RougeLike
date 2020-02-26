@@ -37,10 +37,11 @@ public:
 	void setPressed(bool isPressed) { mPressed = isPressed; }
 	void setReleased(bool isReleased) { mReleased = isReleased; }
 
-	Key getKey() { return mKeyBinding; }
+	const Key getKey() const { return mKeyBinding; }
 
 	int getHeldFrames() const { return mHeldFrames; }
 	void incrementHeldFrame() { ++mHeldFrames; }
+
 
 private:
 	int mHeldFrames;
