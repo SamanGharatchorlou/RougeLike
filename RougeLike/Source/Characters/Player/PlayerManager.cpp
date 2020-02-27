@@ -36,7 +36,12 @@ void PlayerManager::init()
 void PlayerManager::selectCharacter(const std::string& character)
 {
 	player->init(character);
+	selectWeapon(player->propertyBag().pWeapon.get());
+}
 
+
+void PlayerManager::selectWeapon(const std::string& weapon)
+{
 	const WeaponData* weaponData = &weaponStash.getData(player->propertyBag().pWeapon.get());
 	player->equiptWeapon(weaponData);
 }

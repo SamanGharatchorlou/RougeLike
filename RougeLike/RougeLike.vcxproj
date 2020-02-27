@@ -54,6 +54,8 @@
     <ClCompile Include="Source\Graphics\Font.cpp" />
     <ClCompile Include="Source\Graphics\Renderer.cpp" />
     <ClCompile Include="Source\Graphics\Text.cpp" />
+    <ClCompile Include="Source\Items\Collectables\Collectable.cpp" />
+    <ClCompile Include="Source\Items\Collectables\Collectables.cpp" />
     <ClCompile Include="Source\Managers\ScoreManager.cpp" />
     <ClCompile Include="Source\Map\MapTile.cpp" />
     <ClCompile Include="Source\Map\ProceduralMap\TunnelGenerator.cpp" />
@@ -141,6 +143,8 @@
     <ClInclude Include="Source\Graphics\Renderer.h" />
     <ClInclude Include="Source\Graphics\Text.h" />
     <ClInclude Include="Source\Input\Button.h" />
+    <ClInclude Include="Source\Items\Collectables\Collectable.h" />
+    <ClInclude Include="Source\Items\Collectables\Collectables.h" />
     <ClInclude Include="Source\Managers\ScoreManager.h" />
     <ClInclude Include="Source\Map\Map.h" />
     <ClInclude Include="Source\Map\MapTile.h" />

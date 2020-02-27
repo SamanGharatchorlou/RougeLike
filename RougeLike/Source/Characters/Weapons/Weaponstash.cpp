@@ -30,7 +30,7 @@ void WeaponStash::load(TextureManager* tm)
 
 		// Damage
 		float damage = std::stof(rootNode->first_node("Damage")->value());
-		weaponData.damage.set(damage);
+		weaponData.damage = Damage(damage);
 
 		// Swing speed & angle
 		weaponData.swingSpeed = std::stod(rootNode->first_node("SwingSpeed")->value());

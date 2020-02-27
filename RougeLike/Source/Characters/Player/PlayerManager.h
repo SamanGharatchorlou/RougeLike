@@ -25,6 +25,7 @@ public:
 	void fastUpdate(float dt);
 
 	void selectCharacter(const std::string& character);
+	void selectWeapon(const std::string& weapon);
 
 	Player* get() { return player; }
 	RectF* getRectRef();
