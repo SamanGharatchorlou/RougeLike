@@ -59,6 +59,7 @@ void Player::handleInput()
 	}
 }
 
+
 void Player::slowUpdate(float dt)
 {
 	// Attack state
@@ -87,8 +88,6 @@ void Player::fastUpdate(float dt)
 	// Weapon
 	mWeapon.fastUpdate(getRect().TopLeft());
 }
-
-
 
 
 void Player::render()

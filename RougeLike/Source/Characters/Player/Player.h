@@ -46,7 +46,7 @@ private:
 	// Animations
 	void selectAnimation(PlayerState::actionState state);
 	void initAnimations(const std::string& config);
-#
+
 
 private:
 	GameData* mGameData;

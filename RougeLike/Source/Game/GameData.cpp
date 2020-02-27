@@ -59,6 +59,7 @@ void GameData::init()
 	// Enemies
 	enemies = new EnemyManager(this);
 	enemies->addObserver(scoreManager);
+	enemies->addObserver(player);
 }
 
 

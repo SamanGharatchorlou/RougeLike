@@ -31,9 +31,8 @@ public:
 
 	std::vector<Collider*> getWeaponColliders();
 
-	void handleEvent(const Event event, EventData& data) override;
-	void handleEvent(const EventPacket) override { }
-
+	void handleEvent(const Event event, EventData& data) override { }
+	void handleEvent(const EventPacket eventPacket) override;
 
 
 	// testing

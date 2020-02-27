@@ -16,6 +16,7 @@ void EnemyDead::init()
 	mEnemy->pushEvent(EventPacket(Event::EnemyDead, dataPtr));
 }
 
+
 void EnemyDead::slowUpdate(float dt)
 {
 	Texture* texture = mEnemy->getAnimator()->getSpriteTexture();

@@ -38,18 +38,18 @@ namespace fs = std::experimental::filesystem;
 // --- Custom ---
 
 // Include these first as they are be required in some of the below includes
-#include "Utilities/Logging.h"
+#include "Debug/Logging.h"
 #include "System/Files/Attributes.h"
 
-// Maths
-#include "Maths/Vector2D.h"
-#include "Maths/Rect.h"
-#include "Maths/Helpers.h"
-#include "Maths/Grid.h"
-
-// Logging
-#include "Utilities/DebugDraw.h"
+// Utilities / helper classes
+#include "Utilities/Vector2D.h"
+#include "Utilities/Rect.h"
+#include "Utilities/Helpers.h"
+#include "Utilities/Grid.h"
 #include "Utilities/Timer.h"
+
+// Debug
+#include "Debug/DebugDraw.h"
 
 // File accessors
 #include "System/Files/XMLParser.h"

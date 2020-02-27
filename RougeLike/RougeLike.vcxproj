@@ -66,7 +66,7 @@
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Managers\GameController.cpp" />
     <ClCompile Include="Source\Map\Map.cpp" />
-    <ClCompile Include="Source\Maths\Helpers.cpp" />
+    <ClCompile Include="Source\Utilities\Helpers.cpp" />
     <ClCompile Include="Source\Characters\Player\Player.cpp" />
     <ClCompile Include="Source\Characters\Player\States\PlayerState.cpp" />
     <ClCompile Include="Source\pch.cpp">
@@ -92,8 +92,8 @@
     <ClCompile Include="Source\System\Files\StatReader.cpp" />
     <ClCompile Include="Source\System\Files\FileManager.cpp" />
     <ClCompile Include="Source\UI\Elements\UITextBox.cpp" />
-    <ClCompile Include="Source\Utilities\DebugDraw.cpp" />
-    <ClCompile Include="Source\Utilities\Logging.cpp" />
+    <ClCompile Include="Source\Debug\DebugDraw.cpp" />
+    <ClCompile Include="Source\Debug\Logging.cpp" />
     <ClCompile Include="Source\System\Files\XMLParser.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -152,9 +152,9 @@
     <ClInclude Include="Source\Graphics\TextureManager.h" />
     <ClInclude Include="Source\Input\InputManager.h" />
     <ClInclude Include="Source\Managers\GameController.h" />
-    <ClInclude Include="Source\Maths\Grid.h" />
-    <ClInclude Include="Source\Maths\Rect.h" />
-    <ClInclude Include="Source\Maths\Vector2D.h" />
+    <ClInclude Include="Source\Utilities\Grid.h" />
+    <ClInclude Include="Source\Utilities\Rect.h" />
+    <ClInclude Include="Source\Utilities\Vector2D.h" />
     <ClInclude Include="Source\Characters\Player\Player.h" />
     <ClInclude Include="Source\Characters\Player\States\PlayerState.h" />
     <ClInclude Include="Source\pch.h" />
@@ -177,10 +177,10 @@
     <ClInclude Include="Source\System\Files\StatReader.h" />
     <ClInclude Include="Source\System\Files\FileManager.h" />
     <ClInclude Include="Source\UI\Elements\UITextBox.h" />
-    <ClInclude Include="Source\Utilities\DebugDraw.h" />
-    <ClInclude Include="Source\Utilities\Logging.h" />
+    <ClInclude Include="Source\Debug\DebugDraw.h" />
+    <ClInclude Include="Source\Debug\Logging.h" />
     <ClInclude Include="Source\Utilities\Timer.h" />
-    <ClInclude Include="Source\Maths\Helpers.h" />
+    <ClInclude Include="Source\Utilities\Helpers.h" />
     <ClInclude Include="Source\System\Files\XMLParser.h" />
   </ItemGroup>
   <ItemGroup>

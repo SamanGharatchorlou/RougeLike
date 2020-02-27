@@ -67,5 +67,5 @@ struct Observer
 {
 	virtual ~Observer() = default;
 	virtual void handleEvent(const Event event, EventData& data) = 0;
-	virtual void handleEvent(const EventPacket) = 0;
+	virtual void handleEvent(const EventPacket eventPacket) = 0;
 };

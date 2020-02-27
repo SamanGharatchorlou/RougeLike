@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "Maths/Rect.h"
+#include "Utilities/Rect.h"
 
 /* Base element for all UI components */
 class UIElement
