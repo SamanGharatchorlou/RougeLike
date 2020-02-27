@@ -8,7 +8,6 @@ public:
 	void removeObserver(Observer* observer);
 
 	void notify(const Event type, EventData& event);
-	void notify(const EventPacket eventPacket);
 
 
 private:

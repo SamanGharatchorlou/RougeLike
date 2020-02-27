@@ -34,6 +34,10 @@ XMLValueMap StatReader::getStats(FileManager::Folder folder, std::string config)
 			{
 				stat.f = std::stof(node->value());
 			}
+			else if (strcmp(type.c_str(), "double") == 0)
+			{
+				stat.d = std::stod(node->value());
+			}
 			else if (strcmp(type.c_str(), "string") == 0)
 			{
 				const char* string = node->value();

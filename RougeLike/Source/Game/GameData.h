@@ -12,8 +12,11 @@ class Camera;
 class Cursor;
 class PlayerManager;
 class EnemyManager;
-
 class ScoreManager;
+
+#if _DEBUG
+class MessageDebugger;
+#endif
 
 
 struct GameData
@@ -35,7 +38,11 @@ struct GameData
 	Camera* camera = nullptr;
 	Cursor* cursor = nullptr;
 
-	PlayerManager* player = nullptr;
+	PlayerManager* playerManager = nullptr;
 	EnemyManager* enemies = nullptr;
+
+#if _DEBUG
+	MessageDebugger* msgDebugger = nullptr;
+#endif
 };
 

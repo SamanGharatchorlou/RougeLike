@@ -104,11 +104,13 @@ void InputManager::bindDefaultButtons()
 	mButtons[index++].bindToKey(Button::Left);
 	mButtons[index++].bindToKey(Button::Right);
 
-
 	// Game state
 	mButtons[index++].bindToKey(Button::Pause);
 	mButtons[index++].bindToKey(Button::Esc);
 	mButtons[index++].bindToKey(Button::Quit);
+
+	// Keys
+	mButtons[index++].bindToKey(Button::E);
 
 	ASSERT(Warning, index < maxButtons, "Attempting to bind too many buttons, you need to increase the size of 'maxButtons'\n");
 }

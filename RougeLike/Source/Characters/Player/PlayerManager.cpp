@@ -86,13 +86,13 @@ void PlayerManager::fastUpdate(float dt)
 }
 
 
-void PlayerManager::handleEvent(const EventPacket eventPacket)
+void PlayerManager::handleEvent(const Event event, EventData& data)
 {
-	if (eventPacket.event == Event::EnemyDead)
+	if (event == Event::EnemyDead)
 	{
-		const EnemyDeadEvent* eventData = static_cast<const EnemyDeadEvent*>(eventPacket.data);
+		EnemyDeadEvent eventData = static_cast<EnemyDeadEvent&>(data);
 
-		statManager.gainExp(eventData->mExp);
+		statManager.gainExp(eventData.mExp);
 	}
 }
 

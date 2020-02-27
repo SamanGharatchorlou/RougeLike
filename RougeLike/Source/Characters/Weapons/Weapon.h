@@ -15,10 +15,13 @@ public:
 
 	void equipt(const WeaponData* data);
 
+	void updateDamage(Damage playerAttackDamage);
+	void updateSwingSpeed(double swingSpeed);
+
 	void rotate(double theta);
 	const double getAngle() const { return getRotation(mDirection); }
 	const double maxSwingAngle() const { return mData->swingArc; }
-	const double swingSpeed() const { return mData->swingSpeed; }
+	const double swingSpeed() const { return mPlayerSwingSpeed; }
 
 	const std::vector<Collider*> getColliders() const { return mBlockColliders; }
 	const std::vector<RectF> getRects() const { return mBlockRects; }
@@ -44,8 +47,10 @@ private:
 	std::vector<Collider*> mBlockColliders;
 
 	RectF mRect;
+
 	VectorF mDirection;
 	int mSwingDirection;
+	double mPlayerSwingSpeed;
 
 	bool mOverrideCursorControl;
 };

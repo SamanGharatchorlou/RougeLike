@@ -105,7 +105,8 @@ void EnemyManager::slowUpdate(float dt)
 		while (enemy->hasEvent())
 		{
 			EventPacket ep = enemy->popEvent();
-			notify(ep);
+
+			notify(ep.event, *ep.data);
 
 			ep.free();
 		}

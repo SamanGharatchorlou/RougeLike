@@ -10,7 +10,7 @@ void StatManager::init(PlayerPropertyBag* propertyBag)
 
 void StatManager::gainExp(int exp)
 {
-	Level playerLevel = bag->pLevel.get();
+	Level& playerLevel = bag->pLevel.get();
 
 	int currentLevel = playerLevel.getLevel();
 
@@ -18,10 +18,9 @@ void StatManager::gainExp(int exp)
 
 	if (playerLevel.getLevel() != currentLevel)
 	{
-		// player has leveled up! increase other stats
-		bag->pDefence.get() += bag->pDefenceUp.get();
-
 		bag->pHealth.get().increaseMax(bag->pHealthUp.get());
+
+		bag->pDefence.get() += bag->pDefenceUp.get();
 
 		bag->pAttackDmg.get() += bag->pAttackDmgUp.get();
 

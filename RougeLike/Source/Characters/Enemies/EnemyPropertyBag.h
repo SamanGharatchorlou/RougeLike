@@ -10,10 +10,10 @@ public:
 
 public:
 	HealthProperty pHealth;
-	DamageProperty pDamage;
 	MovementSpeedProperty pMovementSpeed;
 
 	// Attack
+	AttackDamageProperty pDamage;
 	TackleDistanceProperty pTackleDistance;
 	TackleSpeedProperty pTackleSpeed;
 	TackleChangeTimeProperty pTackleChargeTime;

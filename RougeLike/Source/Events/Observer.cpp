@@ -2,7 +2,7 @@
 #include "Observer.h"
 
 
-EventData::~EventData() { printf("destroy event data\n"); }
+EventData::~EventData() { /*printf("destroy event data\n");*/ }
 
 
 void EventPacket::free()

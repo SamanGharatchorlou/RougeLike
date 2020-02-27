@@ -31,12 +31,12 @@ public:
 
 	std::vector<Collider*> getWeaponColliders();
 
-	void handleEvent(const Event event, EventData& data) override { }
-	void handleEvent(const EventPacket eventPacket) override;
+	void handleEvent(const Event event, EventData& data) override;
 
 
 	// testing
 	bool gotHit = false;
+
 
 private:
 	void resolveWallCollisions(float dt);
@@ -46,6 +46,7 @@ private:
 	bool doesCollideBot(const VectorF point, float dt) const;
 
 	void updateTrackedColliders();
+
 
 private:
 	GameData* mGameData;

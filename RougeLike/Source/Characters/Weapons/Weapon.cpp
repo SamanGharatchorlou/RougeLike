@@ -14,6 +14,7 @@ Weapon::Weapon(GameData* gameData) :
 	mGameData(gameData)
 	, mOverrideCursorControl(false)
 	, mSwingDirection(-1)
+	, mPlayerSwingSpeed(0.0f)
 { 
 	// 4 blocks seems to be a good number of blocks
 	unsigned int blocks = 4;
@@ -121,5 +122,21 @@ void Weapon::setColliderActivite(bool isActive)
 	for (unsigned int i = 0; i < mBlockColliders.size(); i++)
 	{
 		mBlockColliders[i]->setActive(isActive);
+	}
+}
+
+
+
+void Weapon::updateSwingSpeed(double swingSpeed)
+{ 
+	mPlayerSwingSpeed = mData->swingSpeed * (1 + (swingSpeed / 100));
+}
+
+
+void Weapon::updateDamage(Damage playerAttackDamage)
+{
+	for (Collider* collider : mBlockColliders)
+	{
+		collider->setDamage(mData->damage + playerAttackDamage);
 	}
 }

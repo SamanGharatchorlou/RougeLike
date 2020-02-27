@@ -13,17 +13,17 @@ void ScoreManager::update()
 }
 
 
-void ScoreManager::handleEvent(const EventPacket eventPacket)
+void ScoreManager::handleEvent(const Event event, EventData& data)
 {
 	hasChanged = false;
 	int currentScore = mScore;
 
-	switch (eventPacket.event)
+	switch (event)
 	{
 	case Event::EnemyDead:
 	{
-		const EnemyDeadEvent* deathData = static_cast<const EnemyDeadEvent*>(eventPacket.data);
-		mScore += deathData->mScore;
+		EnemyDeadEvent deathData = static_cast<EnemyDeadEvent&>(data);
+		mScore += deathData.mScore;
 		break;
 	}
 	default:

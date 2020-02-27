@@ -10,8 +10,7 @@ public:
 
 	void update();
 
-	void handleEvent(const Event event, EventData& data) override { }
-	void handleEvent(const EventPacket eventPacket) override;
+	void handleEvent(const Event event, EventData& data) override;
 
 	int score() { return mScore; }
 

@@ -19,6 +19,9 @@ public:
 		Esc = SDLK_ESCAPE,
 		Quit = SDL_QUIT,
 
+		// Keys
+		E = SDLK_e,
+
 		KeyCount
 	};
 

@@ -68,6 +68,12 @@ void Player::slowUpdate(float dt)
 	mAnimator.slowUpdate(dt);
 
 	updateState();
+
+	if (bag.pLevel.get().didLevelUp())
+	{
+		mWeapon.updateDamage(bag.pAttackDmg.get());
+		mWeapon.updateSwingSpeed(bag.pAttackSpd.get());
+	}
 }
 
 
@@ -116,6 +122,14 @@ void Player::render()
 
 	// Weapon
 	mWeapon.render();
+}
+
+
+void Player::equiptWeapon(const WeaponData* data)
+{
+	mWeapon.equipt(data);
+	mWeapon.updateDamage(bag.pAttackDmg.get());
+	mWeapon.updateSwingSpeed(bag.pAttackSpd.get());
 }
 
 

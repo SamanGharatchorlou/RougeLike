@@ -28,18 +28,18 @@ private:
 // Shared
 class HealthProperty : public Property<Health> { };
 class MovementSpeedProperty : public Property<float> { };
+class AttackDamageProperty : public Property<Damage> { };
 
 // Player - Attributes
 class LevelProperty : public Property<Level> { };
 class DefenceProperty : public Property<float> { };
-class AttackDamageProperty : public Property<float> { };
-class AttackSpeedProperty : public Property<float> { };
+class AttackSpeedProperty : public Property<double> { };
 
 // Player - Level up rate
-class HealthUpRate : public Property<float> { };
+class HealthUpRate : public Property<Health> { };
 class DefenceUpRate : public Property<float> { };
-class AttackDamageUpRate : public Property<float> { };
-class AttackSpeedUpRate : public Property<float> { };
+class AttackDamageUpRate : public Property<Damage> { };
+class AttackSpeedUpRate : public Property<double> { };
 class MovementSpeedUpRate : public Property<float> { };
 
 // Player - Movement
@@ -55,7 +55,6 @@ class WeaponProperty : public Property<std::string> { };
 class TackleSpeedProperty : public Property<float> { };
 class TackleDistanceProperty : public Property<float> { };
 class TackleChangeTimeProperty : public Property<float> { };
-class DamageProperty : public Property<Damage> { };
 class SightRangeProperty : public Property<float> { };
 class ChaseRangeProperty : public Property<float> { };
 class HurtTimeProperty : public Property<float> { };

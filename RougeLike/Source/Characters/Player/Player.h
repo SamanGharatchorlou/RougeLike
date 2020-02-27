@@ -25,7 +25,7 @@ public:
 	void fastUpdate(float dt);
 	void render();
 
-	void equiptWeapon(const WeaponData* data) { mWeapon.equipt(data); }
+	void equiptWeapon(const WeaponData* data);
 
 	// Movement states
 	void updateState();

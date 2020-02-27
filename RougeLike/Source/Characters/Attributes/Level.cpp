@@ -2,29 +2,32 @@
 #include "Level.h"
 
 
-Level::Level(int startingLevel) : level(startingLevel), totalExp(0) 
-{
-	int playerLevel = 1;
-
-	while (playerLevel < startingLevel)
-	{
-		totalExp += nextLevelExp(playerLevel);
-	}
-}
-
-
 void Level::gainExp(int exp)
 {
+	currentExp += exp;
 	totalExp += exp;
 
-	if (totalExp >= nextLevelExp(level))
+	if (currentExp >= nextLevelExp())
 	{
+		currentExp = currentExp - nextLevelExp();
 		level++;
+		levelledUp = true;
 	}
 }
 
 
-int Level::nextLevelExp(int currentLevel)
+int Level::nextLevelExp()
 {
-	return currentLevel * 1000;
+	return 800 + (level * 200);
+}
+
+
+// Can only query once, after it sets the level up bool back to false
+bool Level::didLevelUp()
+{
+	bool returnValue = levelledUp;
+
+	levelledUp = false;
+
+	return returnValue;
 }

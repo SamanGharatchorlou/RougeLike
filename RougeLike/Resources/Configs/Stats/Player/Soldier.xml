@@ -12,8 +12,8 @@
 	<AttackDamage type = "float">10</AttackDamage>
 	<AttackDamageUpRate type = "float">2</AttackDamageUpRate>
 
-	<AttackSpeed type = "float">10</AttackSpeed>
-	<AttackSpeedUpRate type = "float">0.5</AttackSpeedUpRate>
+	<AttackSpeed type = "double">10</AttackSpeed>
+	<AttackSpeedUpRate type = "double">0.5</AttackSpeedUpRate>
 
 	<MovementSpeed type = "float">1</MovementSpeed>
 	<MovementSpeedUpRate type = "float">0</MovementSpeedUpRate>

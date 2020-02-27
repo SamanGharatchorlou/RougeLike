@@ -17,6 +17,10 @@
 #include "Game/Camera.h"
 #include "Game/Cursor.h"
 
+#if _DEBUG
+#include "Debug/MessageDebugger.h"
+#endif
+
 
 void GameData::init()
 {
@@ -53,13 +57,23 @@ void GameData::init()
 	scoreManager->addObserver(uiManager);
 
 	// Player
-	player = new PlayerManager(this);
-	player->addObserver(uiManager);
+	playerManager = new PlayerManager(this);
+	playerManager->addObserver(uiManager);
 
 	// Enemies
 	enemies = new EnemyManager(this);
 	enemies->addObserver(scoreManager);
-	enemies->addObserver(player);
+	enemies->addObserver(playerManager);
+
+
+#if _DEBUG // Message debugger
+	msgDebugger = MessageDebugger::Get();
+	msgDebugger->gameData = this;
+
+	msgDebugger->addObserver(uiManager); 
+	msgDebugger->addObserver(scoreManager);
+	msgDebugger->addObserver(playerManager);
+#endif
 }
 
 
@@ -85,7 +99,7 @@ void GameData::free()
 	delete camera;
 	delete cursor;
 
-	delete player;
+	delete playerManager;
 	delete enemies;
 
 	DebugPrint(Log, "All game data has been deleted\n");

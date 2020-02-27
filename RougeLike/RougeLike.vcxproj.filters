@@ -72,6 +72,7 @@
     <ClCompile Include="Source\Debug\DebugDraw.cpp" />
     <ClCompile Include="Source\Debug\Logging.cpp" />
     <ClCompile Include="Source\Utilities\Helpers.cpp" />
+    <ClCompile Include="Source\Debug\MessageDebugger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -160,6 +161,7 @@
     <ClInclude Include="Source\Utilities\Helpers.h" />
     <ClInclude Include="Source\Utilities\Rect.h" />
     <ClInclude Include="Source\Utilities\Vector2D.h" />
+    <ClInclude Include="Source\Debug\MessageDebugger.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

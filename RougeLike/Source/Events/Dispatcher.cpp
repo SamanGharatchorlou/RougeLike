@@ -27,12 +27,3 @@ void Dispatcher::notify(const Event event, EventData& data)
 		observers[i]->handleEvent(event, data);
 	}
 }
-
-
-void Dispatcher::notify(const EventPacket eventPacket)
-{
-	for (unsigned int i = 0; i < observers.size(); i++)
-	{
-		observers[i]->handleEvent(eventPacket);
-	}
-}

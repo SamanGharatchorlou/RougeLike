@@ -92,6 +92,8 @@ void Enemy::spawn(VectorF position)
 {
 	addState(EnemyState::Patrol);
 
+	replaceState(EnemyState::Dead);
+
 	mMovement.setPosition(position);
 }
 

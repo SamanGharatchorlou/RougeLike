@@ -2,7 +2,7 @@
 <Stats>
 	<Health type = "float">100</Health>
 	<AttackDamage type = "float">10</AttackDamage>
-	<AttackSpeed type ="float">1</AttackSpeed>
+	<AttackSpeed type ="double">1</AttackSpeed>
 	<MovementSpeed type = "float">50</MovementSpeed>
 	<TackleChargeTime type = "float">1</TackleChargeTime>
 	<TackleDistance type = "float">2000</TackleDistance>

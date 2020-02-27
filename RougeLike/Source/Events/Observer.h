@@ -19,13 +19,13 @@ struct EventData
 
 struct EventPacket
 {
-	EventPacket(const Event theEvent, const EventData* dataPtr) : event(theEvent), data(dataPtr) { }
+	EventPacket(const Event theEvent, EventData* dataPtr) : event(theEvent), data(dataPtr) { }
 	~EventPacket() { }
 
 	void free();
 
 	const Event event;
-	const EventData* data;
+	EventData* data;
 };
 
 
@@ -67,5 +67,4 @@ struct Observer
 {
 	virtual ~Observer() = default;
 	virtual void handleEvent(const Event event, EventData& data) = 0;
-	virtual void handleEvent(const EventPacket eventPacket) = 0;
 };

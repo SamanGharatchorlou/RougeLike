@@ -4,6 +4,7 @@ union value
 {
 	int i;
 	float f;
+	double d;
 	char c[20];
 };
 
@@ -36,6 +37,15 @@ public:
 			DebugPrint(Warning, "There is no value with the label: %s\n", name.c_str());
 #endif
 		return map[name].f;
+	}
+
+	double getDouble(std::string name)
+	{
+#if _DEBUG
+		if (map.count(name) == 0)
+			DebugPrint(Warning, "There is no value with the label: %s\n", name.c_str());
+#endif
+		return map[name].d;
 	}
 
 	char* getChar(std::string name)

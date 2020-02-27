@@ -16,7 +16,9 @@
 #include "Characters/Player/PlayerManager.h"
 #include "Characters/Enemies/EnemyManager.h"
 
-
+#if _DEBUG
+#include "Debug/MessageDebugger.h"
+#endif
 
 
 GameState::GameState(GameData* gameData, GameController* gameController) : 
@@ -43,7 +45,7 @@ void GameState::init()
 	mGameData->uiManager->selectScreen(Screen::Game);
 
 	// Player
-	PlayerManager* player = mGameData->player;
+	PlayerManager* player = mGameData->playerManager;
 	EnemyManager* enemies = mGameData->enemies;
 
 	player->init();
@@ -56,8 +58,8 @@ void GameState::init()
 
 	// Enemies
 	enemies->addEnemiesToPool(EnemyType::Imp, 10);
-	enemies->subscribe(mGameData->player->getWeaponColliders());
-	enemies->setTarget(mGameData->player->getRectRef());
+	enemies->subscribe(player->getWeaponColliders());
+	enemies->setTarget(player->getRectRef());
 
 	// rendering
 	mGameData->renderManager->Set(mGameData->map);
@@ -82,7 +84,7 @@ void GameState::init()
 
 void GameState::preProcess()
 {
-	mGameData->player->preProcess();
+	mGameData->playerManager->preProcess();
 }
 
 
@@ -98,14 +100,24 @@ void GameState::handleInput()
 		mGameController->getStateMachine()->addState(new PauseState(mGameData, mGameController));
 	}
 
-	mGameData->player->handleInput();
+	mGameData->playerManager->handleInput();
 	mGameData->uiManager->handleInput();
+
+#if _DEBUG
+	if(mGameData->inputManager->isPressed(Button::E))
+	{
+		MessageDebugger* msgDebugger = MessageDebugger::Get();
+
+		EnemyDeadEvent event(50, 250);
+		msgDebugger->notify(Event::EnemyDead, event);
+	}
+#endif
 }
  
 
 void GameState::slowUpdate(float dt)
 {
-	mGameData->player->slowUpdate(dt);
+	mGameData->playerManager->slowUpdate(dt);
 	mGameData->enemies->slowUpdate(dt);
 
 	mGameData->scoreManager->update();
@@ -114,7 +126,7 @@ void GameState::slowUpdate(float dt)
 
 void GameState::fastUpdate(float dt)
 {
-	mGameData->player->fastUpdate(dt);
+	mGameData->playerManager->fastUpdate(dt);
 	mGameData->enemies->fastUpdate(dt);
 
 	mGameData->camera->update();
