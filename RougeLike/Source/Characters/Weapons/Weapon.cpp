@@ -6,7 +6,7 @@
 #include "Game/Camera.h"
 
 #include "Graphics/Texture.h"
-#include "Collisions/Collider.h"
+#include "Collisions/DamageCollider.h"
 
 
 
@@ -21,7 +21,7 @@ Weapon::Weapon(GameData* gameData) :
 	for (unsigned int i = 0; i < blocks; i++)
 	{
 		mBlockRects.push_back(RectF());
-		mBlockColliders.push_back(new Collider);
+		mBlockColliders.push_back(new DamageCollider);
 	}
 
 	for (unsigned int i = 0; i < blocks; i++)
@@ -34,9 +34,9 @@ Weapon::Weapon(GameData* gameData) :
 
 Weapon::~Weapon()
 {
-	for (Collider* collider : mBlockColliders)
+	for (unsigned int i = 0; i < mBlockColliders.size(); i++)
 	{
-		delete collider;
+		delete mBlockColliders[i];
 	}
 
 	mBlockRects.clear();
@@ -48,9 +48,9 @@ void Weapon::equipt(const WeaponData* data)
 {
 	mData = data;
 
-	for (Collider* collider : mBlockColliders)
+	for (unsigned int i = 0; i < mBlockColliders.size(); i++)
 	{
-		collider->setDamage(mData->damage);
+		mBlockColliders[i]->setDamage(mData->damage);
 	}
 
 	// TODO: where/what to do with this 1.5 scale factor
@@ -126,6 +126,20 @@ void Weapon::setColliderActivite(bool isActive)
 }
 
 
+const std::vector<Collider*> Weapon::getColliders() const
+{
+	std::vector<Collider*> colliders;
+
+	for (unsigned int i = 0; i < mBlockColliders.size(); i++)
+	{
+		colliders.push_back(mBlockColliders[i]);
+	}
+
+	return colliders;
+}
+
+
+
 
 void Weapon::updateSwingSpeed(double swingSpeed)
 { 
@@ -135,8 +149,8 @@ void Weapon::updateSwingSpeed(double swingSpeed)
 
 void Weapon::updateDamage(Damage playerAttackDamage)
 {
-	for (Collider* collider : mBlockColliders)
+	for (unsigned int i = 0; i < mBlockColliders.size(); i++)
 	{
-		collider->setDamage(mData->damage + playerAttackDamage);
+		mBlockColliders[i]->setDamage(mData->damage + playerAttackDamage);
 	}
 }

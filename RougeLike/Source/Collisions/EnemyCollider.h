@@ -1,12 +1,16 @@
 #pragma once
 
-#include "Collider.h"
+#include "DamageCollider.h"
 
-class EnemyCollider : public Collider
+
+class EnemyCollider : public DamageCollider
 {
 public:
-	EnemyCollider() : didAttack(false) { }
+	EnemyCollider() : mProcessedAttack(false) { }
+
+	void hasProcessedAttack(bool wasProcessed) { mProcessedAttack = wasProcessed; }
+	bool hasProcessedAttack() const { return mProcessedAttack; }
 
 private:
-	bool didAttack;
+	bool mProcessedAttack;
 };

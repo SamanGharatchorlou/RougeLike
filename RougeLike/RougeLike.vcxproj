@@ -134,6 +134,7 @@
     <ClInclude Include="Source\Audio\Audio.h" />
     <ClInclude Include="Source\Audio\AudioManager.h" />
     <ClInclude Include="Source\Collisions\CollisionTracker.h" />
+    <ClInclude Include="Source\Collisions\DamageCollider.h" />
     <ClInclude Include="Source\Collisions\EnemyCollider.h" />
     <ClInclude Include="Source\Debug\MessageDebugger.h" />
     <ClInclude Include="Source\Events\Dispatcher.h" />

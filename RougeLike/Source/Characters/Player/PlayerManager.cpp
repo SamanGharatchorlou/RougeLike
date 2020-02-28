@@ -48,7 +48,13 @@ void PlayerManager::selectWeapon(const std::string& weapon)
 
 
 RectF* PlayerManager::getRectRef() { return &player->getRect(); }
-std::vector<Collider*> PlayerManager::getWeaponColliders() { return player->getWeapon().getColliders(); }
+
+
+std::vector<Collider*> PlayerManager::getWeaponColliders() 
+{ 
+	return player->getWeapon().getColliders(); 
+}
+
 
 void PlayerManager::preProcess() { player->processStateChanges(); }
 void PlayerManager::handleInput() { player->handleInput(); }
@@ -65,17 +71,12 @@ void PlayerManager::slowUpdate(float dt)
 	// implement collisions, player getting hit by the enemy
 	if (player->getCollider().hasCollided())
 	{
-		if (gotHit == false)
-		{
-			Damage damage = player->getCollider().getOtherColliderDamage();
-			Health& hp = player->propertyBag().pHealth.get();
-			hp.takeDamage(damage);
+		Damage damage = player->getCollider().getOtherColliderDamage();
+		Health& hp = player->propertyBag().pHealth.get();
+		hp.takeDamage(damage);
 
-			SetHealthBarEvent event( hp );
-			notify(Event::SetHealth, event);
-
-			gotHit = true;
-		}
+		SetHealthBarEvent event( hp );
+		notify(Event::SetHealth, event);
 	}
 }
 

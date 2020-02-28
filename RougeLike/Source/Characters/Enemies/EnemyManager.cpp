@@ -181,7 +181,12 @@ std::vector<Collider*> EnemyManager::getAttackingEnemyColliders() const
 	{
 		if (enemy->getState() == EnemyState::Attack)
 		{
-			colliders.push_back(enemy->getCollider());
+			EnemyCollider* collider = enemy->getCollider();
+
+			if (!collider->hasProcessedAttack())
+			{
+				colliders.push_back(collider);
+			}
 		}
 	}
 

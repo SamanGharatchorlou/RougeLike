@@ -12,6 +12,14 @@ public:
 	float get() const { return hp; }
 	float getPercentage() const { return hp / maxHp; }
 
+	void increase(float health)
+	{
+		hp += health;
+
+		// TODO: how can I use clamp here, there's no pch included...
+		hp = clamp(hp, 0.0f, maxHp);
+	}
+
 	float getMax() const { return maxHp; }
 	void increaseMax(Health health) { hp += health.get(); maxHp += health.get(); }
 

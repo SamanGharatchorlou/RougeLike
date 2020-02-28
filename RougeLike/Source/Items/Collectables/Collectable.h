@@ -8,9 +8,11 @@ class PlayerManager;
 class Collectable
 {
 public:
-	Collectable() : mTexture(nullptr) { }
+	Collectable(std::string value) : mValue(value), mTexture(nullptr) { }
 
-	void init(Texture* texture, RectF rect, std::string id);
+	virtual ~Collectable() = 0;
+
+	void init(Texture* texture, RectF rect);
 	
 	virtual void activate(PlayerManager* playerManager) = 0;
 
@@ -26,7 +28,7 @@ public:
 
 	RectF mRect;
 
-	std::string mId;
+	std::string mValue;
 };
 
 

@@ -4,14 +4,14 @@
 
 #include "States/StateMachine.h"
 #include "Animations/Animator.h"
-#include "Collisions/Collider.h"
+#include "Collisions/EnemyCollider.h"
+#include "Characters/Attributes/Movement.h"
 
 #include "EnemyPropertyBag.h"
-#include "Characters/Attributes/Movement.h"
 #include "EnemyEnums.h"
 
+
 struct GameData;
-class EnemyPropertyBag;
 
 
 class Enemy
@@ -43,12 +43,12 @@ public:
 	void		setRect(RectF rect) { mRect = rect; }
 	RectF&		getRect() { return mRect; }
 
-	StateMachine* getStateMachine() { return &mStateMachine; }
-	Animator*	getAnimator() { return &mAnimator; }
-	Collider*	getCollider() { return &mCollider; }
-	Movement&	getMovement() { return mMovement; }
+	StateMachine*	 getStateMachine() { return &mStateMachine; }
+	Animator*		getAnimator() { return &mAnimator; }
+	EnemyCollider*	getCollider() { return &mCollider; }
+	Movement&		getMovement() { return mMovement; }
 
-	void		move(float dt);
+	void		move(float dt); // TODO: need this?
 
 	EnemyPropertyBag& propertyBag() { return bag; }
 
@@ -74,7 +74,7 @@ protected:
 	GameData* mGameData;
 	
 	StateMachine mStateMachine;
-	Collider mCollider;
+	EnemyCollider mCollider;
 	Animator mAnimator;
 
 	Movement mMovement;

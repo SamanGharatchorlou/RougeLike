@@ -4,6 +4,7 @@
 
 struct GameData;
 class Collider;
+class DamageCollider;
 
 class Weapon
 {
@@ -23,7 +24,9 @@ public:
 	const double maxSwingAngle() const { return mData->swingArc; }
 	const double swingSpeed() const { return mPlayerSwingSpeed; }
 
-	const std::vector<Collider*> getColliders() const { return mBlockColliders; }
+	const std::vector<DamageCollider*> getDamageColliders() const { return mBlockColliders; }
+	const std::vector<Collider*> getColliders() const;
+
 	const std::vector<RectF> getRects() const { return mBlockRects; }
 
 	void setColliderActivite(bool isActive);
@@ -44,7 +47,7 @@ private:
 	const WeaponData* mData;
 
 	std::vector<RectF> mBlockRects;
-	std::vector<Collider*> mBlockColliders;
+	std::vector<DamageCollider*> mBlockColliders;
 
 	RectF mRect;
 

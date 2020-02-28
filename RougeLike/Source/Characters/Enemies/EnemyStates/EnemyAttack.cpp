@@ -18,15 +18,14 @@ void EnemyAttack::init()
 	mHasAttacked = false;
 	mIsAttacking = false;
 
-	// TODO: adding
 	mEnemy->setActive(true);
+	mEnemy->getCollider()->hasProcessedAttack(false);
 
 	mEnemy->getAnimator()->selectAnimation("Attack");
 	timer.restart();
 
 	VectorF direction = mEnemy->targetRect().Center() - mEnemy->getRect().Center();
 	mEnemy->getMovement().setDirection(direction);
-
 	mEnemy->getMovement().setSpeed(mEnemy->propertyBag().pTackleSpeed.get());
 }
 
@@ -49,6 +48,12 @@ void EnemyAttack::slowUpdate(float dt)
 	if (endAttack())
 	{
 		mEnemy->popState();
+	}
+
+
+	if (mEnemy->getCollider()->hasCollided())
+	{
+		mEnemy->getCollider()->hasProcessedAttack(true);
 	}
 }
 

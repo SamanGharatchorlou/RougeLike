@@ -70,8 +70,35 @@ void EnemyPatrol::setPatrolPoint()
 
 bool EnemyPatrol::canSeeTarget() const
 {
-	float distance = distanceSquared(mEnemy->targetRect().Center(), mEnemy->getMovement().getPostion());
-	return distance < mEnemy->propertyBag().pSightRange.get();
+	Map* map = mEnemy->getData()->map;
+
+	VectorF position = mEnemy->getRect().Center();
+	VectorF targetPosition = mEnemy->targetRect().Center();
+
+	float distance = distanceSquared(targetPosition, position);
+
+	bool isNearby = distance < mEnemy->propertyBag().pSightRange.get();
+	bool hasLineOfSight = false;
+
+	if (!isNearby)
+	{
+		// Is there a line of sight?
+		float yPatrolDirection = (mPatrolTarget - position).y;
+		float yTargetDirection = (targetPosition - position).y;
+
+		bool isFacingTarget = (yPatrolDirection == yTargetDirection);
+
+		if (isFacingTarget)
+		{
+			int enemyXTile = map->getIndex(position).x;
+			int playerXTile = map->getIndex(targetPosition).x;
+
+			hasLineOfSight = (enemyXTile == playerXTile);
+		}
+
+	}
+
+	return isNearby || hasLineOfSight;
 }
 
 

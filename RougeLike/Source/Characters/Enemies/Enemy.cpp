@@ -1,16 +1,12 @@
 #include "pch.h"
 #include "Enemy.h"
+#include "EnemyStates/EnemyStateHeaders.h"
 
 #include "Game/GameData.h"
 #include "Game/Camera.h"
 
-#include "System/Files/AnimationReader.h"
-
 #include "Graphics/Texture.h"
-
-#include "EnemyEnums.h"
-#include "EnemyPropertyBag.h"
-#include "EnemyStates/EnemyStateHeaders.h"
+#include "System/Files/AnimationReader.h"
 
 #include "Characters/Player/Player.h"
 

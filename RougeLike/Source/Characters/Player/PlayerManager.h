@@ -34,11 +34,6 @@ public:
 
 	void handleEvent(const Event event, EventData& data) override;
 
-
-	// testing
-	bool gotHit = false;
-
-
 private:
 	void resolveWallCollisions(float dt);
 	bool doesCollideLeft(const VectorF point, float dt) const;

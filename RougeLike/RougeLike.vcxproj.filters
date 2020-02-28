@@ -166,6 +166,7 @@
     <ClInclude Include="Source\Debug\MessageDebugger.h" />
     <ClInclude Include="Source\Items\Collectables\Collectable.h" />
     <ClInclude Include="Source\Items\Collectables\Collectables.h" />
+    <ClInclude Include="Source\Collisions\DamageCollider.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />
