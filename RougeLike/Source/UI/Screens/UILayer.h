@@ -19,7 +19,7 @@ public:
 
 	// TODO: make this const
 	std::vector<UIElement*> elements() const { return mElements; }
-	const UIElement* element(unsigned int i) const { return mElements[i]; }
+	UIElement* element(unsigned int i) const { return mElements[i]; }
 
 private:
 	std::vector<UIElement*> mElements;

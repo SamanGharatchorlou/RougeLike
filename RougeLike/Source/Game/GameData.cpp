@@ -17,10 +17,6 @@
 #include "Game/Camera.h"
 #include "Game/Cursor.h"
 
-#if _DEBUG
-#include "Debug/MessageDebugger.h"
-#endif
-
 
 void GameData::init()
 {
@@ -64,16 +60,6 @@ void GameData::init()
 	enemies = new EnemyManager(this);
 	enemies->addObserver(scoreManager);
 	enemies->addObserver(playerManager);
-
-
-#if _DEBUG // Message debugger
-	msgDebugger = MessageDebugger::Get();
-	msgDebugger->gameData = this;
-
-	msgDebugger->addObserver(uiManager); 
-	msgDebugger->addObserver(scoreManager);
-	msgDebugger->addObserver(playerManager);
-#endif
 }
 
 

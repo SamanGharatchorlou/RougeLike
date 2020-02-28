@@ -14,10 +14,6 @@ class PlayerManager;
 class EnemyManager;
 class ScoreManager;
 
-#if _DEBUG
-class MessageDebugger;
-#endif
-
 
 struct GameData
 {
@@ -40,9 +36,5 @@ struct GameData
 
 	PlayerManager* playerManager = nullptr;
 	EnemyManager* enemies = nullptr;
-
-#if _DEBUG
-	MessageDebugger* msgDebugger = nullptr;
-#endif
 };
 

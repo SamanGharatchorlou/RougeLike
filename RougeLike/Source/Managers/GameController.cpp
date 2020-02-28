@@ -186,9 +186,11 @@ void GameController::run()
 }
 
 
+// TODO: correctly implement this, you need to first break everything down,
+// then restart it all again
 void GameController::restartGame()
 {
-	// Remove all states
+	//// Remove all states
 	//while (mGameStateMachine.size() > 1)
 	//{
 	//	mGameStateMachine.popState();
@@ -196,4 +198,5 @@ void GameController::restartGame()
 	//}
 
 	//mGameStateMachine.addState(new GameState(&mGameData, this));
+	DebugPrint(Log, "Restart game unimplemented\n");
 }

@@ -29,6 +29,7 @@ void EnemyHit::init()
 	Health newHealth = mEnemy->propertyBag().pHealth.get() - damage;
 
 	mEnemy->propertyBag().pHealth.set(newHealth);
+	printf("hit state\n");
 }
 
 void EnemyHit::slowUpdate(float dt)

@@ -67,7 +67,7 @@ void CollisionTracker::checkForCollisions()
 				mBaseColliders[j]->didCollide(true);
 
 				// TODO: make sure this doesnt break anything else
-				mSubbedColliders[i]->didCollide(true);
+				//mSubbedColliders[i]->didCollide(true);
 			}
 		}
 	}

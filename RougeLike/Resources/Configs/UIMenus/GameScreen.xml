@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <screen>
 	<layer>
-		<!-- Parernt box -->
-		<Element id = "StatBox" x_p = "0.05" y_p = "0.5" width_p = "0.15" height_p = "0.2"></Element>		
-		<!-- Children elements -->
-		<BasicText parent = "StatBox" id = "Attack" x_p = "0.025" y_p = "0.025">
+		
+		<Box id = "StatBox" x = "0.5" y = "0.5" width = "0.2" height = "0.4" texture = "BlackHealthBar"></Box>		
+		
+		<Text parent = "StatBox" id = "Attack" x = "0" y = "0" width = "0.2" height = "0.4">
 			<text font = "lazy.ttf" ptSize = "32" r = "0" g = "255" b = "0" >Attack Damage: 0</text>
-		</BasicText>
-		<BasicText parernt = "StatBox" id = "Defence" x_p = "0.025" y_p = "0.025">
+		</Text>
+		<Text parent = "StatBox" id = "Defence" x = "0.5" y = "0.5" width = "0.2" height = "0.4">
 			<text font = "lazy.ttf" ptSize = "32" r = "0" g = "255" b = "0" >Defence: 0</text>
-		</BasicText>
-
+		</Text>
 		
 	</layer>
 
 	<layer>
-		<BasicText id = "Score" x_p = "0.025" y_p = "0.025">
+		<Text id = "Score" x = "0.025" y = "0.025" width = "0.2" height = "0.4">
 			<text font = "lazy.ttf" ptSize = "32" r = "0" g = "255" b = "0" >Score: 0</text>
-		</BasicText>
-		<Box id = "RedHealth" x_p = "0.05" y_p = "0.95" width_p = "0.15" height_p = "0.025" texture = "RedHealthBar"></Box>
+		</Text>
+		<Box id = "RedHealth" x = "0.05" y = "0.95" width = "0.15" height = "0.025" texture = "RedHealthBar"></Box>
 	</layer>
 	<layer>
-		<Box id = "BlackHealth" x_p = "0.05" y_p = "0.95" width_p = "0.15" height_p = "0.025" texture = "BlackHealthBar"></Box>
+		<Box id = "BlackHealth" x = "0.05" y = "0.95" width = "0.15" height = "0.025" texture = "BlackHealthBar"></Box>
 	</layer>
 </screen>

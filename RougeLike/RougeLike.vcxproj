@@ -46,8 +46,8 @@
     <ClCompile Include="Source\Audio\Audio.cpp" />
     <ClCompile Include="Source\Audio\AudioManager.cpp" />
     <ClCompile Include="Source\Collisions\CollisionTracker.cpp" />
+    <ClCompile Include="Source\Collisions\DamageCollider.cpp" />
     <ClCompile Include="Source\Collisions\EnemyCollider.cpp" />
-    <ClCompile Include="Source\Debug\MessageDebugger.cpp" />
     <ClCompile Include="Source\Events\Dispatcher.cpp" />
     <ClCompile Include="Source\Events\Observer.cpp" />
     <ClCompile Include="Source\Game\GameData.cpp" />
@@ -70,6 +70,7 @@
     <ClCompile Include="Source\Managers\GameController.cpp" />
     <ClCompile Include="Source\Map\Map.cpp" />
     <ClCompile Include="Source\UI\Elements\UIElement.cpp" />
+    <ClCompile Include="Source\UI\Elements\UIText.cpp" />
     <ClCompile Include="Source\Utilities\Helpers.cpp" />
     <ClCompile Include="Source\Characters\Player\Player.cpp" />
     <ClCompile Include="Source\Characters\Player\States\PlayerState.cpp" />
@@ -137,7 +138,6 @@
     <ClInclude Include="Source\Collisions\CollisionTracker.h" />
     <ClInclude Include="Source\Collisions\DamageCollider.h" />
     <ClInclude Include="Source\Collisions\EnemyCollider.h" />
-    <ClInclude Include="Source\Debug\MessageDebugger.h" />
     <ClInclude Include="Source\Events\Dispatcher.h" />
     <ClInclude Include="Source\Events\Observer.h" />
     <ClInclude Include="Source\Game\GameData.h" />
@@ -160,6 +160,7 @@
     <ClInclude Include="Source\Graphics\TextureManager.h" />
     <ClInclude Include="Source\Input\InputManager.h" />
     <ClInclude Include="Source\Managers\GameController.h" />
+    <ClInclude Include="Source\UI\Elements\UIText.h" />
     <ClInclude Include="Source\Utilities\Grid.h" />
     <ClInclude Include="Source\Utilities\Rect.h" />
     <ClInclude Include="Source\Utilities\Vector2D.h" />

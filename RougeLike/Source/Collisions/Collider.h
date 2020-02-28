@@ -13,14 +13,12 @@ public:
 	bool doesIntersect(Collider* collider) const;
 
 	void hasCollidedWith(Collider* collider);
+
 	inline void didCollide(bool collision) { mHasCollided = collision; }
 	inline bool hasCollided() const { return mHasCollided; }
 
 	const RectF getRect() const { return *mRect; }
 	RectF getRectBase() const;
-
-	//void setDamage(Damage damage) { mDamage = damage; }
-	//const Damage getDamage() const { return mDamage; }
 
 	const Collider* getOtherCollider() const { return mOtherCollider; }
 	const Damage getOtherColliderDamage() const;
@@ -33,8 +31,6 @@ protected:
 	VectorF mColliderScale;
 
 	Collider* mOtherCollider;
-
-	//Damage mDamage;
 
 	bool mHasCollided;
 

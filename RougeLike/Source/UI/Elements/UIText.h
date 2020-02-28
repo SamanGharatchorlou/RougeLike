@@ -1,15 +1,13 @@
 #pragma once
 
 #include "UIElement.h"
-#include "UIBox.h"
 #include "Graphics/Text.h"
 
 
-// TODO: merge this into UIText... just add a box texture
-class UITextBox : public UIBox
+class UIText : public UIElement
 {
 public:
-	struct Data : public UIBox::Data
+	struct Data : public UIElement::Data
 	{
 		std::string text;
 		std::string font;
@@ -18,15 +16,14 @@ public:
 	};
 
 public:
-	UITextBox(Data& data);
+	UIText(Data& data);
 
 	void setText(std::string text) { mText.setText(text); }
 
 	void render() override;
 
 	virtual bool isButton() { return false; }
-	virtual Type type() { return Type::TextBox; }
-
+	virtual Type type() { return Type::Text; }
 
 private:
 	Text mText;

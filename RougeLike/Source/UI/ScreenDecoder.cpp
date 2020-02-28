@@ -114,18 +114,23 @@ std::vector<UILayer*> ScreenDecoder::buildUIScreenLayers(ScreenAttributes& attri
 			}
 
 			// Text Box
-			else if (strcmp(type, "BasicText") == 0)
+			else if (strcmp(type, "Text") == 0)
 			{
-				UIBasicText::Data data;
-				fillBasicTextData(data, attributes);
+				UIText::Data data;
+				fillTextData(data, attributes);
 
-				layer->addElement(new UIBasicText(data));
+				layer->addElement(new UIText(data));
 			}
 
 			else
 			{
 				DebugPrint(Warning, "The Screen item %s not a box or button!\n", attributes.getString("type").c_str());
 			}
+		}
+
+		for (unsigned int i = 0; i < layer->elements().size(); i++)
+		{
+			layer->element(i)->rectToPixles(mGameData->camera->getSize());
 		}
 
 		layers.push_back(layer);
@@ -143,11 +148,10 @@ void ScreenDecoder::fillElementData(UIElement::Data& data, Attributes& attribute
 {
 	data.rect = generateRect(attributes);
 	data.id = attributes.getString("id");
+	data.parent = nullptr;
 
 	if (attributes.contains("parent"))
 	{
-		printf("hello");
-
 		for (unsigned int i = 0; i < currentLayer->elements().size(); i++)
 		{
 			const UIElement* element = currentLayer->element(i);
@@ -171,7 +175,7 @@ void ScreenDecoder::fillBoxData(UIBox::Data& data, Attributes& attributes)
 }
 
 
-void ScreenDecoder::fillBasicTextData(UIBasicText::Data& data, Attributes& attributes)
+void ScreenDecoder::fillTextData(UIText::Data& data, Attributes& attributes)
 {
 	fillElementData(data, attributes);
 
@@ -231,9 +235,18 @@ void ScreenDecoder::fillTextButtonData(UITextButton::Data& data, Attributes& att
 
 RectF ScreenDecoder::generateRect(Attributes& attributes) const
 {
-	float cameraWidth = mGameData->camera->getWidth();
-	float cameraHeight = mGameData->camera->getHeight();
+	// RectF
+	float x = attributes.getFloat("x");
 
+	float y = attributes.getFloat("y");
+
+	float width = attributes.getFloat("width");
+
+	float height = attributes.getFloat("height");
+
+	return RectF(VectorF(x, y), VectorF(width, height));
+
+	/*
 	// RectF
 	float x = 0.0f;
 	if (attributes.contains("x_p"))
@@ -290,8 +303,8 @@ RectF ScreenDecoder::generateRect(Attributes& attributes) const
 	{
 		DebugPrint(Warning, "No height value was found, setting height = 0\n");
 	}
+	*/
 
-	return RectF(VectorF(x, y), VectorF(width, height));
 }
 
 

@@ -44,7 +44,7 @@ void WeaponStash::load(TextureManager* tm)
 
 		std::string fileName = FileManager::Get()->getFileName(dir.path().u8string());
 
-		ASSERT(Warning, data.count(fileName) == 0, "The file: %s has already been loaded into the weapon stash\n", dir.path().u8string());
+		ASSERT(Warning, data.count(fileName) == 0, "The file: %s has already been loaded into the weapon stash.cpp\n", dir.path().u8string());
 
 		data[fileName] = weaponData;
 	}

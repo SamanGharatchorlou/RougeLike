@@ -10,7 +10,8 @@ public:
 	void setDamage(Damage damage) { mDamage = damage; }
 	const Damage getDamage() const { return mDamage; }
 
-
 protected:
 	Damage mDamage;
+
+
 };

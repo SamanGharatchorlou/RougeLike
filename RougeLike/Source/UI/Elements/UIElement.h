@@ -6,12 +6,12 @@
 class UIElement
 {
 public:
-	enum Type
+	enum class Type
 	{
 		None,
 		Element,
 		Box,
-		BasicText,
+		Text,
 		TextBox,
 		Button,
 		TextButton
@@ -26,7 +26,9 @@ public:
 
 public:
 	UIElement() : mParent(nullptr) { }
-	UIElement(Data& data) : mId(data.id), mRect(data.rect) { } // UI TODO: net parent here
+	UIElement(Data& data);
+
+	void rectToPixles(VectorF screenSize);
 
 	const std::string& id() const { return mId; }
 

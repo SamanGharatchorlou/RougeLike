@@ -55,14 +55,16 @@ void UIManager::init()
 	fs::path menuPath;
 	ScreenAttributes attributes;
 
-	//// Pause Menu
-	//menuPath = menuDirectoryPath / "PauseScreen.xml";
-	//ASSERT(Warning, menuPath.has_filename(), "File: %s does not exist\n", menuPath.string().c_str());
 
-	//attributes = screenDecoder.getScreenAttributes(menuPath.string());
-	//std::vector<UILayer*> pauseLayers = screenDecoder.buildUIScreenLayers(attributes);
+	// Pause Menu
+	menuPath = menuDirectoryPath / "PauseScreen.xml";
+	ASSERT(Warning, menuPath.has_filename(), "File: %s does not exist\n", menuPath.string().c_str());
 
-	//screens.push_back(new PauseScreen(mGameData, pauseLayers));
+	attributes = screenDecoder.getScreenAttributes(menuPath.string());
+	std::vector<UILayer*> pauseLayers = screenDecoder.buildUIScreenLayers(attributes);
+
+	screens.push_back(new PauseScreen(mGameData, pauseLayers));
+
 
 	// Game Menu
 	menuPath = menuDirectoryPath / "GameScreen.xml";	
@@ -110,9 +112,9 @@ void UIManager::handleEvent(Event event, EventData& data)
 
 		UIElement* element = find("Score");
 
-		if (element != nullptr && element->type() == UIElement::BasicText)
+		if (element != nullptr && element->type() == UIElement::Type::Text)
 		{
-			UIBasicText* text = static_cast<UIBasicText*>(element);
+			UIText* text = static_cast<UIText*>(element);
 
 			text->setText(scoreString);
 		}
@@ -125,7 +127,7 @@ void UIManager::handleEvent(Event event, EventData& data)
 
 		UIElement* element = find("RedHealth");
 
-		if (element != nullptr && element->type() == UIElement::Box)
+		if (element != nullptr && element->type() == UIElement::Type::Box)
 		{
 			UIBox* healthBar = static_cast<UIBox*>(element);
 

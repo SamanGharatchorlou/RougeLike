@@ -16,10 +16,6 @@
 #include "Characters/Player/PlayerManager.h"
 #include "Characters/Enemies/EnemyManager.h"
 
-#if _DEBUG
-#include "Debug/MessageDebugger.h"
-#endif
-
 
 GameState::GameState(GameData* gameData, GameController* gameController) : 
 	mGameData(gameData)
@@ -102,16 +98,6 @@ void GameState::handleInput()
 
 	mGameData->playerManager->handleInput();
 	mGameData->uiManager->handleInput();
-
-#if _DEBUG
-	if(mGameData->inputManager->isPressed(Button::E))
-	{
-		MessageDebugger* msgDebugger = MessageDebugger::Get();
-
-		EnemyDeadEvent event(50, 250);
-		msgDebugger->notify(Event::EnemyDead, event);
-	}
-#endif
 }
  
 

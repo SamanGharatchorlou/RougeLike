@@ -1,13 +1,18 @@
 #pragma once
 
+// TODO: this should be included in pch, why does it not work without this include?
+#include "System/Files/Attributes.h"
+
 typedef std::vector<std::vector<Attributes>> ScreenAttributes;
 
 class TextureManager;
 class UILayer;
 struct GameData;
 
+
 // This is only for enum
 #include "UI/Elements/UIButton.h"
+#include "UI/Elements/UIText.h"
 #include "UI/Elements/UITextBox.h"
 
 /*
@@ -26,7 +31,7 @@ public:
 private:
 	void fillElementData	(UIElement::Data& data,		Attributes& attributes);
 	void fillBoxData		(UIBox::Data& data,			Attributes& attributes);
-	void fillBasicTextData	(UIBasicText::Data& data,	Attributes& attributes);
+	void fillTextData		(UIText::Data& data,		Attributes& attributes);
 	void fillButtonData		(UIButton::Data& data,		Attributes& attributes);
 	void fillTextButtonData	(UITextButton::Data& data,	Attributes& attributes);
 
