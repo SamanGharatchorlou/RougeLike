@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <screen>
 	<layer>
+		<!-- Parernt box -->
+		<Element id = "StatBox" x_p = "0.05" y_p = "0.5" width_p = "0.15" height_p = "0.2"></Element>		
+		<!-- Children elements -->
+		<BasicText parent = "StatBox" id = "Attack" x_p = "0.025" y_p = "0.025">
+			<text font = "lazy.ttf" ptSize = "32" r = "0" g = "255" b = "0" >Attack Damage: 0</text>
+		</BasicText>
+		<BasicText parernt = "StatBox" id = "Defence" x_p = "0.025" y_p = "0.025">
+			<text font = "lazy.ttf" ptSize = "32" r = "0" g = "255" b = "0" >Defence: 0</text>
+		</BasicText>
+
+		
+	</layer>
+
+	<layer>
 		<BasicText id = "Score" x_p = "0.025" y_p = "0.025">
 			<text font = "lazy.ttf" ptSize = "32" r = "0" g = "255" b = "0" >Score: 0</text>
 		</BasicText>

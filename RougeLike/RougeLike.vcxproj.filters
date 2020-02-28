@@ -75,6 +75,7 @@
     <ClCompile Include="Source\Debug\MessageDebugger.cpp" />
     <ClCompile Include="Source\Items\Collectables\Collectable.cpp" />
     <ClCompile Include="Source\Items\Collectables\Collectables.cpp" />
+    <ClCompile Include="Source\UI\Elements\UIElement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />

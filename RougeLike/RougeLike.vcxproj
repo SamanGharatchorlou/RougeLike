@@ -69,6 +69,7 @@
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Managers\GameController.cpp" />
     <ClCompile Include="Source\Map\Map.cpp" />
+    <ClCompile Include="Source\UI\Elements\UIElement.cpp" />
     <ClCompile Include="Source\Utilities\Helpers.cpp" />
     <ClCompile Include="Source\Characters\Player\Player.cpp" />
     <ClCompile Include="Source\Characters\Player\States\PlayerState.cpp" />

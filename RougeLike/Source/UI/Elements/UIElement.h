@@ -9,6 +9,7 @@ public:
 	enum Type
 	{
 		None,
+		Element,
 		Box,
 		BasicText,
 		TextBox,
@@ -20,23 +21,26 @@ public:
 	{
 		std::string id;
 		RectF rect;
+		const UIElement* parent = nullptr;
 	};
 
 public:
-	UIElement() { }
-	UIElement(Data& data) : mId(data.id), mRect(data.rect) { }
+	UIElement() : mParent(nullptr) { }
+	UIElement(Data& data) : mId(data.id), mRect(data.rect) { } // UI TODO: net parent here
 
-	std::string id() { return mId; }
+	const std::string& id() const { return mId; }
 
-	void setRect(RectF rect) { mRect = rect; }
-	RectF getRect() { return mRect; }
+	void setRect(RectF rect);
+	RectF getRect() const { return mRect; }
 
-	virtual Type type() = 0;
-	virtual bool isButton() = 0;
-	virtual void render() = 0;
+	virtual Type type() { return Type::Element; }
+	virtual bool isButton() { return false; }
+	virtual void render() { };
 
 protected:
 	std::string mId;
 
 	RectF mRect;
+
+	const UIElement* mParent;
 };

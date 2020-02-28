@@ -50,6 +50,17 @@ public:
 	}
 
 
+	const int getBool(std::string name)
+	{
+#if _DEBUG
+		// TODO: is this a value check or does it need to be .count == 0 like in XMLValueMap
+		if (attributes[name].empty())
+			DebugPrint(Warning, "There is no attribute with the label: %s\n", name.c_str());
+#endif
+		return strcmp(attributes[name].c_str(), "true") == 0;
+	}
+
+
 	const float getFloat(std::string name)
 	{
 #if _DEBUG

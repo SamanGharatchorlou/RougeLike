@@ -55,14 +55,14 @@ void UIManager::init()
 	fs::path menuPath;
 	ScreenAttributes attributes;
 
-	// Pause Menu
-	menuPath = menuDirectoryPath / "PauseScreen.xml";
-	ASSERT(Warning, menuPath.has_filename(), "File: %s does not exist\n", menuPath.string().c_str());
+	//// Pause Menu
+	//menuPath = menuDirectoryPath / "PauseScreen.xml";
+	//ASSERT(Warning, menuPath.has_filename(), "File: %s does not exist\n", menuPath.string().c_str());
 
-	attributes = screenDecoder.getScreenAttributes(menuPath.string());
-	std::vector<UILayer*> pauseLayers = screenDecoder.buildUIScreenLayers(attributes);
+	//attributes = screenDecoder.getScreenAttributes(menuPath.string());
+	//std::vector<UILayer*> pauseLayers = screenDecoder.buildUIScreenLayers(attributes);
 
-	screens.push_back(new PauseScreen(mGameData, pauseLayers));
+	//screens.push_back(new PauseScreen(mGameData, pauseLayers));
 
 	// Game Menu
 	menuPath = menuDirectoryPath / "GameScreen.xml";	

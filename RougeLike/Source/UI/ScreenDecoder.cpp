@@ -66,18 +66,28 @@ ScreenAttributes ScreenDecoder::getScreenAttributes(std::string config)
 
 std::vector<UILayer*> ScreenDecoder::buildUIScreenLayers(ScreenAttributes& attributes)
 {
-	std::vector<UILayer*> layers;
+	std::vector<UILayer*> layers;	
 
 	for (LayerAttributes layerAttribute : attributes)
 	{
 		UILayer* layer = new UILayer;
+		currentLayer = layer;
 
 		for (Attributes attributes : layerAttribute)
 		{
 			const char* type = attributes.getString("type").c_str();
 
+			// Element
+			if (strcmp(type, "Element") == 0)
+			{
+				UIElement::Data data;
+				fillElementData(data, attributes);
+
+				layer->addElement(new UIElement(data));
+			}
+
 			// Box
-			if (strcmp(type, "Box") == 0)
+			else if (strcmp(type, "Box") == 0)
 			{
 				UIBox::Data data;
 				fillBoxData(data, attributes);
@@ -126,13 +136,28 @@ std::vector<UILayer*> ScreenDecoder::buildUIScreenLayers(ScreenAttributes& attri
 }
 
 
-// --- Populate UI Element data packets --- //
 
+// --- Populate UI Element data packets --- //
 
 void ScreenDecoder::fillElementData(UIElement::Data& data, Attributes& attributes)
 {
 	data.rect = generateRect(attributes);
 	data.id = attributes.getString("id");
+
+	if (attributes.contains("parent"))
+	{
+		printf("hello");
+
+		for (unsigned int i = 0; i < currentLayer->elements().size(); i++)
+		{
+			const UIElement* element = currentLayer->element(i);
+
+			if (strcmp(element->id().c_str(), attributes.getString("parent").c_str()) == 0)
+			{
+				data.parent = element;
+			}
+		}
+	}
 }
 
 

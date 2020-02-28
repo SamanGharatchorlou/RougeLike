@@ -17,7 +17,7 @@ Note: The layers must be in order with the top layer first/at the top of the fil
 class ScreenDecoder
 {
 public:
-	ScreenDecoder(GameData* gameData) : mGameData(gameData) { };
+	ScreenDecoder(GameData* gameData) : mGameData(gameData), currentLayer(nullptr) { };
 	~ScreenDecoder() { }
 
 	ScreenAttributes getScreenAttributes(std::string config);
@@ -38,4 +38,6 @@ private:
 private:
 	GameData* mGameData;
 	XMLParser xmlParser;
+
+	const UILayer* currentLayer;
 };

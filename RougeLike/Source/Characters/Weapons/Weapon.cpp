@@ -139,8 +139,6 @@ const std::vector<Collider*> Weapon::getColliders() const
 }
 
 
-
-
 void Weapon::updateSwingSpeed(double swingSpeed)
 { 
 	mPlayerSwingSpeed = mData->swingSpeed * (1 + (swingSpeed / 100));
