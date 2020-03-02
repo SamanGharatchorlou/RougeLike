@@ -8,6 +8,7 @@ enum class Event
 	EnemyDead,
 	SetHealth,
 	UpdateScore,
+	UpdateUIValue
 };
 
 
@@ -54,7 +55,7 @@ struct SetHealthBarEvent : public EventData
 	const Health health;
 };
 
-
+// TODO: replace with update ui value
 struct UpdateScoreEvent : EventData
 {
 	UpdateScoreEvent(int score) : mScore(score) { }
@@ -62,6 +63,15 @@ struct UpdateScoreEvent : EventData
 	const int mScore;
 };
 
+
+struct UpdateUIValueEvent : EventData
+{
+	UpdateUIValueEvent(std::string id, int value) : mId(id), mValue(value)  { }
+	~UpdateUIValueEvent() { }
+
+	const std::string mId;
+	const int mValue;
+};
 
 struct Observer
 {

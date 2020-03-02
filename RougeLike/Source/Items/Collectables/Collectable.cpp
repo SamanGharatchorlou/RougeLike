@@ -34,7 +34,7 @@ void WeaponCollectable::activate(PlayerManager* playerManager)
 // --- Health Pickup --- //
 void HealthCollectable::activate(PlayerManager* playerManager)
 {
-	float health = std::stof(mValue);
+	int health = std::stoi(mValue);
 
 	playerManager->get()->propertyBag().pHealth.get().increase(health);
 }

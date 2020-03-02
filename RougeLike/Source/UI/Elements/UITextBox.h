@@ -5,7 +5,6 @@
 #include "Graphics/Text.h"
 
 
-// TODO: merge this into UIText... just add a box texture
 class UITextBox : public UIBox
 {
 public:
@@ -14,13 +13,16 @@ public:
 		std::string text;
 		std::string font;
 		int ptSize;
-		SDL_Color colour;
+		SDL_Color colour;	
 	};
 
 public:
 	UITextBox(Data& data);
 
 	void setText(std::string text) { mText.setText(text); }
+
+	int fontSize() const { return mText.fontSize(); }
+	void autoSizeFont();
 
 	void render() override;
 

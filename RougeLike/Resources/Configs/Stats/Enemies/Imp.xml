@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Stats>
-	<Health type = "float">100</Health>
-	<AttackDamage type = "float">10</AttackDamage>
+	<Health type = "int">100</Health>
+	<AttackDamage type = "int">10</AttackDamage>
 	<AttackSpeed type ="double">1</AttackSpeed>
-	<MovementSpeed type = "float">50</MovementSpeed>
+	<MovementSpeed type = "int">50</MovementSpeed>
 	<TackleChargeTime type = "float">1</TackleChargeTime>
 	<TackleDistance type = "float">2000</TackleDistance>
 	<TackleSpeed type = "float">100</TackleSpeed>
@@ -12,5 +12,5 @@
 	<HurtTime type = "float">0.125</HurtTime>
 	<AttentionTime type ="float">1</AttentionTime>
 	<Score type ="int">50></Score>
-	<Experience type = "int">100</Experience>
+	<Experience type = "int">2000</Experience>
 </Stats>

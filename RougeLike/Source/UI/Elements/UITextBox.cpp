@@ -15,3 +15,10 @@ void UITextBox::render()
 	mText.render(mRect.TopLeft());
 	UIBox::render();
 }
+
+
+void UITextBox::autoSizeFont()
+{
+	VectorF newSize = mText.autoSize(mRect.Size());
+	mRect.SetSize(newSize);
+}

@@ -3,7 +3,7 @@
 class Level
 {
 public:
-	Level() : level(1), currentExp(0), totalExp(0) { }
+	Level() : level(1), currentExp(0), totalExp(0), levelledUp(false) { }
 
 	void gainExp(int exp);
 

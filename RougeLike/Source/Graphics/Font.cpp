@@ -14,7 +14,7 @@ Font::~Font()
 }
 
 
-bool Font::loadFromFile(std::string font, int ptSize)
+bool Font::loadFromFile(const std::string& font, int ptSize)
 {
 	//Loading success flag
 	bool success = true;
@@ -27,11 +27,26 @@ bool Font::loadFromFile(std::string font, int ptSize)
 		success = false;
 	}
 
+	// TODO: can I find a way to not save this, it's a large string
+	// save a copy of the font name
+	mFontName = std::string(font);
+
+	mPtSize = ptSize;
+
 	return success;
 }
 
 
-void Font::setText(std::string text)
+void Font::resize(int ptSize)
+{
+	// Font must be reloaded
+	TTF_CloseFont(mFont);
+	mFont = TTF_OpenFont(mFontName.c_str(), ptSize);
+	mPtSize = ptSize;
+}
+
+
+void Font::setText(const std::string& text)
 {
 	if (mFont != nullptr)
 	{
@@ -44,6 +59,9 @@ void Font::setText(std::string text)
 		}
 		else
 		{
+			if (mTexture)
+				SDL_DestroyTexture(mTexture);
+
 			//Create texture from surface pixels
 			mTexture = SDL_CreateTextureFromSurface(mRenderer, textSurface);
 
@@ -58,6 +76,7 @@ void Font::setText(std::string text)
 
 			// loaded surface no longer needed
 			SDL_FreeSurface(textSurface);
+			textSurface = nullptr;
 		}
 	}
 	else
@@ -66,6 +85,7 @@ void Font::setText(std::string text)
 		return;
 	}
 }
+
 
 void Font::render(const VectorF position) const
 {

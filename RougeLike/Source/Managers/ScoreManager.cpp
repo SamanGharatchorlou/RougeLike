@@ -5,8 +5,11 @@ void ScoreManager::update()
 {
 	if (hasChanged)
 	{
-		UpdateScoreEvent event(mScore);
-		notify(Event::UpdateScore, event);
+		//UpdateScoreEvent event(mScore);
+		//notify(Event::UpdateScore, event);
+
+		UpdateUIValueEvent event("Score val", mScore);
+		notify(Event::UpdateUIValue, event);
 	}
 
 	hasChanged = false;

@@ -3,20 +3,20 @@
 	<!-- Attributes -->
 	<Level type = "int">1</Level>
 
-	<Health type = "float">100</Health>
-	<HealthUpRate type = "float">10</HealthUpRate>
+	<Health type = "int">100</Health>
+	<HealthUpRate type = "int">10</HealthUpRate>
 
-	<Defence type = "float">10</Defence>
-	<DefenceUpRate type = "float">4</DefenceUpRate>
+	<Defence type = "int">10</Defence>
+	<DefenceUpRate type = "int">4</DefenceUpRate>
 
-	<AttackDamage type = "float">10</AttackDamage>
-	<AttackDamageUpRate type = "float">2</AttackDamageUpRate>
+	<AttackDamage type = "int">10</AttackDamage>
+	<AttackDamageUpRate type = "int">2</AttackDamageUpRate>
 
 	<AttackSpeed type = "double">10</AttackSpeed>
 	<AttackSpeedUpRate type = "double">0.5</AttackSpeedUpRate>
 
-	<MovementSpeed type = "float">1</MovementSpeed>
-	<MovementSpeedUpRate type = "float">0</MovementSpeedUpRate>
+	<MovementSpeed type = "int">1</MovementSpeed>
+	<MovementSpeedUpRate type = "int">0</MovementSpeedUpRate>
 
 	<!-- Movement -->
 	<Force type = "float">8000</Force>

@@ -11,7 +11,6 @@ public:
 		None,
 		Element,
 		Box,
-		Text,
 		TextBox,
 		Button,
 		TextButton
@@ -28,7 +27,7 @@ public:
 	UIElement() : mParent(nullptr) { }
 	UIElement(Data& data);
 
-	void rectToPixles(VectorF screenSize);
+	// void rectToPixles(VectorF screenSize);
 
 	const std::string& id() const { return mId; }
 

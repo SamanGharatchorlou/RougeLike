@@ -35,7 +35,8 @@ void Enemy::init(std::string name)
 	mCollider.init(&mRect);
 	mCollider.setDamage(propertyBag().pDamage.get());
 
-	mMovement.init(&mCollider, bag.pMovementSpeed.get());
+	// TODO: using int movement speed for float in mMovement class, fix me
+	mMovement.init(&mCollider, (float)bag.pMovementSpeed.get());
 }
 
 void Enemy::slowUpdate(float dt)

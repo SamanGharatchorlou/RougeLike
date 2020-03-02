@@ -25,8 +25,11 @@ UIManager::~UIManager()
 
 void UIManager::selectScreen(Screen::Type screenType)
 {
-	activeScreen->exit();
-	activeScreen = nullptr;
+	if (activeScreen)
+	{
+		activeScreen->exit();
+		activeScreen = nullptr;
+	}
 
 	for (Screen* screen : screens)
 	{
@@ -75,8 +78,7 @@ void UIManager::init()
 	
 	screens.push_back(new GameScreen(mGameData, gameLayers));
 
-	// Default screen selection to... anything
-	activeScreen = screens[0];
+	activeScreen = nullptr;
 }
 
 
@@ -104,19 +106,18 @@ void UIManager::handleEvent(Event event, EventData& data)
 {
 	switch (event)
 	{
-	case Event::UpdateScore:
+	case Event::UpdateUIValue:
 	{
-		UpdateScoreEvent scoreEvent = static_cast<UpdateScoreEvent&>(data);
+		UpdateUIValueEvent eventData = static_cast<UpdateUIValueEvent&>(data);
 
-		std::string scoreString = "Score: " + std::to_string(scoreEvent.mScore);
+		UIElement* element = find(eventData.mId);
 
-		UIElement* element = find("Score");
-
-		if (element != nullptr && element->type() == UIElement::Type::Text)
+		if (element != nullptr && element->type() == UIElement::Type::TextBox)
 		{
-			UIText* text = static_cast<UIText*>(element);
+			UITextBox* text = static_cast<UITextBox*>(element);
+			std::string score = std::to_string(eventData.mValue);
 
-			text->setText(scoreString);
+			text->setText(score);
 		}
 
 		break;

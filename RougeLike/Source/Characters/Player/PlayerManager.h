@@ -43,6 +43,8 @@ private:
 
 	void updateTrackedColliders();
 
+	void updateUIStats();
+
 
 private:
 	GameData* mGameData;

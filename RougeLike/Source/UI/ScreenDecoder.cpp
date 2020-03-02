@@ -114,23 +114,25 @@ std::vector<UILayer*> ScreenDecoder::buildUIScreenLayers(ScreenAttributes& attri
 			}
 
 			// Text Box
-			else if (strcmp(type, "Text") == 0)
+			else if (strcmp(type, "TextBox") == 0)
 			{
-				UIText::Data data;
-				fillTextData(data, attributes);
+				UITextBox::Data data;
+				fillTextBoxtData(data, attributes);
 
-				layer->addElement(new UIText(data));
+				UITextBox* textBox = new UITextBox(data);
+
+				if (textBox->fontSize() == 0)
+				{
+					textBox->autoSizeFont();
+				}
+
+				layer->addElement(textBox);
 			}
 
 			else
 			{
 				DebugPrint(Warning, "The Screen item %s not a box or button!\n", attributes.getString("type").c_str());
 			}
-		}
-
-		for (unsigned int i = 0; i < layer->elements().size(); i++)
-		{
-			layer->element(i)->rectToPixles(mGameData->camera->getSize());
 		}
 
 		layers.push_back(layer);
@@ -146,10 +148,8 @@ std::vector<UILayer*> ScreenDecoder::buildUIScreenLayers(ScreenAttributes& attri
 
 void ScreenDecoder::fillElementData(UIElement::Data& data, Attributes& attributes)
 {
-	data.rect = generateRect(attributes);
-	data.id = attributes.getString("id");
+	// Set parent first so the rect can be correctly positioned relative to it
 	data.parent = nullptr;
-
 	if (attributes.contains("parent"))
 	{
 		for (unsigned int i = 0; i < currentLayer->elements().size(); i++)
@@ -161,7 +161,12 @@ void ScreenDecoder::fillElementData(UIElement::Data& data, Attributes& attribute
 				data.parent = element;
 			}
 		}
+
+		ASSERT(Warning, data.parent, "No parent was found with lable: %s\n", attributes.getString("parent").c_str());
 	}
+
+	data.rect = generateRect(attributes, data.parent);
+	data.id = attributes.getString("id");
 }
 
 
@@ -170,24 +175,38 @@ void ScreenDecoder::fillBoxData(UIBox::Data& data, Attributes& attributes)
 	fillElementData(data, attributes);
 
 	// Texture
-	std::string textureLabel = attributes.getString("texture");
-	data.texture = mGameData->textureManager->getTexture(textureLabel);
+	if (attributes.contains("texture"))
+	{
+		std::string textureLabel = attributes.getString("texture");
+		data.texture = mGameData->textureManager->getTexture(textureLabel);
+	}
+	else
+		data.texture = nullptr;
 }
 
 
-void ScreenDecoder::fillTextData(UIText::Data& data, Attributes& attributes)
+void ScreenDecoder::fillTextBoxtData(UITextBox::Data& data, Attributes& attributes)
 {
-	fillElementData(data, attributes);
+	fillBoxData(data, attributes);
 
 	// Text
 	data.text = attributes.getString("text");
 	data.font = attributes.getString("font");
-	data.ptSize = attributes.getInt("ptSize");
+
 	data.colour = {
 		(Uint8)attributes.getInt("r"),
 		(Uint8)attributes.getInt("g"),
 		(Uint8)attributes.getInt("b")
 	};
+
+	if (attributes.contains("ptSize"))
+	{
+		data.ptSize = attributes.getInt("ptSize");
+	}
+	else
+	{
+		data.ptSize = 0;
+	}
 }
 
 
@@ -233,78 +252,49 @@ void ScreenDecoder::fillTextButtonData(UITextButton::Data& data, Attributes& att
 }
 
 
-RectF ScreenDecoder::generateRect(Attributes& attributes) const
+RectF ScreenDecoder::generateRect(Attributes& attributes, const UIElement* parent) const
 {
 	// RectF
 	float x = attributes.getFloat("x");
-
 	float y = attributes.getFloat("y");
 
-	float width = attributes.getFloat("width");
+	float width = -1;
+	float height = -1;
 
-	float height = attributes.getFloat("height");
-
-	return RectF(VectorF(x, y), VectorF(width, height));
-
-	/*
-	// RectF
-	float x = 0.0f;
-	if (attributes.contains("x_p"))
-	{
-		x = attributes.getFloat("x_p") * cameraWidth;
-	}
-	else if (attributes.contains("x"))
-	{
-		x = attributes.getFloat("x");
-	}
-	else
-	{
-		DebugPrint(Warning, "No x value was found, setting x = 0\n");
-	}
-
-	float y = 0.0f;
-	if (attributes.contains("y_p"))
-	{
-		y = attributes.getFloat("y_p") * cameraHeight;
-	}
-	else if (attributes.contains("y"))
-	{
-		y = attributes.getFloat("y");
-	}
-	else
-	{
-		DebugPrint(Warning, "No y value was found, setting y = 0\n");
-	}
-
-	float width = 0.0f;
-	if (attributes.contains("width_p"))
-	{
-		width = attributes.getFloat("width_p") * cameraWidth;
-	}
-	else if (attributes.contains("width"))
+	if (attributes.contains("width"))
 	{
 		width = attributes.getFloat("width");
 	}
-	else
-	{
-		DebugPrint(Warning, "No width value was found, setting width = 0\n");
-	}
 
-	float height = 0.0f;
-	if (attributes.contains("height_p"))
-	{
-		height = attributes.getFloat("height_p") * cameraHeight;
-	}
-	else if (attributes.contains("height"))
+	if (attributes.contains("height"))
 	{
 		height = attributes.getFloat("height");
 	}
+
+
+	// Adjust relative to the parent rect
+	// No need to convert to pixles as parent already has been
+	if (parent != nullptr)
+	{
+		RectF parentRect = parent->getRect();
+
+		x = parentRect.x1 + x * parentRect.Width();
+		y = parentRect.y1 + y * parentRect.Height();
+		width = width * parentRect.Width();
+		height = height * parentRect.Height();
+	}
+	// Convert relative positions to pixles
 	else
 	{
-		DebugPrint(Warning, "No height value was found, setting height = 0\n");
-	}
-	*/
+		VectorF screenSize = mGameData->camera->getSize();
 
+		x = x * screenSize.x;
+		y = y * screenSize.y;
+		width = width * screenSize.x;
+		height = height * screenSize.y;
+	}
+
+	return RectF(VectorF(x, y), VectorF(width, height));
 }
 
 

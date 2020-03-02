@@ -9,15 +9,15 @@ void EnemyPropertyBag::readAttributes(std::string name)
 	XMLValueMap map = statReader.getStats(FileManager::Config_Stats_Enemies, name);
 
 	// Health
-	Health health(map.getFloat("Health"));
+	Health health(map.getInt("Health"));
 	pHealth.set(health);
 
 	// Movement
-	float movementSpeed = map.getFloat("MovementSpeed");
+	int movementSpeed = map.getInt("MovementSpeed");
 	pMovementSpeed.set(movementSpeed);
 
 	// Damage
-	Damage damage(map.getFloat("AttackDamage"));
+	Damage damage(map.getInt("AttackDamage"));
 	pDamage.set(damage);
 
 	// Tackle Speed

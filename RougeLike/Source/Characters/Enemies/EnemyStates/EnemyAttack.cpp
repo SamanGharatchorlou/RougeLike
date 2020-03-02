@@ -75,7 +75,8 @@ void EnemyAttack::fastUpdate(float dt)
 
 void EnemyAttack::exit()
 {
-	mEnemy->getMovement().setSpeed(mEnemy->propertyBag().pMovementSpeed.get());
+	// TODO: using int movement speed for float in mMovement class, fix me
+	mEnemy->getMovement().setSpeed((float)mEnemy->propertyBag().pMovementSpeed.get());
 }
 
 

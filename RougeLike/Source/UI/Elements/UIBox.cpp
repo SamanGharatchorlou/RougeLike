@@ -4,10 +4,7 @@
 #include "Graphics/Texture.h"
 
 
-UIBox::UIBox(Data& data) : UIElement(data), mTexture(data.texture) 
-{
-	ASSERT(Error, data.texture != nullptr, "UIBox element must have a texture assigned\n");
-}
+UIBox::UIBox(Data& data) : UIElement(data), mTexture(data.texture) { }
 
 
 void UIBox::render()

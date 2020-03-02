@@ -5,35 +5,35 @@
 class Health
 {
 public:
-	Health() : hp(0.0f), maxHp(0.0f) { }
-	Health(float maxHealth) : maxHp(maxHealth), hp(maxHealth) { }
+	Health() : hp(0), maxHp(0) { }
+	Health(int maxHealth) : maxHp(maxHealth), hp(maxHealth) { }
 
-	void set(float health) { hp = health; }
-	float get() const { return hp; }
-	float getPercentage() const { return hp / maxHp; }
+	void set(int health) { hp = health; }
+	int value() const { return hp; }
+	int getPercentage() const { return hp / maxHp; }
 
-	void increase(float health)
+	void increase(int health)
 	{
 		hp += health;
 
 		// TODO: how can I use clamp here, there's no pch included...
-		hp = clamp(hp, 0.0f, maxHp);
+		hp = clamp(hp, 0, maxHp);
 	}
 
-	float getMax() const { return maxHp; }
-	void increaseMax(Health health) { hp += health.get(); maxHp += health.get(); }
+	int getMax() const { return maxHp; }
+	void increaseMax(Health health) { hp += health.value(); maxHp += health.value(); }
 
 	bool isDead() const { return hp <= 0; }
-	void takeDamage(float damage) { hp -= damage; }
-	void takeDamage(Damage damage) { hp -= damage.get(); }
+	void takeDamage(int damage) { hp -= damage; }
+	void takeDamage(Damage damage) { hp -= damage.value(); }
 
 	inline Health operator - (Damage damage) const
 	{
-		return Health(hp - damage.get());
+		return Health(hp - damage.value());
 	}
 
 private:
-	float hp;
-	float maxHp;
+	int hp;
+	int maxHp;
 };
 

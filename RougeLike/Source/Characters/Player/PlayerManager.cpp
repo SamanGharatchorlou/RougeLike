@@ -37,6 +37,8 @@ void PlayerManager::selectCharacter(const std::string& character)
 {
 	player->init(character);
 	selectWeapon(player->propertyBag().pWeapon.get());
+
+	updateUIStats();
 }
 
 
@@ -78,6 +80,23 @@ void PlayerManager::slowUpdate(float dt)
 		SetHealthBarEvent event( hp );
 		notify(Event::SetHealth, event);
 	}
+
+	if (player->propertyBag().pLevel.get().didLevelUp())
+	{
+		player->updateWeaponStats();
+
+		updateUIStats();
+	}
+}
+
+
+void PlayerManager::updateUIStats()
+{
+	UpdateUIValueEvent attackStat("Atk val", player->propertyBag().pAttackDmg.get().value());
+	notify(Event::UpdateUIValue, attackStat);
+
+	UpdateUIValueEvent defenceStat("Def val", player->propertyBag().pDefence.get());
+	notify(Event::UpdateUIValue, defenceStat);
 }
 
 

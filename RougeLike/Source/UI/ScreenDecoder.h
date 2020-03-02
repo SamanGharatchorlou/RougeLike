@@ -31,11 +31,11 @@ public:
 private:
 	void fillElementData	(UIElement::Data& data,		Attributes& attributes);
 	void fillBoxData		(UIBox::Data& data,			Attributes& attributes);
-	void fillTextData		(UIText::Data& data,		Attributes& attributes);
+	void fillTextBoxtData		(UITextBox::Data& data,		Attributes& attributes);
 	void fillButtonData		(UIButton::Data& data,		Attributes& attributes);
 	void fillTextButtonData	(UITextButton::Data& data,	Attributes& attributes);
 
-	RectF generateRect(Attributes& attributes) const;
+	RectF generateRect(Attributes& attributes, const UIElement* parent = nullptr) const;
 
 	UIButton::Action getAction(std::string action);
 

@@ -26,6 +26,7 @@ public:
 	void render();
 
 	void equiptWeapon(const WeaponData* data);
+	void updateWeaponStats();
 
 	// Movement states
 	void updateState();

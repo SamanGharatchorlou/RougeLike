@@ -37,45 +37,45 @@ void PlayerPropertyBag::readAttributes(std::string name)
 	pLevel.set(Level());
 
 	// Health
-	Health health(map.getFloat("Health"));
+	Health health(map.getInt("Health"));
 	pHealth.set(health);
 
 	// Defence
-	float defence = map.getFloat("Defence");
+	int defence = map.getInt("Defence");
 	pDefence.set(defence);
 
 	// Attack Damage
-	Damage attackDamage(map.getFloat("AttackDamage"));
+	Damage attackDamage(map.getInt("AttackDamage"));
 	pAttackDmg.set(attackDamage);
 
 	// Attack Speed
-	double attackSpeed = map.getFloat("AttackSpeed");
+	double attackSpeed = map.getDouble("AttackSpeed");
 	pAttackSpd.set(attackSpeed);
 
 	// Movement Speed
-	float movementSpeed = map.getFloat("MovementSpeed");
+	int movementSpeed = map.getInt("MovementSpeed");
 	pMovementSpd.set(movementSpeed);
 
 
 	// -- Attribute Level up rates -- //
 	
 	// Health up rate
-	Health healthUp(map.getFloat("HealthUpRate"));
+	Health healthUp(map.getInt("HealthUpRate"));
 	pHealthUp.set(healthUp);
 
 	// Defence up rate
-	float defenceUp = map.getFloat("DefenceUpRate");
+	int defenceUp = map.getInt("DefenceUpRate");
 	pDefenceUp.set(defenceUp);
 
 	// Attack Damage up rate
-	Damage attackDmgUp(map.getFloat("AttackDamageUpRate"));
+	Damage attackDmgUp(map.getInt("AttackDamageUpRate"));
 	pAttackDmgUp.set(attackDmgUp);
 
 	// Attack Speed up rate
-	float attackSpdUp = map.getFloat("AttackSpeedUpRate");
+	int attackSpdUp = map.getInt("AttackSpeedUpRate");
 	pAttackSpdUp.set(attackSpdUp);
 
 	// Movement Speed up rate
-	float movementSpdUp = map.getFloat("MovementSpeedUpRate");
+	int movementSpdUp = map.getInt("MovementSpeedUpRate");
 	pMovementSpdUp.set(movementSpdUp);
 }
