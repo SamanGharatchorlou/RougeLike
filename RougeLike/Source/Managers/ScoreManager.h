@@ -8,7 +8,7 @@ class ScoreManager : public Observer, public Dispatcher
 public:
 	ScoreManager() : mScore(0), hasChanged(false) { }
 
-	void update();
+	void slowUpdate();
 
 	void handleEvent(const Event event, EventData& data) override;
 

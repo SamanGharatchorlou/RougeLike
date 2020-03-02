@@ -18,12 +18,13 @@
 
 // TEMp
 #include "Items/Spawner.h"
+#include "Characters/Player/Player.h"
 
 
 GameState::GameState(GameData* gameData, GameController* gameController) : 
 	mGameData(gameData)
 	, mGameController(gameController)
-	, collectables(mGameData)
+	, collectables(gameData)
 {
 	// random seed
 	srand((unsigned int)time(NULL));
@@ -61,11 +62,16 @@ void GameState::init()
 	enemies->subscribe(player->getWeaponColliders());
 	enemies->setTarget(player->getRectRef());
 
+	// Collectables 
+	// TODO?: change this to items, item manager (its not really a manager)
+	collectables.subscrbeCollider(&player->get()->getCollider());
+
 	// rendering
 	mGameData->renderManager->Set(mGameData->map);
-	mGameData->renderManager->Set(player->get());
+	mGameData->renderManager->Set(player);
 	mGameData->renderManager->Set(enemies);
 	mGameData->renderManager->Set(mGameData->uiManager);
+	mGameData->renderManager->Set(&collectables);
 
 
 	// Test spawning
@@ -81,7 +87,7 @@ void GameState::init()
 	//enemies->spawn(EnemyType::Imp, 42.0f);
 
 	Spawner itemSpawner;
-	VectorF position = itemSpawner.findSpawnPoint(mGameData->map, 50);
+	VectorF position = itemSpawner.findSpawnPoint(mGameData->map, 10);
 
 	std::string weaponName = "weapon_big_hammer";
 
@@ -120,7 +126,9 @@ void GameState::slowUpdate(float dt)
 	mGameData->playerManager->slowUpdate(dt);
 	mGameData->enemies->slowUpdate(dt);
 
-	mGameData->scoreManager->update();
+	mGameData->scoreManager->slowUpdate();
+
+	collectables.slowUpdate();
 }
 
 
@@ -129,7 +137,7 @@ void GameState::fastUpdate(float dt)
 	mGameData->playerManager->fastUpdate(dt);
 	mGameData->enemies->fastUpdate(dt);
 
-	mGameData->camera->update();
+	mGameData->camera->fastUpdate();
 }
 
 

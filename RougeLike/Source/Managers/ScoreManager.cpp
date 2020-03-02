@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ScoreManager.h"
 
-void ScoreManager::update()
+void ScoreManager::slowUpdate()
 {
 	if (hasChanged)
 	{

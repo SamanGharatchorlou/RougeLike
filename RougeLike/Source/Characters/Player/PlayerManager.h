@@ -23,6 +23,7 @@ public:
 	void handleInput();
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
+	void render();
 
 	void selectCharacter(const std::string& character);
 	void selectWeapon(const std::string& weapon);

@@ -4,6 +4,7 @@
 
 class Texture;
 class PlayerManager;
+class Camera;
 
 class Collectable
 {
@@ -13,12 +14,14 @@ public:
 	virtual ~Collectable() { };
 
 	void init(std::string value, Texture* texture, RectF rect);
-	void render();
+	void render(Camera* camera);
 	
 	virtual void activate(PlayerManager* playerManager) = 0;
 
+	void toWorldCoords(Camera* camera);
 	void setPosition(VectorF position) { mRect.SetCenter(position); }
 
+	Collider* getCollider() { return &mCollider; }
 	bool pickedUp() { return mCollider.hasCollided(); }
 
 

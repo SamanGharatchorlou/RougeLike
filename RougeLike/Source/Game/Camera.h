@@ -14,7 +14,7 @@ public:
 	// follow this object
 	void follow(RectF* rect);
 
-	void update();
+	void fastUpdate();
 
 	void setViewport(VectorF viewport) { mRect.SetSize(viewport); }
 	void setViewport(float x, float y) { mRect.SetSize(VectorF(x, y)); }

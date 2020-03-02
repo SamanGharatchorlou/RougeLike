@@ -169,6 +169,7 @@
     <ClInclude Include="Source\Collisions\DamageCollider.h" />
     <ClInclude Include="Source\UI\Elements\UIText.h" />
     <ClInclude Include="Source\Items\Spawner.h" />
+    <ClInclude Include="Source\Graphics\Renderable.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

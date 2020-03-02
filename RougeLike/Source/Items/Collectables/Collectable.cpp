@@ -6,6 +6,8 @@
 #include "Characters/Player/PlayerManager.h"
 #include "Characters/Player/Player.h"
 
+#include "Game/Camera.h"
+
 
 void Collectable::init(std::string value, Texture* texture, RectF rect)
 {
@@ -17,9 +19,16 @@ void Collectable::init(std::string value, Texture* texture, RectF rect)
 }
 
 
-void Collectable::render()
+void Collectable::render(Camera* camera)
 {
-	mTexture->render(mRect);
+	RectF rect = camera->toWorldCoords(mRect);
+	mTexture->render(rect);
+}
+
+
+void Collectable::toWorldCoords(Camera* camera)
+{
+	mRect = camera->toWorldCoords(mRect);
 }
 
 
@@ -27,7 +36,7 @@ void Collectable::render()
 // --- Weapon pickup --- //
 WeaponCollectable::WeaponCollectable(std::string weaponName, Texture* texture)
 {
-	RectF rect(VectorF(), texture->originalDimentions * 4.0f);
+	RectF rect(VectorF(), texture->originalDimentions);
 
 	init(weaponName, texture, rect);
 }
@@ -35,7 +44,7 @@ WeaponCollectable::WeaponCollectable(std::string weaponName, Texture* texture)
 
 void WeaponCollectable::activate(PlayerManager* playerManager)
 {
-	playerManager->selectWeapon(mValue);
+	playerManager->selectWeapon("BigHammer");
 }
 
 

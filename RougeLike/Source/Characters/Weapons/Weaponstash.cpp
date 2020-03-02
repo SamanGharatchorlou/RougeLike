@@ -53,5 +53,9 @@ void WeaponStash::load(TextureManager* tm)
 
 WeaponData& WeaponStash::getData(std::string label)
 {
+#if _DEBUG
+	if(data.count(label) == 0)
+		DebugPrint(Warning, "There is no weapon with the label %s\n", label.c_str());
+#endif
 	return data.count(label) > 0 ? data[label] : data["empty"];
 }

@@ -112,6 +112,7 @@
     <ClInclude Include="Source\Characters\Enemies\Enemy.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyManager.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyPropertyBag.h" />
+    <ClInclude Include="Source\Graphics\Renderable.h" />
     <ClInclude Include="Source\Items\Spawner.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyStates\EnemyAlert.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyStates\EnemyAttack.h" />

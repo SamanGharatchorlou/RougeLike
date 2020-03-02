@@ -24,7 +24,7 @@ void Camera::follow(RectF* rect)
 }
 
 
-void Camera::update()
+void Camera::fastUpdate()
 {
 	VectorF translation = mFollowingRect->Center() - mRect.Center();
 

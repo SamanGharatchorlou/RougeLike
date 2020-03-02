@@ -44,7 +44,7 @@ void PlayerManager::selectCharacter(const std::string& character)
 
 void PlayerManager::selectWeapon(const std::string& weapon)
 {
-	const WeaponData* weaponData = &weaponStash.getData(player->propertyBag().pWeapon.get());
+	const WeaponData* weaponData = &weaponStash.getData(weapon);
 	player->equiptWeapon(weaponData);
 }
 
@@ -119,6 +119,12 @@ void PlayerManager::handleEvent(const Event event, EventData& data)
 
 		statManager.gainExp(eventData.mExp);
 	}
+}
+
+
+void PlayerManager::render()
+{
+	player->render();
 }
 
 
