@@ -2,6 +2,9 @@
 
 #include "State.h"
 
+// TEMP
+#include "Items/Collectables/Collectables.h"
+
 class GameController;
 struct GameData;
 
@@ -22,6 +25,8 @@ public:
 
 	void resume();
 
+	// TEMP
+	Collectables collectables;
 
 private:
 	GameController* mGameController;

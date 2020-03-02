@@ -4,7 +4,7 @@
 #include "Game/GameData.h"
 #include "Game/Camera.h"
 
-#include "EnemySpawner.h"
+#include "Items/Spawner.h"
 
 #include "Characters/Enemies/Imp.h"
 
@@ -73,8 +73,9 @@ void EnemyManager::spawn(EnemyType type, unsigned int xPositionPercentage)
 			Enemy* enemy = mEnemyPool[i].first;
 
 			// Add new active enemy to list and spawn around index x
-			EnemySpawner spawner;
-			spawner.spawn(mGameData->map, enemy, xPositionPercentage);
+			Spawner enemySpawner;
+			VectorF position = enemySpawner.findSpawnPoint(mGameData->map, xPositionPercentage);
+			enemy->spawn(position);
 
 			mActiveEnemies.push_back(enemy);
 

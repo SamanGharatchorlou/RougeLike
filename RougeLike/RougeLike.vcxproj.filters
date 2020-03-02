@@ -41,7 +41,6 @@
     <ClCompile Include="Source\AI\AIPathing.cpp" />
     <ClCompile Include="Source\System\Files\AnimationReader.cpp" />
     <ClCompile Include="Source\System\Files\StatReader.cpp" />
-    <ClCompile Include="Source\Characters\Enemies\EnemySpawner.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyStates\EnemyAlert.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyStates\EnemyPatrol.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyStates\EnemyDead.cpp" />
@@ -77,6 +76,7 @@
     <ClCompile Include="Source\UI\Elements\UIElement.cpp" />
     <ClCompile Include="Source\Collisions\DamageCollider.cpp" />
     <ClCompile Include="Source\UI\Elements\UIText.cpp" />
+    <ClCompile Include="Source\Items\Spawner.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -126,7 +126,6 @@
     <ClInclude Include="Source\System\Files\AnimationReader.h" />
     <ClInclude Include="Source\System\Files\XMLValueMap.h" />
     <ClInclude Include="Source\System\Files\StatReader.h" />
-    <ClInclude Include="Source\Characters\Enemies\EnemySpawner.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyStates\EnemyAlert.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyStates\EnemyPatrol.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyPropertyBag.h" />
@@ -169,6 +168,7 @@
     <ClInclude Include="Source\Items\Collectables\Collectables.h" />
     <ClInclude Include="Source\Collisions\DamageCollider.h" />
     <ClInclude Include="Source\UI\Elements\UIText.h" />
+    <ClInclude Include="Source\Items\Spawner.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

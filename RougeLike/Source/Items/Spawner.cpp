@@ -1,11 +1,10 @@
 #include "pch.h"
-#include "EnemySpawner.h"
+#include "Spawner.h"
 
 #include "Map/Map.h"
-#include "Enemy.h"
 
 // Find a random valid y tile at map position x
-void EnemySpawner::spawn(Map* map, Enemy* enemy, int xPositionPercentage)
+VectorF Spawner::findSpawnPoint(Map* map, int xPositionPercentage)
 {
 	ASSERT(Warning, xPositionPercentage >= 0 && xPositionPercentage <= 100,
 		"Invalid position percentage: %d. Enemy must be spawned between 0 and 100\n", xPositionPercentage);
@@ -22,8 +21,5 @@ void EnemySpawner::spawn(Map* map, Enemy* enemy, int xPositionPercentage)
 
 	ASSERT(Warning, map->floorRenderTile(xTileIndex, randomYTile), "Cannot spawn enemy on a wall tile\n");
 
-	enemy->spawn(map->getTileRect(xTileIndex, randomYTile).Center());
-
-	DebugPrint(Log, "Spawing enemy at %f,%f\n",
-		map->getTileRect(xTileIndex, randomYTile).Center().x, map->getTileRect(xTileIndex, randomYTile).Center().y);
+	return map->getTileRect(xTileIndex, randomYTile).Center();
 }
