@@ -16,10 +16,14 @@
 #include "Characters/Player/PlayerManager.h"
 #include "Characters/Enemies/EnemyManager.h"
 
+// TEMp
+#include "Items/Spawner.h"
+
 
 GameState::GameState(GameData* gameData, GameController* gameController) : 
 	mGameData(gameData)
 	, mGameController(gameController)
+	, collectables(mGameData)
 {
 	// random seed
 	srand((unsigned int)time(NULL));
@@ -75,7 +79,17 @@ void GameState::init()
 	//enemies->spawn(EnemyType::Imp, 35.0f);
 	//enemies->spawn(EnemyType::Imp, 40.0f);
 	//enemies->spawn(EnemyType::Imp, 42.0f);
+
+	Spawner itemSpawner;
+	VectorF position = itemSpawner.findSpawnPoint(mGameData->map, 50);
+
+	std::string weaponName = "weapon_big_hammer";
+
+	WeaponCollectable* weaponPickup = new WeaponCollectable(weaponName, mGameData->textureManager->getTexture(weaponName));
+
+	collectables.spawn(weaponPickup, position);
 }
+
 
 
 void GameState::preProcess()

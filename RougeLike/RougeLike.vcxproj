@@ -27,7 +27,7 @@
     <ClCompile Include="Source\Characters\Enemies\EnemyManager.cpp" />
     <ClCompile Include="Source\Characters\Enemies\Enemy.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyPropertyBag.cpp" />
-    <ClCompile Include="Source\Characters\Enemies\EnemySpawner.cpp" />
+    <ClCompile Include="Source\Items\Spawner.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyStates\EnemyAlert.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyStates\EnemyAttack.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyStates\EnemyDead.cpp" />
@@ -112,7 +112,7 @@
     <ClInclude Include="Source\Characters\Enemies\Enemy.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyManager.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyPropertyBag.h" />
-    <ClInclude Include="Source\Characters\Enemies\EnemySpawner.h" />
+    <ClInclude Include="Source\Items\Spawner.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyStates\EnemyAlert.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyStates\EnemyAttack.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyStates\EnemyDead.h" />

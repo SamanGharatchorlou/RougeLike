@@ -7,8 +7,9 @@
 #include "Characters/Player/Player.h"
 
 
-void Collectable::init(Texture* texture, RectF rect)
+void Collectable::init(std::string value, Texture* texture, RectF rect)
 {
+	mValue = value;
 	mTexture = texture;
 	mRect = rect;
 
@@ -24,6 +25,14 @@ void Collectable::render()
 
 
 // --- Weapon pickup --- //
+WeaponCollectable::WeaponCollectable(std::string weaponName, Texture* texture)
+{
+	RectF rect(VectorF(), texture->originalDimentions * 4.0f);
+
+	init(weaponName, texture, rect);
+}
+
+
 void WeaponCollectable::activate(PlayerManager* playerManager)
 {
 	playerManager->selectWeapon(mValue);

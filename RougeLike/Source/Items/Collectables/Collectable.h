@@ -8,20 +8,21 @@ class PlayerManager;
 class Collectable
 {
 public:
-	Collectable(std::string value) : mValue(value), mTexture(nullptr) { }
+	Collectable() : mTexture(nullptr) { }
 
-	virtual ~Collectable() = 0;
+	virtual ~Collectable() { };
 
-	void init(Texture* texture, RectF rect);
+	void init(std::string value, Texture* texture, RectF rect);
+	void render();
 	
 	virtual void activate(PlayerManager* playerManager) = 0;
 
-	void render();
+	void setPosition(VectorF position) { mRect.SetCenter(position); }
 
-	bool pickedUp() { mCollider.hasCollided(); }
+	bool pickedUp() { return mCollider.hasCollided(); }
 
 
-public:
+protected:
 	Texture* mTexture;
 
 	Collider mCollider;
@@ -36,11 +37,15 @@ public:
 class WeaponCollectable : public Collectable
 {
 public:
+	WeaponCollectable(std::string value, Texture* texture);
+
 	void activate(PlayerManager* playerManager) override;
+
 };
 
 class HealthCollectable : public Collectable
 {
 public:
+
 	void activate(PlayerManager* playerManager) override;
 };
