@@ -18,7 +18,6 @@
     <ClCompile Include="Source\Graphics\RenderManager.cpp" />
     <ClCompile Include="Source\Collisions\Collider.cpp" />
     <ClCompile Include="Source\Game\Camera.cpp" />
-    <ClCompile Include="Source\Characters\Player\States\AttackState.cpp" />
     <ClCompile Include="Source\Game\Cursor.cpp" />
     <ClCompile Include="Source\pch.cpp" />
     <ClCompile Include="Source\Characters\Weapons\Weapon.cpp" />
@@ -77,6 +76,8 @@
     <ClCompile Include="Source\Collisions\DamageCollider.cpp" />
     <ClCompile Include="Source\UI\Elements\UIText.cpp" />
     <ClCompile Include="Source\Items\Spawner.cpp" />
+    <ClCompile Include="Source\Characters\Weapons\MeleeWeapon.cpp" />
+    <ClCompile Include="Source\Characters\Player\States\MeleeAttackState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -98,7 +99,6 @@
     <ClInclude Include="Source\Graphics\RenderManager.h" />
     <ClInclude Include="Source\Collisions\Collider.h" />
     <ClInclude Include="Source\Game\Camera.h" />
-    <ClInclude Include="Source\Characters\Player\States\AttackState.h" />
     <ClInclude Include="Source\Game\Cursor.h" />
     <ClInclude Include="Source\pch.h" />
     <ClInclude Include="Source\Characters\Weapons\Weapon.h" />
@@ -170,6 +170,8 @@
     <ClInclude Include="Source\UI\Elements\UIText.h" />
     <ClInclude Include="Source\Items\Spawner.h" />
     <ClInclude Include="Source\Graphics\Renderable.h" />
+    <ClInclude Include="Source\Characters\Weapons\MeleeWeapon.h" />
+    <ClInclude Include="Source\Characters\Player\States\MeleeAttackState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

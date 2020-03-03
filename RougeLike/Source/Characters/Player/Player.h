@@ -5,11 +5,12 @@
 #include "States/StateMachine.h"
 #include "Animations/Animator.h"
 #include "Collisions/Collider.h"
-#include "Characters/Weapons/Weapon.h"
-
-#include "PlayerPropertyBag.h"
 
 struct GameData;
+class Weapon;
+struct WeaponData;
+class PlayerPropertyBag;
+
 
 class Player
 {
@@ -26,7 +27,7 @@ public:
 	void render();
 
 	void equiptWeapon(const WeaponData* data);
-	void updateWeaponStats();
+	void updateWeaponStats(const PlayerPropertyBag* bag);
 
 	// Movement states
 	void updateState();
@@ -37,10 +38,11 @@ public:
 
 	RectF&		getRect()		{ return physics.getRect(); }
 	Collider&	getCollider()	{ return mCollider; }
-	Weapon&		getWeapon()		{ return mWeapon; }
 	Physics&	getPhysics()	{ return physics; }
 
-	PlayerPropertyBag& propertyBag() { return bag; }
+	Weapon*		getWeapon()		{ return mWeapon; }
+
+	PlayerPropertyBag* propertyBag() { return mBag; }
 
 
 private:
@@ -52,13 +54,14 @@ private:
 private:
 	GameData* mGameData;
 
-	PlayerPropertyBag bag;
+	PlayerPropertyBag* mBag;
 
 	StateMachine stateMachine;
 	Animator mAnimator;
 	Collider mCollider;
-	Weapon mWeapon;
 	Physics physics;
+
+	Weapon* mWeapon;
 
 	SDL_RendererFlip mFlip;
 

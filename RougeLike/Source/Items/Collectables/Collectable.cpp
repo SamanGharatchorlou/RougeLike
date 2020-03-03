@@ -34,7 +34,7 @@ void Collectable::toWorldCoords(Camera* camera)
 
 
 // --- Weapon pickup --- //
-WeaponCollectable::WeaponCollectable(std::string weaponName, Texture* texture)
+WeaponCollectable::WeaponCollectable(const std::string& weaponName, Texture* texture)
 {
 	RectF rect(VectorF(), texture->originalDimentions);
 
@@ -54,5 +54,5 @@ void HealthCollectable::activate(PlayerManager* playerManager)
 {
 	int health = std::stoi(mValue);
 
-	playerManager->get()->propertyBag().pHealth.get().increase(health);
+	playerManager->get()->propertyBag()->pHealth.get().increase(health);
 }

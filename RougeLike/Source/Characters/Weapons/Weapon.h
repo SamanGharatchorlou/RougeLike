@@ -1,59 +1,35 @@
 #pragma once
 
-#include "WeaponData.h"
-
 struct GameData;
+struct WeaponData;
 class Collider;
-class DamageCollider;
+class PlayerPropertyBag;
 
 class Weapon
 {
 public:
-	Weapon(GameData* gameData);
-	~Weapon();
+	virtual ~Weapon() { };
 
-	void fastUpdate(VectorF anchorPosition);
+	virtual void fastUpdate(VectorF anchorPosition) = 0;
 
-	void equipt(const WeaponData* data);
+	virtual void equipt(const WeaponData* data) = 0;
 
-	void updateDamage(Damage playerAttackDamage);
-	void updateSwingSpeed(double swingSpeed);
+	virtual void updateStats(const PlayerPropertyBag* bag) = 0;
 
-	void rotate(double theta);
-	const double getAngle() const { return getRotation(mDirection); }
-	const double maxSwingAngle() const { return mData->swingArc; }
-	const double swingSpeed() const { return mPlayerSwingSpeed; }
-
-	const std::vector<DamageCollider*> getDamageColliders() const { return mBlockColliders; }
-	const std::vector<Collider*> getColliders() const;
-
-	const std::vector<RectF> getRects() const { return mBlockRects; }
-
-	void setColliderActivite(bool isActive);
+	virtual const std::vector<Collider*> getColliders() const = 0;
+	virtual void setColliderActivite(bool isActive) = 0;
 
 	void overrideCursorControl(bool overrideControl) { mOverrideCursorControl = overrideControl; }
-	void flipSide() { mSwingDirection *= -1; }
 
-	void render();
-
-
-private:
-	void updateWeaponBlocks();
+	virtual void render() = 0;
 
 
-private:
-	GameData* mGameData;
+protected:
+	GameData* mGameData; // TODO: remove this
 
 	const WeaponData* mData;
 
-	std::vector<RectF> mBlockRects;
-	std::vector<DamageCollider*> mBlockColliders;
-
 	RectF mRect;
-
-	VectorF mDirection;
-	int mSwingDirection;
-	double mPlayerSwingSpeed;
 
 	bool mOverrideCursorControl;
 };

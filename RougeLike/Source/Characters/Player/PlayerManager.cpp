@@ -5,6 +5,8 @@
 #include "UI/UIManager.h"
 
 #include "Player.h"
+#include "Characters/Weapons/Weapon.h"
+
 #include "Map/Map.h"
 #include "Characters/Enemies/EnemyManager.h"
 
@@ -15,7 +17,7 @@ PlayerManager::PlayerManager(GameData* gameData) : mGameData(gameData)
 {
 	player = new Player(gameData);
 
-	statManager.init(&player->propertyBag());
+	statManager.init(player->propertyBag());
 }
 
 PlayerManager::~PlayerManager()
@@ -36,7 +38,7 @@ void PlayerManager::init()
 void PlayerManager::selectCharacter(const std::string& character)
 {
 	player->init(character);
-	selectWeapon(player->propertyBag().pWeapon.get());
+	selectWeapon(player->propertyBag()->pWeapon.get());
 
 	updateUIStats();
 }
@@ -45,7 +47,7 @@ void PlayerManager::selectCharacter(const std::string& character)
 void PlayerManager::selectWeapon(const std::string& weapon)
 {
 	const WeaponData* weaponData = &weaponStash.getData(weapon);
-	player->equiptWeapon(weaponData);
+	//player->equiptWeapon(weaponData);
 }
 
 
@@ -54,7 +56,7 @@ RectF* PlayerManager::getRectRef() { return &player->getRect(); }
 
 std::vector<Collider*> PlayerManager::getWeaponColliders() 
 { 
-	return player->getWeapon().getColliders(); 
+	return std::vector<Collider*>();// player->getWeapon()->getColliders();
 }
 
 
@@ -74,16 +76,16 @@ void PlayerManager::slowUpdate(float dt)
 	if (player->getCollider().hasCollided())
 	{
 		Damage damage = player->getCollider().getOtherColliderDamage();
-		Health& hp = player->propertyBag().pHealth.get();
+		Health& hp = player->propertyBag()->pHealth.get();
 		hp.takeDamage(damage);
 
 		SetHealthBarEvent event( hp );
 		notify(Event::SetHealth, event);
 	}
 
-	if (player->propertyBag().pLevel.get().didLevelUp())
+	if (player->propertyBag()->pLevel.get().didLevelUp())
 	{
-		player->updateWeaponStats();
+		//player->updateWeaponStats(player->propertyBag());
 
 		updateUIStats();
 	}
@@ -92,10 +94,10 @@ void PlayerManager::slowUpdate(float dt)
 
 void PlayerManager::updateUIStats()
 {
-	UpdateUIValueEvent attackStat("Atk val", player->propertyBag().pAttackDmg.get().value());
+	UpdateUIValueEvent attackStat("Atk val", player->propertyBag()->pAttackDmg.get().value());
 	notify(Event::UpdateUIValue, attackStat);
 
-	UpdateUIValueEvent defenceStat("Def val", player->propertyBag().pDefence.get());
+	UpdateUIValueEvent defenceStat("Def val", player->propertyBag()->pDefence.get());
 	notify(Event::UpdateUIValue, defenceStat);
 }
 

@@ -128,7 +128,7 @@ void GameState::slowUpdate(float dt)
 
 	mGameData->scoreManager->slowUpdate();
 
-	collectables.slowUpdate();
+	collectables.slowUpdate(dt);
 }
 
 

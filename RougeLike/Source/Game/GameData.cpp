@@ -46,6 +46,7 @@ void GameData::init()
 	uiManager->init();
 
 	// Renderer
+	// TODO: replace with singleton
 	renderManager = new RenderManager(this);
 
 	// Score Manager

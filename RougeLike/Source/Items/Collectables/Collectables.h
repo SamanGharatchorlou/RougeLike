@@ -10,14 +10,18 @@ class Collectables
 public:
 	Collectables(GameData* gameData);
 
-	void spawn(Collectable* collectable, VectorF position);
-	void slowUpdate();
+	void slowUpdate(float dt);
 	void render();
 
+	void spawn(Collectable* collectable, VectorF position);
+	
 	void subscrbeCollider(Collider* collider);
+
 
 private:
 	GameData* mGameData;
+
+	Timer<float> timer;
 
 	CollisionTracker mCollisionTracker;
 

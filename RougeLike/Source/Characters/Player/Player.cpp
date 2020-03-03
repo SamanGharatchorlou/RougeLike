@@ -6,15 +6,18 @@
 #include "Graphics/TextureManager.h"
 #include "Game/Camera.h"
 
-#include "States/AttackState.h"
+
+#include "PlayerPropertyBag.h"
+
+#include "Characters/Weapons/Weapon.h"
+#include "States/MeleeAttackState.h"
 
 #include "System/Files/AnimationReader.h"
 #include "Map/Map.h"
 
 
 Player::Player(GameData* gameData) : 
-	mGameData(gameData), 
-	mWeapon(gameData),
+	mGameData(gameData),
 	mFlip(SDL_FLIP_NONE),
 	mState(PlayerState::None)
 { }
@@ -23,10 +26,10 @@ Player::Player(GameData* gameData) :
 void Player::init(const std::string& characterConfig)
 {
 	// Setup stats
-	propertyBag().readAttributes(characterConfig);
+	propertyBag()->readAttributes(characterConfig);
 
 	// init physics
-	physics.init(bag.pForce.get(), bag.pMaxVelocity.get(), bag.pDragFactor.get());
+	physics.init(mBag->pForce.get(), mBag->pMaxVelocity.get(), mBag->pDragFactor.get());
 
 	// Setup animations
 	initAnimations(characterConfig);
@@ -86,7 +89,7 @@ void Player::fastUpdate(float dt)
 	mAnimator.fastUpdate(dt);
 
 	// Weapon
-	mWeapon.fastUpdate(getRect().TopLeft());
+	mWeapon->fastUpdate(getRect().TopLeft());
 }
 
 
@@ -115,21 +118,20 @@ void Player::render()
 	mAnimator.getSpriteTile()->render(rect, mFlip);
 
 	// Weapon
-	mWeapon.render();
+	mWeapon->render();
 }
 
 
 void Player::equiptWeapon(const WeaponData* data)
 {
-	mWeapon.equipt(data);
-	updateWeaponStats();
+	mWeapon->equipt(data);
+	updateWeaponStats(mBag);
 }
 
 
-void Player::updateWeaponStats()
+void Player::updateWeaponStats(const PlayerPropertyBag* bag)
 {
-	mWeapon.updateDamage(bag.pAttackDmg.get());
-	mWeapon.updateSwingSpeed(bag.pAttackSpd.get());
+	mWeapon->updateStats(bag);
 }
 
 
@@ -150,7 +152,7 @@ void Player::addState(PlayerState::actionState newState)
 	switch (newState)
 	{
 	case PlayerState::Attack:
-		stateMachine.addState(new AttackState(mGameData, this));
+		stateMachine.addState(new MeleeAttackState(mGameData, this));
 		break;
 	default:
 		DebugPrint(Warning, "Failed adding %d player state\n", newState);

@@ -11,6 +11,9 @@ class Property
 {
 public:
 	void set(T property) { mProperty = property; }
+
+	// TODO: how do I know which get it will use?
+	const T get() const { return mProperty; }
 	T& get() { return mProperty; }
 
 	Property& operator += (Property propertry)

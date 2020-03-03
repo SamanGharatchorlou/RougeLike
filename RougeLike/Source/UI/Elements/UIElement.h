@@ -27,8 +27,6 @@ public:
 	UIElement() : mParent(nullptr) { }
 	UIElement(Data& data);
 
-	// void rectToPixles(VectorF screenSize);
-
 	const std::string& id() const { return mId; }
 
 	void setRect(RectF rect);

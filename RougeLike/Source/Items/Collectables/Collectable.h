@@ -20,6 +20,7 @@ public:
 
 	void toWorldCoords(Camera* camera);
 	void setPosition(VectorF position) { mRect.SetCenter(position); }
+	void move(VectorF translation) { mRect.Translate(translation); }
 
 	Collider* getCollider() { return &mCollider; }
 	bool pickedUp() { return mCollider.hasCollided(); }
@@ -40,7 +41,7 @@ protected:
 class WeaponCollectable : public Collectable
 {
 public:
-	WeaponCollectable(std::string value, Texture* texture);
+	WeaponCollectable(const std::string& value, Texture* texture);
 
 	void activate(PlayerManager* playerManager) override;
 

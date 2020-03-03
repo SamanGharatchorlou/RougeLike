@@ -1,18 +1,19 @@
 #include "pch.h"
-#include "AttackState.h"
+#include "MeleeAttackState.h"
 
 #include "Game/GameData.h"
 #include "Characters/Weapons/Weapon.h"
+#include "Characters/Weapons/MeleeWeapon.h"
 #include "Characters/Player/Player.h"
 #include "Collisions/Collider.h"
 
 
-AttackState::AttackState(GameData* gameData, Player* player)
+MeleeAttackState::MeleeAttackState(GameData* gameData, Player* player)
 {
 	setupStateData(gameData, player);
 	mState = PlayerState::Attack;
 
-	mWeapon = &mPlayer->getWeapon();
+//	mWeapon = static_cast<MeleeWeapon*>(mPlayer->getWeapon());
 	mWeapon->overrideCursorControl(true);
 	mWeapon->setColliderActivite(true);
 
@@ -20,7 +21,7 @@ AttackState::AttackState(GameData* gameData, Player* player)
 }
 
 
-void AttackState::fastUpdate(float dt)
+void MeleeAttackState::fastUpdate(float dt)
 {
 	// weapon has completed its attack rotation
 	if (mRotationSum > mWeapon->maxSwingAngle())
@@ -40,7 +41,7 @@ void AttackState::fastUpdate(float dt)
 }
 
 
-void AttackState::exit()
+void MeleeAttackState::exit()
 {
 	mWeapon->flipSide();
 	mWeapon->overrideCursorControl(false);

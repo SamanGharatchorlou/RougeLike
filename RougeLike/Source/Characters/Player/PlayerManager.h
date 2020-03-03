@@ -9,7 +9,7 @@
 
 struct GameData;
 class Player;
-class Collider;
+class Collider; // TODO: do I need this?
 
 
 class PlayerManager : public Dispatcher, public Observer

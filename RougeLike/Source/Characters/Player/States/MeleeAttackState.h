@@ -3,12 +3,12 @@
 #include "PlayerState.h"
 
 struct GameData;
-class Weapon;
+class MeleeWeapon;
 
-class AttackState : public PlayerState
+class MeleeAttackState : public PlayerState
 {
 public:
-	AttackState(GameData* gameData, Player* player);
+	MeleeAttackState(GameData* gameData, Player* player);
 
 	void init() { }
 	void handleInput() { };
@@ -21,6 +21,6 @@ public:
 	void resume() { };
 
 private:
-	Weapon* mWeapon;
+	MeleeWeapon* mWeapon;
 	double mRotationSum;
 };

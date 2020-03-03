@@ -4,7 +4,10 @@
 #include "Game/GameData.h"
 
 
-Collectables::Collectables(GameData* gameData) : mGameData(gameData) { }
+Collectables::Collectables(GameData* gameData) : mGameData(gameData) 
+{ 
+	timer.start();
+}
 
 
 // Collectables now owns this object, must be destroyed.
@@ -16,13 +19,18 @@ void Collectables::spawn(Collectable* collectable, VectorF position)
 }
 
 
-void Collectables::slowUpdate()
+void Collectables::slowUpdate(float dt)
 {
 	mCollisionTracker.checkForCollisions();
+
+	double oscillation = std::sin(timer.getSeconds() * dt * 500);
+	VectorF oscillationVector = VectorF(oscillation, oscillation);
 
 	std::vector<Collectable*>::iterator iter;
 	for (iter = mCollectables.begin(); iter != mCollectables.end(); iter++)
 	{
+		(*iter)->move(oscillationVector);
+
 		if ((*iter)->pickedUp())
 		{
 			(*iter)->activate(mGameData->playerManager);
@@ -36,7 +44,6 @@ void Collectables::slowUpdate()
 		}
 	}
 }
-
 
 
 void Collectables::render()
