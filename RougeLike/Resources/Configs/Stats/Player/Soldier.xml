@@ -23,5 +23,5 @@
 	<MaxVelocity type = "float">300</MaxVelocity>
 	<DragFactor type = "float">0.85</DragFactor>
 
-	<Weapon type = "string">Katana</Weapon>
+	<Weapon type = "string">weapon_katana</Weapon>
 </Stats>

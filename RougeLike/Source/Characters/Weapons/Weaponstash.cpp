@@ -13,16 +13,15 @@ WeaponStash::WeaponStash()
 
 void WeaponStash::load(TextureManager* tm)
 {
-	std::string configFilePath = FileManager::Get()->getFolderPath(FileManager::Config_Weapons);
+	std::vector<std::string> filePaths = FileManager::Get()->fullPathsInFolder(FileManager::Config_Stats_Weapons);
 
-	for (auto& dir : fs::directory_iterator(configFilePath))
+	for (const std::string& filePath : filePaths)
 	{
 		WeaponData weaponData;
 
 		XMLParser parser;
-		parser.parseXML(dir.path().u8string());
+		parser.parseXML(filePath);
 		xmlNode rootNode = parser.getRootNode();
-
 
 		// Texture
 		std::string textureName = rootNode->first_node("Name")->value();
@@ -42,9 +41,8 @@ void WeaponStash::load(TextureManager* tm)
 		float y = attributes.getFloat("y");
 		weaponData.pommeloffset.set(x, y);
 
-		std::string fileName = FileManager::Get()->getFileName(dir.path().u8string());
-
-		ASSERT(Warning, data.count(fileName) == 0, "The file: %s has already been loaded into the weapon stash.cpp\n", dir.path().u8string());
+		std::string fileName = FileManager::Get()->fileName(filePath);
+		ASSERT(Warning, data.count(fileName) == 0, "The file: %s has already been loaded into the weapon stash.cpp\n", filePath);
 
 		data[fileName] = weaponData;
 	}

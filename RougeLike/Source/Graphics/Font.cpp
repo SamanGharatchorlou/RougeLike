@@ -27,9 +27,9 @@ bool Font::loadFromFile(const std::string& font, int ptSize)
 		success = false;
 	}
 
-	// TODO: can I find a way to not save this, it's a large string
+
 	// save a copy of the font name
-	mFontName = std::string(font);
+	mFontName = FileManager::Get()->fileName(std::string(font)) + ".ttf";
 
 	mPtSize = ptSize;
 
@@ -39,9 +39,10 @@ bool Font::loadFromFile(const std::string& font, int ptSize)
 
 void Font::resize(int ptSize)
 {
-	// Font must be reloaded
+	// Font must be closed and reloaded
 	TTF_CloseFont(mFont);
-	mFont = TTF_OpenFont(mFontName.c_str(), ptSize);
+
+	mFont = TTF_OpenFont(FileManager::Get()->filePath(FileManager::Font, mFontName).c_str(), ptSize);
 	mPtSize = ptSize;
 }
 

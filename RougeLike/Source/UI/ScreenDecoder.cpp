@@ -71,7 +71,7 @@ std::vector<UILayer*> ScreenDecoder::buildUIScreenLayers(ScreenAttributes& attri
 	for (LayerAttributes layerAttribute : attributes)
 	{
 		UILayer* layer = new UILayer;
-		currentLayer = layer;
+		currentLayer = layer; // TODO: expand this to all layers. also delay this so the rects are set after its all been parsed
 
 		for (Attributes attributes : layerAttribute)
 		{

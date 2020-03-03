@@ -3,6 +3,7 @@
 #include "Texture.h"
 #include "Font.h"
 
+
 TextureManager::TextureManager()
 {
 	DebugPrint(Log, "Texture manager created\n");
@@ -36,28 +37,34 @@ void TextureManager::init(SDL_Renderer* setRenderer)
 
 	DebugPrint(Log, "\n--- Loading Textures ---\n");
 
-	// Load all weapon textures
-	fm->readFile(FileManager::Configs, "WeaponTextures.txt", config);
-	textureFolder = fm->getFolderPath(FileManager::Image_Weapons);
-	fails += loadTextureConfigs(textureFolder, config);
+	DebugPrint(Log, "\nWeapon textures\n");
+	fails += loadAllTextures(FileManager::Image_Weapons);
 
-	// load all UI bits
-	fm->readFile(FileManager::Configs, "UI_Components.txt", config);
-	textureFolder = fm->getFolderPath(FileManager::Image_UI);
-	fails += loadTextureConfigs(textureFolder, config);
+	DebugPrint(Log, "\nUI Components\n");
+	fails += loadAllTextures(FileManager::Image_UI);
 
-	fm->readFile(FileManager::Configs, "Map_Tiles.txt", config);
-	textureFolder = fm->getFolderPath(FileManager::Image_Maps);
-	fails += loadTextureConfigs(textureFolder, config);
+	DebugPrint(Log, "\nMap tiles\n");
+	fails += loadAllTextures(FileManager::Image_Maps);
 	
-	fails += !loadTexture("Soldier", fm->getFilePath(FileManager::Image_Character, "soldier.png"));
-	fails += !loadTexture("Imp", fm->getFilePath(FileManager::Image_Enemies, "Imp.png"));
-	fails += !loadTexture("Tileset", fm->getFilePath(FileManager::Image_Maps, "tileset.png"));
+	DebugPrint(Log, "\nCharacters\n");
+	fails += loadAllTextures(FileManager::Image_Characters_Enemies);
+	fails += loadAllTextures(FileManager::Image_Characters_Player);
 
-	if (!fails)
-		DebugPrint(Log, " --- Texture Loading Success: NO Failures ---\n\n");
-	else
-		DebugPrint(Log, " --- Texture Loading Complete: %d Failures ---\n\n", fails);
+	DebugPrint(Log, "\n--- Texture Loading Complete: %d Failures ---\n\n", fails);
+}
+
+
+int TextureManager::loadAllTextures(FileManager::Folder folder)
+{
+	int fails = 0;
+	std::vector<std::string> imagePaths = FileManager::Get()->fullPathsInFolder(folder);
+
+	for (const std::string& path : imagePaths)
+	{
+		fails += !loadTexture(FileManager::Get()->fileName(path), path);
+	}
+
+	return fails;
 }
 
 
@@ -69,26 +76,12 @@ bool TextureManager::loadTexture(std::string label, std::string fileName)
 	if (texture->loadFromFile(fileName))
 	{
 		textures[label] = texture;
-		DebugPrint(Log, "Sucessfully loaded texture %s as %s\n", fileName.c_str(), label.c_str());
+		DebugPrint(Log, "Success: loaded texture '%s' at %s\n", label.c_str(), fileName.c_str());
 		return true;
 	}
 	else
 		return false;
 }
-
-//bool TextureManager::loadFont(std::string label, std::string fileName)
-//{
-//	Font *font = new Font(renderer);
-//
-//	if (font->loadFromFile(fileName))
-//	{
-//		fonts[label] = font;
-//		DebugPrint(Log, "Sucessfully loaded font %s as %s\n", fileName.c_str(), label.c_str());
-//		return true;
-//	}
-//	else
-//		return false;
-//}
 
 
 // what if I put an invalid texture path???
@@ -105,56 +98,4 @@ Texture* TextureManager::getTexture(std::string label)
 		DebugPrint(Warning, "No item in texture map with label: %s\n", label.c_str());
 		return nullptr;
 	}
-}
-
-//// what if I put an invalid texture path???
-//Font TextureManager::getFont(std::string label)
-//{
-//	auto search = fonts.find(label);
-//
-//	if (search != fonts.end())
-//	{
-//		return *(search->second);
-//	}
-//	else
-//	{
-//		DebugPrint(Warning, "No item in font map with label: %s\n", label.c_str());
-//		return Font();
-//	}
-//}
-
-
-
-int TextureManager::loadTextureConfigs(std::string textureFolder, std::string config)
-{
-	int start = 0;
-	int end = 0;
-	int failCounter = 0;
-
-	for (unsigned int i = 0; i < config.length(); i++)
-	{
-		char character = config[i];
-
-		if (character == '\r')
-		{
-			end = i;
-
-			std::string fileName = config.substr(start, end - start);
-			std::string filePath = textureFolder + fileName + ".png";
-
-			// skip \r\n
-			start = end + 2;
-
-			// dont attempt to load blank lines
-			if (fileName.empty())
-				continue;
-
-			if (fileName == "END")
-				break;
-
-			failCounter += !loadTexture(fileName, filePath);
-		}
-	}
-
-	return failCounter;
 }

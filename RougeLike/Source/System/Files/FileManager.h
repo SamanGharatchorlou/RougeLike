@@ -10,8 +10,8 @@ public:
 		Root_Folder,
 
 		Image_UI,
-		Image_Enemies,
-		Image_Character,
+		Image_Characters_Enemies,
+		Image_Characters_Player,
 		Image_Maps,
 		Image_Weapons,
 
@@ -23,9 +23,9 @@ public:
 		Config_UI,
 		Config_Map,
 		Config_Animations,
-		Config_Weapons,
 		Config_Stats_Enemies,
 		Config_Stats_Player,
+		Config_Stats_Weapons,
 
 		count
 	};
@@ -34,13 +34,16 @@ public:
 public:
 	static FileManager* Get();
 
-	std::string getFolderPath(Folder folder) const;
-	std::string getFilePath(Folder folder, std::string fileName) const;
-	std::string getXMLFilePath(Folder folder, std::string fileName) const;
+	std::string folderPath(const Folder folder) const;
+	std::string filePath(const Folder folder, const std::string& fileName) const;
+	std::string XMLFilePath(const Folder folder, const std::string& fileName) const;
 
-	bool readFile(Folder folder, std::string fileName, std::string& outBuffer);
+	std::vector<std::string> fullPathsInFolder(const Folder folder) const;
+	std::vector<std::string> fileNamesInFolder(const Folder folder) const;
 
-	std::string getFileName(std::string filePath) const;
+	bool readFile(const Folder folder, const std::string& fileName, std::string& outBuffer);
+
+	std::string fileName(const std::string& filePath) const;
 
 private:
 	FileManager();

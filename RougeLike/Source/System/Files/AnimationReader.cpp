@@ -9,7 +9,7 @@
 AnimationReader::AnimationReader(std::string file, TextureManager* textureManager) : 
 	mTextureManager(textureManager)
 {
-	std::string configFilePath = FileManager::Get()->getFilePath(FileManager::Config_Animations, file);
+	std::string configFilePath = FileManager::Get()->filePath(FileManager::Config_Animations, file);
 	parser.parseXML(configFilePath);
 }
 

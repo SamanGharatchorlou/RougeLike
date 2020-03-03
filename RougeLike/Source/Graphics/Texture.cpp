@@ -50,7 +50,6 @@ bool Texture::loadFromFile(const std::string filePath)
 			else
 			{
 				originalDimentions = VectorF(static_cast<float>(loadedSurface->w), static_cast<float>(loadedSurface->h));
-				DebugPrint(Log, "Texture successfully loaded from file %s\n", filePath.c_str());
 			}
 		}
 

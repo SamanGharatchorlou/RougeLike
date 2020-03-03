@@ -12,38 +12,41 @@ FileManager* FileManager::Get()
 	return &sInstance;
 }
 
+
 FileManager::FileManager()
 {
-	folderPaths[None]					= std::string("");
-	folderPaths[Root_Folder]			= std::string("\\Resources\\");
+	folderPaths[None]						= std::string("");
+	folderPaths[Root_Folder]				= std::string("\\Resources\\");
 
-	folderPaths[Image_UI]				= std::string("Images\\UI\\");
-	folderPaths[Image_Enemies]			= std::string("Images\\Enemies\\");
-	folderPaths[Image_Character]		= std::string("Images\\Character\\");
-	folderPaths[Image_Maps]				= std::string("Images\\Maps\\");
-	folderPaths[Image_Weapons]			= std::string("Images\\Weapons\\");
+	folderPaths[Image_UI]					= std::string("Images\\UI\\");
+	folderPaths[Image_Characters_Enemies]	= std::string("Images\\Characters\\Enemies\\");
+	folderPaths[Image_Characters_Player]	= std::string("Images\\Characters\\Player\\");
+	folderPaths[Image_Maps]					= std::string("Images\\Maps\\");
+	folderPaths[Image_Weapons]				= std::string("Images\\Weapons\\");
 
-	folderPaths[Font]					= std::string("Font\\");
+	folderPaths[Font]						= std::string("Font\\");
 
-	folderPaths[Configs]				= std::string("Configs\\");
-	folderPaths[Config_UI]				= std::string("Configs\\UIMenus\\");
-	folderPaths[Config_Map]				= std::string("Configs\\Map\\");
-	folderPaths[Config_Animations]		= std::string("Configs\\Animations\\");
-	folderPaths[Config_Weapons]			= std::string("Configs\\Weapons\\");
-	folderPaths[Config_Stats_Enemies]	= std::string("Configs\\Stats\\Enemies\\");
-	folderPaths[Config_Stats_Player]	= std::string("Configs\\Stats\\Player\\");
+	folderPaths[Configs]					= std::string("Configs\\");
+	folderPaths[Config_UI]					= std::string("Configs\\UIMenus\\");
+	folderPaths[Config_Map]					= std::string("Configs\\Map\\");
+	folderPaths[Config_Animations]			= std::string("Configs\\Animations\\");
+	folderPaths[Config_Stats_Enemies]		= std::string("Configs\\Stats\\Enemies\\");
+	folderPaths[Config_Stats_Player]		= std::string("Configs\\Stats\\Player\\");
+	folderPaths[Config_Stats_Weapons]		= std::string("Configs\\Stats\\Weapons\\");
 }
 
 
-std::string FileManager::getFolderPath(Folder folder) const
+std::string FileManager::folderPath(const Folder folder) const
 {
-	std::string buffer = "empty";
+	std::string buffer;
 
 	if (folder < count)
 	{
-		buffer = fs::current_path().string() +
+		buffer = std::string(
+			fs::current_path().string() +
 			folderPaths[Root_Folder] +
-			folderPaths[folder];
+			folderPaths[folder]
+		);
 	}
 	else
 	{
@@ -56,16 +59,18 @@ std::string FileManager::getFolderPath(Folder folder) const
 
 
 // Get filepath with folder specified 
-std::string FileManager::getFilePath(Folder folder, std::string fileName) const
+std::string FileManager::filePath(const Folder folder, const std::string& fileName) const
 {
-	std::string buffer = "empty";
+	std::string buffer;
 
 	if (folder < count)
 	{
-		buffer = fs::current_path().string() + 
+		buffer = std::string(
+			fs::current_path().string() + 
 			folderPaths[Root_Folder] + 
 			folderPaths[folder] + 
-			fileName;
+			fileName
+		);
 	}
 	else
 	{
@@ -78,16 +83,18 @@ std::string FileManager::getFilePath(Folder folder, std::string fileName) const
 
 
 // Get filepath with folder specified and xml extension added
-std::string FileManager::getXMLFilePath(Folder folder, std::string fileName) const
+std::string FileManager::XMLFilePath(const Folder folder, const std::string& fileName) const
 {
-	std::string buffer = "empty";
+	std::string buffer;
 
 	if (folder < count)
 	{
-		buffer = fs::current_path().string() +
+		buffer = std::string(
+			fs::current_path().string() +
 			folderPaths[Root_Folder] +
 			folderPaths[folder] +
-			fileName;
+			fileName
+		);
 	}
 	else
 	{
@@ -104,15 +111,56 @@ std::string FileManager::getXMLFilePath(Folder folder, std::string fileName) con
 	}
 #endif
 
-	buffer.append(".xml");
-
-	return buffer;
+	return buffer.append(".xml");
 }
 
 
-bool FileManager::readFile(Folder folder, std::string fileName, std::string& outBuffer)
+std::string FileManager::fileName(const std::string& filePath) const
 {
-	fs::path filePath = fs::path(getFilePath(folder, fileName));
+	char fileName[50];
+
+	errno_t error = _splitpath_s(filePath.c_str(), NULL, 0, NULL, 0, fileName, 50, NULL, 0);
+
+	return std::string(fileName);
+}
+
+
+std::vector<std::string> FileManager::fullPathsInFolder(const Folder folder) const
+{
+	std::vector<std::string> fileNameList;
+
+	// Not calling this first doesnt compile??
+	std::string folderPath = this->folderPath(folder);
+
+	for (const auto fullFilePath : fs::directory_iterator(folderPath))
+	{
+		fileNameList.push_back(fullFilePath.path().string());
+	}
+
+	return fileNameList;
+}
+
+
+std::vector<std::string> FileManager::fileNamesInFolder(const Folder folder) const
+{
+	std::vector<std::string> fileNameList;
+
+	// Not calling this first doesnt compile??
+	std::string folderPath = this->folderPath(folder);
+
+	for (const auto fullFilePath : fs::directory_iterator(folderPath))
+	{
+		fileNameList.push_back(fileName(fullFilePath.path().string()));
+	}
+
+	return fileNameList;
+}
+
+
+bool FileManager::readFile(const Folder folder, const std::string& fileName, std::string& outBuffer)
+{
+	std::string filePathString = filePath(folder, fileName);
+	fs::path filePath = fs::path(filePathString);
 	
 	if (fs::exists(filePath))
 	{
@@ -130,14 +178,4 @@ bool FileManager::readFile(Folder folder, std::string fileName, std::string& out
 	else
 		return false;
 
-}
-
-
-std::string FileManager::getFileName(std::string filePath) const
-{
-	char fileName[50];
-
-	errno_t error = _splitpath_s(filePath.c_str(), NULL, 0, NULL, 0, fileName, 50, NULL, 0);
-
-	return std::string(fileName);
 }

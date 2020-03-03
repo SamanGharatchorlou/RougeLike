@@ -8,7 +8,7 @@ Text::Text(const std::string& text, std::string font, int ptSize, SDL_Color colo
 	mFont.init(Renderer::Get()->renderer());
 
 	FileManager* fm = FileManager::Get();
-	mFont.loadFromFile(fm->getFilePath(FileManager::Font, font), ptSize);
+	mFont.loadFromFile(fm->filePath(FileManager::Font, font), ptSize);
 
 	mFont.setColour(colour);
 	setText(text);
@@ -20,7 +20,7 @@ void Text::init(const std::string& fontLabel, int ptSize, SDL_Color colour, cons
 	mFont.init(Renderer::Get()->renderer());
 
 	FileManager* fm = FileManager::Get();
-	mFont.loadFromFile(fm->getFilePath(FileManager::Font, fontLabel), ptSize);
+	mFont.loadFromFile(fm->filePath(FileManager::Font, fontLabel), ptSize);
 
 	mFont.setColour(colour);
 	setText(text);

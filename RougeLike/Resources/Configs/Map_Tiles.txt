@@ -1,9 +1,0 @@
-tileset
-floor
-wall
-
-wall_left_edge
-wall_right_edge
-wall_bot_edge
-
-END
