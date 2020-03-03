@@ -76,21 +76,11 @@ void GameState::init()
 
 	// Test spawning
 	enemies->spawn(EnemyType::Imp, 5);
-	//enemies->spawn(EnemyType::Imp, 10.0f);
-	//enemies->spawn(EnemyType::Imp, 15.0f);
-	//enemies->spawn(EnemyType::Imp, 20.0f);
-	//enemies->spawn(EnemyType::Imp, 22.0f);
-	//enemies->spawn(EnemyType::Imp, 25.0f);
-	//enemies->spawn(EnemyType::Imp, 28.0f);
-	//enemies->spawn(EnemyType::Imp, 35.0f);
-	//enemies->spawn(EnemyType::Imp, 40.0f);
-	//enemies->spawn(EnemyType::Imp, 42.0f);
 
 	Spawner itemSpawner;
 	VectorF position = itemSpawner.findSpawnPoint(mGameData->map, 10);
 
 	std::string weaponName = "weapon_big_hammer";
-
 	WeaponCollectable* weaponPickup = new WeaponCollectable(weaponName, mGameData->textureManager->getTexture(weaponName));
 
 	collectables.spawn(weaponPickup, position);

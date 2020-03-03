@@ -1,13 +1,22 @@
 #include "pch.h"
 #include "WeaponStash.h"
 
-#include "Game/GameData.h"
+#include "Melee/MeleeWeapon.h"
+
 #include "Graphics/TextureManager.h"
 
 
 WeaponStash::WeaponStash()
 {
 	data["empty"] = WeaponData();
+
+	meleeWeapon = new MeleeWeapon;
+}
+
+WeaponStash::~WeaponStash()
+{
+	delete meleeWeapon;
+	meleeWeapon = nullptr;
 }
 
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Weapon>
+<MeleeWeapon>
 	<Name>weapon_katana</Name>
 	<Damage>25</Damage>
 	<SwingSpeed>1500</SwingSpeed>
 	<SwingAngle>190</SwingSpeed>
 	<PommelOffset x = "7" y = "7"></PommelOffset>
-</Weapon>
+</MeleeWeapon>

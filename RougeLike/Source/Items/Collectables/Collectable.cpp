@@ -44,7 +44,7 @@ WeaponCollectable::WeaponCollectable(const std::string& weaponName, Texture* tex
 
 void WeaponCollectable::activate(PlayerManager* playerManager)
 {
-	playerManager->selectWeapon("BigHammer");
+	playerManager->selectWeapon("weapon_big_hammer");
 }
 
 

@@ -1,6 +1,7 @@
 #pragma once
 
-struct GameData;
+
+class Camera;
 struct WeaponData;
 class Collider;
 class PlayerPropertyBag;
@@ -10,7 +11,8 @@ class Weapon
 public:
 	virtual ~Weapon() { };
 
-	virtual void fastUpdate(VectorF anchorPosition) = 0;
+	virtual void updateAnchor(VectorF anchor) = 0;
+	virtual void updatePommelToCursor(Camera* camera, VectorF cursorPosition) = 0;
 
 	virtual void equipt(const WeaponData* data) = 0;
 
@@ -21,12 +23,11 @@ public:
 
 	void overrideCursorControl(bool overrideControl) { mOverrideCursorControl = overrideControl; }
 
-	virtual void render() = 0;
+	// Render relative to the camera
+	virtual void render(Camera* camera) = 0;
 
 
 protected:
-	GameData* mGameData; // TODO: remove this
-
 	const WeaponData* mData;
 
 	RectF mRect;

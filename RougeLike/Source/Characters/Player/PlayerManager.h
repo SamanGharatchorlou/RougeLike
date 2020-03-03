@@ -3,8 +3,8 @@
 #include "Events/Dispatcher.h"
 #include "Events/Observer.h"
 
+#include "Weapons/WeaponStash.h"
 #include "Collisions/CollisionTracker.h"
-#include "Characters/Weapons/WeaponStash.h"
 #include "Characters/Attributes/StatManager.h"
 
 struct GameData;

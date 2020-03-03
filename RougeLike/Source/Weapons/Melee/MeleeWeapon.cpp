@@ -1,9 +1,8 @@
 #include "pch.h"
 #include "MeleeWeapon.h"
 
-#include "WeaponData.h"
+#include "Weapons/WeaponData.h"
 
-#include "Game/GameData.h"
 #include "Game/Cursor.h"
 #include "Game/Camera.h"
 #include "Graphics/Texture.h"
@@ -13,11 +12,8 @@
 #include "Characters/Player/PlayerPropertyBag.h"
 
 
-MeleeWeapon::MeleeWeapon(GameData* gameData) : mSwingDirection(-1), mPlayerSwingSpeed(0.0f)
+MeleeWeapon::MeleeWeapon() : mSwingDirection(-1), mPlayerSwingSpeed(0.0f) 
 {
-
-	mGameData = gameData;
-
 	// 4 blocks seems to be a good number of blocks
 	unsigned int blocks = 4;
 	for (unsigned int i = 0; i < blocks; i++)
@@ -71,19 +67,22 @@ void MeleeWeapon::updateStats(const PlayerPropertyBag* bag)
 }
 
 
-
-void MeleeWeapon::fastUpdate(VectorF anchorPosition)
+// Follow character
+void MeleeWeapon::updateAnchor(VectorF anchor)
 {
-	// Follow character
-	mRect.SetTopLeft(anchorPosition + mData->pommeloffset);
+	mRect.SetTopLeft(anchor + mData->pommeloffset);
+}
 
+
+void MeleeWeapon::updatePommelToCursor(Camera* camera, VectorF cursorPosition)
+{
 	// Follow cursor
 	if (!mOverrideCursorControl)
 	{
 		double offsetAngle = (mData->swingArc / 2.0) * mSwingDirection;
 
 		// Camera to cursor vector
-		mDirection = (mGameData->cursor->getPosition() - mGameData->camera->toCameraCoords(mRect.BotCenter()));
+		mDirection = (cursorPosition - camera->toCameraCoords(mRect.BotCenter()));
 		mDirection = rotateVector(mDirection, offsetAngle);
 	}
 
@@ -91,10 +90,10 @@ void MeleeWeapon::fastUpdate(VectorF anchorPosition)
 }
 
 
-void MeleeWeapon::render()
+void MeleeWeapon::render(Camera* camera)
 {
 	VectorF aboutPoint(mRect.Width() / 2.0f, mRect.Height());
-	mData->texture->render(mGameData->camera->toCameraCoords(mRect), getRotation(mDirection), aboutPoint);
+	mData->texture->render(camera->toCameraCoords(mRect), getRotation(mDirection), aboutPoint);
 }
 
 
@@ -142,6 +141,14 @@ const std::vector<Collider*> MeleeWeapon::getColliders() const
 	return colliders;
 }
 
+
+void MeleeWeapon::setColliderActivite(bool isActive)
+{
+	for (unsigned int i = 0; i < mBlockColliders.size(); i++)
+	{
+		mBlockColliders[i]->setActive(isActive);
+	}
+}
 
 
 const double MeleeWeapon::maxSwingAngle() const 

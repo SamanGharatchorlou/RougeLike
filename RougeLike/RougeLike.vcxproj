@@ -27,7 +27,7 @@
     <ClCompile Include="Source\Characters\Enemies\EnemyManager.cpp" />
     <ClCompile Include="Source\Characters\Enemies\Enemy.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyPropertyBag.cpp" />
-    <ClCompile Include="Source\Characters\Weapons\MeleeWeapon.cpp" />
+    <ClCompile Include="Source\Weapons\Melee\MeleeWeapon.cpp" />
     <ClCompile Include="Source\Items\Spawner.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyStates\EnemyAlert.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyStates\EnemyAttack.cpp" />
@@ -40,8 +40,10 @@
     <ClCompile Include="Source\Characters\Player\PlayerManager.cpp" />
     <ClCompile Include="Source\Characters\Player\PlayerPropertyBag.cpp" />
     <ClCompile Include="Source\Characters\Player\States\MeleeAttackState.cpp" />
-    <ClCompile Include="Source\Characters\Weapons\Weapon.cpp" />
-    <ClCompile Include="Source\Characters\Weapons\Weaponstash.cpp" />
+    <ClCompile Include="Source\Weapons\Ranged\Projectile.cpp" />
+    <ClCompile Include="Source\Weapons\Ranged\RangedWeapon.cpp" />
+    <ClCompile Include="Source\Weapons\Weapon.cpp" />
+    <ClCompile Include="Source\Weapons\Weaponstash.cpp" />
     <ClCompile Include="Source\Collisions\Collider.cpp" />
     <ClCompile Include="Source\Characters\Attributes\Movement.cpp" />
     <ClCompile Include="Source\Audio\Audio.cpp" />
@@ -113,7 +115,7 @@
     <ClInclude Include="Source\Characters\Enemies\Enemy.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyManager.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyPropertyBag.h" />
-    <ClInclude Include="Source\Characters\Weapons\MeleeWeapon.h" />
+    <ClInclude Include="Source\Weapons\Melee\MeleeWeapon.h" />
     <ClInclude Include="Source\Graphics\Renderable.h" />
     <ClInclude Include="Source\Items\Spawner.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyStates\EnemyAlert.h" />
@@ -129,10 +131,11 @@
     <ClInclude Include="Source\Characters\Player\PlayerManager.h" />
     <ClInclude Include="Source\Characters\Player\PlayerPropertyBag.h" />
     <ClInclude Include="Source\Characters\Player\States\MeleeAttackState.h" />
-    <ClInclude Include="Source\Characters\Weapons\Swing.h" />
-    <ClInclude Include="Source\Characters\Weapons\Weapon.h" />
-    <ClInclude Include="Source\Characters\Weapons\WeaponData.h" />
-    <ClInclude Include="Source\Characters\Weapons\WeaponStash.h" />
+    <ClInclude Include="Source\Weapons\Ranged\Projectile.h" />
+    <ClInclude Include="Source\Weapons\Ranged\RangedWeapon.h" />
+    <ClInclude Include="Source\Weapons\Weapon.h" />
+    <ClInclude Include="Source\Weapons\WeaponData.h" />
+    <ClInclude Include="Source\Weapons\WeaponStash.h" />
     <ClInclude Include="Source\Collisions\Collider.h" />
     <ClInclude Include="Source\Characters\Attributes\Health.h" />
     <ClInclude Include="Source\Characters\Attributes\Movement.h" />

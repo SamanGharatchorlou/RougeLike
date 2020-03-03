@@ -2,6 +2,7 @@
 #include "Player.h"
 
 #include "Game/GameData.h"
+#include "Game/Cursor.h"
 #include "Input/InputManager.h"
 #include "Graphics/TextureManager.h"
 #include "Game/Camera.h"
@@ -9,7 +10,7 @@
 
 #include "PlayerPropertyBag.h"
 
-#include "Characters/Weapons/Weapon.h"
+#include "Weapons/Weapon.h"
 #include "States/MeleeAttackState.h"
 
 #include "System/Files/AnimationReader.h"
@@ -20,7 +21,16 @@ Player::Player(GameData* gameData) :
 	mGameData(gameData),
 	mFlip(SDL_FLIP_NONE),
 	mState(PlayerState::None)
-{ }
+{
+	mBag = new PlayerPropertyBag;
+}
+
+
+Player::~Player()
+{
+	delete mBag;
+	mBag = nullptr;
+}
 
 
 void Player::init(const std::string& characterConfig)
@@ -51,12 +61,10 @@ void Player::processStateChanges()
 
 void Player::handleInput()
 {
-	InputManager& input = *mGameData->inputManager;
-
-	physics.handleInput(&input);
+	physics.handleInput(mGameData->inputManager);
 
 	// Attack
-	if (input.isCursorPressed())
+	if (mGameData->inputManager->isCursorPressed())
 	{
 		addState(PlayerState::Attack);
 	}
@@ -89,7 +97,8 @@ void Player::fastUpdate(float dt)
 	mAnimator.fastUpdate(dt);
 
 	// Weapon
-	mWeapon->fastUpdate(getRect().TopLeft());
+	mWeapon->updateAnchor(getRect().TopLeft());
+	mWeapon->updatePommelToCursor(mGameData->camera, mGameData->cursor->getPosition());
 }
 
 
@@ -118,7 +127,7 @@ void Player::render()
 	mAnimator.getSpriteTile()->render(rect, mFlip);
 
 	// Weapon
-	mWeapon->render();
+	mWeapon->render(mGameData->camera);
 }
 
 

@@ -1,33 +1,35 @@
 #pragma once
 
-#include "Weapon.h"
+#include "Weapons/Weapon.h"
 
 class DamageCollider;
-
+class Camera;
 
 class MeleeWeapon : public Weapon
 {
 public:
-	MeleeWeapon(GameData* gameData);
+	MeleeWeapon();
 	~MeleeWeapon();
 
-	void fastUpdate(VectorF anchorPosition);
+	void updateAnchor(VectorF anchor) override;
+	void updatePommelToCursor(Camera* camera, VectorF cursorPosition) override;
 
-	void equipt(const WeaponData* data);
-	void updateStats(const PlayerPropertyBag* bag);
+	void equipt(const WeaponData* data) override;
+	void updateStats(const PlayerPropertyBag* bag) override;
 
 	void rotate(double theta);
 	const double getAngle() const { return getRotation(mDirection); }
 	const double maxSwingAngle() const;
 	const double swingSpeed() const { return mPlayerSwingSpeed; }
 
-	const std::vector<Collider*> getColliders() const;
+	const std::vector<Collider*> getColliders() const override;
+	void setColliderActivite(bool isActive) override;
 
 	const std::vector<RectF> getRects() const { return mBlockRects; }
 
 	void flipSide() { mSwingDirection *= -1; }
 
-	void render();
+	void render(Camera* camera) override;
 
 
 private:

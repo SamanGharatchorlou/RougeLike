@@ -20,7 +20,6 @@
     <ClCompile Include="Source\Game\Camera.cpp" />
     <ClCompile Include="Source\Game\Cursor.cpp" />
     <ClCompile Include="Source\pch.cpp" />
-    <ClCompile Include="Source\Characters\Weapons\Weapon.cpp" />
     <ClCompile Include="Source\Characters\Enemies\Enemy.cpp" />
     <ClCompile Include="Source\Characters\Enemies\Imp.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyManager.cpp" />
@@ -66,7 +65,6 @@
     <ClCompile Include="Source\Game\GameData.cpp" />
     <ClCompile Include="Source\Events\Observer.cpp" />
     <ClCompile Include="Source\Characters\Attributes\StatManager.cpp" />
-    <ClCompile Include="Source\Characters\Weapons\Weaponstash.cpp" />
     <ClCompile Include="Source\Debug\DebugDraw.cpp" />
     <ClCompile Include="Source\Debug\Logging.cpp" />
     <ClCompile Include="Source\Utilities\Helpers.cpp" />
@@ -76,8 +74,12 @@
     <ClCompile Include="Source\Collisions\DamageCollider.cpp" />
     <ClCompile Include="Source\UI\Elements\UIText.cpp" />
     <ClCompile Include="Source\Items\Spawner.cpp" />
-    <ClCompile Include="Source\Characters\Weapons\MeleeWeapon.cpp" />
     <ClCompile Include="Source\Characters\Player\States\MeleeAttackState.cpp" />
+    <ClCompile Include="Source\Weapons\Weapon.cpp" />
+    <ClCompile Include="Source\Weapons\Weaponstash.cpp" />
+    <ClCompile Include="Source\Weapons\Melee\MeleeWeapon.cpp" />
+    <ClCompile Include="Source\Weapons\Ranged\RangedWeapon.cpp" />
+    <ClCompile Include="Source\Weapons\Ranged\Projectile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -101,8 +103,6 @@
     <ClInclude Include="Source\Game\Camera.h" />
     <ClInclude Include="Source\Game\Cursor.h" />
     <ClInclude Include="Source\pch.h" />
-    <ClInclude Include="Source\Characters\Weapons\Weapon.h" />
-    <ClInclude Include="Source\Characters\Weapons\Swing.h" />
     <ClInclude Include="Source\Characters\Enemies\Enemy.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyManager.h" />
     <ClInclude Include="Source\Characters\Enemies\Imp.h" />
@@ -156,8 +156,6 @@
     <ClInclude Include="Source\Characters\Player\PlayerPropertyBag.h" />
     <ClInclude Include="Source\Characters\Attributes\Level.h" />
     <ClInclude Include="Source\Characters\Attributes\StatManager.h" />
-    <ClInclude Include="Source\Characters\Weapons\WeaponStash.h" />
-    <ClInclude Include="Source\Characters\Weapons\WeaponData.h" />
     <ClInclude Include="Source\Debug\DebugDraw.h" />
     <ClInclude Include="Source\Debug\Logging.h" />
     <ClInclude Include="Source\Utilities\Grid.h" />
@@ -170,8 +168,13 @@
     <ClInclude Include="Source\UI\Elements\UIText.h" />
     <ClInclude Include="Source\Items\Spawner.h" />
     <ClInclude Include="Source\Graphics\Renderable.h" />
-    <ClInclude Include="Source\Characters\Weapons\MeleeWeapon.h" />
     <ClInclude Include="Source\Characters\Player\States\MeleeAttackState.h" />
+    <ClInclude Include="Source\Weapons\Weapon.h" />
+    <ClInclude Include="Source\Weapons\WeaponData.h" />
+    <ClInclude Include="Source\Weapons\WeaponStash.h" />
+    <ClInclude Include="Source\Weapons\Melee\MeleeWeapon.h" />
+    <ClInclude Include="Source\Weapons\Ranged\RangedWeapon.h" />
+    <ClInclude Include="Source\Weapons\Ranged\Projectile.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

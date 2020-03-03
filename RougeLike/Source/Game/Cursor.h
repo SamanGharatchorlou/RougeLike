@@ -12,7 +12,7 @@ public:
 	void setSize(float x, float y) { mRect.SetSize(x, y); }
 
 	void setPosition(float x, float y) { mRect.SetCenter(x, y); }
-	VectorF getPosition() { return mRect.Center(); }
+	VectorF getPosition() const { return mRect.Center(); }
 
 
 	// Inputs

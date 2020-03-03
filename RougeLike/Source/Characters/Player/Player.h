@@ -16,7 +16,7 @@ class Player
 {
 public:
 	Player(GameData* gameData);
-	~Player() { }
+	~Player();
 
 	// TODO: change all 'std::string' parameters to 'const std::string&'
 	void init(const std::string& characterConfig);
@@ -25,6 +25,9 @@ public:
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
 	void render();
+
+	// TEMP
+	void setWeaponType(Weapon* weapon) { mWeapon = weapon; }
 
 	void equiptWeapon(const WeaponData* data);
 	void updateWeaponStats(const PlayerPropertyBag* bag);

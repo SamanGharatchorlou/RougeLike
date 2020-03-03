@@ -5,7 +5,9 @@
 #include "UI/UIManager.h"
 
 #include "Player.h"
-#include "Characters/Weapons/Weapon.h"
+
+#include "Weapons/Melee/MeleeWeapon.h"
+#include "Weapons/Weapon.h"
 
 #include "Map/Map.h"
 #include "Characters/Enemies/EnemyManager.h"
@@ -18,6 +20,8 @@ PlayerManager::PlayerManager(GameData* gameData) : mGameData(gameData)
 	player = new Player(gameData);
 
 	statManager.init(player->propertyBag());
+
+	player->setWeaponType(weaponStash.getMeleeWeapon());
 }
 
 PlayerManager::~PlayerManager()
@@ -47,7 +51,7 @@ void PlayerManager::selectCharacter(const std::string& character)
 void PlayerManager::selectWeapon(const std::string& weapon)
 {
 	const WeaponData* weaponData = &weaponStash.getData(weapon);
-	//player->equiptWeapon(weaponData);
+	player->equiptWeapon(weaponData);
 }
 
 
@@ -56,7 +60,7 @@ RectF* PlayerManager::getRectRef() { return &player->getRect(); }
 
 std::vector<Collider*> PlayerManager::getWeaponColliders() 
 { 
-	return std::vector<Collider*>();// player->getWeapon()->getColliders();
+	return player->getWeapon()->getColliders();
 }
 
 
@@ -85,7 +89,7 @@ void PlayerManager::slowUpdate(float dt)
 
 	if (player->propertyBag()->pLevel.get().didLevelUp())
 	{
-		//player->updateWeaponStats(player->propertyBag());
+		player->updateWeaponStats(player->propertyBag());
 
 		updateUIStats();
 	}
