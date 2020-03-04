@@ -23,7 +23,7 @@ public:
 private:
 	void fillBasicWeaponData(XMLParser& parser, WeaponData* data);
 	void fillMeleeWeaponData(XMLParser& parser, MeleeWeaponData* data);
-	void fillRangedWeaponData(XMLParser& parser, RangedWeaponData* data);
+	void fillRangedWeaponData(XMLParser& parser, RangedWeaponData* data, TextureManager* tm);
 
 
 private:

@@ -12,10 +12,10 @@ public:
 
 	void init(SDL_Renderer* setRenderer);
 
-	bool loadTexture(std::string label , std::string fileName);
+	bool loadTexture(const std::string label , const std::string& fileName);
 	int loadAllTextures(FileManager::Folder folder);
 
-	Texture* getTexture(std::string label);
+	Texture* getTexture(const std::string& label) const;
 
 private:
 	SDL_Renderer* renderer; // TODO: replace with singleton

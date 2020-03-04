@@ -23,5 +23,7 @@ struct MeleeWeaponData : public WeaponData
 
 struct RangedWeaponData : public WeaponData
 {
+	Texture* projectileTexture;
 	float travelSpeed;
+	VectorF projectileSize;
 };

@@ -1,9 +1,10 @@
 #pragma once
 
 #include "Weapons/Weapon.h"
+#include "Projectile.h"
 
 struct RangedWeaponData;
-class Projectile;
+
 
 class RangedWeapon : public Weapon
 {
@@ -29,5 +30,5 @@ public:
 private:
 	const RangedWeaponData* mData;
 
-	std::vector<Projectile*> projectiles;
+	std::vector<Projectile> projectiles;
 };

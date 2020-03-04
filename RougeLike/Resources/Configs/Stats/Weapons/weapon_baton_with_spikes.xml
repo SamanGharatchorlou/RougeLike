@@ -3,4 +3,7 @@
 	<Damage>25</Damage>
 	<PommelOffset x = "7" y = "-5"></PommelOffset>
 	<TravelSpeed>500</TravelSpeed>
+	<ProjectileTexture>weapon_golden_sword</ProjectileTexture>
+	<ProjectileWidth>10</ProjectileWidth>
+	<ProjectileHeight>10</ProjectileHeight>
 </Ranged>

@@ -59,7 +59,7 @@ void WeaponStash::load(TextureManager* tm)
 			weaponData->texture = tm->getTexture(fileName);
 
 			fillBasicWeaponData(parser, weaponData);
-			fillRangedWeaponData(parser, weaponData);
+			fillRangedWeaponData(parser, weaponData, tm);
 
 			ASSERT(Warning, data.count(fileName) == 0, "The file: %s has already been loaded into the weapon stash.cpp\n", filePath);
 
@@ -76,6 +76,7 @@ void WeaponStash::fillBasicWeaponData(XMLParser& parser, WeaponData* data)
 	int damage = std::stoi(parser.getRootNode()->first_node("Damage")->value());
 	data->damage = Damage(damage);
 
+	// TODO: change this to regular format or keep attribute format?
 	// Pommel offset
 	Attributes attributes = parser.getAttributes(parser.getRootNode()->first_node("PommelOffset"));
 	float x = attributes.getFloat("x");
@@ -88,15 +89,24 @@ void WeaponStash::fillBasicWeaponData(XMLParser& parser, WeaponData* data)
 void WeaponStash::fillMeleeWeaponData(XMLParser& parser, MeleeWeaponData* data)
 {
 	// Swing speed & angle
-	data->swingSpeed = std::stod(parser.getRootNode()->first_node("SwingSpeed")->value());
-	data->swingArc = std::stod(parser.getRootNode()->first_node("SwingAngle")->value());
+	data->swingSpeed = std::stof(parser.getRootNode()->first_node("SwingSpeed")->value());
+	data->swingArc = std::stof(parser.getRootNode()->first_node("SwingAngle")->value());
 }
 
 
-void WeaponStash::fillRangedWeaponData(XMLParser& parser, RangedWeaponData* data)
+void WeaponStash::fillRangedWeaponData(XMLParser& parser, RangedWeaponData* data, TextureManager* tm)
 {
 	// Travel speed
 	data->travelSpeed = std::stof(parser.getRootNode()->first_node("TravelSpeed")->value());
+
+	// Projectile texture
+	std::string projectileTexture = parser.getRootNode()->first_node("ProjectileTexture")->value();
+	data->projectileTexture = tm->getTexture(projectileTexture);
+
+	// Projectile size
+	float width = std::stof(parser.getRootNode()->first_node("ProjectileWidth")->value());
+	float height = std::stof(parser.getRootNode()->first_node("ProjectileHeight")->value());
+	data->projectileSize = VectorF(width, height);
 }
 
 

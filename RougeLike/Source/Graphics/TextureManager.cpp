@@ -69,7 +69,7 @@ int TextureManager::loadAllTextures(FileManager::Folder folder)
 
 
 // textures
-bool TextureManager::loadTexture(std::string label, std::string fileName)
+bool TextureManager::loadTexture(const std::string label, const std::string& fileName)
 {
 	Texture *texture = new Texture(renderer);
 
@@ -85,7 +85,7 @@ bool TextureManager::loadTexture(std::string label, std::string fileName)
 
 
 // what if I put an invalid texture path???
-Texture* TextureManager::getTexture(std::string label)
+Texture* TextureManager::getTexture(const std::string& label) const
 {
 	auto search = textures.find(label);
 

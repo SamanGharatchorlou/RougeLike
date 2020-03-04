@@ -16,7 +16,7 @@ Texture::~Texture()
 }
 
 
-bool Texture::loadFromFile(const std::string filePath)
+bool Texture::loadFromFile(const std::string& filePath)
 {
 	// remove any existing texture
 	free();
