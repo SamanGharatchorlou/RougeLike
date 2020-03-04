@@ -109,7 +109,7 @@ void MeleeWeapon::updateAnchor(VectorF anchor)
 }
 
 
-void MeleeWeapon::updateAimDirection(Camera* camera, VectorF cursorPosition)
+void MeleeWeapon::updateAimDirection(VectorF cursorPosition)
 {
 	// Follow cursor
 	if (!mOverrideCursorControl)
@@ -117,7 +117,7 @@ void MeleeWeapon::updateAimDirection(Camera* camera, VectorF cursorPosition)
 		float offsetAngle = (mData->swingArc / 2.0f) * mSwingDirection;
 
 		// Camera to cursor vector
-		mDirection = (cursorPosition - camera->toCameraCoords(mRect.BotCenter()));
+		mDirection = (cursorPosition - Camera::Get()->toCameraCoords(mRect.BotCenter()));
 		mDirection = rotateVector(mDirection, offsetAngle);
 	}
 
@@ -125,10 +125,10 @@ void MeleeWeapon::updateAimDirection(Camera* camera, VectorF cursorPosition)
 }
 
 
-void MeleeWeapon::render(Camera* camera)
+void MeleeWeapon::render()
 {
 	VectorF aboutPoint(mRect.Width() / 2.0f, mRect.Height());
-	mData->texture->render(camera->toCameraCoords(mRect), getRotation(mDirection), aboutPoint);
+	mData->texture->render(Camera::Get()->toCameraCoords(mRect), getRotation(mDirection), aboutPoint);
 }
 
 

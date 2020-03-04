@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Font.h"
 
-
 Font::~Font()
 {
 	if (mTexture)
@@ -18,6 +17,8 @@ bool Font::loadFromFile(const std::string& font, int ptSize)
 {
 	//Loading success flag
 	bool success = true;
+
+	mRenderer = Renderer::Get()->sdlRenderer();
 
 	//Open the font
 	mFont = TTF_OpenFont(font.c_str(), ptSize);

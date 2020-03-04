@@ -88,6 +88,8 @@ void WeaponStash::fillBasicWeaponData(XMLParser& parser, WeaponData* data)
 
 void WeaponStash::fillMeleeWeaponData(XMLParser& parser, MeleeWeaponData* data)
 {
+	data->type = WeaponType::Melee;
+
 	// Swing speed & angle
 	data->swingSpeed = std::stof(parser.getRootNode()->first_node("SwingSpeed")->value());
 	data->swingArc = std::stof(parser.getRootNode()->first_node("SwingAngle")->value());
@@ -96,6 +98,8 @@ void WeaponStash::fillMeleeWeaponData(XMLParser& parser, MeleeWeaponData* data)
 
 void WeaponStash::fillRangedWeaponData(XMLParser& parser, RangedWeaponData* data, TextureManager* tm)
 {
+	data->type = WeaponType::Ranged;
+
 	// Travel speed
 	data->travelSpeed = std::stof(parser.getRootNode()->first_node("TravelSpeed")->value());
 
@@ -111,11 +115,33 @@ void WeaponStash::fillRangedWeaponData(XMLParser& parser, RangedWeaponData* data
 
 
 
-WeaponData* WeaponStash::getData(std::string label)
+WeaponData* WeaponStash::getData(const std::string& weaponName)
 {
 #if _DEBUG
-	if(data.count(label) == 0)
-		DebugPrint(Warning, "There is no weapon with the label %s\n", label.c_str());
+	if(data.count(weaponName) == 0)
+		DebugPrint(Warning, "There is no weapon with the label %s\n", weaponName.c_str());
 #endif
-	return data.count(label) > 0 ? data[label] : data["empty"];
+	return data.count(weaponName) > 0 ? data[weaponName] : data["empty"];
+}
+
+
+Weapon* WeaponStash::getWeapon(const std::string& weaponName)
+{
+	WeaponData* data = getData(weaponName);
+
+	if (data->type == WeaponType::Melee)
+	{
+		meleeWeapon->equipt(data);
+		return meleeWeapon;
+	}
+	else if (data->type == WeaponType::Ranged)
+	{
+		rangedWeapon->equipt(data);
+		return rangedWeapon;
+	}
+	else
+	{
+		DebugPrint(Warning, "Weapon %s data has no type\n", weaponName.c_str());
+		return nullptr;
+	}
 }

@@ -4,7 +4,6 @@
 
 struct MeleeWeaponData;
 class DamageCollider;
-class Camera;
 
 
 class MeleeWeapon : public Weapon
@@ -17,7 +16,7 @@ public:
 
 	void fastUpdate(float dt) override;
 	void updateAnchor(VectorF anchor) override;
-	void updateAimDirection(Camera* camera, VectorF cursorPosition) override;
+	void updateAimDirection(VectorF cursorPosition) override;
 
 	void equipt(const WeaponData* data) override;
 	void updateStats(const PlayerPropertyBag* bag) override;
@@ -33,7 +32,7 @@ public:
 
 	void flipSide() { mSwingDirection *= -1; }
 
-	void render(Camera* camera) override;
+	void render() override;
 
 
 private:

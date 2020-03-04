@@ -73,7 +73,6 @@
     <ClCompile Include="Source\Collisions\DamageCollider.cpp" />
     <ClCompile Include="Source\UI\Elements\UIText.cpp" />
     <ClCompile Include="Source\Items\Spawner.cpp" />
-    <ClCompile Include="Source\Characters\Player\States\MeleeAttackState.cpp" />
     <ClCompile Include="Source\Weapons\Weapon.cpp" />
     <ClCompile Include="Source\Weapons\Weaponstash.cpp" />
     <ClCompile Include="Source\Weapons\Melee\MeleeWeapon.cpp" />
@@ -166,7 +165,6 @@
     <ClInclude Include="Source\UI\Elements\UIText.h" />
     <ClInclude Include="Source\Items\Spawner.h" />
     <ClInclude Include="Source\Graphics\Renderable.h" />
-    <ClInclude Include="Source\Characters\Player\States\MeleeAttackState.h" />
     <ClInclude Include="Source\Weapons\Weapon.h" />
     <ClInclude Include="Source\Weapons\WeaponData.h" />
     <ClInclude Include="Source\Weapons\WeaponStash.h" />

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "RangedWeapon.h"
 
+#include "Projectile.h"
 #include "Weapons/WeaponData.h"
 
 #include "Game/Cursor.h"
@@ -11,6 +12,7 @@
 
 #include "Characters/Player/PlayerPropertyBag.h"
 
+#include "Game/Camera.h"
 
 RangedWeapon::RangedWeapon()
 {
@@ -20,6 +22,27 @@ RangedWeapon::RangedWeapon()
 
 RangedWeapon::~RangedWeapon()
 {
+}
+
+
+void RangedWeapon::attack()
+{
+	Projectile* projectile = new Projectile(mData);
+
+	VectorF camPos = Camera::Get()->toCameraCoords(mRect.Center());
+
+	projectile->fire(camPos, mDirection);
+
+	projectiles.push_back(projectile);
+}
+
+
+void RangedWeapon::fastUpdate(float dt)
+{
+	for (unsigned int i = 0; i < projectiles.size(); i++)
+	{
+		projectiles[i]->move(dt);
+	}
 }
 
 
@@ -45,20 +68,25 @@ void RangedWeapon::updateAnchor(VectorF anchor)
 }
 
 
-void RangedWeapon::updateAimDirection(Camera* camera, VectorF cursorPosition)
+void RangedWeapon::updateAimDirection(VectorF cursorPosition)
 {
 	// Follow cursor
 	if (!mOverrideCursorControl)
 	{
 		// Camera to cursor vector
-		mDirection = (cursorPosition - camera->toCameraCoords(mRect.BotCenter()));
+		mDirection = (cursorPosition - Camera::Get()->toCameraCoords(mRect.BotCenter()));
 	}
 }
 
 
-void RangedWeapon::render(Camera* camera)
+void RangedWeapon::render()
 {
-	mData->texture->render(camera->toCameraCoords(mRect));
+	mData->texture->render(Camera::Get()->toCameraCoords(mRect));
+
+	for (unsigned int i = 0; i < projectiles.size(); i++)
+	{
+		projectiles[i]->render();
+	}
 }
 
 

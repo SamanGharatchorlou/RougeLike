@@ -17,7 +17,7 @@ public:
 
 
 public:
-	Texture(SDL_Renderer* renderer);
+	Texture();
 	~Texture();
 
 	bool loadFromFile(const std::string& filePath);
@@ -36,8 +36,10 @@ public:
 	void setAlpha(const Uint8 alpha);
 	void modifyAlpha(const int delta);
 
+
 public:
 	VectorF originalDimentions; // can I remove this??? -> change it to dimentions
+
 
 private:
 	void free() const;

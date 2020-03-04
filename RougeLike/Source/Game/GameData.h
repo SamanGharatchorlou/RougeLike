@@ -1,14 +1,12 @@
 #pragma once
 
 class Window;
-struct SDL_Renderer;
 class TextureManager;
 class AudioManager;
 class InputManager;
 class RenderManager;
 class UIManager;
 class Map;
-class Camera;
 class Cursor;
 class PlayerManager;
 class EnemyManager;
@@ -21,7 +19,6 @@ struct GameData
 	void free();
 
 	Window* window = nullptr;
-	SDL_Renderer* renderer = nullptr;
 
 	TextureManager* textureManager = nullptr;
 	AudioManager* audioManager = nullptr;
@@ -31,7 +28,6 @@ struct GameData
 	ScoreManager* scoreManager = nullptr;
 
 	Map* map = nullptr;
-	Camera* camera = nullptr;
 	Cursor* cursor = nullptr;
 
 	PlayerManager* playerManager = nullptr;

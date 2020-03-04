@@ -3,8 +3,6 @@
 
 #include "States/GameState.h"
 
-#include "Graphics/Renderer.h"
-
 // GameData
 #include "System/Window.h"
 #include "Graphics/TextureManager.h"
@@ -41,12 +39,10 @@ GameController::GameController(const char* gameTitle) : quit(false)
 		else
 		{
 			// init window renderer
-			SDL_Renderer* renderer = mGameData.window->createRenderer();
+			SDL_Renderer* sdlRenderer = mGameData.window->createRenderer();
+			Renderer* renderer = Renderer::Get()->create(sdlRenderer);
 
-			Renderer::Get()->create(renderer);
-			mGameData.renderer = renderer; // TODO: remove the renderer from game data, it is not a global?
-
-			if (!mGameData.renderer)
+			if (!renderer->sdlRenderer())
 			{
 				DebugPrint(Error, "Renderer could not be created! SDL Image Error: %s\n", IMG_GetError());
 			}
@@ -84,6 +80,10 @@ GameController::GameController(const char* gameTitle) : quit(false)
 GameController::~GameController()
 {
 	mGameData.free();
+
+	// delete globals
+	Renderer::Get()->free();
+
 
 	// quit SDL subsystems
 	Mix_Quit();

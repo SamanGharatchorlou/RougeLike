@@ -6,7 +6,6 @@
 #define DRAW_BINARY_MAP 0
 #define DRAW_ENEMY_RECT 0
 
-struct GameData;
 
 struct RenderColour
 {
@@ -46,5 +45,6 @@ struct RenderColour
 	Uint8 a = 255;
 };
 
-void debugDrawRect(GameData* gameData, RectF rect, RenderColour colour);
-void debugDrawRects(GameData* gameData, std::vector<RectF> rects, RenderColour colour);
+
+void debugDrawRect(RectF rect, RenderColour colour);
+void debugDrawRects(std::vector<RectF> rects, RenderColour colour);

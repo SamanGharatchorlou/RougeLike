@@ -1,13 +1,15 @@
 #include "pch.h"
 #include "Projectile.h"
 
+#include "Graphics/Texture.h"
 
-Projectile::Projectile(const RangedWeaponData& data)
+
+Projectile::Projectile(const RangedWeaponData* data)
 {
-	mTexture = data.projectileTexture;
-	mRect.SetSize(data.projectileSize);
+	mTexture = data->projectileTexture;
+	mRect.SetSize(data->projectileSize);
 	mCollider.init(&mRect);
-	mSpeed = data.travelSpeed;
+	mSpeed = data->travelSpeed;
 }
 
 
@@ -20,5 +22,10 @@ void Projectile::fire(VectorF position, VectorF direction)
 
 void Projectile::move(float dt)
 {
-	mRect.Translate(mDirection * mSpeed * dt);
+	mRect = mRect.Translate(mDirection.normalise() * mSpeed * dt);
+}
+
+void Projectile::render()
+{
+	mTexture->render(mRect);
 }

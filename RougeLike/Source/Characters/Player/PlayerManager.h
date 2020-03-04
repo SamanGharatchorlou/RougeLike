@@ -26,7 +26,7 @@ public:
 	void render();
 
 	void selectCharacter(const std::string& character);
-	void selectWeapon(const std::string& weapon);
+	void selectWeapon(const std::string& weaponName);
 
 	Player* get() { return player; }
 	RectF* getRectRef();

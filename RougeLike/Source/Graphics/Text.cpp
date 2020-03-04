@@ -1,12 +1,9 @@
 #include "pch.h"
 #include "Text.h"
-#include "Renderer.h"
 
 
 Text::Text(const std::string& text, std::string font, int ptSize, SDL_Color colour)
 {
-	mFont.init(Renderer::Get()->renderer());
-
 	FileManager* fm = FileManager::Get();
 	mFont.loadFromFile(fm->filePath(FileManager::Font, font), ptSize);
 
@@ -17,8 +14,6 @@ Text::Text(const std::string& text, std::string font, int ptSize, SDL_Color colo
 
 void Text::init(const std::string& fontLabel, int ptSize, SDL_Color colour, const std::string& text)
 {
-	mFont.init(Renderer::Get()->renderer());
-
 	FileManager* fm = FileManager::Get();
 	mFont.loadFromFile(fm->filePath(FileManager::Font, fontLabel), ptSize);
 

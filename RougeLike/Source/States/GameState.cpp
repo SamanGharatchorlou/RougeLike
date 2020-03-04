@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "GameState.h"
+
 #include "PauseState.h"
 
 #include "Managers/GameController.h"
@@ -40,7 +41,7 @@ void GameState::init()
 	mGameData->map->generateRandomTunnel(20, 100);
 
 	// Camera
-	mGameData->camera->setupCamera(mGameData->map);
+	Camera::Get()->setupCamera(mGameData->map);
 
 	// UI
 	mGameData->uiManager->selectScreen(Screen::Game);
@@ -55,7 +56,7 @@ void GameState::init()
 	// this should happen on the screen before this one?
 	player->selectCharacter("Soldier.xml");
 
-	mGameData->camera->follow(player->getRectRef());
+	Camera::Get()->follow(player->getRectRef());
 
 	// Enemies
 	enemies->addEnemiesToPool(EnemyType::Imp, 10);
@@ -75,12 +76,12 @@ void GameState::init()
 
 
 	// Test spawning
-	enemies->spawn(EnemyType::Imp, 5);
+	//enemies->spawn(EnemyType::Imp, 5);
 
 	Spawner itemSpawner;
 	VectorF position = itemSpawner.findSpawnPoint(mGameData->map, 10);
 
-	std::string weaponName = "weapon_big_hammer";
+	std::string weaponName = "weapon_baton_with_spikes";
 	WeaponCollectable* weaponPickup = new WeaponCollectable(weaponName, mGameData->textureManager->getTexture(weaponName));
 
 	collectables.spawn(weaponPickup, position);
@@ -127,20 +128,22 @@ void GameState::fastUpdate(float dt)
 	mGameData->playerManager->fastUpdate(dt);
 	mGameData->enemies->fastUpdate(dt);
 
-	mGameData->camera->fastUpdate();
+	Camera::Get()->fastUpdate();
 }
 
 
 void GameState::render()
 {
+	SDL_Renderer* renderer = Renderer::Get()->sdlRenderer();
+
 	// clear screen
-	SDL_SetRenderDrawColor(mGameData->renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-	SDL_RenderClear(mGameData->renderer);
+	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_RenderClear(renderer);
 
 	mGameData->renderManager->render();
 
 	// update window surface
-	SDL_RenderPresent(mGameData->renderer);
+	SDL_RenderPresent(renderer);
 }
 
 

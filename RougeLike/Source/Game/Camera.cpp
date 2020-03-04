@@ -5,6 +5,12 @@
 #include "Map/Map.h"
 #include "Characters/Attributes/Movement.h"
 
+// TEMP
+Camera* Camera::Get()
+{
+	static Camera sInstance;
+	return &sInstance;
+}
 
 void Camera::setupCamera(Map* map)
 {

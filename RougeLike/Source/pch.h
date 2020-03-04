@@ -55,3 +55,6 @@ namespace fs = std::experimental::filesystem;
 #include "System/Files/XMLParser.h"
 #include "System/Files/FileManager.h"
 #include "System/Files/XMLValueMap.h"
+
+// Globals
+#include "Graphics/Renderer.h"

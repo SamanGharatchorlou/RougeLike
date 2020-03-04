@@ -39,7 +39,6 @@
     <ClCompile Include="Source\Characters\Enemies\Imp.cpp" />
     <ClCompile Include="Source\Characters\Player\PlayerManager.cpp" />
     <ClCompile Include="Source\Characters\Player\PlayerPropertyBag.cpp" />
-    <ClCompile Include="Source\Characters\Player\States\MeleeAttackState.cpp" />
     <ClCompile Include="Source\Weapons\Ranged\Projectile.cpp" />
     <ClCompile Include="Source\Weapons\Ranged\RangedWeapon.cpp" />
     <ClCompile Include="Source\Weapons\Weapon.cpp" />
@@ -129,7 +128,6 @@
     <ClInclude Include="Source\Characters\Enemies\EnemyEnums.h" />
     <ClInclude Include="Source\Characters\Player\PlayerManager.h" />
     <ClInclude Include="Source\Characters\Player\PlayerPropertyBag.h" />
-    <ClInclude Include="Source\Characters\Player\States\MeleeAttackState.h" />
     <ClInclude Include="Source\Weapons\Ranged\Projectile.h" />
     <ClInclude Include="Source\Weapons\Ranged\RangedWeapon.h" />
     <ClInclude Include="Source\Weapons\Weapon.h" />

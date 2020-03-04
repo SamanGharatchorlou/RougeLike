@@ -19,16 +19,10 @@ void Collectable::init(std::string value, Texture* texture, RectF rect)
 }
 
 
-void Collectable::render(Camera* camera)
+void Collectable::render()
 {
-	RectF rect = camera->toWorldCoords(mRect);
+	RectF rect = Camera::Get()->toWorldCoords(mRect);
 	mTexture->render(rect);
-}
-
-
-void Collectable::toWorldCoords(Camera* camera)
-{
-	mRect = camera->toWorldCoords(mRect);
 }
 
 
@@ -44,7 +38,7 @@ WeaponCollectable::WeaponCollectable(const std::string& weaponName, Texture* tex
 
 void WeaponCollectable::activate(PlayerManager* playerManager)
 {
-	playerManager->selectWeapon("weapon_big_hammer");
+	playerManager->selectWeapon(mValue);
 }
 
 

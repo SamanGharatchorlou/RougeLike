@@ -165,7 +165,7 @@ void EnemyManager::render() const
 {
 	for (Enemy* enemy : mActiveEnemies)
 	{
-		if (mGameData->camera->inView(enemy->getRect()))
+		if (Camera::Get()->inView(enemy->getRect()))
 		{
 			enemy->render();
 		}

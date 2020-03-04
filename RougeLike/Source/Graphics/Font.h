@@ -6,7 +6,6 @@ public:
 	Font() : mRenderer(nullptr), mTexture(nullptr), mFont(nullptr) { }
 	~Font();
 
-	void init(SDL_Renderer* renderer) { mRenderer = renderer; }
 	bool loadFromFile(const std::string& font, int ptSize);
 
 	void render(const VectorF position) const;

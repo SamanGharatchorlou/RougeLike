@@ -157,7 +157,7 @@ void Map::renderLayerA(float yPoint)
 	Texture* rightEdge = tm->getTexture("wall_right_edge");
 	Texture* botEdge = tm->getTexture("wall_bot_edge");
 
-	Camera camera = *mGameData->camera;
+	Camera* camera = Camera::Get();
 	Vector2D<int> size = mTileSize * mScale;
 
 	for (unsigned int y = 0; y < yCount(); y++)
@@ -166,7 +166,7 @@ void Map::renderLayerA(float yPoint)
 		{
 			Rect<int> tileRect(Vector2D<int>(x, y) * size, size);
 
-			if (camera.inView(tileRect))
+			if (camera->inView(tileRect))
 			{
 				MapTile tile = mData[y][x];
 
@@ -176,7 +176,7 @@ void Map::renderLayerA(float yPoint)
 					continue;
 				}
 
-				tileRect = camera.toCameraCoords(tileRect);
+				tileRect = camera->toCameraCoords(tileRect);
 
 				if (mData[y][x].hasRenderType(MapTile::Wall))
 					wall->render(tileRect);
@@ -211,7 +211,7 @@ void Map::renderLayerB()
 	Texture* rightEdge = tm->getTexture("wall_right_edge");
 	Texture* botEdge = tm->getTexture("wall_bot_edge");
 
-	Camera camera = *mGameData->camera;
+	Camera* camera = Camera::Get();
 	Vector2D<int> size = mTileSize * mScale;
 
 	for (unsigned int y = 0; y < yCount(); y++)
@@ -220,7 +220,7 @@ void Map::renderLayerB()
 		{
 			Rect<int> tileRect(Vector2D<int>(x, y) * size, size);
 
-			if (camera.inView(tileRect))
+			if (camera->inView(tileRect))
 			{
 				MapTile tile = mData[y][x];
 
@@ -230,7 +230,7 @@ void Map::renderLayerB()
 					continue;
 				}
 
-				tileRect = camera.toCameraCoords(tileRect);
+				tileRect = camera->toCameraCoords(tileRect);
 
 				if (mData[y][x].hasRenderType(MapTile::Wall))
 					wall->render(tileRect);
@@ -254,7 +254,7 @@ void Map::renderLayerB()
 	}
 
 #if _DEBUG
-	float tilesInCamera = (mGameData->camera->getSize() / getTileSize()).area();
+	float tilesInCamera = (Camera::Get()->getSize() / getTileSize()).area();
 
 	if (tileRenderCounter > tilesInCamera + (yCount() * 2) + (xCount() * 2))
 		DebugPrint(Log, "There are approx %f tiles within the viewport and we are rendering %f, too many?\n",

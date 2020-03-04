@@ -9,11 +9,13 @@ class Texture;
 class Projectile
 {
 public:
-	Projectile(const RangedWeaponData& data);
+	Projectile(const RangedWeaponData* data);
 
 	void fire(VectorF position, VectorF direction);
 
 	void move(float dt);
+
+	void render();
 
 
 private:

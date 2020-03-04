@@ -20,7 +20,7 @@ PlayerManager::PlayerManager(GameData* gameData) : mGameData(gameData)
 
 	statManager.init(player->propertyBag());
 
-	player->setWeaponType(weaponStash.getMeleeWeapon());
+	//player->setWeaponType(weaponStash.getMeleeWeapon());
 }
 
 PlayerManager::~PlayerManager()
@@ -47,10 +47,10 @@ void PlayerManager::selectCharacter(const std::string& character)
 }
 
 
-void PlayerManager::selectWeapon(const std::string& weapon)
+void PlayerManager::selectWeapon(const std::string& weaponName)
 {
-	const WeaponData* weaponData = weaponStash.getData(weapon);
-	player->equiptWeapon(weaponData);
+	Weapon* weapon = weaponStash.getWeapon(weaponName);
+	player->equiptWeapon(weapon);
 }
 
 

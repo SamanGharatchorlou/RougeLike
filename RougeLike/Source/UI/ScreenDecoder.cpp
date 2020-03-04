@@ -286,7 +286,7 @@ RectF ScreenDecoder::generateRect(Attributes& attributes, const UIElement* paren
 	// Convert relative positions to pixles
 	else
 	{
-		VectorF screenSize = mGameData->camera->getSize();
+		VectorF screenSize = Camera::Get()->getSize();
 
 		x = x * screenSize.x;
 		y = y * screenSize.y;

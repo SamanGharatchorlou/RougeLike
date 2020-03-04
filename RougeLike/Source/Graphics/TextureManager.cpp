@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "TextureManager.h"
+
 #include "Texture.h"
 #include "Font.h"
 
@@ -25,10 +26,8 @@ TextureManager::~TextureManager()
 
 
 // load all textures here
-void TextureManager::init(SDL_Renderer* setRenderer) 
+void TextureManager::init() 
 {
-	renderer = setRenderer;
-
 	FileManager* fm = FileManager::Get();
 
 	std::string config;
@@ -71,7 +70,7 @@ int TextureManager::loadAllTextures(FileManager::Folder folder)
 // textures
 bool TextureManager::loadTexture(const std::string label, const std::string& fileName)
 {
-	Texture *texture = new Texture(renderer);
+	Texture *texture = new Texture;
 
 	if (texture->loadFromFile(fileName))
 	{

@@ -60,14 +60,16 @@ void PauseState::handleInput()
 
 void PauseState::render() 
 {
+	SDL_Renderer* renderer = Renderer::Get()->sdlRenderer();
+
 	// clear screen
-	SDL_SetRenderDrawColor(mGameData->renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-	SDL_RenderClear(mGameData->renderer);
+	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_RenderClear(renderer);
 
 	mGameData->renderManager->render();
 
 	// update window surface
-	SDL_RenderPresent(mGameData->renderer);
+	SDL_RenderPresent(renderer);
 }
 
 

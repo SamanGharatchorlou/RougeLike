@@ -7,7 +7,8 @@ class Camera
 {
 
 public:
-	Camera() { }
+	// temp
+	static Camera* Get();
 
 	void setupCamera(Map* map);
 
@@ -39,6 +40,12 @@ public:
 	float getWidth() { return mRect.Width(); }
 	float getHeight() { return mRect.Height(); }
 	VectorF getSize() { return mRect.Size(); }
+
+
+private:
+	Camera() { }
+	~Camera() { }
+
 
 private:
 	Vector2D<int> boundaries;

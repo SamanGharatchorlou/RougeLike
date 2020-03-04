@@ -5,9 +5,16 @@
 
 class Texture;
 
+enum class WeaponType
+{
+	None,
+	Melee,
+	Ranged
+};
 
 struct WeaponData
 {
+	WeaponType type = WeaponType::None;
 	Texture* texture = nullptr;
 	Damage damage;
 	VectorF handleOffset;
@@ -23,7 +30,7 @@ struct MeleeWeaponData : public WeaponData
 
 struct RangedWeaponData : public WeaponData
 {
-	Texture* projectileTexture;
-	float travelSpeed;
+	Texture* projectileTexture = nullptr;
+	float travelSpeed = 0.0f;
 	VectorF projectileSize;
 };

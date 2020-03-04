@@ -25,10 +25,8 @@ public:
 	void fastUpdate(float dt);
 	void render();
 
-	// TEMP
-	void setWeaponType(Weapon* weapon) { mWeapon = weapon; }
-
-	void equiptWeapon(const WeaponData* data);
+	// Weapon
+	void equiptWeapon(Weapon* weapon);
 	void updateWeaponStats(const PlayerPropertyBag* bag);
 
 	// Movement states

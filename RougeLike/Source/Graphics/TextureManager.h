@@ -10,7 +10,7 @@ public:
 	TextureManager();
 	~TextureManager();
 
-	void init(SDL_Renderer* setRenderer);
+	void init();
 
 	bool loadTexture(const std::string label , const std::string& fileName);
 	int loadAllTextures(FileManager::Folder folder);
@@ -18,6 +18,5 @@ public:
 	Texture* getTexture(const std::string& label) const;
 
 private:
-	SDL_Renderer* renderer; // TODO: replace with singleton
 	std::unordered_map<std::string, Texture*> textures;
 };

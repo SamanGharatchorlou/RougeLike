@@ -2,7 +2,6 @@
 #include "GameData.h"
 
 // GameData
-#include "Graphics/Renderer.h"
 #include "System/Window.h"
 #include "Graphics/TextureManager.h"
 #include "Audio/AudioManager.h"
@@ -22,14 +21,13 @@ void GameData::init()
 {
 	// Must be before cursor
 	textureManager = new TextureManager();
-	textureManager->init(renderer);
+	textureManager->init();
 
 	cursor = new Cursor();
 	cursor->setSize(25.0f, 25.0f);
 
-	// Must be before UIManager
-	camera = new Camera();
-	camera->setViewport(1024, 768);
+	// Set camera before UIManager
+	Camera::Get()->setViewport(1024, 768);
 
 	map = new Map(this);
 
@@ -45,8 +43,7 @@ void GameData::init()
 	uiManager = new UIManager(this);
 	uiManager->init();
 
-	// Renderer
-	// TODO: replace with singleton
+	// Rendering
 	renderManager = new RenderManager(this);
 
 	// Score Manager
@@ -66,10 +63,6 @@ void GameData::init()
 
 void GameData::free()
 {
-	// destroy renderer
-	SDL_DestroyRenderer(renderer);
-	renderer = nullptr;
-
 	// destory window
 	delete window;
 
@@ -83,7 +76,6 @@ void GameData::free()
 	delete scoreManager;
 
 	delete map;
-	delete camera;
 	delete cursor;
 
 	delete playerManager;

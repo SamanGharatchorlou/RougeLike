@@ -50,7 +50,7 @@ void Collectables::render()
 {
 	for (unsigned int i = 0; i < mCollectables.size(); i++)
 	{
-		mCollectables[i]->render(mGameData->camera);
+		mCollectables[i]->render();
 	}
 }
 

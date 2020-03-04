@@ -4,7 +4,6 @@
 
 class Texture;
 class PlayerManager;
-class Camera;
 
 class Collectable
 {
@@ -14,11 +13,10 @@ public:
 	virtual ~Collectable() { };
 
 	void init(std::string value, Texture* texture, RectF rect);
-	void render(Camera* camera);
+	void render();
 	
 	virtual void activate(PlayerManager* playerManager) = 0;
 
-	void toWorldCoords(Camera* camera);
 	void setPosition(VectorF position) { mRect.SetCenter(position); }
 	void move(VectorF translation) { mRect.Translate(translation); }
 

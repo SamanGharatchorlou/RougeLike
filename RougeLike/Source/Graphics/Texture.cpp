@@ -1,12 +1,7 @@
 #include "pch.h"
 #include "Texture.h"
 
-
-Texture::Texture(SDL_Renderer* newRenderer) : renderer(newRenderer)
-{
-	texture = nullptr;
-	originalDimentions = VectorF();
-}
+Texture::Texture() : texture(nullptr), renderer(nullptr) { }
 
 
 Texture::~Texture()
@@ -23,6 +18,8 @@ bool Texture::loadFromFile(const std::string& filePath)
 
 	// final texture
 	SDL_Texture* tempTexture = nullptr;
+
+	renderer = Renderer::Get()->sdlRenderer();
 
 	// load image
 	SDL_Surface* loadedSurface = IMG_Load(filePath.c_str());

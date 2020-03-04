@@ -3,6 +3,7 @@
 #include "WeaponData.h"
 
 class TextureManager;
+class Weapon;
 class MeleeWeapon;
 class RangedWeapon;
 
@@ -17,8 +18,9 @@ public:
 	MeleeWeapon* getMeleeWeapon() const { return meleeWeapon; }
 	RangedWeapon* getRangedWeapon() const { return rangedWeapon; }
 
-	WeaponData* getData(std::string label);
+	WeaponData* getData(const std::string& weaponName);
 
+	Weapon* getWeapon(const std::string& weaponName);
 
 private:
 	void fillBasicWeaponData(XMLParser& parser, WeaponData* data);

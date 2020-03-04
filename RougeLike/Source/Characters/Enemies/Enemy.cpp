@@ -73,14 +73,14 @@ void Enemy::render()
 	}
 
 	// render in camera coords
-	VectorF cameraPosition = mGameData->camera->toCameraCoords(mMovement.getPostion());
+	VectorF cameraPosition = Camera::Get()->toCameraCoords(mMovement.getPostion());
 	RectF rect = RectF(cameraPosition, mRect.Size());
 
 	mAnimator.getSpriteTexture()->setAlpha(mAlpha);
 	mAnimator.getSpriteTile()->render(rect, mFlip);
 
 #if DRAW_ENEMY_RECT
-	debugDrawRect(mGameData, mRect, RenderColour(RenderColour::RED));
+	debugDrawRect(mRect, RenderColour(RenderColour::RED));
 #endif
 }
 

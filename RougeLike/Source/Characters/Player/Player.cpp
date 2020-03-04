@@ -7,11 +7,9 @@
 #include "Graphics/TextureManager.h"
 #include "Game/Camera.h"
 
-
 #include "PlayerPropertyBag.h"
 
 #include "Weapons/Weapon.h"
-#include "States/MeleeAttackState.h"
 
 #include "System/Files/AnimationReader.h"
 #include "Map/Map.h"
@@ -86,7 +84,7 @@ void Player::fastUpdate(float dt)
 
 	// Weapon
 	mWeapon->updateAnchor(getRect().TopLeft());
-	mWeapon->updateAimDirection(mGameData->camera, mGameData->cursor->getPosition());
+	mWeapon->updateAimDirection(mGameData->cursor->getPosition());
 }
 
 
@@ -111,17 +109,17 @@ void Player::render()
 #endif
 
 	// Character
-	RectF rect = mGameData->camera->toCameraCoords(getRect());
+	RectF rect = Camera::Get()->toCameraCoords(getRect());
 	mAnimator.getSpriteTile()->render(rect, mFlip);
 
 	// Weapon
-	mWeapon->render(mGameData->camera);
+	mWeapon->render();
 }
 
 
-void Player::equiptWeapon(const WeaponData* data)
+void Player::equiptWeapon(Weapon* weapon)
 {
-	mWeapon->equipt(data);
+	mWeapon = weapon;
 	updateWeaponStats(mBag);
 }
 
@@ -146,6 +144,7 @@ void Player::updateState()
 
 
 // -- Private Functions -- //
+
 void Player::initAnimations(const std::string& config)
 {
 	// config reader
