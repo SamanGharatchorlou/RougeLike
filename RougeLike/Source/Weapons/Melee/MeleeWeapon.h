@@ -13,16 +13,15 @@ public:
 	MeleeWeapon();
 	~MeleeWeapon();
 
-	void attack() override { mAttacking = true; }
+	void attack() override;
 
-	void update(float dt) override;
+	void fastUpdate(float dt) override;
 	void updateAnchor(VectorF anchor) override;
 	void updateAimDirection(Camera* camera, VectorF cursorPosition) override;
 
 	void equipt(const WeaponData* data) override;
 	void updateStats(const PlayerPropertyBag* bag) override;
 
-	void rotate(float theta);
 	const float getAngle() const { return getRotation(mDirection); }
 	const float maxSwingAngle() const;
 	const float swingSpeed() const { return mPlayerSwingSpeed; }

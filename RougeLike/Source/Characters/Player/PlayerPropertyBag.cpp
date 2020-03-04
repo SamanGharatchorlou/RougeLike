@@ -72,7 +72,7 @@ void PlayerPropertyBag::readAttributes(std::string name)
 	pAttackDmgUp.set(attackDmgUp);
 
 	// Attack Speed up rate
-	int attackSpdUp = map.getInt("AttackSpeedUpRate");
+	float attackSpdUp = map.getFloat("AttackSpeedUpRate");
 	pAttackSpdUp.set(attackSpdUp);
 
 	// Movement Speed up rate

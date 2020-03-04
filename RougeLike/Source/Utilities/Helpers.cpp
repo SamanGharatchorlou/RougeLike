@@ -38,7 +38,7 @@ VectorF rotateVector(VectorF vector, float dTheta)
 // (0,1) = 0 degrees
 float getRotation(VectorF direction)
 {
-	return (std::atan2(direction.y, direction.x) * 180.0 / pi) + 90.0;
+	return (std::atan2(direction.y, direction.x) * 180.0f / pi) + 90.0f;
 }
 
 

@@ -14,7 +14,7 @@ public:
 
 	void attack() override { } //{ mAttacking = true; }
 
-	void update(float dt) override { }
+	void fastUpdate(float dt) override { }
 
 	void updateAnchor(VectorF anchor) override;
 	void updateAimDirection(Camera* camera, VectorF cursorPosition) override;

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "MeleeWeapon.h"
 
+#include "Characters/Player/PlayerPropertyBag.h"
 #include "Weapons/WeaponData.h"
 
 #include "Game/Cursor.h"
@@ -9,7 +10,6 @@
 
 #include "Collisions/DamageCollider.h"
 
-#include "Characters/Player/PlayerPropertyBag.h"
 
 
 MeleeWeapon::MeleeWeapon() : mSwingDirection(-1), mPlayerSwingSpeed(0.0f), mRotationSum(0.0), mAttacking(false)
@@ -67,7 +67,15 @@ void MeleeWeapon::updateStats(const PlayerPropertyBag* bag)
 }
 
 
-void MeleeWeapon::update(float dt)
+void MeleeWeapon::attack()
+{
+	mAttacking = true;
+	overrideCursorControl(true);
+	setColliderActivite(true);
+}
+
+
+void MeleeWeapon::fastUpdate(float dt)
 {
 	if (mAttacking)
 	{
@@ -75,6 +83,10 @@ void MeleeWeapon::update(float dt)
 		{
 			mRotationSum = 0.0f;
 			mAttacking = false;
+
+			flipSide();
+			overrideCursorControl(false);
+			setColliderActivite(false);
 		}
 		else
 		{
@@ -84,7 +96,7 @@ void MeleeWeapon::update(float dt)
 			if (mRotationSum > maxSwingAngle())
 				theta = maxSwingAngle() - mRotationSum;
 
-			rotate(theta);
+			mDirection = rotateVector(mDirection, theta * -mSwingDirection);
 		}
 	}
 }
@@ -102,7 +114,7 @@ void MeleeWeapon::updateAimDirection(Camera* camera, VectorF cursorPosition)
 	// Follow cursor
 	if (!mOverrideCursorControl)
 	{
-		float offsetAngle = (mData->swingArc / 2.0) * mSwingDirection;
+		float offsetAngle = (mData->swingArc / 2.0f) * mSwingDirection;
 
 		// Camera to cursor vector
 		mDirection = (cursorPosition - camera->toCameraCoords(mRect.BotCenter()));
@@ -117,12 +129,6 @@ void MeleeWeapon::render(Camera* camera)
 {
 	VectorF aboutPoint(mRect.Width() / 2.0f, mRect.Height());
 	mData->texture->render(camera->toCameraCoords(mRect), getRotation(mDirection), aboutPoint);
-}
-
-
-void MeleeWeapon::rotate(float theta)
-{
-	mDirection = rotateVector(mDirection, theta * -mSwingDirection);
 }
 
 

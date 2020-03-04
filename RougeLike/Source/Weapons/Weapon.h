@@ -14,7 +14,7 @@ public:
 
 	virtual void attack() = 0;
 
-	virtual void update (float dt) = 0;
+	virtual void fastUpdate(float dt) = 0;
 	virtual void updateAnchor(VectorF anchor) = 0;
 	virtual void updateAimDirection(Camera* camera, VectorF cursorPosition) = 0;
 

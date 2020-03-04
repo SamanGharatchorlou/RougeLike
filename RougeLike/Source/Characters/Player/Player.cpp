@@ -52,12 +52,6 @@ void Player::init(const std::string& characterConfig)
 }
 
 
-void Player::processStateChanges()
-{
-	stateMachine.processStateChanges();
-}
-
-
 void Player::handleInput()
 {
 	physics.handleInput(mGameData->inputManager);
@@ -71,9 +65,6 @@ void Player::handleInput()
 
 void Player::slowUpdate(float dt)
 {
-	// Attack state
-	stateMachine.getActiveState().slowUpdate(dt);
-
 	mAnimator.slowUpdate(dt);
 
 	updateState();
@@ -84,8 +75,7 @@ void Player::fastUpdate(float dt)
 {
 	physics.update(dt);
 
-	// Attack state
-	stateMachine.getActiveState().fastUpdate(dt);
+	mWeapon->fastUpdate(dt);
 	
 	if (physics.isMoving())
 		mAnimator.setSpeedFactor(physics.relativeSpeed());
@@ -153,21 +143,6 @@ void Player::updateState()
 	}
 }
 
-void Player::addMeleeAttackState()
-{
-	stateMachine.addState(new MeleeAttackState(this));
-}
-
-void Player::addRangedAttackState()
-{
-	//stateMachine.addState(new MeleeAttackState(this));
-}
-
-
-void Player::popState()
-{
-	stateMachine.popState();
-}
 
 
 // -- Private Functions -- //

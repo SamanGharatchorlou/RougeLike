@@ -19,7 +19,7 @@ public:
 
 	// TODO: change all 'std::string' parameters to 'const std::string&'
 	void init(const std::string& characterConfig);
-	void processStateChanges();
+	void processStateChanges() { }
 	void handleInput();
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
@@ -33,11 +33,6 @@ public:
 
 	// Movement states
 	void updateState();
-
-	// Attack states
-	void addMeleeAttackState();
-	void addRangedAttackState();
-	void popState();
 
 	RectF&		getRect()		{ return physics.getRect(); }
 	Collider&	getCollider()	{ return mCollider; }

@@ -21,7 +21,7 @@ RenderManager::RenderManager(GameData* gameData) :
 
 void RenderManager::render()
 {
-	return;
+	//return;
 
 
 	mMap->renderLayerA(mPlayer->getRectRef()->Center().y);
