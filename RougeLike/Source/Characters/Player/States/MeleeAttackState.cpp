@@ -1,20 +1,12 @@
 #include "pch.h"
 #include "MeleeAttackState.h"
 
-#include "Game/GameData.h"
-#include "Weapons/Weapon.h"
 #include "Weapons/Melee/MeleeWeapon.h"
-
 #include "Characters/Player/Player.h"
-#include "Collisions/Collider.h"
 
 
-MeleeAttackState::MeleeAttackState(GameData* gameData, Player* player) : 
-	mRotationSum(0.0)
+MeleeAttackState::MeleeAttackState(Player* player) : mPlayer(player), mRotationSum(0.0)
 {
-	setupStateData(gameData, player);
-	mState = PlayerState::Attack;
-
 	mWeapon = static_cast<MeleeWeapon*>(mPlayer->getWeapon());
 	mWeapon->overrideCursorControl(true);
 	mWeapon->setColliderActivite(true);

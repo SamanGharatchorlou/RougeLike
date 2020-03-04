@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Ranged>
+	<Damage>25</Damage>
+	<PommelOffset x = "7" y = "-5"></PommelOffset>
+	<TravelSpeed>500</TravelSpeed>
+</Ranged>

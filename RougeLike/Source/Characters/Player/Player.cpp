@@ -19,8 +19,7 @@
 
 Player::Player(GameData* gameData) : 
 	mGameData(gameData),
-	mFlip(SDL_FLIP_NONE),
-	mState(PlayerState::None)
+	mFlip(SDL_FLIP_NONE)
 {
 	mBag = new PlayerPropertyBag;
 }
@@ -63,10 +62,9 @@ void Player::handleInput()
 {
 	physics.handleInput(mGameData->inputManager);
 
-	// Attack
 	if (mGameData->inputManager->isCursorPressed())
 	{
-		addState(PlayerState::Attack);
+		mWeapon->attack();
 	}
 }
 
@@ -98,7 +96,7 @@ void Player::fastUpdate(float dt)
 
 	// Weapon
 	mWeapon->updateAnchor(getRect().TopLeft());
-	mWeapon->updatePommelToCursor(mGameData->camera, mGameData->cursor->getPosition());
+	mWeapon->updateAimDirection(mGameData->camera, mGameData->cursor->getPosition());
 }
 
 
@@ -146,27 +144,23 @@ void Player::updateWeaponStats(const PlayerPropertyBag* bag)
 
 void Player::updateState()
 {
-	PlayerState::actionState newState = physics.isMoving() ? PlayerState::Run : PlayerState::Idle;
+	bool isMoving = physics.isMoving();
 
-	if (mState != newState)
+	if (mMoving != physics.isMoving())
 	{
-		selectAnimation(newState);
-		mState = newState;
+		mMoving = physics.isMoving();
+		selectAnimation();
 	}
 }
 
-
-void Player::addState(PlayerState::actionState newState)
+void Player::addMeleeAttackState()
 {
-	switch (newState)
-	{
-	case PlayerState::Attack:
-		stateMachine.addState(new MeleeAttackState(mGameData, this));
-		break;
-	default:
-		DebugPrint(Warning, "Failed adding %d player state\n", newState);
-		break;
-	}
+	stateMachine.addState(new MeleeAttackState(this));
+}
+
+void Player::addRangedAttackState()
+{
+	//stateMachine.addState(new MeleeAttackState(this));
 }
 
 
@@ -193,20 +187,10 @@ void Player::initAnimations(const std::string& config)
 
 
 
-void Player::selectAnimation(PlayerState::actionState state)
+void Player::selectAnimation()
 {
-	switch (state)
-	{
-	case PlayerState::Idle:
-		mAnimator.selectAnimation("Idle");
-		break;
-	case PlayerState::Run:
+	if(mMoving)
 		mAnimator.selectAnimation("Run");
-		break;
-	case PlayerState::Attack:
-		break;
-	default:
-		DebugPrint(Warning, "Failed replacing player state with %d\n", state);
-		break;
-	}
+	else
+		mAnimator.selectAnimation("Idle");
 }

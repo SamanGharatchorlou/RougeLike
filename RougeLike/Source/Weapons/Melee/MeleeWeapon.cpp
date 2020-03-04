@@ -12,7 +12,7 @@
 #include "Characters/Player/PlayerPropertyBag.h"
 
 
-MeleeWeapon::MeleeWeapon() : mSwingDirection(-1), mPlayerSwingSpeed(0.0f) 
+MeleeWeapon::MeleeWeapon() : mSwingDirection(-1), mPlayerSwingSpeed(0.0f), mRotationSum(0.0), mAttacking(false)
 {
 	// 4 blocks seems to be a good number of blocks
 	unsigned int blocks = 4;
@@ -44,7 +44,7 @@ MeleeWeapon::~MeleeWeapon()
 
 void MeleeWeapon::equipt(const WeaponData* data)
 {
-	mData = data;
+	mData = static_cast<const MeleeWeaponData*>(data);
 
 	for (unsigned int i = 0; i < mBlockColliders.size(); i++)
 	{
@@ -67,19 +67,42 @@ void MeleeWeapon::updateStats(const PlayerPropertyBag* bag)
 }
 
 
-// Follow character
-void MeleeWeapon::updateAnchor(VectorF anchor)
+void MeleeWeapon::update(float dt)
 {
-	mRect.SetTopLeft(anchor + mData->pommeloffset);
+	if (mAttacking)
+	{
+		if (mRotationSum > maxSwingAngle())
+		{
+			mRotationSum = 0.0f;
+			mAttacking = false;
+		}
+		else
+		{
+			float theta = mPlayerSwingSpeed * dt;
+			mRotationSum += theta;
+
+			if (mRotationSum > maxSwingAngle())
+				theta = maxSwingAngle() - mRotationSum;
+
+			rotate(theta);
+		}
+	}
 }
 
 
-void MeleeWeapon::updatePommelToCursor(Camera* camera, VectorF cursorPosition)
+// Follow character
+void MeleeWeapon::updateAnchor(VectorF anchor)
+{
+	mRect.SetTopLeft(anchor + mData->handleOffset);
+}
+
+
+void MeleeWeapon::updateAimDirection(Camera* camera, VectorF cursorPosition)
 {
 	// Follow cursor
 	if (!mOverrideCursorControl)
 	{
-		double offsetAngle = (mData->swingArc / 2.0) * mSwingDirection;
+		float offsetAngle = (mData->swingArc / 2.0) * mSwingDirection;
 
 		// Camera to cursor vector
 		mDirection = (cursorPosition - camera->toCameraCoords(mRect.BotCenter()));
@@ -97,7 +120,7 @@ void MeleeWeapon::render(Camera* camera)
 }
 
 
-void MeleeWeapon::rotate(double theta)
+void MeleeWeapon::rotate(float theta)
 {
 	mDirection = rotateVector(mDirection, theta * -mSwingDirection);
 }
@@ -151,7 +174,7 @@ void MeleeWeapon::setColliderActivite(bool isActive)
 }
 
 
-const double MeleeWeapon::maxSwingAngle() const 
+const float MeleeWeapon::maxSwingAngle() const
 { 
 	return mData->swingArc; 
 }

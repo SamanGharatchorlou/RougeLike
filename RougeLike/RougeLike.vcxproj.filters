@@ -9,7 +9,6 @@
     <ClCompile Include="Source\Audio\Audio.cpp" />
     <ClCompile Include="Source\Graphics\TextureManager.cpp" />
     <ClCompile Include="Source\Audio\AudioManager.cpp" />
-    <ClCompile Include="Source\Characters\Player\States\PlayerState.cpp" />
     <ClCompile Include="Source\Characters\Player\Player.cpp" />
     <ClCompile Include="Source\Characters\Attributes\Movement.cpp" />
     <ClCompile Include="Source\Input\InputManager.cpp" />
@@ -91,7 +90,6 @@
     <ClInclude Include="Source\Audio\Audio.h" />
     <ClInclude Include="Source\Graphics\TextureManager.h" />
     <ClInclude Include="Source\Audio\AudioManager.h" />
-    <ClInclude Include="Source\Characters\Player\States\PlayerState.h" />
     <ClInclude Include="Source\Characters\Player\Player.h" />
     <ClInclude Include="Source\Characters\Attributes\Movement.h" />
     <ClInclude Include="Source\Input\InputManager.h" />

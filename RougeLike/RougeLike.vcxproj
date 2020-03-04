@@ -76,7 +76,6 @@
     <ClCompile Include="Source\UI\Elements\UIText.cpp" />
     <ClCompile Include="Source\Utilities\Helpers.cpp" />
     <ClCompile Include="Source\Characters\Player\Player.cpp" />
-    <ClCompile Include="Source\Characters\Player\States\PlayerState.cpp" />
     <ClCompile Include="Source\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
@@ -171,7 +170,6 @@
     <ClInclude Include="Source\Utilities\Rect.h" />
     <ClInclude Include="Source\Utilities\Vector2D.h" />
     <ClInclude Include="Source\Characters\Player\Player.h" />
-    <ClInclude Include="Source\Characters\Player\States\PlayerState.h" />
     <ClInclude Include="Source\pch.h" />
     <ClInclude Include="Source\States\GameState.h" />
     <ClInclude Include="Source\States\PauseState.h" />

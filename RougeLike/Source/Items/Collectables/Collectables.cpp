@@ -23,7 +23,7 @@ void Collectables::slowUpdate(float dt)
 {
 	mCollisionTracker.checkForCollisions();
 
-	double oscillation = std::sin(timer.getSeconds() * dt * 500);
+	float oscillation = std::sin(timer.getSeconds() * dt * 500);
 	VectorF oscillationVector = VectorF(oscillation, oscillation);
 
 	std::vector<Collectable*>::iterator iter;

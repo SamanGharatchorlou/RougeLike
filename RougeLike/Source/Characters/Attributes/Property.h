@@ -36,13 +36,13 @@ class AttackDamageProperty : public Property<Damage> { };
 // Player - Attributes
 class LevelProperty : public Property<Level> { };
 class DefenceProperty : public Property<int> { };
-class AttackSpeedProperty : public Property<double> { };
+class AttackSpeedProperty : public Property<float> { };
 
 // Player - Level up rate
 class HealthUpRate : public Property<Health> { };
 class DefenceUpRate : public Property<int> { };
 class AttackDamageUpRate : public Property<Damage> { };
-class AttackSpeedUpRate : public Property<double> { };
+class AttackSpeedUpRate : public Property<float> { };
 class MovementSpeedUpRate : public Property<int> { };
 
 // Player - Movement

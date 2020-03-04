@@ -49,7 +49,7 @@ void PlayerPropertyBag::readAttributes(std::string name)
 	pAttackDmg.set(attackDamage);
 
 	// Attack Speed
-	double attackSpeed = map.getDouble("AttackSpeed");
+	float attackSpeed = map.getFloat("AttackSpeed");
 	pAttackSpd.set(attackSpeed);
 
 	// Movement Speed

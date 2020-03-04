@@ -53,7 +53,7 @@ T randomNumberBetween(T min, T max)
 }
 
 
-double getRotation(VectorF direction);
-VectorF rotateVector(VectorF vec, double dTheta);
+float getRotation(VectorF direction);
+VectorF rotateVector(VectorF vec, float dTheta);
 
 VectorF closestRectSide(VectorF point, RectF rect);

@@ -2,12 +2,11 @@
 #include "PlayerManager.h"
 
 #include "Game/GameData.h"
-#include "UI/UIManager.h"
 
 #include "Player.h"
 
 #include "Weapons/Melee/MeleeWeapon.h"
-#include "Weapons/Weapon.h"
+#include "Weapons/Ranged/RangedWeapon.h"
 
 #include "Map/Map.h"
 #include "Characters/Enemies/EnemyManager.h"
@@ -50,7 +49,7 @@ void PlayerManager::selectCharacter(const std::string& character)
 
 void PlayerManager::selectWeapon(const std::string& weapon)
 {
-	const WeaponData* weaponData = &weaponStash.getData(weapon);
+	const WeaponData* weaponData = weaponStash.getData(weapon);
 	player->equiptWeapon(weaponData);
 }
 
@@ -65,7 +64,11 @@ std::vector<Collider*> PlayerManager::getWeaponColliders()
 
 
 void PlayerManager::preProcess() { player->processStateChanges(); }
-void PlayerManager::handleInput() { player->handleInput(); }
+
+void PlayerManager::handleInput() 
+{ 
+	player->handleInput();
+}
 
 
 void PlayerManager::slowUpdate(float dt) 

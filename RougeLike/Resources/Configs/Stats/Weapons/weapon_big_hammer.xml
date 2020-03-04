@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<MeleeWeapon>
-	<Name>weapon_big_hammer</Name>
+<Melee>
 	<Damage>60</Damage>
 	<SwingSpeed>700</SwingSpeed>
 	<SwingAngle>250</SwingSpeed>
 	<PommelOffset x = "7" y = "-5"></PommelOffset>
-</MeleeWeapon>
+</Melee>

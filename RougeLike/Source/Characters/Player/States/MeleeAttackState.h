@@ -1,14 +1,15 @@
 #pragma once
 
-#include "PlayerState.h"
+#include "States/State.h"
 
-struct GameData;
+class Player;
 class MeleeWeapon;
 
-class MeleeAttackState : public PlayerState
+
+class MeleeAttackState : public State
 {
 public:
-	MeleeAttackState(GameData* gameData, Player* player);
+	MeleeAttackState(Player* player);
 
 	void init() { }
 	void handleInput() { };
@@ -21,6 +22,8 @@ public:
 	void resume() { };
 
 private:
+	Player* mPlayer;
+
 	MeleeWeapon* mWeapon;
 	double mRotationSum;
 };

@@ -1,5 +1,4 @@
 #pragma once
-#include "States/PlayerState.h" // TODO: only for enum actionstate type, could move it??
 
 #include "Characters/Attributes/Physics.h"
 #include "States/StateMachine.h"
@@ -36,7 +35,8 @@ public:
 	void updateState();
 
 	// Attack states
-	void addState(PlayerState::actionState newState);
+	void addMeleeAttackState();
+	void addRangedAttackState();
 	void popState();
 
 	RectF&		getRect()		{ return physics.getRect(); }
@@ -50,7 +50,7 @@ public:
 
 private:
 	// Animations
-	void selectAnimation(PlayerState::actionState state);
+	void selectAnimation();
 	void initAnimations(const std::string& config);
 
 
@@ -68,6 +68,6 @@ private:
 
 	SDL_RendererFlip mFlip;
 
-	PlayerState::actionState mState;
+	bool mMoving;
 };
 

@@ -10,8 +10,18 @@ struct WeaponData
 {
 	Texture* texture = nullptr;
 	Damage damage;
-	double swingArc = 0.0;
-	double swingSpeed = 0.0;
-	VectorF pommeloffset;
+	VectorF handleOffset;
 };
 
+
+struct MeleeWeaponData : public WeaponData
+{
+	float swingArc = 0.0;
+	float swingSpeed = 0.0;
+};
+
+
+struct RangedWeaponData : public WeaponData
+{
+	float travelSpeed;
+};

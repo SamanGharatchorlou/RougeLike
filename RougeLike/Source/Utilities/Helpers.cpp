@@ -22,11 +22,11 @@ std::vector<int> parseCSVtoInt(std::string csv)
 
 // x' = x cos - y sin
 // y' = x sin + y cos
-VectorF rotateVector(VectorF vector, double dTheta)
+VectorF rotateVector(VectorF vector, float dTheta)
 {
-	const float radians = static_cast<float>(toRadians(dTheta));
-
 	VectorF outVector;
+	float radians = toRadians(dTheta);
+
 	outVector.x = vector.x * cos(radians) - vector.y * sin(radians);
 	outVector.y = (vector.x * sin(radians) + vector.y * cos(radians));
 
@@ -36,9 +36,9 @@ VectorF rotateVector(VectorF vector, double dTheta)
 
 
 // (0,1) = 0 degrees
-double getRotation(VectorF direction)
+float getRotation(VectorF direction)
 {
-	return (static_cast<double>(std::atan2(direction.y, direction.x)) * 180.0 / pi) + 90.0;
+	return (std::atan2(direction.y, direction.x) * 180.0 / pi) + 90.0;
 }
 
 

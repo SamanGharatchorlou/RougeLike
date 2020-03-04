@@ -5,7 +5,6 @@
 StateMachine::StateMachine()
 {
 	states.push(new NullState);
-	DebugPrint(Log, "StateMachine created with a null state\n");
 }
 
 StateMachine::~StateMachine()

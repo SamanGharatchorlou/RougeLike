@@ -12,8 +12,8 @@
 	<AttackDamage type = "int">10</AttackDamage>
 	<AttackDamageUpRate type = "int">2</AttackDamageUpRate>
 
-	<AttackSpeed type = "double">10</AttackSpeed>
-	<AttackSpeedUpRate type = "double">0.5</AttackSpeedUpRate>
+	<AttackSpeed type = "float">10</AttackSpeed>
+	<AttackSpeedUpRate type = "float">0.5</AttackSpeedUpRate>
 
 	<MovementSpeed type = "int">1</MovementSpeed>
 	<MovementSpeedUpRate type = "int">0</MovementSpeedUpRate>

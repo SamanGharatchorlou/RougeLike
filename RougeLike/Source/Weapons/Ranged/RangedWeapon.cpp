@@ -25,12 +25,7 @@ RangedWeapon::~RangedWeapon()
 
 void RangedWeapon::equipt(const WeaponData* data)
 {
-	mData = data;
-
-	//for (unsigned int i = 0; i < mBlockColliders.size(); i++)
-	//{
-	//	mBlockColliders[i]->setDamage(mData->damage);
-	//}
+	mData = static_cast<const RangedWeaponData*>(data);
 
 	// TODO: where/what to do with this 1.5 scale factor
 	mRect.SetSize(mData->texture->originalDimentions * 1.5f);
@@ -46,13 +41,18 @@ void RangedWeapon::updateStats(const PlayerPropertyBag* bag)
 // Follow character
 void RangedWeapon::updateAnchor(VectorF anchor)
 {
-	mRect.SetTopLeft(anchor + mData->pommeloffset);
+	mRect.SetTopLeft(anchor + mData->handleOffset);
 }
 
 
-void RangedWeapon::updatePommelToCursor(Camera* camera, VectorF cursorPosition)
+void RangedWeapon::updateAimDirection(Camera* camera, VectorF cursorPosition)
 {
-
+	// Follow cursor
+	if (!mOverrideCursorControl)
+	{
+		// Camera to cursor vector
+		mDirection = (cursorPosition - camera->toCameraCoords(mRect.BotCenter()));
+	}
 }
 
 
@@ -68,6 +68,7 @@ const std::vector<Collider*> RangedWeapon::getColliders() const
 {
 	std::vector<Collider*> colliders;
 
+	// TODO: get all traveling projectile colliders
 	//for (unsigned int i = 0; i < mBlockColliders.size(); i++)
 	//{
 	//	colliders.push_back(mBlockColliders[i]);
@@ -77,6 +78,7 @@ const std::vector<Collider*> RangedWeapon::getColliders() const
 }
 
 
+// TODO: maybe dont need this?
 void RangedWeapon::setColliderActivite(bool isActive)
 {
 	//for (unsigned int i = 0; i < mBlockColliders.size(); i++)
