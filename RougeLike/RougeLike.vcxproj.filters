@@ -79,6 +79,8 @@
     <ClCompile Include="Source\Weapons\Melee\MeleeWeapon.cpp" />
     <ClCompile Include="Source\Weapons\Ranged\RangedWeapon.cpp" />
     <ClCompile Include="Source\Weapons\Ranged\Projectile.cpp" />
+    <ClCompile Include="Source\Game\Trauma.cpp" />
+    <ClCompile Include="Source\Game\CameraShake.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -173,6 +175,9 @@
     <ClInclude Include="Source\Weapons\Melee\MeleeWeapon.h" />
     <ClInclude Include="Source\Weapons\Ranged\RangedWeapon.h" />
     <ClInclude Include="Source\Weapons\Ranged\Projectile.h" />
+    <ClInclude Include="Source\Game\Trauma.h" />
+    <ClInclude Include="Source\Game\CameraShake.h" />
+    <ClInclude Include="Source\Events\Events.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />
