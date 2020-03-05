@@ -101,11 +101,11 @@ void PlayerManager::slowUpdate(float dt)
 
 void PlayerManager::updateUIStats()
 {
-	UpdateUIValueEvent attackStat("Atk val", player->propertyBag()->pAttackDmg.get().value());
-	notify(Event::UpdateUIValue, attackStat);
+	UpdateTextBoxEvent attackStat("Atk val", player->propertyBag()->pAttackDmg.get().value());
+	notify(Event::UpdateTextBox, attackStat);
 
-	UpdateUIValueEvent defenceStat("Def val", player->propertyBag()->pDefence.get());
-	notify(Event::UpdateUIValue, defenceStat);
+	UpdateTextBoxEvent defenceStat("Def val", player->propertyBag()->pDefence.get());
+	notify(Event::UpdateTextBox, defenceStat);
 }
 
 

@@ -27,6 +27,8 @@
     <ClCompile Include="Source\Characters\Enemies\EnemyManager.cpp" />
     <ClCompile Include="Source\Characters\Enemies\Enemy.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyPropertyBag.cpp" />
+    <ClCompile Include="Source\Game\CameraShake.cpp" />
+    <ClCompile Include="Source\Game\Trauma.cpp" />
     <ClCompile Include="Source\Weapons\Melee\MeleeWeapon.cpp" />
     <ClCompile Include="Source\Items\Spawner.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyStates\EnemyAlert.cpp" />
@@ -113,6 +115,9 @@
     <ClInclude Include="Source\Characters\Enemies\Enemy.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyManager.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyPropertyBag.h" />
+    <ClInclude Include="Source\Events\Events.h" />
+    <ClInclude Include="Source\Game\CameraShake.h" />
+    <ClInclude Include="Source\Game\Trauma.h" />
     <ClInclude Include="Source\Weapons\Melee\MeleeWeapon.h" />
     <ClInclude Include="Source\Graphics\Renderable.h" />
     <ClInclude Include="Source\Items\Spawner.h" />

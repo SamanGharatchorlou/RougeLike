@@ -106,9 +106,9 @@ void UIManager::handleEvent(Event event, EventData& data)
 {
 	switch (event)
 	{
-	case Event::UpdateUIValue:
+	case Event::UpdateTextBox:
 	{
-		UpdateUIValueEvent eventData = static_cast<UpdateUIValueEvent&>(data);
+		UpdateTextBoxEvent eventData = static_cast<UpdateTextBoxEvent&>(data);
 
 		UIElement* element = find(eventData.mId);
 

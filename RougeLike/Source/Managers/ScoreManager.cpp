@@ -5,11 +5,8 @@ void ScoreManager::slowUpdate()
 {
 	if (hasChanged)
 	{
-		//UpdateScoreEvent event(mScore);
-		//notify(Event::UpdateScore, event);
-
-		UpdateUIValueEvent event("Score val", mScore);
-		notify(Event::UpdateUIValue, event);
+		UpdateTextBoxEvent event("Score val", mScore);
+		notify(Event::UpdateTextBox, event);
 	}
 
 	hasChanged = false;
