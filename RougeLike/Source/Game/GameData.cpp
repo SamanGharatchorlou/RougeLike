@@ -54,6 +54,9 @@ void GameData::init()
 	playerManager = new PlayerManager(this);
 	playerManager->addObserver(uiManager);
 
+	// TEMP
+	playerManager->addObserver(Camera::Get()->getShake());
+
 	// Enemies
 	enemies = new EnemyManager(this);
 	enemies->addObserver(scoreManager);

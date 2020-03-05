@@ -254,7 +254,7 @@ void Map::renderLayerB()
 	}
 
 #if _DEBUG
-	float tilesInCamera = (Camera::Get()->getSize() / getTileSize()).area();
+	float tilesInCamera = (Camera::Get()->size() / getTileSize()).area();
 
 	if (tileRenderCounter > tilesInCamera + (yCount() * 2) + (xCount() * 2))
 		DebugPrint(Log, "There are approx %f tiles within the viewport and we are rendering %f, too many?\n",

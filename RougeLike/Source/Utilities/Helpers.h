@@ -46,14 +46,12 @@ float distanceSquared(Vector2D<T> pointA, Vector2D<K> pointB)
 }
 
 
-template<typename T>
-T randomNumberBetween(T min, T max)
-{
-	return (rand() % (max - min)) + min;
-}
+int randomNumberBetween(int min, int max);
 
 
 float getRotation(VectorF direction);
 VectorF rotateVector(VectorF vec, float dTheta);
 
 VectorF closestRectSide(VectorF point, RectF rect);
+
+double perlinNoise(float dt);

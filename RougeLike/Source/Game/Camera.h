@@ -1,5 +1,7 @@
 #pragma once
 
+#include "CameraShake.h"
+
 class Window;
 class Map;
 
@@ -15,7 +17,8 @@ public:
 	// follow this object
 	void follow(RectF* rect);
 
-	void fastUpdate();
+	void slowUpdate(float dt);
+	void fastUpdate(float dt);
 
 	void setViewport(VectorF viewport) { mRect.SetSize(viewport); }
 	void setViewport(float x, float y) { mRect.SetSize(VectorF(x, y)); }
@@ -37,9 +40,9 @@ public:
 	VectorF toWorldCoords(VectorF cameraCoords);
 	RectF toWorldCoords(RectF cameraRect);
 
-	float getWidth() { return mRect.Width(); }
-	float getHeight() { return mRect.Height(); }
-	VectorF getSize() { return mRect.Size(); }
+	VectorF size() const { return mRect.Size(); }
+
+	CameraShake* getShake() { return &shakeyCam; }
 
 
 private:
@@ -52,7 +55,11 @@ private:
 
 	RectF* mFollowingRect;
 
+	const RectF* mActiveRect;
+
 	RectF mRect;
+
+	CameraShake shakeyCam;
 };
 
 

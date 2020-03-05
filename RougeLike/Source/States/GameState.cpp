@@ -120,6 +120,8 @@ void GameState::slowUpdate(float dt)
 	mGameData->scoreManager->slowUpdate();
 
 	collectables.slowUpdate(dt);
+
+	Camera::Get()->slowUpdate(dt);
 }
 
 
@@ -128,7 +130,7 @@ void GameState::fastUpdate(float dt)
 	mGameData->playerManager->fastUpdate(dt);
 	mGameData->enemies->fastUpdate(dt);
 
-	Camera::Get()->fastUpdate();
+	Camera::Get()->fastUpdate(dt);
 }
 
 

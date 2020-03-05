@@ -2,8 +2,9 @@
 
 #if _DEBUG
 #include "Game/GameData.h"
-//#include "Game/Camera.h"
 #endif
+
+// TODO: const up
 
 template<class T>
 class Rect
@@ -79,8 +80,8 @@ public:
 
 
 	// Movement
-	inline Rect<T> Translate(Vector2D<T> vector);
-	inline Rect<T> Translate(T lateral, T vertical) { return Rect<T>(x1 + lateral, y1 + vertical, x2 + lateral, y2 + vertical); }
+	inline Rect<T> Translate(Vector2D<T> vector) const;
+	inline Rect<T> Translate(T lateral, T vertical) const { return Rect<T>(x1 + lateral, y1 + vertical, x2 + lateral, y2 + vertical); }
 
 
 	// Get Size
@@ -92,7 +93,7 @@ public:
 
 
 	// Validity
-	inline bool isValid() { return (Size().x != -1 && Size().y != -1); }
+	inline bool isValid() const { return (Size().x != -1 && Size().y != -1); }
 
 
 	// return true if rectangles overlap
@@ -235,13 +236,8 @@ inline void    Rect<T> ::SetCenter(T x, T y)
 
 
 template <class T>
-inline Rect<T>    Rect<T> ::Translate(Vector2D<T> vector)
+inline Rect<T>    Rect<T> ::Translate(Vector2D<T> vector) const
 {
-	//x1 += vector.x;
-	//x2 += vector.x;
-	//y1 += vector.y;
-	//y2 += vector.y;
-
 	return Rect<T>(x1 + vector.x, y1 + vector.y, x2 + vector.x, y2 + vector.y);
 }
 

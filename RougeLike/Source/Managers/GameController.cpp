@@ -148,13 +148,12 @@ void GameController::run()
 		mGameData.window->setTitle(ss.str().c_str());
 #endif
 
-		// Slow update runs once per frame
-		mGameStateMachine.getActiveState().slowUpdate(dt);
-
 		// Fast update runs updateLoopRepeats number of times per frame
 		for (int i = 0; i < updateLoopRepeats; i++)
 			mGameStateMachine.getActiveState().fastUpdate(dt / updateLoopRepeats);
 
+		// Slow update runs once per frame
+		mGameStateMachine.getActiveState().slowUpdate(dt);
 
 		mGameData.uiManager->update();
 

@@ -20,7 +20,12 @@ void Camera::setupCamera(Map* map)
 
 	mRect.SetLeftCenter(startingPosition);
 
+	mActiveRect = &mRect;
+
 	boundaries = map->size();	
+
+	// TEMP - shake setup
+	shakeyCam.init(150, 200, 20.0f);
 }
 
 
@@ -30,7 +35,8 @@ void Camera::follow(RectF* rect)
 }
 
 
-void Camera::fastUpdate()
+// TODO: does this need to be in fast update? could be slow maybe?
+void Camera::fastUpdate(float dt)
 {
 	VectorF translation = mFollowingRect->Center() - mRect.Center();
 
@@ -48,27 +54,44 @@ void Camera::fastUpdate()
 }
 
 
+
+void Camera::slowUpdate(float dt)
+{
+	if (shakeyCam.hasTrauma())
+	{
+		mActiveRect = shakeyCam.rect();
+
+		shakeyCam.setRect(mRect);
+		shakeyCam.update(dt);
+	}
+	else
+	{
+		mActiveRect = &mRect;
+	}
+}
+
+
 VectorF Camera::toCameraCoords(VectorF worldCoords)
 {
-	return worldCoords - mRect.TopLeft();
+	return worldCoords - mActiveRect->TopLeft();
 }
 
 RectF Camera::toCameraCoords(RectF worldRect)
 {
-	return RectF(worldRect.TopLeft() - mRect.TopLeft(), worldRect.Size());
+	return RectF(worldRect.TopLeft() - mActiveRect->TopLeft(), worldRect.Size());
 }
 
 Rect<int> Camera::toCameraCoords(Rect<int> worldRect)
 {
-	return Rect<int>(worldRect.TopLeft() - mRect.TopLeft().toInt(), worldRect.Size());
+	return Rect<int>(worldRect.TopLeft() - mActiveRect->TopLeft().toInt(), worldRect.Size());
 }
 
 VectorF Camera::toWorldCoords(VectorF cameraCoords)
 {
-	return cameraCoords - mRect.TopLeft();
+	return cameraCoords - mActiveRect->TopLeft();
 }
 
 RectF Camera::toWorldCoords(RectF cameraRect)
 {
-	return RectF(cameraRect.TopLeft() - mRect.TopLeft(), cameraRect.Size());
+	return RectF(cameraRect.TopLeft() - mActiveRect->TopLeft(), cameraRect.Size());
 }

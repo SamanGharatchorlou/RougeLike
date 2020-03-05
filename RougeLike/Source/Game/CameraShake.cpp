@@ -1,22 +1,31 @@
 #include "pch.h"
 #include "CameraShake.h"
 
-CameraShake::CameraShake(float maxTrauma, float traumaReduction, float maxAngle, VectorF maxOffset) :
+CameraShake::CameraShake() :
 	mTrauma(0), 
-	mMaxTrauma(maxTrauma), 
-	mTraumaReduction(traumaReduction), 
-	mMaxAngle(maxAngle), 
-	mMaxOffset(maxOffset)
+	mMaxTrauma(0), 
+	mTraumaReduction(0), 
+	mMaxAngle(0.0f)
 {
 
 }
 
 
+void CameraShake::init(float maxTrauma, float traumaReduction, float maxAngle)
+{
+	mMaxTrauma = maxTrauma;
+	mTraumaReduction = traumaReduction;
+	mMaxAngle = maxAngle;
+}
+
+
 void CameraShake::update(float dt)
 {
+	cameraRect = cameraRect.Translate(offset());
+
 	// dampen trauma;
 	mTrauma -= mTraumaReduction * dt;
-	mTrauma = std::min(0, mTrauma);
+	mTrauma = std::max(0.0f, mTrauma);
 }
 
 
@@ -28,16 +37,14 @@ void CameraShake::handleEvent(const Event event, EventData& data)
 
 		mTrauma += eventData.mTrauma;
 
-		mTrauma = clamp(mTrauma, 0, mMaxTrauma);
-		printf("trauma increased %d\n", mTrauma);
+		mTrauma = clamp(mTrauma, 0.0f, mMaxTrauma);
 	}
 }
 
-// use perlin noise
 
 float CameraShake::angle()
 {
-	float randomNumber = randomNumberBetween(-1.0f, +1.0f);
+	float randomNumber = (float)randomNumberBetween(-100, 100) / 100;
 	return mTrauma * mMaxAngle * randomNumber;
 }
 
@@ -45,8 +52,9 @@ float CameraShake::angle()
 VectorF CameraShake::offset()
 {
 	// TODO: check these two random number generations give actual random numbers
-	float xRandom = randomNumberBetween(-1.0f, +1.0f);
-	float yRandom = randomNumberBetween(-1.0f, +1.0f);
+	float xRandom = (float)randomNumberBetween(-100, 100) / 100;
+	float yRandom = (float)randomNumberBetween(-100, 100) / 100;
 
-	return mMaxOffset * VectorF(xRandom, yRandom) * mTrauma;
+	printf("trauma %f\n", mTrauma);
+	return (VectorF(xRandom, yRandom) / 2000) * (mTrauma * mTrauma);
 }

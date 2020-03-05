@@ -1,33 +1,34 @@
 #pragma once
 
-#include "Trauma.h" // Do I need this?
-
 #include "Events/Observer.h"
 
 
 class CameraShake : public Observer
 {
 public:
-	CameraShake(float maxTrauma, float traumaReduction, float maxAngle, VectorF maxOffset);
+	CameraShake();
 
+	void init(float maxTrauma, float traumaReduction, float maxAngle);
 	void update(float dt);
 
-	void handleEvent(const Event event, EventData& data) override;
+	void setRect(RectF rect) { cameraRect = rect; }
 
+	void handleEvent(const Event event, EventData& data) override;
 
 	float angle();
 	VectorF offset();
 
+	RectF* rect() { return &cameraRect; }
+
+	bool hasTrauma() const { return mTrauma != 0; }
+
+
 private:
-	//Trauma trauma;
-	int mTrauma;
-	int mMaxTrauma;
+	float mTrauma;
+	float mMaxTrauma;
+	float mTraumaReduction;
 
-	int mTraumaReduction;
-
-	//float mAngle;
 	float mMaxAngle;
 
-	//VectorF mOffset;
-	VectorF mMaxOffset;
+	RectF cameraRect;
 };

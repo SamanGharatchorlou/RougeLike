@@ -1,7 +1,9 @@
+
 #include "pch.h"
 #include "PlayerManager.h"
 
 #include "Game/GameData.h"
+#include "Input/InputManager.h"
 
 #include "Player.h"
 
@@ -19,8 +21,6 @@ PlayerManager::PlayerManager(GameData* gameData) : mGameData(gameData)
 	player = new Player(gameData);
 
 	statManager.init(player->propertyBag());
-
-	//player->setWeaponType(weaponStash.getMeleeWeapon());
 }
 
 PlayerManager::~PlayerManager()
@@ -68,6 +68,15 @@ void PlayerManager::preProcess() { player->processStateChanges(); }
 void PlayerManager::handleInput() 
 { 
 	player->handleInput();
+
+	if (mGameData->inputManager->getButton(Button::E).isPressed())
+	{
+		printf("E pressed\n");
+
+		TraumaEvent event(100);
+
+		notify(Event::Trauma, event);
+	}
 }
 
 

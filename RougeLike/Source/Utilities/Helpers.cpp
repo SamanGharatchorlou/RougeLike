@@ -42,6 +42,12 @@ float getRotation(VectorF direction)
 }
 
 
+int randomNumberBetween(int min, int max)
+{
+	return (rand() % (max - min)) + min;
+}
+
+
 
 VectorF closestRectSide(VectorF point, RectF rect)
 {
@@ -68,3 +74,4 @@ VectorF closestRectSide(VectorF point, RectF rect)
 
 	return rectSides[nearestSide];
 }
+
