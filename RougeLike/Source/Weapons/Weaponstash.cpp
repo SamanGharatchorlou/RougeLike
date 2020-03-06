@@ -111,6 +111,9 @@ void WeaponStash::fillRangedWeaponData(XMLParser& parser, RangedWeaponData* data
 	float width = std::stof(parser.getRootNode()->first_node("ProjectileWidth")->value());
 	float height = std::stof(parser.getRootNode()->first_node("ProjectileHeight")->value());
 	data->projectileSize = VectorF(width, height);
+
+	// Quiver size
+	data->quiverSize = std::stoi(parser.getRootNode()->first_node("QuiverSize")->value());
 }
 
 

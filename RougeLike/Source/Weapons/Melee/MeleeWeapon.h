@@ -15,6 +15,8 @@ public:
 	void attack() override;
 
 	void fastUpdate(float dt) override;
+	void slowUpdate(float dt) override { };
+
 	void updateAnchor(VectorF anchor) override;
 	void updateAimDirection(VectorF cursorPosition) override;
 

@@ -2,6 +2,9 @@
 
 #include "Weapons/Weapon.h"
 
+#include "Quiver.h"
+#include "Utilities/Queue.h"
+
 struct RangedWeaponData;
 class Projectile;
 
@@ -15,6 +18,7 @@ public:
 	void attack() override;
 
 	void fastUpdate(float dt) override;
+	void slowUpdate(float dt) override;
 
 	void updateAnchor(VectorF anchor) override;
 	void updateAimDirection(VectorF cursorPosition) override;
@@ -30,5 +34,7 @@ public:
 private:
 	const RangedWeaponData* mData;
 
-	std::vector<Projectile*> projectiles;
+	Quiver quiver;
+
+	Queue<Projectile*> travelingProjectiles;
 };

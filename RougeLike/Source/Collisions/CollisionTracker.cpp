@@ -48,7 +48,30 @@ void CollisionTracker::clearSubscriptions()
 
 
 
-void CollisionTracker::checkForCollisions()
+void CollisionTracker::checkBaseCollisions()
+{
+	for (unsigned int j = 0; j < mBaseColliders.size(); j++)
+	{
+		if (!mBaseColliders[j]->isActive())
+			continue;
+
+		for (unsigned int i = 0; i < mSubbedColliders.size(); i++)
+		{
+			if (!mSubbedColliders[i]->isActive())
+				continue;
+
+			// check pixle collision
+			if (mBaseColliders[j]->doesIntersect(mSubbedColliders[i]))
+			{
+				mBaseColliders[j]->hasCollidedWith(mSubbedColliders[i]);
+				mBaseColliders[j]->didCollide(true);
+			}
+		}
+	}
+}
+
+
+void CollisionTracker::checkAllCollisions()
 {
 	for (unsigned int j = 0; j < mBaseColliders.size(); j++)
 	{
@@ -66,8 +89,8 @@ void CollisionTracker::checkForCollisions()
 				mBaseColliders[j]->hasCollidedWith(mSubbedColliders[i]);
 				mBaseColliders[j]->didCollide(true);
 
-				// TODO: make sure this doesnt break anything else
-				//mSubbedColliders[i]->didCollide(true);
+				mSubbedColliders[i]->didCollide(true);
+				mSubbedColliders[i]->hasCollidedWith(mBaseColliders[j]);
 			}
 		}
 	}

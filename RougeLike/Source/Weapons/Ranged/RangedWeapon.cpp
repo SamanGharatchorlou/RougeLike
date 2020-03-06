@@ -4,7 +4,6 @@
 #include "Projectile.h"
 #include "Weapons/WeaponData.h"
 
-#include "Game/Cursor.h"
 #include "Game/Camera.h"
 #include "Graphics/Texture.h"
 
@@ -12,9 +11,10 @@
 
 #include "Characters/Player/PlayerPropertyBag.h"
 
-#include "Game/Camera.h"
+constexpr int quiverStashCount = 30;
 
-RangedWeapon::RangedWeapon()
+
+RangedWeapon::RangedWeapon() : quiver(quiverStashCount)
 {
 
 }
@@ -27,21 +27,31 @@ RangedWeapon::~RangedWeapon()
 
 void RangedWeapon::attack()
 {
-	Projectile* projectile = new Projectile(mData);
-
 	VectorF camPos = Camera::Get()->toCameraCoords(mRect.Center());
+
+	Projectile* projectile = quiver.draw();
 
 	projectile->fire(camPos, mDirection);
 
-	projectiles.push_back(projectile);
+	travelingProjectiles.push_back(projectile);
 }
 
 
 void RangedWeapon::fastUpdate(float dt)
 {
-	for (unsigned int i = 0; i < projectiles.size(); i++)
+	for (unsigned int i = 0; i < travelingProjectiles.size(); i++)
 	{
-		projectiles[i]->move(dt);
+		travelingProjectiles[i]->move(dt);
+	}
+}
+
+
+void RangedWeapon::slowUpdate(float dt)
+{
+	if (travelingProjectiles.front()->hasCollided())
+	{
+		travelingProjectiles.pop_front();
+		quiver.lostProjectile();
 	}
 }
 
@@ -83,9 +93,9 @@ void RangedWeapon::render()
 {
 	mData->texture->render(Camera::Get()->toCameraCoords(mRect));
 
-	for (unsigned int i = 0; i < projectiles.size(); i++)
+	for (unsigned int i = 0; i < travelingProjectiles.size(); i++)
 	{
-		projectiles[i]->render();
+		travelingProjectiles[i]->render();
 	}
 }
 

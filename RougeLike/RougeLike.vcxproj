@@ -42,6 +42,7 @@
     <ClCompile Include="Source\Characters\Player\PlayerManager.cpp" />
     <ClCompile Include="Source\Characters\Player\PlayerPropertyBag.cpp" />
     <ClCompile Include="Source\Weapons\Ranged\Projectile.cpp" />
+    <ClCompile Include="Source\Weapons\Ranged\Quiver.cpp" />
     <ClCompile Include="Source\Weapons\Ranged\RangedWeapon.cpp" />
     <ClCompile Include="Source\Weapons\Weapon.cpp" />
     <ClCompile Include="Source\Weapons\Weaponstash.cpp" />
@@ -118,6 +119,8 @@
     <ClInclude Include="Source\Events\Events.h" />
     <ClInclude Include="Source\Game\CameraShake.h" />
     <ClInclude Include="Source\Game\Trauma.h" />
+    <ClInclude Include="Source\Utilities\Queue.h" />
+    <ClInclude Include="Source\Utilities\RingBuffer.h" />
     <ClInclude Include="Source\Weapons\Melee\MeleeWeapon.h" />
     <ClInclude Include="Source\Graphics\Renderable.h" />
     <ClInclude Include="Source\Items\Spawner.h" />
@@ -134,6 +137,7 @@
     <ClInclude Include="Source\Characters\Player\PlayerManager.h" />
     <ClInclude Include="Source\Characters\Player\PlayerPropertyBag.h" />
     <ClInclude Include="Source\Weapons\Ranged\Projectile.h" />
+    <ClInclude Include="Source\Weapons\Ranged\Quiver.h" />
     <ClInclude Include="Source\Weapons\Ranged\RangedWeapon.h" />
     <ClInclude Include="Source\Weapons\Weapon.h" />
     <ClInclude Include="Source\Weapons\WeaponData.h" />

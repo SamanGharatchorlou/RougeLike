@@ -28,6 +28,15 @@ void Collider::init(RectF* objectRect, VectorF colliderScale)
 	mColliderScale = colliderScale;
 }
 
+
+void Collider::reset()
+{
+	mIsActive = true;
+	mHasCollided = false;
+	mOtherCollider = nullptr;
+}
+
+
 // convert the player rect to just return the base of the player i.e. their effective feet area
 RectF Collider::getRectBase() const 
 {

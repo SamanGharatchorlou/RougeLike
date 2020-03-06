@@ -61,14 +61,6 @@ void Player::handleInput()
 }
 
 
-void Player::slowUpdate(float dt)
-{
-	mAnimator.slowUpdate(dt);
-
-	updateState();
-}
-
-
 void Player::fastUpdate(float dt)
 {
 	physics.update(dt);
@@ -85,6 +77,16 @@ void Player::fastUpdate(float dt)
 	// Weapon
 	mWeapon->updateAnchor(getRect().TopLeft());
 	mWeapon->updateAimDirection(mGameData->cursor->getPosition());
+}
+
+
+void Player::slowUpdate(float dt)
+{
+	mWeapon->slowUpdate(dt);
+
+	mAnimator.slowUpdate(dt);
+
+	updateState();
 }
 
 

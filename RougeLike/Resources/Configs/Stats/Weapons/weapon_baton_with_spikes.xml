@@ -6,4 +6,5 @@
 	<ProjectileTexture>weapon_golden_sword</ProjectileTexture>
 	<ProjectileWidth>10</ProjectileWidth>
 	<ProjectileHeight>10</ProjectileHeight>
+	<QuiverSize>20</QuiverSize>
 </Ranged>

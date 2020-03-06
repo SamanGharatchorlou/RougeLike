@@ -21,7 +21,7 @@ void Collectables::spawn(Collectable* collectable, VectorF position)
 
 void Collectables::slowUpdate(float dt)
 {
-	mCollisionTracker.checkForCollisions();
+	mCollisionTracker.checkBaseCollisions();
 
 	float oscillation = std::sin(timer.getSeconds() * dt * 500);
 	VectorF oscillationVector = VectorF(oscillation, oscillation);

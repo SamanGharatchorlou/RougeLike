@@ -132,7 +132,6 @@ void MeleeWeapon::render()
 }
 
 
-// TODO: have this return blocks instead?
 void MeleeWeapon::updateWeaponBlocks()
 {
 	VectorF weaponVector = mDirection.normalise() * mRect.Height();

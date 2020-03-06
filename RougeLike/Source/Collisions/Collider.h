@@ -9,6 +9,7 @@ public:
 	virtual ~Collider() { }
 
 	void init(RectF* objectRect, VectorF colliderScale = VectorF(1.0f, 1.0f));
+	void reset();
 
 	bool doesIntersect(Collider* collider) const;
 

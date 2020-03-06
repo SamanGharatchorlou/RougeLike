@@ -86,7 +86,7 @@ void PlayerManager::slowUpdate(float dt)
 
 	updateTrackedColliders();
 
-	collisionTracker.checkForCollisions();
+	collisionTracker.checkBaseCollisions();
 
 	// implement collisions, player getting hit by the enemy
 	if (player->getCollider().hasCollided())

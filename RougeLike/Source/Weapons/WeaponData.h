@@ -33,4 +33,5 @@ struct RangedWeaponData : public WeaponData
 	Texture* projectileTexture = nullptr;
 	float travelSpeed = 0.0f;
 	VectorF projectileSize;
+	int quiverSize = 0;
 };

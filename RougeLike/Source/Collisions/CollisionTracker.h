@@ -11,7 +11,11 @@ public:
 
 	void clearSubscriptions();
 
-	void checkForCollisions();
+	// Only mark base colliders as has collided
+	void checkBaseCollisions();
+
+	// Mark both base and subbed colliders as has collded
+	void checkAllCollisions();
 
 private:
 	std::vector<Collider*> mBaseColliders;
