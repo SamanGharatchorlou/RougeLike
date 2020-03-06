@@ -132,7 +132,7 @@ void UIManager::handleEvent(Event event, EventData& data)
 		{
 			UIBox* healthBar = static_cast<UIBox*>(element);
 
-			RectF rect = healthBar->getRect();
+			RectF rect = healthBar->rect();
 			rect.SetWidth(rect.Width() * event.health.getPercentage());
 
 			healthBar->setRect(rect);

@@ -64,11 +64,11 @@ ScreenAttributes ScreenDecoder::getScreenAttributes(std::string config)
 }
 
 
-std::vector<UILayer*> ScreenDecoder::buildUIScreenLayers(ScreenAttributes& attributes)
+std::vector<UILayer*> ScreenDecoder::buildUIScreenLayers(ScreenAttributes& screenAttributes)
 {
 	std::vector<UILayer*> layers;	
 
-	for (LayerAttributes layerAttribute : attributes)
+	for (LayerAttributes layerAttribute : screenAttributes)
 	{
 		UILayer* layer = new UILayer;
 		currentLayer = layer; // TODO: expand this to all layers. also delay this so the rects are set after its all been parsed
@@ -138,6 +138,56 @@ std::vector<UILayer*> ScreenDecoder::buildUIScreenLayers(ScreenAttributes& attri
 		layers.push_back(layer);
 	}
 
+	// TODO: split this up into smaller functions??
+
+	// Store parents for more effcient third pass
+	std::vector<UIElement*> parentElements;
+
+	// Second Pass: Setup parents
+	for (unsigned int layerIndex = 0; layerIndex < screenAttributes.size(); layerIndex++)
+	{
+		// TODO: does this setup a reference or value?
+		LayerAttributes layerAttributes = screenAttributes[layerIndex];
+
+		for (unsigned int elementIndex = 0; elementIndex < layerAttributes.size(); elementIndex++)
+		{
+			Attributes elementAttributes = layerAttributes[elementIndex];
+
+			if (elementAttributes.contains("parent"))
+			{
+				UIElement* element = layers[layerIndex]->element(elementIndex);
+
+				// search for parent with this id
+				UIElement* parent = findElement(layers, elementAttributes.getString("parent"));
+				ASSERT(Warning, parent != nullptr, "No parent was found with label: %s\n", elementAttributes.getString("parent").c_str());
+
+				element->setParernt(parent);
+
+				parentElements.push_back(parent);
+			}
+		}
+	}
+
+	// Third Pass: setup childred
+	for (UIElement* parent : parentElements)
+	{
+		for (UILayer* layer : layers)
+		{
+			for (UIElement* element : layer->elements())
+			{
+				if (element->parent() == parent)
+				{
+					parent->addChild(element);
+				}
+			}
+		}
+
+		ASSERT(Warning, parent->children().size() != 0, "Parernt %s could find no children\n", parent->id());
+	}
+
+	// Fourth Pass
+	// TODO: fill rect elements now that the parent relationship has been setup
+
 	ASSERT(Warning, layers.size() > 0, "This screen has no layers\n");
 	return layers;
 }
@@ -148,25 +198,15 @@ std::vector<UILayer*> ScreenDecoder::buildUIScreenLayers(ScreenAttributes& attri
 
 void ScreenDecoder::fillElementData(UIElement::Data& data, Attributes& attributes)
 {
-	// Set parent first so the rect can be correctly positioned relative to it
-	data.parent = nullptr;
-	if (attributes.contains("parent"))
-	{
-		for (unsigned int i = 0; i < currentLayer->elements().size(); i++)
-		{
-			const UIElement* element = currentLayer->element(i);
 
-			if (strcmp(element->id().c_str(), attributes.getString("parent").c_str()) == 0)
-			{
-				data.parent = element;
-			}
-		}
 
-		ASSERT(Warning, data.parent, "No parent was found with lable: %s\n", attributes.getString("parent").c_str());
-	}
-
+	// TODO: this also needs to be delayed... just do it last
 	data.rect = generateRect(attributes, data.parent);
-	data.id = attributes.getString("id");
+	ASSERT(Error, false, "You need to set this up dummy. Fourth pass above\n");
+
+	// Not every element needs an id
+	if(attributes.contains("id"))
+		data.id = attributes.getString("id");
 }
 
 
@@ -276,7 +316,7 @@ RectF ScreenDecoder::generateRect(Attributes& attributes, const UIElement* paren
 	// No need to convert to pixles as parent already has been
 	if (parent != nullptr)
 	{
-		RectF parentRect = parent->getRect();
+		RectF parentRect = parent->rect();
 
 		x = parentRect.x1 + x * parentRect.Width();
 		y = parentRect.y1 + y * parentRect.Height();
@@ -314,4 +354,21 @@ UIButton::Action ScreenDecoder::getAction(std::string action)
 
 		return (UIButton::Action)value;
 	}
+}
+
+
+
+UIElement* ScreenDecoder::findElement(std::vector<UILayer*> layers, std::string id)
+{
+	for (const UILayer* layer : layers)
+	{
+		for (UIElement* element : layer->elements())
+		{
+			if (element->id() == id)
+					return element;
+		}
+	}
+
+	DebugPrint(Warning, "No element with the id %s was found\n", id.c_str());
+	return nullptr;
 }

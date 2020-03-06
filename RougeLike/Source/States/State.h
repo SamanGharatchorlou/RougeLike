@@ -31,5 +31,7 @@ struct NullState : public State
 	void slowUpdate(float /*dt*/) override { /* do nothing */ }
 	void fastUpdate(float /*dt*/) override { /* do nothing */ }
 	void render() override {}
-	void exit() override { DebugPrint(Warning, "Removing the null state\n"); }
+	void exit() override { 
+		DebugPrint(Warning, "Removing the null state\n"); 
+	}
 };

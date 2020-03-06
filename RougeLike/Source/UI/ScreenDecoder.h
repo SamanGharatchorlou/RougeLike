@@ -31,7 +31,7 @@ public:
 private:
 	void fillElementData	(UIElement::Data& data,		Attributes& attributes);
 	void fillBoxData		(UIBox::Data& data,			Attributes& attributes);
-	void fillTextBoxtData		(UITextBox::Data& data,		Attributes& attributes);
+	void fillTextBoxtData	(UITextBox::Data& data,		Attributes& attributes);
 	void fillButtonData		(UIButton::Data& data,		Attributes& attributes);
 	void fillTextButtonData	(UITextButton::Data& data,	Attributes& attributes);
 
@@ -39,6 +39,7 @@ private:
 
 	UIButton::Action getAction(std::string action);
 
+	UIElement* findElement(std::vector<UILayer*> layers, std::string id);
 
 private:
 	GameData* mGameData;
