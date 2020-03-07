@@ -88,7 +88,7 @@ Rect<int> Camera::toCameraCoords(Rect<int> worldRect)
 
 VectorF Camera::toWorldCoords(VectorF cameraCoords)
 {
-	return cameraCoords - mActiveRect->TopLeft();
+	return cameraCoords + mActiveRect->TopLeft();
 }
 
 RectF Camera::toWorldCoords(RectF cameraRect)

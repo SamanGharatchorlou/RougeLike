@@ -16,16 +16,13 @@ MeleeWeapon::MeleeWeapon() : mSwingDirection(-1), mPlayerSwingSpeed(0.0f), mRota
 {
 	// 4 blocks seems to be a good number of blocks
 	unsigned int blocks = 4;
+
 	for (unsigned int i = 0; i < blocks; i++)
 	{
 		mBlockRects.push_back(RectF());
 		mBlockColliders.push_back(new DamageCollider);
-	}
 
-	for (unsigned int i = 0; i < blocks; i++)
-	{
 		mBlockColliders[i]->init(&mBlockRects[i]);
-		mBlockColliders[i]->setActive(false);
 	}
 }
 
@@ -71,7 +68,6 @@ void MeleeWeapon::attack()
 {
 	mAttacking = true;
 	overrideCursorControl(true);
-	setColliderActivite(true);
 }
 
 
@@ -86,7 +82,6 @@ void MeleeWeapon::fastUpdate(float dt)
 
 			flipSide();
 			overrideCursorControl(false);
-			setColliderActivite(false);
 		}
 		else
 		{
@@ -157,25 +152,19 @@ void MeleeWeapon::updateWeaponBlocks()
 }
 
 
-const std::vector<Collider*> MeleeWeapon::getColliders() const
+const std::vector<Collider*> MeleeWeapon::getColliders()
 {
 	std::vector<Collider*> colliders;
 
-	for (unsigned int i = 0; i < mBlockColliders.size(); i++)
+	if (mAttacking)
 	{
-		colliders.push_back(mBlockColliders[i]);
+		for (unsigned int i = 0; i < mBlockColliders.size(); i++)
+		{
+			colliders.push_back(mBlockColliders[i]);
+		}
 	}
 
 	return colliders;
-}
-
-
-void MeleeWeapon::setColliderActivite(bool isActive)
-{
-	for (unsigned int i = 0; i < mBlockColliders.size(); i++)
-	{
-		mBlockColliders[i]->setActive(isActive);
-	}
 }
 
 

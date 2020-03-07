@@ -174,8 +174,6 @@ void RangedWeapon::slowUpdate(float dt)
 		{
 			quiver.lostProjectile(*iter);
 			travelingProjectiles.erase(iter);
-			// TODO: why does this not work?????
-			// this return fucks it??
 			return;
 		}
 	}

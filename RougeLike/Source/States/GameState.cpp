@@ -60,7 +60,6 @@ void GameState::init()
 
 	// Enemies
 	enemies->addEnemiesToPool(EnemyType::Imp, 10);
-	enemies->subscribe(player->getWeaponColliders());
 	enemies->setTarget(player->getRectRef());
 
 	// Collectables 
@@ -76,7 +75,7 @@ void GameState::init()
 
 
 	// Test spawning
-	//enemies->spawn(EnemyType::Imp, 5);
+	enemies->spawn(EnemyType::Imp, 5);
 
 	Spawner itemSpawner;
 	VectorF position = itemSpawner.findSpawnPoint(mGameData->map, 10);
@@ -110,7 +109,16 @@ void GameState::handleInput()
 	mGameData->playerManager->handleInput();
 	mGameData->uiManager->handleInput();
 }
- 
+
+
+void GameState::fastUpdate(float dt)
+{
+	mGameData->playerManager->fastUpdate(dt);
+	mGameData->enemies->fastUpdate(dt);
+
+	Camera::Get()->fastUpdate(dt);
+}
+
 
 void GameState::slowUpdate(float dt)
 {
@@ -122,15 +130,10 @@ void GameState::slowUpdate(float dt)
 	collectables.slowUpdate(dt);
 
 	Camera::Get()->slowUpdate(dt);
-}
 
-
-void GameState::fastUpdate(float dt)
-{
-	mGameData->playerManager->fastUpdate(dt);
-	mGameData->enemies->fastUpdate(dt);
-
-	Camera::Get()->fastUpdate(dt);
+	// Update weapon collider list
+	mGameData->enemies->clearSubscriptions();
+	mGameData->enemies->subscribe(mGameData->playerManager->getWeaponColliders());
 }
 
 

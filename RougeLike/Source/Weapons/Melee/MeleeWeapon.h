@@ -27,8 +27,7 @@ public:
 	const float maxSwingAngle() const;
 	const float swingSpeed() const { return mPlayerSwingSpeed; }
 
-	const std::vector<Collider*> getColliders() const override;
-	void setColliderActivite(bool isActive) override;
+	const std::vector<Collider*> getColliders() override;
 
 	const std::vector<RectF> getRects() const { return mBlockRects; }
 

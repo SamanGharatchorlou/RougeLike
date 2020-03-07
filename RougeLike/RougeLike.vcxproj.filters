@@ -80,6 +80,7 @@
     <ClCompile Include="Source\Game\Trauma.cpp" />
     <ClCompile Include="Source\Game\CameraShake.cpp" />
     <ClCompile Include="Source\Weapons\Ranged\Quiver.cpp" />
+    <ClCompile Include="Source\Utilities\Buffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -178,6 +179,7 @@
     <ClInclude Include="Source\Weapons\Ranged\Quiver.h" />
     <ClInclude Include="Source\Utilities\RingBuffer.h" />
     <ClInclude Include="Source\Utilities\Queue.h" />
+    <ClInclude Include="Source\Utilities\Buffer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

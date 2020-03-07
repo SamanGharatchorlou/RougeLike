@@ -25,6 +25,11 @@ EnemyManager::~EnemyManager()
 	mEnemyPool.clear();
 }
 
+void EnemyManager::clearSubscriptions()
+{
+	mCollisionManager.clearSubscriptions();
+}
+
 
 void EnemyManager::subscribe(std::vector<Collider*> colliders)
 {

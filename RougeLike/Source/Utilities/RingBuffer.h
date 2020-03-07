@@ -26,6 +26,7 @@ public:
 
 	void retreat() 
 	{ 
+		printf("retreat\n");
 		if (tail != head)
 			increment(tail);
 		else
@@ -34,12 +35,10 @@ public:
 
 
 private:
-	unsigned int increment(unsigned int index)
+	void increment(unsigned int &index)
 	{
 		if (++index >= buffer.size())
 			index = 0;
-
-		return index;
 	}
 
 

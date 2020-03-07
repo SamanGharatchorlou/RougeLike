@@ -8,6 +8,7 @@ class Queue
 public:
 
 	T& operator [] (int i) { return queue[i]; }
+	T get(unsigned int i) const { return queue[i]; }
 
 	T& front() { return queue[0]; }
 
@@ -31,8 +32,9 @@ T& Queue<T>::pop_front()
 	for (unsigned int i = 0; i < queue.size() - 1; i++)
 	{
 		queue[i] = queue[i + 1];
-		queue.pop_back();
 	}
+
+	queue.pop_back();
 
 	return frontObject;
 }

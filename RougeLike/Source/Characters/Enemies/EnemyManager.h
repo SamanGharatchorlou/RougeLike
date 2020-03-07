@@ -32,6 +32,7 @@ public:
 	void fastUpdate(float dt);
 	void render() const;
 
+	void clearSubscriptions();
 	void subscribe(std::vector<Collider*> colliders);
 
 	void addEnemiesToPool(EnemyType type, unsigned int count);

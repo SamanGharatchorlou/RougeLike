@@ -61,6 +61,10 @@ void GameData::init()
 	enemies = new EnemyManager(this);
 	enemies->addObserver(scoreManager);
 	enemies->addObserver(playerManager);
+
+
+	// Setup gameinfo
+	GameInfo::Get()->map(map);
 }
 
 
@@ -85,4 +89,17 @@ void GameData::free()
 	delete enemies;
 
 	DebugPrint(Log, "All game data has been deleted\n");
+}
+
+
+
+// -- Game Info -- //
+const VectorF GameInfo::mapDimentions() const
+{
+	return mMap->size();
+}
+
+bool GameInfo::isWall(VectorF position) const
+{
+	return mMap->getTile(position)->hasCollisionType(MapTile::Wall);
 }

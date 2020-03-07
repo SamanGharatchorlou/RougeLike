@@ -84,6 +84,7 @@ void PlayerManager::slowUpdate(float dt)
 { 
 	player->slowUpdate(dt);
 
+	// TODO: only if it needs to?
 	updateTrackedColliders();
 
 	collisionTracker.checkBaseCollisions();

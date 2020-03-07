@@ -22,8 +22,7 @@ public:
 
 	virtual void updateStats(const PlayerPropertyBag* bag) = 0;
 
-	virtual const std::vector<Collider*> getColliders() const = 0;
-	virtual void setColliderActivite(bool isActive) = 0;
+	virtual const std::vector<Collider*> getColliders() = 0;
 
 	void overrideCursorControl(bool overrideControl) { mOverrideCursorControl = overrideControl; }
 

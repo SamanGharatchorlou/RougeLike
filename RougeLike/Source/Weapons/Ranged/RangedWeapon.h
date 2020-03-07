@@ -26,8 +26,7 @@ public:
 	void equipt(const WeaponData* data) override;
 	void updateStats(const PlayerPropertyBag* bag) override;
 
-	const std::vector<Collider*> getColliders() const override;
-	void setColliderActivite(bool isActive) override;
+	const std::vector<Collider*> getColliders() override;
 
 	void render() override;
 
@@ -36,5 +35,7 @@ private:
 
 	Quiver quiver;
 
-	Queue<Projectile*> travelingProjectiles;
+	//Queue<Projectile*> travelingProjectiles;
+
+	std::list<Projectile*> travelingProjectiles;
 };

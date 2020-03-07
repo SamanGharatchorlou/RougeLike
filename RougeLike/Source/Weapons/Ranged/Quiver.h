@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Utilities/RingBuffer.h"
+#include "Utilities/Buffer.h"
 
 struct RangedWeaponData;
 class Projectile;
@@ -17,12 +18,14 @@ public:
 
 	Projectile* draw();
 
-	void lostProjectile();
+	void lostProjectile(Projectile* projectile);
 
 private:
 	std::queue<Projectile*> loadedProjectiles;
 
-	RingBuffer<Projectile*> ProjectileRingBuffer;
+	//RingBuffer<Projectile*> ProjectileRingBuffer;
+
+	Buffer<Projectile*> projectileBuffer;
 
 	int mSize;
 
