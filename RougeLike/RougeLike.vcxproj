@@ -75,7 +75,6 @@
     <ClCompile Include="Source\Managers\GameController.cpp" />
     <ClCompile Include="Source\Map\Map.cpp" />
     <ClCompile Include="Source\UI\Elements\UIElement.cpp" />
-    <ClCompile Include="Source\UI\Elements\UIText.cpp" />
     <ClCompile Include="Source\Utilities\Helpers.cpp" />
     <ClCompile Include="Source\Characters\Player\Player.cpp" />
     <ClCompile Include="Source\pch.cpp">
@@ -172,7 +171,6 @@
     <ClInclude Include="Source\Graphics\TextureManager.h" />
     <ClInclude Include="Source\Input\InputManager.h" />
     <ClInclude Include="Source\Managers\GameController.h" />
-    <ClInclude Include="Source\UI\Elements\UIText.h" />
     <ClInclude Include="Source\Utilities\Grid.h" />
     <ClInclude Include="Source\Utilities\Rect.h" />
     <ClInclude Include="Source\Utilities\Vector2D.h" />

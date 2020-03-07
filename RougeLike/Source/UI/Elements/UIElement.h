@@ -12,8 +12,7 @@ public:
 		Element,
 		Box,
 		TextBox,
-		Button,
-		TextButton
+		Button
 	};
 
 	struct Data
@@ -38,8 +37,10 @@ public:
 	void addChild(UIElement* child) { mChildren.push_back(child); }
 	std::vector<UIElement*> children() const { return mChildren; }
 
-	virtual Type type() { return Type::Element; }
-	virtual bool isButton() { return false; }
+	virtual Type type() const { return Type::Element; }
+	virtual bool isButton() const { return false; }
+	virtual bool hasText() const { return false; }
+
 	virtual void render() { };
 
 protected:

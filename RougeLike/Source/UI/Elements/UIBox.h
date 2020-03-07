@@ -22,8 +22,9 @@ public:
 
 	virtual void render();
 
-	virtual bool isButton() { return false; }
-	virtual Type type() override { return Type::Box; }
+	virtual bool isButton() const { return false; }
+	virtual bool hasText() const { return false; }
+	virtual Type type() const { return Type::Box; }
 
 protected:
 	Texture* mTexture;

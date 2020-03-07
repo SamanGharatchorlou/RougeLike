@@ -5,18 +5,18 @@
 		<Box id = "StatBox" x = "0.95" y = "0.5" width = "0.3" height = "0.4" texture = "BlackHealthBar"></Box>		
 		
 		<!-- Attack -->
-		<TextBox id = "Atk str" parent = "StatBox" x = "0" y = "0" height = "0.1">
+		<TextBox id = "Atk str" parent = "StatBox" x = "0" y = "0" height = "0.1" width ="0.5">
 			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >Attack Damage</text>
 		</TextBox>
-		<TextBox id = "Atk val" parent = "StatBox" x = "0.75" y = "0" height = "0.1">
+		<TextBox id = "Atk val" parent = "StatBox" x = "0.75" y = "0" height = "0.1" width ="0.5">
 			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >0</text>
 		</TextBox>
 
 		<!-- Defence -->
-		<TextBox id = "Def str" parent = "StatBox" x = "0" y = "0.25" height = "0.1">
+		<TextBox id = "Def str" parent = "StatBox" x = "0" y = "0.25" height = "0.1" width ="0.5">
 			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >Defence</text>
 		</TextBox>
-		<TextBox id = "Def val" parent = "StatBox" x = "0.75" y = "0.25" height = "0.1">
+		<TextBox id = "Def val" parent = "StatBox" x = "0.75" y = "0.25" height = "0.1" width ="0.5">
 			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >0</text>
 		</TextBox>
 
@@ -25,10 +25,10 @@
 
 	<layer>
 		<!-- Score -->
-		<TextBox id = "Score str" x = "0.025" y = "0.025" width = "0.15">
+		<TextBox id = "Score str" x = "0.025" y = "0.025" width = "0.15" height = "1">
 			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >Score: </text>
 		</TextBox>
-		<TextBox id = "Score val" parent = "Score str" x = "1" y = "0" height = "1">
+		<TextBox id = "Score val" parent = "Score str" x = "1" y = "0" height = "1" width ="1">
 			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >0</text>
 		</TextBox>
 

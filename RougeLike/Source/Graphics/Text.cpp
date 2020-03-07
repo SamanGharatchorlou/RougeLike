@@ -79,7 +79,7 @@ VectorF Text::autoSize(VectorF size)
 	TTF_SizeText(mFont.get(), mText.c_str(), &width, &height);
 
 	// assume ptSize = 0; so its always smaller
-	while (width < targetWidth || height < targetHeight)
+	while (width < targetWidth && height < targetHeight)
 	{
 		mFont.resize(++ptSize);
 		TTF_SizeText(mFont.get(), mText.c_str(), &width, &height);

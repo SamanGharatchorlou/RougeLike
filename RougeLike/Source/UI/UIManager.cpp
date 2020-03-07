@@ -49,7 +49,7 @@ void UIManager::selectScreen(Screen::Type screenType)
 
 void UIManager::init()
 {
-	ScreenDecoder screenDecoder(mGameData);
+	ScreenDecoder screenDecoder(mGameData->textureManager);
 
 	fs::path menuDirectoryPath = fs::current_path();
 	menuDirectoryPath /= "Resources/Configs/UIMenus";

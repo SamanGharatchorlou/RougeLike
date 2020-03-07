@@ -1,19 +1,17 @@
 #pragma once
 
-// TODO: this should be included in pch, why does it not work without this include?
-#include "System/Files/Attributes.h"
-
-typedef std::vector<std::vector<Attributes>> ScreenAttributes;
+#include "UI/Elements/UIButton.h"
+#include "UI/Elements/UITextBox.h"
 
 class TextureManager;
 class UILayer;
-struct GameData;
+
+typedef std::vector<UIElement*> Elements;
+typedef std::vector<UILayer*> Layers;
+typedef std::vector<Attributes> LayerAttributes;
+typedef std::vector<std::vector<Attributes>> ScreenAttributes;
 
 
-// This is only for enum
-#include "UI/Elements/UIButton.h"
-#include "UI/Elements/UIText.h"
-#include "UI/Elements/UITextBox.h"
 
 /*
 Decodes an XML formatted file into a UI built into layers, boxes, buttons, text etc.
@@ -22,27 +20,30 @@ Note: The layers must be in order with the top layer first/at the top of the fil
 class ScreenDecoder
 {
 public:
-	ScreenDecoder(GameData* gameData) : mGameData(gameData), currentLayer(nullptr) { };
+	ScreenDecoder(TextureManager* texManager) : tm(texManager), currentLayer(nullptr) { };
 	~ScreenDecoder() { }
 
-	ScreenAttributes getScreenAttributes(std::string config);
-	std::vector<UILayer*> buildUIScreenLayers(ScreenAttributes& attributes);
+	ScreenAttributes getScreenAttributes(const std::string& config);
+	Layers buildUIScreenLayers(ScreenAttributes& attributes);
 
 private:
-	void fillElementData	(UIElement::Data& data,		Attributes& attributes);
-	void fillBoxData		(UIBox::Data& data,			Attributes& attributes);
-	void fillTextBoxtData	(UITextBox::Data& data,		Attributes& attributes);
-	void fillButtonData		(UIButton::Data& data,		Attributes& attributes);
-	void fillTextButtonData	(UITextButton::Data& data,	Attributes& attributes);
+	Elements setParents(Layers layers, ScreenAttributes& screenAttributes);
+	void setChildren(Elements parernts, Layers layers);
+	void setRects(Layers layers);
 
-	RectF generateRect(Attributes& attributes, const UIElement* parent = nullptr) const;
+	void fillElementData	(UIElement::Data& data,		Attributes& attributes) const;
+	void fillBoxData		(UIBox::Data& data,			Attributes& attributes) const;
+	void fillTextBoxtData	(UITextBox::Data& data,		Attributes& attributes) const;
+	void fillButtonData		(UIButton::Data& data,		Attributes& attributes) const;
 
-	UIButton::Action getAction(std::string action);
+	void setRect(UIElement* element);
 
-	UIElement* findElement(std::vector<UILayer*> layers, std::string id);
+	UIButton::Action getAction(const std::string& action) const;
+
+	UIElement* findElement(Layers layers, const std::string& id);
 
 private:
-	GameData* mGameData;
+	TextureManager* tm;
 	XMLParser xmlParser;
 
 	const UILayer* currentLayer;

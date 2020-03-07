@@ -26,8 +26,9 @@ public:
 
 	void render() override;
 
-	virtual bool isButton() { return false; }
-	virtual Type type() { return Type::TextBox; }
+	virtual bool isButton() const { return false; }
+	virtual bool hasText() const { return true; }
+	virtual Type type() const { return Type::TextBox; }
 
 
 private:

@@ -8,11 +8,7 @@
 #include "UI/Screens/UILayer.h"
 
 
-typedef std::vector<Attributes> LayerAttributes;
-typedef std::vector<LayerAttributes> ScreenAttributes;
-
-
-ScreenAttributes ScreenDecoder::getScreenAttributes(std::string config)
+ScreenAttributes ScreenDecoder::getScreenAttributes(const std::string& config)
 {
 	xmlParser.parseXML(config);
 
@@ -27,7 +23,7 @@ ScreenAttributes ScreenDecoder::getScreenAttributes(std::string config)
 	// Get all layers
 	while (layerNode != nullptr)
 	{
-		std::vector<Attributes> layerAttibutes;
+		LayerAttributes layerAttibutes;
 
 		xmlNode childNode = layerNode->first_node();
 
@@ -64,9 +60,9 @@ ScreenAttributes ScreenDecoder::getScreenAttributes(std::string config)
 }
 
 
-std::vector<UILayer*> ScreenDecoder::buildUIScreenLayers(ScreenAttributes& screenAttributes)
+Layers ScreenDecoder::buildUIScreenLayers(ScreenAttributes& screenAttributes)
 {
-	std::vector<UILayer*> layers;	
+	Layers layers;
 
 	for (LayerAttributes layerAttribute : screenAttributes)
 	{
@@ -104,29 +100,13 @@ std::vector<UILayer*> ScreenDecoder::buildUIScreenLayers(ScreenAttributes& scree
 				layer->addElement(new UIButton(data));
 			}
 
-			// Text Button
-			else if (strcmp(type, "TextButton") == 0)
-			{
-				UITextButton::Data data;
-				fillTextButtonData(data, attributes);
-
-				layer->addElement(new UITextButton(data));
-			}
-
 			// Text Box
 			else if (strcmp(type, "TextBox") == 0)
 			{
 				UITextBox::Data data;
 				fillTextBoxtData(data, attributes);
 
-				UITextBox* textBox = new UITextBox(data);
-
-				if (textBox->fontSize() == 0)
-				{
-					textBox->autoSizeFont();
-				}
-
-				layer->addElement(textBox);
+				layer->addElement(new UITextBox(data));
 			}
 
 			else
@@ -138,12 +118,67 @@ std::vector<UILayer*> ScreenDecoder::buildUIScreenLayers(ScreenAttributes& scree
 		layers.push_back(layer);
 	}
 
-	// TODO: split this up into smaller functions??
+	// Set UI element parents and cache parents for next step
+	Elements parents = setParents(layers, screenAttributes);
 
+	//  List all parent children
+	setChildren(parents, layers);
+
+	// Set element rects relative to parents
+	setRects(layers);
+
+	ASSERT(Warning, layers.size() > 0, "This screen has no layers\n");
+	return layers;
+}
+
+void ScreenDecoder::setRects(Layers layers)
+{
+	for (UILayer* layer : layers)
+	{
+		for (UIElement* element : layer->elements())
+		{
+			setRect(element);
+
+			// set text sizes
+			if (element->hasText())
+			{
+				UITextBox* textBox = static_cast<UITextBox*>(element);
+
+				// If no font size has been given auto size the font to fit the box
+				if (!textBox->fontSize())
+					textBox->autoSizeFont();
+			}
+		}
+	}
+}
+
+
+void ScreenDecoder::setChildren(Elements parents, Layers layers)
+{
+	// Third Pass: setup childred
+	for (UIElement* parent : parents)
+	{
+		for (UILayer* layer : layers)
+		{
+			for (UIElement* element : layer->elements())
+			{
+				if (element->parent() == parent)
+				{
+					parent->addChild(element);
+				}
+			}
+		}
+
+		ASSERT(Warning, parent->children().size() != 0, "Parernt %s could find no children\n", parent->id());
+	}
+}
+
+
+Elements ScreenDecoder::setParents(Layers layers, ScreenAttributes& screenAttributes)
+{
 	// Store parents for more effcient third pass
-	std::vector<UIElement*> parentElements;
+	Elements parentElements;
 
-	// Second Pass: Setup parents
 	for (unsigned int layerIndex = 0; layerIndex < screenAttributes.size(); layerIndex++)
 	{
 		// TODO: does this setup a reference or value?
@@ -168,41 +203,24 @@ std::vector<UILayer*> ScreenDecoder::buildUIScreenLayers(ScreenAttributes& scree
 		}
 	}
 
-	// Third Pass: setup childred
-	for (UIElement* parent : parentElements)
-	{
-		for (UILayer* layer : layers)
-		{
-			for (UIElement* element : layer->elements())
-			{
-				if (element->parent() == parent)
-				{
-					parent->addChild(element);
-				}
-			}
-		}
-
-		ASSERT(Warning, parent->children().size() != 0, "Parernt %s could find no children\n", parent->id());
-	}
-
-	// Fourth Pass
-	// TODO: fill rect elements now that the parent relationship has been setup
-
-	ASSERT(Warning, layers.size() > 0, "This screen has no layers\n");
-	return layers;
+	// Remove duplicates
+	parentElements.erase(unique(parentElements.begin(), parentElements.end()), parentElements.end());
+	return parentElements;
 }
-
 
 
 // --- Populate UI Element data packets --- //
 
-void ScreenDecoder::fillElementData(UIElement::Data& data, Attributes& attributes)
+void ScreenDecoder::fillElementData(UIElement::Data& data, Attributes& attributes) const
 {
+	// RectF
+	float x = attributes.getFloat("x");
+	float y = attributes.getFloat("y");
 
+	float width = attributes.contains("width") ? attributes.getFloat("width") : 0;
+	float height = attributes.contains("height") ? attributes.getFloat("height") : 0;
 
-	// TODO: this also needs to be delayed... just do it last
-	data.rect = generateRect(attributes, data.parent);
-	ASSERT(Error, false, "You need to set this up dummy. Fourth pass above\n");
+	data.rect = RectF(VectorF(x, y), VectorF(width, height));
 
 	// Not every element needs an id
 	if(attributes.contains("id"))
@@ -210,7 +228,7 @@ void ScreenDecoder::fillElementData(UIElement::Data& data, Attributes& attribute
 }
 
 
-void ScreenDecoder::fillBoxData(UIBox::Data& data, Attributes& attributes)
+void ScreenDecoder::fillBoxData(UIBox::Data& data, Attributes& attributes) const
 {
 	fillElementData(data, attributes);
 
@@ -218,14 +236,14 @@ void ScreenDecoder::fillBoxData(UIBox::Data& data, Attributes& attributes)
 	if (attributes.contains("texture"))
 	{
 		std::string textureLabel = attributes.getString("texture");
-		data.texture = mGameData->textureManager->getTexture(textureLabel);
+		data.texture = tm->getTexture(textureLabel);
 	}
 	else
 		data.texture = nullptr;
 }
 
 
-void ScreenDecoder::fillTextBoxtData(UITextBox::Data& data, Attributes& attributes)
+void ScreenDecoder::fillTextBoxtData(UITextBox::Data& data, Attributes& attributes) const
 {
 	fillBoxData(data, attributes);
 
@@ -239,18 +257,11 @@ void ScreenDecoder::fillTextBoxtData(UITextBox::Data& data, Attributes& attribut
 		(Uint8)attributes.getInt("b")
 	};
 
-	if (attributes.contains("ptSize"))
-	{
-		data.ptSize = attributes.getInt("ptSize");
-	}
-	else
-	{
-		data.ptSize = 0;
-	}
+	data.ptSize = attributes.contains("ptSize") ? attributes.getInt("ptSize") : 0;
 }
 
 
-void ScreenDecoder::fillButtonData(UIButton::Data& data, Attributes& attributes)
+void ScreenDecoder::fillButtonData(UIButton::Data& data, Attributes& attributes) const
 {
 	// Box component
 	fillBoxData(data, attributes);
@@ -259,7 +270,7 @@ void ScreenDecoder::fillButtonData(UIButton::Data& data, Attributes& attributes)
 	if (attributes.contains("textureSelected"))
 	{
 		std::string textureLabel = attributes.getString("textureSelected");
-		data.highlightedTexture = mGameData->textureManager->getTexture(textureLabel);
+		data.highlightedTexture = tm->getTexture(textureLabel);
 	}
 	else
 	{
@@ -274,72 +285,57 @@ void ScreenDecoder::fillButtonData(UIButton::Data& data, Attributes& attributes)
 	data.id = attributes.getString("id");
 }
 
+//
+//void ScreenDecoder::fillTextButtonData(UITextButton::Data& data, Attributes& attributes) const
+//{
+//	// Button component
+//	fillButtonData(data, attributes);
+//	
+//	// Text
+//	data.text = attributes.getString("text");
+//	data.font = attributes.getString("font");
+//	data.ptSize = attributes.getInt("ptSize");
+//	data.colour = {
+//		(Uint8)attributes.getInt("r"),
+//		(Uint8)attributes.getInt("g"),
+//		(Uint8)attributes.getInt("b")
+//	};
+//}
 
-void ScreenDecoder::fillTextButtonData(UITextButton::Data& data, Attributes& attributes)
+
+void ScreenDecoder::setRect(UIElement* element)
 {
-	// Button component
-	fillButtonData(data, attributes);
-	
-	// Text
-	data.text = attributes.getString("text");
-	data.font = attributes.getString("font");
-	data.ptSize = attributes.getInt("ptSize");
-	data.colour = {
-		(Uint8)attributes.getInt("r"),
-		(Uint8)attributes.getInt("g"),
-		(Uint8)attributes.getInt("b")
-	};
-}
-
-
-RectF ScreenDecoder::generateRect(Attributes& attributes, const UIElement* parent) const
-{
-	// RectF
-	float x = attributes.getFloat("x");
-	float y = attributes.getFloat("y");
-
-	float width = -1;
-	float height = -1;
-
-	if (attributes.contains("width"))
-	{
-		width = attributes.getFloat("width");
-	}
-
-	if (attributes.contains("height"))
-	{
-		height = attributes.getFloat("height");
-	}
-
+	RectF relativeRect = element->rect();
+	RectF absoluteRect;
 
 	// Adjust relative to the parent rect
 	// No need to convert to pixles as parent already has been
-	if (parent != nullptr)
+	if (element->parent() != nullptr)
 	{
-		RectF parentRect = parent->rect();
+		RectF parentRect = element->parent()->rect();
 
-		x = parentRect.x1 + x * parentRect.Width();
-		y = parentRect.y1 + y * parentRect.Height();
-		width = width * parentRect.Width();
-		height = height * parentRect.Height();
+		absoluteRect.x1 = parentRect.x1 + relativeRect.x1 * parentRect.Width();
+		absoluteRect.y1 = parentRect.y1 + relativeRect.y1 * parentRect.Height();
+		absoluteRect.SetWidth(relativeRect.Width() * parentRect.Width());
+		absoluteRect.SetHeight(relativeRect.Height() * parentRect.Height());
 	}
 	// Convert relative positions to pixles
 	else
 	{
 		VectorF screenSize = Camera::Get()->size();
 
-		x = x * screenSize.x;
-		y = y * screenSize.y;
-		width = width * screenSize.x;
-		height = height * screenSize.y;
+		absoluteRect.x1 = relativeRect.x1 * screenSize.x;
+		absoluteRect.y1 = relativeRect.y1 * screenSize.y;
+		absoluteRect.SetWidth(relativeRect.Width() * screenSize.x);
+		absoluteRect.SetHeight(relativeRect.Height() * screenSize.y);
 	}
 
-	return RectF(VectorF(x, y), VectorF(width, height));
+	element->setRect(absoluteRect);
 }
 
 
 
-UIButton::Action ScreenDecoder::getAction(std::string action)
+UIButton::Action ScreenDecoder::getAction(const std::string& action) const
 {
 	if (action.empty())
 		return UIButton::None_0;
@@ -358,7 +354,7 @@ UIButton::Action ScreenDecoder::getAction(std::string action)
 
 
 
-UIElement* ScreenDecoder::findElement(std::vector<UILayer*> layers, std::string id)
+UIElement* ScreenDecoder::findElement(Layers layers, const std::string& id)
 {
 	for (const UILayer* layer : layers)
 	{

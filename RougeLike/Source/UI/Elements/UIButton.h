@@ -37,8 +37,9 @@ public:
 
 	const Action getAction() const { return mAction; }
 
-	virtual bool isButton() { return true; }
-	virtual Type type() { return Type::Button; }
+	virtual bool isButton() const { return true; }
+	virtual bool hasText() const { return false; }
+	virtual Type type() const { return Type::Button; }
 
 private:
 	Texture* mDefault;
@@ -51,7 +52,9 @@ private:
 };
 
 
-
+// Dont need a text button
+// replace with with text box and a button, seperat objects might be better
+/*
 class UITextButton : public UIButton
 {
 public:
@@ -69,8 +72,10 @@ public:
 
 	void render() override;
 
-	virtual Type type() { return Type::TextButton; }
+	virtual bool hasText() const { return true; }
+	virtual Type type() const { return Type::TextButton; }
 
 private:
 	Text mText;
 };
+*/

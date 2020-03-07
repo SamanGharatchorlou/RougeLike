@@ -35,19 +35,3 @@ void UIButton::setReleased(bool isReleased)
 	mIsReleased = isReleased;
 }
 
-
-
-// -- UI Text Button -- //
-UITextButton::UITextButton(Data& data) : 
-	mText(data.text, data.font, data.ptSize, data.colour),
-	UIButton(data)
-{
-
-}
-
-
-void UITextButton::render()
-{
-	UIButton::render();
-	mText.render(mRect.TopLeft());
-}

@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <screen>
 	<layer>
-		<TextButton id = "ResumeGame" x = "0.375" y = "0.25" width = "0.25" height = "0.075" texture = "RedButton" textureSelected = "SelectedRedButton" action = "ResumeGame_1">
-			<text font = "lazy.ttf" ptSize = "56" r = "0" g = "255" b = "0" >Resume</text>
-		</TextButton>
-		<TextButton id= "QuitGame" x = "0.375" y = "0.6" width = "0.25" height = "0.075" texture = "RedButton" textureSelected = "SelectedRedButton" action = "QuitGame_2">
+
+		<Button id = "Resume" x = "0.375" y = "0.25" width = "0.25" height = "0.075" texture = "RedButton" textureSelected = "SelectedRedButton" action = "ResumeGame_1"></Button>
+		<TextBox id = "ResumeText" parent = "Resume" x = "0" y = "0" height = "1"  width = "1">
+			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >Resume</text>
+		</TextBox>
+
+
+		<Button id = "Restart" x = "0.375" y = "0.45" width = "0.25" height = "0.075" texture = "RedButton" textureSelected = "SelectedRedButton" action = "RestartGame_3"></Button>
+		<TextBox  id = "RestartText" parent = "Restart" x = "0" y = "0" height = "1" width = "1">
+			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >Restart</text>
+		</TextBox>
+
+
+		<Button id= "Quit" x = "0.375" y = "0.6" width = "0.25" height = "0.075" texture = "RedButton" textureSelected = "SelectedRedButton" action = "QuitGame_2"></Button>
+		<TextBox id = "QuitText" parent = "Quit" x = "0" y = "0" height = "1"  width = "1">
 			<text font = "lazy.ttf" ptSize = "56" r = "0" g = "255" b = "0" >Quit</text>
-		</TextButton>
-				<TextButton id = "RestartGame" x = "0.375" y = "0.45" width = "0.25" height = "0.075" texture = "RedButton" textureSelected = "SelectedRedButton" action = "RestartGame_3">
-			<text font = "lazy.ttf" ptSize = "56" r = "0" g = "255" b = "0" >Restart</text>
-		</TextButton>
+		</TextBox>
+
 	</layer>
 	<layer>
 		<Box type = "Box" x = "0.325" y = "0.15" width = "0.35" height = "0.6" texture = "GreyBox"></Box>
