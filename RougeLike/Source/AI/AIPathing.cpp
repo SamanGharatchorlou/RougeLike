@@ -36,7 +36,7 @@ std::stack<Vector2D<int>> AIPathing::findPath(VectorF startPosition, VectorF end
 		for (unsigned int i = 0; i < 4; i++)
 		{
 			const MapTile* nextTile = *(neighbours + i);
-			if (nextTile->hasCollisionType(MapTile::Floor))
+			if (nextTile && nextTile->hasCollisionType(MapTile::Floor))
 			{
 				Vector2D<int> index = mMap->getIndex(nextTile);
 

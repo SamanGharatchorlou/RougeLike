@@ -25,7 +25,14 @@ T Buffer<T>::getAvailable()
 	for (unsigned int i = 0; i < buffer.size(); i++)
 	{
 		if (buffer[i] != nullptr)
-			return buffer[i];
+		{
+			T object = buffer[i];
+			buffer[i] = nullptr;
+
+			printf("index %d set to null\n", i);
+
+			return object;
+		}
 	}
 
 	ASSERT(Warning, false, "Buffer has ran out of size, %d used objects\n", buffer.size());
@@ -39,7 +46,10 @@ void Buffer<T>::insert(T object)
 {
 	for (unsigned int i = 0; i < buffer.size(); i++)
 	{
-		if (buffer[i] = nullptr)
+		if (buffer[i] == nullptr)
+		{
 			buffer[i] = object;
+			break;
+		}
 	}
 }

@@ -12,13 +12,15 @@ void CollisionTracker::addCollider(Collider* collider)
 
 void CollisionTracker::subscribe(Collider* collider)
 {
+#if _DEBUG
 	for (auto subbedCollider : mSubbedColliders)
 	{
 		if (subbedCollider == collider)
 		{
-			DebugPrint(Log, "Collider is already subscribed with the collider manager");
+			DebugPrint(Log, "Collider is already subscribed with the collider manager\n");
 		}
 	}
+#endif
 
 	mSubbedColliders.push_back(collider);
 }
@@ -26,15 +28,17 @@ void CollisionTracker::subscribe(Collider* collider)
 
 void CollisionTracker::subscribe(std::vector<Collider*> colliders)
 {
+#if _DEBUG
 	for (Collider* collider : colliders)
 	{
 		for (auto subbedCollider : mSubbedColliders)
 		{
 			if (subbedCollider == collider)
 			{
-				DebugPrint(Log, "Collider is already subscribed with the collider manager");
+				DebugPrint(Log, "Collider is already subscribed with the collider manager\n");
 			}
 		}
+#endif
 
 		mSubbedColliders.push_back(collider);
 	}

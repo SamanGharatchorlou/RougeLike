@@ -29,4 +29,7 @@ private:
 
 	int mSize;
 
+	// TEMP
+	int counter = 0;
+
 };

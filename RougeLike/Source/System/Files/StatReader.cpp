@@ -42,10 +42,10 @@ XMLValueMap StatReader::getStats(FileManager::Folder folder, std::string config)
 			{
 				const char* string = node->value();
 
-				ASSERT(Warning, strlen(string) < 20, 
-					"The %s attribute from %s is too big to fit into the union value char. \
-					It must be less than 20 characters, either reduce the text size or increase the value union data type\n", 
-					name, configFilePath);
+				ASSERT(Warning, strlen(string) < 25, 
+					"The %s attribute of length %d from %s is too big to fit into the union value char. \
+					It must be less than 25 characters, either reduce the text size or increase the value union data type\n", 
+					name.c_str(), strlen(string), configFilePath.c_str());
 
 				strcpy_s(stat.c, string);
 			}

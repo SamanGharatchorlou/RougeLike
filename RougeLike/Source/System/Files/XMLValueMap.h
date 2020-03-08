@@ -5,7 +5,7 @@ union value
 	int i;
 	float f;
 	double d;
-	char c[20];
+	char c[25];
 };
 
 using valueMap = std::unordered_map<std::string, value>;

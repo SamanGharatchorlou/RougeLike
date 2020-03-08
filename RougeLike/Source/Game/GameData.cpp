@@ -101,5 +101,6 @@ const VectorF GameInfo::mapDimentions() const
 
 bool GameInfo::isWall(VectorF position) const
 {
-	return mMap->getTile(position)->hasCollisionType(MapTile::Wall);
+	const MapTile* tile = mMap->getTile(position);
+	return tile ? tile->hasCollisionType(MapTile::Wall) : false;
 }

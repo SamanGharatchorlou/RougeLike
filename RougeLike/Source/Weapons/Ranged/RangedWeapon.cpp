@@ -50,11 +50,6 @@ void RangedWeapon::attack()
 
 void RangedWeapon::fastUpdate(float dt)
 {
-	//for (unsigned int i = 0; i < travelingProjectiles.size(); i++)
-	//{
-	//	travelingProjectiles[i]->move(dt);
-	//}
-
 	for (std::list<Projectile*>::iterator iter = travelingProjectiles.begin(); iter != travelingProjectiles.end(); iter++)
 	{
 		(*iter)->move(dt);
@@ -220,8 +215,6 @@ void RangedWeapon::render()
 {
 	mData->texture->render(Camera::Get()->toCameraCoords(mRect));
 
-	//for (unsigned int i = 0; i < travelingProjectiles.size(); i++)
-	//{
 	for (std::list<Projectile*>::iterator iter = travelingProjectiles.begin(); iter != travelingProjectiles.end(); iter++)
 	{
 		(*iter)->render();
@@ -235,10 +228,9 @@ const std::vector<Collider*> RangedWeapon::getColliders()
 {
 	std::vector<Collider*> colliders;
 
-	//for (unsigned int i = 0; i < travelingProjectiles.size(); i++)
-	//{
 	for (std::list<Projectile*>::iterator iter = travelingProjectiles.begin(); iter != travelingProjectiles.end(); iter++)
 	{
+
 		colliders.push_back((*iter)->collider());
 	}
 
