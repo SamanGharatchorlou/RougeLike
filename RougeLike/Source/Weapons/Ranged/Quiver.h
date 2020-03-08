@@ -23,13 +23,7 @@ public:
 private:
 	std::queue<Projectile*> loadedProjectiles;
 
-	//RingBuffer<Projectile*> ProjectileRingBuffer;
-
 	Buffer<Projectile*> projectileBuffer;
 
 	int mSize;
-
-	// TEMP
-	int counter = 0;
-
 };

@@ -25,9 +25,6 @@ public:
 
 	VectorF position() const { return mRect.Center(); }
 
-	void setActive(bool isActive) { mActive = isActive; }
-	bool isActive() const { return mActive; }
-
 private:
 	Texture* mTexture;
 
@@ -37,6 +34,4 @@ private:
 
 	float mSpeed;
 	VectorF mDirection;
-
-	bool mActive;
 };

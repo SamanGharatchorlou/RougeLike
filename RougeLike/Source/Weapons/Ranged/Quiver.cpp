@@ -22,6 +22,8 @@ Quiver::~Quiver()
 }
 
 
+// BUG: if you change weapon while the buffer is not full then there will be nulls
+// even any in the quiver will cause this
 void Quiver::init(const RangedWeaponData* data)
 {
 	mSize = data->quiverSize;

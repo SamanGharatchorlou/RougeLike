@@ -42,7 +42,6 @@ void RangedWeapon::attack()
 	}
 	else
 	{
-		printf("loading\n");
 		quiver.load();
 	}
 }
@@ -56,122 +55,41 @@ void RangedWeapon::fastUpdate(float dt)
 	}
 }
 
-
-// WARNING: requires testing
-// will only processing the front projectile break things?
-/*
 void RangedWeapon::slowUpdate(float dt)
 {
-	if (travelingProjectiles.size() > 0)
-	{
-		for (unsigned int i = 0; i < travelingProjectiles.size(); i++)
-		{
-			Projectile* projectile = travelingProjectiles[i];
-
-			if (!projectile->isActive())
-			{
-				if (i == 0)
-				{
-
-					travelingProjectiles.pop_front();
-					quiver.lostProjectile();
-					printf("fast popping front\n");
-					return;
-				}
-				else
-					continue;
-			}
-
-
-			// Lost projectile from collision
-			bool remove = projectile->hasCollided();
-
-			VectorF position = projectile->position();
-			position = Camera::Get()->toWorldCoords(position);
-
-			// Lost projectile from out of bounds
-			if (!remove)
-			{
-				VectorF mapBoundaries = GameInfo::Get()->mapDimentions();
-
-				bool outOfBounds =
-					position.x < 0.0f				|| 
-					position.x > mapBoundaries.x	||
-					position.y < 0.0f				|| 
-					position.y > mapBoundaries.y;
-
-				remove = outOfBounds;
-
-				if(remove)
-					printf("out of bounds\n");
-			}
-	
-			// Lost projectile from wall collision
-			if (!remove)
-			{
-				remove = GameInfo::Get()->isWall(position);
-
-				if(remove)
-					printf("wall collision\n");
-			}
-
-			if (remove)
-			{
-				projectile->setActive(false);
-
-				if (i == 0)
-				{
-					travelingProjectiles.pop_front();
-					quiver.lostProjectile();
-					printf("popping front\n");
-				}
-			}
-		}
-		
-	}
-
-} 
-*/
-
-void RangedWeapon::slowUpdate(float dt)
-{
-	//for (unsigned int i = 0; i < travelingProjectiles.size(); i++)
-	//{
-	//	VectorF position = travelingProjectiles[i]->position();
-	//	position = Camera::Get()->toWorldCoords(position);
-
-	//	//// Lost projectile from out of bounds
-	//	//VectorF mapBoundaries = GameInfo::Get()->mapDimentions();
-
-	//	//bool outOfBounds =
-	//	//	position.x < 0.0f ||
-	//	//	position.x > mapBoundaries.x ||
-	//	//	position.y < 0.0f ||
-	//	//	position.y > mapBoundaries.y;
-
-	//	//if (remove)
-	//	//	printf("out of bounds\n");
-	//	//}
-
-	//	// Lost projectile from wall collision
-	//	if (GameInfo::Get()->isWall(position))
-	//	{
-	//		quiver.lostProjectile(travelingProjectiles[i]);
-	//	}
-	//}
-
 	for (std::list<Projectile*>::iterator iter = travelingProjectiles.begin(); iter != travelingProjectiles.end(); iter++)
 	{
 		VectorF position = (*iter)->position();
 		position = Camera::Get()->toWorldCoords(position);
 
+		// Lost projectil from wall collision
 		if (GameInfo::Get()->isWall(position))
 		{
 			quiver.lostProjectile(*iter);
 			travelingProjectiles.erase(iter);
-			// TODO: why does this not work?????
-			// this return fucks it??
-			return;
+			break;
+		}
+
+		// Lost projectile from out of bounds
+		VectorF mapBoundaries = GameInfo::Get()->mapDimentions();
+
+		bool outOfBounds =
+			position.x < 0.0f || position.x > mapBoundaries.x ||
+			position.y < 0.0f || position.y > mapBoundaries.y;
+
+		if (outOfBounds)
+		{
+			quiver.lostProjectile(*iter);
+			travelingProjectiles.erase(iter);
+			break;
+		}
+
+		if ((*iter)->hasCollided())
+		{
+			quiver.lostProjectile(*iter);
+			travelingProjectiles.erase(iter);
+			break;
+			//printf("hit enemy\n");
 		}
 	}
 }

@@ -154,7 +154,7 @@ void EnemyManager::fastUpdate(float dt)
 			enemy->fastUpdate(dt);
 		}
 
-		mCollisionManager.checkBaseCollisions();
+		mCollisionManager.checkAllCollisions();
 	}
 }
 

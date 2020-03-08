@@ -59,6 +59,7 @@ private:
 	std::vector<EnemyObject> mEnemyPool;
 	std::vector<Enemy*> mActiveEnemies;
 
+	// Player weapon <-> enemy
 	CollisionTracker mCollisionManager;
 
 	RectF* mTarget;
