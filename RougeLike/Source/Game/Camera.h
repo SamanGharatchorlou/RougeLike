@@ -3,7 +3,6 @@
 #include "CameraShake.h"
 
 class Window;
-class Map;
 
 class Camera
 {
@@ -12,16 +11,16 @@ public:
 	// temp
 	static Camera* Get();
 
-	void setupCamera(Map* map);
+	void setViewport(VectorF viewport) { mRect.SetSize(viewport); }
+	void setPosition(VectorF position);
+
+	void setMapBoundaries(VectorF boundaries) { mBoundaries = boundaries; }
 
 	// follow this object
 	void follow(RectF* rect);
 
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
-
-	void setViewport(VectorF viewport) { mRect.SetSize(viewport); }
-	void setViewport(float x, float y) { mRect.SetSize(VectorF(x, y)); }
 
 	template <typename T>
 	bool inView(Rect<T> object);
@@ -42,6 +41,7 @@ public:
 
 	VectorF size() const { return mRect.Size(); }
 
+	void initShakeyCam(float maxTrauma, float traumaReduction, float maxAngle) { shakeyCam.init(maxTrauma, traumaReduction, maxAngle); }
 	CameraShake* getShake() { return &shakeyCam; }
 
 
@@ -51,7 +51,7 @@ private:
 
 
 private:
-	Vector2D<int> boundaries;
+	VectorF mBoundaries;
 
 	RectF* mFollowingRect;
 

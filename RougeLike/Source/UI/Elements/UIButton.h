@@ -1,6 +1,5 @@
 #pragma once
 #include "UIBox.h"
-#include "Graphics/Text.h"
 
 class Texture;
 
@@ -50,32 +49,3 @@ private:
 	bool mIsPressed;
 	bool mIsReleased;
 };
-
-
-// Dont need a text button
-// replace with with text box and a button, seperat objects might be better
-/*
-class UITextButton : public UIButton
-{
-public:
-	struct Data : public UIButton::Data
-	{
-		std::string text;
-		std::string font;
-		int ptSize;
-		SDL_Color colour;
-	};
-
-public:
-	UITextButton() { }
-	UITextButton(Data& data);
-
-	void render() override;
-
-	virtual bool hasText() const { return true; }
-	virtual Type type() const { return Type::TextButton; }
-
-private:
-	Text mText;
-};
-*/

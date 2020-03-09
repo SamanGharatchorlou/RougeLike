@@ -7,9 +7,6 @@
 #include "ScreenDecoder.h"
 #include "Game/GameData.h"
 
-#include "Characters/Attributes/Damage.h"
-
-
 UIManager::UIManager(GameData* gameData) : mGameData(gameData) { }
 
 UIManager::~UIManager()
@@ -36,9 +33,7 @@ void UIManager::selectScreen(Screen::Type screenType)
 		if (screen->type() == screenType)
 		{
 			activeScreen = screen;
-
 			activeScreen->enter();
-
 			break;
 		}
 	}
@@ -51,32 +46,27 @@ void UIManager::init()
 {
 	ScreenDecoder screenDecoder(mGameData->textureManager);
 
-	fs::path menuDirectoryPath = fs::current_path();
-	menuDirectoryPath /= "Resources/Configs/UIMenus";
-	ASSERT(Warning, fs::is_directory(menuDirectoryPath), "Path: %s is not a directory\n", menuDirectoryPath.string().c_str());
-
-	fs::path menuPath;
 	ScreenAttributes attributes;
+	std::vector<UILayer*> screenLayers;
 
+	std::string screenPath = FileManager::Get()->folderPath(FileManager::Config_UI);
+	std::vector<std::string> screenNames = FileManager::Get()->fileNamesInFolder(FileManager::Config_UI);
 
-	// Pause Menu
-	menuPath = menuDirectoryPath / "PauseScreen.xml";
-	ASSERT(Warning, menuPath.has_filename(), "File: %s does not exist\n", menuPath.string().c_str());
+	for (const std::string& screenName : screenNames)
+	{
+		attributes = screenDecoder.getScreenAttributes(screenPath + screenName + ".xml");
+		screenLayers = screenDecoder.buildUIScreenLayers(attributes);
 
-	attributes = screenDecoder.getScreenAttributes(menuPath.string());
-	std::vector<UILayer*> pauseLayers = screenDecoder.buildUIScreenLayers(attributes);
+		Screen* screen = nullptr;
 
-	screens.push_back(new PauseScreen(mGameData, pauseLayers));
+		if (screenName == "GameScreen")
+			screen = new GameScreen(mGameData, screenLayers);
 
+		else if (screenName == "PauseScreen")
+			screen = new PauseScreen(mGameData, screenLayers);
 
-	// Game Menu
-	menuPath = menuDirectoryPath / "GameScreen.xml";	
-	ASSERT(Warning, menuPath.has_filename(), "File: %s does not exist\n", menuPath.string().c_str());
-
-	attributes = screenDecoder.getScreenAttributes(menuPath.string());
-	std::vector<UILayer*> gameLayers = screenDecoder.buildUIScreenLayers(attributes);
-	
-	screens.push_back(new GameScreen(mGameData, gameLayers));
+		screens.push_back(screen);
+	}
 
 	activeScreen = nullptr;
 }

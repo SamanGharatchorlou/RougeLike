@@ -174,19 +174,18 @@ void PlayerManager::resolveWallCollisions(float dt)
 
 bool PlayerManager::doesCollideLeft(const VectorF point, float dt) const
 {
-	const MapTile* currentTile = mGameData->map->getTile(point);
-
-	ASSERT(Warning, currentTile->collisionType() == MapTile::Floor,
-		"Player is not on a floor tile, tile at index %d,%d has a %d tile type",
-		currentTile->index.x, currentTile->index.y, currentTile->collisionType());
-
 	bool willCollide = false;
+	const MapTile* currentTile = mGameData->map->getTile(point);
 
 	if (currentTile)
 	{
+		ASSERT(Warning, currentTile->collisionType() == MapTile::Floor,
+			"Player is not on a floor tile, tile at index %d,%d has a %d tile type",
+			currentTile->index.x, currentTile->index.y, currentTile->collisionType());
+
 		const MapTile* leftTile = mGameData->map->offsetTile(currentTile, -1, 0);
 
-		if (leftTile->hasCollisionType(MapTile::Right ^ MapTile::Wall))
+		if (leftTile && leftTile->hasCollisionType(MapTile::Right ^ MapTile::Wall))
 		{
 			float xFuturePosition = point.x - player->getPhysics().maxMovementDistance(dt);
 			willCollide = xFuturePosition < leftTile->rect().RightPoint();
@@ -199,19 +198,18 @@ bool PlayerManager::doesCollideLeft(const VectorF point, float dt) const
 
 bool PlayerManager::doesCollideRight(const VectorF point, float dt) const
 {
-	const MapTile* currentTile = mGameData->map->getTile(point);
-
-	ASSERT(Warning, currentTile->collisionType() == MapTile::Floor,
-		"Player is not on a floor tile, tile at index %d,%d has a %d tile type",
-		currentTile->index.x, currentTile->index.y, currentTile->collisionType());
-
 	bool willCollide = false;
+	const MapTile* currentTile = mGameData->map->getTile(point);
 
 	if (currentTile)
 	{
+		ASSERT(Warning, currentTile->collisionType() == MapTile::Floor,
+			"Player is not on a floor tile, tile at index %d,%d has a %d tile type",
+			currentTile->index.x, currentTile->index.y, currentTile->collisionType());
+
 		const MapTile* rightTile = mGameData->map->offsetTile(currentTile, +1, 0);
 
-		if (rightTile->hasCollisionType(MapTile::Left ^ MapTile::Wall))
+		if (rightTile && rightTile->hasCollisionType(MapTile::Left ^ MapTile::Wall))
 		{
 			float xFuturePosition = point.x + player->getPhysics().maxMovementDistance(dt);
 			willCollide = xFuturePosition > rightTile->rect().LeftPoint();
@@ -224,19 +222,18 @@ bool PlayerManager::doesCollideRight(const VectorF point, float dt) const
 
 bool PlayerManager::doesCollideTop(const VectorF point, float dt) const
 {
-	const MapTile* currentTile = mGameData->map->getTile(point);
-
-	ASSERT(Warning, currentTile->collisionType() == MapTile::Floor,
-		"Player is not on a floor tile, tile at index %d,%d has a %d tile type",
-		currentTile->index.x, currentTile->index.y, currentTile->collisionType());
-
 	bool willCollide = false;
+	const MapTile* currentTile = mGameData->map->getTile(point);
 
 	if (currentTile)
 	{
+		ASSERT(Warning, currentTile->collisionType() == MapTile::Floor,
+			"Player is not on a floor tile, tile at index %d,%d has a %d tile type",
+			currentTile->index.x, currentTile->index.y, currentTile->collisionType());
+
 		const MapTile* upTile = mGameData->map->offsetTile(currentTile, 0, -1);
 
-		if (upTile->hasCollisionType(MapTile::Bot))
+		if (upTile && upTile->hasCollisionType(MapTile::Bot))
 		{
 			float yFuturePosition = point.y - (player->getPhysics().maxMovementDistance(dt));
 			willCollide = yFuturePosition < upTile->rect().BotPoint();
@@ -249,19 +246,18 @@ bool PlayerManager::doesCollideTop(const VectorF point, float dt) const
 
 bool PlayerManager::doesCollideBot(const VectorF point, float dt) const
 {
-	const MapTile* currentTile = mGameData->map->getTile(point);
-
-	ASSERT(Warning, currentTile->collisionType() == MapTile::Floor,
-		"Player is not on a floor tile, tile at index %d,%d has a %d tile type",
-		currentTile->index.x, currentTile->index.y, currentTile->collisionType());
-
 	bool willCollide = false;
+	const MapTile* currentTile = mGameData->map->getTile(point);
 
 	if (currentTile)
 	{
+		ASSERT(Warning, currentTile->collisionType() == MapTile::Floor,
+			"Player is not on a floor tile, tile at index %d,%d has a %d tile type",
+			currentTile->index.x, currentTile->index.y, currentTile->collisionType());
+
 		const MapTile* downTile = mGameData->map->offsetTile(currentTile, 0, +1);
 
-		if (downTile->hasCollisionType(MapTile::Top))
+		if (downTile && downTile->hasCollisionType(MapTile::Top))
 		{
 			float yFuturePosition = point.y + (player->getPhysics().maxMovementDistance(dt));
 			willCollide = yFuturePosition > downTile->rect().TopPoint();

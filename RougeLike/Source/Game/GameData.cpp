@@ -19,16 +19,18 @@
 
 void GameData::init()
 {
-	// Must be before cursor
+	// Texture Manager: must be before cursor
 	textureManager = new TextureManager();
 	textureManager->init();
 
+	// Cursor
 	cursor = new Cursor();
 	cursor->setSize(25.0f, 25.0f);
 
 	// Set camera before UIManager
-	Camera::Get()->setViewport(1024, 768);
+	Camera::Get()->setViewport(window->size());
 
+	// Map
 	map = new Map(this);
 
 	// Audio

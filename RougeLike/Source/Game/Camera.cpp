@@ -12,20 +12,11 @@ Camera* Camera::Get()
 	return &sInstance;
 }
 
-void Camera::setupCamera(Map* map)
+
+void Camera::setPosition(VectorF position)
 {
-	// TODO: not exactly center, maybe its top left of the center tile? or theres not a center tile?
-	VectorF startingPosition(0.0f, map->size().y / 2);
-	ASSERT(Warning, !mRect.Size().isZero(), "Viewport has not been setup\n");
-
-	mRect.SetLeftCenter(startingPosition);
-
+	mRect.SetLeftCenter(position);
 	mActiveRect = &mRect;
-
-	boundaries = map->size();	
-
-	// TEMP - shake setup
-	shakeyCam.init(150, 200, 20.0f);
 }
 
 
@@ -41,13 +32,13 @@ void Camera::fastUpdate(float dt)
 	VectorF translation = mFollowingRect->Center() - mRect.Center();
 
 	if (mRect.LeftPoint() + translation.x >= 0.0f &&
-		mRect.RightPoint() + translation.x <= boundaries.x)
+		mRect.RightPoint() + translation.x <= mBoundaries.x)
 	{
 		mRect = mRect.Translate(translation.x, 0.0f);
 	}
 
 	if (mRect.TopPoint() + translation.y >= 0.0f &&
-		mRect.BotPoint() + translation.y <= boundaries.y)
+		mRect.BotPoint() + translation.y <= mBoundaries.y)
 	{
 		mRect = mRect.Translate(0.0f, translation.y);
 	}

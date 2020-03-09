@@ -29,6 +29,12 @@ void Text::setText(const std::string& text)
 }
 
 
+void Text::displaySubText(int startIndex, int endIndex)
+{
+	mFont.setText(mText.substr(startIndex, endIndex - startIndex));
+}
+
+
 void Text::render(VectorF position)
 {
 	mFont.render(position);

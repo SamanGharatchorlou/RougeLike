@@ -2,7 +2,7 @@
 
 #include "UIElement.h"
 #include "UIBox.h"
-#include "Graphics/Text.h"
+#include "Text/Text.h"
 
 
 class UITextBox : public UIBox
@@ -20,6 +20,8 @@ public:
 	UITextBox(Data& data);
 
 	void setText(std::string text) { mText.setText(text); }
+
+	void displaySubText(int startIndex, int endIndex) { mText.displaySubText(startIndex, endIndex); }
 
 	int fontSize() const { return mText.fontSize(); }
 	void autoSizeFont();

@@ -1,9 +1,8 @@
 #include "pch.h"
 #include "ScreenDecoder.h"
 
-#include "Game/GameData.h"
-#include "Graphics/TextureManager.h"
 #include "Game/Camera.h"
+#include "Graphics/TextureManager.h"
 
 #include "UI/Screens/UILayer.h"
 
@@ -284,23 +283,6 @@ void ScreenDecoder::fillButtonData(UIButton::Data& data, Attributes& attributes)
 	// Id
 	data.id = attributes.getString("id");
 }
-
-//
-//void ScreenDecoder::fillTextButtonData(UITextButton::Data& data, Attributes& attributes) const
-//{
-//	// Button component
-//	fillButtonData(data, attributes);
-//	
-//	// Text
-//	data.text = attributes.getString("text");
-//	data.font = attributes.getString("font");
-//	data.ptSize = attributes.getInt("ptSize");
-//	data.colour = {
-//		(Uint8)attributes.getInt("r"),
-//		(Uint8)attributes.getInt("g"),
-//		(Uint8)attributes.getInt("b")
-//	};
-//}
 
 
 void ScreenDecoder::setRect(UIElement* element)

@@ -41,24 +41,25 @@ void GameState::init()
 	mGameData->map->generateRandomTunnel(20, 100);
 
 	// Camera
-	Camera::Get()->setupCamera(mGameData->map);
+	VectorF startingPosition = VectorF(0.0f, mGameData->map->size().y / 2.0f);
+	Camera::Get()->setPosition(startingPosition);
+	Camera::Get()->setMapBoundaries(mGameData->map->size());
 
 	// UI
 	mGameData->uiManager->selectScreen(Screen::Game);
 
 	// Player
 	PlayerManager* player = mGameData->playerManager;
-	EnemyManager* enemies = mGameData->enemies;
-
 	player->init();
 
-	// TODO: splitting this out has created the dependancy that a character must be selected before anything else as the rect isnt set
-	// this should happen on the screen before this one?
+	// TODO: splitting this out has created the dependancy that a character must be selected before anything else 
+	// as the rect isnt set this should happen on the screen before this one?
 	player->selectCharacter("Soldier.xml");
 
 	Camera::Get()->follow(player->getRectRef());
 
 	// Enemies
+	EnemyManager* enemies = mGameData->enemies;
 	enemies->addEnemiesToPool(EnemyType::Imp, 10);
 	enemies->setTarget(player->getRectRef());
 
@@ -87,7 +88,6 @@ void GameState::init()
 }
 
 
-
 void GameState::preProcess()
 {
 	mGameData->playerManager->preProcess();
@@ -104,6 +104,11 @@ void GameState::handleInput()
 	if (mGameData->inputManager->isPressed(Button::Pause))
 	{
 		mGameController->getStateMachine()->addState(new PauseState(mGameData, mGameController));
+	}
+
+	if (mGameData->inputManager->isPressed(Button::E))
+	{
+		mGameData->map->generateRandomTunnel(30, 150);
 	}
 
 	mGameData->playerManager->handleInput();
