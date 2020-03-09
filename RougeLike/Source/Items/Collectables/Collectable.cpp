@@ -6,8 +6,6 @@
 #include "Characters/Player/PlayerManager.h"
 #include "Characters/Player/Player.h"
 
-#include "Game/Camera.h"
-
 
 void Collectable::init(std::string value, Texture* texture, RectF rect)
 {
@@ -19,9 +17,8 @@ void Collectable::init(std::string value, Texture* texture, RectF rect)
 }
 
 
-void Collectable::render()
+void Collectable::render(RectF rect) const
 {
-	RectF rect = Camera::Get()->toWorldCoords(mRect);
 	mTexture->render(rect);
 }
 

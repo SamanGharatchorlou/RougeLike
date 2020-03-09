@@ -41,7 +41,7 @@ void Projectile::move(float dt)
 	mRect = mRect.Translate(mDirection.normalise() * mSpeed * dt);
 }
 
-void Projectile::render()
+void Projectile::render(RectF rect) const
 {
-	mTexture->render(mRect);
+	mTexture->render(rect);
 }

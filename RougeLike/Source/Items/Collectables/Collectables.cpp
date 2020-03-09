@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Collectables.h"
 
+#include "Game/Camera.h"
 #include "Game/GameData.h"
 
 
@@ -50,7 +51,13 @@ void Collectables::render()
 {
 	for (unsigned int i = 0; i < mCollectables.size(); i++)
 	{
-		mCollectables[i]->render();
+		RectF worldRect = mCollectables[i]->rect();
+
+		if (Camera::Get()->inView(worldRect))
+		{
+			RectF cameraRect = Camera::Get()->toCameraCoords(worldRect);
+			mCollectables[i]->render(cameraRect);
+		}
 	}
 }
 

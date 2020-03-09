@@ -18,12 +18,14 @@ public:
 
 	void move(float dt);
 
-	void render();
+	void render(RectF rect) const;
 
 	DamageCollider* collider() { return &mCollider; }
 	bool hasCollided() const { return mCollider.hasCollided(); }
 
 	VectorF position() const { return mRect.Center(); }
+
+	RectF rect() const { return mRect; }
 
 private:
 	Texture* mTexture;

@@ -13,9 +13,11 @@ public:
 	virtual ~Collectable() { };
 
 	void init(std::string value, Texture* texture, RectF rect);
-	void render();
+	void render(RectF rect) const;
 	
 	virtual void activate(PlayerManager* playerManager) = 0;
+
+	RectF rect() const { return mRect; }
 
 	void setPosition(VectorF position) { mRect.SetCenter(position); }
 	void move(VectorF translation) { mRect.Translate(translation); }
