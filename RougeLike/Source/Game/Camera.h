@@ -36,8 +36,8 @@ public:
 	RectF toCameraCoords(RectF worldRect);
 	Rect<int> toCameraCoords(Rect<int> worldRect);
 
-	VectorF toWorldCoords(VectorF cameraCoords);
-	RectF toWorldCoords(RectF cameraRect);
+	//VectorF toWorldCoords(VectorF cameraCoords);
+	//RectF toWorldCoords(RectF cameraRect);
 
 	VectorF size() const { return mRect.Size(); }
 

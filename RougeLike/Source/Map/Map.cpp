@@ -172,9 +172,7 @@ void Map::renderLayerA(float yPoint)
 
 				// Render walls 'below/under' the player after the player 
 				if (tile.rect().Center().y >= yLayerA && !tile.hasRenderType(MapTile::Floor))
-				{
 					continue;
-				}
 
 				tileRect = camera->toCameraCoords(tileRect);
 
@@ -226,9 +224,7 @@ void Map::renderLayerB()
 
 				// skip anything that would have been rendered in layer A
 				if (tile.rect().Center().y < yLayerA || tile.hasRenderType(MapTile::Floor))
-				{
 					continue;
-				}
 
 				tileRect = camera->toCameraCoords(tileRect);
 

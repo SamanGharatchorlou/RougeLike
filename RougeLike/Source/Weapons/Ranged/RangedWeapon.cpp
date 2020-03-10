@@ -30,13 +30,11 @@ RangedWeapon::~RangedWeapon()
 
 void RangedWeapon::attack()
 {
-	VectorF camPos = Camera::Get()->toCameraCoords(mRect.Center());
-
 	Projectile* projectile = quiver.draw();
 
 	if (projectile)
 	{
-		projectile->fire(camPos, mDirection);
+		projectile->fire(mRect.Center(), mDirection);
 
 		travelingProjectiles.push_back(projectile);
 	}
@@ -60,7 +58,6 @@ void RangedWeapon::slowUpdate(float dt)
 	for (std::list<Projectile*>::iterator iter = travelingProjectiles.begin(); iter != travelingProjectiles.end(); iter++)
 	{
 		VectorF position = (*iter)->position();
-		position = Camera::Get()->toWorldCoords(position);
 
 		// Lost projectil from wall collision
 		if (GameInfo::Get()->isWall(position))
@@ -135,11 +132,13 @@ void RangedWeapon::render()
 
 	for (std::list<Projectile*>::iterator iter = travelingProjectiles.begin(); iter != travelingProjectiles.end(); iter++)
 	{
-		(*iter)->render();
+		if (Camera::Get()->inView((*iter)->rect()))
+		{
+			RectF rect = Camera::Get()->toCameraCoords((*iter)->rect());
+			(*iter)->render(rect);
+		}
 	}
 }
-
-
 
 
 const std::vector<Collider*> RangedWeapon::getColliders()
@@ -148,7 +147,6 @@ const std::vector<Collider*> RangedWeapon::getColliders()
 
 	for (std::list<Projectile*>::iterator iter = travelingProjectiles.begin(); iter != travelingProjectiles.end(); iter++)
 	{
-
 		colliders.push_back((*iter)->collider());
 	}
 

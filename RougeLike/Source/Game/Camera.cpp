@@ -76,13 +76,3 @@ Rect<int> Camera::toCameraCoords(Rect<int> worldRect)
 {
 	return Rect<int>(worldRect.TopLeft() - mActiveRect->TopLeft().toInt(), worldRect.Size());
 }
-
-VectorF Camera::toWorldCoords(VectorF cameraCoords)
-{
-	return cameraCoords + mActiveRect->TopLeft();
-}
-
-RectF Camera::toWorldCoords(RectF cameraRect)
-{
-	return RectF(cameraRect.TopLeft() - mActiveRect->TopLeft(), cameraRect.Size());
-}

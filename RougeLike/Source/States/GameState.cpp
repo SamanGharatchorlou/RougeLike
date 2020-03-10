@@ -52,8 +52,8 @@ void GameState::init()
 	PlayerManager* player = mGameData->playerManager;
 	player->init();
 
-	// TODO: splitting this out has created the dependancy that a character must be selected before anything else 
-	// as the rect isnt set this should happen on the screen before this one?
+	// TODO: splitting this out has created the dependancy that a character must be selected before 
+	// anything else as the rect isnt set this should happen on the screen before this one?
 	player->selectCharacter("Soldier.xml");
 
 	Camera::Get()->follow(player->getRectRef());

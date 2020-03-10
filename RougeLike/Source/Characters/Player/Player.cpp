@@ -87,6 +87,8 @@ void Player::slowUpdate(float dt)
 	mAnimator.slowUpdate(dt);
 
 	updateState();
+
+	//printf("%f, %f\n", getRect().TopLeft().x, getRect().TopLeft().y);
 }
 
 
