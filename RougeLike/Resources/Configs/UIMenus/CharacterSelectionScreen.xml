@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen>
+
+	<!-- Top layer -->
+	<Layer>
+		
+		<!-- Title -->
+		<TextBox id = "SelectionTitle" x = "0.15" y = "0.1" height = "0.2"  width = "0.7">
+			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >Character Selection</text>
+		</TextBox>
+
+
+		<!-- Character selection box -->
+		<TextBox id = "CharacterLabel" parent = "CharacterBox" x = "0" y = "-0.25" height = "0.2"  width = "1">
+			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >Character</text>
+		</TextBox>
+		<Box id = "CharacterImg" parent = "CharacterBox" x = "0.2" y = "0.2" width = "0.6" height = "0.6" texture = "Soldier"></Box>
+
+
+		<!-- Attack -->
+		<TextBox id = "Atk str" parent = "StatBox" x = "0" y = "0" height = "0.1" width ="0.5">
+			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >Attack Damage</text>
+		</TextBox>
+		<TextBox id = "Atk val" parent = "StatBox" x = "0.75" y = "0" height = "0.1" width ="0.5">
+			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >0</text>
+		</TextBox>
+
+
+		<!-- Defence -->
+		<TextBox id = "Def str" parent = "StatBox" x = "0" y = "0.25" height = "0.1" width ="0.5">
+			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >Defence</text>
+		</TextBox>
+		<TextBox id = "Def val" parent = "StatBox" x = "0.75" y = "0.25" height = "0.1" width ="0.5">
+			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >0</text>
+		</TextBox>
+
+
+		<!-- Weapon Info -->
+		<TextBox id = "WeaponLabel" parent = "CharacterBox" x = "0" y = "-0.25" height = "0.2"  width = "1">
+			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >Weapon</text>
+		</TextBox>
+
+		<Box id = "WeaponImg" parent = "WeaponBox" x = "0.2" y = "-0.25" width = "0.6" height = "0.6" texture = "Soldier"></Box>
+
+	</Layer>
+
+	<!-- Bottom Layer -->
+	<layer>
+
+		<!-- Character selection box -->
+		<Box id = "CharacterBox" x = "0.2" y = "0.25" width = "0.3" height = "0.45" texture = "GreyBox"></Box>
+
+		<!-- Stat box -->
+		<Box id = "StatBox" x = "0.6" y = "0.35" width = "0.3" height = "0.4" texture = "BlackHealthBar"></Box>
+
+		<!-- Weapon box -->
+		<Box id = "WeaponBox" x = "0.2" y = "0.7" width = "0.2" height = "0.25" texture = "Soldier_Weapon"></Box>
+
+	</layer>
+
+</screen>

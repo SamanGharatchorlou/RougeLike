@@ -3,6 +3,7 @@
 
 #include "UI/Screens/GameScreen.h"
 #include "UI/Screens/PauseScreen.h"
+#include "UI/Screens/CharacterSelectionScreen.h"
 
 #include "ScreenDecoder.h"
 #include "Game/GameData.h"
@@ -64,6 +65,10 @@ void UIManager::init()
 
 		else if (screenName == "PauseScreen")
 			screen = new PauseScreen(mGameData, screenLayers);
+
+		else if (screenName == "CharacterSelectionScreen")
+			screen = new CharacterSelectionScreen(mGameData, screenLayers); 
+
 
 		screens.push_back(screen);
 	}
