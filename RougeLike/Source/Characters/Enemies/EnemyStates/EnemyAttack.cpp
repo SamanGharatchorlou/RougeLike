@@ -50,11 +50,12 @@ void EnemyAttack::slowUpdate(float dt)
 		mEnemy->popState();
 	}
 
+	//if (mEnemy->getCollider()->hasResponse())
+	//{
+	//	printf("[SGT] processed attack\n");
+	//	mEnemy->getCollider()->hasProcessedAttack(true);
+	//}
 
-	if (mEnemy->getCollider()->hasCollided())
-	{
-		mEnemy->getCollider()->hasProcessedAttack(true);
-	}
 }
 
 

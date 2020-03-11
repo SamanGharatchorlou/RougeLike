@@ -39,6 +39,17 @@ void Enemy::init(std::string name)
 	mMovement.init(&mCollider, (float)bag.pMovementSpeed.get());
 }
 
+
+void Enemy::fastUpdate(float dt)
+{
+	//mCollider.reset();
+
+	mStateMachine.getActiveState().fastUpdate(dt);
+
+	mAnimator.fastUpdate(dt);
+}
+
+
 void Enemy::slowUpdate(float dt)
 {
 	// reset alpha for enemies sharing the same texture
@@ -52,12 +63,7 @@ void Enemy::slowUpdate(float dt)
 }
 
 
-void Enemy::fastUpdate(float dt)
-{
-	mStateMachine.getActiveState().fastUpdate(dt);
 
-	mAnimator.fastUpdate(dt);
-}
 
 
 void Enemy::render()

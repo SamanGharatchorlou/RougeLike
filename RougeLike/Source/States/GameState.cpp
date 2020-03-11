@@ -48,14 +48,11 @@ void GameState::init()
 	// UI
 	mGameData->uiManager->selectScreen(Screen::Game);
 
-	//// Player
+	// Player
 	VectorF playerPosition = VectorF(mGameData->map->getTileSize().x, mGameData->map->size().y / 2.0f);
 	mGameData->playerManager->getRectRef()->SetLeftCenter(playerPosition);
 
-	//// TODO: splitting this out has created the dependancy that a character must be selected before 
-	//// anything else as the rect isnt set this should happen on the screen before this one?
-	//player->selectCharacter("Soldier.xml");
-
+	// Camera
 	Camera::Get()->follow(mGameData->playerManager->getRectRef());
 
 	// Enemies
@@ -154,6 +151,12 @@ void GameState::render()
 
 	// update window surface
 	SDL_RenderPresent(renderer);
+}
+
+
+void GameState::enter()
+{
+	mGameData->cursor->setTexture(mGameData->textureManager->getTexture("GameCursor"));
 }
 
 

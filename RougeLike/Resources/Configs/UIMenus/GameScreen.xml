@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <screen>
+
 	<layer>
-		
-		<Box id = "StatBox" x = "1" y = "0.5" width = "0.3" height = "0.4" texture = "BlackHealthBar"></Box>		
-		
+		<Box id = "StatBox" x = "1.0" y = "0.5" width = "0.3" height = "0.4" texture = "BlackHealthBar"></Box>
+	</layer>
+
+
+	<layer>
+
 		<!-- Attack -->
 		<TextBox id = "Atk str" parent = "StatBox" x = "0" y = "0" height = "0.1" width ="0.5">
 			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >Attack Damage</text>
@@ -19,10 +23,16 @@
 		<TextBox id = "Def val" parent = "StatBox" x = "0.75" y = "0.25" height = "0.1" width ="0.5">
 			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >0</text>
 		</TextBox>
-
 		
 	</layer>
 
+
+	<layer>
+		<Box id = "BlackHealth" x = "0.05" y = "0.95" width = "0.15" height = "0.025" texture = "BlackHealthBar"></Box>
+		<Box id = "RedHealth" x = "0.05" y = "0.95" width = "0.15" height = "0.025" texture = "RedHealthBar"></Box>
+	</layer>
+
+		
 	<layer>
 		<!-- Score -->
 		<TextBox id = "Score str" x = "0.025" y = "0.025" width = "0.15" height = "1">
@@ -32,9 +42,8 @@
 			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >0</text>
 		</TextBox>
 
-		<Box id = "RedHealth" x = "0.05" y = "0.95" width = "0.15" height = "0.025" texture = "RedHealthBar"></Box>
+		
 	</layer>
-	<layer>
-		<Box id = "BlackHealth" x = "0.05" y = "0.95" width = "0.15" height = "0.025" texture = "BlackHealthBar"></Box>
-	</layer>
+
+
 </screen>

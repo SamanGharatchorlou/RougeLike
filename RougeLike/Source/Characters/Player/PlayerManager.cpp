@@ -80,6 +80,18 @@ void PlayerManager::handleInput()
 }
 
 
+void PlayerManager::fastUpdate(float dt)
+{
+	// resolve collisions before any movement takes place!
+	player->getPhysics().resetAllowedMovement();
+	//player->getCollider().reset();
+
+	resolveWallCollisions(dt);
+
+	player->fastUpdate(dt);
+}
+
+
 void PlayerManager::slowUpdate(float dt) 
 { 
 	player->slowUpdate(dt);
@@ -98,6 +110,7 @@ void PlayerManager::slowUpdate(float dt)
 
 		SetHealthBarEvent event( hp );
 		notify(Event::SetHealth, event);
+		printf("[SGT] reduce health\n");
 	}
 
 	if (player->propertyBag()->pLevel.get().didLevelUp())
@@ -119,15 +132,7 @@ void PlayerManager::updateUIStats()
 }
 
 
-void PlayerManager::fastUpdate(float dt) 
-{
-	// resolve collisions before any movement takes place!
-	player->getPhysics().resetAllowedMovement();
 
-	resolveWallCollisions(dt);
-
-	player->fastUpdate(dt);
-}
 
 
 void PlayerManager::handleEvent(const Event event, EventData& data)

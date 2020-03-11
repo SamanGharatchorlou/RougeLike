@@ -23,6 +23,7 @@ public:
 	void render() override;
 	void exit() override { };
 
+	void enter();
 	void resume();
 
 	// TEMP
