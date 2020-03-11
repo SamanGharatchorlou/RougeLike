@@ -2,7 +2,7 @@
 <screen>
 	<layer>
 		
-		<Box id = "StatBox" x = "0.95" y = "0.5" width = "0.3" height = "0.4" texture = "BlackHealthBar"></Box>		
+		<Box id = "StatBox" x = "1" y = "0.5" width = "0.3" height = "0.4" texture = "BlackHealthBar"></Box>		
 		
 		<!-- Attack -->
 		<TextBox id = "Atk str" parent = "StatBox" x = "0" y = "0" height = "0.1" width ="0.5">

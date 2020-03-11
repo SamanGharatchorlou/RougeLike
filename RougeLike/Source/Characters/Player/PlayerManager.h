@@ -31,7 +31,8 @@ public:
 	Player* get() { return player; }
 	RectF* getRectRef();
 
-	bool colliderUpdateRequired() const;
+
+
 	std::vector<Collider*> getWeaponColliders();
 
 	void handleEvent(const Event event, EventData& data) override;

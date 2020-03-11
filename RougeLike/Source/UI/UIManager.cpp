@@ -66,9 +66,8 @@ void UIManager::init()
 		else if (screenName == "PauseScreen")
 			screen = new PauseScreen(mGameData, screenLayers);
 
-		else if (screenName == "CharacterSelectionScreen")
+		 if (screenName == "CharacterSelectionScreen")
 			screen = new CharacterSelectionScreen(mGameData, screenLayers); 
-
 
 		screens.push_back(screen);
 	}

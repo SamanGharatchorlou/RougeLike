@@ -61,7 +61,7 @@ void WeaponStash::load(TextureManager* tm)
 			fillBasicWeaponData(parser, weaponData);
 			fillRangedWeaponData(parser, weaponData, tm);
 
-			ASSERT(Warning, data.count(fileName) == 0, "The file: %s has already been loaded into the weapon stash.cpp\n", filePath);
+			ASSERT(Warning, data.count(fileName) == 0, "The file: %s has already been loaded into the weapon stash\n", filePath.c_str());
 
 			data[fileName] = weaponData;
 		}

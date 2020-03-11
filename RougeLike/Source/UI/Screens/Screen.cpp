@@ -62,7 +62,7 @@ void Screen::render()
 {
 	ASSERT(Warning, mLayers.size() > 0, "Screen must have at least 1 layer\n");
 
-	for (int i = mLayers.size() - 1; i >= 0; i--)
+	for (unsigned int i = 0; i < mLayers.size(); i++)
 	{
 		mLayers[i]->render();
 	}	

@@ -15,7 +15,8 @@ public:
 	{
 		Start,
 		Pause,
-		Game
+		Game,
+		CharacterSelection
 	};
 
 public:

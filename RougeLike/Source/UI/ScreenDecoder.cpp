@@ -213,11 +213,24 @@ Elements ScreenDecoder::setParents(Layers layers, ScreenAttributes& screenAttrib
 void ScreenDecoder::fillElementData(UIElement::Data& data, Attributes& attributes) const
 {
 	// RectF
-	float x = attributes.getFloat("x");
-	float y = attributes.getFloat("y");
 
-	float width = attributes.contains("width") ? attributes.getFloat("width") : 0;
-	float height = attributes.contains("height") ? attributes.getFloat("height") : 0;
+	// Allow these attributes not to be set, assuming they have a parent rect
+	float x = attributes.contains("x") ? attributes.getFloat("x") : 12345.0f;
+	float y = attributes.contains("y") ? attributes.getFloat("y") : 12345.0f;
+
+	float width = attributes.contains("width") ? attributes.getFloat("width") : 0.0f;
+	float height = attributes.contains("height") ? attributes.getFloat("height") : 0.0f;
+
+#if _DEBUG
+	if (x == 12345.0f || y == 12345.0f || width == 0.0f || height == 0.0f)
+	{
+		if (!attributes.contains("parent"))
+		{
+			DebugPrint(Warning, "No x, y, width or height parameter has been set and \
+								 there is no parent to default the value to. This is invalid\n");
+		}
+	}
+#endif
 
 	data.rect = RectF(VectorF(x, y), VectorF(width, height));
 
@@ -296,10 +309,17 @@ void ScreenDecoder::setRect(UIElement* element)
 	{
 		RectF parentRect = element->parent()->rect();
 
-		absoluteRect.x1 = parentRect.x1 + relativeRect.x1 * parentRect.Width();
-		absoluteRect.y1 = parentRect.y1 + relativeRect.y1 * parentRect.Height();
-		absoluteRect.SetWidth(relativeRect.Width() * parentRect.Width());
-		absoluteRect.SetHeight(relativeRect.Height() * parentRect.Height());
+		float x = (relativeRect.x1 == 12345.0f) ? 0.0f : relativeRect.x1;
+		float y = (relativeRect.y1 == 12345.0f) ? 0.0f : relativeRect.y1;
+
+		absoluteRect.x1 = parentRect.x1 + x * parentRect.Width();
+		absoluteRect.y1 = parentRect.y1 + y * parentRect.Height();
+
+		float width = relativeRect.Width() == 0.0f ? 1.0f : relativeRect.Width();
+		float height = relativeRect.Height() == 0.0f ? 1.0f : relativeRect.Height();
+
+		absoluteRect.SetWidth(width * parentRect.Width());
+		absoluteRect.SetHeight(height * parentRect.Height());
 	}
 	// Convert relative positions to pixles
 	else

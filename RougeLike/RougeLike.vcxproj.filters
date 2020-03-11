@@ -81,6 +81,8 @@
     <ClCompile Include="Source\Utilities\Buffer.cpp" />
     <ClCompile Include="Source\Text\Font.cpp" />
     <ClCompile Include="Source\Text\Text.cpp" />
+    <ClCompile Include="Source\UI\Screens\CharacterSelectionScreen.cpp" />
+    <ClCompile Include="Source\States\PreGameState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -180,6 +182,8 @@
     <ClInclude Include="Source\Utilities\Buffer.h" />
     <ClInclude Include="Source\Text\Font.h" />
     <ClInclude Include="Source\Text\Text.h" />
+    <ClInclude Include="Source\UI\Screens\CharacterSelectionScreen.h" />
+    <ClInclude Include="Source\States\PreGameState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

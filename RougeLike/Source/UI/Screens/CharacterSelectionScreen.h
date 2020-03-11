@@ -10,17 +10,17 @@ public:
 	CharacterSelectionScreen(GameData* gameData, std::vector<UILayer*> layers);
 
 	void enter() override { }
-	void exit() override;
+	void exit() override { };
 	void update() override;
 
-	bool quitGame() const { return mQuitGame; }
-	bool resumeGame() const { return mResumeGame; }
-	bool restartGame() const { return mRestartGame; }
+	const std::string& selectCharacter() const { return mSelectedCharacter; }
 
-	Type type() override { return Type::Pause; }
+	bool enterGame() const { return mEnterGame; }
+
+	Type type() override { return Type::CharacterSelection; }
 
 private:
-	bool mResumeGame;
-	bool mQuitGame;
-	bool mRestartGame;
+	std::string mSelectedCharacter;
+
+	bool mEnterGame;
 };

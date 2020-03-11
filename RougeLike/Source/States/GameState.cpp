@@ -41,35 +41,35 @@ void GameState::init()
 	mGameData->map->generateRandomTunnel(20, 100);
 
 	// Camera
-	VectorF startingPosition = VectorF(0.0f, mGameData->map->size().y / 2.0f);
-	Camera::Get()->setPosition(startingPosition);
+	VectorF cameraPosition = VectorF(0.0f, mGameData->map->size().y / 2.0f);
+	Camera::Get()->setPosition(cameraPosition);
 	Camera::Get()->setMapBoundaries(mGameData->map->size());
 
 	// UI
 	mGameData->uiManager->selectScreen(Screen::Game);
 
-	// Player
-	PlayerManager* player = mGameData->playerManager;
-	player->init();
+	//// Player
+	VectorF playerPosition = VectorF(mGameData->map->getTileSize().x, mGameData->map->size().y / 2.0f);
+	mGameData->playerManager->getRectRef()->SetLeftCenter(playerPosition);
 
-	// TODO: splitting this out has created the dependancy that a character must be selected before 
-	// anything else as the rect isnt set this should happen on the screen before this one?
-	player->selectCharacter("Soldier.xml");
+	//// TODO: splitting this out has created the dependancy that a character must be selected before 
+	//// anything else as the rect isnt set this should happen on the screen before this one?
+	//player->selectCharacter("Soldier.xml");
 
-	Camera::Get()->follow(player->getRectRef());
+	Camera::Get()->follow(mGameData->playerManager->getRectRef());
 
 	// Enemies
 	EnemyManager* enemies = mGameData->enemies;
 	enemies->addEnemiesToPool(EnemyType::Imp, 10);
-	enemies->setTarget(player->getRectRef());
+	enemies->setTarget(mGameData->playerManager->getRectRef());
 
 	// Collectables 
 	// TODO?: change this to items, item manager (its not really a manager)
-	collectables.subscrbeCollider(&player->get()->getCollider());
+	collectables.subscrbeCollider(&mGameData->playerManager->get()->getCollider());
 
 	// rendering
 	mGameData->renderManager->Set(mGameData->map);
-	mGameData->renderManager->Set(player);
+	mGameData->renderManager->Set(mGameData->playerManager);
 	mGameData->renderManager->Set(enemies);
 	mGameData->renderManager->Set(mGameData->uiManager);
 	mGameData->renderManager->Set(&collectables);
@@ -81,7 +81,7 @@ void GameState::init()
 	Spawner itemSpawner;
 	VectorF position = itemSpawner.findSpawnPoint(mGameData->map, 10);
 
-	std::string weaponName = "weapon_baton_with_spikes";
+	std::string weaponName = "weapon_big_hammer";
 	WeaponCollectable* weaponPickup = new WeaponCollectable(weaponName, mGameData->textureManager->getTexture(weaponName));
 
 	collectables.spawn(weaponPickup, position);

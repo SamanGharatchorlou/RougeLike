@@ -9,9 +9,14 @@ public:
 	enum Action
 	{
 		None_0,
+
+		// Pause Screen
 		ResumeGame_1,
 		QuitGame_2,
 		RestartGame_3,
+
+		// Character Selection Screen
+		SelectSoldier_4,
 
 		COUNT
 	};

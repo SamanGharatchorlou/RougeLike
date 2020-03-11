@@ -29,6 +29,8 @@
     <ClCompile Include="Source\Characters\Enemies\EnemyPropertyBag.cpp" />
     <ClCompile Include="Source\Game\CameraShake.cpp" />
     <ClCompile Include="Source\Game\Trauma.cpp" />
+    <ClCompile Include="Source\States\PreGameState.cpp" />
+    <ClCompile Include="Source\UI\Screens\CharacterSelectionScreen.cpp" />
     <ClCompile Include="Source\Utilities\Buffer.cpp" />
     <ClCompile Include="Source\Weapons\Melee\MeleeWeapon.cpp" />
     <ClCompile Include="Source\Items\Spawner.cpp" />
@@ -119,6 +121,8 @@
     <ClInclude Include="Source\Events\Events.h" />
     <ClInclude Include="Source\Game\CameraShake.h" />
     <ClInclude Include="Source\Game\Trauma.h" />
+    <ClInclude Include="Source\States\PreGameState.h" />
+    <ClInclude Include="Source\UI\Screens\CharacterSelectionScreen.h" />
     <ClInclude Include="Source\Utilities\Buffer.h" />
     <ClInclude Include="Source\Utilities\Queue.h" />
     <ClInclude Include="Source\Utilities\RingBuffer.h" />

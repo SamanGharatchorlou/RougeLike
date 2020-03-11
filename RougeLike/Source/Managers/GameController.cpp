@@ -2,6 +2,8 @@
 #include "GameController.h"
 
 #include "States/GameState.h"
+// TEMP
+#include "States/PreGameState.h"
 
 // GameData
 #include "System/Window.h"
@@ -104,7 +106,7 @@ void GameController::init()
 void GameController::run()
 {
 	// add first game state
-	mGameStateMachine.addState(new GameState(&mGameData, this));
+	mGameStateMachine.addState(new PreGameState(&mGameData, this));
 
 	// frame rate timer
 	Timer<float> frameTimer(Timer<float>::START);
