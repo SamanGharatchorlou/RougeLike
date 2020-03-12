@@ -83,6 +83,7 @@
     <ClCompile Include="Source\Text\Text.cpp" />
     <ClCompile Include="Source\UI\Screens\CharacterSelectionScreen.cpp" />
     <ClCompile Include="Source\States\PreGameState.cpp" />
+    <ClCompile Include="Source\Characters\Enemies\EnemyStates\EnemyPreAttack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -184,6 +185,7 @@
     <ClInclude Include="Source\Text\Text.h" />
     <ClInclude Include="Source\UI\Screens\CharacterSelectionScreen.h" />
     <ClInclude Include="Source\States\PreGameState.h" />
+    <ClInclude Include="Source\Characters\Enemies\EnemyStates\EnemyPreAttack.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

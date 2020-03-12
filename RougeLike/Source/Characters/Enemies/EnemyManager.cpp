@@ -100,6 +100,21 @@ void EnemyManager::spawn(EnemyType type, unsigned int xPositionPercentage)
 }
 
 
+void EnemyManager::fastUpdate(float dt)
+{
+	if (mActiveEnemies.size() > 0)
+	{
+		for (auto enemy : mActiveEnemies)
+		{
+			enemy->fastUpdate(dt);
+		}
+
+		// Player attacking enemies
+		mCollisionManager.checkAllCollisions();
+	}
+}
+
+
 void EnemyManager::slowUpdate(float dt)
 {
 	std::vector<Enemy*>::iterator iter;
@@ -145,20 +160,6 @@ void EnemyManager::slowUpdate(float dt)
 }
 
 
-void EnemyManager::fastUpdate(float dt)
-{
-	if (mActiveEnemies.size() > 0)
-	{
-		for (auto enemy : mActiveEnemies)
-		{
-			enemy->fastUpdate(dt);
-		}
-
-		mCollisionManager.checkAllCollisions();
-	}
-}
-
-
 Enemy* EnemyManager::getEnemy(unsigned int index) const 
 {
 	ASSERT(Warning, index <= mActiveEnemies.size(), "Enemy index out of bounds\n");
@@ -187,13 +188,14 @@ std::vector<Collider*> EnemyManager::getAttackingEnemyColliders() const
 	{
 		if (enemy->getState() == EnemyState::Attack)
 		{
-			EnemyCollider* collider = enemy->getCollider();
+			DamageCollider* collider = enemy->getCollider();
 
-			if (!collider->hasProcessedAttack())
+			if (!collider->didHit())
 			{
 				colliders.push_back(collider);
 			}
 		}
+
 	}
 
 	return colliders;

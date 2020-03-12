@@ -18,6 +18,12 @@ public:
 	inline void didCollide(bool collision) { mHasCollided = collision; }
 	inline bool hasCollided() const { return mHasCollided; }
 
+	inline void setDidHit(bool collisionStatus) { mDidHit = collisionStatus; }
+	inline bool didHit() const { return mDidHit; }
+
+	inline void setGotHit(bool collisionStatus) { mGotHit = collisionStatus; }
+	inline bool gotHit() const { return mGotHit; }
+
 	const RectF getRect() const { return *mRect; }
 	RectF getRectBase() const;
 
@@ -36,4 +42,8 @@ protected:
 	bool mHasCollided;
 
 	bool mIsActive;
+
+	// TODO: replace has collider with these
+	bool mDidHit;
+	bool mGotHit;
 };

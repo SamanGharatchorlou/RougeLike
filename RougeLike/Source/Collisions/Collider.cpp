@@ -9,7 +9,9 @@ Collider::Collider() :
 	mColliderScale(VectorF(1.0f, 1.0f)),
 	mOtherCollider(nullptr),
 	mHasCollided(false),
-	mIsActive(true)
+	mIsActive(true),
+	mDidHit(false),
+	mGotHit(false)
 { }
 
 
@@ -18,7 +20,9 @@ Collider::Collider(RectF* rect, VectorF colliderScale) :
 	mColliderScale(colliderScale),
 	mOtherCollider(nullptr),
 	mHasCollided(false),
-	mIsActive(true)
+	mIsActive(true),
+	mDidHit(false),
+	mGotHit(false)
 { }
 
 
@@ -34,6 +38,9 @@ void Collider::reset()
 	mIsActive = true;
 	mHasCollided = false;
 	mOtherCollider = nullptr;
+
+	// TEMP
+	mGotHit = false;
 }
 
 

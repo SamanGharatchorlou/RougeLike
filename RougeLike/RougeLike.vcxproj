@@ -27,6 +27,7 @@
     <ClCompile Include="Source\Characters\Enemies\EnemyManager.cpp" />
     <ClCompile Include="Source\Characters\Enemies\Enemy.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyPropertyBag.cpp" />
+    <ClCompile Include="Source\Characters\Enemies\EnemyStates\EnemyPreAttack.cpp" />
     <ClCompile Include="Source\Game\CameraShake.cpp" />
     <ClCompile Include="Source\Game\Trauma.cpp" />
     <ClCompile Include="Source\States\PreGameState.cpp" />
@@ -118,6 +119,7 @@
     <ClInclude Include="Source\Characters\Enemies\Enemy.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyManager.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyPropertyBag.h" />
+    <ClInclude Include="Source\Characters\Enemies\EnemyStates\EnemyPreAttack.h" />
     <ClInclude Include="Source\Events\Events.h" />
     <ClInclude Include="Source\Game\CameraShake.h" />
     <ClInclude Include="Source\Game\Trauma.h" />

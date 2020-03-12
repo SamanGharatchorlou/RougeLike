@@ -44,7 +44,7 @@ void EnemyRun::slowUpdate(float dt)
 
 		if (inAttackRange())
 		{
-			mEnemy->addState(EnemyState::Attack);
+			mEnemy->addState(EnemyState::PreAttack);
 		}
 	}
 

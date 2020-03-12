@@ -42,7 +42,7 @@ void Enemy::init(std::string name)
 
 void Enemy::fastUpdate(float dt)
 {
-	//mCollider.reset();
+	mCollider.reset();
 
 	mStateMachine.getActiveState().fastUpdate(dt);
 
@@ -152,6 +152,13 @@ void Enemy::replaceState(EnemyState state)
 		break;
 
 	case EnemyState::Attack:
+		mStateMachine.replaceState(new EnemyAttack(this));
+
+		mState.pop();
+		mState.push(EnemyState::Attack);
+		break;
+
+	case EnemyState::PreAttack:
 	case EnemyState::None:
 	default:
 		DebugPrint(Warning, "No enemy state set, no state was replaced\n");
@@ -163,9 +170,9 @@ void Enemy::addState(EnemyState state)
 {
 	switch (state)
 	{
-	case EnemyState::Attack:
-		mStateMachine.addState(new EnemyAttack(this));
-		mState.push(EnemyState::Attack);
+	case EnemyState::PreAttack:
+		mStateMachine.addState(new EnemyPreAttack(this));
+		mState.push(EnemyState::PreAttack);
 		break;
 
 	case EnemyState::Hit:

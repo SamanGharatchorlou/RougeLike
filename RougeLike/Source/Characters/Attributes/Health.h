@@ -10,7 +10,7 @@ public:
 
 	void set(int health) { hp = health; }
 	int value() const { return hp; }
-	int getPercentage() const { return hp / maxHp; }
+	float getPercentage() const { return (float)hp / (float)maxHp; }
 
 	void increase(int health)
 	{

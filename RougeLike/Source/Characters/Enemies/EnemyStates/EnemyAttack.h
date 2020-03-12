@@ -20,7 +20,6 @@ public:
 
 
 private:
-	bool beginMovement() const;
 	bool returnMovement() const;
 	bool endAttack() const;
 
@@ -31,5 +30,4 @@ private:
 
 	float mAttackDistance;
 	bool mHasAttacked;
-	bool mIsAttacking;
 };

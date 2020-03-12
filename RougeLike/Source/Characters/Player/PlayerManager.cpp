@@ -34,7 +34,9 @@ void PlayerManager::init()
 {
 	weaponStash.load(mGameData->textureManager);
 
-	collisionTracker.addCollider(&player->getCollider());
+	// TEMP
+	//collisionTracker.addCollider(&player->getCollider());
+	collisionTracker.addDefender(&player->getCollider());
 }
 
 
@@ -84,7 +86,7 @@ void PlayerManager::fastUpdate(float dt)
 {
 	// resolve collisions before any movement takes place!
 	player->getPhysics().resetAllowedMovement();
-	//player->getCollider().reset();
+	player->getCollider().reset();
 
 	resolveWallCollisions(dt);
 
@@ -96,13 +98,15 @@ void PlayerManager::slowUpdate(float dt)
 { 
 	player->slowUpdate(dt);
 
-	// TODO: only if it needs to?
+	// TODO: only run this if it needs to, overoptimising?
 	updateTrackedColliders();
 
-	collisionTracker.checkBaseCollisions();
+	// TEMP
+	//collisionTracker.checkBaseCollisions();
+	collisionTracker.checkCollisions();
 
 	// implement collisions, player getting hit by the enemy
-	if (player->getCollider().hasCollided())
+	if (player->getCollider().gotHit())
 	{
 		Damage damage = player->getCollider().getOtherColliderDamage();
 		Health& hp = player->propertyBag()->pHealth.get();
@@ -110,7 +114,6 @@ void PlayerManager::slowUpdate(float dt)
 
 		SetHealthBarEvent event( hp );
 		notify(Event::SetHealth, event);
-		printf("[SGT] reduce health\n");
 	}
 
 	if (player->propertyBag()->pLevel.get().didLevelUp())
@@ -155,8 +158,13 @@ void PlayerManager::render()
 // --- Private Functions --- //
 void PlayerManager::updateTrackedColliders()
 {
-	collisionTracker.clearSubscriptions();
-	collisionTracker.subscribe(mGameData->enemies->getAttackingEnemyColliders());
+	// TEMP
+	// Enemy attacking player
+	//collisionTracker.clearSubscriptions();
+	//collisionTracker.subscribe(mGameData->enemies->getAttackingEnemyColliders());
+
+	collisionTracker.clearAttackers();
+	collisionTracker.addAttackers(mGameData->enemies->getAttackingEnemyColliders());
 }
 
 

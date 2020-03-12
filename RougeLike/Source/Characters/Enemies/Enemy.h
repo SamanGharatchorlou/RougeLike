@@ -45,7 +45,7 @@ public:
 
 	StateMachine*	 getStateMachine() { return &mStateMachine; }
 	Animator*		getAnimator() { return &mAnimator; }
-	EnemyCollider*	getCollider() { return &mCollider; }
+	DamageCollider*	getCollider() { return &mCollider; }
 	Movement&		getMovement() { return mMovement; }
 
 	void		move(float dt); // TODO: need this?
@@ -74,7 +74,7 @@ protected:
 	GameData* mGameData;
 	
 	StateMachine mStateMachine;
-	EnemyCollider mCollider;
+	DamageCollider mCollider;
 	Animator mAnimator;
 
 	Movement mMovement;

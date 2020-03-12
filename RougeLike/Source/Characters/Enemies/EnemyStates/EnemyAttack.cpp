@@ -7,37 +7,23 @@
 EnemyAttack::EnemyAttack(Enemy* enemy) :
 	mEnemy(enemy), 
 	mAttackDistance(0.0f), 
-	mHasAttacked(false),
-	mIsAttacking(false)
-{ }
+	mHasAttacked(false)
+{ 
+	mEnemy->setActive(true);
+	mEnemy->getCollider()->setDidHit(false);
+}
 
 
 void EnemyAttack::init()
 {
-	mAttackDistance = 0.0f;
-	mHasAttacked = false;
-	mIsAttacking = false;
-
-	mEnemy->setActive(true);
-	mEnemy->getCollider()->hasProcessedAttack(false);
-
-	mEnemy->getAnimator()->selectAnimation("Attack");
 	timer.restart();
-
-	VectorF direction = mEnemy->targetRect().Center() - mEnemy->getRect().Center();
-	mEnemy->getMovement().setDirection(direction);
 	mEnemy->getMovement().setSpeed(mEnemy->propertyBag().pTackleSpeed.get());
 }
 
 
 void EnemyAttack::slowUpdate(float dt)
 {
-	// Start attack movement
-	if (beginMovement())
-	{
-		mIsAttacking = true;
-	}
-
+	// Return to starting position
 	if (returnMovement())
 	{
 		mEnemy->getMovement().flipDirection();
@@ -49,13 +35,6 @@ void EnemyAttack::slowUpdate(float dt)
 	{
 		mEnemy->popState();
 	}
-
-	//if (mEnemy->getCollider()->hasResponse())
-	//{
-	//	printf("[SGT] processed attack\n");
-	//	mEnemy->getCollider()->hasProcessedAttack(true);
-	//}
-
 }
 
 
@@ -63,14 +42,10 @@ void EnemyAttack::fastUpdate(float dt)
 {
 	mEnemy->resolvePlayerWeaponCollisions();
 
-	if (mIsAttacking)
-	{
-		int attackDirection = mHasAttacked ? -1 : +1;
-		mAttackDistance += attackDirection * distanceSquared(VectorF(), mEnemy->getMovement().getMovementDistance()) * dt;
-	}
+	int attackDirection = mHasAttacked ? -1 : +1;
+	mAttackDistance += attackDirection * distanceSquared(VectorF(), mEnemy->getMovement().getMovementDistance()) * dt;
 
-	if(mIsAttacking)
-		mEnemy->move(dt);
+	mEnemy->move(dt);
 }
 
 
@@ -82,15 +57,10 @@ void EnemyAttack::exit()
 
 
 // --- Private Functions ---
-bool EnemyAttack::beginMovement() const
-{
-	return !mIsAttacking && !mHasAttacked && (timer.getSeconds() > mEnemy->propertyBag().pTackleChargeTime.get());
-}
-
 
 bool EnemyAttack::returnMovement() const
 {
-	return mIsAttacking && !mHasAttacked && (mAttackDistance > mEnemy->propertyBag().pTackleDistance.get());
+	return !mHasAttacked && (mAttackDistance > mEnemy->propertyBag().pTackleDistance.get());
 }
 
 

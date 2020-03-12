@@ -9,7 +9,12 @@ public:
 	void subscribe(Collider* collider);
 	void subscribe(std::vector<Collider*> colliders);
 
+	void addAttackers(std::vector<Collider*> attackers);
+	void addDefender(Collider* collider);
+
 	void clearSubscriptions();
+
+	void clearAttackers();
 
 	// Only mark base colliders as has collided
 	void checkBaseCollisions();
@@ -17,7 +22,9 @@ public:
 	// Mark both base and subbed colliders as has collded
 	void checkAllCollisions();
 
+	void checkCollisions();
+
 private:
-	std::vector<Collider*> mBaseColliders;
-	std::vector<Collider*> mSubbedColliders;
+	std::vector<Collider*> mAttackers;
+	std::vector<Collider*> mDefenders;
 };

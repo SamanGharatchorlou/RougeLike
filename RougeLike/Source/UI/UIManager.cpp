@@ -118,18 +118,23 @@ void UIManager::handleEvent(Event event, EventData& data)
 	}
 	case Event::SetHealth:
 	{
-		SetHealthBarEvent event = static_cast<SetHealthBarEvent&>(data);
+		SetHealthBarEvent eventData = static_cast<SetHealthBarEvent&>(data);
 
-		UIElement* element = find("RedHealth");
+		UIElement* redHealth = find("RedHealth");
+		UIElement* blackHealth = find("BlackHealth");
 
-		if (element != nullptr && element->type() == UIElement::Type::Box)
+		if (redHealth != nullptr && redHealth->type() == UIElement::Type::Box &&
+			blackHealth != nullptr && blackHealth->type() == UIElement::Type::Box)
 		{
-			UIBox* healthBar = static_cast<UIBox*>(element);
+			UIBox* redHealthBar = static_cast<UIBox*>(redHealth);
+			UIBox* blackHealthBar = static_cast<UIBox*>(blackHealth);
 
-			RectF rect = healthBar->rect();
-			rect.SetWidth(rect.Width() * event.health.getPercentage());
+			RectF hpRect = redHealthBar->rect();
+			RectF maxHpRect = blackHealthBar->rect();
 
-			healthBar->setRect(rect);
+			hpRect.SetWidth(maxHpRect.Width() * eventData.health.getPercentage());
+
+			redHealthBar->setRect(hpRect);
 		}
 
 		break;

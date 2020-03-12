@@ -134,8 +134,8 @@ void GameState::slowUpdate(float dt)
 	Camera::Get()->slowUpdate(dt);
 
 	// Update weapon collider list
-	mGameData->enemies->clearSubscriptions();
-	mGameData->enemies->subscribe(mGameData->playerManager->getWeaponColliders());
+	//mGameData->enemies->clearSubscriptions();
+	//mGameData->enemies->subscribe(mGameData->playerManager->getWeaponColliders());
 }
 
 

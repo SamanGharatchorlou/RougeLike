@@ -8,6 +8,7 @@ enum class EnemyState
 	Patrol,
 	Alert,
 	Hit,
+	PreAttack,
 	Attack,
 	Dead
 };
