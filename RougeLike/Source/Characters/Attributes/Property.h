@@ -55,12 +55,23 @@ class WeaponProperty : public Property<std::string> { };
 
 
 // Enemy
+
+// Enemy - Attack
 class TackleSpeedProperty : public Property<float> { };
 class TackleDistanceProperty : public Property<float> { };
 class TackleChangeTimeProperty : public Property<float> { };
+
+// Enemy Patrol
 class SightRangeProperty : public Property<float> { };
 class ChaseRangeProperty : public Property<float> { };
+class IdleTimeProperty : public Property<float> { };
+
+// Enemy - Hurt
 class HurtTimeProperty : public Property<float> { };
+
+// Enemy - Alert
 class AttentionTimeProperty : public Property<float> { };
+
+// Enemy - Data values
 class ScoreProperty : public Property<int> { };
 class ExperienceProperty : public Property<int> { };

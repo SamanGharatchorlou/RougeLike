@@ -8,6 +8,12 @@
 #include "Graphics/Texture.h"
 
 
+EnemyHit::EnemyHit(Enemy* enemy) : mEnemy(enemy)
+{
+	mEnemy->getCollider()->reset();
+}
+
+
 void EnemyHit::init()
 {
 	timer.restart();
@@ -31,6 +37,7 @@ void EnemyHit::init()
 	mEnemy->propertyBag().pHealth.set(newHealth);
 	printf("hit state\n");
 }
+
 
 void EnemyHit::slowUpdate(float dt)
 {
@@ -56,8 +63,6 @@ void EnemyHit::exit()
 {
 	Texture* texture = mEnemy->getAnimator()->getSpriteTexture();
 	texture->setAlpha(alphaMax);
-
-	mEnemy->getCollider()->didCollide(false);
 
 	mEnemy->getMovement().setDirection(VectorF());
 }

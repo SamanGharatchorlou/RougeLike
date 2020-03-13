@@ -23,9 +23,11 @@ void EnemyRun::init()
 
 void EnemyRun::slowUpdate(float dt)
 {
-	VectorF targetPosition;
+	mEnemy->resolvePlayerWeaponCollisions();
 
 	updatePath();
+
+	VectorF targetPosition;
 
 	// Target has not been reached yet, move to next tile
 	if (mPath.size() > 0)
@@ -54,7 +56,6 @@ void EnemyRun::slowUpdate(float dt)
 
 void EnemyRun::fastUpdate(float dt)
 {
-	mEnemy->resolvePlayerWeaponCollisions();
 
 	mEnemy->move(dt);
 }

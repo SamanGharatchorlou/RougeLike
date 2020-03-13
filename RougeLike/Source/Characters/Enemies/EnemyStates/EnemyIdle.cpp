@@ -13,6 +13,10 @@ void EnemyIdle::init()
 
 void EnemyIdle::slowUpdate(float dt)
 {
+	mEnemy->resolvePlayerWeaponCollisions();
+
+	float idleTime = mEnemy->propertyBag().pIdleTime.get();;
+
 	if (idleTime > 0 && timer.getSeconds() > idleTime)
 	{
 		mEnemy->replaceState(EnemyState::Patrol);
@@ -25,11 +29,6 @@ void EnemyIdle::slowUpdate(float dt)
 }
 
 
-void EnemyIdle::fastUpdate(float dt)
-{
-	// Collisions
-	mEnemy->resolvePlayerWeaponCollisions();
-}
 
 bool EnemyIdle::canSeeTarget() const
 {

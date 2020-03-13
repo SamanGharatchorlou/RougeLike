@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Stats>
+	<!-- General Attributes -->
 	<Health type = "int">100</Health>
+	<MovementSpeed type = "int">50</MovementSpeed>
+
+	<!-- Data values -->
+	<Score type ="int">50></Score>
+	<Experience type = "int">2000</Experience>
+
+	<!-- Attack -->
 	<AttackDamage type = "int">10</AttackDamage>
 	<AttackSpeed type ="double">1</AttackSpeed>
-	<MovementSpeed type = "int">50</MovementSpeed>
 	<TackleChargeTime type = "float">1</TackleChargeTime>
 	<TackleDistance type = "float">2000</TackleDistance>
 	<TackleSpeed type = "float">100</TackleSpeed>
+
+	<!-- Patrol -->
 	<SightRange type = "float">10000</SightRange>
 	<ChaseRange type = "float">200000</ChaseRange>
+	<IdleTime type = "float">2</IdleTime>
+
+	<!-- Hit -->
 	<HurtTime type = "float">0.125</HurtTime>
+	
+	<!-- Alert -->
 	<AttentionTime type ="float">1</AttentionTime>
-	<Score type ="int">50></Score>
-	<Experience type = "int">2000</Experience>
+
 </Stats>

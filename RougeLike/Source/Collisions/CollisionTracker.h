@@ -24,7 +24,9 @@ public:
 
 	void checkCollisions();
 
-private:
+	// TEMP
 	std::vector<Collider*> mAttackers;
+
+private:
 	std::vector<Collider*> mDefenders;
 };

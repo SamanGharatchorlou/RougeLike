@@ -21,8 +21,19 @@ void EnemyAttack::init()
 }
 
 
+void EnemyAttack::fastUpdate(float dt)
+{
+	int attackDirection = mHasAttacked ? -1 : +1;
+	mAttackDistance += attackDirection * distanceSquared(VectorF(), mEnemy->getMovement().getMovementDistance()) * dt;
+
+	mEnemy->move(dt);
+}
+
+
 void EnemyAttack::slowUpdate(float dt)
 {
+	mEnemy->resolvePlayerWeaponCollisions();
+
 	// Return to starting position
 	if (returnMovement())
 	{
@@ -35,17 +46,6 @@ void EnemyAttack::slowUpdate(float dt)
 	{
 		mEnemy->popState();
 	}
-}
-
-
-void EnemyAttack::fastUpdate(float dt)
-{
-	mEnemy->resolvePlayerWeaponCollisions();
-
-	int attackDirection = mHasAttacked ? -1 : +1;
-	mAttackDistance += attackDirection * distanceSquared(VectorF(), mEnemy->getMovement().getMovementDistance()) * dt;
-
-	mEnemy->move(dt);
 }
 
 

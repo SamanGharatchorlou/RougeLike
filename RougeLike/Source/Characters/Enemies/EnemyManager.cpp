@@ -25,20 +25,6 @@ EnemyManager::~EnemyManager()
 	mEnemyPool.clear();
 }
 
-void EnemyManager::clearSubscriptions()
-{
-	mCollisionManager.clearSubscriptions();
-}
-
-
-void EnemyManager::subscribe(std::vector<Collider*> colliders)
-{
-	for (Collider* collider : colliders)
-	{
-		mCollisionManager.subscribe(collider);
-	}
-}
-
 
 void EnemyManager::addEnemiesToPool(EnemyType type, unsigned int count)
 {
@@ -90,7 +76,7 @@ void EnemyManager::spawn(EnemyType type, unsigned int xPositionPercentage)
 			enemy->setTarget(mTarget);
 
 			// subscribe to player weapon collisions
-			mCollisionManager.addCollider(enemy->getCollider());
+			mCollisionManager.addDefender(enemy->getCollider());
 
 			return;
 		}
@@ -110,7 +96,9 @@ void EnemyManager::fastUpdate(float dt)
 		}
 
 		// Player attacking enemies
-		mCollisionManager.checkAllCollisions();
+		if (mCollisionManager.mAttackers.size() > 0)
+			printf("");
+		mCollisionManager.checkCollisions();
 	}
 }
 
@@ -179,8 +167,10 @@ void EnemyManager::render() const
 }
 
 
+// --- Collisions --- //
 
-std::vector<Collider*> EnemyManager::getAttackingEnemyColliders() const
+// Enemies are attacking with these colliders
+std::vector<Collider*> EnemyManager::getAttackingColliders() const
 {
 	std::vector<Collider*> colliders;
 
@@ -201,6 +191,18 @@ std::vector<Collider*> EnemyManager::getAttackingEnemyColliders() const
 	return colliders;
 }
 
+
+// Enemies being attacked by these colliders
+void EnemyManager::clearAttackingColliders()
+{
+	mCollisionManager.clearAttackers();
+}
+
+
+void EnemyManager::addAttackingColliders(std::vector<Collider*> colliders)
+{
+	mCollisionManager.addAttackers(colliders);
+}
 
 // --- Private Functions --- //
 void EnemyManager::deactivate(std::vector<Enemy*>::iterator& iter)

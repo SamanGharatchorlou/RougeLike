@@ -28,12 +28,11 @@ void EnemyPatrol::init()
 
 void EnemyPatrol::slowUpdate(float dt)
 {
+	mEnemy->resolvePlayerWeaponCollisions();
+
 	if (hasReachedPatrolTarget())
 	{
-		EnemyIdle* idleState = new EnemyIdle(mEnemy);
-		idleState->setIdleTime(2.0f);
-
-		mEnemy->getStateMachine()->replaceState(idleState);
+		mEnemy->getStateMachine()->replaceState(new EnemyIdle(mEnemy));
 	}
 
 	if (canSeeTarget())

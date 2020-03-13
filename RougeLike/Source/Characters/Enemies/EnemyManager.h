@@ -32,8 +32,8 @@ public:
 	void fastUpdate(float dt);
 	void render() const;
 
-	void clearSubscriptions();
-	void subscribe(std::vector<Collider*> colliders);
+	void clearAttackingColliders();
+	void addAttackingColliders(std::vector<Collider*> colliders);
 
 	void addEnemiesToPool(EnemyType type, unsigned int count);
 
@@ -43,7 +43,7 @@ public:
 
 	Enemy* getEnemy(unsigned int index) const;
 
-	std::vector<Collider*> getAttackingEnemyColliders() const;
+	std::vector<Collider*> getAttackingColliders() const;
 
 	unsigned int size() const { return mActiveEnemies.size(); }
 

@@ -1,14 +1,14 @@
 #pragma once
 
 #include "States/State.h"
-#include "Characters/Attributes/Damage.h"
+
 
 class Enemy;
 
 class EnemyHit : public State
 {
 public:
-	EnemyHit(Enemy* enemy) : mEnemy(enemy) { }
+	EnemyHit(Enemy* enemy);
 
 	void init() override;
 	void handleInput() override { }

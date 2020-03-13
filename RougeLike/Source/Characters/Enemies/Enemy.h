@@ -31,7 +31,7 @@ public:
 	void replaceState(EnemyState state);
 	const EnemyState getState() const { return mState.top(); }
 
-	virtual void resolvePlayerWeaponCollisions() = 0;
+	void resolvePlayerWeaponCollisions();
 
 	const GameData* getData() { return mGameData; }
 
@@ -43,7 +43,7 @@ public:
 	void		setRect(RectF rect) { mRect = rect; }
 	RectF&		getRect() { return mRect; }
 
-	StateMachine*	 getStateMachine() { return &mStateMachine; }
+	StateMachine*	getStateMachine() { return &mStateMachine; }
 	Animator*		getAnimator() { return &mAnimator; }
 	DamageCollider*	getCollider() { return &mCollider; }
 	Movement&		getMovement() { return mMovement; }

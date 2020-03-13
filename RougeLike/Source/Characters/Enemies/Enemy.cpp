@@ -63,9 +63,6 @@ void Enemy::slowUpdate(float dt)
 }
 
 
-
-
-
 void Enemy::render()
 {
 	// Flip sprite
@@ -88,6 +85,15 @@ void Enemy::render()
 #if DRAW_ENEMY_RECT
 	debugDrawRect(mRect, RenderColour(RenderColour::RED));
 #endif
+}
+
+
+void Enemy::resolvePlayerWeaponCollisions()
+{
+	if (mCollider.gotHit())
+	{
+		replaceState(EnemyState::Hit);
+	}
 }
 
 

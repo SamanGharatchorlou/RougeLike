@@ -48,6 +48,10 @@ void EnemyPropertyBag::readAttributes(std::string name)
 	float attentionTime = map.getFloat("AttentionTime");
 	pAttentionTime.set(attentionTime);
 
+	// Idle Time
+	float idleTime = map.getFloat("IdleTime");
+	pIdleTime.set(idleTime);
+
 	// Score
 	int score = map.getInt("Score");
 	pScore.set(score);

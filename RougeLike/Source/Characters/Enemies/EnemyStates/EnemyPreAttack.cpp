@@ -2,7 +2,6 @@
 #include "EnemyPreAttack.h"
 
 #include "Characters/Enemies/Enemy.h"
-#include "Characters/Enemies/EnemyPropertyBag.h"
 
 EnemyPreAttack::EnemyPreAttack(Enemy* enemy) : mEnemy(enemy)
 {
@@ -19,6 +18,8 @@ void EnemyPreAttack::init()
 
 void EnemyPreAttack::slowUpdate(float dt)
 {
+	mEnemy->resolvePlayerWeaponCollisions();
+
 	VectorF direction = mEnemy->targetRect().Center() - mEnemy->getRect().Center();
 	mEnemy->getMovement().setDirection(direction);
 
@@ -37,7 +38,6 @@ void EnemyPreAttack::slowUpdate(float dt)
 
 void EnemyPreAttack::fastUpdate(float dt)
 {
-	mEnemy->resolvePlayerWeaponCollisions();
 }
 
 

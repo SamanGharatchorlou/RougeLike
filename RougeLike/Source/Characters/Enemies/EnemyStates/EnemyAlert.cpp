@@ -18,6 +18,9 @@ void EnemyAlert::init()
 
 void EnemyAlert::slowUpdate(float dt)
 {
+	// Collisions
+	mEnemy->resolvePlayerWeaponCollisions();
+
 	// Flip sprite half way
 	if (!mHasFlipped && timer.getSeconds() > mEnemy->propertyBag().pAttentionTime.get() / 2.0f)
 	{
@@ -34,7 +37,5 @@ void EnemyAlert::slowUpdate(float dt)
 
 void EnemyAlert::fastUpdate(float dt)
 {
-	// Collisions
-	mEnemy->resolvePlayerWeaponCollisions();
 }
 

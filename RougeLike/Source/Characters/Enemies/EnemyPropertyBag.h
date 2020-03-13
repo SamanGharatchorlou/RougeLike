@@ -28,6 +28,9 @@ public:
 	// Hurt
 	HurtTimeProperty pHurtTime;
 
+	// Idle
+	IdleTimeProperty pIdleTime;
+
 	// Score
 	ScoreProperty pScore;
 	ExperienceProperty pExp;

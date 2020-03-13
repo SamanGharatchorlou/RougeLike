@@ -98,11 +98,8 @@ void PlayerManager::slowUpdate(float dt)
 { 
 	player->slowUpdate(dt);
 
-	// TODO: only run this if it needs to, overoptimising?
+	// Test for enemy attacking player collisions
 	updateTrackedColliders();
-
-	// TEMP
-	//collisionTracker.checkBaseCollisions();
 	collisionTracker.checkCollisions();
 
 	// implement collisions, player getting hit by the enemy
@@ -123,7 +120,7 @@ void PlayerManager::slowUpdate(float dt)
 		updateUIStats();
 	}
 }
-
+ 
 
 void PlayerManager::updateUIStats()
 {
@@ -158,13 +155,9 @@ void PlayerManager::render()
 // --- Private Functions --- //
 void PlayerManager::updateTrackedColliders()
 {
-	// TEMP
 	// Enemy attacking player
-	//collisionTracker.clearSubscriptions();
-	//collisionTracker.subscribe(mGameData->enemies->getAttackingEnemyColliders());
-
 	collisionTracker.clearAttackers();
-	collisionTracker.addAttackers(mGameData->enemies->getAttackingEnemyColliders());
+	collisionTracker.addAttackers(mGameData->enemies->getAttackingColliders());
 }
 
 
