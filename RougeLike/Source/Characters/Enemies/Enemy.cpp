@@ -13,15 +13,16 @@
 
 Enemy::Enemy(GameData* gameData) : 
 	mGameData(gameData),
-	mIsActive(false),
-	mAlpha(alphaMax)
-{ }
+	mStateMachine(new EnemyNullState),
+	mFlip(SDL_FLIP_NONE), 
+	mTarget(nullptr) 
+{
+
+}
 
 
 void Enemy::init(std::string name)
 {
-	mFlip = SDL_FLIP_NONE;
-
 	initAnimations(name);
 	bag.readAttributes(name);
 
@@ -65,6 +66,12 @@ void Enemy::slowUpdate(float dt)
 
 void Enemy::render()
 {
+	mStateMachine.getActiveState().render();
+}
+
+
+void Enemy::renderCharacter()
+{
 	// Flip sprite
 	if (mFlip == SDL_FLIP_NONE && mMovement.getDirection().x < 0)
 	{
@@ -79,13 +86,28 @@ void Enemy::render()
 	VectorF cameraPosition = Camera::Get()->toCameraCoords(mMovement.getPostion());
 	RectF rect = RectF(cameraPosition, mRect.Size());
 
-	mAnimator.getSpriteTexture()->setAlpha(mAlpha);
 	mAnimator.getSpriteTile()->render(rect, mFlip);
 
 #if DRAW_ENEMY_RECT
 	debugDrawRect(mRect, RenderColour(RenderColour::RED));
 #endif
 }
+
+//void Enemy::clear()
+//{
+//	while (mStateMachine.size() > 0)
+//	{
+//		mStateMachine.popState();
+//		mStateMachine.processStateChanges();
+//	}
+//
+//	mStateMachine.addState(new EnemyNullState);
+//	mStateMachine.processStateChanges();
+//
+//	mStateMachine(new EnemyNullState),
+//	mFlip(SDL_FLIP_NONE),
+//	mTarget(nullptr)
+//}
 
 
 void Enemy::resolvePlayerWeaponCollisions()
@@ -104,6 +126,7 @@ void Enemy::spawn(VectorF position)
 	mMovement.setPosition(position);
 }
 
+
 void Enemy::move(float dt)
 {
 	mMovement.fastUpdate(dt);
@@ -111,57 +134,36 @@ void Enemy::move(float dt)
 }
 
 
-void Enemy::replaceState(EnemyState state)
+void Enemy::replaceState(EnemyState::Type state)
 {
 	switch (state)
 	{
 	case EnemyState::Idle:
 		mStateMachine.replaceState(new EnemyIdle(this));
-
-		mState.pop();
-		mState.push(EnemyState::Idle);
 		break;
 
 	case EnemyState::Run:
 		mStateMachine.replaceState(new EnemyRun(this));
-
-		mState.pop();
-		mState.push(EnemyState::Run);
 		break;
 
 	case EnemyState::Patrol:
 		mStateMachine.replaceState(new EnemyPatrol(this));
-
-		mState.pop();
-		mState.push(EnemyState::Patrol);
 		break;
 
 	case EnemyState::Alert:
 		mStateMachine.replaceState(new EnemyAlert(this));
-
-		mState.pop();
-		mState.push(EnemyState::Alert);
 		break;
 
 	case EnemyState::Hit:
 		mStateMachine.replaceState(new EnemyHit(this));
-
-		mState.pop();
-		mState.push(EnemyState::Hit);
 		break;
 
 	case EnemyState::Dead:
 		mStateMachine.replaceState(new EnemyDead(this));
-
-		mState.pop();
-		mState.push(EnemyState::Dead);
 		break;
 
 	case EnemyState::Attack:
 		mStateMachine.replaceState(new EnemyAttack(this));
-
-		mState.pop();
-		mState.push(EnemyState::Attack);
 		break;
 
 	case EnemyState::PreAttack:
@@ -172,26 +174,27 @@ void Enemy::replaceState(EnemyState state)
 	}
 }
 
-void Enemy::addState(EnemyState state)
+
+void Enemy::addState(EnemyState::Type state)
 {
 	switch (state)
 	{
 	case EnemyState::PreAttack:
 		mStateMachine.addState(new EnemyPreAttack(this));
-		mState.push(EnemyState::PreAttack);
 		break;
 
 	case EnemyState::Hit:
 		mStateMachine.addState(new EnemyHit(this));
-		mState.push(EnemyState::Hit);
 		break;	
 	
 	case EnemyState::Patrol:
 		mStateMachine.addState(new EnemyPatrol(this));
-		mState.push(EnemyState::Patrol);
 		break;
 
 	case EnemyState::None:
+		mStateMachine.addState(new EnemyNullState());
+		break;
+
 	case EnemyState::Idle:
 	case EnemyState::Run:
 	case EnemyState::Alert:
@@ -199,6 +202,26 @@ void Enemy::addState(EnemyState state)
 	default:
 		DebugPrint(Warning, "No enemy state set, no state was added\n");
 		break;
+	}
+}
+
+
+void Enemy::popState()
+{
+	mStateMachine.popState();
+}
+
+
+EnemyState::Type Enemy::state() const
+{
+	if (mStateMachine.size() > 0)
+	{
+		return mStateMachine.getActiveState().type();
+	}
+	else
+	{
+		DebugPrint(Warning, "Enemy state machine has no state, size = 0\n");
+		return EnemyState::None;
 	}
 }
 

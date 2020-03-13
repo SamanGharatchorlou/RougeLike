@@ -2,23 +2,24 @@
 
 #include "States/State.h"
 
+#include "EnemyState.h"
+
 class Enemy;
 
-class EnemyAlert : public State
+class EnemyAlert : public EnemyState
 {
 public:
-	EnemyAlert(Enemy* enemy) : mEnemy(enemy), mHasFlipped(false) { }
+	EnemyAlert(Enemy* enemy) : EnemyState(enemy) { }
 
 	void init() override;
 	void handleInput() override { }
 	void slowUpdate(float) override;
-	void fastUpdate(float dt) override;
-	void render() override { }
+	void fastUpdate(float dt) override { };
+	void render() override;
 	void exit() override { }
 
-private:
-	Enemy* mEnemy;
+	const Type type() const { return Type::Alert; }
 
+private:
 	Timer<float> timer;
-	bool mHasFlipped;
 };

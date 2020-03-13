@@ -177,6 +177,29 @@ void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, SDL_Re
 }
 
 
+// Renders part of the texture, e.g. a tile in a set with the flip and alpha specified
+void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, SDL_RendererFlip flip, const Uint8 tempAlpha)
+{
+	// texture being displayed on the screen
+	SDL_Rect renderQuad = { static_cast<int>(rect.x1),
+						static_cast<int>(rect.y1),
+						static_cast<int>(rect.Width()),
+						static_cast<int>(rect.Height()) };
+
+	// the region of the texture being displayed on the screen
+	SDL_Rect subQuad = { subRect.x1, subRect.y1, subRect.Width(), subRect.Height() };
+
+	// Temporarily set the alpha 
+	const Uint8 currentAlpha = alpha();
+	setAlpha(tempAlpha);
+
+	SDL_RenderCopyEx(renderer, texture, &subQuad, &renderQuad, 0.0, NULL, flip);
+
+	// Set the alpha back to the default value
+	setAlpha(currentAlpha);
+}
+
+
 // Renders part of the texture, e.g. a tile in a set with the roation specified
 void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, double rotation, VectorF aboutPoint, SDL_RendererFlip flip) const
 {

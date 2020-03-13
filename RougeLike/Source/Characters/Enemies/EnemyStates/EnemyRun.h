@@ -1,12 +1,10 @@
 #pragma once
 
-#include "States/State.h"
-
+#include "EnemyState.h"
 #include "AI/AIPathing.h"
 
-class Enemy;
 
-class EnemyRun : public State
+class EnemyRun : public EnemyState
 {
 public:
 	EnemyRun(Enemy* enemy);
@@ -15,11 +13,13 @@ public:
 	void handleInput() override { }
 	void slowUpdate(float) override;
 	void fastUpdate(float dt) override;
-	void render() override { }
+	void render() override;
 	void exit() override { }
 
 	void pause() override { };
 	void resume() override;
+
+	const Type type() const { return Type::Run; }
 
 private:
 	void updatePath();
@@ -29,8 +29,6 @@ private:
 	bool inAttackRange() const;
 
 private:
-	Enemy* mEnemy;
-
 	AIPathing mAIPathing;
 	Path mPath;
 };

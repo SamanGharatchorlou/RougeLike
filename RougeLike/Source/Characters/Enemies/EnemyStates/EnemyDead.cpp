@@ -3,6 +3,15 @@
 
 #include "Characters/Enemies/Enemy.h"
 
+#include "Game/Camera.h"
+
+// TODO: this should come from enemy?
+#include "Graphics/Texture.h"
+
+
+
+EnemyDead::EnemyDead(Enemy* enemy) : EnemyState(enemy), mAlpha(alphaMax) { }
+
 
 void EnemyDead::init()
 {
@@ -19,17 +28,35 @@ void EnemyDead::init()
 
 void EnemyDead::slowUpdate(float dt)
 {
-	Texture* texture = mEnemy->getAnimator()->getSpriteTexture();
-
-	if (mEnemy->getAnimator()->loopCount() > 0)
-	{
-		mEnemy->getAnimator()->stop();
-		mEnemy->alpha() -= (Uint8)(100 * dt);
-	}
+	mAlpha -= (Uint8)(200 * dt);
 
 	// Remove enemy from play
-	if (mEnemy->alpha() <= 10)
+	if (mAlpha <= 10)
 	{
-		mEnemy->setActive(false);
+		mEnemy->addState(EnemyState::None);
 	}
+}
+
+
+void EnemyDead::render()
+{
+	// Flip sprite
+	if (mEnemy->flip() == SDL_FLIP_NONE && mEnemy->getMovement().getDirection().x < 0)
+	{
+		mEnemy->setFlip(SDL_FLIP_HORIZONTAL);
+	}
+	else if (mEnemy->flip() == SDL_FLIP_HORIZONTAL && mEnemy->getMovement().getDirection().x >= 0)
+	{
+		mEnemy->setFlip(SDL_FLIP_NONE);
+	}
+
+	// render in camera coords
+	VectorF cameraPosition = Camera::Get()->toCameraCoords(mEnemy->getMovement().getPostion());
+	RectF rect = RectF(cameraPosition, mEnemy->getRect().Size());
+
+	mEnemy->getAnimator()->getSpriteTile()->render(rect, mEnemy->flip(), mAlpha);
+
+#if DRAW_ENEMY_RECT
+	debugDrawRect(mRect, RenderColour(RenderColour::RED));
+#endif
 }

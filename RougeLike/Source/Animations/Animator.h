@@ -27,7 +27,7 @@ using Animations = std::unordered_map<std::string, Animation>;
 class Animator
 {
 public:
-	Animator() : animationIndex(0), loops(0), speedFactor(1.0f) { }
+	Animator() : animationIndex(0), speedFactor(1.0f) { }
 
 	void init(Tileset spriteSheet, Animations animations);
 	void slowUpdate(float dt);
@@ -42,9 +42,8 @@ public:
 
 	void setSpeedFactor(float speed) { speedFactor = speed; }
 
-	int loopCount() const { return loops; }
+	Tile* getSpriteTile();
 
-	const Tile* getSpriteTile();
 	Texture* getSpriteTexture();
 
 private:
@@ -56,8 +55,6 @@ private:
 	float speedFactor;
 
 	int animationIndex;
-
-	int loops;
 
 	Timer<float> timer;
 };

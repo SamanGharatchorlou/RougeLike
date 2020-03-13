@@ -1,21 +1,23 @@
 #pragma once
 
-#include "States/State.h"
+#include "EnemyState.h"
 
 class Enemy;
 
-class EnemyDead : public State
+class EnemyDead : public EnemyState
 {
 public:
-	EnemyDead(Enemy* enemy) : mEnemy(enemy) { }
+	EnemyDead(Enemy* enemy);
 
 	void init() override;
 	void handleInput() override { }
 	void slowUpdate(float dt) override;
 	void fastUpdate(float dt) override { };
-	void render() override { }
+	void render() override;
 	void exit() override { };
 
+	const Type type() const { return Type::Dead; }
+
 private:
-	Enemy* mEnemy;
+	Uint8 mAlpha;
 };

@@ -23,7 +23,7 @@
 
 
 // init all SDL subsystems
-GameController::GameController(const char* gameTitle) : quit(false)
+GameController::GameController(const char* gameTitle) : quit(false), mGameStateMachine(new NullState)
 {
 	// init SDL
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)

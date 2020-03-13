@@ -1,10 +1,8 @@
 #pragma once
 
-#include "States/State.h"
+#include "EnemyState.h"
 
-class Enemy;
-
-class EnemyPatrol : public State
+class EnemyPatrol : public EnemyState
 {
 public:
 	EnemyPatrol(Enemy* enemy);
@@ -13,9 +11,10 @@ public:
 	void handleInput() override { }
 	void slowUpdate(float) override;
 	void fastUpdate(float dt) override;
-	void render() override { }
+	void render() override;
 	void exit() override { }
 
+	const Type type() const { return Type::Patrol; }
 
 private:
 	void setPatrolPoint();
@@ -23,7 +22,6 @@ private:
 	bool canSeeTarget() const;
 
 private:
-	Enemy* mEnemy;
-
 	VectorF mPatrolTarget;
 };
+

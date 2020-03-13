@@ -2,10 +2,10 @@
 
 #include "EnemyState.h"
 
-class EnemyHit : public EnemyState
+class EnemyClear : public EnemyState
 {
 public:
-	EnemyHit(Enemy* enemy);
+	EnemyClear(Enemy* enemy);
 
 	void init() override;
 	void handleInput() override { }
@@ -15,7 +15,4 @@ public:
 	void exit() override;
 
 	const Type type() const { return Type::Hit; }
-
-private:
-	Timer<float> timer;
 };

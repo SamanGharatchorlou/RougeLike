@@ -16,15 +16,15 @@ void EnemyAlert::init()
 	timer.restart();
 }
 
+
 void EnemyAlert::slowUpdate(float dt)
 {
 	// Collisions
 	mEnemy->resolvePlayerWeaponCollisions();
 
 	// Flip sprite half way
-	if (!mHasFlipped && timer.getSeconds() > mEnemy->propertyBag().pAttentionTime.get() / 2.0f)
+	if (timer.getSeconds() > mEnemy->propertyBag().pAttentionTime.get() / 2.0f)
 	{
-		mHasFlipped = true;
 		mEnemy->getMovement().flipDirection();
 	}
 
@@ -35,7 +35,9 @@ void EnemyAlert::slowUpdate(float dt)
 	}
 }
 
-void EnemyAlert::fastUpdate(float dt)
+
+void EnemyAlert::render()
 {
+	mEnemy->renderCharacter();
 }
 

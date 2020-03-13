@@ -5,9 +5,7 @@
 #include "Characters/Enemies/Enemy.h"
 
 
-EnemyRun::EnemyRun(Enemy* enemy) : 
-	mEnemy(enemy), 
-	mAIPathing(enemy->getData()->map) { }
+EnemyRun::EnemyRun(Enemy* enemy) : EnemyState(enemy), mAIPathing(enemy->getData()->map) { }
 
 
 void EnemyRun::init()
@@ -18,6 +16,13 @@ void EnemyRun::init()
 	VectorF currentPosition = mEnemy->getMovement().getPostion();
 	VectorF endTargetPosition = mEnemy->targetRect().Center();
 	mPath = mAIPathing.findPath(currentPosition, endTargetPosition);
+}
+
+
+void EnemyRun::fastUpdate(float dt)
+{
+
+	mEnemy->move(dt);
 }
 
 
@@ -54,10 +59,9 @@ void EnemyRun::slowUpdate(float dt)
 }
 
 
-void EnemyRun::fastUpdate(float dt)
+void EnemyRun::render()
 {
-
-	mEnemy->move(dt);
+	mEnemy->renderCharacter();
 }
 
 

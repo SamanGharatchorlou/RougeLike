@@ -15,7 +15,6 @@ void Animator::slowUpdate(float dt)
 		if (++animationIndex >= mActiveAnimation.startingIndex + mActiveAnimation.count)
 		{
 			animationIndex = mActiveAnimation.startingIndex;
-			loops++;
 		}
 
 		timer.restart();
@@ -26,13 +25,12 @@ void Animator::slowUpdate(float dt)
 void Animator::selectAnimation(std::string name)
 {
 	timer.restart();
-	loops = 0;
 	mActiveAnimation = mAnimations[name];
 	animationIndex = mActiveAnimation.startingIndex;
 }
 
 
-const Tile* Animator::getSpriteTile()
+Tile* Animator::getSpriteTile()
 {
 	return &mSpriteSheet.getTile(animationIndex);
 }
@@ -47,7 +45,6 @@ Texture* Animator::getSpriteTexture()
 void Animator::reset()
 {
 	animationIndex = 0;
-	loops = 0;
 	timer.restart();
 }
 

@@ -90,7 +90,6 @@
     </ClCompile>
     <ClCompile Include="Source\States\GameState.cpp" />
     <ClCompile Include="Source\States\PauseState.cpp" />
-    <ClCompile Include="Source\States\StateMachine.cpp" />
     <ClCompile Include="Source\System\Files\AnimationReader.cpp" />
     <ClCompile Include="Source\System\Window.cpp" />
     <ClCompile Include="Source\UI\Elements\UIBox.cpp" />
@@ -119,7 +118,9 @@
     <ClInclude Include="Source\Characters\Enemies\Enemy.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyManager.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyPropertyBag.h" />
+    <ClInclude Include="Source\Characters\Enemies\EnemyStates\EnemyClear.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyStates\EnemyPreAttack.h" />
+    <ClInclude Include="Source\Characters\Enemies\EnemyStates\EnemyState.h" />
     <ClInclude Include="Source\Events\Events.h" />
     <ClInclude Include="Source\Game\CameraShake.h" />
     <ClInclude Include="Source\Game\Trauma.h" />

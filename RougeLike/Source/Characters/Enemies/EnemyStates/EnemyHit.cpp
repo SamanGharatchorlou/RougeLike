@@ -8,7 +8,7 @@
 #include "Graphics/Texture.h"
 
 
-EnemyHit::EnemyHit(Enemy* enemy) : mEnemy(enemy)
+EnemyHit::EnemyHit(Enemy* enemy) : EnemyState(enemy)
 {
 	mEnemy->getCollider()->reset();
 }
@@ -39,6 +39,12 @@ void EnemyHit::init()
 }
 
 
+void EnemyHit::fastUpdate(float dt)
+{
+	mEnemy->getMovement().fastUpdate(dt);
+}
+
+
 void EnemyHit::slowUpdate(float dt)
 {
 	if (timer.getSeconds() > mEnemy->propertyBag().pHurtTime.get())
@@ -53,9 +59,9 @@ void EnemyHit::slowUpdate(float dt)
 }
 
 
-void EnemyHit::fastUpdate(float dt)
+void EnemyHit::render()
 {
-	mEnemy->getMovement().fastUpdate(dt);
+	mEnemy->renderCharacter();
 }
 
 

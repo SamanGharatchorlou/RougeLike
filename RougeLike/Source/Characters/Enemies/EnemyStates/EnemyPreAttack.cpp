@@ -3,7 +3,7 @@
 
 #include "Characters/Enemies/Enemy.h"
 
-EnemyPreAttack::EnemyPreAttack(Enemy* enemy) : mEnemy(enemy)
+EnemyPreAttack::EnemyPreAttack(Enemy* enemy) : EnemyState(enemy)
 {
 	mEnemy->getCollider()->setDidHit(false);
 }
@@ -36,8 +36,9 @@ void EnemyPreAttack::slowUpdate(float dt)
 }
 
 
-void EnemyPreAttack::fastUpdate(float dt)
+void EnemyPreAttack::render()
 {
+	mEnemy->renderCharacter();
 }
 
 

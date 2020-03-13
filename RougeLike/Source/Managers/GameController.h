@@ -13,14 +13,14 @@ public:
 	void run();
 	void quitGame() { quit = true; }
 
-	StateMachine* getStateMachine() { return &mGameStateMachine; }
+	StateMachine<State>* getStateMachine() { return &mGameStateMachine; }
 	
 	void restartGame();
 
 private:
 	GameData mGameData;
 
-	StateMachine mGameStateMachine;
+	StateMachine<State> mGameStateMachine;
 
 	bool quit;
 };

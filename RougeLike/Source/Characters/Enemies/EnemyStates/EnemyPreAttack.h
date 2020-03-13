@@ -1,10 +1,9 @@
 #pragma once
 
-#include "States/State.h"
+#include "EnemyState.h"
 
-class Enemy;
 
-class EnemyPreAttack : public State
+class EnemyPreAttack : public EnemyState
 {
 public:
 	EnemyPreAttack(Enemy* enemy);
@@ -12,17 +11,18 @@ public:
 	void init() override;
 	void handleInput() override { }
 	void slowUpdate(float dt) override;
-	void fastUpdate(float dt) override;
-	void render() override { }
+	void fastUpdate(float dt) override { };
+	void render() override;
 	void exit() override { };
 
+	const Type type() const { return Type::PreAttack; }
 
 private:
 	bool inAttackRange() const;
 
 
 private:
-	Enemy* mEnemy;
-
 	Timer<float> timer;
 };
+
+

@@ -5,11 +5,10 @@
 #include "Characters/Enemies/EnemyPropertyBag.h"
 
 EnemyAttack::EnemyAttack(Enemy* enemy) :
-	mEnemy(enemy), 
+	EnemyState(enemy),
 	mAttackDistance(0.0f), 
 	mHasAttacked(false)
 { 
-	mEnemy->setActive(true);
 	mEnemy->getCollider()->setDidHit(false);
 }
 
@@ -46,6 +45,12 @@ void EnemyAttack::slowUpdate(float dt)
 	{
 		mEnemy->popState();
 	}
+}
+
+
+void EnemyAttack::render()
+{
+	mEnemy->renderCharacter();
 }
 
 

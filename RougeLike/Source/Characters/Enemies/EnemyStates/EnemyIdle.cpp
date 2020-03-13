@@ -35,3 +35,9 @@ bool EnemyIdle::canSeeTarget() const
 	float distance = distanceSquared(mEnemy->targetRect().Center(), mEnemy->getMovement().getPostion());
 	return distance < mEnemy->propertyBag().pSightRange.get();
 }
+
+
+void EnemyIdle::render()
+{
+	mEnemy->renderCharacter();
+}

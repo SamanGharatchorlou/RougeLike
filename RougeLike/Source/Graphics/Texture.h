@@ -3,11 +3,9 @@
 constexpr Uint8 alphaMax = 255;
 constexpr Uint8 alphaMin = 0;
 
-
 class Texture
 {
 public:
-
 	enum Flip
 	{
 		none,
@@ -27,9 +25,10 @@ public:
 	void render(const Rect<int> rect, SDL_RendererFlip flip) const;
 	void render(const RectF rect, double rotation, VectorF aboutPoint) const;
 	void renderSubTexture(const Rect<int> rect, const Rect<int> subRect) const;
-	void renderSubTexture(const RectF rect, const Rect<int> subRect) const; 
+	void renderSubTexture(const RectF rect, const Rect<int> subRect) const;
 	void renderSubTexture(const RectF rect, const Rect<int> subRect, double rotation, VectorF aboutPoint) const;
 	void renderSubTexture(const RectF rect, const Rect<int> subRect, SDL_RendererFlip flip) const;
+	void renderSubTexture(const RectF rect, const Rect<int> subRect, SDL_RendererFlip flip, const Uint8 tempAlpha);
 	void renderSubTexture(const RectF rect, const Rect<int> subRect, double rotation, VectorF aboutPoint, SDL_RendererFlip flip) const;
 
 	const Uint8 alpha() const;

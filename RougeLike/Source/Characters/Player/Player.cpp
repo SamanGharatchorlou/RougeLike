@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Player.h"
 
+#include "States/State.h"
+
 #include "Game/GameData.h"
 #include "Game/Cursor.h"
 #include "Input/InputManager.h"
@@ -17,9 +19,12 @@
 
 Player::Player(GameData* gameData) : 
 	mGameData(gameData),
+	mStateMachine(new NullState),
+	mBag(new PlayerPropertyBag),
+	mWeapon(nullptr),
 	mFlip(SDL_FLIP_NONE)
 {
-	mBag = new PlayerPropertyBag;
+
 }
 
 
@@ -27,6 +32,8 @@ Player::~Player()
 {
 	delete mBag;
 	mBag = nullptr;
+
+	// TODO delete weapon???
 }
 
 

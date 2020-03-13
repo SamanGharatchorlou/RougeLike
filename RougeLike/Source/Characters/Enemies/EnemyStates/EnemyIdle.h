@@ -1,27 +1,26 @@
 #pragma once
 
-#include "States/State.h"
+#include "EnemyState.h"
 
-class Enemy;
 
-class EnemyIdle : public State
+class EnemyIdle : public EnemyState
 {
 public:
-	EnemyIdle(Enemy* enemy) : mEnemy(enemy) { }
+	EnemyIdle(Enemy* enemy) : EnemyState(enemy) { }
 
 	void init() override;
 	void handleInput() override { }
 	void fastUpdate(float dt) override { }
 	void slowUpdate(float) override;
-	void render() override { }
+	void render() override;
 	void exit() override { }
 
+	const Type type() const { return Type::Idle; }
+
 private:
+
 	bool canSeeTarget() const;
 
 private:
-	Enemy* mEnemy;
-
 	Timer<float> timer;
 };
-

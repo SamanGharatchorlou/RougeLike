@@ -52,7 +52,7 @@ private:
 
 	PlayerPropertyBag* mBag;
 
-	StateMachine stateMachine;
+	StateMachine<State> mStateMachine;
 	Animator mAnimator;
 	Collider mCollider;
 	Physics physics;

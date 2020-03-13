@@ -8,6 +8,7 @@
 #include "Characters/Attributes/Movement.h"
 
 #include "EnemyPropertyBag.h"
+#include "EnemyStates/EnemyState.h"
 #include "EnemyEnums.h"
 
 
@@ -24,46 +25,46 @@ public:
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
 	void render();
+	void renderCharacter();
+
+	//void clear();
 
 	// State handling
-	void addState(EnemyState state);
-	void popState() { mStateMachine.popState(); }
-	void replaceState(EnemyState state);
-	const EnemyState getState() const { return mState.top(); }
+	void addState(EnemyState::Type state);
+	void popState();
+	void replaceState(EnemyState::Type state);
+	EnemyState::Type state() const;
 
 	void resolvePlayerWeaponCollisions();
 
 	const GameData* getData() { return mGameData; }
 
-	// Event handling
-	void pushEvent(const EventPacket event);
+	EnemyPropertyBag& propertyBag() { return bag; }
+
+	// Event 
 	const EventPacket popEvent();
+	void pushEvent(const EventPacket event);
 	bool hasEvent() const { return events.size() > 0; }
 
 	void		setRect(RectF rect) { mRect = rect; }
 	RectF&		getRect() { return mRect; }
 
-	StateMachine*	getStateMachine() { return &mStateMachine; }
-	Animator*		getAnimator() { return &mAnimator; }
-	DamageCollider*	getCollider() { return &mCollider; }
-	Movement&		getMovement() { return mMovement; }
+	StateMachine<EnemyState>*	getStateMachine() { return &mStateMachine; }
+	Animator*					getAnimator() { return &mAnimator; }
+	DamageCollider*				getCollider() { return &mCollider; }
+	Movement&					getMovement() { return mMovement; }
 
 	void		move(float dt); // TODO: need this?
-
-	EnemyPropertyBag& propertyBag() { return bag; }
 
 	void setTarget(RectF* rect) { mTarget = rect; }
 	const RectF		targetRect() const { return *mTarget; }
 
+	void setFlip(SDL_RendererFlip flip) { mFlip = flip; }
+	SDL_RendererFlip flip() const { return mFlip; }
+
 	void spawn(VectorF position);
 
 	virtual const EnemyType type() const = 0;
-
-	Uint8& alpha() { return mAlpha; }
-
-	void setActive(bool active) { mIsActive = active; }
-	bool isActive() const { return mIsActive; }
-
 
 
 private:
@@ -73,7 +74,8 @@ private:
 protected:
 	GameData* mGameData;
 	
-	StateMachine mStateMachine;
+	StateMachine<EnemyState> mStateMachine;
+
 	DamageCollider mCollider;
 	Animator mAnimator;
 
@@ -84,12 +86,6 @@ protected:
 	EnemyPropertyBag bag;
 
 	RectF* mTarget;
-
-	Uint8 mAlpha;
-
-	bool mIsActive;
-
-	std::stack<EnemyState> mState;
 
 	std::queue<EventPacket> events;
 };

@@ -71,7 +71,6 @@ void EnemyManager::spawn(EnemyType type, unsigned int xPositionPercentage)
 			mActiveEnemies.push_back(enemy);
 
 			mEnemyPool[i].second = ObjectStatus::Active;
-			enemy->setActive(true);
 
 			enemy->setTarget(mTarget);
 
@@ -95,9 +94,6 @@ void EnemyManager::fastUpdate(float dt)
 			enemy->fastUpdate(dt);
 		}
 
-		// Player attacking enemies
-		if (mCollisionManager.mAttackers.size() > 0)
-			printf("");
 		mCollisionManager.checkCollisions();
 	}
 }
@@ -124,12 +120,13 @@ void EnemyManager::slowUpdate(float dt)
 
 		// Automatically clear out dead enemies
 		// This needs to change to something else so the death anim can play
-		if (!enemy->isActive())
+		if (enemy->state() == EnemyState::None)
 		{
 			deactivate(iter);
 
 			if (iter == mActiveEnemies.end())
 				break;
+
 		}
 	}
 
@@ -176,7 +173,7 @@ std::vector<Collider*> EnemyManager::getAttackingColliders() const
 
 	for (Enemy* enemy : mActiveEnemies)
 	{
-		if (enemy->getState() == EnemyState::Attack)
+		if (enemy->state() == EnemyState::Attack)
 		{
 			DamageCollider* collider = enemy->getCollider();
 
@@ -207,7 +204,7 @@ void EnemyManager::addAttackingColliders(std::vector<Collider*> colliders)
 // --- Private Functions --- //
 void EnemyManager::deactivate(std::vector<Enemy*>::iterator& iter)
 {
-	// Find this enemy in the pool and deactivate inactive to be cleaned
+	// Find this enemy in the pool, deactivate and clear from active enemies
 	for (std::vector<EnemyObject>::iterator poolIter = mEnemyPool.begin(); poolIter != mEnemyPool.end(); poolIter++)
 	{
 		if (*iter == poolIter->first)

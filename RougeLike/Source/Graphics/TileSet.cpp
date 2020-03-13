@@ -14,10 +14,10 @@ void Tile::render(Rect<float> targetRect, SDL_RendererFlip flip) const
 	texture->renderSubTexture(targetRect, rect, flip);
 }
 
+
 void Tile::render(Rect<float> targetRect, SDL_RendererFlip flip, Uint8 alpha)
 {
-	texture->setAlpha(alpha);
-	texture->renderSubTexture(targetRect, rect, flip);
+	texture->renderSubTexture(targetRect, rect, flip, alpha);
 }
 
 Tileset::Tileset(TilesetData& data) :

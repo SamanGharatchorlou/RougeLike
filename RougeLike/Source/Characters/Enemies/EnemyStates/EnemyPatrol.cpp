@@ -12,8 +12,7 @@
 #include "Game/GameData.h"
 
 
-EnemyPatrol::EnemyPatrol(Enemy* enemy) : mEnemy(enemy)
-{ }
+EnemyPatrol::EnemyPatrol(Enemy* enemy) : EnemyState(enemy) { }
 
 
 void EnemyPatrol::init()
@@ -45,6 +44,12 @@ void EnemyPatrol::slowUpdate(float dt)
 void EnemyPatrol::fastUpdate(float dt)
 {
 	mEnemy->move(dt);
+}
+
+
+void EnemyPatrol::render()
+{
+	mEnemy->renderCharacter();
 }
 
 
