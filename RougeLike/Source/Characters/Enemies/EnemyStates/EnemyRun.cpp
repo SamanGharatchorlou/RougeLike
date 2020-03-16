@@ -2,10 +2,11 @@
 #include "EnemyRun.h"
 
 #include "Game/GameData.h"
+#include "Map/MapLevel.h"
 #include "Characters/Enemies/Enemy.h"
 
 
-EnemyRun::EnemyRun(Enemy* enemy) : EnemyState(enemy), mAIPathing(enemy->getData()->map) { }
+EnemyRun::EnemyRun(Enemy* enemy) : EnemyState(enemy), mAIPathing(enemy->getData()->level->map()) { }
 
 
 void EnemyRun::init()

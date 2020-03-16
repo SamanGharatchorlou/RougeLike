@@ -4,7 +4,7 @@
 #include "Game/GameData.h"
 
 #include "Game/Cursor.h"
-#include "Map/Map.h"
+#include "Map/MapLevel.h"
 #include "UI/UIManager.h"
 #include "Characters/Player/PlayerManager.h"
 #include "Characters/Enemies/EnemyManager.h"
@@ -13,7 +13,7 @@
 
 RenderManager::RenderManager(GameData* gameData) :
 	mGameData(gameData),
-	mMap(nullptr),
+	mLevel(nullptr),
 	mPlayer(nullptr),
 	mEnemies(nullptr),
 	mUIManager(nullptr) { }
@@ -21,16 +21,15 @@ RenderManager::RenderManager(GameData* gameData) :
 
 void RenderManager::render()
 {
-	//return;
+	mLevel->renderA();
 
-
-	mMap->renderLayerA(mPlayer->getRectRef()->Center().y);
+	mLevel->renderExit();
 
 	mEnemies->render();
 
 	mPlayer->render();
 
-	mMap->renderLayerB();
+	mLevel->renderB();
 
 	mCollectables->render();
 	

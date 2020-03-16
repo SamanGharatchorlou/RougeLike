@@ -4,7 +4,7 @@
 
 #include "Characters/Enemies/Enemy.h"
 
-
+#include "Map/MapLevel.h" // TODO: do I need both map level and map here?
 #include "Map/Map.h"
 
 // test
@@ -57,7 +57,7 @@ void EnemyPatrol::render()
 
 void EnemyPatrol::setPatrolPoint()
 {
-	Map* map = mEnemy->getData()->map;
+	Map* map = mEnemy->getData()->level->map();
 
 	VectorF position = mEnemy->getMovement().getPostion();
 	Vector2D<int> tilePositionIndex = map->getIndex(position);
@@ -74,7 +74,7 @@ void EnemyPatrol::setPatrolPoint()
 
 bool EnemyPatrol::canSeeTarget() const
 {
-	Map* map = mEnemy->getData()->map;
+	Map* map = mEnemy->getData()->level->map();
 
 	VectorF position = mEnemy->getRect().Center();
 	VectorF targetPosition = mEnemy->targetRect().Center();

@@ -10,6 +10,7 @@
 #include "Weapons/Melee/MeleeWeapon.h"
 #include "Weapons/Ranged/RangedWeapon.h"
 
+#include "Map/MapLevel.h" // TODO: do I need both map level and map here?
 #include "Map/Map.h"
 #include "Characters/Enemies/EnemyManager.h"
 
@@ -34,8 +35,6 @@ void PlayerManager::init()
 {
 	weaponStash.load(mGameData->textureManager);
 
-	// TEMP
-	//collisionTracker.addCollider(&player->getCollider());
 	collisionTracker.addDefender(&player->getCollider());
 }
 
@@ -73,8 +72,6 @@ void PlayerManager::handleInput()
 
 	if (mGameData->inputManager->getButton(Button::E).isPressed())
 	{
-		printf("E pressed\n");
-
 		TraumaEvent event(100);
 
 		notify(Event::Trauma, event);
@@ -88,7 +85,8 @@ void PlayerManager::fastUpdate(float dt)
 	player->getPhysics().resetAllowedMovement();
 	player->getCollider().reset();
 
-	resolveWallCollisions(dt);
+	RectF rect = *getRectRef();
+	resolveWallCollisions(mGameData->level->map(rect.Center()), dt);
 
 	player->fastUpdate(dt);
 }
@@ -161,15 +159,21 @@ void PlayerManager::updateTrackedColliders()
 }
 
 
-void PlayerManager::resolveWallCollisions(float dt)
+void PlayerManager::resolveWallCollisions(const Map* map, float dt)
 {
 	RectF collisionRect = player->getCollider().getRectBase();
 
-	bool restrictLeft = doesCollideLeft(collisionRect.TopLeft(), dt) || doesCollideLeft(collisionRect.BotLeft(), dt);
-	bool restrictRight = doesCollideRight(collisionRect.TopRight(), dt) || doesCollideRight(collisionRect.BotRight(), dt);
+	bool restrictLeft =		doesCollideLeft	(map, collisionRect.TopLeft(), dt)	|| 
+							doesCollideLeft	(map, collisionRect.BotLeft(), dt);
 
-	bool restrictUp = doesCollideTop(collisionRect.TopLeft(), dt) || doesCollideTop(collisionRect.TopRight(), dt);
-	bool restrictDown = doesCollideBot(collisionRect.BotLeft(), dt) || doesCollideBot(collisionRect.BotRight(), dt);
+	bool restrictRight =	doesCollideRight(map, collisionRect.TopRight(), dt) || 
+							doesCollideRight(map, collisionRect.BotRight(), dt);
+
+	bool restrictUp =		doesCollideTop	(map, collisionRect.TopLeft(),  dt)	|| 
+							doesCollideTop	(map, collisionRect.TopRight(), dt);
+
+	bool restrictDown =		doesCollideBot	(map, collisionRect.BotLeft(),  dt)	|| 
+							doesCollideBot	(map, collisionRect.BotRight(), dt);
 
 	player->getPhysics().restrictMovement(Physics::Up, restrictUp);
 	player->getPhysics().restrictMovement(Physics::Down, restrictDown);
@@ -178,10 +182,10 @@ void PlayerManager::resolveWallCollisions(float dt)
 }
 
 
-bool PlayerManager::doesCollideLeft(const VectorF point, float dt) const
+bool PlayerManager::doesCollideLeft(const Map* map, const VectorF point, float dt) const
 {
 	bool willCollide = false;
-	const MapTile* currentTile = mGameData->map->getTile(point);
+	const MapTile* currentTile = map->getTile(point);
 
 	if (currentTile)
 	{
@@ -189,7 +193,7 @@ bool PlayerManager::doesCollideLeft(const VectorF point, float dt) const
 			"Player is not on a floor tile, tile at index %d,%d has a %d tile type",
 			currentTile->index.x, currentTile->index.y, currentTile->collisionType());
 
-		const MapTile* leftTile = mGameData->map->offsetTile(currentTile, -1, 0);
+		const MapTile* leftTile = map->offsetTile(currentTile, -1, 0);
 
 		if (leftTile && leftTile->hasCollisionType(MapTile::Right ^ MapTile::Wall))
 		{
@@ -197,15 +201,17 @@ bool PlayerManager::doesCollideLeft(const VectorF point, float dt) const
 			willCollide = xFuturePosition < leftTile->rect().RightPoint();
 		}
 	}
+	else
+		printf("null\n");
 	
 	return willCollide;
 }
 
 
-bool PlayerManager::doesCollideRight(const VectorF point, float dt) const
+bool PlayerManager::doesCollideRight(const Map* map, const VectorF point, float dt) const
 {
 	bool willCollide = false;
-	const MapTile* currentTile = mGameData->map->getTile(point);
+	const MapTile* currentTile = map->getTile(point);
 
 	if (currentTile)
 	{
@@ -213,7 +219,7 @@ bool PlayerManager::doesCollideRight(const VectorF point, float dt) const
 			"Player is not on a floor tile, tile at index %d,%d has a %d tile type",
 			currentTile->index.x, currentTile->index.y, currentTile->collisionType());
 
-		const MapTile* rightTile = mGameData->map->offsetTile(currentTile, +1, 0);
+		const MapTile* rightTile = map->offsetTile(currentTile, +1, 0);
 
 		if (rightTile && rightTile->hasCollisionType(MapTile::Left ^ MapTile::Wall))
 		{
@@ -226,10 +232,10 @@ bool PlayerManager::doesCollideRight(const VectorF point, float dt) const
 }
 
 
-bool PlayerManager::doesCollideTop(const VectorF point, float dt) const
+bool PlayerManager::doesCollideTop(const Map* map, const VectorF point, float dt) const
 {
 	bool willCollide = false;
-	const MapTile* currentTile = mGameData->map->getTile(point);
+	const MapTile* currentTile = map->getTile(point);
 
 	if (currentTile)
 	{
@@ -237,7 +243,7 @@ bool PlayerManager::doesCollideTop(const VectorF point, float dt) const
 			"Player is not on a floor tile, tile at index %d,%d has a %d tile type",
 			currentTile->index.x, currentTile->index.y, currentTile->collisionType());
 
-		const MapTile* upTile = mGameData->map->offsetTile(currentTile, 0, -1);
+		const MapTile* upTile = map->offsetTile(currentTile, 0, -1);
 
 		if (upTile && upTile->hasCollisionType(MapTile::Bot))
 		{
@@ -250,10 +256,10 @@ bool PlayerManager::doesCollideTop(const VectorF point, float dt) const
 }
 
 
-bool PlayerManager::doesCollideBot(const VectorF point, float dt) const
+bool PlayerManager::doesCollideBot(const Map* map, const VectorF point, float dt) const
 {
 	bool willCollide = false;
-	const MapTile* currentTile = mGameData->map->getTile(point);
+	const MapTile* currentTile = map->getTile(point);
 
 	if (currentTile)
 	{
@@ -261,7 +267,7 @@ bool PlayerManager::doesCollideBot(const VectorF point, float dt) const
 			"Player is not on a floor tile, tile at index %d,%d has a %d tile type",
 			currentTile->index.x, currentTile->index.y, currentTile->collisionType());
 
-		const MapTile* downTile = mGameData->map->offsetTile(currentTile, 0, +1);
+		const MapTile* downTile = map->offsetTile(currentTile, 0, +1);
 
 		if (downTile && downTile->hasCollisionType(MapTile::Top))
 		{

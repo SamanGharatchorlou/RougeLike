@@ -10,7 +10,7 @@
 #include "UI/UIManager.h"
 #include "Managers/ScoreManager.h"
 
-#include "Map/Map.h"
+#include "Map/MapLevel.h"
 #include "Game/Cursor.h"
 #include "Game/Camera.h"
 
@@ -37,19 +37,18 @@ void GameState::init()
 	mGameData->cursor->setTexture(mGameData->textureManager->getTexture("GameCursor"));
 
 	// Map
-	mGameData->map->setScale(3.0f);
-	mGameData->map->generateRandomTunnel(20, 100);
+	mGameData->level->GenerateRandomLevel(20, 20);
 
 	// Camera
-	VectorF cameraPosition = VectorF(0.0f, mGameData->map->size().y / 2.0f);
+	VectorF cameraPosition = VectorF(0.0f, mGameData->level->size().y / 2.0f);
 	Camera::Get()->setPosition(cameraPosition);
-	Camera::Get()->setMapBoundaries(mGameData->map->size());
+	Camera::Get()->setMapBoundaries(mGameData->level->size());
 
 	// UI
 	mGameData->uiManager->selectScreen(Screen::Game);
 
 	// Player
-	VectorF playerPosition = VectorF(mGameData->map->getTileSize().x, mGameData->map->size().y / 2.0f);
+	VectorF playerPosition = VectorF(50.0f, mGameData->level->size().y / 2.0f);
 	mGameData->playerManager->getRectRef()->SetLeftCenter(playerPosition);
 
 	// Camera
@@ -65,7 +64,7 @@ void GameState::init()
 	collectables.subscrbeCollider(&mGameData->playerManager->get()->getCollider());
 
 	// rendering
-	mGameData->renderManager->Set(mGameData->map);
+	mGameData->renderManager->Set(mGameData->level);
 	mGameData->renderManager->Set(mGameData->playerManager);
 	mGameData->renderManager->Set(enemies);
 	mGameData->renderManager->Set(mGameData->uiManager);
@@ -76,7 +75,7 @@ void GameState::init()
 	enemies->spawn(EnemyType::Imp, 5);
 
 	Spawner itemSpawner;
-	VectorF position = itemSpawner.findSpawnPoint(mGameData->map, 10);
+	VectorF position = itemSpawner.findSpawnPoint(mGameData->level->map(), 10);
 
 	std::string weaponName = "weapon_big_hammer";
 	WeaponCollectable* weaponPickup = new WeaponCollectable(weaponName, mGameData->textureManager->getTexture(weaponName));
@@ -103,10 +102,10 @@ void GameState::handleInput()
 		mGameController->getStateMachine()->addState(new PauseState(mGameData, mGameController));
 	}
 
-	if (mGameData->inputManager->isPressed(Button::E))
-	{
-		mGameData->map->generateRandomTunnel(30, 150);
-	}
+	//if (mGameData->inputManager->isPressed(Button::E))
+	//{
+	//	mGameData->map->generateRandomTunnel(30, 150);
+	//}
 
 	mGameData->playerManager->handleInput();
 	mGameData->uiManager->handleInput();

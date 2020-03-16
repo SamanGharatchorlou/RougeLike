@@ -2,6 +2,7 @@
 #include "Characters/Enemies/EnemyManager.h"
 
 #include "Game/GameData.h"
+#include "Map/MapLevel.h"
 #include "Game/Camera.h"
 
 #include "Items/Spawner.h"
@@ -65,7 +66,7 @@ void EnemyManager::spawn(EnemyType type, unsigned int xPositionPercentage)
 
 			// Add new active enemy to list and spawn around index x
 			Spawner enemySpawner;
-			VectorF position = enemySpawner.findSpawnPoint(mGameData->map, xPositionPercentage);
+			VectorF position = enemySpawner.findSpawnPoint(mGameData->level->map(), xPositionPercentage);
 			enemy->spawn(position);
 
 			mActiveEnemies.push_back(enemy);
@@ -211,6 +212,7 @@ void EnemyManager::deactivate(std::vector<Enemy*>::iterator& iter)
 			poolIter->second = ObjectStatus::Inactive;
 	}
 
+	(*iter)->clear();
 	iter = mActiveEnemies.erase(iter);
 }
 

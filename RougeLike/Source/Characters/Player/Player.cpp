@@ -14,6 +14,7 @@
 #include "Weapons/Weapon.h"
 
 #include "System/Files/AnimationReader.h"
+#include "Map/MapLevel.h" // TODO: do i need both maplevel and map?
 #include "Map/Map.h"
 
 
@@ -50,7 +51,7 @@ void Player::init(const std::string& characterConfig)
 
 	// Size
 	VectorF size = mAnimator.getSpriteTile()->getRect().Size() * 2;
-	physics.setRect(RectF(VectorF(size.x * 2.0f, mGameData->map->size().y / 2.0f), size));
+	physics.setRect(RectF(VectorF(size.x * 2.0f, mGameData->level->map()->size().y / 2.0f), size));
 
 	VectorF colliderScale = VectorF(1.0f, 0.2f); // only with walls
 	mCollider.init(&physics.getRect(), colliderScale);

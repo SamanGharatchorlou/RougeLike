@@ -93,21 +93,22 @@ void Enemy::renderCharacter()
 #endif
 }
 
-//void Enemy::clear()
-//{
-//	while (mStateMachine.size() > 0)
-//	{
-//		mStateMachine.popState();
-//		mStateMachine.processStateChanges();
-//	}
-//
-//	mStateMachine.addState(new EnemyNullState);
-//	mStateMachine.processStateChanges();
-//
-//	mStateMachine(new EnemyNullState),
-//	mFlip(SDL_FLIP_NONE),
-//	mTarget(nullptr)
-//}
+void Enemy::clear()
+{
+	// clear statemachine states (except null state at i = 0)
+	while (mStateMachine.size() > 1)
+	{
+		mStateMachine.popState();
+		mStateMachine.processStateChanges();
+	}
+
+	// Check we have no unhandled events
+	while (events.size() > 0)
+		events.pop();
+
+	mFlip = SDL_FLIP_NONE;
+	mTarget = nullptr;
+}
 
 
 void Enemy::resolvePlayerWeaponCollisions()

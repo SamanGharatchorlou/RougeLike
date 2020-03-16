@@ -7,6 +7,7 @@ class InputManager;
 class RenderManager;
 class UIManager;
 class Map;
+class MapLevel;
 class Cursor;
 class PlayerManager;
 class EnemyManager;
@@ -27,7 +28,7 @@ struct GameData
 	UIManager* uiManager = nullptr;
 	ScoreManager* scoreManager = nullptr;
 
-	Map* map = nullptr;
+	MapLevel* level = nullptr;
 	Cursor* cursor = nullptr;
 
 	PlayerManager* playerManager = nullptr;

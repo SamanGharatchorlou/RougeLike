@@ -64,7 +64,6 @@ void Physics::update(float dt)
 
 	if (restrictedMovement[Direction::Right])
 	{
-		printf("restrict right\n");
 		mVelocity.x = clamp(mVelocity.x, -std::abs(mVelocity.x), 0.0f);
 	}
 
@@ -110,6 +109,7 @@ float Physics::relativeSpeed() const
 // --- Private Functions --- //
 void Physics::applyDrag()
 {
+	// No movement
 	if (!mHasForce.x)
 	{
 		mVelocity.x = mVelocity.x * mDragFactor;
@@ -124,5 +124,19 @@ void Physics::applyDrag()
 
 		if (mVelocity.y < mMaxVelocity * 0.01)
 			mVelocity.y = 0;
+	}
+
+
+	// Chaning direction
+	if (mVelocity.x > 0.0f && mAcceleration.x < 0.0f ||
+		mVelocity.x < 0.0f && mAcceleration.x > 0.0f)
+	{
+		mVelocity.x = mVelocity.x * mDragFactor;
+	}
+
+	if (mVelocity.y > 0.0f && mAcceleration.y < 0.0f ||
+		mVelocity.y < 0.0f && mAcceleration.y > 0.0f)
+	{
+		mVelocity.y = mVelocity.y * mDragFactor;
 	}
 }

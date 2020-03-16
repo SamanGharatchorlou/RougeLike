@@ -23,6 +23,7 @@ public:
 	void render(const Rect<int> rect) const;
 	void render(const RectF rect) const;
 	void render(const Rect<int> rect, SDL_RendererFlip flip) const;
+	void render(const RectF rect, SDL_RendererFlip flip) const;
 	void render(const RectF rect, double rotation, VectorF aboutPoint) const;
 	void renderSubTexture(const Rect<int> rect, const Rect<int> subRect) const;
 	void renderSubTexture(const RectF rect, const Rect<int> subRect) const;

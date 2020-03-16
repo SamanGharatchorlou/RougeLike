@@ -9,7 +9,7 @@
 
 struct GameData;
 class Player;
-class Collider; // TODO: do I need this?
+class Map;
 
 
 class PlayerManager : public Dispatcher, public Observer
@@ -31,18 +31,16 @@ public:
 	Player* get() { return player; }
 	RectF* getRectRef();
 
-
-
 	std::vector<Collider*> getWeaponColliders();
 
 	void handleEvent(const Event event, EventData& data) override;
 
 private:
-	void resolveWallCollisions(float dt);
-	bool doesCollideLeft(const VectorF point, float dt) const;
-	bool doesCollideRight(const VectorF point, float dt) const;
-	bool doesCollideTop(const VectorF point, float dt) const;
-	bool doesCollideBot(const VectorF point, float dt) const;
+	void resolveWallCollisions(const Map* map, float dt);
+	bool doesCollideLeft(const Map* map, const VectorF point, float dt) const;
+	bool doesCollideRight(const Map* map, const VectorF point, float dt) const;
+	bool doesCollideTop(const Map* map, const VectorF point, float dt) const;
+	bool doesCollideBot(const Map* map, const VectorF point, float dt) const;
 
 	void updateTrackedColliders();
 

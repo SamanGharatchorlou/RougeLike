@@ -12,9 +12,12 @@
 #include "Characters/Player/PlayerManager.h"
 #include "Characters/Enemies/EnemyManager.h"
 
-#include "Map/Map.h"
+#include "Map/MapLevel.h"
 #include "Game/Camera.h"
 #include "Game/Cursor.h"
+
+// GameInfo
+#include "Map/Map.h"
 
 
 void GameData::init()
@@ -30,8 +33,8 @@ void GameData::init()
 	// Set camera before UIManager
 	Camera::Get()->setViewport(window->size());
 
-	// Map
-	map = new Map(this);
+	// Map Level
+	level = new MapLevel(this);
 
 	// Audio
 	audioManager = new AudioManager();
@@ -66,7 +69,7 @@ void GameData::init()
 
 
 	// Setup gameinfo
-	GameInfo::Get()->map(map);
+	GameInfo::Get()->map(level->map());
 }
 
 
@@ -84,7 +87,7 @@ void GameData::free()
 	delete uiManager;
 	delete scoreManager;
 
-	delete map;
+	delete level;
 	delete cursor;
 
 	delete playerManager;

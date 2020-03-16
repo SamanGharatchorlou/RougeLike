@@ -41,6 +41,7 @@ public:
 	void resetAllowedMovement();
 	void restrictMovement(Direction direction, bool restriction);
 
+
 private:
 	void applyDrag();
 

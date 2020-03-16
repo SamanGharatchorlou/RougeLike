@@ -31,17 +31,19 @@ void Camera::fastUpdate(float dt)
 {
 	VectorF translation = mFollowingRect->Center() - mRect.Center();
 
-	if (mRect.LeftPoint() + translation.x >= 0.0f &&
-		mRect.RightPoint() + translation.x <= mBoundaries.x)
-	{
-		mRect = mRect.Translate(translation.x, 0.0f);
-	}
+	mRect = mRect.Translate(translation);
 
-	if (mRect.TopPoint() + translation.y >= 0.0f &&
-		mRect.BotPoint() + translation.y <= mBoundaries.y)
-	{
-		mRect = mRect.Translate(0.0f, translation.y);
-	}
+	//if (mRect.LeftPoint() + translation.x >= 0.0f &&
+	//	mRect.RightPoint() + translation.x <= mBoundaries.x)
+	//{
+	//	mRect = mRect.Translate(translation.x, 0.0f);
+	//}
+
+	//if (mRect.TopPoint() + translation.y >= 0.0f &&
+	//	mRect.BotPoint() + translation.y <= mBoundaries.y)
+	//{
+	//	mRect = mRect.Translate(0.0f, translation.y);
+	//}
 }
 
 

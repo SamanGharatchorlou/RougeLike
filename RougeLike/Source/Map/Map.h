@@ -1,17 +1,21 @@
 #pragma once
 #include "MapTile.h"
 
-
-struct GameData;
-
+class TextureManager;
 
 class Map
 {
 public:
-	Map(GameData* gameData);
+	Map();
 
-	void generateRandomTunnel(int y, int x);
-	void populateTileRects();
+
+	void init(int x, int y);
+	void populateData();
+
+	void populateTileRects(VectorF offset = VectorF());
+	void populateCollisionRenderInfo();
+
+	Grid<MapTile>& getData() { return mData; }
 
 	unsigned int yCount() const { return mTileCount.y; }
 	unsigned int xCount() const { return mTileCount.x; }
@@ -37,8 +41,8 @@ public:
 	void setScale(float scale) { mScale = scale; }
 	float getScale() const { return mScale; }
 
-	void renderLayerA(float yPoint);
-	void renderLayerB();
+	void renderLayerA(TextureManager* tm, float yPoint);
+	void renderLayerB(TextureManager* tm, float yPoint);
 
 	Vector2D<int> findYFloorTileRange(int xTileIndex);
 
@@ -63,16 +67,12 @@ private:
 	bool isValidPosition(VectorF position) const;
 
 private:
-	GameData* mGameData;
-
 	Vector2D<int> mTileSize;
 	Vector2D<int> mTileCount;
 
 	float mScale;
 
 	Grid<MapTile> mData;
-
-	float yLayerA;
 
 #if _DEBUG
 	int tileRenderCounter;

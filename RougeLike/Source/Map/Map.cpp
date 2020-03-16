@@ -1,29 +1,28 @@
 #include "pch.h"
 #include"Map/Map.h"
 
-#include "Game/GameData.h"
 #include "Game/Camera.h"
 #include "Graphics/Texture.h"
 #include "Graphics/TextureManager.h"
 
-#include "ProceduralMap/TunnelGenerator.h"
+#include "TunnelGenerator.h"
 
 
-Map::Map(GameData* gameData) : mGameData(gameData), mScale(1.0f) , yLayerA(0.0f)
+Map::Map() : mScale(1.0f)
 {
 	mTileSize.set(16, 16); // TODO: get this from some where else?
 }
 
-void Map::populateTileRects()
+
+void Map::populateTileRects(VectorF offset)
 {
 	for (int y = 0; y < mData.yCount(); y++)
 	{
 		for (int x = 0; x < mData.xCount(); x++)
 		{
-			VectorF size(mTileSize);
-			size = size * mScale;
+			VectorF size(mTileSize * mScale);
 			VectorF position = VectorF(x * size.x, y * size.y);
-			RectF rect(position, size);
+			RectF rect(position + offset, size);
 
 			mData[y][x].setRect(rect);
 
@@ -32,23 +31,11 @@ void Map::populateTileRects()
 #endif
 		}
 	}
-
-	yLayerA = size().y;
 }
 
 
-void Map::generateRandomTunnel(int y, int x)
+void Map::populateCollisionRenderInfo()
 {
-	mTileCount.set(x, y);
-
-	// clear data, default all tiles to walls
-	mData.clearAndSet(x, y, MapTile());
-
-	TunnelGenerator generator(mData);
-	generator.build();
-
-	populateTileRects();
-
 	for (unsigned int x = 0; x < xCount(); x++)
 	{
 		bool floorAboveReached = false;
@@ -114,12 +101,12 @@ void Map::generateRandomTunnel(int y, int x)
 					tile.removeRenderType(MapTile::Left ^ MapTile::Right);
 
 					// Add isometic wall edges if the left/right tile is a wall but is not a MapTile::Bot
-					if (inBounds(x-1,y) && wallRenderTile(x - 1, y) && !(mData[y][x - 1].hasRenderType(MapTile::Bot)))
+					if (inBounds(x - 1, y) && wallRenderTile(x - 1, y) && !(mData[y][x - 1].hasRenderType(MapTile::Bot)))
 					{
 						mData[y][x - 1].addRenderType(MapTile::Right);
 					}
 
-					if (inBounds(x+1,y) && wallRenderTile(x + 1, y) && !(mData[y][x + 1].hasRenderType(MapTile::Bot)))
+					if (inBounds(x + 1, y) && wallRenderTile(x + 1, y) && !(mData[y][x + 1].hasRenderType(MapTile::Bot)))
 					{
 						mData[y][x + 1].addRenderType(MapTile::Left);
 					}
@@ -134,21 +121,33 @@ void Map::generateRandomTunnel(int y, int x)
 }
 
 
+void Map::init(int x, int y)
+{
+	mTileCount.set(x, y);
+
+	// clear data, default all tiles to walls
+	mData.clearAndSet(x, y, MapTile());
+}
+
+
+void Map::populateData()
+{
+	populateTileRects();
+	populateCollisionRenderInfo();
+}
+
+
 Vector2D<float> Map::size() const
 {
 	return Vector2D<float>(xCount(), yCount()) * mTileSize * mScale;
 }
 
 
-void Map::renderLayerA(float yPoint)
+void Map::renderLayerA(TextureManager* tm, float yPoint)
 {
 #if _DEBUG
 	tileRenderCounter = 0;
 #endif
-
-	yLayerA = yPoint;
-
-	TextureManager* tm = mGameData->textureManager;
 
 	Texture* floor = tm->getTexture("floor");
 	Texture* wall = tm->getTexture("wall");
@@ -164,14 +163,13 @@ void Map::renderLayerA(float yPoint)
 	{
 		for (unsigned int x = 0; x < xCount(); x++)
 		{
-			Rect<int> tileRect(Vector2D<int>(x, y) * size, size);
+			MapTile tile = mData[y][x];
+			Rect<int> tileRect = tile.rect();
 
 			if (camera->inView(tileRect))
 			{
-				MapTile tile = mData[y][x];
-
 				// Render walls 'below/under' the player after the player 
-				if (tile.rect().Center().y >= yLayerA && !tile.hasRenderType(MapTile::Floor))
+				if (tileRect.Center().y >= yPoint && !tile.hasRenderType(MapTile::Floor))
 					continue;
 
 				tileRect = camera->toCameraCoords(tileRect);
@@ -198,10 +196,9 @@ void Map::renderLayerA(float yPoint)
 	}
 }
 
-void Map::renderLayerB()
-{
-	TextureManager* tm = mGameData->textureManager;
 
+void Map::renderLayerB(TextureManager* tm, float yPoint)
+{
 	Texture* floor = tm->getTexture("floor");
 	Texture* wall = tm->getTexture("wall");
 
@@ -223,7 +220,7 @@ void Map::renderLayerB()
 				MapTile tile = mData[y][x];
 
 				// skip anything that would have been rendered in layer A
-				if (tile.rect().Center().y < yLayerA || tile.hasRenderType(MapTile::Floor))
+				if (tile.rect().Center().y < yPoint || tile.hasRenderType(MapTile::Floor))
 					continue;
 
 				tileRect = camera->toCameraCoords(tileRect);
@@ -421,15 +418,18 @@ bool Map::isValidTile(RectF rect) const
 }
 
 
+// TODO: this invalid index test checks everything based on 0 -> width
+// the tunnel is based on a shift so it should be using the tile rects
+// i.e. index[0].rect.leftside or something like that
 bool Map::isValidIndex(Vector2D<int> index) const
 {
 #if _DEBUG
 	bool isValid = (index.x >= 0 && index.x < mTileCount.x) &&
 					(index.y >= 0 && index.y < mTileCount.y);
-	if (!isValid)
-	{
-		DebugPrint(Warning, "index (%d,%d), is out of bounds\n", index.x, index.y);
-	}
+	//if (!isValid)
+	//{
+	//	DebugPrint(Warning, "index (%d,%d), is out of bounds\n", index.x, index.y);
+	//}
 	return isValid;
 #else // if release
 	return (index.x >= 0 && index.x < mTileCount.x) &&

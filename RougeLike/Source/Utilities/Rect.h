@@ -17,6 +17,8 @@ public:
 	Rect(Vector2D<T> position, Vector2D<T> size) { SetRect(position, size); }
 	Rect(int isValid) { if(isValid == -1) SetRect(-1, -1, -1, -1); }
 
+	template<class K>
+	Rect(Rect<K> rect) { x1 = (T)rect.x1; x2 = (T)rect.x2; y1 = (T)rect.y1; y2 = (T)rect.y2; }
 
 	// Initialisations
 	inline void SetRect(T left, T top, T right, T bot) { x1 = left; y1 = top; x2 = right, y2 = bot; }

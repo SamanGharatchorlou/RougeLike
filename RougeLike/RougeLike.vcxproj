@@ -30,6 +30,7 @@
     <ClCompile Include="Source\Characters\Enemies\EnemyStates\EnemyPreAttack.cpp" />
     <ClCompile Include="Source\Game\CameraShake.cpp" />
     <ClCompile Include="Source\Game\Trauma.cpp" />
+    <ClCompile Include="Source\Map\MapLevel.cpp" />
     <ClCompile Include="Source\States\PreGameState.cpp" />
     <ClCompile Include="Source\UI\Screens\CharacterSelectionScreen.cpp" />
     <ClCompile Include="Source\Utilities\Buffer.cpp" />
@@ -67,7 +68,7 @@
     <ClCompile Include="Source\Items\Collectables\Collectables.cpp" />
     <ClCompile Include="Source\Managers\ScoreManager.cpp" />
     <ClCompile Include="Source\Map\MapTile.cpp" />
-    <ClCompile Include="Source\Map\ProceduralMap\TunnelGenerator.cpp" />
+    <ClCompile Include="Source\Map\TunnelGenerator.cpp" />
     <ClCompile Include="Source\Game\Camera.cpp" />
     <ClCompile Include="Source\Game\Cursor.cpp" />
     <ClCompile Include="Source\Graphics\RenderManager.cpp" />
@@ -124,6 +125,7 @@
     <ClInclude Include="Source\Events\Events.h" />
     <ClInclude Include="Source\Game\CameraShake.h" />
     <ClInclude Include="Source\Game\Trauma.h" />
+    <ClInclude Include="Source\Map\MapLevel.h" />
     <ClInclude Include="Source\States\PreGameState.h" />
     <ClInclude Include="Source\UI\Screens\CharacterSelectionScreen.h" />
     <ClInclude Include="Source\Utilities\Buffer.h" />
@@ -170,7 +172,7 @@
     <ClInclude Include="Source\Managers\ScoreManager.h" />
     <ClInclude Include="Source\Map\Map.h" />
     <ClInclude Include="Source\Map\MapTile.h" />
-    <ClInclude Include="Source\Map\ProceduralMap\TunnelGenerator.h" />
+    <ClInclude Include="Source\Map\TunnelGenerator.h" />
     <ClInclude Include="Source\Game\Camera.h" />
     <ClInclude Include="Source\Game\Cursor.h" />
     <ClInclude Include="Source\Graphics\RenderManager.h" />

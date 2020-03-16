@@ -27,7 +27,7 @@ public:
 	void render();
 	void renderCharacter();
 
-	//void clear();
+	void clear();
 
 	// State handling
 	void addState(EnemyState::Type state);

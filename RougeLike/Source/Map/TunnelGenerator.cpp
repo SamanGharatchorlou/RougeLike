@@ -2,34 +2,25 @@
 #include "TunnelGenerator.h"
 
 
-TunnelGenerator::TunnelGenerator(Grid<MapTile>& mapData) : map(mapData)
+TunnelGenerator::TunnelGenerator()
 {
 	srand((int)time(NULL));
 }
 
-
-void TunnelGenerator::build()
+void TunnelGenerator::buildRandom(Grid<MapTile>& mapData)
 {
 	int pathWidth = 5;
-	int yPath = map.yCount() / 2;
-	int y = yPath;
+	int y = mapData.yCount() / 2;
 
 	// creat first entry point
 	ASSERT(Log, pathWidth > 1, 
 		"The initial pathWidth(%d) must be bigger than 1 to create a starting section\n", pathWidth);
 
-	for (int z = 0; z < 3; z++)
-	{
-		for (int yStart = yPath - pathWidth / 2; yStart < y + pathWidth / 2; yStart++)
-		{
-			//map[yStart][0].setRenderType(MapTile::Floor);
-			map[yStart][z].setType(MapTile::Floor);
-		}
-	}
-
+	// Entrace
+	mapData[y][0].setType(MapTile::Floor);
 
 	// build tunnel
-	for (unsigned int x = 1; x < map[0].size(); x++)
+	for (unsigned int x = 1; x < mapData[0].size(); x++)
 	{
 		int randomNumber = rand() % 100;
 		int roughness = 20;
@@ -63,20 +54,36 @@ void TunnelGenerator::build()
 			if (y <= maxPathY)
 				y = maxPathY + minPathY;
 
-			if (y >= map.yCount() - maxPathY)
-				y = map.yCount() - maxPathY - 1 - minPathY;
+			if (y >= mapData.yCount() - maxPathY)
+				y = mapData.yCount() - maxPathY - 1 - minPathY;
 		}
 		
 		for (int i = -pathWidth; i <= pathWidth; i++)
 		{
 			// Skip over edges of map, make sure its wall
-			if (x == 0 || x == map.xCount() - 1)
+			if (x == 0 || x == mapData.xCount() - 1)
 				continue;
-			else if (y + i == 0 || y + i == map.yCount() - 1)
+			else if (y + i == 0 || y + i == mapData.yCount() - 1)
 				continue;
 
-			// ERROR: once I got y = 15 and i = 5 giving out of bounds access here
-			map[y + i][x].setType(MapTile::Floor);
+			mapData[y + i][x].setType(MapTile::Floor);
 		}
 	}
+
+	// Exit
+	mapData[mapData.yCount() / 2][mapData.xCount() - 1].setType(MapTile::Floor);
+}
+
+
+void TunnelGenerator::buildTunnel(Grid<MapTile>& mapData)
+{
+	int yPosition = mapData.yCount() / 2;
+
+	// build tunnel
+	for (unsigned int x = 0; x < mapData[0].size(); x++)
+	{
+		mapData[yPosition][x].setType(MapTile::Floor);
+	}
+
+
 }

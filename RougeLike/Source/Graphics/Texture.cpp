@@ -85,6 +85,16 @@ void Texture::render(const Rect<int> rect, SDL_RendererFlip flip) const
 	SDL_RenderCopyEx(renderer, texture, nullptr, &renderQuad, 0.0, NULL, flip);
 }
 
+void Texture::render(const RectF rect, SDL_RendererFlip flip) const
+{
+	SDL_Rect renderQuad = { static_cast<int>(rect.x1),
+							static_cast<int>(rect.y1),
+							static_cast<int>(rect.Width()),
+							static_cast<int>(rect.Height()) };
+
+	SDL_RenderCopyEx(renderer, texture, nullptr, &renderQuad, 0.0, NULL, flip);
+}
+
 
 void Texture::render(const RectF rect) const
 {
