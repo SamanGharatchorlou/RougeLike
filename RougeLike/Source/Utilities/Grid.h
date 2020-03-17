@@ -22,7 +22,7 @@ public:
 
 	// Getters
 	const T& get(Vector2D<int> index) const { return data[index.y][index.x]; }
-	const T& get(int y, int x) const { return data[y][x]; }
+	const T& get(int x, int y) const { return data[y][x]; }
 
 	const std::vector<T> getRow( int y) const;
 	const std::vector<T> getColumn(int x) const;

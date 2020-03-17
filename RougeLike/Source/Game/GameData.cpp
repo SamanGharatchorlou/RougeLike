@@ -69,7 +69,7 @@ void GameData::init()
 
 
 	// Setup gameinfo
-	GameInfo::Get()->map(level->map());
+	GameInfo::Get()->map(level);
 }
 
 
@@ -106,6 +106,6 @@ const VectorF GameInfo::mapDimentions() const
 
 bool GameInfo::isWall(VectorF position) const
 {
-	const MapTile* tile = mMap->getTile(position);
+	const MapTile* tile = mMap->map()->getTile(position);
 	return tile ? tile->hasCollisionType(MapTile::Wall) : false;
 }

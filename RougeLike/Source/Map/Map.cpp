@@ -130,9 +130,9 @@ void Map::init(int x, int y)
 }
 
 
-void Map::populateData()
+void Map::populateData(VectorF offset)
 {
-	populateTileRects();
+	populateTileRects(offset);
 	populateCollisionRenderInfo();
 }
 
@@ -213,7 +213,8 @@ void Map::renderLayerB(TextureManager* tm, float yPoint)
 	{
 		for (unsigned int x = 0; x < xCount(); x++)
 		{
-			Rect<int> tileRect(Vector2D<int>(x, y) * size, size);
+			MapTile tile = mData[y][x];
+			Rect<int> tileRect = tile.rect();
 
 			if (camera->inView(tileRect))
 			{
@@ -323,27 +324,29 @@ const MapTile::EdgeInfo Map::getEdgeInfo(int x, int y) const
 }
 
 
-const Vector2D<int> Map::getIndex(const VectorF position) const
+const Vector2D<int> Map::getIndex(VectorF position) const
 {
-	Vector2D<int> index(position.x / (mTileSize.x * mScale), position.y / (mTileSize.y * mScale));
+	VectorF mapTopLeft = mData.get(0, 0).rect().TopLeft();
+	VectorF shiftedPosition = position - mapTopLeft;
+
+	// Get the index relative to this map
+	Vector2D<int> index(shiftedPosition.x / (mTileSize.x * mScale), shiftedPosition.y / (mTileSize.y * mScale));
+
 	return isValidPosition(position) ? index : Vector2D<int>(-1, -1);
 }
 
 
 const Vector2D<int> Map::getIndex(const MapTile* tile) const
 {
-	const VectorF position(tile->rect().TopLeft());
-	Vector2D<int> index(position.x / (mTileSize.x * mScale), position.y / (mTileSize.y * mScale));
-	return isValidPosition(position) ? index : Vector2D<int>(-1, -1);
+	VectorF position(tile->rect().TopLeft());
+	return getIndex(position);
 }
 
 
 const Vector2D<int> Map::getIndex(RectF rect) const
-{
-	if (isValidTile(rect))
-		return Vector2D<int>(rect.Center().x, rect.Center().y) / (mTileSize * mScale);
-	else
-		return Vector2D<int>(-1, -1);
+{               
+	VectorF position(rect.TopLeft());
+	return getIndex(position);
 }
 
 
@@ -361,99 +364,62 @@ const MapTile* Map::getTile(int x, int y) const
 
 const MapTile* Map::getTile(VectorF position) const 
 {
-	Vector2D<int> tileIndex(position.x / (mTileSize.x * mScale), position.y / (mTileSize.y * mScale));
-	return isValidIndex(tileIndex) ? &mData.get(tileIndex) : nullptr;
+	Vector2D<int> index = getIndex(position);
+	return isValidIndex(index) ? &mData.get(index) : nullptr;
 }
 
 
 const RectF Map::getTileRect(Vector2D<int> index) const
 {
-	VectorF size = VectorF(mTileSize.x, mTileSize.y) * mScale;
-	VectorF position = VectorF(index.x, index.y) * size;
-	RectF rect(position, size);
-
-	return isValidTile(rect) ? rect : RectF(-1);
+	return isValidIndex(index) ? mData.get(index).rect() : RectF(-1);
 }
 
 
 const RectF Map::getTileRect(int x, int y) const
 {
-	VectorF size = VectorF(mTileSize.x, mTileSize.y) * mScale;
-	VectorF position = VectorF(x, y) * size;
-	RectF rect(position, size);
-
-	return isValidTile(rect) ? rect : RectF(-1);
+	return isValidIndex(Vector2D<int>(x, y)) ? mData.get(x, y).rect() : RectF(-1);
 }
 
 
-const RectF Map::getTileRect(int coords[2]) const
-{
-	VectorF size = VectorF(mTileSize.x, mTileSize.y) * mScale;
-	VectorF position = VectorF(coords[0], coords[1]) * size;
-	RectF rect(position, size);
 
-	return isValidTile(rect) ? rect : RectF(-1);
+const RectF Map::getFirstRect(int yIndex) const
+{
+	return getTileRect(0, yIndex);
+}
+
+const RectF Map::getLastRect(int yIndex) const
+{
+	return getTileRect(mTileCount.x - 1, yIndex);
 }
 
 
 // -- Validity functions -- //
 bool Map::isValidTile(RectF rect) const
 {
-#if _DEBUG
-	bool isValid = rect.x1 >= 0.0f && rect.y1 >= 0.0f &&
-					rect.x2 < size().x && rect.y2 < size().y &&
-					rect.Size() == mTileSize * mScale;
-	if (!isValid)
-	{
-		DebugPrint(Warning, "Rect topleft p(%f,%f), s(%f,%f) is invalid\n",
-			rect.TopLeft().x, rect.TopLeft().y, rect.Size().x, rect.Size().y);
-	}
-	return isValid;
-#else // if release
-	return (
-		rect.x1 >= 0.0f && rect.y1 >= 0.0f &&
-		rect.x2 < size().x && rect.y2 < size().y &&
-		rect.Size() == mTileSize * mScale);
-#endif
+	VectorF start = mData.get(0, 0).rect().TopLeft();
+	VectorF end = mData.get(mTileCount.x - 1, mTileCount.y - 1).rect().BotRight();
+
+	return (rect.x1 >= start.x && rect.y1 >= start.y) &&
+			(rect.x2 < end.x && rect.y2 < end.y) &&
+			 rect.Size() == mTileSize * mScale;
 }
 
 
-// TODO: this invalid index test checks everything based on 0 -> width
-// the tunnel is based on a shift so it should be using the tile rects
-// i.e. index[0].rect.leftside or something like that
 bool Map::isValidIndex(Vector2D<int> index) const
 {
-#if _DEBUG
-	bool isValid = (index.x >= 0 && index.x < mTileCount.x) &&
-					(index.y >= 0 && index.y < mTileCount.y);
-	//if (!isValid)
-	//{
-	//	DebugPrint(Warning, "index (%d,%d), is out of bounds\n", index.x, index.y);
-	//}
-	return isValid;
-#else // if release
 	return (index.x >= 0 && index.x < mTileCount.x) &&
-		(index.y >= 0 && index.y < mTileCount.y);
-#endif
-}
+			(index.y >= 0 && index.y < mTileCount.y);
 
+}
 
 bool Map::isValidPosition(VectorF position) const
 {
-#if _DEBUG
-	bool isValid = position.x >= 0 && position.x < (float)size().x &&
-					position.y >= 0 && position.y < (float)size().y;
-	if (!isValid)
-	{
-		DebugPrint(Warning, "position(%f,%f) is invalid\n", position.x, position.y);
-	}
-	return isValid;
-#else
-	return position.x >= 0 && position.x < (float)size().x &&
-		position.y >= 0 && position.y < (float)size().y;
-#endif
-}
+	VectorF start = mData.get(0, 0).rect().TopLeft();
+	VectorF end = mData.get(mTileCount.x - 1, mTileCount.y - 1).rect().BotRight();
 
+	return (position.x >= start.x && position.x < end.x) &&
+			(position.y >= start.y && position.y < end.y);
+}
 
 
 // --- Debugging --- //

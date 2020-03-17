@@ -201,8 +201,6 @@ bool PlayerManager::doesCollideLeft(const Map* map, const VectorF point, float d
 			willCollide = xFuturePosition < leftTile->rect().RightPoint();
 		}
 	}
-	else
-		printf("null\n");
 	
 	return willCollide;
 }

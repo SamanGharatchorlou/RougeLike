@@ -10,27 +10,26 @@ public:
 
 
 	void init(int x, int y);
-	void populateData();
-
-	void populateTileRects(VectorF offset = VectorF());
-	void populateCollisionRenderInfo();
+	void populateData(VectorF offset = VectorF());
 
 	Grid<MapTile>& getData() { return mData; }
 
 	unsigned int yCount() const { return mTileCount.y; }
 	unsigned int xCount() const { return mTileCount.x; }
 
+	const RectF getFirstRect(int yIndex = 0) const;
+	const RectF getLastRect(int yIndex = 0) const;
+
 	const MapTile* getTile(Vector2D<int> index) const;
 	const MapTile* getTile(int x, int y) const;
 	const MapTile* getTile(VectorF position) const;
 
-	const Vector2D<int> getIndex(const VectorF position) const;
+	const Vector2D<int> getIndex(VectorF position) const;
 	const Vector2D<int> getIndex(const MapTile* tile) const;
-	const Vector2D<int> getIndex(const RectF rect) const;
+	const Vector2D<int> getIndex(RectF rect) const;
 
 	const RectF getTileRect(Vector2D<int> index) const;
 	const RectF getTileRect(int x, int y) const;
-	const RectF getTileRect(int coords[2]) const;
 
 	const VectorF getTileSize() const { return mTileSize * mScale; }
 
@@ -46,10 +45,10 @@ public:
 
 	Vector2D<int> findYFloorTileRange(int xTileIndex);
 
-	bool wallRenderTile(int x, int y) const { return mData.get(y,x).renderType() >= MapTile::Wall; }
-	bool floorRenderTile(int x, int y) const { return mData.get(y, x).renderType() == MapTile::Floor; }
-	bool wallCollisionTile(int x, int y) const { return mData.get(y, x).collisionType() >= MapTile::Wall; }
-	bool floorCollisionTile(int x, int y) const { return mData.get(y, x).collisionType() == MapTile::Floor; }
+	bool wallRenderTile(int x, int y) const { return mData.get(x, y).renderType() >= MapTile::Wall; }
+	bool floorRenderTile(int x, int y) const { return mData.get(x, y).renderType() == MapTile::Floor; }
+	bool wallCollisionTile(int x, int y) const { return mData.get(x, y).collisionType() >= MapTile::Wall; }
+	bool floorCollisionTile(int x, int y) const { return mData.get(x, y).collisionType() == MapTile::Floor; }
 
 	bool inBounds(int x, int y) const;
 
@@ -61,10 +60,13 @@ public:
 
 
 private:
-	// TODO: make these annoymous?
+	void populateTileRects(VectorF offset);
+	void populateCollisionRenderInfo();
+
 	bool isValidTile(RectF rect) const;
 	bool isValidIndex(Vector2D<int> index) const;
 	bool isValidPosition(VectorF position) const;
+
 
 private:
 	Vector2D<int> mTileSize;

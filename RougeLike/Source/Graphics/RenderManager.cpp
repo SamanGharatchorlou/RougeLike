@@ -23,8 +23,6 @@ void RenderManager::render()
 {
 	mLevel->renderA();
 
-	mLevel->renderExit();
-
 	mEnemies->render();
 
 	mPlayer->render();

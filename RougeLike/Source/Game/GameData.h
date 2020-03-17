@@ -6,7 +6,6 @@ class AudioManager;
 class InputManager;
 class RenderManager;
 class UIManager;
-class Map;
 class MapLevel;
 class Cursor;
 class PlayerManager;
@@ -55,9 +54,9 @@ public:
 	}
 
 
-	void map(Map* map) { mMap = map; }
+	void map(MapLevel* map) { mMap = map; }
 
-	const VectorF mapDimentions() const; // { return mMap->size(); }
+	const VectorF mapDimentions() const;
 
 	bool isWall(VectorF position) const;
 
@@ -65,5 +64,5 @@ private:
 	GameInfo() : mMap(nullptr)  { };
 	~GameInfo() { };
 
-	const Map* mMap ;
+	const MapLevel* mMap ;
 };

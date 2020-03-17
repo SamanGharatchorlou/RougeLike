@@ -37,7 +37,8 @@ void GameState::init()
 	mGameData->cursor->setTexture(mGameData->textureManager->getTexture("GameCursor"));
 
 	// Map
-	mGameData->level->GenerateRandomLevel(20, 20);
+	mGameData->level->generateNextLevel();
+	mGameData->level->generateExitTunnel();
 
 	// Camera
 	VectorF cameraPosition = VectorF(0.0f, mGameData->level->size().y / 2.0f);
@@ -102,10 +103,10 @@ void GameState::handleInput()
 		mGameController->getStateMachine()->addState(new PauseState(mGameData, mGameController));
 	}
 
-	//if (mGameData->inputManager->isPressed(Button::E))
-	//{
-	//	mGameData->map->generateRandomTunnel(30, 150);
-	//}
+	if (mGameData->inputManager->isPressed(Button::E))
+	{
+		//mGameData->level->generateRandomLevel(150, 20);
+	}
 
 	mGameData->playerManager->handleInput();
 	mGameData->uiManager->handleInput();
@@ -135,6 +136,19 @@ void GameState::slowUpdate(float dt)
 	// Update weapon collider list
 	mGameData->enemies->clearAttackingColliders();
 	mGameData->enemies->addAttackingColliders(mGameData->playerManager->getWeaponColliders());
+
+	// IF HAS REACHED END OF LEVEL MOVE TO NEXT LEVEL
+	if (mGameData->level->mapOutOfView())
+	{
+		printf("out of view\n");
+		mGameData->level->swapToEntrance();
+	}
+
+	// TODO: can I do this without the check.. seems a bit hacked
+	if (mGameData->level->hasEntrance() && mGameData->level->entraceOutOfView())
+	{
+		mGameData->level->generateExitTunnel();
+	}
 }
 
 
