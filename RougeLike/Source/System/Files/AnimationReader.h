@@ -10,17 +10,16 @@ class Texture;
 class AnimationReader
 {
 public:
-	AnimationReader(std::string file, TextureManager* textureManager);
+	AnimationReader(const std::string& file);
 
-	Animations readAnimationData();
-	TilesetData readTilesetData();
+	Animations readAnimationData() const;
+	TilesetData readTilesetData(const TextureManager* textureManager) const;
 
 private:
-	Vector2D<int> readTileCount();
-	Vector2D<int> readTileSize();
-	Texture* readTexture();
+	Vector2D<int> readTileCount() const;
+	Vector2D<int> readTileSize() const;
+	Texture* readTexture(const TextureManager* tm) const;
 
 private:
 	XMLParser parser;
-	TextureManager* mTextureManager;
 };

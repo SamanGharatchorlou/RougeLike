@@ -230,10 +230,10 @@ EnemyState::Type Enemy::state() const
 void Enemy::initAnimations(std::string file)
 {
 	// config reader
-	AnimationReader reader(file, mGameData->textureManager);;
+	AnimationReader reader(file);
 
 	// Setup sprite sheet
-	TilesetData spriteSheetData = reader.readTilesetData();
+	TilesetData spriteSheetData = reader.readTilesetData(mGameData->textureManager);
 	Tileset spriteSheet(spriteSheetData);
 
 	// Setup animations

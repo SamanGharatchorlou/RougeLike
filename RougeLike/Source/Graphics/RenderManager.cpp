@@ -21,13 +21,15 @@ RenderManager::RenderManager(GameData* gameData) :
 
 void RenderManager::render()
 {
-	mLevel->renderA();
+	float renderDepth = mGameData->playerManager->getRectRef()->Center().y;
+
+	mLevel->renderA(mGameData->textureManager, renderDepth);
 
 	mEnemies->render();
 
 	mPlayer->render();
 
-	mLevel->renderB();
+	mLevel->renderB(mGameData->textureManager, renderDepth);
 
 	mCollectables->render();
 	

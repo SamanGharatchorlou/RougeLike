@@ -34,7 +34,7 @@ void GameData::init()
 	Camera::Get()->setViewport(window->size());
 
 	// Map Level
-	level = new MapLevel(this);
+	level = new MapLevel();
 
 	// Audio
 	audioManager = new AudioManager();

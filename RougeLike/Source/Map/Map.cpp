@@ -143,7 +143,7 @@ Vector2D<float> Map::size() const
 }
 
 
-void Map::renderLayerA(TextureManager* tm, float yPoint)
+void Map::renderLayerA(const TextureManager* tm, float yPoint)
 {
 #if _DEBUG
 	tileRenderCounter = 0;
@@ -197,7 +197,7 @@ void Map::renderLayerA(TextureManager* tm, float yPoint)
 }
 
 
-void Map::renderLayerB(TextureManager* tm, float yPoint)
+void Map::renderLayerB(const TextureManager* tm, float yPoint)
 {
 	Texture* floor = tm->getTexture("floor");
 	Texture* wall = tm->getTexture("wall");

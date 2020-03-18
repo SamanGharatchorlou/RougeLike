@@ -10,14 +10,6 @@ class XMLParser
 
 public:
 	XMLParser() { };
-//	XMLParser(FileManager::Folder folder, std::string file) 
-//	{ 
-//		std::string filePath = FileManager::Get()->getFilePath(folder, file);
-//		parseXML(filePath); 
-//#if _DEBUG
-//		path = filePath;
-//#endif
-//	}
 
 	~XMLParser()
 	{
@@ -41,12 +33,10 @@ public:
 
 	rapidxml::xml_document<>& getXML() { return xmlFile; }
 
-	xmlNode getRootNode();
-	Attributes getAttributes(xmlNode root);
+	xmlNode getRootNode() const;
+	Attributes getAttributes(xmlNode root) const;
 
-	// TODO: implement get all nodes
-	// Attributes getAllNodeAttributes(xmlNode root);
-	std::string getNodeData(xmlNode dataNode);
+	std::string getNodeData(xmlNode dataNode) const;
 
 #if _DEBUG
 	std::string path;

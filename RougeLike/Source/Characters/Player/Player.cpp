@@ -162,10 +162,10 @@ void Player::updateState()
 void Player::initAnimations(const std::string& config)
 {
 	// config reader
-	AnimationReader reader(config, mGameData->textureManager);
+	AnimationReader reader(config);
 
 	// Setup sprite sheet
-	TilesetData spriteSheetData = reader.readTilesetData();
+	TilesetData spriteSheetData = reader.readTilesetData(mGameData->textureManager);
 	Tileset spriteSheet(spriteSheetData);
 
 	// Setup animations

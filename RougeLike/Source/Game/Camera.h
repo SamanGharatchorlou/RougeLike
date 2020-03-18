@@ -8,7 +8,6 @@ class Camera
 {
 
 public:
-	// temp
 	static Camera* Get();
 
 	void setViewport(VectorF viewport) { mRect.SetSize(viewport); }
@@ -35,9 +34,6 @@ public:
 	VectorF toCameraCoords(VectorF worldCoords);
 	RectF toCameraCoords(RectF worldRect);
 	Rect<int> toCameraCoords(Rect<int> worldRect);
-
-	//VectorF toWorldCoords(VectorF cameraCoords);
-	//RectF toWorldCoords(RectF cameraRect);
 
 	VectorF size() const { return mRect.Size(); }
 

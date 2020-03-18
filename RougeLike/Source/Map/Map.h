@@ -40,8 +40,8 @@ public:
 	void setScale(float scale) { mScale = scale; }
 	float getScale() const { return mScale; }
 
-	void renderLayerA(TextureManager* tm, float yPoint);
-	void renderLayerB(TextureManager* tm, float yPoint);
+	void renderLayerA(const TextureManager* tm, float yPoint);
+	void renderLayerB(const TextureManager* tm, float yPoint);
 
 	Vector2D<int> findYFloorTileRange(int xTileIndex);
 

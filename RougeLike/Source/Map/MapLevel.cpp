@@ -8,13 +8,15 @@
 #include "Characters/Player/PlayerManager.h"
 
 
-MapLevel::MapLevel(GameData* gameData) : mGameData(gameData), mEntraceTunnel(nullptr)
+MapLevel::MapLevel()
 {
 	mMap = new Map();
 	mMap->setScale(3.0f);
 
-	mExitTunnel = new Map();
-	mExitTunnel->setScale(3.0f);
+	mEntrace = new Map();
+	mEntrace->setScale(3.0f);
+
+	mExit = nullptr;
 
 	mapSize = Vector2D<int>(30, 20);
 };
@@ -23,7 +25,7 @@ MapLevel::MapLevel(GameData* gameData) : mGameData(gameData), mEntraceTunnel(nul
 
 void MapLevel::generateNextLevel()
 {
-	swapToEntrance();
+	ASSERT(Warning, mEntrace != nullptr, "Entrance cannot be null, did you forget to call swapToEntrace()?\n");
 
 	// Random map width between 90% and 120% of previous level
 	int mapMinX = (int)((float)mapSize.x * 0.9f);
@@ -31,7 +33,7 @@ void MapLevel::generateNextLevel()
 
 	int mapWidth = randomNumberBetween(mapMinX, mapMaxX);
 
-	float offset = mEntraceTunnel->getTileRect(mEntraceTunnel->xCount() - 1, 0.0f).RightPoint();
+	float offset = mEntrace->getTileRect(mEntrace->xCount() - 1, 0.0f).RightPoint();
 
 	generateRandomLevel(mapWidth, mapSize.y, offset);
 }
@@ -46,48 +48,63 @@ void MapLevel::generateRandomLevel(int width, int height, float offset)
 	mMap->init(width, height);
 
 	TunnelGenerator generator;
-	generator.buildRandom(mMap->getData(), width);
+	generator.buildRandom(mMap->getData());
 
 	mMap->populateData(VectorF(offset, 0.0f));
 }
 
 
-void MapLevel::generateExitTunnel()
+void MapLevel::generateEntrace(float offset)
 {
-	swapToExit();
-
 	// Add a small buffer so the eixt tunnel takes up whole screen
-	int exitTunnelWidth = (int)((Camera::Get()->size().x / mMap->getTileSize().x) * 1.5f);
+	int width = (int)((Camera::Get()->size().x / mMap->getTileSize().x) * 1.5f);
 
-	mExitTunnel->init(exitTunnelWidth, mapSize.y);
+	mEntrace->init(width, mapSize.y);
 
 	TunnelGenerator generator;
-	generator.buildExit(mExitTunnel->getData(), exitTunnelWidth);
+	generator.buildSimpleLine(mEntrace->getData());
 
-	mExitTunnel->populateData(VectorF(mMap->size().x, 0.0f));
+	mEntrace->populateData(VectorF(offset, 0.0f));
+}
+
+void MapLevel::generateExit(float offset)
+{
+	// Add a small buffer so the eixt tunnel takes up whole screen
+	int width = (int)((Camera::Get()->size().x / mMap->getTileSize().x) * 1.5f);
+
+	mExit->init(width, mapSize.y);
+
+	TunnelGenerator generator;
+	generator.buildSimpleLine(mExit->getData());
+
+	mExit->populateData(VectorF(offset, 0.0f));
 }
 
 
-
-
-
-void MapLevel::renderA()
+void MapLevel::generateNextExit()
 {
-	float renderDepth = mGameData->playerManager->getRectRef()->Center().y;
-	mMap->renderLayerA(mGameData->textureManager, renderDepth);
+	ASSERT(Warning, mExit != nullptr, "Exit cannot be null, did you forget to call swapToExit()?\n");
 
-	Map* connectingTunnel = mExitTunnel ? mExitTunnel : mEntraceTunnel;
-	connectingTunnel->renderLayerA(mGameData->textureManager, renderDepth);
+	float offset = mMap->getLastRect().RightPoint();
+	generateExit(offset);
 }
 
 
-void MapLevel::renderB()
+void MapLevel::renderA(const TextureManager* tm, float depth)
 {
-	float renderDepth = mGameData->playerManager->getRectRef()->Center().y;
-	mMap->renderLayerB(mGameData->textureManager, renderDepth);
+	mMap->renderLayerA(tm, depth);
 
-	Map* connectingTunnel = mExitTunnel ? mExitTunnel : mEntraceTunnel;
-	connectingTunnel->renderLayerB(mGameData->textureManager, renderDepth);
+	Map* connectingTunnel = mExit ? mExit : mEntrace;
+	connectingTunnel->renderLayerA(tm, depth);
+}
+
+
+void MapLevel::renderB(const TextureManager* tm, float depth)
+{
+	mMap->renderLayerB(tm, depth);
+
+	Map* connectingTunnel = mExit ? mExit : mEntrace;
+	connectingTunnel->renderLayerB(tm, depth);
 }
 
 
@@ -99,56 +116,49 @@ VectorF MapLevel::size() const
 
 Map* MapLevel::map(VectorF position) const
 {
-	if (mEntraceTunnel && position.x < mEntraceTunnel->getLastRect().RightPoint())
-		return mEntraceTunnel;
+	if (mEntrace && position.x < mEntrace->getLastRect().RightPoint())
+		return mEntrace;
 
 	else if (mMap && position.x < mMap->getLastRect().LeftPoint())
 		return mMap;
 	
 	else
-		return mExitTunnel;
+		return mExit;
 }
 
 
-bool MapLevel::mapOutOfView() const
+bool MapLevel::mapOutOfView(VectorF position) const
 {
-	const RectF playerRect = *mGameData->playerManager->getRectRef();
-
-	if (playerRect.LeftPoint() > mMap->getLastRect().RightPoint())
+	if (position.x > mMap->getLastRect().RightPoint())
 		return !Camera::Get()->inView(mMap->getLastRect(mMap->yCount() / 2));
 	else
 		return false;
 }
 
 
-bool MapLevel::entraceOutOfView() const
+bool MapLevel::entraceOutOfView(VectorF position) const
 {
-	if (mEntraceTunnel)
+	if (mEntrace)
 	{
-		const RectF playerRect = *mGameData->playerManager->getRectRef();
-
-		if (playerRect.LeftPoint() > mEntraceTunnel->getLastRect().RightPoint())
-			return !Camera::Get()->inView(mEntraceTunnel->getLastRect(mMap->yCount() / 2));
-		else
-			return false;
-
+		if (position.x > mEntrace->getLastRect().RightPoint())
+			return !Camera::Get()->inView(mEntrace->getLastRect(mMap->yCount() / 2));
 	}
 	else
 		DebugPrint(Warning, "Entrance has not been set\n");
 
-	return true;
+	return false;
 }
 
 
 void MapLevel::swapToEntrance()
 {
-	mEntraceTunnel = mExitTunnel;
-	mExitTunnel = nullptr;
+	mEntrace = mExit;
+	mExit = nullptr;
 }
 
 
 void MapLevel::swapToExit()
 {
-	mExitTunnel = mEntraceTunnel;
-	mEntraceTunnel = nullptr;
+	mExit = mEntrace;
+	mEntrace = nullptr;
 }

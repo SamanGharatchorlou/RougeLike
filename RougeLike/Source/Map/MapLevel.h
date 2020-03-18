@@ -1,41 +1,40 @@
 #pragma once
 
-struct GameData;
 class Map;
 
 class MapLevel
 {
 public:
-	MapLevel(GameData* gameData);
+	MapLevel();
 
 	void generateNextLevel();
-	void generateExitTunnel();
+	void generateNextExit();
 
 	void swapToEntrance();
 	void swapToExit();
 
-	void renderA();
-	void renderB();
+	void renderA(const TextureManager* tm, float depth);
+	void renderB(const TextureManager* tm, float depth);
 
 	Map* map(VectorF position = VectorF(-1.0f, -1.0f)) const;
 
 	VectorF size() const;
 
-	bool entraceOutOfView() const;
-	bool mapOutOfView() const;
+	bool entraceOutOfView(VectorF position) const;
+	bool mapOutOfView(VectorF position) const;
 
-	bool hasExit() const { return mExitTunnel; }
-	bool hasEntrance() const { return mEntraceTunnel; }
+	void generateEntrace(float offset);
+	void generateExit(float offset);
+
 
 private:
 	void generateRandomLevel(int width, int height, float offset);
 
-private:
-	GameData* mGameData;
 
-	Map* mEntraceTunnel;
+private:
+	Map* mEntrace;
 	Map* mMap;
-	Map* mExitTunnel;
+	Map* mExit;
 
 	Vector2D<int> mapSize;
 };

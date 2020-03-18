@@ -6,15 +6,14 @@
 
 // TODO: both the enemy and player use the same init function kind of thing where they setup an animator
 // move that logic into here
-AnimationReader::AnimationReader(std::string file, TextureManager* textureManager) : 
-	mTextureManager(textureManager)
+AnimationReader::AnimationReader(const std::string& file)
 {
 	std::string configFilePath = FileManager::Get()->filePath(FileManager::Config_Animations, file);
 	parser.parseXML(configFilePath);
 }
 
 
-Animations AnimationReader::readAnimationData()
+Animations AnimationReader::readAnimationData() const
 {
 	Animations animations;
 
@@ -40,11 +39,11 @@ Animations AnimationReader::readAnimationData()
 }
 
 
-TilesetData AnimationReader::readTilesetData()
+TilesetData AnimationReader::readTilesetData(const TextureManager* tm) const
 {
 	TilesetData data;
 
-	data.texture = readTexture();
+	data.texture = readTexture(tm);
 	data.tileSize = readTileSize();
 	data.tileCount = readTileCount();
 
@@ -53,7 +52,7 @@ TilesetData AnimationReader::readTilesetData()
 
 
 // -- Private Functions -- //
-Vector2D<int> AnimationReader::readTileCount()
+Vector2D<int> AnimationReader::readTileCount() const
 {
 	xmlNode rootNode = parser.getRootNode();
 	xmlNode tileSetInfoNode = rootNode->first_node("TilesetInfo");
@@ -68,7 +67,7 @@ Vector2D<int> AnimationReader::readTileCount()
 }
 
 
-Vector2D<int> AnimationReader::readTileSize()
+Vector2D<int> AnimationReader::readTileSize() const
 {
 	xmlNode rootNode = parser.getRootNode();
 	xmlNode tileSetInfoNode = rootNode->first_node("TilesetInfo");
@@ -83,10 +82,10 @@ Vector2D<int> AnimationReader::readTileSize()
 }
 
 
-Texture* AnimationReader::readTexture()
+Texture* AnimationReader::readTexture(const TextureManager* tm) const
 {
 	xmlNode rootNode = parser.getRootNode();
 	std::string textureName = rootNode->first_node("TextureName")->value();
 
-	return mTextureManager->getTexture(textureName);
+	return tm->getTexture(textureName);
 }

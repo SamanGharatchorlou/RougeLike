@@ -37,8 +37,11 @@ void GameState::init()
 	mGameData->cursor->setTexture(mGameData->textureManager->getTexture("GameCursor"));
 
 	// Map
+
+	// Entrance width
+	float entraceOffset = Camera::Get()->size().x * 1.5f;
+	mGameData->level->generateEntrace(-entraceOffset);
 	mGameData->level->generateNextLevel();
-	mGameData->level->generateExitTunnel();
 
 	// Camera
 	VectorF cameraPosition = VectorF(0.0f, mGameData->level->size().y / 2.0f);
@@ -73,7 +76,7 @@ void GameState::init()
 
 
 	// Test spawning
-	enemies->spawn(EnemyType::Imp, 5);
+	//enemies->spawn(EnemyType::Imp, 5);
 
 	Spawner itemSpawner;
 	VectorF position = itemSpawner.findSpawnPoint(mGameData->level->map(), 10);
@@ -81,7 +84,7 @@ void GameState::init()
 	std::string weaponName = "weapon_big_hammer";
 	WeaponCollectable* weaponPickup = new WeaponCollectable(weaponName, mGameData->textureManager->getTexture(weaponName));
 
-	collectables.spawn(weaponPickup, position);
+	//collectables.spawn(weaponPickup, position);
 }
 
 
@@ -101,11 +104,6 @@ void GameState::handleInput()
 	if (mGameData->inputManager->isPressed(Button::Pause))
 	{
 		mGameController->getStateMachine()->addState(new PauseState(mGameData, mGameController));
-	}
-
-	if (mGameData->inputManager->isPressed(Button::E))
-	{
-		//mGameData->level->generateRandomLevel(150, 20);
 	}
 
 	mGameData->playerManager->handleInput();
@@ -137,17 +135,17 @@ void GameState::slowUpdate(float dt)
 	mGameData->enemies->clearAttackingColliders();
 	mGameData->enemies->addAttackingColliders(mGameData->playerManager->getWeaponColliders());
 
-	// IF HAS REACHED END OF LEVEL MOVE TO NEXT LEVEL
-	if (mGameData->level->mapOutOfView())
+	if (mGameData->level->mapOutOfView(mGameData->playerManager->getRectRef()->TopLeft()))
 	{
-		printf("out of view\n");
 		mGameData->level->swapToEntrance();
+		mGameData->level->generateNextLevel();
 	}
 
-	// TODO: can I do this without the check.. seems a bit hacked
-	if (mGameData->level->hasEntrance() && mGameData->level->entraceOutOfView())
+	if (mGameData->level->entraceOutOfView(mGameData->playerManager->getRectRef()->TopLeft()))
 	{
-		mGameData->level->generateExitTunnel();
+		// clear/close entrance
+		mGameData->level->swapToExit();
+		mGameData->level->generateNextExit();
 	}
 }
 

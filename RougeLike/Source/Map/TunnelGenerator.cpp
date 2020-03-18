@@ -7,10 +7,8 @@ TunnelGenerator::TunnelGenerator()
 	srand((int)time(NULL));
 }
 
-void TunnelGenerator::buildRandom(Grid<MapTile>& mapData, int width)
+void TunnelGenerator::buildRandom(Grid<MapTile>& mapData)
 {
-	ASSERT(Warning, width <= mapData.xCount(), "Requesting to build a tunnel larger than the map, increase map size\n");
-
 	int pathWidth = 5;
 	int y = mapData.yCount() / 2;
 
@@ -18,7 +16,7 @@ void TunnelGenerator::buildRandom(Grid<MapTile>& mapData, int width)
 	mapData[y][0].setType(MapTile::Floor);
 
 	// build tunnel
-	for (unsigned int x = 1; x < width; x++)
+	for (unsigned int x = 1; x < mapData.xCount(); x++)
 	{
 		int randomNumber = rand() % 100;
 		int roughness = 20;
@@ -86,7 +84,7 @@ void TunnelGenerator::addExitPath(Grid<MapTile>& mapData, int startingX)
 }
 
 
-void TunnelGenerator::buildExit(Grid<MapTile>& mapData, int width)
+void TunnelGenerator::buildSimpleLine(Grid<MapTile>& mapData)
 {
 	int yPosition = mapData.yCount() / 2;
 
