@@ -3,7 +3,7 @@
 
 bool MapTile::hasRenderType(Type type) const 
 {
-	return (mRenderType &type) != MapTile::None;
+	return (mRenderType & type) != MapTile::None;
 }
 
 void MapTile::addRenderType(Type type)

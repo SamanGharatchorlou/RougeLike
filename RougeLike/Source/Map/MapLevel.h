@@ -26,6 +26,9 @@ public:
 	void generateEntrace(float offset);
 	void generateExit(float offset);
 
+	void closeEntrance();
+	void closeLevel();
+
 
 private:
 	void generateRandomLevel(int width, int height, float offset);

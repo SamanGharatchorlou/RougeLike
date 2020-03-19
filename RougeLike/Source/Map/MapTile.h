@@ -16,6 +16,8 @@ public:
 
 		Top = Wall << 3,
 		Bot = Wall << 4,
+
+		Column = Wall << 5
 	};
 
 	struct EdgeInfo

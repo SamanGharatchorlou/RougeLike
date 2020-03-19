@@ -8,7 +8,6 @@ class Map
 public:
 	Map();
 
-
 	void init(int x, int y);
 	void populateData(VectorF offset = VectorF());
 
@@ -45,10 +44,15 @@ public:
 
 	Vector2D<int> findYFloorTileRange(int xTileIndex);
 
+	void setUnpassableTile(Vector2D<int> index);
+
 	bool wallRenderTile(int x, int y) const { return mData.get(x, y).renderType() >= MapTile::Wall; }
 	bool floorRenderTile(int x, int y) const { return mData.get(x, y).renderType() == MapTile::Floor; }
+
 	bool wallCollisionTile(int x, int y) const { return mData.get(x, y).collisionType() >= MapTile::Wall; }
 	bool floorCollisionTile(int x, int y) const { return mData.get(x, y).collisionType() == MapTile::Floor; }
+
+	void addColumn(int x, int y);
 
 	bool inBounds(int x, int y) const;
 
@@ -66,6 +70,9 @@ private:
 	bool isValidTile(RectF rect) const;
 	bool isValidIndex(Vector2D<int> index) const;
 	bool isValidPosition(VectorF position) const;
+
+
+	void renderTile(const RectF& rect);
 
 
 private:

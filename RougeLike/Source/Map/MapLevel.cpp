@@ -8,6 +8,11 @@
 #include "Characters/Player/PlayerManager.h"
 
 
+// TEMP
+#include "Graphics/TextureManager.h"
+#include "Graphics/Texture.h"
+
+
 MapLevel::MapLevel()
 {
 	mMap = new Map();
@@ -92,19 +97,23 @@ void MapLevel::generateNextExit()
 
 void MapLevel::renderA(const TextureManager* tm, float depth)
 {
-	mMap->renderLayerA(tm, depth);
 
 	Map* connectingTunnel = mExit ? mExit : mEntrace;
 	connectingTunnel->renderLayerA(tm, depth);
+
+	mMap->renderLayerA(tm, depth);
+
 }
 
 
 void MapLevel::renderB(const TextureManager* tm, float depth)
 {
-	mMap->renderLayerB(tm, depth);
-
 	Map* connectingTunnel = mExit ? mExit : mEntrace;
 	connectingTunnel->renderLayerB(tm, depth);
+
+
+	mMap->renderLayerB(tm, depth);
+
 }
 
 
@@ -138,15 +147,10 @@ bool MapLevel::mapOutOfView(VectorF position) const
 
 bool MapLevel::entraceOutOfView(VectorF position) const
 {
-	if (mEntrace)
-	{
-		if (position.x > mEntrace->getLastRect().RightPoint())
-			return !Camera::Get()->inView(mEntrace->getLastRect(mMap->yCount() / 2));
-	}
+	if (mEntrace && position.x > mEntrace->getLastRect().RightPoint())
+		return !Camera::Get()->inView(mEntrace->getLastRect(mMap->yCount() / 2));
 	else
-		DebugPrint(Warning, "Entrance has not been set\n");
-
-	return false;
+		return false;
 }
 
 
@@ -161,4 +165,18 @@ void MapLevel::swapToExit()
 {
 	mExit = mEntrace;
 	mEntrace = nullptr;
+}
+
+
+void MapLevel::closeEntrance()
+{
+	mMap->addColumn(0, mMap->yCount() / 2);
+	mMap->addColumn(0, (mMap->yCount() / 2) + 1);
+}
+
+
+void MapLevel::closeLevel()
+{
+	mMap->addColumn(mMap->xCount() - 1, mMap->yCount() / 2);
+	mMap->addColumn(mMap->xCount() - 1, (mMap->yCount() / 2) + 1);
 }

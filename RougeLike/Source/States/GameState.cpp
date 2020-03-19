@@ -139,6 +139,8 @@ void GameState::slowUpdate(float dt)
 	{
 		mGameData->level->swapToEntrance();
 		mGameData->level->generateNextLevel();
+
+		mGameData->level->closeLevel();
 	}
 
 	if (mGameData->level->entraceOutOfView(mGameData->playerManager->getRectRef()->TopLeft()))
@@ -146,6 +148,8 @@ void GameState::slowUpdate(float dt)
 		// clear/close entrance
 		mGameData->level->swapToExit();
 		mGameData->level->generateNextExit();
+
+		mGameData->level->closeEntrance();
 	}
 }
 

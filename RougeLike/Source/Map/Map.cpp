@@ -156,6 +156,8 @@ void Map::renderLayerA(const TextureManager* tm, float yPoint)
 	Texture* rightEdge = tm->getTexture("wall_right_edge");
 	Texture* botEdge = tm->getTexture("wall_bot_edge");
 
+	Texture* column = tm->getTexture("columnsmall");
+
 	Camera* camera = Camera::Get();
 	Vector2D<int> size = mTileSize * mScale;
 
@@ -185,7 +187,22 @@ void Map::renderLayerA(const TextureManager* tm, float yPoint)
 				if (mData[y][x].hasRenderType(MapTile::Right))
 					rightEdge->render(tileRect);
 
-				if (mData[y][x].hasRenderType((MapTile::Top ^ MapTile::Bot)))
+				if (mData[y][x].hasRenderType(MapTile::Bot))
+					botEdge->render(tileRect, SDL_FLIP_VERTICAL);
+
+				// TODO: fix render ordering
+				if (mData[y][x].hasRenderType(MapTile::Column))
+				{
+					size = column->originalDimentions * 3.0f;
+					VectorF position = tileRect.BotRight();
+
+					RectF columnRect = RectF(position, size);
+					columnRect.SetBotRight(position);
+
+					column->render(columnRect);
+				}
+
+				if (mData[y][x].hasRenderType(MapTile::Top))
 					botEdge->render(tileRect, SDL_FLIP_VERTICAL);
 
 #if _DEBUG
@@ -197,6 +214,7 @@ void Map::renderLayerA(const TextureManager* tm, float yPoint)
 }
 
 
+
 void Map::renderLayerB(const TextureManager* tm, float yPoint)
 {
 	Texture* floor = tm->getTexture("floor");
@@ -205,6 +223,8 @@ void Map::renderLayerB(const TextureManager* tm, float yPoint)
 	Texture* leftEdge = tm->getTexture("wall_left_edge");
 	Texture* rightEdge = tm->getTexture("wall_right_edge");
 	Texture* botEdge = tm->getTexture("wall_bot_edge");
+
+	Texture* column = tm->getTexture("columnsmall");
 
 	Camera* camera = Camera::Get();
 	Vector2D<int> size = mTileSize * mScale;
@@ -226,6 +246,7 @@ void Map::renderLayerB(const TextureManager* tm, float yPoint)
 
 				tileRect = camera->toCameraCoords(tileRect);
 
+				// TODO: do I need to render this wall if i will also render the left/right/top etc
 				if (mData[y][x].hasRenderType(MapTile::Wall))
 					wall->render(tileRect);
 				else
@@ -237,7 +258,21 @@ void Map::renderLayerB(const TextureManager* tm, float yPoint)
 				if (mData[y][x].hasRenderType(MapTile::Right))
 					rightEdge->render(tileRect);
 
-				if (mData[y][x].hasRenderType((MapTile::Top ^ MapTile::Bot)))
+				if (mData[y][x].hasRenderType(MapTile::Bot))
+					botEdge->render(tileRect, SDL_FLIP_VERTICAL);
+
+				if (mData[y][x].hasRenderType(MapTile::Column))
+				{
+					size = column->originalDimentions * 3.0f;
+					VectorF position = tileRect.BotRight();
+
+					RectF columnRect = RectF(position, size);
+					columnRect.SetBotRight(position);
+
+					column->render(columnRect);
+				}
+
+				if (mData[y][x].hasRenderType(MapTile::Top))
 					botEdge->render(tileRect, SDL_FLIP_VERTICAL);
 
 #if _DEBUG
@@ -296,6 +331,20 @@ bool Map::inBounds(int x, int y) const
 
 	return xBounds && yBounds;
 }
+
+
+
+void Map::setUnpassableTile(Vector2D<int> index)
+{
+	if (isValidIndex(Vector2D<int>(index.x, index.y)))
+	{
+		mData[index.y][index.x].setCollisionType(MapTile::Wall);
+	}
+	else
+		DebugPrint(Error, "Attempting to set out of bounds map tile collision type at %d, %d\n", index.x, index.y);
+
+}
+
 
 
 // --- Getters --- //
@@ -390,6 +439,13 @@ const RectF Map::getFirstRect(int yIndex) const
 const RectF Map::getLastRect(int yIndex) const
 {
 	return getTileRect(mTileCount.x - 1, yIndex);
+}
+
+
+void Map::addColumn(int x, int y)
+{
+	mData[y][x].setCollisionType(MapTile::Wall);
+	mData[y][x].addRenderType(MapTile::Column);
 }
 
 
