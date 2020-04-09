@@ -9,7 +9,7 @@ class Enemy;
 class EnemyAlert : public EnemyState
 {
 public:
-	EnemyAlert(Enemy* enemy) : EnemyState(enemy) { }
+	EnemyAlert(Enemy* enemy) : EnemyState(enemy), flipCounter(0) { }
 
 	void init() override;
 	void handleInput() override { }
@@ -22,4 +22,5 @@ public:
 
 private:
 	Timer<float> timer;
+	int flipCounter;
 };

@@ -1,39 +1,45 @@
 #pragma once
 
 #define PRINT_FRAMERATE 0
-#define DRAW_PLAYER_RECT 0
-#define DRAW_WEAPON_RECTS 0
+#define DRAW_PLAYER_RECT 1
+#define DRAW_WEAPON_RECTS 1
 #define DRAW_BINARY_MAP 0
-#define DRAW_ENEMY_RECT 0
+#define DRAW_ENEMY_RECT 1
 
 
 struct RenderColour
 {
 	enum Colour
 	{
-		NONE,
-		RED,
-		BLUE,
-		GREEN,
+		None,
+		Red,
+		Blue,
+		Green,
+		Yellow
 	};
 
 	RenderColour() { }
+
 	RenderColour(Colour colour) 
 	{
+		a = 255;
+
 		switch (colour)
 		{
-		case RenderColour::NONE:
+		case RenderColour::None:
 			a = 0;
 			break;
-		case RenderColour::RED:
-			r = 255; g = 0; b = 0; a = 255;
+		case RenderColour::Red:
+			r = 255; g = 0; b = 0;
 			break;
-		case RenderColour::BLUE:
-			r = 0; g = 0; b = 255; a = 255;
+		case RenderColour::Blue:
+			r = 0; g = 0; b = 255;
 			break;
-		case RenderColour::GREEN:
-			r = 0; g = 255; b = 0; a = 255;
+		case RenderColour::Green:
+			r = 0; g = 255; b = 0;
 			break;
+		case RenderColour::Yellow:
+			r = 255; g = 255; b = 0;
 		default:
 			break;
 		}

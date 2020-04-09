@@ -22,7 +22,7 @@ public:
 
 
 private:
-	bool returnMovement() const;
+	bool returnMovement();
 	bool endAttack() const;
 
 private:
@@ -30,4 +30,7 @@ private:
 
 	float mAttackDistance;
 	bool mHasAttacked;
+
+	VectorF startingPosition;
+	int hitCounter; // prevent enemy returning too early
 };

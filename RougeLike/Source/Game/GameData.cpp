@@ -22,22 +22,23 @@
 
 void GameData::init()
 {
+
 	// Texture Manager: must be before cursor
-	textureManager = new TextureManager();
+	textureManager = new TextureManager;
 	textureManager->init();
 
 	// Cursor
-	cursor = new Cursor();
+	cursor = new Cursor;
 	cursor->setSize(25.0f, 25.0f);
 
 	// Set camera before UIManager
 	Camera::Get()->setViewport(window->size());
 
 	// Map Level
-	level = new MapLevel();
+	level = new MapLevel;
 
 	// Audio
-	audioManager = new AudioManager();
+	audioManager = new AudioManager;
 	audioManager->init();
 
 	// Input
@@ -53,29 +54,46 @@ void GameData::init()
 
 	// Score Manager
 	scoreManager = new ScoreManager;
-	scoreManager->addObserver(uiManager);
 
 	// Player
 	playerManager = new PlayerManager(this);
-	playerManager->addObserver(uiManager);
 
 	// TEMP
 	playerManager->addObserver(Camera::Get()->getShake());
 
 	// Enemies
 	enemies = new EnemyManager(this);
-	enemies->addObserver(scoreManager);
-	enemies->addObserver(playerManager);
 
 
 	// Setup gameinfo
 	GameInfo::Get()->map(level);
+
+	// Must be done AFTER everything has been new'd
+	setupObservers();
+}
+
+// TODO: centralise some of these systems?
+void GameData::setupObservers()
+{
+	// Update the current map level
+	level->addObserver(scoreManager);
+
+	// Update the UI with all scores
+	scoreManager->addObserver(uiManager);
+
+	// Update the UI with the players hp and the stats attack, defence etc.
+	playerManager->addObserver(uiManager);
+
+	// Update the score
+	enemies->addObserver(scoreManager);
+	// Player gains exp
+	enemies->addObserver(playerManager);
 }
 
 
 void GameData::free()
 {
-	// destory window
+	// destory window (created in gamecontroller)
 	delete window;
 
 	// managers

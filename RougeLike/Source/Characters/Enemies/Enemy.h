@@ -21,13 +21,12 @@ public:
 	Enemy(GameData* gameData);
 	~Enemy() { }
 
-	void init(std::string name);
+	// Core
+	virtual void init() = 0;
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
 	void render();
 	void renderCharacter();
-
-	void clear();
 
 	// State handling
 	void addState(EnemyState::Type state);
@@ -35,24 +34,32 @@ public:
 	void replaceState(EnemyState::Type state);
 	EnemyState::Type state() const;
 
-	void resolvePlayerWeaponCollisions();
+	void clear();
 
+	// Data
 	const GameData* getData() { return mGameData; }
-
 	EnemyPropertyBag& propertyBag() { return bag; }
+	virtual const EnemyType type() const = 0;
 
-	// Event 
+	// Events
 	const EventPacket popEvent();
 	void pushEvent(const EventPacket event);
 	bool hasEvent() const { return events.size() > 0; }
 
+	// Rect
 	void		setRect(RectF rect) { mRect = rect; }
-	RectF&		getRect() { return mRect; }
+	RectF&		rect() { return mRect; }
 
+	virtual RectF renderRect() const = 0;
+
+	// Systems
 	StateMachine<EnemyState>*	getStateMachine() { return &mStateMachine; }
 	Animator*					getAnimator() { return &mAnimator; }
 	DamageCollider*				getCollider() { return &mCollider; }
 	Movement&					getMovement() { return mMovement; }
+
+	// Dynamics
+	void resolvePlayerWeaponCollisions();
 
 	void		move(float dt); // TODO: need this?
 
@@ -64,10 +71,8 @@ public:
 
 	void spawn(VectorF position);
 
-	virtual const EnemyType type() const = 0;
 
-
-private:
+protected:
 	void initAnimations(std::string name);
 
 
@@ -88,4 +93,6 @@ protected:
 	RectF* mTarget;
 
 	std::queue<EventPacket> events;
+
+	VectorF colliderRatio;
 };

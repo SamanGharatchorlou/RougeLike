@@ -8,8 +8,10 @@ enum class Event
 	None,
 	EnemyDead,
 	SetHealth,
-	UpdateScore,
+	IncrementMapLevel,
+
 	UpdateTextBox,
+
 	Trauma,
 };
 
@@ -47,6 +49,13 @@ struct SetHealthBarEvent : public EventData
 	SetHealthBarEvent(Health hp) : health(hp) { }
 	~SetHealthBarEvent() { }
 	const Health health;
+};
+
+
+struct IncrementLevelEvent : public EventData
+{
+	IncrementLevelEvent() { };
+	~IncrementLevelEvent() { }
 };
 
 

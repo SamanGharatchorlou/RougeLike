@@ -1,23 +1,30 @@
 #include "pch.h"
 #include "ScoreManager.h"
 
+
+ScoreManager::ScoreManager() : mScore(0), mMapLevel(0), updateUI(true)
+{
+
+}
+
+
 void ScoreManager::slowUpdate()
 {
-	if (hasChanged)
+	if (updateUI)
 	{
-		UpdateTextBoxEvent event("Score val", mScore);
-		notify(Event::UpdateTextBox, event);
+		UpdateTextBoxEvent scoreEvent("Score val", mScore);
+		notify(Event::UpdateTextBox, scoreEvent);
+
+		UpdateTextBoxEvent mapLevelEvent("MapLevel val", mMapLevel);
+		notify(Event::UpdateTextBox, mapLevelEvent);
 	}
 
-	hasChanged = false;
+	updateUI = false;
 }
 
 
 void ScoreManager::handleEvent(const Event event, EventData& data)
 {
-	hasChanged = false;
-	int currentScore = mScore;
-
 	switch (event)
 	{
 	case Event::EnemyDead:
@@ -26,10 +33,13 @@ void ScoreManager::handleEvent(const Event event, EventData& data)
 		mScore += deathData.mScore;
 		break;
 	}
+	case Event::IncrementMapLevel:
+	{
+		mMapLevel++;
+	}
 	default:
 		break;
 	}
 
-
-	hasChanged = (currentScore != mScore);
+	updateUI = true;
 }

@@ -12,7 +12,7 @@
 	<AttackDamage type = "int">10</AttackDamage>
 	<AttackSpeed type ="double">1</AttackSpeed>
 	<TackleChargeTime type = "float">1</TackleChargeTime>
-	<TackleDistance type = "float">2000</TackleDistance>
+	<TackleDistance type = "float">1000</TackleDistance>
 	<TackleSpeed type = "float">100</TackleSpeed>
 
 	<!-- Patrol -->

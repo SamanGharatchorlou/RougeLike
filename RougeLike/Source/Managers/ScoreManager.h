@@ -6,7 +6,7 @@
 class ScoreManager : public Observer, public Dispatcher
 {
 public:
-	ScoreManager() : mScore(0), hasChanged(false) { }
+	ScoreManager();
 
 	void slowUpdate();
 
@@ -14,10 +14,12 @@ public:
 
 	int score() { return mScore; }
 
-	bool hasScoreChanged() { return hasChanged; }
+	bool UIRequiresUpdate() { return updateUI; }
 
 private:
 	int mScore;
 
-	bool hasChanged;
+	int mMapLevel;
+
+	bool updateUI;
 };

@@ -2,6 +2,7 @@
 #include "MapTile.h"
 
 class TextureManager;
+class Texture;
 
 class Map
 {
@@ -39,12 +40,10 @@ public:
 	void setScale(float scale) { mScale = scale; }
 	float getScale() const { return mScale; }
 
-	void renderLayerA(const TextureManager* tm, float yPoint);
-	void renderLayerB(const TextureManager* tm, float yPoint);
+	void renderBottomLayer(const TextureManager* tm, float yPoint);
+	void renderTopLayer(const TextureManager* tm, float yPoint);
 
 	Vector2D<int> findYFloorTileRange(int xTileIndex);
-
-	void setUnpassableTile(Vector2D<int> index);
 
 	bool wallRenderTile(int x, int y) const { return mData.get(x, y).renderType() >= MapTile::Wall; }
 	bool floorRenderTile(int x, int y) const { return mData.get(x, y).renderType() == MapTile::Floor; }
@@ -52,7 +51,9 @@ public:
 	bool wallCollisionTile(int x, int y) const { return mData.get(x, y).collisionType() >= MapTile::Wall; }
 	bool floorCollisionTile(int x, int y) const { return mData.get(x, y).collisionType() == MapTile::Floor; }
 
-	void addColumn(int x, int y);
+	void addTileType(int x, int y, MapTile::Type type);
+	void setTileType(int x, int y, MapTile::Type type);
+	void removeTileType(int x, int y, MapTile::Type type);
 
 	bool inBounds(int x, int y) const;
 
@@ -71,8 +72,7 @@ private:
 	bool isValidIndex(Vector2D<int> index) const;
 	bool isValidPosition(VectorF position) const;
 
-
-	void renderTile(const RectF& rect);
+	void renderColumn(const RectF& rect, Texture* column);
 
 
 private:

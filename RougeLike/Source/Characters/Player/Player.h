@@ -32,11 +32,13 @@ public:
 	// Movement states
 	void updateState();
 
-	RectF&		getRect()		{ return physics.getRect(); }
-	Collider&	getCollider()	{ return mCollider; }
-	Physics&	getPhysics()	{ return physics; }
+	RectF&		rectRef()	{ return mPhysics.rectRef(); }
+	RectF		rectA() const { return mPhysics.rectA(); }
 
-	Weapon*		getWeapon()		{ return mWeapon; }
+	Collider&	collider()	{ return mCollider; }
+	Physics&	physics()	{ return mPhysics; }
+
+	Weapon*		weapon()		{ return mWeapon; }
 
 	PlayerPropertyBag* propertyBag() { return mBag; }
 
@@ -46,6 +48,7 @@ private:
 	void selectAnimation();
 	void initAnimations(const std::string& config);
 
+	RectF renderRect() const; // TODO: move this into physics, enemy also has this but isn't using physics yet
 
 private:
 	GameData* mGameData;
@@ -55,7 +58,7 @@ private:
 	StateMachine<State> mStateMachine;
 	Animator mAnimator;
 	Collider mCollider;
-	Physics physics;
+	Physics mPhysics;
 
 	Weapon* mWeapon;
 

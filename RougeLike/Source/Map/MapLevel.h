@@ -1,37 +1,44 @@
 #pragma once
 
+#include "Events/Dispatcher.h"
+
 class Map;
 
-class MapLevel
+class MapLevel : public Dispatcher
 {
 public:
 	MapLevel();
 
-	void generateNextLevel();
+	void init();
+
+	void generateNextEntrace();
 	void generateNextExit();
 
-	void swapToEntrance();
-	void swapToExit();
-
-	void renderA(const TextureManager* tm, float depth);
-	void renderB(const TextureManager* tm, float depth);
+	void renderBottomLayer(const TextureManager* tm, float depth);
+	void renderTopLayer(const TextureManager* tm, float depth);
 
 	Map* map(VectorF position = VectorF(-1.0f, -1.0f)) const;
+	Map* primaryMap() const { return mMap; }
 
 	VectorF size() const;
 
 	bool entraceOutOfView(VectorF position) const;
 	bool mapOutOfView(VectorF position) const;
 
-	void generateEntrace(float offset);
-	void generateExit(float offset);
+	RectF boundaries() const;
+
+private:
+	void buildEntrance(float offset);
+	void buildLevel();
+	void buildExit();
+
+	void swapToEntrance();
+	void swapToExit();
 
 	void closeEntrance();
 	void closeLevel();
 
-
-private:
-	void generateRandomLevel(int width, int height, float offset);
+	void buildRandomLevel(int width, int height, float offset);
 
 
 private:

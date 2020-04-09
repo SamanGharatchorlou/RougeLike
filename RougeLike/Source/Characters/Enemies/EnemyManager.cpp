@@ -9,7 +9,7 @@
 
 #include "Characters/Enemies/Imp.h"
 
-
+// TODO: remove enemies once out of play, i.e. player has not killed them and moved onto the next level
 EnemyManager::EnemyManager(GameData* gameData) : mGameData(gameData) { }
 
 
@@ -33,15 +33,23 @@ void EnemyManager::addEnemiesToPool(EnemyType type, unsigned int count)
 	for (unsigned int i = 0; i < count; i++)
 	{
 		EnemyObject enemyObject;
-		enemyObject.second = ObjectStatus::Available;
+		enemyObject.second = ObjectStatus::Uninitialised;
 
 		switch (type)
 		{
 		case EnemyType::None:
+			enemyObject.second = ObjectStatus::None;
 			break;
+
 		case EnemyType::Imp:
-			enemyObject.first = new Imp(mGameData);
+		{
+			Imp* imp = new Imp(mGameData);
+			imp->init();
+
+			enemyObject.first = imp;
+			enemyObject.second = ObjectStatus::Available;
 			break;
+		}
 		default:
 			DebugPrint(Warning, "Invalid enemy type %d\n", type);
 			break;
@@ -66,7 +74,7 @@ void EnemyManager::spawn(EnemyType type, unsigned int xPositionPercentage)
 
 			// Add new active enemy to list and spawn around index x
 			Spawner enemySpawner;
-			VectorF position = enemySpawner.findSpawnPoint(mGameData->level->map(), xPositionPercentage);
+			VectorF position = enemySpawner.findSpawnPoint(mGameData->level->primaryMap(), xPositionPercentage);
 			enemy->spawn(position);
 
 			mActiveEnemies.push_back(enemy);
@@ -157,7 +165,7 @@ void EnemyManager::render() const
 {
 	for (Enemy* enemy : mActiveEnemies)
 	{
-		if (Camera::Get()->inView(enemy->getRect()))
+		if (Camera::Get()->inView(enemy->rect()))
 		{
 			enemy->render();
 		}

@@ -3,8 +3,10 @@
 class Window
 {
 public:
-	Window(const char* title, int width, int height);
+	Window() : mWindow(nullptr) { };
 	~Window();
+
+	void init(const char* title, int width, int height);
 
 	SDL_Renderer* createRenderer();
 

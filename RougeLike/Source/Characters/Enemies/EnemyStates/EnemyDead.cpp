@@ -38,6 +38,7 @@ void EnemyDead::slowUpdate(float dt)
 }
 
 
+// Not using Enemy->renderCharacter() so we can adjust the alpha
 void EnemyDead::render()
 {
 	// Flip sprite
@@ -50,13 +51,12 @@ void EnemyDead::render()
 		mEnemy->setFlip(SDL_FLIP_NONE);
 	}
 
-	// render in camera coords
-	VectorF cameraPosition = Camera::Get()->toCameraCoords(mEnemy->getMovement().getPostion());
-	RectF rect = RectF(cameraPosition, mEnemy->getRect().Size());
-
-	mEnemy->getAnimator()->getSpriteTile()->render(rect, mEnemy->flip(), mAlpha);
+	RectF rect = mEnemy->renderRect();
+	rect = Camera::Get()->toCameraCoords(rect);
 
 #if DRAW_ENEMY_RECT
-	debugDrawRect(mRect, RenderColour(RenderColour::RED));
+	debugDrawRect(mEnemy->rect(), RenderColour(RenderColour::Red));
 #endif
+
+	mEnemy->getAnimator()->getSpriteTile()->render(rect, mEnemy->flip(), mAlpha);
 }

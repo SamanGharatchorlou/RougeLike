@@ -3,5 +3,5 @@
 	<Damage>25</Damage>
 	<SwingSpeed>1500</SwingSpeed>
 	<SwingAngle>190</SwingSpeed>
-	<PommelOffset x = "7" y = "7"></PommelOffset>
+	<PommelOffset x = "2" y = "-20"></PommelOffset>
 </Melee>

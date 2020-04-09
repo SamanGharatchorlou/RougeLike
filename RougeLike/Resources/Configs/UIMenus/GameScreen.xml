@@ -26,12 +26,22 @@
 		
 	</layer>
 
-
+	<!-- Player health bar -->
 	<layer>
 		<Box id = "BlackHealth" x = "0.05" y = "0.95" width = "0.15" height = "0.025" texture = "BlackHealthBar"></Box>
 		<Box id = "RedHealth" x = "0.05" y = "0.95" width = "0.15" height = "0.025" texture = "RedHealthBar"></Box>
 	</layer>
 
+	<!-- Map level -->
+	<layer>
+		<TextBox id = "MapLevel str" x = "0.45" y = "0.025" width = "0.15" height = "1">
+			<text font = "lazy.ttf" r = "0" g = "255" b = "0">Level: </text>
+		</TextBox>
+		<TextBox id = "MapLevel val" parent = "MapLevel str" x = "1" y = "0" width = "1" height = "1">
+			<text font = "lazy.ttf" r = "0" g = "255" b = "0"></text>
+		</TextBox>
+
+	</layer>
 		
 	<layer>
 		<!-- Score -->
@@ -39,7 +49,7 @@
 			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >Score: </text>
 		</TextBox>
 		<TextBox id = "Score val" parent = "Score str" x = "1" y = "0" height = "1" width ="1">
-			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >0</text>
+			<text font = "lazy.ttf" r = "0" g = "255" b = "0" ></text>
 		</TextBox>
 
 		

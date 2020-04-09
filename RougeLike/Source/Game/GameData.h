@@ -16,6 +16,7 @@ class ScoreManager;
 struct GameData
 {
 	void init();
+	void setupObservers();
 	void free();
 
 	Window* window = nullptr;

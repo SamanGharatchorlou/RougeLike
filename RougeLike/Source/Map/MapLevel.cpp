@@ -1,16 +1,9 @@
 #include "pch.h"
 #include "MapLevel.h"
 
-#include "Game/GameData.h"
 #include "Game/Camera.h"
 #include "TunnelGenerator.h"
 #include "Map.h"
-#include "Characters/Player/PlayerManager.h"
-
-
-// TEMP
-#include "Graphics/TextureManager.h"
-#include "Graphics/Texture.h"
 
 
 MapLevel::MapLevel()
@@ -27,39 +20,130 @@ MapLevel::MapLevel()
 };
 
 
-
-void MapLevel::generateNextLevel()
+void MapLevel::init()
 {
-	ASSERT(Warning, mEntrace != nullptr, "Entrance cannot be null, did you forget to call swapToEntrace()?\n");
+	// create first entrace and level
+	buildEntrance(0.0f);
+	buildLevel();
 
-	// Random map width between 90% and 120% of previous level
-	int mapMinX = (int)((float)mapSize.x * 0.9f);
-	int mapMaxX = (int)((float)mapSize.x * 1.2f);
-
-	int mapWidth = randomNumberBetween(mapMinX, mapMaxX);
-
-	float offset = mEntrace->getTileRect(mEntrace->xCount() - 1, 0.0f).RightPoint();
-
-	generateRandomLevel(mapWidth, mapSize.y, offset);
+	IncrementLevelEvent event;
+	notify(Event::IncrementMapLevel, event);
 }
 
 
-
-
-void MapLevel::generateRandomLevel(int width, int height, float offset)
+void MapLevel::generateNextEntrace()
 {
-	mapSize = Vector2D<int>(width, height);
+	swapToEntrance();
+	buildLevel();
 
-	mMap->init(width, height);
+	closeLevel();
 
-	TunnelGenerator generator;
-	generator.buildRandom(mMap->getData());
-
-	mMap->populateData(VectorF(offset, 0.0f));
+	IncrementLevelEvent event;
+	notify(Event::IncrementMapLevel, event);
 }
 
 
-void MapLevel::generateEntrace(float offset)
+void MapLevel::generateNextExit()
+{
+	swapToExit();
+	buildExit();
+
+	closeEntrance();
+}
+
+
+void MapLevel::renderBottomLayer(const TextureManager* tm, float depth)
+{
+	Map* connectingTunnel = mExit ? mExit : mEntrace;
+	connectingTunnel->renderBottomLayer(tm, depth);
+
+	mMap->renderBottomLayer(tm, depth);
+}
+
+
+void MapLevel::renderTopLayer(const TextureManager* tm, float depth)
+{
+	Map* connectingTunnel = mExit ? mExit : mEntrace;
+	connectingTunnel->renderTopLayer(tm, depth);
+
+	mMap->renderTopLayer(tm, depth);
+}
+
+
+VectorF MapLevel::size() const
+{
+	return mMap->size();
+}
+
+
+Map* MapLevel::map(VectorF position) const
+{
+	if (mEntrace && position.x < mEntrace->getLastRect().RightPoint())
+		return mEntrace;
+
+	else if (mMap && position.x < mMap->getLastRect().LeftPoint())
+		return mMap;
+
+	else
+		return mExit;
+}
+
+
+bool MapLevel::mapOutOfView(VectorF position) const
+{
+	if (position.x > mMap->getLastRect().RightPoint())
+	{
+		RectF lastRect = mMap->getLastRect(mMap->yCount() / 2);
+
+		// Make sure its completely out of view
+		lastRect = lastRect.Translate(mMap->getTileSize());
+
+		return !Camera::Get()->inView(lastRect);
+	}
+	else
+		return false;
+}
+
+
+bool MapLevel::entraceOutOfView(VectorF position) const
+{
+	if (mEntrace && position.x > mEntrace->getLastRect().RightPoint())
+	{
+		RectF lastRect = mEntrace->getLastRect(mMap->yCount() / 2);
+
+		// Make sure its completely out of view
+		lastRect = lastRect.Translate(mMap->getTileSize());
+
+		return !Camera::Get()->inView(lastRect);
+	}
+	else
+		return false;
+}
+
+
+RectF MapLevel::boundaries() const
+{
+	float xLeft = 0.0f;
+	float xRight = 0.0f;
+
+	if (mEntrace)
+	{
+		xLeft = mEntrace->getFirstRect().LeftPoint();
+		xRight = mMap->getLastRect().RightPoint();
+	}
+	else
+	{
+		xLeft = mMap->getFirstRect().LeftPoint();
+		xRight = mExit->getLastRect().RightPoint();
+	}
+
+	return RectF(xLeft, 0.0f, xRight, mMap->size().y);
+}
+
+
+// --- Private Functions --- //
+
+void MapLevel::buildEntrance(float offset)
 {
 	// Add a small buffer so the eixt tunnel takes up whole screen
 	int width = (int)((Camera::Get()->size().x / mMap->getTileSize().x) * 1.5f);
@@ -72,8 +156,42 @@ void MapLevel::generateEntrace(float offset)
 	mEntrace->populateData(VectorF(offset, 0.0f));
 }
 
-void MapLevel::generateExit(float offset)
+
+void MapLevel::buildLevel()
 {
+	ASSERT(Warning, mEntrace != nullptr, "Entrance cannot be null, did you forget to call swapToEntrace()?\n");
+
+	// Random map width between 90% and 120% of previous level
+	int mapMinX = (int)((float)mapSize.x * 0.9f);
+	int mapMaxX = (int)((float)mapSize.x * 1.2f);
+
+	int mapWidth = randomNumberBetween(mapMinX, mapMaxX);
+
+	float offset = mEntrace->getTileRect(mEntrace->xCount() - 1, 0.0f).RightPoint();
+
+	buildRandomLevel(mapWidth, mapSize.y, offset);
+}
+
+
+void MapLevel::buildRandomLevel(int width, int height, float offset)
+{
+	mapSize = Vector2D<int>(width, height);
+
+	mMap->init(width, height);
+
+	TunnelGenerator generator;
+	generator.buildRandom(mMap->getData());
+
+	mMap->populateData(VectorF(offset, 0.0f));
+}
+
+
+void MapLevel::buildExit()
+{
+	ASSERT(Warning, mExit != nullptr, "Exit cannot be null, did you forget to call swapToExit()?\n");
+
+	float offset = mMap->getLastRect().RightPoint();
+
 	// Add a small buffer so the eixt tunnel takes up whole screen
 	int width = (int)((Camera::Get()->size().x / mMap->getTileSize().x) * 1.5f);
 
@@ -83,74 +201,6 @@ void MapLevel::generateExit(float offset)
 	generator.buildSimpleLine(mExit->getData());
 
 	mExit->populateData(VectorF(offset, 0.0f));
-}
-
-
-void MapLevel::generateNextExit()
-{
-	ASSERT(Warning, mExit != nullptr, "Exit cannot be null, did you forget to call swapToExit()?\n");
-
-	float offset = mMap->getLastRect().RightPoint();
-	generateExit(offset);
-}
-
-
-void MapLevel::renderA(const TextureManager* tm, float depth)
-{
-
-	Map* connectingTunnel = mExit ? mExit : mEntrace;
-	connectingTunnel->renderLayerA(tm, depth);
-
-	mMap->renderLayerA(tm, depth);
-
-}
-
-
-void MapLevel::renderB(const TextureManager* tm, float depth)
-{
-	Map* connectingTunnel = mExit ? mExit : mEntrace;
-	connectingTunnel->renderLayerB(tm, depth);
-
-
-	mMap->renderLayerB(tm, depth);
-
-}
-
-
-VectorF MapLevel::size() const 
-{ 
-	return mMap->size(); 
-}
-
-
-Map* MapLevel::map(VectorF position) const
-{
-	if (mEntrace && position.x < mEntrace->getLastRect().RightPoint())
-		return mEntrace;
-
-	else if (mMap && position.x < mMap->getLastRect().LeftPoint())
-		return mMap;
-	
-	else
-		return mExit;
-}
-
-
-bool MapLevel::mapOutOfView(VectorF position) const
-{
-	if (position.x > mMap->getLastRect().RightPoint())
-		return !Camera::Get()->inView(mMap->getLastRect(mMap->yCount() / 2));
-	else
-		return false;
-}
-
-
-bool MapLevel::entraceOutOfView(VectorF position) const
-{
-	if (mEntrace && position.x > mEntrace->getLastRect().RightPoint())
-		return !Camera::Get()->inView(mEntrace->getLastRect(mMap->yCount() / 2));
-	else
-		return false;
 }
 
 
@@ -170,13 +220,18 @@ void MapLevel::swapToExit()
 
 void MapLevel::closeEntrance()
 {
-	mMap->addColumn(0, mMap->yCount() / 2);
-	mMap->addColumn(0, (mMap->yCount() / 2) + 1);
+	mMap->addTileType(0, mMap->yCount() / 2, MapTile::ColumnTop);
+	mMap->addTileType(0, (mMap->yCount() / 2) + 1, MapTile::ColumnBot);
 }
 
 
 void MapLevel::closeLevel()
 {
-	mMap->addColumn(mMap->xCount() - 1, mMap->yCount() / 2);
-	mMap->addColumn(mMap->xCount() - 1, (mMap->yCount() / 2) + 1);
+	mEntrace->addTileType(0, mEntrace->yCount() / 2, MapTile::ColumnTop);
+	mEntrace->addTileType(0, (mEntrace->yCount() / 2) + 1, MapTile::ColumnBot);
+
+	// Open entrance
+	mMap->setTileType(0, mMap->yCount() / 2, MapTile::Floor);
+	mMap->setTileType(0, (mMap->yCount() / 2) + 1, MapTile::Floor);
 }
+

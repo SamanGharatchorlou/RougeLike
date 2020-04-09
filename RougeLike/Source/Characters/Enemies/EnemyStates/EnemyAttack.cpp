@@ -7,7 +7,8 @@
 EnemyAttack::EnemyAttack(Enemy* enemy) :
 	EnemyState(enemy),
 	mAttackDistance(0.0f), 
-	mHasAttacked(false)
+	mHasAttacked(false),
+	hitCounter(0)
 { 
 	mEnemy->getCollider()->setDidHit(false);
 }
@@ -17,6 +18,8 @@ void EnemyAttack::init()
 {
 	timer.restart();
 	mEnemy->getMovement().setSpeed(mEnemy->propertyBag().pTackleSpeed.get());
+
+	startingPosition = mEnemy->getMovement().getPostion();
 }
 
 
@@ -26,13 +29,13 @@ void EnemyAttack::fastUpdate(float dt)
 	mAttackDistance += attackDirection * distanceSquared(VectorF(), mEnemy->getMovement().getMovementDistance()) * dt;
 
 	mEnemy->move(dt);
+
+	mEnemy->resolvePlayerWeaponCollisions();
 }
 
 
 void EnemyAttack::slowUpdate(float dt)
 {
-	mEnemy->resolvePlayerWeaponCollisions();
-
 	// Return to starting position
 	if (returnMovement())
 	{
@@ -42,9 +45,7 @@ void EnemyAttack::slowUpdate(float dt)
 
 	// End attack
 	if (endAttack())
-	{
 		mEnemy->popState();
-	}
 }
 
 
@@ -63,9 +64,23 @@ void EnemyAttack::exit()
 
 // --- Private Functions ---
 
-bool EnemyAttack::returnMovement() const
+bool EnemyAttack::returnMovement()
 {
-	return !mHasAttacked && (mAttackDistance > mEnemy->propertyBag().pTackleDistance.get());
+	if (!mHasAttacked)
+	{
+		float distance = distanceSquared(startingPosition, mEnemy->getMovement().getPostion());
+
+		if (distance >= mEnemy->propertyBag().pTackleDistance.get())
+			return true;
+
+		if (mEnemy->getCollider()->didHit())
+			hitCounter++;
+
+		if(hitCounter >= 10)
+			return true;
+	}
+
+	return false;
 }
 
 

@@ -16,8 +16,9 @@ public:
 
 		Top = Wall << 3,
 		Bot = Wall << 4,
-
-		Column = Wall << 5
+		
+		ColumnTop = Wall << 5,
+		ColumnBot = Wall << 6
 	};
 
 	struct EdgeInfo
@@ -41,6 +42,7 @@ public:
 
 	const Type renderType() const { return mRenderType; }
 	bool hasRenderType(Type type) const;
+	bool isRenderType(Type type) const;
 	void setRenderType(Type type) { mRenderType = type; }
 	void addRenderType(Type type);
 	void removeRenderType(Type type);

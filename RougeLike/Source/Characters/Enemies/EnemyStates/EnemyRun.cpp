@@ -6,7 +6,7 @@
 #include "Characters/Enemies/Enemy.h"
 
 
-EnemyRun::EnemyRun(Enemy* enemy) : EnemyState(enemy), mAIPathing(enemy->getData()->level->map()) { }
+EnemyRun::EnemyRun(Enemy* enemy) : EnemyState(enemy), mAIPathing(enemy->getData()->level->primaryMap()) { }
 
 
 void EnemyRun::init()
@@ -17,6 +17,7 @@ void EnemyRun::init()
 	VectorF currentPosition = mEnemy->getMovement().getPostion();
 	VectorF endTargetPosition = mEnemy->targetRect().Center();
 	mPath = mAIPathing.findPath(currentPosition, endTargetPosition);
+
 }
 
 
@@ -102,7 +103,7 @@ void EnemyRun::updatePath()
 
 bool EnemyRun::inAttackRange() const
 {
-	VectorF currentPosition = mEnemy->getRect().Center();
+	VectorF currentPosition = mEnemy->rect().Center();
 	VectorF nearestTargetSide = closestRectSide(currentPosition, mEnemy->targetRect());
 
 	return distanceSquared(currentPosition, nearestTargetSide) < (mEnemy->propertyBag().pTackleDistance.get() * 0.8f);

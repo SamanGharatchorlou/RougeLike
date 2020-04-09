@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Window.h"
 
-Window::Window(const char* title, int width, int height)
+void Window::init(const char* title, int width, int height)
 {
 	// create window
 	mWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -13,7 +13,9 @@ Window::Window(const char* title, int width, int height)
 
 Window::~Window()
 {
-	SDL_DestroyWindow(mWindow);
+	if(mWindow)
+		SDL_DestroyWindow(mWindow);
+	
 	mWindow = nullptr;
 }
 

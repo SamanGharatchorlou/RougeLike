@@ -30,6 +30,9 @@ public:
 
 	void render() override;
 
+	//TEMP
+	const std::vector<RectF> getRects() const { return std::vector<RectF>(); }
+
 private:
 	const RangedWeaponData* mData;
 

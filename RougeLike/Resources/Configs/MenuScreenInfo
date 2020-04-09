@@ -1,0 +1,27 @@
+RougeLike UI
+
+All elements need to be within a 'layer' element e.g.
+
+<layer>
+	<Element></Element>
+</layer>
+
+Layers are rendered in a top first, bottom last order.
+Elements are also rendered in the same order within the layer
+
+Possible UI Elements: Element, Box, Button, TextBox
+
+If a parent is specified all positions and sizes are based relative to its parent
+
+
+Textbox:
+
+Example...
+
+<TextBox id = "Def val" parent = "StatBox" x = "0.75" y = "0.25" height = "0.1" width ="0.5">
+	<text font = "lazy.ttf" r = "0" g = "255" b = "0" >0</text>
+</TextBox>
+
+The text field auto sizes to whatever the smallest dimention is i.e. width or height
+
+Optional ptSize field can be added to the text field if you dont want to auto size within the dimentions

@@ -33,10 +33,6 @@ public:
 	inline void resetDirection() { mDirection.zero(); }
 	bool isMoving() const { return !mDirection.isZero() && mCanMove; }
 
-	//void stopMoving() { mCanMove = false; }
-	//void startMoving() { mCanMove = true; }
-
-
 	inline VectorF getMovementDistance()	const { return mSpeed * mDirection; }
 	inline VectorF getDirection()			const { return mDirection; }
 	inline VectorF getPostion()				const { return mPosition; }

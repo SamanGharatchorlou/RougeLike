@@ -21,26 +21,6 @@ Enemy::Enemy(GameData* gameData) :
 }
 
 
-void Enemy::init(std::string name)
-{
-	initAnimations(name);
-	bag.readAttributes(name);
-
-	// Size
-	VectorF size = mAnimator.getSpriteTile()->getRect().Size() * 2.0f;
-	mRect = RectF(VectorF(), size);
-
-	// Movement
-	mMovement.setPosition(mRect.TopLeft());
-
-	mCollider.init(&mRect);
-	mCollider.setDamage(propertyBag().pDamage.get());
-
-	// TODO: using int movement speed for float in mMovement class, fix me
-	mMovement.init(&mCollider, (float)bag.pMovementSpeed.get());
-}
-
-
 void Enemy::fastUpdate(float dt)
 {
 	mCollider.reset();
@@ -53,7 +33,7 @@ void Enemy::fastUpdate(float dt)
 
 void Enemy::slowUpdate(float dt)
 {
-	// reset alpha for enemies sharing the same texture
+	// Reset alpha for enemies sharing the same texture
 	mAnimator.getSpriteTexture()->setAlpha(alphaMax);
 
 	mStateMachine.processStateChanges();
@@ -82,20 +62,21 @@ void Enemy::renderCharacter()
 		mFlip = SDL_FLIP_NONE;
 	}
 
-	// render in camera coords
-	VectorF cameraPosition = Camera::Get()->toCameraCoords(mMovement.getPostion());
-	RectF rect = RectF(cameraPosition, mRect.Size());
-
-	mAnimator.getSpriteTile()->render(rect, mFlip);
+	RectF rect = renderRect();
+	rect = Camera::Get()->toCameraCoords(rect);
 
 #if DRAW_ENEMY_RECT
-	debugDrawRect(mRect, RenderColour(RenderColour::RED));
+	debugDrawRect(mRect, RenderColour(RenderColour::Red));
 #endif
+
+	mAnimator.getSpriteTile()->render(rect, mFlip);
 }
+
+
 
 void Enemy::clear()
 {
-	// clear statemachine states (except null state at i = 0)
+	// Clear statemachine states (except null state at i = 0)
 	while (mStateMachine.size() > 1)
 	{
 		mStateMachine.popState();
@@ -229,7 +210,7 @@ EnemyState::Type Enemy::state() const
 
 void Enemy::initAnimations(std::string file)
 {
-	// config reader
+	// Config reader
 	AnimationReader reader(file);
 
 	// Setup sprite sheet

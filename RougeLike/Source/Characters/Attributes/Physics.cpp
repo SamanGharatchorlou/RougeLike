@@ -72,7 +72,7 @@ void Physics::update(float dt)
 		mVelocity.x = clamp(mVelocity.x, 0.0f, std::abs(mVelocity.x));
 	}
 
-	rect = rect.Translate(mVelocity * dt);
+	mRect = mRect.Translate(mVelocity * dt);
 
 	mAcceleration.zero();
 }

@@ -40,19 +40,18 @@ void GameState::init()
 
 	// Entrance width
 	float entraceOffset = Camera::Get()->size().x * 1.5f;
-	mGameData->level->generateEntrace(-entraceOffset);
-	mGameData->level->generateNextLevel();
+	mGameData->level->init();
 
 	// Camera
 	VectorF cameraPosition = VectorF(0.0f, mGameData->level->size().y / 2.0f);
 	Camera::Get()->setPosition(cameraPosition);
-	Camera::Get()->setMapBoundaries(mGameData->level->size());
+	Camera::Get()->setMapBoundaries(mGameData->level->boundaries());
 
 	// UI
 	mGameData->uiManager->selectScreen(Screen::Game);
 
 	// Player
-	VectorF playerPosition = VectorF(50.0f, mGameData->level->size().y / 2.0f);
+	VectorF playerPosition = VectorF(Camera::Get()->getCenter().x, mGameData->level->size().y / 2.0f);
 	mGameData->playerManager->getRectRef()->SetLeftCenter(playerPosition);
 
 	// Camera
@@ -65,7 +64,7 @@ void GameState::init()
 
 	// Collectables 
 	// TODO?: change this to items, item manager (its not really a manager)
-	collectables.subscrbeCollider(&mGameData->playerManager->get()->getCollider());
+	collectables.subscrbeCollider(&mGameData->playerManager->get()->collider());
 
 	// rendering
 	mGameData->renderManager->Set(mGameData->level);
@@ -76,10 +75,10 @@ void GameState::init()
 
 
 	// Test spawning
-	//enemies->spawn(EnemyType::Imp, 5);
+	enemies->spawn(EnemyType::Imp, 20);
 
 	Spawner itemSpawner;
-	VectorF position = itemSpawner.findSpawnPoint(mGameData->level->map(), 10);
+	VectorF position = itemSpawner.findSpawnPoint(mGameData->level->primaryMap(), 10);
 
 	std::string weaponName = "weapon_big_hammer";
 	WeaponCollectable* weaponPickup = new WeaponCollectable(weaponName, mGameData->textureManager->getTexture(weaponName));
@@ -135,21 +134,18 @@ void GameState::slowUpdate(float dt)
 	mGameData->enemies->clearAttackingColliders();
 	mGameData->enemies->addAttackingColliders(mGameData->playerManager->getWeaponColliders());
 
+	// Update level
 	if (mGameData->level->mapOutOfView(mGameData->playerManager->getRectRef()->TopLeft()))
 	{
-		mGameData->level->swapToEntrance();
-		mGameData->level->generateNextLevel();
+		mGameData->level->generateNextEntrace();
+		Camera::Get()->setMapBoundaries(mGameData->level->boundaries());
 
-		mGameData->level->closeLevel();
 	}
 
 	if (mGameData->level->entraceOutOfView(mGameData->playerManager->getRectRef()->TopLeft()))
 	{
-		// clear/close entrance
-		mGameData->level->swapToExit();
 		mGameData->level->generateNextExit();
-
-		mGameData->level->closeEntrance();
+		Camera::Get()->setMapBoundaries(mGameData->level->boundaries());
 	}
 }
 

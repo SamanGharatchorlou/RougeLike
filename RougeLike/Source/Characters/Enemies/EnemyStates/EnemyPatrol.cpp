@@ -57,7 +57,7 @@ void EnemyPatrol::render()
 
 void EnemyPatrol::setPatrolPoint()
 {
-	Map* map = mEnemy->getData()->level->map();
+	Map* map = mEnemy->getData()->level->primaryMap();
 
 	VectorF position = mEnemy->getMovement().getPostion();
 	Vector2D<int> tilePositionIndex = map->getIndex(position);
@@ -74,9 +74,9 @@ void EnemyPatrol::setPatrolPoint()
 
 bool EnemyPatrol::canSeeTarget() const
 {
-	Map* map = mEnemy->getData()->level->map();
+	Map* map = mEnemy->getData()->level->primaryMap();
 
-	VectorF position = mEnemy->getRect().Center();
+	VectorF position = mEnemy->rect().Center();
 	VectorF targetPosition = mEnemy->targetRect().Center();
 
 	float distance = distanceSquared(targetPosition, position);

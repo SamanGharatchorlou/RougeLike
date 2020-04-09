@@ -26,8 +26,9 @@ public:
 	void update(float dt);
 
 
-	void setRect(RectF newRect) { rect = newRect; }
-	RectF& getRect() { return rect; }
+	void setRect(RectF newRect) { mRect = newRect; }
+	RectF& rectRef() { return mRect; }
+	RectF rectA() const { return mRect; }
 
 	float maxMovementDistance(float dt) const { return mMaxVelocity * dt; }
 
@@ -47,7 +48,7 @@ private:
 
 
 private:
-	RectF rect;
+	RectF mRect;
 	VectorF mVelocity;
 	VectorF mAcceleration;
 

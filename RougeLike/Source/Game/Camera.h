@@ -2,7 +2,6 @@
 
 #include "CameraShake.h"
 
-class Window;
 
 class Camera
 {
@@ -13,7 +12,7 @@ public:
 	void setViewport(VectorF viewport) { mRect.SetSize(viewport); }
 	void setPosition(VectorF position);
 
-	void setMapBoundaries(VectorF boundaries) { mBoundaries = boundaries; }
+	void setMapBoundaries(RectF boundaries) { mBoundaries = boundaries; }
 
 	// follow this object
 	void follow(RectF* rect);
@@ -47,7 +46,7 @@ private:
 
 
 private:
-	VectorF mBoundaries;
+	RectF mBoundaries;
 
 	RectF* mFollowingRect;
 

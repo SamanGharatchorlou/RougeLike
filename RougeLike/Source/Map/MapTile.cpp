@@ -6,6 +6,11 @@ bool MapTile::hasRenderType(Type type) const
 	return (mRenderType & type) != MapTile::None;
 }
 
+bool MapTile::isRenderType(Type type) const
+{
+	return mRenderType == type;
+}
+
 void MapTile::addRenderType(Type type)
 {
 	mRenderType |= type;

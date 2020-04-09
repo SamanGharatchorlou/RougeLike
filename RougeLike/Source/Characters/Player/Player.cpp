@@ -44,25 +44,25 @@ void Player::init(const std::string& characterConfig)
 	propertyBag()->readAttributes(characterConfig);
 
 	// init physics
-	physics.init(mBag->pForce.get(), mBag->pMaxVelocity.get(), mBag->pDragFactor.get());
+	mPhysics.init(mBag->pForce.get(), mBag->pMaxVelocity.get(), mBag->pDragFactor.get());
 
 	// Setup animations
 	initAnimations(characterConfig);
 
 	// Size
-	VectorF size = mAnimator.getSpriteTile()->getRect().Size() * 2;
-	physics.setRect(RectF(VectorF(), size));
 
-	//VectorF(size.x * 2.0f, mGameData->level->map()->size().y / 2.0f)
+	// rect tweak
+	VectorF size = mAnimator.getSpriteTile()->getRect().Size() * 1.2f;
+	mPhysics.setRect(RectF(VectorF(), size));
 
-	VectorF colliderScale = VectorF(1.0f, 0.2f); // only with walls
-	mCollider.init(&physics.getRect(), colliderScale);
+	VectorF colliderScale = VectorF(1.0f, 0.25f); // only with walls
+	mCollider.init(&mPhysics.rectRef(), colliderScale);
 }
 
 
 void Player::handleInput()
 {
-	physics.handleInput(mGameData->inputManager);
+	mPhysics.handleInput(mGameData->inputManager);
 
 	if (mGameData->inputManager->isCursorPressed())
 	{
@@ -73,19 +73,19 @@ void Player::handleInput()
 
 void Player::fastUpdate(float dt)
 {
-	physics.update(dt);
+	mPhysics.update(dt);
 
 	mWeapon->fastUpdate(dt);
 	
-	if (physics.isMoving())
-		mAnimator.setSpeedFactor(physics.relativeSpeed());
+	if (mPhysics.isMoving())
+		mAnimator.setSpeedFactor(mPhysics.relativeSpeed());
 	else
 		mAnimator.setSpeedFactor(1.0f);
 
 	mAnimator.fastUpdate(dt);
 
 	// Weapon
-	mWeapon->updateAnchor(getRect().TopLeft());
+	mWeapon->updateAnchor(rectA().TopLeft());
 	mWeapon->updateAimDirection(mGameData->cursor->getPosition());
 }
 
@@ -97,37 +97,51 @@ void Player::slowUpdate(float dt)
 	mAnimator.slowUpdate(dt);
 
 	updateState();
-
-	//printf("%f, %f\n", getRect().TopLeft().x, getRect().TopLeft().y);
 }
 
 
 void Player::render()
 {	
 	// Flip sprite
-	if (mFlip == SDL_FLIP_NONE && physics.direction().x < 0)
+	if (mFlip == SDL_FLIP_NONE && mPhysics.direction().x < 0)
 	{
 		mFlip = SDL_FLIP_HORIZONTAL;
 	}
-	else if (mFlip == SDL_FLIP_HORIZONTAL && physics.direction().x > 0)
+	else if (mFlip == SDL_FLIP_HORIZONTAL && mPhysics.direction().x > 0)
 	{
 		mFlip = SDL_FLIP_NONE;
 	}
 
 #if DRAW_PLAYER_RECT
-	debugDrawRect(mGameData, getRect(), RenderColour(RenderColour::GREEN));
-	debugDrawRect(mGameData, mCollider.getRectBase(), RenderColour(RenderColour::BLUE));
+	debugDrawRect(rectA(), RenderColour(RenderColour::Green));
+	debugDrawRect(mCollider.getRectBase(), RenderColour(RenderColour::Blue));
 #endif
 #if DRAW_WEAPON_RECTS
-	debugDrawRects(mGameData, mWeapon.getRects(), RenderColour(RenderColour::GREEN));
+	debugDrawRects(mWeapon->getRects(), RenderColour(RenderColour::Yellow));
 #endif
 
 	// Character
-	RectF rect = Camera::Get()->toCameraCoords(getRect());
+	RectF rect = Camera::Get()->toCameraCoords(renderRect());
 	mAnimator.getSpriteTile()->render(rect, mFlip);
 
 	// Weapon
 	mWeapon->render();
+}
+
+
+// Rather than decreasing the player rect, increase the size of the render object
+RectF Player::renderRect() const
+{
+	RectF renderRect = rectA();
+	VectorF size = renderRect.Size();
+
+	renderRect.SetSize(size * 1.75f);
+
+	VectorF sizeDiff = renderRect.Size() - size;
+
+	renderRect = renderRect.Translate(sizeDiff.x / 2.0f * -1, sizeDiff.y * -1);
+
+	return renderRect;
 }
 
 
@@ -146,11 +160,11 @@ void Player::updateWeaponStats(const PlayerPropertyBag* bag)
 
 void Player::updateState()
 {
-	bool isMoving = physics.isMoving();
+	bool isMoving = mPhysics.isMoving();
 
-	if (mMoving != physics.isMoving())
+	if (mMoving != mPhysics.isMoving())
 	{
-		mMoving = physics.isMoving();
+		mMoving = mPhysics.isMoving();
 		selectAnimation();
 	}
 }

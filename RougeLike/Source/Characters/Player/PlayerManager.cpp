@@ -35,7 +35,7 @@ void PlayerManager::init()
 {
 	weaponStash.load(mGameData->textureManager);
 
-	collisionTracker.addDefender(&player->getCollider());
+	collisionTracker.addDefender(&player->collider());
 }
 
 
@@ -55,12 +55,12 @@ void PlayerManager::selectWeapon(const std::string& weaponName)
 }
 
 
-RectF* PlayerManager::getRectRef() { return &player->getRect(); }
+RectF* PlayerManager::getRectRef() { return &player->rectRef(); }
 
 
 std::vector<Collider*> PlayerManager::getWeaponColliders() 
 { 
-	return player->getWeapon()->getColliders();
+	return player->weapon()->getColliders();
 }
 
 
@@ -70,6 +70,7 @@ void PlayerManager::handleInput()
 { 
 	player->handleInput();
 
+	// TEMP
 	if (mGameData->inputManager->getButton(Button::E).isPressed())
 	{
 		TraumaEvent event(100);
@@ -82,8 +83,8 @@ void PlayerManager::handleInput()
 void PlayerManager::fastUpdate(float dt)
 {
 	// resolve collisions before any movement takes place!
-	player->getPhysics().resetAllowedMovement();
-	player->getCollider().reset();
+	player->physics().resetAllowedMovement();
+	player->collider().reset();
 
 	RectF rect = *getRectRef();
 	resolveWallCollisions(mGameData->level->map(rect.Center()), dt);
@@ -101,9 +102,9 @@ void PlayerManager::slowUpdate(float dt)
 	collisionTracker.checkCollisions();
 
 	// implement collisions, player getting hit by the enemy
-	if (player->getCollider().gotHit())
+	if (player->collider().gotHit())
 	{
-		Damage damage = player->getCollider().getOtherColliderDamage();
+		Damage damage = player->collider().getOtherColliderDamage();
 		Health& hp = player->propertyBag()->pHealth.get();
 		hp.takeDamage(damage);
 
@@ -161,7 +162,7 @@ void PlayerManager::updateTrackedColliders()
 
 void PlayerManager::resolveWallCollisions(const Map* map, float dt)
 {
-	RectF collisionRect = player->getCollider().getRectBase();
+	RectF collisionRect = player->collider().getRectBase();
 
 	bool restrictLeft =		doesCollideLeft	(map, collisionRect.TopLeft(), dt)	|| 
 							doesCollideLeft	(map, collisionRect.BotLeft(), dt);
@@ -175,10 +176,10 @@ void PlayerManager::resolveWallCollisions(const Map* map, float dt)
 	bool restrictDown =		doesCollideBot	(map, collisionRect.BotLeft(),  dt)	|| 
 							doesCollideBot	(map, collisionRect.BotRight(), dt);
 
-	player->getPhysics().restrictMovement(Physics::Up, restrictUp);
-	player->getPhysics().restrictMovement(Physics::Down, restrictDown);
-	player->getPhysics().restrictMovement(Physics::Right, restrictRight);
-	player->getPhysics().restrictMovement(Physics::Left, restrictLeft);
+	player->physics().restrictMovement(Physics::Up, restrictUp);
+	player->physics().restrictMovement(Physics::Down, restrictDown);
+	player->physics().restrictMovement(Physics::Right, restrictRight);
+	player->physics().restrictMovement(Physics::Left, restrictLeft);
 }
 
 
@@ -197,7 +198,7 @@ bool PlayerManager::doesCollideLeft(const Map* map, const VectorF point, float d
 
 		if (leftTile && leftTile->hasCollisionType(MapTile::Right ^ MapTile::Wall))
 		{
-			float xFuturePosition = point.x - player->getPhysics().maxMovementDistance(dt);
+			float xFuturePosition = point.x - player->physics().maxMovementDistance(dt);
 			willCollide = xFuturePosition < leftTile->rect().RightPoint();
 		}
 	}
@@ -221,7 +222,7 @@ bool PlayerManager::doesCollideRight(const Map* map, const VectorF point, float 
 
 		if (rightTile && rightTile->hasCollisionType(MapTile::Left ^ MapTile::Wall))
 		{
-			float xFuturePosition = point.x + player->getPhysics().maxMovementDistance(dt);
+			float xFuturePosition = point.x + player->physics().maxMovementDistance(dt);
 			willCollide = xFuturePosition > rightTile->rect().LeftPoint();
 		}
 	}
@@ -245,7 +246,7 @@ bool PlayerManager::doesCollideTop(const Map* map, const VectorF point, float dt
 
 		if (upTile && upTile->hasCollisionType(MapTile::Bot))
 		{
-			float yFuturePosition = point.y - (player->getPhysics().maxMovementDistance(dt));
+			float yFuturePosition = point.y - (player->physics().maxMovementDistance(dt));
 			willCollide = yFuturePosition < upTile->rect().BotPoint();
 		}
 	}
@@ -269,7 +270,7 @@ bool PlayerManager::doesCollideBot(const Map* map, const VectorF point, float dt
 
 		if (downTile && downTile->hasCollisionType(MapTile::Top))
 		{
-			float yFuturePosition = point.y + (player->getPhysics().maxMovementDistance(dt));
+			float yFuturePosition = point.y + (player->physics().maxMovementDistance(dt));
 			willCollide = yFuturePosition > downTile->rect().TopPoint();
 		}
 	}
