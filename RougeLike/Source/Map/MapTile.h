@@ -53,7 +53,8 @@ public:
 	void addCollisionType(Type type);
 	void removeCollisionType(Type type);
 
-	EdgeInfo& info() { return mInfo; }
+	// TODO just copy this by value or make a pointer?
+	const EdgeInfo* info() { return &mInfo; }
 	void setInfo(EdgeInfo info) { mInfo = info; }
 
 #if _DEBUG

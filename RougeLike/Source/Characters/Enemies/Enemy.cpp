@@ -69,7 +69,7 @@ void Enemy::renderCharacter()
 	debugDrawRect(mRect, RenderColour(RenderColour::Red));
 #endif
 
-	mAnimator.getSpriteTile()->render(rect, mFlip);
+	//mAnimator.getSpriteTile()->render(rect, mFlip);
 }
 
 

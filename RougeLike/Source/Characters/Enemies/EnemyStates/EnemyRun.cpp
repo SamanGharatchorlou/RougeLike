@@ -17,7 +17,6 @@ void EnemyRun::init()
 	VectorF currentPosition = mEnemy->getMovement().getPostion();
 	VectorF endTargetPosition = mEnemy->targetRect().Center();
 	mPath = mAIPathing.findPath(currentPosition, endTargetPosition);
-
 }
 
 
@@ -100,6 +99,7 @@ void EnemyRun::updatePath()
 		mPath = mAIPathing.findPath(currentPosition, mEnemy->targetRect().Center());
 	}
 }
+
 
 bool EnemyRun::inAttackRange() const
 {

@@ -122,7 +122,7 @@ void Player::render()
 
 	// Character
 	RectF rect = Camera::Get()->toCameraCoords(renderRect());
-	mAnimator.getSpriteTile()->render(rect, mFlip);
+	//mAnimator.getSpriteTile()->render(rect, mFlip);
 
 	// Weapon
 	mWeapon->render();

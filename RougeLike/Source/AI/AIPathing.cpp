@@ -12,6 +12,13 @@ std::stack<Vector2D<int>> AIPathing::findPath(VectorF startPosition, VectorF end
 	Vector2D<int> startingIndex = mMap->getIndex(startPosition);
 	Vector2D<int> endIndex = mMap->getIndex(endPosition);
 
+	// verify end index()
+	if (!mMap->floorCollisionTile(endIndex.x, endIndex.y))
+	{
+
+	}
+
+
 	// Lowest to highest path cost queue
 	std::priority_queue<TileCost, std::vector<TileCost>, GreaterThanByCost> frontier;
 	frontier.push(TileCost(mMap->getTile(startingIndex), 0));
@@ -102,4 +109,17 @@ VectorF AIPathing::getTilePosition(Vector2D<int> tileIndex) const
 Vector2D<int> AIPathing::getTileIndex(VectorF position) const
 {
 	return mMap->getIndex(position);
+}
+
+
+// --- Private Functions --- //
+
+Vector2D<int> AIPathing::nearestFloorTile(Vector2D<int> index) const
+{
+	const MapTile* wallTile = mMap->getTile(index);
+
+	//MapTile::EdgeInfo info = wallTile->info();
+
+	
+	return Vector2D<int>();
 }

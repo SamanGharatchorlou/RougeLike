@@ -18,8 +18,11 @@ public:
 	VectorF getTilePosition(Vector2D<int> tileIndex) const;
 
 
+
 private:
 	Path getPath(Vector2D<int> start, Vector2D<int> end, Grid<Vector2D<int>>& pathing);
+
+	Vector2D<int> nearestFloorTile(Vector2D<int> index) const;
 
 	inline int heuristic(Vector2D<int> from, Vector2D<int> to);
 	
