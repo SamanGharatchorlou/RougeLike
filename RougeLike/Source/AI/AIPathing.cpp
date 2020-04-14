@@ -15,7 +15,10 @@ std::stack<Vector2D<int>> AIPathing::findPath(VectorF startPosition, VectorF end
 	// verify end index()
 	if (!mMap->floorCollisionTile(endIndex.x, endIndex.y))
 	{
+		Vector2D<int> index = endIndex;
+		endIndex = nearestFloorTile(endIndex);
 
+		printf("end index changed from %d, %d -> %, %d\n", index.x, index.y, endIndex.x, endIndex.y);
 	}
 
 
@@ -114,12 +117,26 @@ Vector2D<int> AIPathing::getTileIndex(VectorF position) const
 
 // --- Private Functions --- //
 
+// Fix when playing is in wall, and invalid end path is given
 Vector2D<int> AIPathing::nearestFloorTile(Vector2D<int> index) const
 {
 	const MapTile* wallTile = mMap->getTile(index);
 
-	//MapTile::EdgeInfo info = wallTile->info();
+	const MapTile* neighbours[4] = {
+		mMap->offsetTile(wallTile, 0, -1),
+		mMap->offsetTile(wallTile, 1, 0),
+		mMap->offsetTile(wallTile, 0, 1),
+		mMap->offsetTile(wallTile, -1, 0) };
 
-	
-	return Vector2D<int>();
+	// Search all neighbours
+	for (unsigned int i = 0; i < 4; i++)
+	{
+		if (neighbours[i] && neighbours[i]->hasCollisionType(MapTile::Floor))
+		{
+			return mMap->getIndex(neighbours[i]);
+		}
+	}
+
+	DebugPrint(Warning, "No valid tile was found, this means there are no avaliable neighbour tiles...how?\n");
+	return index;
 }

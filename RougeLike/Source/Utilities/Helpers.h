@@ -45,6 +45,13 @@ float distanceSquared(Vector2D<T> pointA, Vector2D<K> pointB)
 					(pointA.y - pointB.y) * (pointA.y - pointB.y));
 }
 
+template<typename T, typename K>
+float distance(Vector2D<T> pointA, Vector2D<K> pointB)
+{
+	return (float)sqrt((pointA.x - pointB.x) * (pointA.x - pointB.x) +
+		(pointA.y - pointB.y) * (pointA.y - pointB.y));
+}
+
 
 int randomNumberBetween(int min, int max);
 

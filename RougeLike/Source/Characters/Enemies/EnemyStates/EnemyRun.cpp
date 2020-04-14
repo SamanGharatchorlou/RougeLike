@@ -3,6 +3,7 @@
 
 #include "Game/GameData.h"
 #include "Map/MapLevel.h"
+#include "Map/Map.h"
 #include "Characters/Enemies/Enemy.h"
 
 
@@ -88,8 +89,11 @@ void EnemyRun::updatePath()
 {
 	VectorF currentPosition = mEnemy->getMovement().getPostion();
 	
-	// Take a direct route to the end target if close enough
-	if (distanceSquared(currentPosition, mEnemy->targetRect().Center()) < 2500.0f)
+	float targetDistanceSquared = distance(currentPosition, mEnemy->targetRect().Center());
+	float closeDistanceSquared = mEnemy->getData()->level->primaryMap()->getTileSize().x * mEnemy->getData()->level->primaryMap()->getTileSize().x * 1.5;
+
+	// Take a direct route to the end target if close enough (should be >1 tile width, see AIPAthing::nearestFloorTile fix)
+	if (targetDistanceSquared < closeDistanceSquared)
 	{
 		mPath = std::stack<Vector2D<int>>();
 	}
