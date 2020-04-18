@@ -1,11 +1,10 @@
 #pragma once
 
 #define PRINT_FRAMERATE 0
-#define DRAW_PLAYER_RECT 1
-#define DRAW_WEAPON_RECTS 1
+#define DRAW_ENEMY_RECT 0
+#define DRAW_PLAYER_RECTS 0
 #define DRAW_BINARY_MAP 0
-#define DRAW_ENEMY_RECT 1
-
+#define DRAW_AI_PATH 1
 
 struct RenderColour
 {
@@ -52,5 +51,6 @@ struct RenderColour
 };
 
 
+void debugDrawLine(VectorF pointA, VectorF pointB, RenderColour colour);
 void debugDrawRect(RectF rect, RenderColour colour);
 void debugDrawRects(std::vector<RectF> rects, RenderColour colour);

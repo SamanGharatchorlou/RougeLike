@@ -4,7 +4,7 @@
 #include "Game/GameData.h"
 
 
-Imp::Imp(GameData* gameData) : Enemy(gameData) { }
+Imp::Imp(GameData* gameData, AIPathMap* map) : Enemy(gameData, map) { }
 
 
 void Imp::init()

@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\AI\AIPathing.cpp" />
+    <ClCompile Include="Source\AI\AIPathMap.cpp" />
     <ClCompile Include="Source\Animations\Animator.cpp" />
     <ClCompile Include="Source\Characters\Attributes\Level.cpp" />
     <ClCompile Include="Source\Characters\Attributes\Physics.cpp" />
@@ -110,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\AI\AIPathing.h" />
+    <ClInclude Include="Source\AI\AIPathMap.h" />
     <ClInclude Include="Source\Animations\Animator.h" />
     <ClInclude Include="Source\Characters\Attributes\Damage.h" />
     <ClInclude Include="Source\Characters\Attributes\Level.h" />
@@ -125,6 +127,7 @@
     <ClInclude Include="Source\Events\Events.h" />
     <ClInclude Include="Source\Game\CameraShake.h" />
     <ClInclude Include="Source\Game\Trauma.h" />
+    <ClInclude Include="Source\Map\MapBase.h" />
     <ClInclude Include="Source\Map\MapLevel.h" />
     <ClInclude Include="Source\States\PreGameState.h" />
     <ClInclude Include="Source\UI\Screens\CharacterSelectionScreen.h" />

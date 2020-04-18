@@ -186,7 +186,7 @@ void PlayerManager::resolveWallCollisions(const Map* map, float dt)
 bool PlayerManager::doesCollideLeft(const Map* map, const VectorF point, float dt) const
 {
 	bool willCollide = false;
-	const MapTile* currentTile = map->getTile(point);
+	const MapTile* currentTile = map->tile(point);
 
 	if (currentTile)
 	{
@@ -210,7 +210,7 @@ bool PlayerManager::doesCollideLeft(const Map* map, const VectorF point, float d
 bool PlayerManager::doesCollideRight(const Map* map, const VectorF point, float dt) const
 {
 	bool willCollide = false;
-	const MapTile* currentTile = map->getTile(point);
+	const MapTile* currentTile = map->tile(point);
 
 	if (currentTile)
 	{
@@ -234,7 +234,7 @@ bool PlayerManager::doesCollideRight(const Map* map, const VectorF point, float 
 bool PlayerManager::doesCollideTop(const Map* map, const VectorF point, float dt) const
 {
 	bool willCollide = false;
-	const MapTile* currentTile = map->getTile(point);
+	const MapTile* currentTile = map->tile(point);
 
 	if (currentTile)
 	{
@@ -258,7 +258,7 @@ bool PlayerManager::doesCollideTop(const Map* map, const VectorF point, float dt
 bool PlayerManager::doesCollideBot(const Map* map, const VectorF point, float dt) const
 {
 	bool willCollide = false;
-	const MapTile* currentTile = map->getTile(point);
+	const MapTile* currentTile = map->tile(point);
 
 	if (currentTile)
 	{

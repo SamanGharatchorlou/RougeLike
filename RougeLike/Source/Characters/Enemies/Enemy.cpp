@@ -11,8 +11,9 @@
 #include "Characters/Player/Player.h"
 
 
-Enemy::Enemy(GameData* gameData) : 
+Enemy::Enemy(GameData* gameData, AIPathMap* map) :
 	mGameData(gameData),
+	mMap(map),
 	mStateMachine(new EnemyNullState),
 	mFlip(SDL_FLIP_NONE), 
 	mTarget(nullptr) 
@@ -67,9 +68,9 @@ void Enemy::renderCharacter()
 
 #if DRAW_ENEMY_RECT
 	debugDrawRect(mRect, RenderColour(RenderColour::Red));
+#else
+	mAnimator.getSpriteTile()->render(rect, mFlip);
 #endif
-
-	//mAnimator.getSpriteTile()->render(rect, mFlip);
 }
 
 
@@ -101,10 +102,9 @@ void Enemy::resolvePlayerWeaponCollisions()
 }
 
 
-void Enemy::spawn(VectorF position)
+void Enemy::spawn(EnemyState::Type state, VectorF position)
 {
-	addState(EnemyState::Patrol);
-
+	addState(state);
 	mMovement.setPosition(position);
 }
 

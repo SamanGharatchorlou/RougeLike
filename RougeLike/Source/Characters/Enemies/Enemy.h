@@ -13,12 +13,12 @@
 
 
 struct GameData;
-
+class AIPathMap;
 
 class Enemy
 {
 public:
-	Enemy(GameData* gameData);
+	Enemy(GameData* gameData, AIPathMap* map);
 	~Enemy() { }
 
 	// Core
@@ -57,6 +57,7 @@ public:
 	Animator*					getAnimator() { return &mAnimator; }
 	DamageCollider*				getCollider() { return &mCollider; }
 	Movement&					getMovement() { return mMovement; }
+	AIPathMap*					getMap() { return mMap; }
 
 	// Dynamics
 	void resolvePlayerWeaponCollisions();
@@ -69,7 +70,7 @@ public:
 	void setFlip(SDL_RendererFlip flip) { mFlip = flip; }
 	SDL_RendererFlip flip() const { return mFlip; }
 
-	void spawn(VectorF position);
+	void spawn(EnemyState::Type state, VectorF position);
 
 
 protected:
@@ -78,6 +79,7 @@ protected:
 
 protected:
 	GameData* mGameData;
+	AIPathMap* mMap;
 	
 	StateMachine<EnemyState> mStateMachine;
 

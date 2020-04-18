@@ -5,7 +5,7 @@ class Collider;
 class Movement
 {
 public:
-	Movement() : mCollider(nullptr), mCanMove(true) {}
+	Movement() : mCollider(nullptr) { } //, mCanMove(true) {}
 	~Movement() {}
 
 	void init(Collider* collider, float speed);
@@ -31,7 +31,7 @@ public:
 	inline void stopRight() { mDirection.x -= +1; }
 
 	inline void resetDirection() { mDirection.zero(); }
-	bool isMoving() const { return !mDirection.isZero() && mCanMove; }
+	bool isMoving() const { return !mDirection.isZero(); }// && mCanMove;
 
 	inline VectorF getMovementDistance()	const { return mSpeed * mDirection; }
 	inline VectorF getDirection()			const { return mDirection; }
@@ -45,7 +45,7 @@ private:
 	VectorF mSpeed;
 	VectorF mDirection;
 
-	bool mCanMove;
+	//bool mCanMove;
 
 	Collider* mCollider;
 };

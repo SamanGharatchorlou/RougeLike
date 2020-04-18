@@ -6,13 +6,17 @@
 enum class Event
 {
 	None,
-	EnemyDead,
+
 	SetHealth,
+	EnemyDead,
+
 	IncrementMapLevel,
 
 	UpdateTextBox,
 
 	Trauma,
+
+	UpdateAIPathMap
 };
 
 
@@ -74,4 +78,11 @@ struct TraumaEvent : public EventData
 	TraumaEvent(int trauma) : mTrauma(trauma) { }
 
 	const int mTrauma;
+};
+
+
+struct UpdateAIPathMapEvent : public EventData
+{
+	UpdateAIPathMapEvent() { };
+	~UpdateAIPathMapEvent() { }
 };

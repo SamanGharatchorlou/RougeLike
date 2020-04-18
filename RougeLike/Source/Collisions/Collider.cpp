@@ -37,10 +37,8 @@ void Collider::reset()
 {
 	mIsActive = true;
 	mHasCollided = false;
-	mOtherCollider = nullptr;
-
-	// TEMP
 	mGotHit = false;
+	mOtherCollider = nullptr;
 }
 
 
@@ -49,13 +47,10 @@ RectF Collider::getRectBase() const
 {
 	RectF colliderRect = *mRect;
 
-	float rectWidth = mRect->Width();
-	float colliderWidth = rectWidth * mColliderScale.x;
+	float colliderWidth = mRect->Width() * mColliderScale.x;
+	float colliderHeight = mRect->Height() * mColliderScale.y;
 
-	float rectHeight = mRect->Height();
-	float colliderHeight = rectHeight * mColliderScale.y;
-
-	float xPosition = mRect->LeftPoint() + ((rectWidth - colliderWidth) / 2.0f);
+	float xPosition = mRect->LeftPoint() + ((mRect->Width() - colliderWidth) / 2.0f);
 	float yPosition = mRect->BotPoint() - colliderHeight;
 
 	return RectF(xPosition, yPosition, xPosition + colliderWidth, yPosition + colliderHeight);

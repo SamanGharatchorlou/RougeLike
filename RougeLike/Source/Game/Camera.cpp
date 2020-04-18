@@ -33,6 +33,10 @@ void Camera::fastUpdate(float dt)
 	{
 		mRect = mRect.Translate(translation.x, 0.0f);
 	}
+	else
+	{
+		int a = 4;
+	}
 
 	if (mRect.TopPoint() + translation.y >= mBoundaries.y1 &&
 		mRect.BotPoint() + translation.y <= mBoundaries.y2)

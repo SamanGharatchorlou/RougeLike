@@ -84,6 +84,7 @@
     <ClCompile Include="Source\Characters\Enemies\EnemyStates\EnemyPreAttack.cpp" />
     <ClCompile Include="Source\Map\TunnelGenerator.cpp" />
     <ClCompile Include="Source\Map\MapLevel.cpp" />
+    <ClCompile Include="Source\AI\AIPathMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -189,6 +190,8 @@
     <ClInclude Include="Source\Characters\Enemies\EnemyStates\EnemyClear.h" />
     <ClInclude Include="Source\Map\TunnelGenerator.h" />
     <ClInclude Include="Source\Map\MapLevel.h" />
+    <ClInclude Include="Source\AI\AIPathMap.h" />
+    <ClInclude Include="Source\Map\MapBase.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

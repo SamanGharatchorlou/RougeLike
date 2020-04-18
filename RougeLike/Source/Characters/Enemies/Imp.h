@@ -3,11 +3,12 @@
 #include "Enemy.h"
 
 struct GameData;
+class AIPathMap;
 
 class Imp : public Enemy
 {
 public:
-	Imp(GameData* gameData);
+	Imp(GameData* gameData, AIPathMap* map);
 
 	void init() override;
 

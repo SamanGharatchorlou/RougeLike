@@ -1,16 +1,22 @@
 #pragma once
 
+#include "Events/Observer.h"
 #include "Events/Dispatcher.h"
 
 #include "Collisions/CollisionTracker.h"
 #include "EnemyEnums.h"
+
+#include "Characters/Enemies/EnemyStates/EnemyState.h"
+#include "Items/Spawner.h"
+
+#include "AI/AIPathMap.h"
 
 
 struct GameData;
 class Enemy;
 
 
-class EnemyManager : public Dispatcher
+class EnemyManager : public Dispatcher, public Observer
 {
 public:
 	enum ObjectStatus
@@ -32,12 +38,20 @@ public:
 	void fastUpdate(float dt);
 	void render() const;
 
+	void handleEvent(const Event event, EventData& data);
+
+	void generatePathMap();
+	void updateEnemyPaths();
+
+	void destroyAllEnemies();
+
 	void clearAttackingColliders();
 	void addAttackingColliders(std::vector<Collider*> colliders);
 
 	void addEnemiesToPool(EnemyType type, unsigned int count);
 
-	void spawn(EnemyType type, unsigned int xPositionPercentage);
+	void spawnLevel();
+	void spawn(EnemyType type, EnemyState::Type state, VectorF position);
 
 	void setTarget(RectF* rect) { mTarget = rect; }
 
@@ -52,9 +66,14 @@ public:
 private:
 	void deactivate(std::vector<Enemy*>::iterator& iter);
 
+	void updateOccupiedTiles();
+	void handleEvent(Enemy* enemy);
+
 
 private:
 	GameData* mGameData;
+
+	AIPathMap mPathMap;
 
 	std::vector<EnemyObject> mEnemyPool;
 	std::vector<Enemy*> mActiveEnemies;
@@ -63,4 +82,6 @@ private:
 	CollisionTracker mCollisionManager;
 
 	RectF* mTarget;
+
+	Spawner mSpawner;
 };

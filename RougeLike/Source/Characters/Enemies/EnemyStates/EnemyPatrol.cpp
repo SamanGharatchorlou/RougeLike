@@ -60,12 +60,12 @@ void EnemyPatrol::setPatrolPoint()
 	Map* map = mEnemy->getData()->level->primaryMap();
 
 	VectorF position = mEnemy->getMovement().getPostion();
-	Vector2D<int> tilePositionIndex = map->getIndex(position);
+	Vector2D<int> tilePositionIndex = map->index(position);
 
 	Vector2D<int> yTileRange = map->findYFloorTileRange(tilePositionIndex.x);
 
-	VectorF highestPoint = map->getTileRect(tilePositionIndex.x, yTileRange.x).Center();
-	VectorF lowestPoint = map->getTileRect(tilePositionIndex.x, yTileRange.y).Center();
+	VectorF highestPoint = map->tileRect(tilePositionIndex.x, yTileRange.x).Center();
+	VectorF lowestPoint = map->tileRect(tilePositionIndex.x, yTileRange.y).Center();
 
 	// set the furthest point
 	mPatrolTarget = (position.y - highestPoint.y < lowestPoint.y - position.y) ? lowestPoint : highestPoint;
@@ -94,8 +94,8 @@ bool EnemyPatrol::canSeeTarget() const
 
 		if (isFacingTarget)
 		{
-			int enemyXTile = map->getIndex(position).x;
-			int playerXTile = map->getIndex(targetPosition).x;
+			int enemyXTile = map->index(position).x;
+			int playerXTile = map->index(targetPosition).x;
 
 			hasLineOfSight = (enemyXTile == playerXTile);
 		}

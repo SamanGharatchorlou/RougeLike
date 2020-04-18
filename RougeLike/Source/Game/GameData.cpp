@@ -88,6 +88,8 @@ void GameData::setupObservers()
 	enemies->addObserver(scoreManager);
 	// Player gains exp
 	enemies->addObserver(playerManager);
+	// Update enemy paths
+	enemies->addObserver(enemies);
 }
 
 
@@ -124,6 +126,6 @@ const VectorF GameInfo::mapDimentions() const
 
 bool GameInfo::isWall(VectorF position) const
 {
-	const MapTile* tile = mMap->map()->getTile(position);
+	const MapTile* tile = mMap->map()->tile(position);
 	return tile ? tile->hasCollisionType(MapTile::Wall) : false;
 }

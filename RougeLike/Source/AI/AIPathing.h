@@ -1,30 +1,37 @@
 #pragma once
 
 
-class Map;
-class MapTile;
+class AIPathMap;
+class PathTile;
 
-using TileCost = std::pair<const MapTile*, int>;
+using TileCost = std::pair<const PathTile*, int>;
 using Path = std::stack<Vector2D<int>>;
+using Index = Vector2D<int>;
 
 class AIPathing
 {
 public:
-	AIPathing(Map* map);
+	AIPathing(AIPathMap* map);
 
 	Path findPath(VectorF start, VectorF end);
 
-	Vector2D<int> getTileIndex(VectorF position) const;
-	VectorF getTilePosition(Vector2D<int> tileIndex) const;
+	Index getTileIndex(VectorF position) const;
+	VectorF getTilePosition(Index tileIndex) const;
 
+	// TEMP
+	PathTile tile(Index index);
 
+#if DRAW_AI_PATH
+	std::vector<PathTile> debugPath;
+	void draw(); // TODO: make const?
+#endif
 
 private:
-	Path getPath(Vector2D<int> start, Vector2D<int> end, Grid<Vector2D<int>>& pathing);
+	Path getPath(Index start, Index end, Grid<Index>& pathing);
 
-	Vector2D<int> nearestFloorTile(Vector2D<int> index) const;
+	Index nearestFloorTile(Index index) const;
 
-	inline int heuristic(Vector2D<int> from, Vector2D<int> to);
+	inline int heuristic(Index from, Index to);
 	
 	struct GreaterThanByCost
 	{
@@ -36,11 +43,11 @@ private:
 
 
 private:
-	Map* mMap;
+	AIPathMap* mMap;
 };
 
 
-inline int AIPathing::heuristic(Vector2D<int> from, Vector2D<int> to)
+inline int AIPathing::heuristic(Index from, Index to)
 {
 	return std::abs(from.x - to.x) + std::abs(from.y - to.y);
 }

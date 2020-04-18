@@ -56,7 +56,8 @@ void EnemyDead::render()
 
 #if DRAW_ENEMY_RECT
 	debugDrawRect(mEnemy->rect(), RenderColour(RenderColour::Red));
+#else
+	mEnemy->getAnimator()->getSpriteTile()->render(rect, mEnemy->flip(), mAlpha);
 #endif
 
-	mEnemy->getAnimator()->getSpriteTile()->render(rect, mEnemy->flip(), mAlpha);
 }

@@ -115,17 +115,15 @@ void Player::render()
 #if DRAW_PLAYER_RECT
 	debugDrawRect(rectA(), RenderColour(RenderColour::Green));
 	debugDrawRect(mCollider.getRectBase(), RenderColour(RenderColour::Blue));
-#endif
-#if DRAW_WEAPON_RECTS
 	debugDrawRects(mWeapon->getRects(), RenderColour(RenderColour::Yellow));
-#endif
-
+#else
 	// Character
 	RectF rect = Camera::Get()->toCameraCoords(renderRect());
-	//mAnimator.getSpriteTile()->render(rect, mFlip);
+	mAnimator.getSpriteTile()->render(rect, mFlip);
 
 	// Weapon
 	mWeapon->render();
+#endif
 }
 
 

@@ -41,7 +41,8 @@ void EnemyHit::init()
 
 void EnemyHit::fastUpdate(float dt)
 {
-	mEnemy->getMovement().fastUpdate(dt);
+	mEnemy->move(dt);
+	//mEnemy->getMovement().fastUpdate(dt);
 }
 
 

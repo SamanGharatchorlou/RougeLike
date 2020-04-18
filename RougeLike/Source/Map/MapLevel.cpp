@@ -9,11 +9,7 @@
 MapLevel::MapLevel()
 {
 	mMap = new Map();
-	mMap->setScale(3.0f);
-
 	mEntrace = new Map();
-	mEntrace->setScale(3.0f);
-
 	mExit = nullptr;
 
 	mapSize = Vector2D<int>(30, 20);
@@ -31,7 +27,7 @@ void MapLevel::init()
 }
 
 
-void MapLevel::generateNextEntrace()
+void MapLevel::nextLevel()
 {
 	swapToEntrance();
 	buildLevel();
@@ -43,7 +39,7 @@ void MapLevel::generateNextEntrace()
 }
 
 
-void MapLevel::generateNextExit()
+void MapLevel::closeLevelEntrace()
 {
 	swapToExit();
 	buildExit();
@@ -89,14 +85,14 @@ Map* MapLevel::map(VectorF position) const
 }
 
 
-bool MapLevel::mapOutOfView(VectorF position) const
+bool MapLevel::generateNextLevel(VectorF position) const
 {
 	if (position.x > mMap->getLastRect().RightPoint())
 	{
 		RectF lastRect = mMap->getLastRect(mMap->yCount() / 2);
 
 		// Make sure its completely out of view
-		lastRect = lastRect.Translate(mMap->getTileSize());
+		lastRect = lastRect.Translate(mMap->tileSize());
 
 		return !Camera::Get()->inView(lastRect);
 	}
@@ -105,14 +101,14 @@ bool MapLevel::mapOutOfView(VectorF position) const
 }
 
 
-bool MapLevel::entraceOutOfView(VectorF position) const
+bool MapLevel::closeEntrance(VectorF position) const
 {
 	if (mEntrace && position.x > mEntrace->getLastRect().RightPoint())
 	{
 		RectF lastRect = mEntrace->getLastRect(mMap->yCount() / 2);
 
 		// Make sure its completely out of view
-		lastRect = lastRect.Translate(mMap->getTileSize());
+		lastRect = lastRect.Translate(mMap->tileSize());
 
 		return !Camera::Get()->inView(lastRect);
 	}
@@ -146,7 +142,8 @@ RectF MapLevel::boundaries() const
 void MapLevel::buildEntrance(float offset)
 {
 	// Add a small buffer so the eixt tunnel takes up whole screen
-	int width = (int)((Camera::Get()->size().x / mMap->getTileSize().x) * 1.5f);
+	VectorF size(VectorF(16.0f, 16.0f) * 3.0f); // TODO: hard coded
+	int width = (int)((Camera::Get()->size().x / size.x) * 1.5f);
 
 	mEntrace->init(width, mapSize.y);
 
@@ -167,7 +164,7 @@ void MapLevel::buildLevel()
 
 	int mapWidth = randomNumberBetween(mapMinX, mapMaxX);
 
-	float offset = mEntrace->getTileRect(mEntrace->xCount() - 1, 0.0f).RightPoint();
+	float offset = mEntrace->tileRect(mEntrace->xCount() - 1, 0.0f).RightPoint();
 
 	buildRandomLevel(mapWidth, mapSize.y, offset);
 }
@@ -193,7 +190,7 @@ void MapLevel::buildExit()
 	float offset = mMap->getLastRect().RightPoint();
 
 	// Add a small buffer so the eixt tunnel takes up whole screen
-	int width = (int)((Camera::Get()->size().x / mMap->getTileSize().x) * 1.5f);
+	int width = (int)((Camera::Get()->size().x / mMap->tileSize().x) * 1.5f);
 
 	mExit->init(width, mapSize.y);
 

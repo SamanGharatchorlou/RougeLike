@@ -8,10 +8,7 @@
 #include "TunnelGenerator.h"
 
 
-Map::Map() : mScale(1.0f)
-{
-	mTileSize.set(16, 16); // TODO: get this from some where else?
-}
+
 
 
 void Map::populateTileRects(VectorF offset)
@@ -20,14 +17,14 @@ void Map::populateTileRects(VectorF offset)
 	{
 		for (int x = 0; x < mData.xCount(); x++)
 		{
-			VectorF size(mTileSize * mScale);
+			VectorF size(VectorF(16.0f, 16.0f) * 3.0f); // TODO: hard coded
 			VectorF position = VectorF(x * size.x, y * size.y);
 			RectF rect(position + offset, size);
 
 			mData[y][x].setRect(rect);
 
 #if _DEBUG
-			mData[y][x].index = Vector2D<int>(x,y);
+			mData[y][x].index = Index(x,y);
 #endif
 		}
 	}
@@ -123,9 +120,6 @@ void Map::populateCollisionRenderInfo()
 
 void Map::init(int x, int y)
 {
-	mTileCount.set(x, y);
-
-	// clear data, default all tiles to walls
 	mData.clearAndSet(x, y, MapTile());
 }
 
@@ -137,9 +131,14 @@ void Map::populateData(VectorF offset)
 }
 
 
-Vector2D<float> Map::size() const
+VectorF Map::size() const
 {
-	return Vector2D<float>(xCount(), yCount()) * mTileSize * mScale;
+	return VectorF(xCount(), yCount()) * tileSize();
+}
+
+const VectorF Map::tileSize() const
+{ 
+	return tile(0, 0)->rect().Size();
 }
 
 
@@ -270,7 +269,7 @@ void Map::renderTopLayer(const TextureManager* tm, float yPoint)
 	}
 
 #if _DEBUG
-	float tilesInCamera = (Camera::Get()->size() / getTileSize()).area();
+	float tilesInCamera = (Camera::Get()->size() / tileSize()).area();
 
 	if (tileRenderCounter > tilesInCamera + (yCount() * 2) + (xCount() * 2))
 		DebugPrint(Log, "There are approx %f tiles within the viewport and we are rendering %f, too many?\n",
@@ -291,16 +290,16 @@ void Map::renderColumn(const RectF& rect, Texture* column)
 }
 
 
-const MapTile* Map::offsetTile(const MapTile* tile, int xOffset, int yOffset) const
+const MapTile* Map::offsetTile(const MapTile* target, int xOffset, int yOffset) const
 {
-	Vector2D<int> index = getIndex(tile);
-	index = index + Vector2D<int>(xOffset, yOffset);
+	Index tileIndex = index(target);
+	tileIndex = tileIndex + Index(xOffset, yOffset);
 
-	return isValidIndex(index) ? getTile(index) : nullptr;
+	return isValidIndex(tileIndex) ? tile(tileIndex) : nullptr;
 }
 
 
-Vector2D<int> Map::findYFloorTileRange(int xTileIndex)
+Index Map::findYFloorTileRange(int xTileIndex)
 {
 	unsigned int yTileIndex = 0;
 	Vector2D<unsigned int> yTileRange;
@@ -320,15 +319,6 @@ Vector2D<int> Map::findYFloorTileRange(int xTileIndex)
 	yTileRange.y = clamp(yTileIndex - 2, yTileRange.x, yCount() - 2);
 
 	return yTileRange;
-}
-
-
-bool Map::inBounds(int x, int y) const
-{
-	bool xBounds = (x >= 0 && x < mTileCount.x);
-	bool yBounds = (y >= 0 && y < mTileCount.y);
-
-	return xBounds && yBounds;
 }
 
 
@@ -358,72 +348,60 @@ const MapTile::EdgeInfo Map::getEdgeInfo(int x, int y) const
 }
 
 
-const Vector2D<int> Map::getIndex(VectorF position) const
+const Index Map::index(VectorF position) const
 {
 	VectorF mapTopLeft = mData.get(0, 0).rect().TopLeft();
 	VectorF shiftedPosition = position - mapTopLeft;
 
 	// Get the index relative to this map
-	Vector2D<int> index(shiftedPosition.x / (mTileSize.x * mScale), shiftedPosition.y / (mTileSize.y * mScale));
+	Index index(shiftedPosition.x / tileSize().x, shiftedPosition.y / tileSize().y);
 
-	return isValidPosition(position) ? index : Vector2D<int>(-1, -1);
+	return isValidPosition(position) ? index : Index(-1, -1);
 }
 
 
-const Vector2D<int> Map::getIndex(const MapTile* tile) const
+const Index Map::index(const MapTile* tile) const
 {
 	VectorF position(tile->rect().TopLeft());
-	return getIndex(position);
+	return index(position);
 }
 
 
-const Vector2D<int> Map::getIndex(RectF rect) const
+const Index Map::index(RectF rect) const
 {               
 	VectorF position(rect.TopLeft());
-	return getIndex(position);
+	return index(position);
 }
 
 
-const MapTile* Map::getTile(const Vector2D<int> index) const
+const MapTile* Map::tile(VectorF position) const 
 {
-	return isValidIndex(index) ? &mData.get(index) : nullptr;
+	Index tileIndex = index(position);
+	return isValidIndex(tileIndex) ? &mData.get(tileIndex) : nullptr;
 }
 
 
-const MapTile* Map::getTile(int x, int y) const
-{
-	return isValidIndex(Vector2D<int>(x,y)) ? &mData.get(x,y) : nullptr;
-}
-
-
-const MapTile* Map::getTile(VectorF position) const 
-{
-	Vector2D<int> index = getIndex(position);
-	return isValidIndex(index) ? &mData.get(index) : nullptr;
-}
-
-
-const RectF Map::getTileRect(Vector2D<int> index) const
+const RectF Map::tileRect(Index index) const
 {
 	return isValidIndex(index) ? mData.get(index).rect() : RectF(-1);
 }
 
 
-const RectF Map::getTileRect(int x, int y) const
+const RectF Map::tileRect(int x, int y) const
 {
-	return isValidIndex(Vector2D<int>(x, y)) ? mData.get(x, y).rect() : RectF(-1);
+	return isValidIndex(Index(x, y)) ? mData.get(x, y).rect() : RectF(-1);
 }
 
 
 
 const RectF Map::getFirstRect(int yIndex) const
 {
-	return getTileRect(0, yIndex);
+	return tileRect(0, yIndex);
 }
 
 const RectF Map::getLastRect(int yIndex) const
 {
-	return getTileRect(mTileCount.x - 1, yIndex);
+	return tileRect(xCount() - 1, yIndex);
 }
 
 
@@ -460,25 +438,18 @@ void Map::removeTileType(int x, int y, MapTile::Type type)
 bool Map::isValidTile(RectF rect) const
 {
 	VectorF start = mData.get(0, 0).rect().TopLeft();
-	VectorF end = mData.get(mTileCount.x - 1, mTileCount.y - 1).rect().BotRight();
+	VectorF end = mData.get(xCount() - 1, yCount() - 1).rect().BotRight();
 
 	return (rect.x1 >= start.x && rect.y1 >= start.y) &&
 			(rect.x2 < end.x && rect.y2 < end.y) &&
-			 rect.Size() == mTileSize * mScale;
+			 rect.Size() == tileSize();
 }
 
-
-bool Map::isValidIndex(Vector2D<int> index) const
-{
-	return (index.x >= 0 && index.x < mTileCount.x) &&
-			(index.y >= 0 && index.y < mTileCount.y);
-
-}
 
 bool Map::isValidPosition(VectorF position) const
 {
 	VectorF start = mData.get(0, 0).rect().TopLeft();
-	VectorF end = mData.get(mTileCount.x - 1, mTileCount.y - 1).rect().BotRight();
+	VectorF end = mData.get(xCount() - 1, yCount() - 1).rect().BotRight();
 
 	return (position.x >= start.x && position.x < end.x) &&
 			(position.y >= start.y && position.y < end.y);

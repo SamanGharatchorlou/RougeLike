@@ -11,8 +11,8 @@ public:
 
 	void init();
 
-	void generateNextEntrace();
-	void generateNextExit();
+	void nextLevel();
+	void closeLevelEntrace();
 
 	void renderBottomLayer(const TextureManager* tm, float depth);
 	void renderTopLayer(const TextureManager* tm, float depth);
@@ -22,8 +22,8 @@ public:
 
 	VectorF size() const;
 
-	bool entraceOutOfView(VectorF position) const;
-	bool mapOutOfView(VectorF position) const;
+	bool closeEntrance(VectorF position) const;
+	bool generateNextLevel(VectorF position) const;
 
 	RectF boundaries() const;
 

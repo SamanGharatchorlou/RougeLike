@@ -1,42 +1,44 @@
 #include "pch.h"
 #include "AIPathing.h"
 
-#include "Map/Map.h"
+#include "AIPathMap.h"
 
 
-AIPathing::AIPathing(Map* map) : mMap(map) { }
+AIPathing::AIPathing(AIPathMap* map) : mMap(map) { }
 
 
-std::stack<Vector2D<int>> AIPathing::findPath(VectorF startPosition, VectorF endPosition)
+// TODO: the enemy updates after a new tile has been reached, can I only use this path finding for the next tile? no need for a whole path
+std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition)
 {
-	Vector2D<int> startingIndex = mMap->getIndex(startPosition);
-	Vector2D<int> endIndex = mMap->getIndex(endPosition);
+	Index startingIndex = mMap->index(startPosition);
+	Index endIndex = mMap->index(endPosition);
+
+	if (startingIndex == endIndex)
+		return Path();
 
 	// verify end index()
+	// TODO: if enemy out of map bounds i.e. follows player into entrance/exit end.x/y == -1
 	if (!mMap->floorCollisionTile(endIndex.x, endIndex.y))
 	{
-		Vector2D<int> index = endIndex;
+		printf("hit I do need this...\n");
 		endIndex = nearestFloorTile(endIndex);
-
-		printf("end index changed from %d, %d -> %, %d\n", index.x, index.y, endIndex.x, endIndex.y);
 	}
-
 
 	// Lowest to highest path cost queue
 	std::priority_queue<TileCost, std::vector<TileCost>, GreaterThanByCost> frontier;
-	frontier.push(TileCost(mMap->getTile(startingIndex), 0));
+	frontier.push(TileCost(mMap->tile(startingIndex), 0));
 
-	Grid<Vector2D<int>> cameFrom(mMap->yCount(), mMap->xCount(), Vector2D<int>(-1,-1));
+	Grid<Index> cameFrom(mMap->yCount(), mMap->xCount(), Index(-1,-1));
 	Grid<int> cost(mMap->yCount(), mMap->xCount(), 0);
 
-	// start search coming from nowhere with 0 cost
-	cameFrom[startingIndex] = Vector2D<int>(-1, -1);
+	// start search coming from no where with 0 cost
+	cameFrom[startingIndex] = Index(-1, -1);
 	cost[startingIndex] = 0;
 
 	while (!frontier.empty())
 	{
-		const MapTile* currentTile = frontier.top().first;
-		const MapTile* neighbours[4] = { 
+		const PathTile* currentTile = frontier.top().first;
+		const PathTile* neighbours[4] = {
 			mMap->offsetTile(currentTile, 0, -1),
 			mMap->offsetTile(currentTile, 1, 0),
 			mMap->offsetTile(currentTile, 0, 1),
@@ -45,25 +47,31 @@ std::stack<Vector2D<int>> AIPathing::findPath(VectorF startPosition, VectorF end
 		// Search all neighbours
 		for (unsigned int i = 0; i < 4; i++)
 		{
-			const MapTile* nextTile = *(neighbours + i);
-			if (nextTile && nextTile->hasCollisionType(MapTile::Floor))
+			const PathTile* nextTile = *(neighbours + i);
+
+			// valid tile
+			if (nextTile && nextTile->hasCollisionType(BasicTile::Floor))
 			{
-				Vector2D<int> index = mMap->getIndex(nextTile);
-
-				int newCost = cost[mMap->getIndex(currentTile)] + 1; // replace 1 with the floor type
-
-				if (mMap->inBounds(index.x, index.y) && 
-					(cameFrom.get(index).isNegative() || newCost < cost[index]))
+				// Is a floor tile, not currently occupied and not about to be occupied
+				if (nextTile->hasCollisionType(BasicTile::Floor) && !nextTile->isOccupied() && !nextTile->isToBeOccupied())
 				{
-					int priority = newCost + heuristic(endIndex, index);
-					frontier.push(TileCost(nextTile, priority));
+					Index index = mMap->index(nextTile);
 
-					cameFrom[index] = mMap->getIndex(currentTile);
-					cost[index] = newCost;
+					int newCost = cost[mMap->index(currentTile)] + 1; // replace 1 with the floor type
 
-					if (index == endIndex)
+					if (mMap->inBounds(index.x, index.y) &&
+						(cameFrom.get(index).isNegative() || newCost < cost[index]))
 					{
-						return getPath(startingIndex, endIndex, cameFrom);
+						int priority = newCost + heuristic(endIndex, index);
+						frontier.push(TileCost(nextTile, priority));
+
+						cameFrom[index] = mMap->index(currentTile);
+						cost[index] = newCost;
+
+						if (index == endIndex)
+						{
+							return getPath(startingIndex, endIndex, cameFrom);
+						}
 					}
 				}
 			}
@@ -76,7 +84,7 @@ std::stack<Vector2D<int>> AIPathing::findPath(VectorF startPosition, VectorF end
 			DebugPrint(Log, 
 				"Whole map searched: No valid path was found from index %d,%d to index %d,%d\n",
 				startingIndex.x, startingIndex.y, endIndex.x, endIndex.y);
-			return std::stack<Vector2D<int>>();
+			return std::stack<Index>();
 		}
 	}
 
@@ -88,41 +96,75 @@ std::stack<Vector2D<int>> AIPathing::findPath(VectorF startPosition, VectorF end
 }
 
 
-Path AIPathing::getPath(Vector2D<int> start, Vector2D<int> finish, Grid<Vector2D<int>>& pathing)
+Path AIPathing::getPath(Index start, Index finish, Grid<Index>& pathing)
 {
 	Path path;
 	path.push(finish);
 
+#if DRAW_AI_PATH
+	debugPath.clear();
+	debugPath.push_back(*mMap->tile(finish));
+#endif
+
 	while (pathing[path.top()] != start)
 	{
+#if DRAW_AI_PATH
+		debugPath.push_back(*mMap->tile(pathing[path.top()]));
+#endif
 		path.push(pathing[path.top()]);
 	}
-
+  
 	return path;
 }
 
 
 // For Enemy class
-VectorF AIPathing::getTilePosition(Vector2D<int> tileIndex) const
+VectorF AIPathing::getTilePosition(Index tileIndex) const
 {
-	return mMap->getTileRect(tileIndex).Center();
+	return mMap->tile(tileIndex)->rect().Center();
 }
 
 
-Vector2D<int> AIPathing::getTileIndex(VectorF position) const
+// TEMP
+PathTile AIPathing::tile(Index tileIndex)
 {
-	return mMap->getIndex(position);
+	return *mMap->tile(tileIndex);
 }
+
+
+Index AIPathing::getTileIndex(VectorF position) const
+{
+	return mMap->index(position);
+}
+
+
+#if DRAW_AI_PATH
+void AIPathing::draw()
+{
+	if (debugPath.size() > 1)
+	{
+		for (int i = 0; i < debugPath.size() - 1; i++)
+		{
+			RectF rect = debugPath[i].rect();
+
+			VectorF pointA = debugPath[i].rect().Center();
+			VectorF pointB = debugPath[i + 1].rect().Center();
+
+			debugDrawLine(pointA, pointB, RenderColour::Green);
+		}
+	}
+}
+#endif
 
 
 // --- Private Functions --- //
 
 // Fix when playing is in wall, and invalid end path is given
-Vector2D<int> AIPathing::nearestFloorTile(Vector2D<int> index) const
+Index AIPathing::nearestFloorTile(Index index) const
 {
-	const MapTile* wallTile = mMap->getTile(index);
+	const PathTile* wallTile = mMap->tile(index);
 
-	const MapTile* neighbours[4] = {
+	const PathTile* neighbours[4] = {
 		mMap->offsetTile(wallTile, 0, -1),
 		mMap->offsetTile(wallTile, 1, 0),
 		mMap->offsetTile(wallTile, 0, 1),
@@ -131,9 +173,9 @@ Vector2D<int> AIPathing::nearestFloorTile(Vector2D<int> index) const
 	// Search all neighbours
 	for (unsigned int i = 0; i < 4; i++)
 	{
-		if (neighbours[i] && neighbours[i]->hasCollisionType(MapTile::Floor))
+		if (neighbours[i] && neighbours[i]->hasCollisionType(BasicTile::Floor))
 		{
-			return mMap->getIndex(neighbours[i]);
+			return mMap->index(neighbours[i]);
 		}
 	}
 

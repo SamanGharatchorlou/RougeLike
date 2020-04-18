@@ -4,13 +4,17 @@
 #include "Game/GameData.h"
 #include "Map/MapLevel.h"
 #include "Game/Camera.h"
+#include "Characters/Player/PlayerManager.h"
 
 #include "Items/Spawner.h"
 
 #include "Characters/Enemies/Imp.h"
 
+// TEMP
+#include "Characters/Enemies/EnemyStates/EnemyRun.h"
+
 // TODO: remove enemies once out of play, i.e. player has not killed them and moved onto the next level
-EnemyManager::EnemyManager(GameData* gameData) : mGameData(gameData) { }
+EnemyManager::EnemyManager(GameData* gameData) : mGameData(gameData), mSpawner(this) { }
 
 
 EnemyManager::~EnemyManager()
@@ -24,6 +28,12 @@ EnemyManager::~EnemyManager()
 
 	mActiveEnemies.clear();
 	mEnemyPool.clear();
+}
+
+
+void EnemyManager::generatePathMap()
+{
+	mPathMap.build(mGameData->level->primaryMap(), 2, 2);
 }
 
 
@@ -43,7 +53,7 @@ void EnemyManager::addEnemiesToPool(EnemyType type, unsigned int count)
 
 		case EnemyType::Imp:
 		{
-			Imp* imp = new Imp(mGameData);
+			Imp* imp = new Imp(mGameData, &mPathMap);
 			imp->init();
 
 			enemyObject.first = imp;
@@ -62,7 +72,7 @@ void EnemyManager::addEnemiesToPool(EnemyType type, unsigned int count)
 }
 
 
-void EnemyManager::spawn(EnemyType type, unsigned int xPositionPercentage)
+void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF position)
 {
 	// Find available enemy to spawn
 	for (unsigned int i = 0; i < mEnemyPool.size(); i++)
@@ -71,26 +81,27 @@ void EnemyManager::spawn(EnemyType type, unsigned int xPositionPercentage)
 			mEnemyPool[i].second == ObjectStatus::Available)
 		{
 			Enemy* enemy = mEnemyPool[i].first;
-
-			// Add new active enemy to list and spawn around index x
-			Spawner enemySpawner;
-			VectorF position = enemySpawner.findSpawnPoint(mGameData->level->primaryMap(), xPositionPercentage);
-			enemy->spawn(position);
-
-			mActiveEnemies.push_back(enemy);
-
 			mEnemyPool[i].second = ObjectStatus::Active;
 
+			enemy->propertyBag().pHealth.get().setFullHp();
+			enemy->spawn(state, position);
 			enemy->setTarget(mTarget);
 
 			// subscribe to player weapon collisions
 			mCollisionManager.addDefender(enemy->getCollider());
 
+			mActiveEnemies.push_back(enemy);
 			return;
 		}
 	}
 
 	DebugPrint(Warning, "No available enemies of type %d in enemy pool, consider adding more\n", type);
+}
+
+void EnemyManager::spawnLevel()
+{
+	// TODO: can i just link this up to level and forget about updating it?
+	mSpawner.spawnLevelPatrollers(mGameData->level->primaryMap());
 }
 
 
@@ -110,34 +121,30 @@ void EnemyManager::fastUpdate(float dt)
 
 void EnemyManager::slowUpdate(float dt)
 {
-	std::vector<Enemy*>::iterator iter;
-	for (iter = mActiveEnemies.begin(); iter != mActiveEnemies.end(); iter++)
+	for (std::vector<Enemy*>::iterator iter = mActiveEnemies.begin(); iter != mActiveEnemies.end(); iter++)
 	{
 		Enemy* enemy = *iter;
 
-		// handle all enemy messages
+		// Handle enemy messages
 		while (enemy->hasEvent())
-		{
-			EventPacket ep = enemy->popEvent();
+			handleEvent(enemy);
 
-			notify(ep.event, *ep.data);
-
-			ep.free();
-		}
-
+		// Update enemies
 		enemy->slowUpdate(dt);
 
-		// Automatically clear out dead enemies
-		// This needs to change to something else so the death anim can play
+		// Clear out dead enemies
 		if (enemy->state() == EnemyState::None)
 		{
 			deactivate(iter);
 
 			if (iter == mActiveEnemies.end())
 				break;
-
 		}
 	}
+
+	// Update weapon collider list
+	clearAttackingColliders();
+	addAttackingColliders(mGameData->playerManager->getWeaponColliders());
 
 #if _DEBUG // Police the pool and active enemy lists
 	int activeEnemies = 0;
@@ -151,6 +158,36 @@ void EnemyManager::slowUpdate(float dt)
 		"There is a mismatch between the number of active enemies in the pool(%d) and the number active in the active list %d\n",
 		activeEnemies, mActiveEnemies.size());
 #endif
+}
+
+
+void EnemyManager::handleEvent(const Event event, EventData& data)
+{
+	if (event == Event::UpdateAIPathMap)
+	{
+		updateEnemyPaths();
+	}
+}
+
+
+// Call from messages?
+// if player moves tile or an enemy moves a tile update this bad boi
+void EnemyManager::updateEnemyPaths()
+{
+	updateOccupiedTiles();
+	mPathMap.clearToBeOccupiedTiles();
+
+	for (int i = 0; i < mActiveEnemies.size(); i++)
+	{
+		if (mActiveEnemies[i]->state() == EnemyState::Run)
+		{
+			EnemyRun& runState = static_cast<EnemyRun&>(mActiveEnemies[i]->getStateMachine()->getActiveState());
+			runState.updatePath();
+
+			Index nextTileIndex = runState.nextTileIndex();
+			mPathMap.addToBeOccupiedTile(nextTileIndex);
+		}
+	}
 }
 
 
@@ -169,6 +206,15 @@ void EnemyManager::render() const
 		{
 			enemy->render();
 		}
+	}
+}
+
+
+void EnemyManager::destroyAllEnemies()
+{
+	for (unsigned int i = 0; i < mActiveEnemies.size(); i++)
+	{
+		mActiveEnemies[i]->addState(EnemyState::None);
 	}
 }
 
@@ -210,6 +256,7 @@ void EnemyManager::addAttackingColliders(std::vector<Collider*> colliders)
 	mCollisionManager.addAttackers(colliders);
 }
 
+
 // --- Private Functions --- //
 void EnemyManager::deactivate(std::vector<Enemy*>::iterator& iter)
 {
@@ -224,3 +271,25 @@ void EnemyManager::deactivate(std::vector<Enemy*>::iterator& iter)
 	iter = mActiveEnemies.erase(iter);
 }
 
+
+void EnemyManager::updateOccupiedTiles()
+{
+	// Update AI Path mapping first
+	mPathMap.clearOccupiedTiles();
+
+	for (int i = 0; i < mActiveEnemies.size(); i++)
+	{
+		VectorF position = mActiveEnemies[i]->rect().Center();
+		mPathMap.addOccupiedTile(position);
+	}
+}
+
+
+void EnemyManager::handleEvent(Enemy* enemy)
+{
+	EventPacket ep = enemy->popEvent();
+
+	notify(ep.event, *ep.data);
+
+	ep.free();
+}

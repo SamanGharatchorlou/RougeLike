@@ -21,9 +21,12 @@ public:
 
 	const Type type() const { return Type::Run; }
 
-private:
 	void updatePath();
+	Index nextTileIndex();
+
+private:
 	void updateMovement(VectorF target);
+	VectorF position() const;
 
 	bool inChaseRange() const;
 	bool inAttackRange() const;

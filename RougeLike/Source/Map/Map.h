@@ -1,49 +1,38 @@
 #pragma once
+
+#include "Map/MapBase.h"
 #include "MapTile.h"
 
 class TextureManager;
 class Texture;
 
-class Map
+class Map : public MapBase<MapTile>
 {
 public:
-	Map();
-
 	void init(int x, int y);
 	void populateData(VectorF offset = VectorF());
 
-	Grid<MapTile>& getData() { return mData; }
-
-	unsigned int yCount() const { return mTileCount.y; }
-	unsigned int xCount() const { return mTileCount.x; }
+	Vector2D<float> size() const;
+	const VectorF tileSize() const;
 
 	const RectF getFirstRect(int yIndex = 0) const;
 	const RectF getLastRect(int yIndex = 0) const;
 
-	const MapTile* getTile(Vector2D<int> index) const;
-	const MapTile* getTile(int x, int y) const;
-	const MapTile* getTile(VectorF position) const;
+	const MapTile* tile(Index index) const { return MapBase<MapTile>::tile(index); };
+	const MapTile* tile(int x, int y) const { return MapBase<MapTile> ::tile(x, y); }
+	const MapTile* tile(VectorF position) const;
 
-	const Vector2D<int> getIndex(VectorF position) const;
-	const Vector2D<int> getIndex(const MapTile* tile) const;
-	const Vector2D<int> getIndex(RectF rect) const;
+	const Vector2D<int> index(VectorF position) const;
+	const Vector2D<int> index(const MapTile* tile) const;
+	const Vector2D<int> index(RectF rect) const;
 
-	const RectF getTileRect(Vector2D<int> index) const;
-	const RectF getTileRect(int x, int y) const;
+	const RectF tileRect(Index index) const;
+	const RectF tileRect(int x, int y) const;
 
-	const VectorF getTileSize() const { return mTileSize * mScale; }
-
-	const MapTile* offsetTile(const MapTile* tile, int xOffset, int yOffset) const;
-
-	Vector2D<float> size() const;
-
-	void setScale(float scale) { mScale = scale; }
-	float getScale() const { return mScale; }
+	const MapTile* offsetTile(const MapTile* target, int xOffset, int yOffset) const;
 
 	void renderBottomLayer(const TextureManager* tm, float yPoint);
 	void renderTopLayer(const TextureManager* tm, float yPoint);
-
-	Vector2D<int> findYFloorTileRange(int xTileIndex);
 
 	bool wallRenderTile(int x, int y) const { return mData.get(x, y).renderType() >= MapTile::Wall; }
 	bool floorRenderTile(int x, int y) const { return mData.get(x, y).renderType() == MapTile::Floor; }
@@ -55,35 +44,23 @@ public:
 	void setTileType(int x, int y, MapTile::Type type);
 	void removeTileType(int x, int y, MapTile::Type type);
 
-	bool inBounds(int x, int y) const;
-
 	const MapTile::EdgeInfo getEdgeInfo(int x, int y) const;
+
+	Vector2D<int> findYFloorTileRange(int xTileIndex);
 
 #if DRAW_BINARY_MAP
 	void printBinaryMap();
 #endif
-
+#if _DEBUG
+	int tileRenderCounter = 0;
+#endif
 
 private:
 	void populateTileRects(VectorF offset);
 	void populateCollisionRenderInfo();
 
 	bool isValidTile(RectF rect) const;
-	bool isValidIndex(Vector2D<int> index) const;
 	bool isValidPosition(VectorF position) const;
 
 	void renderColumn(const RectF& rect, Texture* column);
-
-
-private:
-	Vector2D<int> mTileSize;
-	Vector2D<int> mTileCount;
-
-	float mScale;
-
-	Grid<MapTile> mData;
-
-#if _DEBUG
-	int tileRenderCounter;
-#endif
 };

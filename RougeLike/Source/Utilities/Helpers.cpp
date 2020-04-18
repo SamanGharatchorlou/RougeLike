@@ -42,6 +42,7 @@ float getRotation(VectorF direction)
 }
 
 
+// including min, not max
 int randomNumberBetween(int min, int max)
 {
 	return (rand() % (max - min)) + min;

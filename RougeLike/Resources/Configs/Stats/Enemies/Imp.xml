@@ -2,7 +2,7 @@
 <Stats>
 	<!-- General Attributes -->
 	<Health type = "int">100</Health>
-	<MovementSpeed type = "int">50</MovementSpeed>
+	<MovementSpeed type = "int">80</MovementSpeed>
 
 	<!-- Data values -->
 	<Score type ="int">50></Score>
@@ -21,9 +21,9 @@
 	<IdleTime type = "float">2</IdleTime>
 
 	<!-- Hit -->
-	<HurtTime type = "float">0.125</HurtTime>
+	<HurtTime type = "float">0.25</HurtTime>
 	
 	<!-- Alert -->
-	<AttentionTime type ="float">1</AttentionTime>
+	<AttentionTime type ="float">0.5</AttentionTime>
 
 </Stats>

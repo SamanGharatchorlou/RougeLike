@@ -32,6 +32,8 @@ public:
 		return Health(hp - damage.value());
 	}
 
+	void setFullHp() { hp = maxHp; }
+
 private:
 	int hp;
 	int maxHp;
