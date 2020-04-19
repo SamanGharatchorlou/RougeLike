@@ -46,9 +46,13 @@ const K* MapBase<K>::tile(int x, int y) const
 template <class K>
 bool MapBase<K>::isValidIndex(Index index) const
 {
-	return (index.x >= 0 && index.x < xCount()) &&
+	bool a = (index.x >= 0 && index.x < xCount()) &&
 		(index.y >= 0 && index.y < yCount());
 
+	if (a == false)
+		printf("");
+
+	return a;
 }
 
 

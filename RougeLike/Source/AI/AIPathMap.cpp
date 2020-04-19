@@ -85,8 +85,13 @@ bool AIPathMap::isValidPosition(VectorF position) const
 	VectorF start = mData.get(0, 0).rect().TopLeft();
 	VectorF end = mData.get(xCount() - 1, yCount() - 1).rect().BotRight();
 
-	return (position.x >= start.x && position.x < end.x) &&
+	bool a = (position.x >= start.x && position.x < end.x) &&
 		(position.y >= start.y && position.y < end.y);
+
+	if (a == false)
+		printf("pause");
+
+	return a;
 }
 
 

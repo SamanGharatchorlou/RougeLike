@@ -23,7 +23,7 @@ public:
 
 #if DRAW_AI_PATH
 	std::vector<PathTile> debugPath;
-	void draw(); // TODO: make const?
+	void draw();
 #endif
 
 private:

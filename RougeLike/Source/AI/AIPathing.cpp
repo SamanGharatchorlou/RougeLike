@@ -79,18 +79,20 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 
 		frontier.pop();
 
+#if _DEBUG
 		if (frontier.size() > mMap->yCount() * mMap->xCount())
 		{
-			DebugPrint(Log, 
+			DebugPrint(Log,
 				"Whole map searched: No valid path was found from index %d,%d to index %d,%d\n",
 				startingIndex.x, startingIndex.y, endIndex.x, endIndex.y);
-			return std::stack<Index>();
+			return Path();
 		}
+#endif
 	}
 
-	DebugPrint(Log, 
-		"Empty frontier: No valid path was found from index %d,%d to index %d,%d\n",
-		startingIndex.x, startingIndex.y, endIndex.x, endIndex.y);
+	//DebugPrint(Log, 
+	//	"Empty frontier: No valid path was found from index %d,%d to index %d,%d\n",
+	//	startingIndex.x, startingIndex.y, endIndex.x, endIndex.y);
 
 	return Path();
 }

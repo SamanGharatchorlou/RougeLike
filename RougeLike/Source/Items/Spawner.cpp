@@ -31,14 +31,14 @@ void Spawner::spawnLevelPatrollers(Map* map)
 {
 	// progress in increments of 5%
 	int xProgress = 0;
-	int increment = 15;
+	int increment = 5;
 
-	//for (unsigned int xPoint = increment; xPoint < 100 - increment; xPoint += increment)
-	//{
-	//	VectorF position = findSpawnPoint(map, xPoint);
-	//	mEnemies->spawn(EnemyType::Imp, EnemyState::Patrol, position);
-	//}
+	for (unsigned int xPoint = increment; xPoint < 100 - increment; xPoint += increment)
+	{
+		VectorF position = findSpawnPoint(map, xPoint);
+		mEnemies->spawn(EnemyType::Imp, EnemyState::Patrol, position);
+	}
 
-	VectorF position = findSpawnPoint(map, 25);
-	mEnemies->spawn(EnemyType::Imp, EnemyState::Patrol, position);
+	//VectorF position = findSpawnPoint(map, 25);
+	//mEnemies->spawn(EnemyType::Imp, EnemyState::Patrol, position);
 }

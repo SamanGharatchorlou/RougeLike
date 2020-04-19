@@ -10,7 +10,7 @@
 #include "Weapons/Melee/MeleeWeapon.h"
 #include "Weapons/Ranged/RangedWeapon.h"
 
-#include "Map/MapLevel.h" // TODO: do I need both map level and map here?
+#include "Map/MapLevel.h"
 #include "Map/Map.h"
 #include "Characters/Enemies/EnemyManager.h"
 
@@ -55,7 +55,7 @@ void PlayerManager::selectWeapon(const std::string& weaponName)
 }
 
 
-RectF* PlayerManager::getRectRef() { return &player->rectRef(); }
+RectF* PlayerManager::rect() { return &player->rectRef(); }
 
 
 std::vector<Collider*> PlayerManager::getWeaponColliders() 
@@ -86,8 +86,7 @@ void PlayerManager::fastUpdate(float dt)
 	player->physics().resetAllowedMovement();
 	player->collider().reset();
 
-	RectF rect = *getRectRef();
-	resolveWallCollisions(mGameData->level->map(rect.Center()), dt);
+	resolveWallCollisions(mGameData->level->map(rect()->Center()), dt);
 
 	player->fastUpdate(dt);
 }
@@ -117,6 +116,17 @@ void PlayerManager::slowUpdate(float dt)
 		player->updateWeaponStats(player->propertyBag());
 
 		updateUIStats();
+	}
+
+	VectorF position = rect()->Center();
+	Vector2D<int> currentTile = mGameData->level->map(position)->index(position);
+
+	if (tileIndex != currentTile)
+	{
+		tileIndex = currentTile;
+
+		UpdateAIPathMapEvent updateAIPathMapEvent;
+		notify(Event::UpdateAIPathMap, updateAIPathMapEvent);
 	}
 }
  

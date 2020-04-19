@@ -29,7 +29,7 @@ public:
 	void selectWeapon(const std::string& weaponName);
 
 	Player* get() { return player; }
-	RectF* getRectRef();
+	RectF* rect();
 
 	std::vector<Collider*> getWeaponColliders();
 
@@ -57,4 +57,6 @@ private:
 	WeaponStash weaponStash;
 
 	CollisionTracker collisionTracker;
+
+	Vector2D<int> tileIndex;
 };

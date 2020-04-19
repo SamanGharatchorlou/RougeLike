@@ -161,6 +161,9 @@ void Enemy::addState(EnemyState::Type state)
 {
 	switch (state)
 	{
+	case EnemyState::Wait:
+		mStateMachine.addState(new EnemyWait(this));
+			
 	case EnemyState::PreAttack:
 		mStateMachine.addState(new EnemyPreAttack(this));
 		break;

@@ -9,6 +9,7 @@ struct EnemyState : public State
 	enum Type
 	{
 		None,
+		Wait,
 		Idle,
 		Run,
 		Patrol,

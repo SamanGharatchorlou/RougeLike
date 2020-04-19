@@ -1,5 +1,6 @@
 #pragma once
 
+#include "EnemyWait.h"
 #include "EnemyIdle.h"
 #include "EnemyRun.h"
 #include "EnemyHit.h"

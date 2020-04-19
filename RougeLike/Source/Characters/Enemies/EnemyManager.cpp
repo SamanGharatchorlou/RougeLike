@@ -174,6 +174,7 @@ void EnemyManager::handleEvent(const Event event, EventData& data)
 // if player moves tile or an enemy moves a tile update this bad boi
 void EnemyManager::updateEnemyPaths()
 {
+	printf("updating enemy paths\n");
 	updateOccupiedTiles();
 	mPathMap.clearToBeOccupiedTiles();
 
@@ -275,7 +276,7 @@ void EnemyManager::deactivate(std::vector<Enemy*>::iterator& iter)
 void EnemyManager::updateOccupiedTiles()
 {
 	// Update AI Path mapping first
-	mPathMap.clearOccupiedTiles();
+	mPathMap.clearOccupiedTiles(); 
 
 	for (int i = 0; i < mActiveEnemies.size(); i++)
 	{

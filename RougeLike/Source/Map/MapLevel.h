@@ -3,6 +3,7 @@
 #include "Events/Dispatcher.h"
 
 class Map;
+class TextureManager;
 
 class MapLevel : public Dispatcher
 {
@@ -17,7 +18,7 @@ public:
 	void renderBottomLayer(const TextureManager* tm, float depth);
 	void renderTopLayer(const TextureManager* tm, float depth);
 
-	Map* map(VectorF position = VectorF(-1.0f, -1.0f)) const;
+	Map* map(VectorF position) const;
 	Map* primaryMap() const { return mMap; }
 
 	VectorF size() const;

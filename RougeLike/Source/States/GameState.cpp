@@ -50,15 +50,15 @@ void GameState::init()
 
 	// Player
 	VectorF playerPosition = VectorF(Camera::Get()->getCenter().x, mGameData->level->size().y / 2.0f);
-	mGameData->playerManager->getRectRef()->SetLeftCenter(playerPosition);
+	mGameData->playerManager->rect()->SetLeftCenter(playerPosition);
 
 	// Camera
-	Camera::Get()->follow(mGameData->playerManager->getRectRef());
+	Camera::Get()->follow(mGameData->playerManager->rect());
 
 	// Enemies
 	EnemyManager* enemies = mGameData->enemies;
 	enemies->addEnemiesToPool(EnemyType::Imp, 50); // TODO: what should this starting value be?
-	enemies->setTarget(mGameData->playerManager->getRectRef());
+	enemies->setTarget(mGameData->playerManager->rect());
 	enemies->spawnLevel();
 
 	// TEMP
@@ -133,7 +133,7 @@ void GameState::slowUpdate(float dt)
 	Camera::Get()->slowUpdate(dt);
 
 	// End current level, close old level exit, open new level entrance
-	if (mGameData->level->generateNextLevel(mGameData->playerManager->getRectRef()->TopLeft()))
+	if (mGameData->level->generateNextLevel(mGameData->playerManager->rect()->TopLeft()))
 	{
 		mGameData->level->nextLevel();
 		Camera::Get()->setMapBoundaries(mGameData->level->boundaries());
@@ -144,7 +144,7 @@ void GameState::slowUpdate(float dt)
 	}
 
 	// Close off new level entrance, open exit
-	if (mGameData->level->closeEntrance(mGameData->playerManager->getRectRef()->TopLeft()))
+	if (mGameData->level->closeEntrance(mGameData->playerManager->rect()->TopLeft()))
 	{
 		mGameData->level->closeLevelEntrace();
 		Camera::Get()->setMapBoundaries(mGameData->level->boundaries());

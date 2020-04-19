@@ -1,10 +1,18 @@
 #pragma once
 
+#if _DEBUG
 #define PRINT_FRAMERATE 0
 #define DRAW_ENEMY_RECT 0
 #define DRAW_PLAYER_RECTS 0
 #define DRAW_BINARY_MAP 0
 #define DRAW_AI_PATH 1
+#else
+#define PRINT_FRAMERATE 0
+#define DRAW_ENEMY_RECT 0
+#define DRAW_PLAYER_RECTS 0
+#define DRAW_BINARY_MAP 0
+#define DRAW_AI_PATH 0
+#endif
 
 struct RenderColour
 {

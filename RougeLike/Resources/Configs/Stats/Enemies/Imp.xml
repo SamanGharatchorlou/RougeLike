@@ -18,6 +18,8 @@
 	<!-- Patrol -->
 	<SightRange type = "float">10000</SightRange>
 	<ChaseRange type = "float">200000</ChaseRange>
+
+	<!-- Idle -->
 	<IdleTime type = "float">2</IdleTime>
 
 	<!-- Hit -->

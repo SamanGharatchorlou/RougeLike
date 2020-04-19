@@ -31,21 +31,31 @@ void EnemyRun::slowUpdate(float dt)
 
 	VectorF targetPosition;
 
-	// Target has not been reached yet, move to next tile
 	if (!inAttackRange())
 	{
-		targetPosition = mAIPathing.getTilePosition(mPath.top());
-
-		if (distanceSquared(position(), targetPosition) < 5.0f)
+		if (mPath.size() > 0)
 		{
-			UpdateAIPathMapEvent* dataPtr = new UpdateAIPathMapEvent;
-			EventPacket eventPacket(Event::UpdateAIPathMap, dataPtr);
-			mEnemy->pushEvent(eventPacket);
+			targetPosition = mAIPathing.getTilePosition(mPath.top());
+
+			if (distanceSquared(position(), targetPosition) < 5.0f)
+			{
+				//UpdateAIPathMapEvent* dataPtr = new UpdateAIPathMapEvent;
+				//EventPacket eventPacket(Event::UpdateAIPathMap, dataPtr);
+				//mEnemy->pushEvent(eventPacket);
+
+				mPath.pop();
+			}
+
+			if (!inChaseRange())
+			{
+				mEnemy->replaceState(EnemyState::Patrol);
+			}
 		}
-
-		if(!inChaseRange())
+		// Not in attack range and no path left
+		else
 		{
-			mEnemy->replaceState(EnemyState::Patrol);
+			mEnemy->addState(EnemyState::Wait);
+			printf("Not in attack range and no path left\n");
 		}
 	}
 	// Target has been reached, attack!
@@ -54,7 +64,7 @@ void EnemyRun::slowUpdate(float dt)
 		mEnemy->addState(EnemyState::PreAttack);
 	}
 
-	updateMovement(targetPosition);
+	mEnemy->getMovement().setDirection(targetPosition - position());
 }
 
 
@@ -69,7 +79,7 @@ void EnemyRun::render()
 
 void EnemyRun::resume()
 {
-	mEnemy->getAnimator()->selectAnimation("Run");
+	mEnemy->getAnimator()->selectAnimation("Run"); //hello th9s is a good game saman is so clever the knight is a bit of a mincer
 	updatePath();
 }
 
@@ -78,6 +88,10 @@ void EnemyRun::resume()
 void EnemyRun::updatePath()
 {
 	mPath = mAIPathing.findPath(position(), mEnemy->targetRect().Center());
+
+	// No valid path was found, wait a bit then try again 
+	if (mPath.size() == 0)
+		mEnemy->addState(EnemyState::Wait);
 }
 
 
@@ -92,12 +106,6 @@ Index EnemyRun::nextTileIndex()
 VectorF EnemyRun::position() const
 {
 	return mEnemy->getMovement().getPostion();
-}
-
-void EnemyRun::updateMovement(VectorF target)
-{
-	VectorF direction = target - position();
-	mEnemy->getMovement().setDirection(direction);
 }
 
 bool EnemyRun::inAttackRange() const

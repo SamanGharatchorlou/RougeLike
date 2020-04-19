@@ -21,7 +21,7 @@ RenderManager::RenderManager(GameData* gameData) :
 
 void RenderManager::render()
 {
-	float renderDepth = mGameData->playerManager->getRectRef()->Center().y;
+	float renderDepth = mGameData->playerManager->rect()->Center().y;
 
 	mLevel->renderBottomLayer(mGameData->textureManager, renderDepth);
 
