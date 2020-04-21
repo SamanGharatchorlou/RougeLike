@@ -18,7 +18,7 @@
 	<MovementSpeed type = "int">1</MovementSpeed>
 	<MovementSpeedUpRate type = "int">0</MovementSpeedUpRate>
 
-	<!-- Movement -->
+	<!-- Physics -->
 	<Force type = "float">8000</Force>
 	<MaxVelocity type = "float">300</MaxVelocity>
 	<DragFactor type = "float">0.85</DragFactor>

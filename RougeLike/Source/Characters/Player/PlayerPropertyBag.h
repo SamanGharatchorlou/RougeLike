@@ -10,7 +10,7 @@ public:
 
 public:
 
-	// Movement
+	// Physics
 	ForceProperty pForce;
 	MaxVelocityProperty pMaxVelocity;
 	DragFactorProperty pDragFactor;

@@ -13,9 +13,7 @@ void EnemyWait::init()
 void EnemyWait::slowUpdate(float dt)
 {
 	if (timer.getSeconds() > 0.5f)
-	{
 		mEnemy->popState();
-	}
 }
 
 

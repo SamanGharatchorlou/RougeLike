@@ -10,7 +10,7 @@ void EnemyAlert::init()
 	mEnemy->getAnimator()->selectAnimation("Hit");
 
 	VectorF position = mEnemy->getMovement().getPostion();
-	mEnemy->getMovement().setDirection(position - mEnemy->targetRect().Center());
+	mEnemy->getMovement().setDirection(position - mEnemy->targetPosition());
 
 	mEnemy->getMovement().flipDirection();
 	timer.restart();

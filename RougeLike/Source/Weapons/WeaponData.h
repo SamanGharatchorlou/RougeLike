@@ -23,8 +23,9 @@ struct WeaponData
 
 struct MeleeWeaponData : public WeaponData
 {
-	float swingArc = 0.0;
-	float swingSpeed = 0.0;
+	float swingArc = 0.0f;
+	float swingSpeed = 0.0f;
+	float knockbackDistance = 0.0f;
 };
 
 

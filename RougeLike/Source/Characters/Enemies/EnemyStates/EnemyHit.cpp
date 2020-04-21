@@ -5,6 +5,7 @@
 #include "Characters/Enemies/Enemy.h"
 #include "Characters/Player/Player.h"
 
+#include "Game/Camera.h"
 #include "Graphics/Texture.h"
 
 
@@ -23,26 +24,24 @@ void EnemyHit::init()
 	Texture* texture = mEnemy->getAnimator()->getSpriteTexture();
 	texture->modifyAlpha(-100);
 
+	mEnemy->getMovement().setSpeed(150);
+
 	// Player to Enemy unit direction vector
 	VectorF enemyPosition = mEnemy->getMovement().getPostion();
-	VectorF source = mEnemy->targetRect().Center();
+	VectorF source = mEnemy->targetPosition();
 	VectorF hitDirection = (enemyPosition - source).normalise();
-
 	mEnemy->getMovement().setDirection(hitDirection);
 
+	// Set hp
 	const Damage damage = mEnemy->getCollider()->getOtherColliderDamage();
-
 	Health newHealth = mEnemy->propertyBag().pHealth.get() - damage;
-
 	mEnemy->propertyBag().pHealth.set(newHealth);
-	printf("hit state\n");
 }
 
 
 void EnemyHit::fastUpdate(float dt)
 {
-	mEnemy->move(dt);
-	//mEnemy->getMovement().fastUpdate(dt);
+	mEnemy->move(dt); // TODO: replace this with fast update?
 }
 
 
@@ -50,19 +49,24 @@ void EnemyHit::slowUpdate(float dt)
 {
 	if (timer.getSeconds() > mEnemy->propertyBag().pHurtTime.get())
 	{
-		mEnemy->replaceState(EnemyState::Run);
-	}
-
-	if (mEnemy->propertyBag().pHealth.get().isDead())
-	{
-		mEnemy->replaceState(EnemyState::Dead);
+		if (mEnemy->propertyBag().pHealth.get().isDead())
+			mEnemy->replaceState(EnemyState::Dead);
+		else
+			mEnemy->replaceState(EnemyState::Run);
 	}
 }
 
 
 void EnemyHit::render()
 {
-	mEnemy->renderCharacter();
+	RectF rect = mEnemy->renderRect();
+	rect = Camera::Get()->toCameraCoords(rect);
+
+#if DRAW_ENEMY_RECT
+	debugDrawRect(mEnemy->rect(), RenderColour(RenderColour::Red));
+#else
+	mEnemy->getAnimator()->getSpriteTile()->render(rect, mEnemy->flip());
+#endif
 }
 
 

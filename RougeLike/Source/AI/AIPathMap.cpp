@@ -88,9 +88,6 @@ bool AIPathMap::isValidPosition(VectorF position) const
 	bool a = (position.x >= start.x && position.x < end.x) &&
 		(position.y >= start.y && position.y < end.y);
 
-	if (a == false)
-		printf("pause");
-
 	return a;
 }
 
@@ -158,3 +155,4 @@ void AIPathMap::addToBeOccupiedTile(Index index)
 		DebugPrint(Warning, "Invalid to be occupied tile index: %d, %d, not adding to the to be occupied tile list\n", index.x, index.y);
 	}
 }
+

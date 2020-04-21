@@ -16,7 +16,7 @@ void PlayerPropertyBag::readAttributes(std::string name)
 	pWeapon.set(weaponName);
 
 
-	// -- Movement -- //
+	// -- Physics -- //
 
 	// Force
 	float force = map.getFloat("Force");

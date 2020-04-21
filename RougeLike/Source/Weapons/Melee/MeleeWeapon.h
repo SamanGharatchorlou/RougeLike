@@ -23,12 +23,13 @@ public:
 	void equipt(const WeaponData* data) override;
 	void updateStats(const PlayerPropertyBag* bag) override;
 
+	// Stats
 	const float getAngle() const { return getRotation(mDirection); }
 	const float maxSwingAngle() const;
-	const float swingSpeed() const { return mPlayerSwingSpeed; }
+	const float swingSpeed() const { return mSwingSpeed; }
+	const float knockbackDistance() const;
 
 	const std::vector<Collider*> getColliders() override;
-
 	const std::vector<RectF> getRects() const { return mBlockRects; }
 
 	void flipSide() { mSwingDirection *= -1; }
@@ -50,5 +51,5 @@ private:
 
 	int mSwingDirection;
 	float mRotationSum;
-	float mPlayerSwingSpeed;
+	float mSwingSpeed;
 };

@@ -33,8 +33,6 @@ Player::~Player()
 {
 	delete mBag;
 	mBag = nullptr;
-
-	// TODO delete weapon???
 }
 
 
@@ -85,7 +83,7 @@ void Player::fastUpdate(float dt)
 	mAnimator.fastUpdate(dt);
 
 	// Weapon
-	mWeapon->updateAnchor(rectA().TopLeft());
+	mWeapon->updateAnchor(rect().TopLeft());
 	mWeapon->updateAimDirection(mGameData->cursor->getPosition());
 }
 
@@ -130,7 +128,7 @@ void Player::render()
 // Rather than decreasing the player rect, increase the size of the render object
 RectF Player::renderRect() const
 {
-	RectF renderRect = rectA();
+	RectF renderRect = rect();
 	VectorF size = renderRect.Size();
 
 	renderRect.SetSize(size * 1.75f);

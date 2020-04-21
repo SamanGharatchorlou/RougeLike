@@ -101,7 +101,8 @@ void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF positio
 void EnemyManager::spawnLevel()
 {
 	// TODO: can i just link this up to level and forget about updating it?
-	mSpawner.spawnLevelPatrollers(mGameData->level->primaryMap());
+	int xIncrement = 5;
+	mSpawner.spawnLevelPatrollers(mGameData->level->primaryMap(), 20);
 }
 
 
@@ -127,7 +128,7 @@ void EnemyManager::slowUpdate(float dt)
 
 		// Handle enemy messages
 		while (enemy->hasEvent())
-			handleEvent(enemy);
+			handleEnemyEvent(enemy);
 
 		// Update enemies
 		enemy->slowUpdate(dt);
@@ -170,23 +171,29 @@ void EnemyManager::handleEvent(const Event event, EventData& data)
 }
 
 
-// Call from messages?
-// if player moves tile or an enemy moves a tile update this bad boi
+// If player moves tile or an enemy moves a tile update this bad boi
 void EnemyManager::updateEnemyPaths()
 {
-	printf("updating enemy paths\n");
+	clearOccupiedTileInfo();
 	updateOccupiedTiles();
-	mPathMap.clearToBeOccupiedTiles();
 
 	for (int i = 0; i < mActiveEnemies.size(); i++)
 	{
 		if (mActiveEnemies[i]->state() == EnemyState::Run)
 		{
 			EnemyRun& runState = static_cast<EnemyRun&>(mActiveEnemies[i]->getStateMachine()->getActiveState());
-			runState.updatePath();
 
-			Index nextTileIndex = runState.nextTileIndex();
-			mPathMap.addToBeOccupiedTile(nextTileIndex);
+			// No need to update anything if in attack range
+			if (!runState.inAttackRange())
+			{
+				runState.updatePath();
+
+ 				Index nextTileIndex = runState.nextTileIndex();
+
+				// Stop enemies walking over the same path on top of each other
+				if (!nextTileIndex.isNegative())
+					mPathMap.addToBeOccupiedTile(nextTileIndex);
+			}
 		}
 	}
 }
@@ -273,11 +280,10 @@ void EnemyManager::deactivate(std::vector<Enemy*>::iterator& iter)
 }
 
 
+
+// Prevent enemies being on top of each other
 void EnemyManager::updateOccupiedTiles()
 {
-	// Update AI Path mapping first
-	mPathMap.clearOccupiedTiles(); 
-
 	for (int i = 0; i < mActiveEnemies.size(); i++)
 	{
 		VectorF position = mActiveEnemies[i]->rect().Center();
@@ -285,8 +291,14 @@ void EnemyManager::updateOccupiedTiles()
 	}
 }
 
+void EnemyManager::clearOccupiedTileInfo()
+{
+	mPathMap.clearOccupiedTiles();
+	mPathMap.clearToBeOccupiedTiles();
+}
 
-void EnemyManager::handleEvent(Enemy* enemy)
+
+void EnemyManager::handleEnemyEvent(Enemy* enemy)
 {
 	EventPacket ep = enemy->popEvent();
 

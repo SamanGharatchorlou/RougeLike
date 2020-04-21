@@ -33,7 +33,7 @@ public:
 	void updateState();
 
 	RectF&		rectRef()	{ return mPhysics.rectRef(); }
-	RectF		rectA() const { return mPhysics.rectA(); }
+	RectF		rect() const { return mPhysics.rect(); }
 
 	Collider&	collider()	{ return mCollider; }
 	Physics&	physics()	{ return mPhysics; }
@@ -53,7 +53,7 @@ private:
 private:
 	GameData* mGameData;
 
-	PlayerPropertyBag* mBag;
+	PlayerPropertyBag* mBag; // TODO: does this need to be a pointer?
 
 	StateMachine<State> mStateMachine;
 	Animator mAnimator;

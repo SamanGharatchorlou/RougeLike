@@ -35,27 +35,18 @@ void EnemyRun::slowUpdate(float dt)
 	{
 		if (mPath.size() > 0)
 		{
-			targetPosition = mAIPathing.getTilePosition(mPath.top());
+			targetPosition = mAIPathing.position(mPath.top());
 
 			if (distanceSquared(position(), targetPosition) < 5.0f)
-			{
-				//UpdateAIPathMapEvent* dataPtr = new UpdateAIPathMapEvent;
-				//EventPacket eventPacket(Event::UpdateAIPathMap, dataPtr);
-				//mEnemy->pushEvent(eventPacket);
-
 				mPath.pop();
-			}
 
 			if (!inChaseRange())
-			{
 				mEnemy->replaceState(EnemyState::Patrol);
-			}
 		}
 		// Not in attack range and no path left
 		else
 		{
 			mEnemy->addState(EnemyState::Wait);
-			printf("Not in attack range and no path left\n");
 		}
 	}
 	// Target has been reached, attack!
@@ -79,15 +70,17 @@ void EnemyRun::render()
 
 void EnemyRun::resume()
 {
-	mEnemy->getAnimator()->selectAnimation("Run"); //hello th9s is a good game saman is so clever the knight is a bit of a mincer
-	updatePath();
+	mEnemy->getAnimator()->selectAnimation("Run");
+	
+	if(!inAttackRange())
+		updatePath();
 }
 
 
 // Generate a path to 
 void EnemyRun::updatePath()
 {
-	mPath = mAIPathing.findPath(position(), mEnemy->targetRect().Center());
+	mPath = mAIPathing.findPath(position(), mEnemy->targetPosition());
 
 	// No valid path was found, wait a bit then try again 
 	if (mPath.size() == 0)
@@ -101,13 +94,6 @@ Index EnemyRun::nextTileIndex()
 }
 
 
-// --- Private Functions ---
-
-VectorF EnemyRun::position() const
-{
-	return mEnemy->getMovement().getPostion();
-}
-
 bool EnemyRun::inAttackRange() const
 {
 	VectorF position = mEnemy->rect().Center();
@@ -116,7 +102,17 @@ bool EnemyRun::inAttackRange() const
 	return distanceSquared(position, nearestTargetSide) < (mEnemy->propertyBag().pTackleDistance.get() * 0.8f);
 }
 
+
+// --- Private Functions ---
+
+VectorF EnemyRun::position() const
+{
+	return mEnemy->getMovement().getPostion();
+}
+
+
+
 bool EnemyRun::inChaseRange() const
 {
-	return distanceSquared(mEnemy->targetRect().Center(), position()) < (mEnemy->propertyBag().pChaseRange.get());
+	return distanceSquared(mEnemy->targetPosition(), position()) < (mEnemy->propertyBag().pChaseRange.get());
 }

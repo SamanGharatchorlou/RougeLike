@@ -29,7 +29,9 @@ public:
 	void selectWeapon(const std::string& weaponName);
 
 	Player* get() { return player; }
+
 	RectF* rect();
+	VectorF position() const;
 
 	std::vector<Collider*> getWeaponColliders();
 

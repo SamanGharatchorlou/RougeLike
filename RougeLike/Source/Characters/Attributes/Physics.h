@@ -25,16 +25,18 @@ public:
 	void handleInput(InputManager* input);
 	void update(float dt);
 
+	void accellerate(VectorF acceleration);
 
 	void setRect(RectF newRect) { mRect = newRect; }
 	RectF& rectRef() { return mRect; }
-	RectF rectA() const { return mRect; }
+	RectF rect() const { return mRect; }
 
 	float maxMovementDistance(float dt) const { return mMaxVelocity * dt; }
 
 	float relativeSpeed() const;
 
 	VectorF direction() const;
+	
 
 	bool hasForce() const { return !mHasForce.isZero(); }
 	bool isMoving() const { return !mVelocity.isZero(); }

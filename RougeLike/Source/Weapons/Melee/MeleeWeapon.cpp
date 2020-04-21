@@ -12,7 +12,7 @@
 
 
 
-MeleeWeapon::MeleeWeapon() : mSwingDirection(-1), mPlayerSwingSpeed(0.0f), mRotationSum(0.0), mAttacking(false)
+MeleeWeapon::MeleeWeapon() : mSwingDirection(-1), mSwingSpeed(0.0f), mRotationSum(0.0), mAttacking(false)
 {
 	// 4 blocks seems to be a good number of blocks
 	unsigned int blocks = 4;
@@ -45,8 +45,10 @@ void MeleeWeapon::equipt(const WeaponData* data)
 
 	for (unsigned int i = 0; i < mBlockColliders.size(); i++)
 	{
-		mBlockColliders[i]->setDamage(mData->damage);
+		mBlockColliders[i]->set(mData->damage, mData->knockbackDistance);
 	}
+
+	mSwingSpeed = mData->swingSpeed;
 
 	// TODO: where/what to do with this 1.5 scale factor
 	mRect.SetSize(mData->texture->originalDimentions * 1.5f);
@@ -55,11 +57,11 @@ void MeleeWeapon::equipt(const WeaponData* data)
 
 void MeleeWeapon::updateStats(const PlayerPropertyBag* bag)
 {
-	mPlayerSwingSpeed = mData->swingSpeed * (1 + (bag->pAttackSpd.get() / 100));
+	mSwingSpeed = mData->swingSpeed * (1 + (bag->pAttackSpd.get() / 100));
 
 	for (unsigned int i = 0; i < mBlockColliders.size(); i++)
 	{
-		mBlockColliders[i]->setDamage(mData->damage + bag->pAttackDmg.get());
+		mBlockColliders[i]->set(mData->damage + bag->pAttackDmg.get(), mData->knockbackDistance);
 	}
 }
 
@@ -85,7 +87,7 @@ void MeleeWeapon::fastUpdate(float dt)
 		}
 		else
 		{
-			float theta = mPlayerSwingSpeed * dt;
+			float theta = mSwingSpeed * dt;
 			mRotationSum += theta;
 
 			if (mRotationSum > maxSwingAngle())
@@ -171,4 +173,9 @@ const std::vector<Collider*> MeleeWeapon::getColliders()
 const float MeleeWeapon::maxSwingAngle() const
 { 
 	return mData->swingArc; 
+}
+
+const float MeleeWeapon::knockbackDistance() const
+{
+	return mData->knockbackDistance;
 }

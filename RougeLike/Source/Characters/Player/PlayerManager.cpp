@@ -141,7 +141,10 @@ void PlayerManager::updateUIStats()
 }
 
 
-
+VectorF PlayerManager::position() const
+{
+	return player->rect().Center();
+}
 
 
 void PlayerManager::handleEvent(const Event event, EventData& data)

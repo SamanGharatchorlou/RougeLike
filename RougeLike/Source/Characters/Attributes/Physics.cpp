@@ -78,6 +78,23 @@ void Physics::update(float dt)
 }
 
 
+void Physics::accellerate(VectorF acceleration)
+{
+	if (acceleration.x != 0.0f)
+	{
+		mHasForce.x = true;
+	}
+
+	if (acceleration.y != 0.0f)
+	{
+		mHasForce.y = true;
+	}
+
+	mAcceleration = acceleration;
+	mAcceleration = clamp(mAcceleration, -1.0f, +1.0f);
+	mAcceleration = mAcceleration.normalise() * mForce;
+}
+
 
 void Physics::resetAllowedMovement()
 {

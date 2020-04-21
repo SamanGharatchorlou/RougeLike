@@ -5,22 +5,19 @@ class Enemy;
 class EnemyManager;
 
 
-class ItemSpawner
+class Spawner
 {
 public:
 	VectorF findSpawnPoint(Map* map, int xPositionPercentage);
 };
 
 
-class Spawner
+class EnemySpawner : public Spawner
 {
 public:
-	Spawner(EnemyManager* enemies) : mEnemies(enemies) { }
+	EnemySpawner(EnemyManager* enemies) : mEnemies(enemies) { }
 
-
-	VectorF findSpawnPoint(Map* map, int xPositionPercentage);
-
-	void spawnLevelPatrollers(Map* map);
+	void spawnLevelPatrollers(Map* map, int xIncrement);
 
 private:
 	EnemyManager* mEnemies;

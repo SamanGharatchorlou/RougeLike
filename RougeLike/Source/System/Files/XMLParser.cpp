@@ -2,10 +2,9 @@
 #include "XMLParser.h"
 
 
-Attributes XMLParser::getAttributes(xmlNode node) const
+Attributes XMLParser::attributes(xmlNode node) const
 {
 	ASSERT(Warning, node != nullptr, "Attempting to get attributes for non-existant node\n");
-	//DebugPrint(Log, "Getting attributes for node %s\n", node->name());
 	Attributes attributes;
 
 	for (xmlAttributes attr = node->first_attribute(); attr; attr = attr->next_attribute())
@@ -18,13 +17,15 @@ Attributes XMLParser::getAttributes(xmlNode node) const
 }
 
 
-std::string XMLParser::getNodeData(xmlNode dataNode) const
+std::string XMLParser::firstRootNodeValue(std::string label) const
 {
-	ASSERT(Warning, dataNode->value() != NULL, "Node %s has no data\n", dataNode->name());
-	return std::string(dataNode->value());
+	xmlNode node = rootNode()->first_node(label.c_str());
+	
+	ASSERT(Warning, node != nullptr, "The node '%s' does not exist, it must have a value\n", label.c_str());
+	return node->value();
 }
 
-xmlNode XMLParser::getRootNode() const
+xmlNode XMLParser::rootNode() const
 {
 	return xmlFile.first_node();
 }

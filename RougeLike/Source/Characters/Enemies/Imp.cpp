@@ -14,9 +14,7 @@ void Imp::init()
 
 	// Size
 	VectorF size = mAnimator.getSpriteTile()->getRect().Size() * 1.5f;
-
 	colliderRatio = VectorF(0.75f, 1.0f);
-
 	mRect = RectF(VectorF(), size * colliderRatio);
 
 	// Movement

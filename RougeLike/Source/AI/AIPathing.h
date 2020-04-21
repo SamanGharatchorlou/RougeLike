@@ -15,8 +15,8 @@ public:
 
 	Path findPath(VectorF start, VectorF end);
 
-	Index getTileIndex(VectorF position) const;
-	VectorF getTilePosition(Index tileIndex) const;
+	Index index(VectorF position) const;
+	VectorF position(Index tileIndex) const;
 
 	// TEMP
 	PathTile tile(Index index);

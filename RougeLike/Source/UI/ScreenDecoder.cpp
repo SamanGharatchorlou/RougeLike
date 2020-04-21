@@ -11,7 +11,7 @@ ScreenAttributes ScreenDecoder::getScreenAttributes(const std::string& config)
 {
 	xmlParser.parseXML(config);
 
-	xmlNode screenNode = xmlParser.getRootNode();
+	xmlNode screenNode = xmlParser.rootNode();
 	ASSERT(Error, strcmp(screenNode->name(), "screen") == 0, "Incorrect attributes node\n");
 
 	xmlNode layerNode = screenNode->first_node("layer");
@@ -29,14 +29,14 @@ ScreenAttributes ScreenDecoder::getScreenAttributes(const std::string& config)
 		// UI component
 		while (childNode != nullptr)
 		{
-			Attributes itemAttributes = xmlParser.getAttributes(childNode);
+			Attributes itemAttributes = xmlParser.attributes(childNode);
 			itemAttributes.add("type", childNode->name());
 
 			// Text component
 			xmlNode node = childNode->first_node();
 			if (childNode->first_node())
 			{
-				Attributes textAttributes = xmlParser.getAttributes(childNode->first_node());
+				Attributes textAttributes = xmlParser.attributes(childNode->first_node());
 
 				// text to be displayed
 				std::string text = childNode->first_node()->value();

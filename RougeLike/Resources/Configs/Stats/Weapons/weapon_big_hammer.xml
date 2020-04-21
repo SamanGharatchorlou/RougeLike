@@ -3,5 +3,6 @@
 	<Damage>60</Damage>
 	<SwingSpeed>700</SwingSpeed>
 	<SwingAngle>250</SwingSpeed>
+	<KnockbackDistance>1000</KnockbackDistance>
 	<PommelOffset x = "7" y = "-5"></PommelOffset>
 </Melee>

@@ -5,7 +5,9 @@
 #include "States/StateMachine.h"
 #include "Animations/Animator.h"
 #include "Collisions/EnemyCollider.h"
-#include "Characters/Attributes/Movement.h"
+
+//#include "Characters/Attributes/Movement.h"
+#include "Characters/Attributes/Physics.h"
 
 #include "EnemyPropertyBag.h"
 #include "EnemyStates/EnemyState.h"
@@ -22,7 +24,7 @@ public:
 	~Enemy() { }
 
 	// Core
-	virtual void init() = 0;
+	virtual void init();
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
 	void render();
@@ -38,7 +40,7 @@ public:
 
 	// Data
 	const GameData* getData() { return mGameData; }
-	EnemyPropertyBag& propertyBag() { return bag; }
+	EnemyPropertyBag& propertyBag() { return mBag; }
 	virtual const EnemyType type() const = 0;
 
 	// Events
@@ -49,6 +51,7 @@ public:
 	// Rect
 	void		setRect(RectF rect) { mRect = rect; }
 	RectF&		rect() { return mRect; }
+	VectorF		position() { return mRect.Center(); }
 
 	virtual RectF renderRect() const = 0;
 
@@ -56,16 +59,17 @@ public:
 	StateMachine<EnemyState>*	getStateMachine() { return &mStateMachine; }
 	Animator*					getAnimator() { return &mAnimator; }
 	DamageCollider*				getCollider() { return &mCollider; }
-	Movement&					getMovement() { return mMovement; }
+	Physics&					physics() { return mPhysics; }
 	AIPathMap*					getMap() { return mMap; }
 
 	// Dynamics
 	void resolvePlayerWeaponCollisions();
 
-	void		move(float dt); // TODO: need this?
+	void		move(float dt);
 
 	void setTarget(RectF* rect) { mTarget = rect; }
 	const RectF		targetRect() const { return *mTarget; }
+	const VectorF	targetPosition() const { return mTarget->Center(); }
 
 	void setFlip(SDL_RendererFlip flip) { mFlip = flip; }
 	SDL_RendererFlip flip() const { return mFlip; }
@@ -86,11 +90,13 @@ protected:
 	DamageCollider mCollider;
 	Animator mAnimator;
 
-	Movement mMovement;
+	//Movement mMovement;
+	Physics mPhysics;
+
 	RectF mRect; // world coords
 	SDL_RendererFlip mFlip;
 
-	EnemyPropertyBag bag;
+	EnemyPropertyBag mBag;
 
 	RectF* mTarget;
 

@@ -33,10 +33,10 @@ public:
 
 	rapidxml::xml_document<>& getXML() { return xmlFile; }
 
-	xmlNode getRootNode() const;
-	Attributes getAttributes(xmlNode root) const;
+	xmlNode rootNode() const;
+	Attributes attributes(xmlNode root) const;
 
-	std::string getNodeData(xmlNode dataNode) const;
+	std::string firstRootNodeValue(std::string label) const;
 
 #if _DEBUG
 	std::string path;

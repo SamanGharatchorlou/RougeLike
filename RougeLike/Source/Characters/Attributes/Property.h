@@ -33,6 +33,13 @@ class HealthProperty : public Property<Health> { };
 class MovementSpeedProperty : public Property<int> { };
 class AttackDamageProperty : public Property<Damage> { };
 
+// Physics
+class ForceProperty : public Property<float> { };
+class MaxVelocityProperty : public Property<float> { };
+class DragFactorProperty : public Property<float> { };
+class MassProperty : public Property<float> { };
+
+
 // Player - Attributes
 class LevelProperty : public Property<Level> { };
 class DefenceProperty : public Property<int> { };
@@ -44,11 +51,6 @@ class DefenceUpRate : public Property<int> { };
 class AttackDamageUpRate : public Property<Damage> { };
 class AttackSpeedUpRate : public Property<float> { };
 class MovementSpeedUpRate : public Property<int> { };
-
-// Player - Movement
-class ForceProperty : public Property<float> { };
-class MaxVelocityProperty : public Property<float> { };
-class DragFactorProperty : public Property<float> { };
 
 // Player - Other
 class WeaponProperty : public Property<std::string> { };

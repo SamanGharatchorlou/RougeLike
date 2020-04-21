@@ -17,13 +17,13 @@ Animations AnimationReader::readAnimationData() const
 {
 	Animations animations;
 
-	xmlNode rootNode = parser.getRootNode();
+	xmlNode rootNode = parser.rootNode();
 	xmlNode animationsParentNode = rootNode->first_node("Animations");
 	xmlNode animationNode = animationsParentNode->first_node("Animation");
 
 	while (animationNode != nullptr)
 	{
-		Attributes attributes = parser.getAttributes(animationNode);
+		Attributes attributes = parser.attributes(animationNode);
 
 		std::string action = attributes.getString("action");
 		int startingIndex = attributes.getInt("start");
@@ -54,11 +54,11 @@ TilesetData AnimationReader::readTilesetData(const TextureManager* tm) const
 // -- Private Functions -- //
 Vector2D<int> AnimationReader::readTileCount() const
 {
-	xmlNode rootNode = parser.getRootNode();
+	xmlNode rootNode = parser.rootNode();
 	xmlNode tileSetInfoNode = rootNode->first_node("TilesetInfo");
 	xmlNode tileSizeNode = tileSetInfoNode->first_node("TileCount");
 
-	Attributes attributes = parser.getAttributes(tileSizeNode);
+	Attributes attributes = parser.attributes(tileSizeNode);
 
 	int tileCountX = attributes.getInt("x");
 	int tileCountY = attributes.getInt("y");
@@ -69,11 +69,11 @@ Vector2D<int> AnimationReader::readTileCount() const
 
 Vector2D<int> AnimationReader::readTileSize() const
 {
-	xmlNode rootNode = parser.getRootNode();
+	xmlNode rootNode = parser.rootNode();
 	xmlNode tileSetInfoNode = rootNode->first_node("TilesetInfo");
 	xmlNode tileSizeNode = tileSetInfoNode->first_node("TileSize");
 
-	Attributes attributes = parser.getAttributes(tileSizeNode);
+	Attributes attributes = parser.attributes(tileSizeNode);
 
 	int tileCountX = attributes.getInt("x");
 	int tileCountY = attributes.getInt("y");
@@ -84,8 +84,5 @@ Vector2D<int> AnimationReader::readTileSize() const
 
 Texture* AnimationReader::readTexture(const TextureManager* tm) const
 {
-	xmlNode rootNode = parser.getRootNode();
-	std::string textureName = rootNode->first_node("TextureName")->value();
-
-	return tm->getTexture(textureName);
+	return tm->getTexture(parser.firstRootNodeValue("TextureName"));
 }

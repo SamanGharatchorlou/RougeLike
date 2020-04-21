@@ -24,6 +24,14 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 		endIndex = nearestFloorTile(endIndex);
 	}
 
+	// End tile cannot be inaccessible or path finding will fail
+	PathTile& endTile = (*mMap)[endIndex];
+	if (endTile.isOccupied() || endTile.isToBeOccupied())
+	{
+		endTile.setOccupied(false);
+		endTile.setToBeOccupied(false);
+	}
+
 	// Lowest to highest path cost queue
 	std::priority_queue<TileCost, std::vector<TileCost>, GreaterThanByCost> frontier;
 	frontier.push(TileCost(mMap->tile(startingIndex), 0));
@@ -34,6 +42,11 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 	// start search coming from no where with 0 cost
 	cameFrom[startingIndex] = Index(-1, -1);
 	cost[startingIndex] = 0;
+
+
+#if _DEBUG
+	int loopCounter = 0;
+#endif
 
 	while (!frontier.empty())
 	{
@@ -70,6 +83,7 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 
 						if (index == endIndex)
 						{
+							
 							return getPath(startingIndex, endIndex, cameFrom);
 						}
 					}
@@ -87,12 +101,21 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 				startingIndex.x, startingIndex.y, endIndex.x, endIndex.y);
 			return Path();
 		}
+
+		loopCounter++;
 #endif
+
 	}
 
-	//DebugPrint(Log, 
-	//	"Empty frontier: No valid path was found from index %d,%d to index %d,%d\n",
-	//	startingIndex.x, startingIndex.y, endIndex.x, endIndex.y);
+#if _DEBUG
+	int largeNumberOfLoops = 50;
+	if (loopCounter > largeNumberOfLoops)
+	{
+		DebugPrint(Log,
+			"Empty frontier: No valid path was found from index %d,%d to index %d,%d -- %d loops were made until this failed\n",
+			startingIndex.x, startingIndex.y, endIndex.x, endIndex.y, loopCounter);
+	}
+#endif
 
 	return Path();
 }
@@ -121,7 +144,7 @@ Path AIPathing::getPath(Index start, Index finish, Grid<Index>& pathing)
 
 
 // For Enemy class
-VectorF AIPathing::getTilePosition(Index tileIndex) const
+VectorF AIPathing::position(Index tileIndex) const
 {
 	return mMap->tile(tileIndex)->rect().Center();
 }
@@ -134,7 +157,7 @@ PathTile AIPathing::tile(Index tileIndex)
 }
 
 
-Index AIPathing::getTileIndex(VectorF position) const
+Index AIPathing::index(VectorF position) const
 {
 	return mMap->index(position);
 }

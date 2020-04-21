@@ -13,14 +13,14 @@ XMLValueMap StatReader::getStats(FileManager::Folder folder, std::string config)
 	value stat;
 	std::string name;
 
-	xmlNode rootNode = parser.getRootNode();
+	xmlNode rootNode = parser.rootNode();
 	xmlNode node = rootNode->first_node();
 
 	while (node != nullptr)
 	{
 		name = node->name();
 
-		Attributes attributes = parser.getAttributes(node);
+		Attributes attributes = parser.attributes(node);
 
 		if (attributes.contains("type"))
 		{

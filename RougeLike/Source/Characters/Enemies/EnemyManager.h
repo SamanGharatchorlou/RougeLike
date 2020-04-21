@@ -66,8 +66,10 @@ public:
 private:
 	void deactivate(std::vector<Enemy*>::iterator& iter);
 
+	void clearOccupiedTileInfo();
 	void updateOccupiedTiles();
-	void handleEvent(Enemy* enemy);
+
+	void handleEnemyEvent(Enemy* enemy);
 
 
 private:
@@ -83,5 +85,5 @@ private:
 
 	RectF* mTarget;
 
-	Spawner mSpawner;
+	EnemySpawner mSpawner;
 };

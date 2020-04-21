@@ -35,7 +35,7 @@ void WeaponStash::load(TextureManager* tm)
 		XMLParser parser;
 		parser.parseXML(filePath);
 
-		if (strcmp(parser.getRootNode()->name(), "Melee") == 0)
+		if (strcmp(parser.rootNode()->name(), "Melee") == 0)
 		{
 			MeleeWeaponData* weaponData = new MeleeWeaponData;
 
@@ -50,7 +50,7 @@ void WeaponStash::load(TextureManager* tm)
 
 			data[fileName] = weaponData;
 		}
-		else if (strcmp(parser.getRootNode()->name(), "Ranged") == 0)
+		else if (strcmp(parser.rootNode()->name(), "Ranged") == 0)
 		{
 			RangedWeaponData* weaponData = new RangedWeaponData;
 
@@ -73,12 +73,12 @@ void WeaponStash::load(TextureManager* tm)
 void WeaponStash::fillBasicWeaponData(XMLParser& parser, WeaponData* data)
 {
 	// Damage
-	int damage = std::stoi(parser.getRootNode()->first_node("Damage")->value());
+	int damage = std::stoi(parser.firstRootNodeValue("Damage"));
 	data->damage = Damage(damage);
 
 	// TODO: change this to regular format or keep attribute format?
 	// Pommel offset
-	Attributes attributes = parser.getAttributes(parser.getRootNode()->first_node("PommelOffset"));
+	Attributes attributes = parser.attributes(parser.rootNode()->first_node("PommelOffset"));
 	float x = attributes.getFloat("x");
 	float y = attributes.getFloat("y");
 	data->handleOffset.set(x, y);
@@ -91,8 +91,9 @@ void WeaponStash::fillMeleeWeaponData(XMLParser& parser, MeleeWeaponData* data)
 	data->type = WeaponType::Melee;
 
 	// Swing speed & angle
-	data->swingSpeed = std::stof(parser.getRootNode()->first_node("SwingSpeed")->value());
-	data->swingArc = std::stof(parser.getRootNode()->first_node("SwingAngle")->value());
+	data->swingSpeed = std::stof(parser.firstRootNodeValue("SwingSpeed"));
+	data->swingArc = std::stof(parser.firstRootNodeValue("SwingAngle"));
+	data->knockbackDistance = std::stof(parser.firstRootNodeValue("KnockbackDistance"));
 }
 
 
@@ -101,19 +102,19 @@ void WeaponStash::fillRangedWeaponData(XMLParser& parser, RangedWeaponData* data
 	data->type = WeaponType::Ranged;
 
 	// Travel speed
-	data->travelSpeed = std::stof(parser.getRootNode()->first_node("TravelSpeed")->value());
+	data->travelSpeed = std::stof(parser.firstRootNodeValue("TravelSpeed"));
 
 	// Projectile texture
-	std::string projectileTexture = parser.getRootNode()->first_node("ProjectileTexture")->value();
+	std::string projectileTexture = parser.firstRootNodeValue("ProjectileTexture");
 	data->projectileTexture = tm->getTexture(projectileTexture);
 
 	// Projectile size
-	float width = std::stof(parser.getRootNode()->first_node("ProjectileWidth")->value());
-	float height = std::stof(parser.getRootNode()->first_node("ProjectileHeight")->value());
+	float width = std::stof(parser.firstRootNodeValue("ProjectileWidth"));
+	float height = std::stof(parser.firstRootNodeValue("ProjectileHeight"));
 	data->projectileSize = VectorF(width, height);
 
 	// Quiver size
-	data->quiverSize = std::stoi(parser.getRootNode()->first_node("QuiverSize")->value());
+	data->quiverSize = std::stoi(parser.firstRootNodeValue("QuiverSize"));
 }
 
 

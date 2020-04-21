@@ -22,6 +22,13 @@ Enemy::Enemy(GameData* gameData, AIPathMap* map) :
 }
 
 
+void Enemy::init()
+{
+	// init physics
+	mPhysics.init(mBag.pForce.get(), mBag.pMaxVelocity.get(), mBag.pDragFactor.get());
+}
+
+
 void Enemy::fastUpdate(float dt)
 {
 	mCollider.reset();
@@ -54,11 +61,11 @@ void Enemy::render()
 void Enemy::renderCharacter()
 {
 	// Flip sprite
-	if (mFlip == SDL_FLIP_NONE && mMovement.getDirection().x < 0)
+	if (mFlip == SDL_FLIP_NONE && mPhysics.direction().x < 0)
 	{
 		mFlip = SDL_FLIP_HORIZONTAL;
 	}
-	else if (mFlip == SDL_FLIP_HORIZONTAL && mMovement.getDirection().x >= 0)
+	else if (mFlip == SDL_FLIP_HORIZONTAL && mPhysics.direction().x >= 0)
 	{
 		mFlip = SDL_FLIP_NONE;
 	}
@@ -83,8 +90,7 @@ void Enemy::clear()
 		mStateMachine.popState();
 		mStateMachine.processStateChanges();
 	}
-
-	// Check we have no unhandled events
+	   o
 	while (events.size() > 0)
 		events.pop();
 

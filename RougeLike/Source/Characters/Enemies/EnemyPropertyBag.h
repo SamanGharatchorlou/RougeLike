@@ -1,4 +1,5 @@
 #pragma once
+// TODO: remoce these
 #include "Characters/Attributes/Property.h"
 #include "Characters/Attributes/Health.h"
 #include "Characters/Attributes/Damage.h"
@@ -9,6 +10,13 @@ public:
 	void readAttributes(std::string name);
 
 public:
+	// Physics
+	ForceProperty pForce;
+	MaxVelocityProperty pMaxVelocity;
+	DragFactorProperty pDragFactor;
+	MassProperty pMass;
+
+
 	HealthProperty pHealth;
 	MovementSpeedProperty pMovementSpeed;
 

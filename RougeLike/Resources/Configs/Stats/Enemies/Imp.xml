@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Stats>
+	<!-- Physics -->
+	<Force type = "float">5000</Force>
+	<MaxVelocity type = "float">250</MaxVelocity>
+	<DragFactor type = "float">0.85</DragFactor>
+	<Mass type = "float">1</Mass>
+
 	<!-- General Attributes -->
 	<Health type = "int">100</Health>
 	<MovementSpeed type = "int">80</MovementSpeed>
