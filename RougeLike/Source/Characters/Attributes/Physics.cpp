@@ -45,7 +45,7 @@ void Physics::handleInput(InputManager* input)
 
 
 
-void Physics::update(float dt)
+void Physics::fastUpdate(float dt)
 {
 	mVelocity += mAcceleration * dt;
 	mVelocity = clamp(mVelocity, -mMaxVelocity, mMaxVelocity);

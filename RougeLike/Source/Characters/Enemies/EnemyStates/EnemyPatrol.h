@@ -18,10 +18,7 @@ public:
 
 private:
 	void setPatrolPoint();
-	bool hasReachedPatrolTarget() const;
-	bool canSeeTarget() const;
-
-private:
-	VectorF mPatrolTarget;
+	bool hasReachedPositionTarget() const;
+	bool canSeeAttackTarget() const;
 };
 

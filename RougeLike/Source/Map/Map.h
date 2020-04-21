@@ -48,6 +48,9 @@ public:
 
 	Vector2D<int> findYFloorTileRange(int xTileIndex);
 
+	bool isValidTile(RectF rect) const;
+	bool isValidPosition(VectorF position) const;
+
 #if DRAW_BINARY_MAP
 	void printBinaryMap();
 #endif
@@ -59,8 +62,6 @@ private:
 	void populateTileRects(VectorF offset);
 	void populateCollisionRenderInfo();
 
-	bool isValidTile(RectF rect) const;
-	bool isValidPosition(VectorF position) const;
 
 	void renderColumn(const RectF& rect, Texture* column);
 };

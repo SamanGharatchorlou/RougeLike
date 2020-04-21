@@ -21,7 +21,7 @@ void EnemyRun::init()
 
 void EnemyRun::fastUpdate(float dt)
 {
-	mEnemy->move(dt);
+	//mEnemy->move(dt);
 }
 
 
@@ -55,7 +55,7 @@ void EnemyRun::slowUpdate(float dt)
 		mEnemy->addState(EnemyState::PreAttack);
 	}
 
-	mEnemy->getMovement().setDirection(targetPosition - position());
+	//mEnemy->getMovement().setDirection(targetPosition - position());
 }
 
 
@@ -80,7 +80,7 @@ void EnemyRun::resume()
 // Generate a path to 
 void EnemyRun::updatePath()
 {
-	mPath = mAIPathing.findPath(position(), mEnemy->targetPosition());
+	mPath = mAIPathing.findPath(position(), mEnemy->attackTargetRect()->Center());
 
 	// No valid path was found, wait a bit then try again 
 	if (mPath.size() == 0)
@@ -97,7 +97,7 @@ Index EnemyRun::nextTileIndex()
 bool EnemyRun::inAttackRange() const
 {
 	VectorF position = mEnemy->rect().Center();
-	VectorF nearestTargetSide = closestRectSide(position, mEnemy->targetRect());
+	VectorF nearestTargetSide = closestRectSide(position, *mEnemy->attackTargetRect());
 
 	return distanceSquared(position, nearestTargetSide) < (mEnemy->propertyBag().pTackleDistance.get() * 0.8f);
 }
@@ -107,12 +107,12 @@ bool EnemyRun::inAttackRange() const
 
 VectorF EnemyRun::position() const
 {
-	return mEnemy->getMovement().getPostion();
+	return mEnemy->physics().position();
 }
 
 
 
 bool EnemyRun::inChaseRange() const
 {
-	return distanceSquared(mEnemy->targetPosition(), position()) < (mEnemy->propertyBag().pChaseRange.get());
+	return distanceSquared(mEnemy->attackTargetRect()->Center(), position()) < (mEnemy->propertyBag().pChaseRange.get());
 }

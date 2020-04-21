@@ -49,9 +49,8 @@ public:
 	bool hasEvent() const { return events.size() > 0; }
 
 	// Rect
-	void		setRect(RectF rect) { mRect = rect; }
-	RectF&		rect() { return mRect; }
-	VectorF		position() { return mRect.Center(); }
+	RectF&		rect() { return mPhysics.rectRef(); }
+	VectorF		position() const { return mPhysics.position(); }
 
 	virtual RectF renderRect() const = 0;
 
@@ -65,11 +64,15 @@ public:
 	// Dynamics
 	void resolvePlayerWeaponCollisions();
 
-	void		move(float dt);
+	// Target
+	void			setAttackTarget(const RectF* rect) { mAttackTarget = rect; }
+	const RectF*	attackTargetRect() const { return mAttackTarget; }
 
-	void setTarget(RectF* rect) { mTarget = rect; }
-	const RectF		targetRect() const { return *mTarget; }
-	const VectorF	targetPosition() const { return mTarget->Center(); }
+	void			setPositionTarget(const RectF* rect) { mPositionTarget = rect; }
+	const RectF*	positionTargetRect() const { return mPositionTarget; }
+
+	VectorF			directionTo(VectorF position) const { return position - mPhysics.position(); }
+	void			moveTowards(VectorF position);
 
 	void setFlip(SDL_RendererFlip flip) { mFlip = flip; }
 	SDL_RendererFlip flip() const { return mFlip; }
@@ -89,16 +92,14 @@ protected:
 
 	DamageCollider mCollider;
 	Animator mAnimator;
-
-	//Movement mMovement;
 	Physics mPhysics;
 
-	RectF mRect; // world coords
 	SDL_RendererFlip mFlip;
 
 	EnemyPropertyBag mBag;
 
-	RectF* mTarget;
+	const RectF* mAttackTarget;
+	const RectF* mPositionTarget;
 
 	std::queue<EventPacket> events;
 

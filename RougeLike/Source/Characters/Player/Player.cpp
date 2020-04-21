@@ -41,13 +41,11 @@ void Player::init(const std::string& characterConfig)
 	// Setup stats
 	propertyBag()->readAttributes(characterConfig);
 
-	// init physics
-	mPhysics.init(mBag->pForce.get(), mBag->pMaxVelocity.get(), mBag->pDragFactor.get());
-
 	// Setup animations
 	initAnimations(characterConfig);
 
-	// Size
+	// init physics
+	mPhysics.init(mBag->pForce.get(), mBag->pMaxVelocity.get(), mBag->pDragFactor.get());
 
 	// rect tweak
 	VectorF size = mAnimator.getSpriteTile()->getRect().Size() * 1.2f;
@@ -71,7 +69,7 @@ void Player::handleInput()
 
 void Player::fastUpdate(float dt)
 {
-	mPhysics.update(dt);
+	mPhysics.fastUpdate(dt);
 
 	mWeapon->fastUpdate(dt);
 	

@@ -10,27 +10,25 @@ Imp::Imp(GameData* gameData, AIPathMap* map) : Enemy(gameData, map) { }
 void Imp::init()
 {
 	initAnimations("Imp.xml");
-	bag.readAttributes("Imp.xml");
+	mBag.readAttributes("Imp.xml");
 
 	// Size
 	VectorF size = mAnimator.getSpriteTile()->getRect().Size() * 1.5f;
 	colliderRatio = VectorF(0.75f, 1.0f);
-	mRect = RectF(VectorF(), size * colliderRatio);
+	RectF rect = RectF(VectorF(), size * colliderRatio);
 
-	// Movement
-	mMovement.setPosition(mRect.TopLeft());
+	mPhysics.setRect(RectF(VectorF(), size * colliderRatio));
 
-	mCollider.init(&mRect);
+	mCollider.init(&mPhysics.rectRef());
 	mCollider.setDamage(propertyBag().pDamage.get());
 
-	// TODO: using int movement speed for float in mMovement class, fix me
-	mMovement.init(&mCollider, (float)bag.pMovementSpeed.get());
+	Enemy::init();
 }
 
 
 RectF Imp::renderRect() const
 {
-	RectF rect = mRect;
+	RectF rect = mPhysics.rect();
 	VectorF size = rect.Size() / colliderRatio;
 	
 	rect.SetSize(size * 1.4f);

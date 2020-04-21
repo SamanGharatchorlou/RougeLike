@@ -85,7 +85,7 @@ void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF positio
 
 			enemy->propertyBag().pHealth.get().setFullHp();
 			enemy->spawn(state, position);
-			enemy->setTarget(mTarget);
+			enemy->setAttackTarget(mTarget);
 
 			// subscribe to player weapon collisions
 			mCollisionManager.addDefender(enemy->getCollider());

@@ -16,7 +16,8 @@ Enemy::Enemy(GameData* gameData, AIPathMap* map) :
 	mMap(map),
 	mStateMachine(new EnemyNullState),
 	mFlip(SDL_FLIP_NONE), 
-	mTarget(nullptr) 
+	mAttackTarget(nullptr),
+	mPositionTarget(nullptr)
 {
 
 }
@@ -24,7 +25,6 @@ Enemy::Enemy(GameData* gameData, AIPathMap* map) :
 
 void Enemy::init()
 {
-	// init physics
 	mPhysics.init(mBag.pForce.get(), mBag.pMaxVelocity.get(), mBag.pDragFactor.get());
 }
 
@@ -33,7 +33,11 @@ void Enemy::fastUpdate(float dt)
 {
 	mCollider.reset();
 
+	mPhysics.resetHasForce();
+
 	mStateMachine.getActiveState().fastUpdate(dt);
+
+	mPhysics.fastUpdate(dt);
 
 	mAnimator.fastUpdate(dt);
 }
@@ -90,12 +94,13 @@ void Enemy::clear()
 		mStateMachine.popState();
 		mStateMachine.processStateChanges();
 	}
-	   o
+
 	while (events.size() > 0)
 		events.pop();
 
 	mFlip = SDL_FLIP_NONE;
-	mTarget = nullptr;
+	mAttackTarget = nullptr;
+	mPositionTarget = nullptr;
 }
 
 
@@ -111,19 +116,20 @@ void Enemy::resolvePlayerWeaponCollisions()
 void Enemy::spawn(EnemyState::Type state, VectorF position)
 {
 	addState(state);
-	mMovement.setPosition(position);
+	mPhysics.setPosition(position);
 }
 
 
-void Enemy::move(float dt)
+void Enemy::moveTowards(VectorF position)
 {
-	mMovement.fastUpdate(dt);
-	mRect.SetTopLeft(mMovement.getPostion());
+	VectorF direction = position - mPhysics.position();
+	mPhysics.accellerate(direction); 
 }
 
 
 void Enemy::replaceState(EnemyState::Type state)
 {
+	printf("replaceing state\n");
 	switch (state)
 	{
 	case EnemyState::Idle:

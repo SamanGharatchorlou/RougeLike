@@ -17,18 +17,19 @@ EnemyAttack::EnemyAttack(Enemy* enemy) :
 void EnemyAttack::init()
 {
 	timer.restart();
-	mEnemy->getMovement().setSpeed(mEnemy->propertyBag().pTackleSpeed.get());
+	//mEnemy->getMovement().setSpeed(mEnemy->propertyBag().pTackleSpeed.get());
+	mEnemy->physics().setForce(mEnemy->physics().force() * 4.0f);
 
-	startingPosition = mEnemy->getMovement().getPostion();
+	startingPosition = mEnemy->physics().position();
 }
 
 
 void EnemyAttack::fastUpdate(float dt)
 {
 	int attackDirection = mHasAttacked ? -1 : +1;
-	mAttackDistance += attackDirection * distanceSquared(VectorF(), mEnemy->getMovement().getMovementDistance()) * dt;
+	//mAttackDistance += attackDirection * distanceSquared(VectorF(), mEnemy->getMovement().getMovementDistance()) * dt;
 
-	mEnemy->move(dt);
+	//mEnemy->move(dt);
 
 	mEnemy->resolvePlayerWeaponCollisions();
 }
@@ -39,7 +40,7 @@ void EnemyAttack::slowUpdate(float dt)
 	// Return to starting position
 	if (returnMovement())
 	{
-		mEnemy->getMovement().flipDirection();
+		//mEnemy->getMovement().flipDirection();
 		mHasAttacked = true;
 	}
 
@@ -58,7 +59,9 @@ void EnemyAttack::render()
 void EnemyAttack::exit()
 {
 	// TODO: using int movement speed for float in mMovement class, fix me
-	mEnemy->getMovement().setSpeed((float)mEnemy->propertyBag().pMovementSpeed.get());
+	//mEnemy->getMovement().setSpeed((float)mEnemy->propertyBag().pMovementSpeed.get());
+
+	mEnemy->physics().setForce(mEnemy->physics().force() / 4.0f);
 }
 
 
@@ -68,16 +71,16 @@ bool EnemyAttack::returnMovement()
 {
 	if (!mHasAttacked)
 	{
-		float distance = distanceSquared(startingPosition, mEnemy->getMovement().getPostion());
+		//float distance = distanceSquared(startingPosition, mEnemy->getMovement().getPostion());
 
-		if (distance >= mEnemy->propertyBag().pTackleDistance.get())
-			return true;
+		//if (distance >= mEnemy->propertyBag().pTackleDistance.get())
+		//	return true;
 
-		if (mEnemy->getCollider()->didHit())
-			hitCounter++;
+		//if (mEnemy->getCollider()->didHit())
+		//	hitCounter++;
 
-		if(hitCounter >= 10)
-			return true;
+		//if(hitCounter >= 10)
+		//	return true;
 	}
 
 	return false;

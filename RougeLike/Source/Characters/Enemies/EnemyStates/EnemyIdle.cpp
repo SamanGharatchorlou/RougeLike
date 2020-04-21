@@ -32,8 +32,8 @@ void EnemyIdle::slowUpdate(float dt)
 
 bool EnemyIdle::canSeeTarget() const
 {
-	float distance = distanceSquared(mEnemy->targetRect().Center(), mEnemy->getMovement().getPostion());
-	return distance < mEnemy->propertyBag().pSightRange.get();
+	//float distance = distanceSquared(mEnemy->targetRect().Center(), mEnemy->getMovement().getPostion());
+	return false;// distance < mEnemy->propertyBag().pSightRange.get();
 }
 
 

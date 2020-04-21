@@ -24,7 +24,8 @@ public:
 	BasicTile() : mRect(-1) { }
 	BasicTile(RectF rect) : mRect(rect) { }
 
-	RectF& rect() { return mRect; }
+	//RectF& rectRef() { return mRect; }
+	const RectF* rectPtr() const { return &mRect; }
 	RectF rect() const { return mRect; }
 	void setRect(RectF rect) { mRect = rect; }
 

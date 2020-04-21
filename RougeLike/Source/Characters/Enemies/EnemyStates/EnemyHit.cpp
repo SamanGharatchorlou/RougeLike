@@ -24,13 +24,13 @@ void EnemyHit::init()
 	Texture* texture = mEnemy->getAnimator()->getSpriteTexture();
 	texture->modifyAlpha(-100);
 
-	mEnemy->getMovement().setSpeed(150);
+	//mEnemy->getMovement().setSpeed(150);
 
 	// Player to Enemy unit direction vector
-	VectorF enemyPosition = mEnemy->getMovement().getPostion();
-	VectorF source = mEnemy->targetPosition();
-	VectorF hitDirection = (enemyPosition - source).normalise();
-	mEnemy->getMovement().setDirection(hitDirection);
+	//VectorF enemyPosition = mEnemy->getMovement().getPostion();
+	//VectorF source = mEnemy->targetPosition();
+	//VectorF hitDirection = (enemyPosition - source).normalise();
+	//mEnemy->getMovement().setDirection(hitDirection);
 
 	// Set hp
 	const Damage damage = mEnemy->getCollider()->getOtherColliderDamage();
@@ -41,7 +41,7 @@ void EnemyHit::init()
 
 void EnemyHit::fastUpdate(float dt)
 {
-	mEnemy->move(dt); // TODO: replace this with fast update?
+	//mEnemy->move(dt); // TODO: replace this with fast update?
 }
 
 
@@ -75,5 +75,5 @@ void EnemyHit::exit()
 	Texture* texture = mEnemy->getAnimator()->getSpriteTexture();
 	texture->setAlpha(alphaMax);
 
-	mEnemy->getMovement().setDirection(VectorF());
+	//mEnemy->getMovement().setDirection(VectorF());
 }

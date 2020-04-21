@@ -29,9 +29,12 @@ VectorF Spawner::findSpawnPoint(Map* map, int xPositionPercentage)
 
 void EnemySpawner::spawnLevelPatrollers(Map* map, int xIncrement)
 {
-	for (unsigned int xPoint = xIncrement; xPoint < 100 - xIncrement; xPoint += xIncrement)
-	{
-		VectorF position = findSpawnPoint(map, xPoint);
-		mEnemies->spawn(EnemyType::Imp, EnemyState::Patrol, position);
-	}
+	//for (unsigned int xPoint = xIncrement; xPoint < 100 - xIncrement; xPoint += xIncrement)
+	//{
+	//	VectorF position = findSpawnPoint(map, xPoint);
+	//	mEnemies->spawn(EnemyType::Imp, EnemyState::Patrol, position);
+	//}
+
+	VectorF position = findSpawnPoint(map, 10);
+	mEnemies->spawn(EnemyType::Imp, EnemyState::Patrol, position);
 }

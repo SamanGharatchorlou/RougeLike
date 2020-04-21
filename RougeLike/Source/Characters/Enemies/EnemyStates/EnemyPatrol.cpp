@@ -19,9 +19,6 @@ void EnemyPatrol::init()
 {
 	mEnemy->getAnimator()->selectAnimation("Run");
 	setPatrolPoint();
-
-	VectorF position = mEnemy->getMovement().getPostion();
-	mEnemy->getMovement().setDirection(mPatrolTarget - position);
 }
 
 
@@ -29,21 +26,18 @@ void EnemyPatrol::slowUpdate(float dt)
 {
 	mEnemy->resolvePlayerWeaponCollisions();
 
-	if (hasReachedPatrolTarget())
-	{
-		mEnemy->getStateMachine()->replaceState(new EnemyIdle(mEnemy));
-	}
 
-	if (canSeeTarget())
-	{
+	if (hasReachedPositionTarget())
+		mEnemy->getStateMachine()->replaceState(new EnemyIdle(mEnemy));
+
+	if (canSeeAttackTarget())
 		mEnemy->replaceState(EnemyState::Alert);
-	}
 }
 
 
 void EnemyPatrol::fastUpdate(float dt)
 {
-	mEnemy->move(dt);
+	mEnemy->moveTowards(mEnemy->positionTargetRect()->Center());
 }
 
 
@@ -57,9 +51,10 @@ void EnemyPatrol::render()
 
 void EnemyPatrol::setPatrolPoint()
 {
+	// TODO: make this enemy get map
 	Map* map = mEnemy->getData()->level->primaryMap();
 
-	VectorF position = mEnemy->getMovement().getPostion();
+	VectorF position = mEnemy->physics().position();
 	Vector2D<int> tilePositionIndex = map->index(position);
 
 	Vector2D<int> yTileRange = map->findYFloorTileRange(tilePositionIndex.x);
@@ -68,18 +63,23 @@ void EnemyPatrol::setPatrolPoint()
 	VectorF lowestPoint = map->tileRect(tilePositionIndex.x, yTileRange.y).Center();
 
 	// set the furthest point
-	mPatrolTarget = (position.y - highestPoint.y < lowestPoint.y - position.y) ? lowestPoint : highestPoint;
+	VectorF patrolTarget = (position.y - highestPoint.y < lowestPoint.y - position.y) ? lowestPoint : highestPoint;
+	ASSERT(Warning, map->isValidPosition(patrolTarget), "Invalid enemy patrol target: %f, %f", patrolTarget.x, patrolTarget.y);
+
+	const MapTile* tile = map->tile(patrolTarget);
+	mEnemy->setPositionTarget(tile->rectPtr());
 }
 
 
-bool EnemyPatrol::canSeeTarget() const
+
+bool EnemyPatrol::canSeeAttackTarget() const
 {
 	Map* map = mEnemy->getData()->level->primaryMap();
 
-	VectorF position = mEnemy->rect().Center();
-	VectorF targetPosition = mEnemy->targetRect().Center();
+	VectorF position = mEnemy->position();
+	VectorF attackTargetPosition = mEnemy->attackTargetRect()->Center();
 
-	float distance = distanceSquared(targetPosition, position);
+	float distance = distanceSquared(attackTargetPosition, position);
 
 	bool isNearby = distance < mEnemy->propertyBag().pSightRange.get();
 	bool hasLineOfSight = false;
@@ -87,15 +87,15 @@ bool EnemyPatrol::canSeeTarget() const
 	if (!isNearby)
 	{
 		// Is there a line of sight?
-		float yPatrolDirection = (mPatrolTarget - position).y;
-		float yTargetDirection = (targetPosition - position).y;
+		float yPatrolDirection = (mEnemy->positionTargetRect()->Center() - position).y;
+		float yTargetDirection = (attackTargetPosition - position).y;
 
 		bool isFacingTarget = (yPatrolDirection == yTargetDirection);
 
 		if (isFacingTarget)
 		{
 			int enemyXTile = map->index(position).x;
-			int playerXTile = map->index(targetPosition).x;
+			int playerXTile = map->index(attackTargetPosition).x;
 
 			hasLineOfSight = (enemyXTile == playerXTile);
 		}
@@ -106,8 +106,8 @@ bool EnemyPatrol::canSeeTarget() const
 }
 
 
-bool EnemyPatrol::hasReachedPatrolTarget() const
+bool EnemyPatrol::hasReachedPositionTarget() const
 {
-	VectorF position = mEnemy->getMovement().getPostion();
-	return distanceSquared(position, mPatrolTarget) < 10.0f;
+	VectorF position = mEnemy->physics().position();
+	return distanceSquared(position, mEnemy->positionTargetRect()->Center()) < 10.0f;
 }

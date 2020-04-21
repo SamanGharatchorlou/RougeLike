@@ -20,8 +20,8 @@ void EnemyPreAttack::slowUpdate(float dt)
 {
 	mEnemy->resolvePlayerWeaponCollisions();
 
-	VectorF direction = mEnemy->targetPosition() - mEnemy->rect().Center();
-	mEnemy->getMovement().setDirection(direction);
+	VectorF direction = mEnemy->attackTargetRect()->Center() - mEnemy->position();
+	//mEnemy->getMovement().setDirection(direction);
 
 	if (!inAttackRange())
 		mEnemy->popState();
@@ -40,8 +40,8 @@ void EnemyPreAttack::render()
 
 bool EnemyPreAttack::inAttackRange() const
 {
-	VectorF currentPosition = mEnemy->rect().Center();
-	VectorF nearestTargetSide = closestRectSide(currentPosition, mEnemy->targetRect());
+	VectorF currentPosition = mEnemy->position();
+	VectorF nearestTargetSide = closestRectSide(currentPosition, *mEnemy->attackTargetRect());
 
 	return distanceSquared(currentPosition, nearestTargetSide) < (mEnemy->propertyBag().pTackleDistance.get());
 }

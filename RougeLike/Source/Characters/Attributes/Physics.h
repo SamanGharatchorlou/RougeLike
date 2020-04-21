@@ -21,15 +21,22 @@ public:
 	Physics() : mForce(0), mMaxVelocity(0), mDragFactor(0) { };
 
 	void init(float force, float maxVelocity, float dragFactor);
+	
+	void resetHasForce() { mHasForce.zero(); }
+	void setForce(float force) { mForce; }
+	float force() const { return mForce; }
 
 	void handleInput(InputManager* input);
-	void update(float dt);
+	void fastUpdate(float dt);
 
 	void accellerate(VectorF acceleration);
 
 	void setRect(RectF newRect) { mRect = newRect; }
 	RectF& rectRef() { return mRect; }
 	RectF rect() const { return mRect; }
+
+	void setPosition(VectorF position) { mRect.SetCenter(position); }
+	VectorF position() const { return mRect.Center(); }
 
 	float maxMovementDistance(float dt) const { return mMaxVelocity * dt; }
 
