@@ -23,4 +23,12 @@ private:
 	StateMachine<State> mGameStateMachine;
 
 	bool quit;
+
+#if FRAMERATE_CAP
+	//The frames per second timer
+	Timer<float> fpsTimer;
+
+	//The frames per second cap timer
+	Timer<float> capTimer;
+#endif
 };

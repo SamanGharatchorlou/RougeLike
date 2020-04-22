@@ -78,6 +78,9 @@ void Physics::fastUpdate(float dt)
 }
 
 
+// TODO: I think because the force is huge, i.e. instanct accel the normalisation is essentially not doing anything...
+// fix me!
+// find a work around for instant accelleration?? big units should slowely accellerate though...
 void Physics::accellerate(VectorF acceleration)
 {
 	if (acceleration.x != 0.0f)
@@ -144,7 +147,7 @@ void Physics::applyDrag()
 	}
 
 
-	// Chaning direction
+	// Changing direction
 	if (mVelocity.x > 0.0f && mAcceleration.x < 0.0f ||
 		mVelocity.x < 0.0f && mAcceleration.x > 0.0f)
 	{

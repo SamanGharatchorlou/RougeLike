@@ -52,6 +52,12 @@ float distance(Vector2D<T> pointA, Vector2D<K> pointB)
 		(pointA.y - pointB.y) * (pointA.y - pointB.y));
 }
 
+template<typename T>
+float magnitudeSqrd(Vector2D<T> vector)
+{
+	return (float)((vector.x * vector.x) + (vector.y * vector.y));
+}
+
 
 int randomNumberBetween(int min, int max);
 

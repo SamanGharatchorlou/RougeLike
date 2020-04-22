@@ -22,9 +22,14 @@ public:
 
 	void init(float force, float maxVelocity, float dragFactor);
 	
+	// Force
 	void resetHasForce() { mHasForce.zero(); }
 	void setForce(float force) { mForce; }
 	float force() const { return mForce; }
+
+	// Max velocity
+	void setMaxVelocity(float maxVelocity) { mMaxVelocity = maxVelocity; }
+	float maxVelocity() const { return mMaxVelocity; }
 
 	void handleInput(InputManager* input);
 	void fastUpdate(float dt);
@@ -39,6 +44,7 @@ public:
 	VectorF position() const { return mRect.Center(); }
 
 	float maxMovementDistance(float dt) const { return mMaxVelocity * dt; }
+	VectorF movementDistance(float dt) const { return mVelocity * dt; }
 
 	float relativeSpeed() const;
 
@@ -66,5 +72,5 @@ private:
 
 	float mForce;
 	float mMaxVelocity;
-	float mDragFactor;
+	float mDragFactor; // 0 is large, 1 is small
 };

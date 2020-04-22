@@ -3,7 +3,7 @@
 	<!-- Physics -->
 	<Force type = "float">500</Force>
 	<MaxVelocity type = "float">70</MaxVelocity>
-	<DragFactor type = "float">0.85</DragFactor>
+	<DragFactor type = "float">0</DragFactor>
 	<Mass type = "float">1</Mass>
 
 	<!-- General Attributes -->
@@ -18,7 +18,7 @@
 	<AttackDamage type = "int">10</AttackDamage>
 	<AttackSpeed type ="double">1</AttackSpeed>
 	<TackleChargeTime type = "float">1</TackleChargeTime>
-	<TackleDistance type = "float">1000</TackleDistance>
+	<TackleDistance type = "float">10000</TackleDistance>
 	<TackleSpeed type = "float">100</TackleSpeed>
 
 	<!-- Patrol -->

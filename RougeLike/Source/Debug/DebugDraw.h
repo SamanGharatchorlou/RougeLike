@@ -1,17 +1,30 @@
 #pragma once
 
 #if _DEBUG
+
+// Framerate
+#define FRAMERATE_CAP 20 // Use the FPS cap you want
 #define PRINT_FRAMERATE 0
-#define DRAW_ENEMY_RECT 0
+
+// Player
 #define DRAW_PLAYER_RECTS 0
+
+// Map
 #define DRAW_BINARY_MAP 0
-#define DRAW_AI_PATH 1
+
+// Enemy / AI
+#define DRAW_AI_PATH 0
+#define DRAW_ENEMY_RECT 0
+#define DRAW_ENEMY_TARGET_PATH 1
+
 #else
+#define FRAMERATE_CAP 0
 #define PRINT_FRAMERATE 0
 #define DRAW_ENEMY_RECT 0
 #define DRAW_PLAYER_RECTS 0
 #define DRAW_BINARY_MAP 0
 #define DRAW_AI_PATH 0
+#define DRAW_ENEMY_TARGET_PATH 0
 #endif
 
 struct RenderColour

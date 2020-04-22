@@ -29,12 +29,12 @@ void EnemyAlert::slowUpdate(float dt)
 	//	flipCounter++;
 	//}
 
-	//if (flipCounter == 1 && timer.getSeconds() > mEnemy->propertyBag().pAttentionTime.get())
-	//{
-	//	mEnemy->replaceState(EnemyState::Run);
-	//	mEnemy->getMovement().flipDirection();
-	//	flipCounter++;
-	//}
+	if (timer.getSeconds() > mEnemy->propertyBag().pAttentionTime.get())
+	{
+		mEnemy->replaceState(EnemyState::Run);
+		//mEnemy->getMovement().flipDirection();
+		//flipCounter++;
+	}
 }
 
 

@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <screen>
 
+	<!-- Background -->
+	<layer>
+		<Box id = "Background" x = "0" y = "0" width = "1" height = "1" texture = "BlackHealthBar"></Box>
+	</layer>
+
 	<!-- Bottom Layer -->
 	<layer>
 
 		<!-- Character selection box -->
-		<Box id = "CharacterBox" x = "0.2" y = "0.35" width = "0.3" height = "0.4" texture = "GreyBox"></Box>
+		<Box id = "CharacterBox" x = "0.2" y = "0.25" width = "0.3" height = "0.4" texture = "GreyBox"></Box>
 		<Button id= "SelectionBox" parent = "CharacterBox" texture = "GreyBox" textureSelected = "BlackHealthBar" action = "SelectSoldier_4"></Button>
 
 		<!-- Weapon box -->
-		<Box id = "WeaponBox" x = "0.2" y = "0.75" width = "0.3" height = "0.15" texture = "RedHealthBar"></Box>
-
-		<!-- Stat box -->
-		<Box id = "StatBox" x = "0.6" y = "0.35" width = "0.3" height = "0.4" texture = "BlackHealthBar"></Box>
+		<Box id = "WeaponBox" parent = "CharacterBox" x = "0" y = "1.25" width = "1" height = "0.5" texture = "RedHealthBar"></Box>
 
 	</layer>
 
@@ -20,48 +22,37 @@
 	<!-- Top layer -->
 	<Layer>
 		
-		<!-- Title -->
-		<TextBox id = "SelectionTitle" x = "0.1" y = "0.05" height = "0.2"  width = "0.7">
-			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >Character Selection</text>
+		<!-- Main Title -->
+		<TextBox id = "SelectionTitle" x = "0.15" y = "0.02" height = "0.2"  width = "0.7">
+			<text r = "0" g = "255" b = "0" >Character Selection</text>
 		</TextBox>
 
 
 		<!-- Character selection box -->
-		<TextBox id = "CharacterLabel" parent = "CharacterBox" x = "0" y = "-0.25" height = "0.2"  width = "1">
-			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >Character</text>
+		<TextBox id = "CharacterLabel" parent = "CharacterBox" x = "0.1" y = "-0.2" height = "0.2"  width = "1">
+			<text r = "0" g = "255" b = "0" >Character</text>
 		</TextBox>
 		<Box id = "CharacterImg" parent = "CharacterBox" x = "0.2" y = "0.15" width = "0.6" height = "0.7" texture = "SingleSoldier"></Box>
 
-
-		<!-- Attack -->
-		<TextBox id = "Atk str" parent = "StatBox" x = "0" y = "0" height = "0.1" width ="0.5">
-			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >Attack Damage</text>
-		</TextBox>
-		<TextBox id = "Atk val" parent = "StatBox" x = "0.75" y = "0" height = "0.1" width ="0.5">
-			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >0</text>
-		</TextBox>
-
-
-		<!-- Defence -->
-		<TextBox id = "Def str" parent = "StatBox" x = "0" y = "0.25" height = "0.1" width ="0.5">
-			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >Defence</text>
-		</TextBox>
-		<TextBox id = "Def val" parent = "StatBox" x = "0.75" y = "0.25" height = "0.1" width ="0.5">
-			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >0</text>
-		</TextBox>
-
-
 		<!-- Weapon Info -->
-		<TextBox id = "WeaponLabel" parent = "WeaponBox" x = "0.1" y = "0.3" height = "0.4"  width = "1">
-			<text font = "lazy.ttf" r = "0" g = "255" b = "0" >Weapon</text>
+		<TextBox id = "WeaponLabel" parent = "WeaponBox" x = "0.1" y = "-0.40" height = "0.4"  width = "1">
+			<text r = "0" g = "255" b = "0" >Weapon</text>
 		</TextBox>
 
-		<Box id = "WeaponImg" parent = "WeaponBox" x = "0.75" y = "0.1" width = "0.1" height = "0.8" texture = "weapon_katana"></Box>
 
 	</Layer>
 
 
+	<Layer>
 
+		<!-- Weapon image -->
+		<Box id = "WeaponImg" parent = "WeaponBox" x = "0.75" y = "0.1" width = "0.1" height = "0.8" texture = "weapon_katana"></Box>
+
+		<!-- Weapon name -->
+		<TextBox id = "WeaponName" parent = "WeaponBox" x = "0.1" y = "0.4" height = "0.4"  width = "0.6">
+			<text r = "0" g = "0" b = "0" >Basic Sword</text>
+		</TextBox>
+	</Layer>
 
 
 

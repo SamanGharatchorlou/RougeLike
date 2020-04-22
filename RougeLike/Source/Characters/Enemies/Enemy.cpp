@@ -129,7 +129,6 @@ void Enemy::moveTowards(VectorF position)
 
 void Enemy::replaceState(EnemyState::Type state)
 {
-	printf("replaceing state\n");
 	switch (state)
 	{
 	case EnemyState::Idle:

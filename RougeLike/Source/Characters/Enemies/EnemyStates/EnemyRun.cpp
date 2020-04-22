@@ -21,7 +21,8 @@ void EnemyRun::init()
 
 void EnemyRun::fastUpdate(float dt)
 {
-	//mEnemy->move(dt);
+	if(mPath.size() > 0)
+		mEnemy->moveTowards(mAIPathing.position(mPath.top()));
 }
 
 

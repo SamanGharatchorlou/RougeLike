@@ -6,46 +6,62 @@
 
 EnemyAttack::EnemyAttack(Enemy* enemy) :
 	EnemyState(enemy),
-	mAttackDistance(0.0f), 
 	mHasAttacked(false),
 	hitCounter(0)
 { 
 	mEnemy->getCollider()->setDidHit(false);
+	
+	startingPosition = mEnemy->position();
+	attackTargetPosition = mEnemy->attackTargetRect()->Center();
 }
 
 
 void EnemyAttack::init()
 {
-	timer.restart();
-	//mEnemy->getMovement().setSpeed(mEnemy->propertyBag().pTackleSpeed.get());
 	mEnemy->physics().setForce(mEnemy->physics().force() * 4.0f);
-
-	startingPosition = mEnemy->physics().position();
+	mEnemy->physics().setMaxVelocity(mEnemy->physics().maxVelocity() * 4.0f);
 }
 
 
 void EnemyAttack::fastUpdate(float dt)
 {
-	int attackDirection = mHasAttacked ? -1 : +1;
-	//mAttackDistance += attackDirection * distanceSquared(VectorF(), mEnemy->getMovement().getMovementDistance()) * dt;
-
-	//mEnemy->move(dt);
-
+	if (mHasAttacked)
+	{
+		mEnemy->moveTowards(startingPosition);
+		
+	}
+	else
+	{
+		mEnemy->moveTowards(attackTargetPosition);
+	}
+	
 	mEnemy->resolvePlayerWeaponCollisions();
 }
 
 
 void EnemyAttack::slowUpdate(float dt)
 {
+
+
 	// Return to starting position
-	if (returnMovement())
+	mHasAttacked = forwardAttackComplete();
+
+	if (mHasAttacked)
 	{
-		//mEnemy->getMovement().flipDirection();
-		mHasAttacked = true;
+		printf("back to start\n");
+
+	}
+	else
+	{
+		printf("attack\n");
 	}
 
+
+
+
+
 	// End attack
-	if (endAttack())
+	if (attackComplete() == true)
 		mEnemy->popState();
 }
 
@@ -53,41 +69,61 @@ void EnemyAttack::slowUpdate(float dt)
 void EnemyAttack::render()
 {
 	mEnemy->renderCharacter();
+
+#if DRAW_ENEMY_TARGET_PATH
+	VectorF targetPosition = mHasAttacked ? startingPosition : attackTargetPosition;
+	debugDrawLine(mEnemy->position(), targetPosition, RenderColour::Red);
+#endif
 }
 
 
 void EnemyAttack::exit()
 {
-	// TODO: using int movement speed for float in mMovement class, fix me
-	//mEnemy->getMovement().setSpeed((float)mEnemy->propertyBag().pMovementSpeed.get());
-
 	mEnemy->physics().setForce(mEnemy->physics().force() / 4.0f);
+	mEnemy->physics().setMaxVelocity(mEnemy->physics().maxVelocity() / 4.0f);
+
 }
 
 
 // --- Private Functions ---
 
-bool EnemyAttack::returnMovement()
+bool EnemyAttack::forwardAttackComplete()
 {
 	if (!mHasAttacked)
 	{
-		//float distance = distanceSquared(startingPosition, mEnemy->getMovement().getPostion());
+		float distance = distanceSquared(startingPosition, mEnemy->position());
 
-		//if (distance >= mEnemy->propertyBag().pTackleDistance.get())
-		//	return true;
 
-		//if (mEnemy->getCollider()->didHit())
-		//	hitCounter++;
+		// Maximum attack distance
+		if (distance >= mEnemy->propertyBag().pTackleDistance.get())
+			return true;
 
-		//if(hitCounter >= 10)
-		//	return true;
+		// Attack connected, early exit
+		if (mEnemy->getCollider()->didHit())
+			hitCounter++;
+
+		// Prevent the enemy returning too early from just touching the player, give it a few frames
+		if(hitCounter >= 10)
+			return true;
+
+		return false;
 	}
+	else
+		return true;
 
-	return false;
+	//return false;
 }
 
 
-bool EnemyAttack::endAttack() const
+bool EnemyAttack::attackComplete() const
 {
-	return mHasAttacked && mAttackDistance <= 0.0f;
+	bool returnValue = false;
+	float distance = distanceSquared(startingPosition, mEnemy->position());
+
+	if (distance < 0.1f)
+		returnValue = mHasAttacked;// && (mAttackDistance <= 0.0f);
+	else
+		returnValue = false;
+
+	return returnValue;
 }

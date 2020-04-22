@@ -261,7 +261,7 @@ void ScreenDecoder::fillTextBoxtData(UITextBox::Data& data, Attributes& attribut
 
 	// Text
 	data.text = attributes.getString("text");
-	data.font = attributes.getString("font");
+	data.font = attributes.contains("font") ? attributes.getString("font") : "default.ttf";
 
 	data.colour = {
 		(Uint8)attributes.getInt("r"),

@@ -20,7 +20,7 @@ void EnemyPreAttack::slowUpdate(float dt)
 {
 	mEnemy->resolvePlayerWeaponCollisions();
 
-	VectorF direction = mEnemy->attackTargetRect()->Center() - mEnemy->position();
+	//VectorF direction = mEnemy->attackTargetRect()->Center() - mEnemy->position();
 	//mEnemy->getMovement().setDirection(direction);
 
 	if (!inAttackRange())

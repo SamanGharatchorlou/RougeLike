@@ -128,6 +128,10 @@ void GameController::run()
 	// main game loop
 	while (quit == false)
 	{
+#if FRAMERATE_CAP
+		capTimer.start();
+#endif
+
 		// change state, init if required
 		mGameStateMachine.processStateChanges();
 
@@ -182,6 +186,16 @@ void GameController::run()
 
 		dt = frameTimer.getSeconds();
 		frameTimer.restart();
+
+#if FRAMERATE_CAP
+		//If frame finished early
+		int frameTicks = capTimer.getMilliseconds();
+		if (frameTicks < (1000 / FRAMERATE_CAP))
+		{
+			//Wait remaining time
+			SDL_Delay((1000 / FRAMERATE_CAP) - frameTicks);
+		}
+#endif
 	}
 
 	DebugPrint(Log, "Quitting Game\n");

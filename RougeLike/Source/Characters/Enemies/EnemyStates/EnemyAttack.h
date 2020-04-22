@@ -22,15 +22,14 @@ public:
 
 
 private:
-	bool returnMovement();
-	bool endAttack() const;
+	bool forwardAttackComplete();
+	bool attackComplete() const;
 
 private:
-	Timer<float> timer;
-
-	float mAttackDistance;
 	bool mHasAttacked;
 
 	VectorF startingPosition;
-	int hitCounter; // prevent enemy returning too early
+	VectorF attackTargetPosition;
+
+	int hitCounter;
 };
