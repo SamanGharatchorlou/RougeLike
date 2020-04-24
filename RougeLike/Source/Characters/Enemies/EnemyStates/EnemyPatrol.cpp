@@ -7,10 +7,6 @@
 #include "Map/MapLevel.h" // TODO: do I need both map level and map here?
 #include "Map/Map.h"
 
-// test
-#include "Input/InputManager.h"
-#include "Game/GameData.h"
-
 
 EnemyPatrol::EnemyPatrol(Enemy* enemy) : EnemyState(enemy) { }
 
@@ -22,22 +18,20 @@ void EnemyPatrol::init()
 }
 
 
-void EnemyPatrol::slowUpdate(float dt)
+void EnemyPatrol::fastUpdate(float dt)
 {
 	mEnemy->resolvePlayerWeaponCollisions();
+	mEnemy->accellerateTowards(mEnemy->positionTargetRect()->Center());
+}
 
 
+void EnemyPatrol::slowUpdate(float dt)
+{
 	if (hasReachedPositionTarget())
 		mEnemy->getStateMachine()->replaceState(new EnemyIdle(mEnemy));
 
 	if (canSeeAttackTarget())
 		mEnemy->replaceState(EnemyState::Alert);
-}
-
-
-void EnemyPatrol::fastUpdate(float dt)
-{
-	mEnemy->moveTowards(mEnemy->positionTargetRect()->Center());
 }
 
 
@@ -79,9 +73,7 @@ bool EnemyPatrol::canSeeAttackTarget() const
 	VectorF position = mEnemy->position();
 	VectorF attackTargetPosition = mEnemy->attackTargetRect()->Center();
 
-	float distance = distanceSquared(attackTargetPosition, position);
-
-	bool isNearby = distance < mEnemy->propertyBag().pSightRange.get();
+	bool isNearby = distanceSquared(attackTargetPosition, position) < mEnemy->propertyBag().pSightRange.get();
 	bool hasLineOfSight = false;
 
 	if (!isNearby)
@@ -90,14 +82,15 @@ bool EnemyPatrol::canSeeAttackTarget() const
 		float yPatrolDirection = (mEnemy->positionTargetRect()->Center() - position).y;
 		float yTargetDirection = (attackTargetPosition - position).y;
 
-		bool isFacingTarget = (yPatrolDirection == yTargetDirection);
+		bool isFacingTarget = 
+			(yPatrolDirection > 0.0f && yTargetDirection > 0.0f) ||
+			(yPatrolDirection < 0.0f && yTargetDirection < 0.0f);
 
 		if (isFacingTarget)
 		{
 			int enemyXTile = map->index(position).x;
 			int playerXTile = map->index(attackTargetPosition).x;
-
-			hasLineOfSight = (enemyXTile == playerXTile);
+			hasLineOfSight = (enemyXTile == playerXTile) || (enemyXTile == playerXTile + 1) || (enemyXTile == playerXTile - 1);
 		}
 
 	}

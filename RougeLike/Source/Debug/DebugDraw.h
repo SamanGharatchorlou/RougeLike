@@ -3,7 +3,7 @@
 #if _DEBUG
 
 // Framerate
-#define FRAMERATE_CAP 20 // Use the FPS cap you want
+#define FRAMERATE_CAP 0 // Use the FPS cap you want
 #define PRINT_FRAMERATE 0
 
 // Player

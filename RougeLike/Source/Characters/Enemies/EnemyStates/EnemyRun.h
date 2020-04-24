@@ -28,8 +28,6 @@ public:
 	Index nextTileIndex();
 
 private:
-	VectorF position() const;
-
 	bool inChaseRange() const;
 
 private:

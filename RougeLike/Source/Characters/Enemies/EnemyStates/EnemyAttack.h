@@ -4,8 +4,7 @@
 
 class Enemy;
 
-// TODO: I think this uses the top left as the enemy position when attacking
-// if the enemy attacks the player from the left or right its position differs
+
 class EnemyAttack : public EnemyState
 {
 public:
@@ -16,9 +15,11 @@ public:
 	void slowUpdate(float dt) override;
 	void fastUpdate(float dt) override;
 	void render() override;
-	void exit() override;
+	void exit() override { };
 
 	const Type type() const { return Type::Attack; }
+
+	bool didConnectWithTarget() const { return (bool)hitCounter; }
 
 
 private:

@@ -23,6 +23,10 @@ MeleeWeapon::MeleeWeapon() : mSwingDirection(-1), mSwingSpeed(0.0f), mRotationSu
 		mBlockColliders.push_back(new DamageCollider);
 
 		mBlockColliders[i]->init(&mBlockRects[i]);
+
+#if _DEBUG
+		mBlockColliders[i]->setName("weapon");
+#endif
 	}
 }
 

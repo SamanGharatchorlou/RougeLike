@@ -8,8 +8,6 @@ Collider::Collider() :
 	mRect(nullptr),
 	mColliderScale(VectorF(1.0f, 1.0f)),
 	mOtherCollider(nullptr),
-	mHasCollided(false),
-	mIsActive(true),
 	mDidHit(false),
 	mGotHit(false)
 { }
@@ -19,8 +17,6 @@ Collider::Collider(RectF* rect, VectorF colliderScale) :
 	mRect(rect),
 	mColliderScale(colliderScale),
 	mOtherCollider(nullptr),
-	mHasCollided(false),
-	mIsActive(true),
 	mDidHit(false),
 	mGotHit(false)
 { }
@@ -35,9 +31,8 @@ void Collider::init(RectF* objectRect, VectorF colliderScale)
 
 void Collider::reset()
 {
-	mIsActive = true;
-	mHasCollided = false;
 	mGotHit = false;
+	mDidHit = false;
 	mOtherCollider = nullptr;
 }
 
@@ -72,20 +67,4 @@ bool Collider::doesIntersect(Collider* collider) const
 void Collider::hasCollidedWith(Collider* collider)
 {
 	mOtherCollider = collider;
-}
-
-
-const Damage Collider::getOtherColliderDamage() const
-{
-	DamageCollider* otherDamageCollider = dynamic_cast<DamageCollider*>(mOtherCollider);
-
-	if (otherDamageCollider != nullptr)
-	{
-		return otherDamageCollider->getDamage();
-	}
-	else
-	{
-		DebugPrint(Warning, "attempting to get the damage from a none damage collider, returning 0 damage\n");
-		return Damage();
-	}
 }

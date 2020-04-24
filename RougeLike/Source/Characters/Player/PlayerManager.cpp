@@ -17,6 +17,9 @@
 #include "Characters/Attributes/Level.h"
 
 
+#include "Collisions/DamageCollider.h"
+
+
 PlayerManager::PlayerManager(GameData* gameData) : mGameData(gameData)
 {
 	player = new Player(gameData);
@@ -70,13 +73,13 @@ void PlayerManager::handleInput()
 { 
 	player->handleInput();
 
-	// TEMP
-	if (mGameData->inputManager->getButton(Button::E).isPressed())
-	{
-		TraumaEvent event(100);
+	//// TEMP
+	//if (mGameData->inputManager->getButton(Button::E).isPressed())
+	//{
+	//	TraumaEvent event(100);
 
-		notify(Event::Trauma, event);
-	}
+	//	notify(Event::Trauma, event);
+	//}
 }
 
 
@@ -84,37 +87,36 @@ void PlayerManager::fastUpdate(float dt)
 {
 	// resolve collisions before any movement takes place!
 	player->physics().resetAllowedMovement();
-	player->collider().reset();
 
+	// Restricts movemoent from input, movement should happen after this
 	resolveWallCollisions(mGameData->level->map(rect()->Center()), dt);
 
+	// Movement, animations, weapon updates
 	player->fastUpdate(dt);
+
+	// Test for enemy attacking player collisions
+	collisionTracker.checkAttackerDefenderCollisions();
 }
 
 
 void PlayerManager::slowUpdate(float dt) 
 { 
-	player->slowUpdate(dt);
-
-	// Test for enemy attacking player collisions
-	updateTrackedColliders();
-	collisionTracker.checkCollisions();
-
-	// implement collisions, player getting hit by the enemy
 	if (player->collider().gotHit())
 	{
-		Damage damage = player->collider().getOtherColliderDamage();
+		const DamageCollider* damageCollider = static_cast<const DamageCollider*>(player->collider().getOtherCollider());
+		Damage damage = damageCollider->damage();
 		Health& hp = player->propertyBag()->pHealth.get();
 		hp.takeDamage(damage);
 
-		SetHealthBarEvent event( hp );
+		SetHealthBarEvent event(hp);
 		notify(Event::SetHealth, event);
 	}
+
+	player->slowUpdate(dt);
 
 	if (player->propertyBag()->pLevel.get().didLevelUp())
 	{
 		player->updateWeaponStats(player->propertyBag());
-
 		updateUIStats();
 	}
 
@@ -128,6 +130,10 @@ void PlayerManager::slowUpdate(float dt)
 		UpdateAIPathMapEvent updateAIPathMapEvent;
 		notify(Event::UpdateAIPathMap, updateAIPathMapEvent);
 	}
+
+	// Reset collider info for next frame
+	updateTrackedColliders();
+	player->collider().reset();
 }
  
 

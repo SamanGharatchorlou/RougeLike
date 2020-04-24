@@ -10,7 +10,7 @@ public:
 
 	void init() override;
 	void handleInput() override { }
-	void fastUpdate(float dt) override { }
+	void fastUpdate(float dt) override;
 	void slowUpdate(float) override;
 	void render() override;
 	void exit() override { }
@@ -19,7 +19,7 @@ public:
 
 private:
 
-	bool canSeeTarget() const;
+	bool canSeeAttackTarget() const;
 
 private:
 	Timer<float> timer;

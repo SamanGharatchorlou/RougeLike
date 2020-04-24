@@ -10,16 +10,16 @@ EnemyAttack::EnemyAttack(Enemy* enemy) :
 	hitCounter(0)
 { 
 	mEnemy->getCollider()->setDidHit(false);
-	
-	startingPosition = mEnemy->position();
-	attackTargetPosition = mEnemy->attackTargetRect()->Center();
 }
 
 
 void EnemyAttack::init()
-{
-	mEnemy->physics().setForce(mEnemy->physics().force() * 4.0f);
-	mEnemy->physics().setMaxVelocity(mEnemy->physics().maxVelocity() * 4.0f);
+{ 
+	startingPosition = mEnemy->position();
+	attackTargetPosition = mEnemy->attackTargetRect()->Center();
+
+	// Face player
+	mEnemy->facePoint(attackTargetPosition);
 }
 
 
@@ -27,12 +27,15 @@ void EnemyAttack::fastUpdate(float dt)
 {
 	if (mHasAttacked)
 	{
-		mEnemy->moveTowards(startingPosition);
-		
+		VectorF direction = startingPosition - mEnemy->position();
+		VectorF velocity = direction.normalise() * mEnemy->propertyBag().pTackleSpeed.get() / 1.5f;
+		mEnemy->move(velocity, dt);
 	}
 	else
 	{
-		mEnemy->moveTowards(attackTargetPosition);
+		VectorF direction = attackTargetPosition - mEnemy->position();
+		VectorF velocity = direction.normalise() * mEnemy->propertyBag().pTackleSpeed.get();
+		mEnemy->move(velocity, dt);
 	}
 	
 	mEnemy->resolvePlayerWeaponCollisions();
@@ -41,24 +44,8 @@ void EnemyAttack::fastUpdate(float dt)
 
 void EnemyAttack::slowUpdate(float dt)
 {
-
-
 	// Return to starting position
 	mHasAttacked = forwardAttackComplete();
-
-	if (mHasAttacked)
-	{
-		printf("back to start\n");
-
-	}
-	else
-	{
-		printf("attack\n");
-	}
-
-
-
-
 
 	// End attack
 	if (attackComplete() == true)
@@ -77,53 +64,22 @@ void EnemyAttack::render()
 }
 
 
-void EnemyAttack::exit()
-{
-	mEnemy->physics().setForce(mEnemy->physics().force() / 4.0f);
-	mEnemy->physics().setMaxVelocity(mEnemy->physics().maxVelocity() / 4.0f);
-
-}
-
-
 // --- Private Functions ---
 
 bool EnemyAttack::forwardAttackComplete()
 {
-	if (!mHasAttacked)
-	{
-		float distance = distanceSquared(startingPosition, mEnemy->position());
-
+	if (mEnemy->getCollider()->didHit() || hitCounter > 0)
+		hitCounter++;
 
 		// Maximum attack distance
-		if (distance >= mEnemy->propertyBag().pTackleDistance.get())
-			return true;
-
-		// Attack connected, early exit
-		if (mEnemy->getCollider()->didHit())
-			hitCounter++;
-
-		// Prevent the enemy returning too early from just touching the player, give it a few frames
-		if(hitCounter >= 10)
-			return true;
-
-		return false;
-	}
-	else
+	if (!mHasAttacked && (distanceSquared(startingPosition, mEnemy->position()) >= mEnemy->propertyBag().pTackleDistance.get()) || hitCounter >= 5)
 		return true;
-
-	//return false;
+	else
+		return mHasAttacked;
 }
 
 
 bool EnemyAttack::attackComplete() const
 {
-	bool returnValue = false;
-	float distance = distanceSquared(startingPosition, mEnemy->position());
-
-	if (distance < 0.1f)
-		returnValue = mHasAttacked;// && (mAttackDistance <= 0.0f);
-	else
-		returnValue = false;
-
-	return returnValue;
+	return distanceSquared(startingPosition, mEnemy->position()) < 5.0f ? mHasAttacked : false;
 }

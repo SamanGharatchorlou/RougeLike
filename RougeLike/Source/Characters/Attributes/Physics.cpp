@@ -3,11 +3,12 @@
 
 #include "Input/InputManager.h"
 
-void Physics::init(float force, float maxVelocity, float dragFactor)
+void Physics::init(Data data)
 {
-	mForce = force;
-	mMaxVelocity = maxVelocity;
-	mDragFactor = dragFactor;
+	mForce = data.force;
+	mMaxVelocity = data.maxVelocity;
+	mDragFactor = data.dragFactor;
+	mMass = data.mass;
 }
 
 
@@ -78,6 +79,12 @@ void Physics::fastUpdate(float dt)
 }
 
 
+void Physics::move(VectorF velocity, float dt)
+{
+	mRect = mRect.Translate(velocity * dt);
+}
+
+
 // TODO: I think because the force is huge, i.e. instanct accel the normalisation is essentially not doing anything...
 // fix me!
 // find a work around for instant accelleration?? big units should slowely accellerate though...
@@ -97,6 +104,11 @@ void Physics::accellerate(VectorF acceleration)
 	mAcceleration = clamp(mAcceleration, -1.0f, +1.0f);
 	mAcceleration = mAcceleration.normalise() * mForce;
 }
+
+
+
+
+
 
 
 void Physics::resetAllowedMovement()

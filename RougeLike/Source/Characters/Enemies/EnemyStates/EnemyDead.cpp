@@ -4,8 +4,6 @@
 #include "Characters/Enemies/Enemy.h"
 
 #include "Game/Camera.h"
-
-// TODO: this should come from enemy?
 #include "Graphics/Texture.h"
 
 
@@ -32,9 +30,7 @@ void EnemyDead::slowUpdate(float dt)
 
 	// Remove enemy from play
 	if (mAlpha <= 10)
-	{
 		mEnemy->addState(EnemyState::None);
-	}
 }
 
 

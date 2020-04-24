@@ -23,7 +23,7 @@ public:
 	void move(VectorF translation) { mRect.Translate(translation); }
 
 	Collider* getCollider() { return &mCollider; }
-	bool pickedUp() { return mCollider.hasCollided(); }
+	//bool pickedUp() { return mCollider.hasCollided(); }
 
 
 protected:

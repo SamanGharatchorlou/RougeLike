@@ -72,8 +72,10 @@ public:
 	const RectF*	positionTargetRect() const { return mPositionTarget; }
 
 	VectorF			directionTo(VectorF position) const { return position - mPhysics.position(); }
-	void			moveTowards(VectorF position);
+	void			accellerateTowards(VectorF position);
+	void			move(VectorF velocity, float dt) { mPhysics.move(velocity, dt); }
 
+	void facePoint(VectorF point);
 	void setFlip(SDL_RendererFlip flip) { mFlip = flip; }
 	SDL_RendererFlip flip() const { return mFlip; }
 

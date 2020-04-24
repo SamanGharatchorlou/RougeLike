@@ -1,5 +1,4 @@
 #pragma once
-#include "Characters/Attributes/Damage.h"
 
 class Collider
 {
@@ -15,9 +14,6 @@ public:
 
 	void hasCollidedWith(Collider* collider);
 
-	inline void didCollide(bool collision) { mHasCollided = collision; }
-	inline bool hasCollided() const { return mHasCollided; }
-
 	inline void setDidHit(bool collisionStatus) { mDidHit = collisionStatus; }
 	inline bool didHit() const { return mDidHit; }
 
@@ -28,10 +24,11 @@ public:
 	RectF getRectBase() const;
 
 	const Collider* getOtherCollider() const { return mOtherCollider; }
-	const Damage getOtherColliderDamage() const;
 
-	void setActive(bool isActive) { mIsActive = isActive; }
-	bool isActive() const { return mIsActive; }
+#if _DEBUG
+	void setName(std::string name) { mName = name; }
+	std::string name() const { return mName; }
+#endif
 
 protected:
 	const RectF* mRect;
@@ -39,11 +36,10 @@ protected:
 
 	Collider* mOtherCollider;
 
-	bool mHasCollided;
-
-	bool mIsActive;
-
-	// TODO: replace has collider with these
 	bool mDidHit;
 	bool mGotHit;
+
+#if _DEBUG
+	std::string mName;
+#endif
 };

@@ -25,7 +25,9 @@ Player::Player(GameData* gameData) :
 	mWeapon(nullptr),
 	mFlip(SDL_FLIP_NONE)
 {
-
+#if _DEBUG
+	mCollider.setName("enemy");
+#endif
 }
 
 
@@ -45,7 +47,13 @@ void Player::init(const std::string& characterConfig)
 	initAnimations(characterConfig);
 
 	// init physics
-	mPhysics.init(mBag->pForce.get(), mBag->pMaxVelocity.get(), mBag->pDragFactor.get());
+	Physics::Data physicsData;
+	physicsData.force = mBag->pForce.get();
+	physicsData.maxVelocity = mBag->pMaxVelocity.get();
+	physicsData.dragFactor = mBag->pDragFactor.get();
+	physicsData.mass = mBag->pMass.get();
+
+	mPhysics.init(physicsData);
 
 	// rect tweak
 	VectorF size = mAnimator.getSpriteTile()->getRect().Size() * 1.2f;
@@ -70,15 +78,13 @@ void Player::handleInput()
 void Player::fastUpdate(float dt)
 {
 	mPhysics.fastUpdate(dt);
-
+	mAnimator.fastUpdate(dt);
 	mWeapon->fastUpdate(dt);
 	
 	if (mPhysics.isMoving())
 		mAnimator.setSpeedFactor(mPhysics.relativeSpeed());
 	else
 		mAnimator.setSpeedFactor(1.0f);
-
-	mAnimator.fastUpdate(dt);
 
 	// Weapon
 	mWeapon->updateAnchor(rect().TopLeft());
@@ -89,7 +95,6 @@ void Player::fastUpdate(float dt)
 void Player::slowUpdate(float dt)
 {
 	mWeapon->slowUpdate(dt);
-
 	mAnimator.slowUpdate(dt);
 
 	updateState();

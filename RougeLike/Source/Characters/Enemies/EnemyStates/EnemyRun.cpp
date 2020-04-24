@@ -1,10 +1,9 @@
 #include "pch.h"
 #include "EnemyRun.h"
 
-#include "Game/GameData.h"
+#include "Characters/Enemies/Enemy.h"
 #include "Map/MapLevel.h"
 #include "Map/Map.h"
-#include "Characters/Enemies/Enemy.h"
 
 
 EnemyRun::EnemyRun(Enemy* enemy) : 
@@ -21,42 +20,39 @@ void EnemyRun::init()
 
 void EnemyRun::fastUpdate(float dt)
 {
+	mEnemy->resolvePlayerWeaponCollisions();
+
 	if(mPath.size() > 0)
-		mEnemy->moveTowards(mAIPathing.position(mPath.top()));
+		mEnemy->accellerateTowards(mAIPathing.position(mPath.top()));
 }
 
 
 void EnemyRun::slowUpdate(float dt)
 {
-	mEnemy->resolvePlayerWeaponCollisions();
-
-	VectorF targetPosition;
-
 	if (!inAttackRange())
 	{
 		if (mPath.size() > 0)
 		{
-			targetPosition = mAIPathing.position(mPath.top());
+			VectorF targetPosition = mAIPathing.position(mPath.top());
 
-			if (distanceSquared(position(), targetPosition) < 5.0f)
+			if (distanceSquared(mEnemy->position(), targetPosition) < 5.0f)
 				mPath.pop();
 
 			if (!inChaseRange())
 				mEnemy->replaceState(EnemyState::Patrol);
 		}
-		// Not in attack range and no path left
-		else
+		else // Not in attack range and no path left
 		{
 			mEnemy->addState(EnemyState::Wait);
 		}
 	}
-	// Target has been reached, attack!
-	else
+	else // Target has been reached, attack!
 	{
 		mEnemy->addState(EnemyState::PreAttack);
 	}
 
-	//mEnemy->getMovement().setDirection(targetPosition - position());
+	// Face player
+	mEnemy->facePoint(mEnemy->attackTargetRect()->Center());
 }
 
 
@@ -81,7 +77,7 @@ void EnemyRun::resume()
 // Generate a path to 
 void EnemyRun::updatePath()
 {
-	mPath = mAIPathing.findPath(position(), mEnemy->attackTargetRect()->Center());
+	mPath = mAIPathing.findPath(mEnemy->position(), mEnemy->attackTargetRect()->Center());
 
 	// No valid path was found, wait a bit then try again 
 	if (mPath.size() == 0)
@@ -105,15 +101,7 @@ bool EnemyRun::inAttackRange() const
 
 
 // --- Private Functions ---
-
-VectorF EnemyRun::position() const
-{
-	return mEnemy->physics().position();
-}
-
-
-
 bool EnemyRun::inChaseRange() const
 {
-	return distanceSquared(mEnemy->attackTargetRect()->Center(), position()) < (mEnemy->propertyBag().pChaseRange.get());
+	return distanceSquared(mEnemy->attackTargetRect()->Center(), mEnemy->position()) < (mEnemy->propertyBag().pChaseRange.get());
 }

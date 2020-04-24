@@ -22,6 +22,7 @@ void EnemyPropertyBag::readAttributes(std::string name)
 	float dragFactor = map.getFloat("DragFactor");
 	pDragFactor.set(dragFactor);
 
+	// Mass
 	float mass = map.getFloat("Mass");
 	pMass.set(mass);
 

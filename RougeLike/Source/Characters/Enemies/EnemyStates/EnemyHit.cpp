@@ -5,49 +5,50 @@
 #include "Characters/Enemies/Enemy.h"
 #include "Characters/Player/Player.h"
 
+#include "Collisions/DamageCollider.h"
+
 #include "Game/Camera.h"
 #include "Graphics/Texture.h"
 
 
-EnemyHit::EnemyHit(Enemy* enemy) : EnemyState(enemy)
-{
-	mEnemy->getCollider()->reset();
-}
+EnemyHit::EnemyHit(Enemy* enemy) : EnemyState(enemy) { }
 
 
 void EnemyHit::init()
 {
-	timer.restart();
+	decayTimer.restart();
 
 	mEnemy->getAnimator()->selectAnimation("Hit");
 
 	Texture* texture = mEnemy->getAnimator()->getSpriteTexture();
 	texture->modifyAlpha(-100);
 
-	//mEnemy->getMovement().setSpeed(150);
+	attackTargetPosition = mEnemy->attackTargetRect()->Center();
+	mEnemy->facePoint(attackTargetPosition);
 
-	// Player to Enemy unit direction vector
-	//VectorF enemyPosition = mEnemy->getMovement().getPostion();
-	//VectorF source = mEnemy->targetPosition();
-	//VectorF hitDirection = (enemyPosition - source).normalise();
-	//mEnemy->getMovement().setDirection(hitDirection);
+	// Attackers weapon collider info
+	const DamageCollider* damageCollider = static_cast<const DamageCollider*>(mEnemy->getCollider()->getOtherCollider());
 
-	// Set hp
-	const Damage damage = mEnemy->getCollider()->getOtherColliderDamage();
-	Health newHealth = mEnemy->propertyBag().pHealth.get() - damage;
-	mEnemy->propertyBag().pHealth.set(newHealth);
+	// Set/reduce hp
+	Health health = mEnemy->propertyBag().pHealth.get() - damageCollider->damage();
+	mEnemy->propertyBag().pHealth.set(health);
+
+	// Store knockback info before collision info is reset (next fast frame)
+	mKnockbackForce = damageCollider->knockbackforce(); 
 }
 
 
 void EnemyHit::fastUpdate(float dt)
 {
-	//mEnemy->move(dt); // TODO: replace this with fast update?
+	VectorF direction = mEnemy->position() - attackTargetPosition;
+	VectorF velocity = direction.normalise() * mKnockbackForce;
+	mEnemy->move(velocity, dt);
 }
 
 
 void EnemyHit::slowUpdate(float dt)
 {
-	if (timer.getSeconds() > mEnemy->propertyBag().pHurtTime.get())
+	if (decayTimer.getSeconds() > mEnemy->propertyBag().pHurtTime.get())
 	{
 		if (mEnemy->propertyBag().pHealth.get().isDead())
 			mEnemy->replaceState(EnemyState::Dead);
@@ -75,5 +76,5 @@ void EnemyHit::exit()
 	Texture* texture = mEnemy->getAnimator()->getSpriteTexture();
 	texture->setAlpha(alphaMax);
 
-	//mEnemy->getMovement().setDirection(VectorF());
+	mEnemy->facePoint(mEnemy->attackTargetRect()->Center());
 }

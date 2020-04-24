@@ -7,7 +7,7 @@
 	<Mass type = "float">1</Mass>
 
 	<!-- General Attributes -->
-	<Health type = "int">100</Health>
+	<Health type = "int">250</Health>
 	<MovementSpeed type = "int">80</MovementSpeed>
 
 	<!-- Data values -->
@@ -18,12 +18,12 @@
 	<AttackDamage type = "int">10</AttackDamage>
 	<AttackSpeed type ="double">1</AttackSpeed>
 	<TackleChargeTime type = "float">1</TackleChargeTime>
-	<TackleDistance type = "float">10000</TackleDistance>
-	<TackleSpeed type = "float">100</TackleSpeed>
+	<TackleDistance type = "float">2000</TackleDistance>
+	<TackleSpeed type = "float">200</TackleSpeed> <!-- attack vs tackle speed?? ->
 
 	<!-- Patrol -->
-	<SightRange type = "float">10000</SightRange>
-	<ChaseRange type = "float">200000</ChaseRange>
+	<SightRange type = "float">50000</SightRange>
+	<ChaseRange type = "float">100000</ChaseRange>
 
 	<!-- Idle -->
 	<IdleTime type = "float">2</IdleTime>

@@ -15,30 +15,34 @@ Enemy::Enemy(GameData* gameData, AIPathMap* map) :
 	mGameData(gameData),
 	mMap(map),
 	mStateMachine(new EnemyNullState),
-	mFlip(SDL_FLIP_NONE), 
 	mAttackTarget(nullptr),
 	mPositionTarget(nullptr)
 {
-
+	setFlip(static_cast<SDL_RendererFlip>(randomNumberBetween(0, 2)));
+#if _DEBUG
+	mCollider.setName("enemy");
+#endif
 }
 
 
 void Enemy::init()
 {
-	mPhysics.init(mBag.pForce.get(), mBag.pMaxVelocity.get(), mBag.pDragFactor.get());
+	Physics::Data physicsData;
+	physicsData.force = mBag.pForce.get();
+	physicsData.maxVelocity = mBag.pMaxVelocity.get();
+	physicsData.dragFactor = mBag.pDragFactor.get();
+	physicsData.mass = mBag.pMass.get();
+
+	mPhysics.init(physicsData);
 }
 
 
 void Enemy::fastUpdate(float dt)
 {
-	mCollider.reset();
-
 	mPhysics.resetHasForce();
 
 	mStateMachine.getActiveState().fastUpdate(dt);
-
 	mPhysics.fastUpdate(dt);
-
 	mAnimator.fastUpdate(dt);
 }
 
@@ -51,8 +55,10 @@ void Enemy::slowUpdate(float dt)
 	mStateMachine.processStateChanges();
 
 	mStateMachine.getActiveState().slowUpdate(dt);
-
 	mAnimator.slowUpdate(dt);
+
+	// reset collider data for next frame
+	mCollider.reset();
 }
 
 
@@ -64,16 +70,6 @@ void Enemy::render()
 
 void Enemy::renderCharacter()
 {
-	// Flip sprite
-	if (mFlip == SDL_FLIP_NONE && mPhysics.direction().x < 0)
-	{
-		mFlip = SDL_FLIP_HORIZONTAL;
-	}
-	else if (mFlip == SDL_FLIP_HORIZONTAL && mPhysics.direction().x >= 0)
-	{
-		mFlip = SDL_FLIP_NONE;
-	}
-
 	RectF rect = renderRect();
 	rect = Camera::Get()->toCameraCoords(rect);
 
@@ -107,9 +103,7 @@ void Enemy::clear()
 void Enemy::resolvePlayerWeaponCollisions()
 {
 	if (mCollider.gotHit())
-	{
 		replaceState(EnemyState::Hit);
-	}
 }
 
 
@@ -120,11 +114,20 @@ void Enemy::spawn(EnemyState::Type state, VectorF position)
 }
 
 
-void Enemy::moveTowards(VectorF position)
+void Enemy::accellerateTowards(VectorF position)
 {
 	VectorF direction = position - mPhysics.position();
 	mPhysics.accellerate(direction); 
 }
+
+void Enemy::facePoint(VectorF point)
+{
+	if (point.x > position().x) // -->
+		mFlip = SDL_FLIP_NONE;
+	else // <--
+		mFlip = SDL_FLIP_HORIZONTAL;
+}
+
 
 
 void Enemy::replaceState(EnemyState::Type state)

@@ -14,6 +14,7 @@ public:
 	ForceProperty pForce;
 	MaxVelocityProperty pMaxVelocity;
 	DragFactorProperty pDragFactor;
+	MassProperty pMass;
 
 	// Attributes
 	LevelProperty pLevel;

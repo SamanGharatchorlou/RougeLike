@@ -21,7 +21,7 @@ public:
 	void render(RectF rect) const;
 
 	DamageCollider* collider() { return &mCollider; }
-	bool hasCollided() const { return mCollider.hasCollided(); }
+	bool hasCollided() const { return mCollider.didHit(); }
 
 	VectorF position() const { return mRect.Center(); }
 

@@ -12,6 +12,7 @@
 
 // TEMP
 #include "Characters/Enemies/EnemyStates/EnemyRun.h"
+#include "Characters/Enemies/EnemyStates/EnemyAttack.h"
 
 // TODO: remove enemies once out of play, i.e. player has not killed them and moved onto the next level
 EnemyManager::EnemyManager(GameData* gameData) : mGameData(gameData), mSpawner(this) { }
@@ -115,7 +116,8 @@ void EnemyManager::fastUpdate(float dt)
 			enemy->fastUpdate(dt);
 		}
 
-		mCollisionManager.checkCollisions();
+		// Check for player weapon hitting enemy
+		mCollisionManager.checkDefenderCollisions();
 	}
 }
 
@@ -238,11 +240,11 @@ std::vector<Collider*> EnemyManager::getAttackingColliders() const
 	{
 		if (enemy->state() == EnemyState::Attack)
 		{
-			DamageCollider* collider = enemy->getCollider();
+			const EnemyAttack* attackState = static_cast<const EnemyAttack*>(&(enemy->getStateMachine()->getActiveState()));
 
-			if (!collider->didHit())
+			if (!attackState->didConnectWithTarget())
 			{
-				colliders.push_back(collider);
+				colliders.push_back(enemy->getCollider());
 			}
 		}
 

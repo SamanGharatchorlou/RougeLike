@@ -15,14 +15,14 @@ void EnemyPreAttack::init()
 	timer.restart();
 }
 
+void EnemyPreAttack::fastUpdate(float dt)
+{
+	mEnemy->resolvePlayerWeaponCollisions();
+}
+
 
 void EnemyPreAttack::slowUpdate(float dt)
 {
-	mEnemy->resolvePlayerWeaponCollisions();
-
-	//VectorF direction = mEnemy->attackTargetRect()->Center() - mEnemy->position();
-	//mEnemy->getMovement().setDirection(direction);
-
 	if (!inAttackRange())
 		mEnemy->popState();
 

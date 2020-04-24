@@ -7,6 +7,14 @@ class InputManager;
 class Physics
 {
 public:
+	struct Data
+	{
+		float force = 0.0f;
+		float maxVelocity = 0.0f;
+		float dragFactor = 0.0f;
+		float mass = 0.0f;
+	};
+
 	enum Direction
 	{
 		Up,
@@ -20,7 +28,9 @@ public:
 public:
 	Physics() : mForce(0), mMaxVelocity(0), mDragFactor(0) { };
 
-	void init(float force, float maxVelocity, float dragFactor);
+	void init(Data data);	
+	void handleInput(InputManager* input);
+	void fastUpdate(float dt);
 	
 	// Force
 	void resetHasForce() { mHasForce.zero(); }
@@ -31,18 +41,22 @@ public:
 	void setMaxVelocity(float maxVelocity) { mMaxVelocity = maxVelocity; }
 	float maxVelocity() const { return mMaxVelocity; }
 
-	void handleInput(InputManager* input);
-	void fastUpdate(float dt);
-
+	// Accellerate object
 	void accellerate(VectorF acceleration);
 
+	// Move object
+	void move(VectorF velocity, float dt);
+
+	// Rect
 	void setRect(RectF newRect) { mRect = newRect; }
 	RectF& rectRef() { return mRect; }
 	RectF rect() const { return mRect; }
 
+	// Position
 	void setPosition(VectorF position) { mRect.SetCenter(position); }
 	VectorF position() const { return mRect.Center(); }
 
+	// TEMP?
 	float maxMovementDistance(float dt) const { return mMaxVelocity * dt; }
 	VectorF movementDistance(float dt) const { return mVelocity * dt; }
 
@@ -50,10 +64,11 @@ public:
 
 	VectorF direction() const;
 	
-
+	// Movement info
 	bool hasForce() const { return !mHasForce.isZero(); }
 	bool isMoving() const { return !mVelocity.isZero(); }
 
+	// Movement
 	void resetAllowedMovement();
 	void restrictMovement(Direction direction, bool restriction);
 
@@ -73,4 +88,5 @@ private:
 	float mForce;
 	float mMaxVelocity;
 	float mDragFactor; // 0 is large, 1 is small
+	float mMass;
 };

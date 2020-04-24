@@ -16,13 +16,15 @@ void Collectables::spawn(Collectable* collectable, VectorF position)
 {
 	collectable->setPosition(position);
 	mCollectables.push_back(collectable);
-	mCollisionTracker.addCollider(collectable->getCollider());
+	
+	// TODO: was removed from collision tracker to keep the attacker/defender consistency
+	// mCollisionTracker.addCollider(collectable->getCollider()); // add attacking collider
 }
 
 
 void Collectables::slowUpdate(float dt)
 {
-	mCollisionTracker.checkBaseCollisions();
+	mCollisionTracker.checkAttackerCollisions();
 
 	float oscillation = std::sin(timer.getSeconds() * dt * 500);
 	VectorF oscillationVector = VectorF(oscillation, oscillation);
@@ -32,17 +34,17 @@ void Collectables::slowUpdate(float dt)
 	{
 		(*iter)->move(oscillationVector);
 
-		if ((*iter)->pickedUp())
-		{
-			(*iter)->activate(mGameData->playerManager);
-			
-			// Destroy the collectable
-			mCollectables.erase(iter);
+		//if ((*iter)->pickedUp())
+		//{
+		//	(*iter)->activate(mGameData->playerManager);
+		//	
+		//	// Destroy the collectable
+		//	mCollectables.erase(iter);
 
-			// TODO: how to delete this???
-			//delete *iter;
-			break;
-		}
+		//	// TODO: how to delete this???
+		//	//delete *iter;
+		//	break;
+		//}
 	}
 }
 
@@ -64,5 +66,6 @@ void Collectables::render()
 
 void Collectables::subscrbeCollider(Collider* collider)
 {
-	mCollisionTracker.subscribe(collider);
+	// TODO: was removed from collision tracker to keep the attacker/defender consistency
+	// mCollisionTracker.subscribe(collider); // add defending collider
 }

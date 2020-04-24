@@ -17,5 +17,10 @@ public:
 	const Type type() const { return Type::Hit; }
 
 private:
-	Timer<float> timer;
+	Timer<float> decayTimer;
+	VectorF decayVelocity;
+
+	VectorF attackTargetPosition;
+
+	float mKnockbackForce;
 };
