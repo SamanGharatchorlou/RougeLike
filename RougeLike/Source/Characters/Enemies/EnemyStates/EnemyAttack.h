@@ -23,7 +23,7 @@ public:
 
 
 private:
-	bool forwardAttackComplete();
+	void updateHasAttackedStatus();
 	bool attackComplete() const;
 
 private:

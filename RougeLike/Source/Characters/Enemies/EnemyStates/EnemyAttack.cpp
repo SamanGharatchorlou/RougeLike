@@ -45,7 +45,7 @@ void EnemyAttack::fastUpdate(float dt)
 void EnemyAttack::slowUpdate(float dt)
 {
 	// Return to starting position
-	mHasAttacked = forwardAttackComplete();
+	updateHasAttackedStatus();
 
 	// End attack
 	if (attackComplete() == true)
@@ -66,16 +66,28 @@ void EnemyAttack::render()
 
 // --- Private Functions ---
 
-bool EnemyAttack::forwardAttackComplete()
+void EnemyAttack::updateHasAttackedStatus()
 {
 	if (mEnemy->getCollider()->didHit() || hitCounter > 0)
 		hitCounter++;
 
+	if (!mHasAttacked)
+	{
 		// Maximum attack distance
-	if (!mHasAttacked && (distanceSquared(startingPosition, mEnemy->position()) >= mEnemy->propertyBag().pTackleDistance.get()) || hitCounter >= 5)
-		return true;
-	else
-		return mHasAttacked;
+		float distanceTravelled = distanceSquared(startingPosition, mEnemy->position());
+
+		if (distanceTravelled >= mEnemy->propertyBag().pTackleDistance.get())
+			mHasAttacked = true;
+
+		if (hitCounter >= 5)
+			mHasAttacked = true;
+
+
+		float distanceToAttackTarget = distanceSquared(attackTargetPosition, mEnemy->position());
+
+		if (distanceToAttackTarget < 5.0f)
+			mHasAttacked = true;
+	}
 }
 
 

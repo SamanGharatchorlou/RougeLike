@@ -13,7 +13,5 @@ void Movement::fastUpdate(float dt)
 	mPreviousPosition = mPosition;
 
 	mDirection = clamp(mDirection, -1.0f, +1.0f).normalise();
-	mPosition += (mSpeed * mDirection) * dt; // *mCanMove;
-
-	//printf("direction %f, %f\n", mDirection.x, mDirection.y);
+	mPosition += (mSpeed * mDirection) * dt; 
 }

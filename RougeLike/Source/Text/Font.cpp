@@ -8,8 +8,6 @@ Font::~Font()
 
 	if(mFont)
 		TTF_CloseFont(mFont);
-
-	DebugPrint(Log, "font destoryed\n");
 }
 
 
@@ -24,7 +22,7 @@ bool Font::loadFromFile(const std::string& font, int ptSize)
 	mFont = TTF_OpenFont(font.c_str(), ptSize);
 	if (mFont == nullptr)
 	{
-		printf("Failed to load font at '%s'! SDL_ttf Error: %s\n", font.c_str(), TTF_GetError());
+		DebugPrint(Warning, "Failed to load font at '%s'! SDL_ttf Error: %s\n", font.c_str(), TTF_GetError());
 		success = false;
 	}
 
@@ -69,7 +67,7 @@ void Font::setText(const std::string& text)
 
 			if (mTexture == nullptr)
 			{
-				printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+				DebugPrint(Warning, "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
 			}
 			else
 			{

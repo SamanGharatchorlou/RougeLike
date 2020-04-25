@@ -29,7 +29,5 @@ bool Level::didLevelUp()
 
 	levelledUp = false;
 
-	if(returnValue)
-		printf("%d\n", returnValue);
 	return returnValue;
 }

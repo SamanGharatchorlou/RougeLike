@@ -86,7 +86,6 @@ void RangedWeapon::slowUpdate(float dt)
 			quiver.lostProjectile(*iter);
 			travelingProjectiles.erase(iter);
 			break;
-			//printf("hit enemy\n");
 		}
 	}
 }

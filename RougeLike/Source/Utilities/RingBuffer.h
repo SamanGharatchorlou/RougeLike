@@ -26,7 +26,6 @@ public:
 
 	void retreat() 
 	{ 
-		printf("retreat\n");
 		if (tail != head)
 			increment(tail);
 		else

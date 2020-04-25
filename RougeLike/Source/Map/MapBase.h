@@ -49,9 +49,6 @@ bool MapBase<K>::isValidIndex(Index index) const
 	bool a = (index.x >= 0 && index.x < xCount()) &&
 		(index.y >= 0 && index.y < yCount());
 
-	if (a == false)
-		printf("");
-
 	return a;
 }
 
