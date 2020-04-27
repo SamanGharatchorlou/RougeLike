@@ -38,7 +38,7 @@ public:
 	void pause() { timer.pause(); }
 	void stop() { timer.stop(); }
 
-	void selectAnimation(std::string name);
+	void selectAnimation(const std::string& name);
 
 	void setSpeedFactor(float speed) { speedFactor = speed; }
 

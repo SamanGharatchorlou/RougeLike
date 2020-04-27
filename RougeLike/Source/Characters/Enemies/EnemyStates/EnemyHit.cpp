@@ -3,12 +3,15 @@
 
 #include "Game/GameData.h"
 #include "Characters/Enemies/Enemy.h"
-#include "Characters/Player/Player.h"
 
 #include "Collisions/DamageCollider.h"
 
 #include "Game/Camera.h"
 #include "Graphics/Texture.h"
+
+// TEMP
+#include "Map/MapLevel.h"
+#include "Map/Map.h"
 
 
 EnemyHit::EnemyHit(Enemy* enemy) : EnemyState(enemy) { }
@@ -42,7 +45,9 @@ void EnemyHit::fastUpdate(float dt)
 {
 	VectorF direction = mEnemy->position() - attackTargetPosition;
 	VectorF velocity = direction.normalise() * mKnockbackForce;
-	mEnemy->move(velocity, dt);
+
+	if (canMove(velocity, dt))
+		mEnemy->move(velocity, dt);
 }
 
 
@@ -77,4 +82,16 @@ void EnemyHit::exit()
 	texture->setAlpha(alphaMax);
 
 	mEnemy->facePoint(mEnemy->attackTargetRect()->Center());
+}
+
+
+// --- Private Functions --- //
+bool EnemyHit::canMove(VectorF velocity, float dt)
+{
+	Map* map = mEnemy->getData()->level->primaryMap();
+
+	VectorF position = mEnemy->position() + (velocity * dt);
+	Index index = map->index(position);
+
+	return map->isValidIndex(index) && map->floorCollisionTile(index);
 }

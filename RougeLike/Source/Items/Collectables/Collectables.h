@@ -15,7 +15,7 @@ public:
 
 	void spawn(Collectable* collectable, VectorF position);
 	
-	void subscrbeCollider(Collider* collider);
+	void subscribeCollider(Collider* collider);
 
 
 private:

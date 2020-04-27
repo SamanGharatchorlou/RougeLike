@@ -5,7 +5,7 @@
 #include "Characters/Attributes/Level.h"
 #include "Characters/Attributes/Health.h"
 
-void PlayerPropertyBag::readAttributes(std::string name)
+void PlayerPropertyBag::readAttributes(const std::string& name)
 {
 	StatReader statReader;
 	XMLValueMap map = statReader.getStats(FileManager::Config_Stats_Player, name);

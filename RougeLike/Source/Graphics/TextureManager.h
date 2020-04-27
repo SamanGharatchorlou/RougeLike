@@ -12,7 +12,7 @@ public:
 
 	void init();
 
-	bool loadTexture(const std::string label , const std::string& fileName);
+	bool loadTexture(const std::string& label , const std::string& fileName);
 	int loadAllTextures(FileManager::Folder folder);
 
 	Texture* getTexture(const std::string& label) const;

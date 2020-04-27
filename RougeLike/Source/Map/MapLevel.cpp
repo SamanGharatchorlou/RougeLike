@@ -145,7 +145,7 @@ void MapLevel::buildEntrance(float offset)
 	VectorF size(VectorF(16.0f, 16.0f) * 3.0f); // TODO: hard coded
 	int width = (int)((Camera::Get()->size().x / size.x) * 1.5f);
 
-	mEntrace->init(width, mapSize.y);
+	mEntrace->init(Index(width, mapSize.y));
 
 	TunnelGenerator generator;
 	generator.buildSimpleLine(mEntrace->getData());
@@ -164,7 +164,8 @@ void MapLevel::buildLevel()
 
 	int mapWidth = randomNumberBetween(mapMinX, mapMaxX);
 
-	float offset = mEntrace->tileRect(mEntrace->xCount() - 1, 0.0f).RightPoint();
+	Index index(mEntrace->xCount() - 1, 0.0f);
+	float offset = mEntrace->tileRect(index).RightPoint();
 
 	buildRandomLevel(mapWidth, mapSize.y, offset);
 }
@@ -174,7 +175,7 @@ void MapLevel::buildRandomLevel(int width, int height, float offset)
 {
 	mapSize = Vector2D<int>(width, height);
 
-	mMap->init(width, height);
+	mMap->init(Index(width, height));
 
 	TunnelGenerator generator;
 	generator.buildRandom(mMap->getData());
@@ -192,7 +193,7 @@ void MapLevel::buildExit()
 	// Add a small buffer so the eixt tunnel takes up whole screen
 	int width = (int)((Camera::Get()->size().x / mMap->tileSize().x) * 1.5f);
 
-	mExit->init(width, mapSize.y);
+	mExit->init(Index(width, mapSize.y));
 
 	TunnelGenerator generator;
 	generator.buildSimpleLine(mExit->getData());
@@ -217,18 +218,18 @@ void MapLevel::swapToExit()
 
 void MapLevel::closeEntrance()
 {
-	mMap->addTileType(0, mMap->yCount() / 2, MapTile::ColumnTop);
-	mMap->addTileType(0, (mMap->yCount() / 2) + 1, MapTile::ColumnBot);
+	mMap->addTileType(Index(0, mMap->yCount() / 2), MapTile::ColumnTop);
+	mMap->addTileType(Index(0, (mMap->yCount() / 2) + 1), MapTile::ColumnBot);
 }
 
 
 void MapLevel::closeLevel()
 {
-	mEntrace->addTileType(0, mEntrace->yCount() / 2, MapTile::ColumnTop);
-	mEntrace->addTileType(0, (mEntrace->yCount() / 2) + 1, MapTile::ColumnBot);
+	mEntrace->addTileType(Index(0, mEntrace->yCount() / 2), MapTile::ColumnTop);
+	mEntrace->addTileType(Index(0, (mEntrace->yCount() / 2) + 1), MapTile::ColumnBot);
 
 	// Open entrance
-	mMap->setTileType(0, mMap->yCount() / 2, MapTile::Floor);
-	mMap->setTileType(0, (mMap->yCount() / 2) + 1, MapTile::Floor);
+	mMap->setTileType(Index(0, mMap->yCount() / 2), MapTile::Floor);
+	mMap->setTileType(Index(0, (mMap->yCount() / 2) + 1), MapTile::Floor);
 }
 

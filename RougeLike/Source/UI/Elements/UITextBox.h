@@ -10,21 +10,32 @@ class UITextBox : public UIBox
 public:
 	struct Data : public UIBox::Data
 	{
+		std::string aligment;
 		std::string text;
 		std::string font;
 		int ptSize;
-		SDL_Color colour;	
+		SDL_Color colour;
+	};
+
+	enum Alignment
+	{
+		None,
+		Left,
+		Right,
+		Center
 	};
 
 public:
 	UITextBox(Data& data);
 
-	void setText(std::string text) { mText.setText(text); }
+	void setText(const std::string& text) { mText.setText(text); }
 
-	void displaySubText(int startIndex, int endIndex) { mText.displaySubText(startIndex, endIndex); }
+	//void displaySubText(int startIndex, int endIndex) { mText.displaySubText(startIndex, endIndex); }
 
 	int fontSize() const { return mText.fontSize(); }
 	void autoSizeFont();
+
+	void align();
 
 	void render() override;
 
@@ -35,4 +46,5 @@ public:
 
 private:
 	Text mText;
+	Alignment mAlignment;
 };

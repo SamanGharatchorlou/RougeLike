@@ -2,7 +2,7 @@
 #include "Helpers.h"
 
 
-std::vector<int> parseCSVtoInt(std::string csv)
+std::vector<int> parseCSVtoInt(const std::string& csv)
 {
 	std::vector<int> vect;
 

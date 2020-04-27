@@ -10,7 +10,8 @@ void AIPathMap::build(Map* map, int xSplit, int ySplit)
 
 	// New larger path tile map
 	mData.clear(); // TODO: does this correctly clear the data?
-	mData.clearAndSet(tileMap.xCount() * xSplit, tileMap.yCount() * ySplit, PathTile());
+	Index index(tileMap.xCount() * xSplit, tileMap.yCount() * ySplit);
+	mData.clearAndSet(index, PathTile());
 
 	// Split each tile into 4
 	for (unsigned int y = 0; y < map->yCount(); y++)
@@ -57,18 +58,17 @@ void AIPathMap::build(Map* map, int xSplit, int ySplit)
 
 const VectorF AIPathMap::tileSize() const
 {
-	return tile(0, 0)->rect().Size();
+	return tile(Index(0,0))->rect().Size();
 }
 
 
 const Index AIPathMap::index(VectorF position) const
 {
-	VectorF mapTopLeft = mData.get(0, 0).rect().TopLeft();
+	VectorF mapTopLeft = mData.get(Index(0, 0)).rect().TopLeft();
 	VectorF shiftedPosition = position - mapTopLeft;
 
 	// Get the index relative to this map
 	Index index(shiftedPosition.x / tileSize().x, shiftedPosition.y / tileSize().y);
-
 	return isValidPosition(position) ? index : Index(-1, -1);
 }
 
@@ -82,21 +82,17 @@ const Index AIPathMap::index(const PathTile* tile) const
 
 bool AIPathMap::isValidPosition(VectorF position) const
 {
-	VectorF start = mData.get(0, 0).rect().TopLeft();
-	VectorF end = mData.get(xCount() - 1, yCount() - 1).rect().BotRight();
+	VectorF start = mData.get(Index(0,0)).rect().TopLeft();
+	VectorF end = mData.get(Index(xCount(), yCount()) - 1).rect().BotRight();
 
-	bool a = (position.x >= start.x && position.x < end.x) &&
+	return (position.x >= start.x && position.x < end.x) &&
 		(position.y >= start.y && position.y < end.y);
-
-	return a;
 }
 
 
 const PathTile* AIPathMap::offsetTile(const PathTile* target, int xOffset, int yOffset) const
 {
-	Index tileIndex = index(target);
-	tileIndex = tileIndex + Index(xOffset, yOffset);
-
+	Index tileIndex = index(target) + Index(xOffset, yOffset);
 	return isValidIndex(tileIndex) ? tile(tileIndex) : nullptr;
 }
 

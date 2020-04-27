@@ -2,7 +2,7 @@
 #include "Text.h"
 
 
-Text::Text(const std::string& text, std::string font, int ptSize, SDL_Color colour)
+Text::Text(const std::string& text, const std::string& font, int ptSize, SDL_Color colour)
 {
 	FileManager* fm = FileManager::Get();
 	mFont.loadFromFile(fm->filePath(FileManager::Font, font), ptSize);
@@ -24,6 +24,7 @@ void Text::init(const std::string& fontLabel, int ptSize, SDL_Color colour, cons
 
 void Text::setText(const std::string& text) 
 { 
+	// TODO: do I need to do this std::string constructor???
 	mText = std::string(text);
 	mFont.setText(text); 
 }
@@ -37,7 +38,7 @@ void Text::displaySubText(int startIndex, int endIndex)
 
 void Text::render(VectorF position)
 {
-	mFont.render(position);
+	mFont.render(position + mAlignmentOffset);
 }
 
 
@@ -94,4 +95,12 @@ VectorF Text::autoSize(VectorF size)
 	mFont.setText(mText);
 
 	return VectorF(width, height);
+}
+
+float Text::stringWidth()
+{
+	float width = -1.0f;
+	float height = -1.0f;
+
+	return 0.0f;
 }

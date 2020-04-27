@@ -65,7 +65,7 @@ struct IncrementLevelEvent : public EventData
 
 struct UpdateTextBoxEvent : public EventData
 {
-	UpdateTextBoxEvent(std::string id, int value) : mId(id), mValue(value) { }
+	UpdateTextBoxEvent(const std::string& id, int value) : mId(id), mValue(value) { }
 	~UpdateTextBoxEvent() { }
 
 	const std::string mId;

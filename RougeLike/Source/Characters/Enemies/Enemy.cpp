@@ -225,7 +225,7 @@ EnemyState::Type Enemy::state() const
 }
 
 
-void Enemy::initAnimations(std::string file)
+void Enemy::initAnimations(const std::string& file)
 {
 	// Config reader
 	AnimationReader reader(file);

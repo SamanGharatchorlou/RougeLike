@@ -22,7 +22,7 @@ public:
 
 	TTF_Font* get() { return mFont; }
 
-	std::string name() const { return mFontName; }
+	const std::string name() const { return mFontName; }
 
 private:
 	SDL_Renderer* mRenderer;
@@ -41,6 +41,6 @@ private:
 	// Forbid copy to prevent shared ownership of of gFont and
 	// it being destroyed by the destructor while still in use
 	Font(Font& font);
-	Font& operator = (const Font) { DebugPrint(Error, "Do no use!\n"); };
+	Font& operator = (const Font) { DebugPrint(Error, "Do not use!\n"); };
 };
  

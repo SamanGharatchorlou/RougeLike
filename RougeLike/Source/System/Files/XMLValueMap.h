@@ -16,12 +16,12 @@ class XMLValueMap
 public:
 	valueMap& getMap() { return map; }
 
-	void add(std::string name, value value)
+	void add(const std::string& name, value value)
 	{
 		map[name] = value;
 	}
 
-	int getInt(std::string name)
+	int getInt(const std::string& name)
 	{
 #if _DEBUG
 		if (map.count(name) == 0)
@@ -30,7 +30,7 @@ public:
 		return map[name].i;
 	}
 
-	float getFloat(std::string name)
+	float getFloat(const std::string& name)
 	{
 #if _DEBUG
 		if (map.count(name) == 0)
@@ -39,7 +39,7 @@ public:
 		return map[name].f;
 	}
 
-	double getDouble(std::string name)
+	double getDouble(const std::string& name)
 	{
 #if _DEBUG
 		if (map.count(name) == 0)
@@ -48,7 +48,7 @@ public:
 		return map[name].d;
 	}
 
-	char* getChar(std::string name)
+	char* getChar(const std::string& name)
 	{
 #if _DEBUG
 		if (map.count(name) == 0)

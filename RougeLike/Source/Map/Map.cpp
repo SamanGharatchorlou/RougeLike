@@ -40,8 +40,9 @@ void Map::populateCollisionRenderInfo()
 		for (unsigned int y = 0; y < yCount(); y++)
 		{
 			// query surronding tiles
-			const MapTile::EdgeInfo& info = getEdgeInfo(x, y);
-			MapTile& tile = mData[y][x];
+			Index index(x, y);
+			const MapTile::EdgeInfo& info = getEdgeInfo(index);
+			MapTile& tile = mData[index];
 
 			if (info.hasEdge)
 			{
@@ -77,11 +78,12 @@ void Map::populateCollisionRenderInfo()
 
 					tile.addRenderType(MapTile::Top);
 
-					if (inBounds(x, y + 1) && wallRenderTile(x, y + 1))
+					Index rightIndex(x, y + 1);
+					if (inBounds(rightIndex) && wallRenderTile(rightIndex))
 					{
 						MapTile::Type tileType = tile.collisionType();
 
-						mData[y + 1][x].setCollisionType(tileType ^ MapTile::Top);
+						mData[rightIndex].setCollisionType(tileType ^ MapTile::Top);
 
 						int a = 0;
 					}
@@ -98,14 +100,16 @@ void Map::populateCollisionRenderInfo()
 					tile.removeRenderType(MapTile::Left ^ MapTile::Right);
 
 					// Add isometic wall edges if the left/right tile is a wall but is not a MapTile::Bot
-					if (inBounds(x - 1, y) && wallRenderTile(x - 1, y) && !(mData[y][x - 1].hasRenderType(MapTile::Bot)))
+					Index leftIndex(x - 1, y);
+					if (inBounds(leftIndex) && wallRenderTile(leftIndex) && !(mData[leftIndex].hasRenderType(MapTile::Bot)))
 					{
-						mData[y][x - 1].addRenderType(MapTile::Right);
+						mData[leftIndex].addRenderType(MapTile::Right);
 					}
 
-					if (inBounds(x + 1, y) && wallRenderTile(x + 1, y) && !(mData[y][x + 1].hasRenderType(MapTile::Bot)))
+					Index rightIndex(x + 1, y);
+					if (inBounds(rightIndex) && wallRenderTile(rightIndex) && !(mData[rightIndex].hasRenderType(MapTile::Bot)))
 					{
-						mData[y][x + 1].addRenderType(MapTile::Left);
+						mData[rightIndex].addRenderType(MapTile::Left);
 					}
 				}
 			}
@@ -118,9 +122,9 @@ void Map::populateCollisionRenderInfo()
 }
 
 
-void Map::init(int x, int y)
+void Map::init(Index index)
 {
-	mData.clearAndSet(x, y, MapTile());
+	mData.clearAndSet(index, MapTile());
 }
 
 
@@ -138,7 +142,7 @@ VectorF Map::size() const
 
 const VectorF Map::tileSize() const
 { 
-	return tile(0, 0)->rect().Size();
+	return tile(Index(0, 0))->rect().Size();
 }
 
 
@@ -292,9 +296,7 @@ void Map::renderColumn(const RectF& rect, Texture* column)
 
 const MapTile* Map::offsetTile(const MapTile* target, int xOffset, int yOffset) const
 {
-	Index tileIndex = index(target);
-	tileIndex = tileIndex + Index(xOffset, yOffset);
-
+	Index tileIndex = index(target) + Index(xOffset, yOffset);
 	return isValidIndex(tileIndex) ? tile(tileIndex) : nullptr;
 }
 
@@ -304,12 +306,12 @@ Index Map::findYFloorTileRange(int xTileIndex)
 	unsigned int yTileIndex = 0;
 	Vector2D<unsigned int> yTileRange;
 
-	while (wallCollisionTile(xTileIndex, ++yTileIndex)) {}
+	while (wallCollisionTile(Index(xTileIndex, ++yTileIndex))) {}
 
 	// highest point
 	yTileRange.x = yTileIndex;
 
-	while (floorCollisionTile(xTileIndex, ++yTileIndex))
+	while (floorCollisionTile(Index(xTileIndex, ++yTileIndex)))
 	{
 		if (yTileIndex >= yCount() - 1)
 			break;
@@ -323,21 +325,23 @@ Index Map::findYFloorTileRange(int xTileIndex)
 
 
 // --- Getters --- //
-const MapTile::EdgeInfo Map::getEdgeInfo(int x, int y) const
+const MapTile::EdgeInfo Map::getEdgeInfo(Index index) const
 {
 	MapTile::EdgeInfo info;
 
 	// Is a wall tile
-	if (wallRenderTile(x, y))
+	if (wallRenderTile(index))
 	{
-		for (int j = y - 1; j <= y + 1; j++)
+		for (int j = index.y - 1; j <= index.y + 1; j++)
 		{
-			for (int i = x - 1; i <= x + 1; i++)
+			for (int i = index.x - 1; i <= index.x + 1; i++)
 			{
 				// If touching a floor tile
-				if (inBounds(i, j) && floorRenderTile(i, j))
+				Index tileIndex(i, j);
+				if (inBounds(tileIndex) && floorRenderTile(tileIndex))
 				{
-					info.data[j - y + 1][i - x + 1] = MapTile::Floor;
+					Index infoIndex = tileIndex - index + 1;
+					info.data[infoIndex.y][infoIndex.x] = MapTile::Floor;
 					info.hasEdge = true;
 				}
 			}
@@ -350,13 +354,10 @@ const MapTile::EdgeInfo Map::getEdgeInfo(int x, int y) const
 
 const Index Map::index(VectorF position) const
 {
-	VectorF mapTopLeft = mData.get(0, 0).rect().TopLeft();
+	VectorF mapTopLeft = mData.get(Index(0, 0)).rect().TopLeft();
 	VectorF shiftedPosition = position - mapTopLeft;
 
-	// Get the index relative to this map
-	Index index(shiftedPosition.x / tileSize().x, shiftedPosition.y / tileSize().y);
-
-	return isValidPosition(position) ? index : Index(-1, -1);
+	return isValidPosition(position) ? Index(shiftedPosition / tileSize()) : Index(-1, -1);
 }
 
 
@@ -387,49 +388,42 @@ const RectF Map::tileRect(Index index) const
 }
 
 
-const RectF Map::tileRect(int x, int y) const
-{
-	return isValidIndex(Index(x, y)) ? mData.get(x, y).rect() : RectF(-1);
-}
-
-
-
 const RectF Map::getFirstRect(int yIndex) const
 {
-	return tileRect(0, yIndex);
+	return tileRect(Index(0, yIndex));
 }
 
 const RectF Map::getLastRect(int yIndex) const
 {
-	return tileRect(xCount() - 1, yIndex);
+	return tileRect(Index(xCount() - 1, yIndex));
 }
 
 
-void Map::addTileType(int x, int y, MapTile::Type type)
+void Map::addTileType(Index index, MapTile::Type type)
 {
-	mData[y][x].addRenderType(type);
+	mData[index].addRenderType(type);
 
 	if (type >= MapTile::Wall)
-		mData[y][x].setCollisionType(MapTile::Wall);
+		mData[index].setCollisionType(MapTile::Wall);
 	else
-		mData[y][x].setCollisionType(MapTile::Floor);
+		mData[index].setCollisionType(MapTile::Floor);
 }
 
 
-void Map::setTileType(int x, int y, MapTile::Type type)
+void Map::setTileType(Index index, MapTile::Type type)
 {
-	mData[y][x].setType(type);
+	mData[index].setType(type);
 }
 
 
-void Map::removeTileType(int x, int y, MapTile::Type type)
+void Map::removeTileType(Index index, MapTile::Type type)
 {
-	mData[y][x].addRenderType(type);
+	mData[index].addRenderType(type);
 
 	if (type >= MapTile::Wall)
-		mData[y][x].setCollisionType(MapTile::Wall);
+		mData[index].setCollisionType(MapTile::Wall);
 	else
-		mData[y][x].setCollisionType(MapTile::Floor);
+		mData[index].setCollisionType(MapTile::Floor);
 }
 
 
@@ -437,8 +431,8 @@ void Map::removeTileType(int x, int y, MapTile::Type type)
 // -- Validity functions -- //
 bool Map::isValidTile(RectF rect) const
 {
-	VectorF start = mData.get(0, 0).rect().TopLeft();
-	VectorF end = mData.get(xCount() - 1, yCount() - 1).rect().BotRight();
+	VectorF start = mData.get(Index(0, 0)).rect().TopLeft();
+	VectorF end = mData.get(Index(xCount(), yCount()) - 1).rect().BotRight();
 
 	return (rect.x1 >= start.x && rect.y1 >= start.y) &&
 			(rect.x2 < end.x && rect.y2 < end.y) &&
@@ -448,8 +442,8 @@ bool Map::isValidTile(RectF rect) const
 
 bool Map::isValidPosition(VectorF position) const
 {
-	VectorF start = mData.get(0, 0).rect().TopLeft();
-	VectorF end = mData.get(xCount() - 1, yCount() - 1).rect().BotRight();
+	VectorF start = mData.get(Index(0, 0)).rect().TopLeft();
+	VectorF end = mData.get(Index(xCount(), yCount()) - 1).rect().BotRight();
 
 	return (position.x >= start.x && position.x < end.x) &&
 			(position.y >= start.y && position.y < end.y);

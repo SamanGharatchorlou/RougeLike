@@ -16,22 +16,22 @@ public:
 	}
 
 
-	void add(std::string name, std::string value)
+	void add(const std::string& name, std::string value)
 	{
 		attributes[name] = value;
 	}
 
 
-	bool contains(std::string name) const
+	bool contains(const std::string& name) const
 	{
 		return (bool)attributes.count(name);
 	}
 
 
-	const std::string& getString(std::string name)
+	const std::string& getString(const std::string& name)
 	{
 #if _DEBUG
-		if (attributes[name].empty())
+		if(!contains(name))
 			DebugPrint(Warning, "There is no attribute with the label: %s\n", name.c_str());
 #endif
 		std::string value = attributes[name];
@@ -39,32 +39,32 @@ public:
 	}
 
 
-	const int getInt(std::string name)
+	const int getInt(const std::string& name)
 	{
 #if _DEBUG
 		// TODO: is this a value check or does it need to be .count == 0 like in XMLValueMap
-		if (attributes[name].empty())
+		if (!contains(name))
 			DebugPrint(Warning, "There is no attribute with the label: %s\n", name.c_str());
 #endif
 		return std::stoi(attributes[name]);
 	}
 
 
-	const int getBool(std::string name)
+	const int getBool(const std::string& name)
 	{
 #if _DEBUG
 		// TODO: is this a value check or does it need to be .count == 0 like in XMLValueMap
-		if (attributes[name].empty())
+		if (!contains(name))
 			DebugPrint(Warning, "There is no attribute with the label: %s\n", name.c_str());
 #endif
 		return strcmp(attributes[name].c_str(), "true") == 0;
 	}
 
 
-	const float getFloat(std::string name)
+	const float getFloat(const std::string& name)
 	{
 #if _DEBUG
-		if (attributes[name].empty())
+		if (!contains(name))
 			DebugPrint(Warning, "There is no attribute with the label: %s\n", name.c_str());
 #endif
 		return std::stof(attributes[name]);

@@ -33,7 +33,7 @@ private:
 
 	void fillElementData	(UIElement::Data& data,		Attributes& attributes) const;
 	void fillBoxData		(UIBox::Data& data,			Attributes& attributes) const;
-	void fillTextBoxtData	(UITextBox::Data& data,		Attributes& attributes) const;
+	void fillTextBoxData	(UITextBox::Data& data,		Attributes& attributes) const;
 	void fillButtonData		(UIButton::Data& data,		Attributes& attributes) const;
 
 	void setRect(UIElement* element);

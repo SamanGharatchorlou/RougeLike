@@ -12,7 +12,7 @@ public:
 
 	virtual ~Collectable() { };
 
-	void init(std::string value, Texture* texture, RectF rect);
+	void init(const std::string& value, Texture* texture, RectF rect);
 	void render(RectF rect) const;
 	
 	virtual void activate(PlayerManager* playerManager) = 0;
@@ -23,8 +23,11 @@ public:
 	void move(VectorF translation) { mRect.Translate(translation); }
 
 	Collider* getCollider() { return &mCollider; }
-	//bool pickedUp() { return mCollider.hasCollided(); }
+	bool pickedUp() { return mCollider.gotHit(); }
 
+#if DRAW_COLLECTABLE_RECT
+	RectF colliderRect() const { return mCollider.scaledRect(); }
+#endif
 
 protected:
 	Texture* mTexture;

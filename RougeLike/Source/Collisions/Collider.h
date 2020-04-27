@@ -20,13 +20,13 @@ public:
 	inline void setGotHit(bool collisionStatus) { mGotHit = collisionStatus; }
 	inline bool gotHit() const { return mGotHit; }
 
-	const RectF getRect() const { return *mRect; }
-	RectF getRectBase() const;
+	const RectF rect() const { return *mRect; }
+	RectF scaledRect() const;
 
 	const Collider* getOtherCollider() const { return mOtherCollider; }
 
 #if _DEBUG
-	void setName(std::string name) { mName = name; }
+	void setName(const std::string& name) { mName = name; }
 	std::string name() const { return mName; }
 #endif
 

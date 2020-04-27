@@ -1,5 +1,8 @@
 #pragma once
 
+#include "Utilities/Vector2D.h"
+using Index = Vector2D<int>;
+
 template<class T>
 class Grid
 {
@@ -12,7 +15,7 @@ public:
 	T& operator [] (Vector2D<int> index);
 
 	void clear();
-	void clearAndSet(int x, int y, T value);
+	void clearAndSet(Index index, T value);
 
 	const std::vector<std::vector<T>>& get() const { return data; }
 
@@ -22,8 +25,7 @@ public:
 	const int xCount() const { return data[0].size(); }
 
 	// Getters
-	const T& get(Vector2D<int> index) const { return data[index.y][index.x]; }
-	const T& get(int x, int y) const { return data[y][x]; }
+	const T& get(Index index) const { return data[index.y][index.x]; }
 
 	const std::vector<T> getRow( int y) const;
 	const std::vector<T> getColumn(int x) const;
@@ -110,15 +112,15 @@ const std::vector<T> Grid<T>::getColumn(int x) const
 
 
 template<class T>
-void Grid<T>::clearAndSet(int x, int y, T value)
+void Grid<T>::clearAndSet(Index index, T value)
 {
 	clear();
 
-	ASSERT(Warning, y > 0 && x > 0,
-		"Grid must have at least 1 column and 1 row, set with %d columns, %d rows\n", y, x);
+	ASSERT(Warning, index.y > 0 && index.x > 0,
+		"Grid must have at least 1 column and 1 row, set with %d columns, %d rows\n", index.y, index.x);
 
-	std::vector<T> row(x, value);
-	for(int i = 0; i < y; i++ )
+	std::vector<T> row(index.x, value);
+	for(int i = 0; i < index.y; i++ )
 		data.push_back(row);
 }
 

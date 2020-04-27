@@ -48,13 +48,13 @@ void EnemyPatrol::setPatrolPoint()
 	// TODO: make this enemy get map
 	Map* map = mEnemy->getData()->level->primaryMap();
 
-	VectorF position = mEnemy->physics().position();
-	Vector2D<int> tilePositionIndex = map->index(position);
+	VectorF position = mEnemy->position();
+	Index tilePositionIndex = map->index(position);
 
-	Vector2D<int> yTileRange = map->findYFloorTileRange(tilePositionIndex.x);
+	Index yTileRange = map->findYFloorTileRange(tilePositionIndex.x);
 
-	VectorF highestPoint = map->tileRect(tilePositionIndex.x, yTileRange.x).Center();
-	VectorF lowestPoint = map->tileRect(tilePositionIndex.x, yTileRange.y).Center();
+	VectorF highestPoint = map->tileRect(Index(tilePositionIndex.x, yTileRange.x)).Center();
+	VectorF lowestPoint = map->tileRect(Index(tilePositionIndex.x, yTileRange.y)).Center();
 
 	// set the furthest point
 	VectorF patrolTarget = (position.y - highestPoint.y < lowestPoint.y - position.y) ? lowestPoint : highestPoint;
@@ -101,6 +101,6 @@ bool EnemyPatrol::canSeeAttackTarget() const
 
 bool EnemyPatrol::hasReachedPositionTarget() const
 {
-	VectorF position = mEnemy->physics().position();
+	VectorF position = mEnemy->position();
 	return distanceSquared(position, mEnemy->positionTargetRect()->Center()) < 10.0f;
 }

@@ -76,7 +76,7 @@ void UIManager::init()
 }
 
 
-UIElement* UIManager::find(std::string id)
+UIElement* UIManager::find(const std::string& id)
 {
 	for (Screen* screen : screens)
 	{

@@ -16,15 +16,13 @@ void Collectables::spawn(Collectable* collectable, VectorF position)
 {
 	collectable->setPosition(position);
 	mCollectables.push_back(collectable);
-	
-	// TODO: was removed from collision tracker to keep the attacker/defender consistency
-	// mCollisionTracker.addCollider(collectable->getCollider()); // add attacking collider
+	mCollisionTracker.addDefender(collectable->getCollider());
 }
 
 
 void Collectables::slowUpdate(float dt)
 {
-	mCollisionTracker.checkAttackerCollisions();
+	mCollisionTracker.checkDefenderCollisions();
 
 	float oscillation = std::sin(timer.getSeconds() * dt * 500);
 	VectorF oscillationVector = VectorF(oscillation, oscillation);
@@ -34,17 +32,17 @@ void Collectables::slowUpdate(float dt)
 	{
 		(*iter)->move(oscillationVector);
 
-		//if ((*iter)->pickedUp())
-		//{
-		//	(*iter)->activate(mGameData->playerManager);
-		//	
-		//	// Destroy the collectable
-		//	mCollectables.erase(iter);
+		if ((*iter)->pickedUp())
+		{
+			(*iter)->activate(mGameData->playerManager);
+			
+			// Destroy the collectable
+			mCollectables.erase(iter);
 
-		//	// TODO: how to delete this???
-		//	//delete *iter;
-		//	break;
-		//}
+			// TODO: how to delete this???
+			//delete *iter;
+			break;
+		}
 	}
 }
 
@@ -58,14 +56,18 @@ void Collectables::render()
 		if (Camera::Get()->inView(worldRect))
 		{
 			RectF cameraRect = Camera::Get()->toCameraCoords(worldRect);
+#if DRAW_COLLECTABLE_RECT
+			debugDrawRect(mCollectables[i]->colliderRect(), RenderColour::Blue);
+			debugDrawRect(worldRect, RenderColour::Green);
+#else
 			mCollectables[i]->render(cameraRect);
+#endif
 		}
 	}
 }
 
 
-void Collectables::subscrbeCollider(Collider* collider)
+void Collectables::subscribeCollider(Collider* collider)
 {
-	// TODO: was removed from collision tracker to keep the attacker/defender consistency
-	// mCollisionTracker.subscribe(collider); // add defending collider
+	mCollisionTracker.addAttacker(collider);
 }

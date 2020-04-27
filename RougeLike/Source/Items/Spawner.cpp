@@ -21,9 +21,10 @@ VectorF Spawner::findSpawnPoint(Map* map, int xPositionPercentage)
 	// Use [1] -1 becuase we don't want it to be hiding behind the wall
 	int randomYTile = randomNumberBetween(yTileRange.x, yTileRange.y - 1);
 
-	ASSERT(Warning, map->floorRenderTile(xTileIndex, randomYTile), "Cannot spawn enemy on a wall tile\n");
+	ASSERT(Warning, map->floorRenderTile(Index(xTileIndex, randomYTile)), "Cannot spawn enemy on a wall tile\n");
 
-	return map->tileRect(xTileIndex, randomYTile).Center();
+	Index index(xTileIndex, randomYTile);
+	return map->tileRect(index).Center();
 }
 
 

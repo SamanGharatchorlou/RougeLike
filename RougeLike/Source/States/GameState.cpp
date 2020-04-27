@@ -66,7 +66,7 @@ void GameState::init()
 
 	// Collectables 
 	// TODO?: change this to items, item manager (its not really a manager)
-	collectables.subscrbeCollider(&mGameData->playerManager->get()->collider());
+	collectables.subscribeCollider(&mGameData->playerManager->get()->collider());
 
 	// rendering
 	mGameData->renderManager->Set(mGameData->level);
@@ -79,13 +79,13 @@ void GameState::init()
 	// Test spawning
 	//enemies->spawn(EnemyType::Imp, 20);
 
-	//ItemSpawner itemSpawner;
-	//VectorF position = itemSpawner.findSpawnPoint(mGameData->level->primaryMap(), 10);
+	Spawner itemSpawner;
+	VectorF position = itemSpawner.findSpawnPoint(mGameData->level->primaryMap(), 10);
 
-	std::string weaponName = "weapon_big_hammer";
+	const std::string weaponName = "weapon_big_hammer";
 	WeaponCollectable* weaponPickup = new WeaponCollectable(weaponName, mGameData->textureManager->getTexture(weaponName));
 
-	//collectables.spawn(weaponPickup, position);
+	collectables.spawn(weaponPickup, position);
 }
 
 

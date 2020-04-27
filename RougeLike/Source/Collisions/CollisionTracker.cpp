@@ -4,21 +4,27 @@
 #include "Collider.h"
 
 
+void CollisionTracker::addAttacker(Collider* collider)
+{
+#if _DEBUG
+	for (auto attacker : mAttackers)
+	{
+		if (collider == attacker)
+		{
+			DebugPrint(Log, "Attacking collider is already subscribed with the collider manager\n");
+		}
+	}
+#endif
+
+	mAttackers.push_back(collider);
+}
+
+
 void CollisionTracker::addAttackers(std::vector<Collider*> colliders)
 {
 	for (Collider* attacker : colliders)
 	{
-#if _DEBUG
-		for (auto attackingCollider : mAttackers)
-		{
-			if (attacker == attackingCollider)
-			{
-				DebugPrint(Log, "Attacking collider is already subscribed with the collider manager\n");
-			}
-		}
-#endif
-
-		mAttackers.push_back(attacker);
+		addAttacker(attacker);
 	}
 }
 

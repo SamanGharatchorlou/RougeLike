@@ -28,10 +28,10 @@
 
 	<!-- Player health bar -->
 	<layer>
-		<TextBox id = "HP" x = "0.02" y = "0.925" width = "0.15" height = "0.04">
+		<TextBox id = "HP" x = "0.02" y = "0.925" width = "0.15" height = "0.05">
 			<text r = "255" g = "0" b = "0">HP</text>
 		</TextBox>
-		<Box id = "BlackHealth" parent = "HP" x = "1.5" y = "0.35" width = "5" height = "0.5" texture = "BlackHealthBar"></Box>
+		<Box id = "BlackHealth" x = "0.065" y = "0.945" width = "0.2" height = "0.02" texture = "BlackHealthBar"></Box>
 		<Box id = "RedHealth"   parent = "BlackHealth" x = "0" y = "0" width = "1" height = "1" texture = "RedHealthBar"></Box>
 	</layer>
 

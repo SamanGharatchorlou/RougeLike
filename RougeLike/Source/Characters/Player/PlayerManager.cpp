@@ -181,7 +181,7 @@ void PlayerManager::updateTrackedColliders()
 
 void PlayerManager::resolveWallCollisions(const Map* map, float dt)
 {
-	RectF collisionRect = player->collider().getRectBase();
+	RectF collisionRect = player->collider().scaledRect();
 
 	bool restrictLeft =		doesCollideLeft	(map, collisionRect.TopLeft(), dt)	|| 
 							doesCollideLeft	(map, collisionRect.BotLeft(), dt);

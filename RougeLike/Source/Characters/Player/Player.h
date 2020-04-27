@@ -17,7 +17,6 @@ public:
 	Player(GameData* gameData);
 	~Player();
 
-	// TODO: change all 'std::string' parameters to 'const std::string&'
 	void init(const std::string& characterConfig);
 	void processStateChanges() { }
 	void handleInput();

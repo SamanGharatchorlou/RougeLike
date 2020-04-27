@@ -17,11 +17,8 @@ public:
 	unsigned int xCount() const { return mData.xCount(); }
 
 	const K* tile(Index index) const;
-	const K* tile(int x, int y) const;
 
-	bool inBounds(int xIndex, int yIndex) const;
-
-protected:
+	bool inBounds(Index index) const;
 	bool isValidIndex(Index index) const;
 
 protected:
@@ -36,13 +33,6 @@ const K* MapBase<K>::tile(const Index index) const
 }
 
 
-template<class K>
-const K* MapBase<K>::tile(int x, int y) const
-{
-	return isValidIndex(Vector2D<int>(x, y)) ? &mData.get(x, y) : nullptr;
-}
-
-
 template <class K>
 bool MapBase<K>::isValidIndex(Index index) const
 {
@@ -54,10 +44,10 @@ bool MapBase<K>::isValidIndex(Index index) const
 
 
 template <class K>
-bool MapBase<K>::inBounds(int x, int y) const
+bool MapBase<K>::inBounds(Index index) const
 {
-	bool xBounds = (x >= 0 && x < xCount());
-	bool yBounds = (y >= 0 && y < yCount());
+	bool xBounds = (index.x >= 0 && index.x < xCount());
+	bool yBounds = (index.y >= 0 && index.y < yCount());
 
 	return xBounds && yBounds;
 }

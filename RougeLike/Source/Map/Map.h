@@ -6,10 +6,11 @@
 class TextureManager;
 class Texture;
 
+
 class Map : public MapBase<MapTile>
 {
 public:
-	void init(int x, int y);
+	void init(Index index);
 	void populateData(VectorF offset = VectorF());
 
 	Vector2D<float> size() const;
@@ -19,32 +20,30 @@ public:
 	const RectF getLastRect(int yIndex = 0) const;
 
 	const MapTile* tile(Index index) const { return MapBase<MapTile>::tile(index); };
-	const MapTile* tile(int x, int y) const { return MapBase<MapTile> ::tile(x, y); }
 	const MapTile* tile(VectorF position) const;
 
 	const Vector2D<int> index(VectorF position) const;
-	const Vector2D<int> index(const MapTile* tile) const;
 	const Vector2D<int> index(RectF rect) const;
+	const Vector2D<int> index(const MapTile* tile) const;
 
 	const RectF tileRect(Index index) const;
-	const RectF tileRect(int x, int y) const;
 
 	const MapTile* offsetTile(const MapTile* target, int xOffset, int yOffset) const;
 
 	void renderBottomLayer(const TextureManager* tm, float yPoint);
 	void renderTopLayer(const TextureManager* tm, float yPoint);
 
-	bool wallRenderTile(int x, int y) const { return mData.get(x, y).renderType() >= MapTile::Wall; }
-	bool floorRenderTile(int x, int y) const { return mData.get(x, y).renderType() == MapTile::Floor; }
+	bool wallRenderTile(Index index) const { return mData.get(index).renderType() >= MapTile::Wall; }
+	bool floorRenderTile(Index index) const { return mData.get(index).renderType() == MapTile::Floor; }
 
-	bool wallCollisionTile(int x, int y) const { return mData.get(x, y).collisionType() >= MapTile::Wall; }
-	bool floorCollisionTile(int x, int y) const { return mData.get(x, y).collisionType() == MapTile::Floor; }
+	bool wallCollisionTile(Index index) const { return mData.get(index).collisionType() >= MapTile::Wall; }
+	bool floorCollisionTile(Index index) const { return mData.get(index).collisionType() == MapTile::Floor; }
 
-	void addTileType(int x, int y, MapTile::Type type);
-	void setTileType(int x, int y, MapTile::Type type);
-	void removeTileType(int x, int y, MapTile::Type type);
+	void addTileType(Index index, MapTile::Type type);
+	void setTileType(Index index, MapTile::Type type);
+	void removeTileType(Index index, MapTile::Type type);
 
-	const MapTile::EdgeInfo getEdgeInfo(int x, int y) const;
+	const MapTile::EdgeInfo getEdgeInfo(Index index) const;
 
 	Vector2D<int> findYFloorTileRange(int xTileIndex);
 

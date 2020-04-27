@@ -83,7 +83,7 @@ public:
 
 
 protected:
-	void initAnimations(std::string name);
+	void initAnimations(const std::string& name);
 
 
 protected:

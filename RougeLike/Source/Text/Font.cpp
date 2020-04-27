@@ -48,7 +48,7 @@ void Font::resize(int ptSize)
 
 void Font::setText(const std::string& text)
 {
-	if (mFont != nullptr)
+	if (mFont != nullptr && !text.empty())
 	{
 		//Render text surface
 		SDL_Surface* textSurface = TTF_RenderText_Solid(mFont, text.c_str(), colour);
@@ -66,14 +66,11 @@ void Font::setText(const std::string& text)
 			mTexture = SDL_CreateTextureFromSurface(mRenderer, textSurface);
 
 			if (mTexture == nullptr)
-			{
 				DebugPrint(Warning, "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
-			}
 			else
-			{
 				size = VectorF(static_cast<float>(textSurface->w), static_cast<float>(textSurface->h));
-			}
 
+			printf("string '%s' size: %f, %f\n", text.c_str(), size.x, size.y);
 			// loaded surface no longer needed
 			SDL_FreeSurface(textSurface);
 			textSurface = nullptr;
@@ -81,8 +78,8 @@ void Font::setText(const std::string& text)
 	}
 	else
 	{
-		DebugPrint(Error, "Font has not beed loaded for text: %s, Call Font::loadFromFile first\n", text);
-		return;
+		if(mFont == nullptr)
+			DebugPrint(Error, "Font has not beed loaded for text: %s, Call Font::loadFromFile first\n", text);
 	}
 }
 

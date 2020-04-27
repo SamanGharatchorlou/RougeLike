@@ -17,6 +17,9 @@ public:
 	const Type type() const { return Type::Hit; }
 
 private:
+	bool canMove(VectorF velocity, float dt);
+
+private:
 	Timer<float> decayTimer;
 	VectorF decayVelocity;
 

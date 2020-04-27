@@ -6,7 +6,7 @@ class Text
 {
 public:
 	Text() { }
-	Text(const std::string& text, std::string font, int ptSize, SDL_Color colour);
+	Text(const std::string& text, const std::string& font, int ptSize, SDL_Color colour);
 	void init(const std::string& font, int ptSize, SDL_Color colour, const std::string& text);
 
 	void setText(const std::string& text);
@@ -23,10 +23,16 @@ public:
 	float width() const { return mFont.width(); }
 	float height() const { return mFont.height(); }
 
+	float stringWidth();
+
+	void setOffset(VectorF offset) { mAlignmentOffset = offset; }
+
 	void render(VectorF position);
 
 
 private:
 	std::string mText;
 	Font mFont;
+
+	VectorF mAlignmentOffset;
 };

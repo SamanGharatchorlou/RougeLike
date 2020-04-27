@@ -6,7 +6,7 @@ class PlayerPropertyBag
 {
 public:
 	PlayerPropertyBag() { }
-	void readAttributes(std::string name);
+	void readAttributes(const std::string& name);
 
 public:
 

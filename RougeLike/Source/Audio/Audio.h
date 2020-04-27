@@ -9,8 +9,8 @@ union uMixer
 class Audio
 {
 public:
-	bool loadWav(const std::string filePath);
-	bool loadMUS(const std::string filePath);
+	bool loadWav(const std::string& filePath);
+	bool loadMUS(const std::string& filePath);
 
 	void play() const;
 	void pause() const;

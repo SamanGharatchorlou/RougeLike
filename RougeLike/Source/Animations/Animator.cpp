@@ -22,7 +22,7 @@ void Animator::slowUpdate(float dt)
 }
 
 
-void Animator::selectAnimation(std::string name)
+void Animator::selectAnimation(const std::string& name)
 {
 	timer.restart();
 	mActiveAnimation = mAnimations[name];

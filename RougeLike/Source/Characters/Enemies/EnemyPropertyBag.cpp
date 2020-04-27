@@ -3,7 +3,7 @@
 #include "System/Files/StatReader.h"
 
 
-void EnemyPropertyBag::readAttributes(std::string name)
+void EnemyPropertyBag::readAttributes(const std::string& name)
 {
 	StatReader statReader;
 	XMLValueMap map = statReader.getStats(FileManager::Config_Stats_Enemies, name);

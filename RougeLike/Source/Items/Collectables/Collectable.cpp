@@ -7,13 +7,13 @@
 #include "Characters/Player/Player.h"
 
 
-void Collectable::init(std::string value, Texture* texture, RectF rect)
+void Collectable::init(const std::string& value, Texture* texture, RectF rect)
 {
 	mValue = value;
 	mTexture = texture;
 	mRect = rect;
 
-	mCollider.init(&mRect);
+	mCollider.init(&mRect, VectorF(2.5f, 1.5f));
 }
 
 

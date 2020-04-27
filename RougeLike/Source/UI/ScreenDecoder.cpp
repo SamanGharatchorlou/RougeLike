@@ -103,7 +103,7 @@ Layers ScreenDecoder::buildUIScreenLayers(ScreenAttributes& screenAttributes)
 			else if (strcmp(type, "TextBox") == 0)
 			{
 				UITextBox::Data data;
-				fillTextBoxtData(data, attributes);
+				fillTextBoxData(data, attributes);
 
 				layer->addElement(new UITextBox(data));
 			}
@@ -146,6 +146,8 @@ void ScreenDecoder::setRects(Layers layers)
 				// If no font size has been given auto size the font to fit the box
 				if (!textBox->fontSize())
 					textBox->autoSizeFont();
+
+				textBox->align();
 			}
 		}
 	}
@@ -212,8 +214,6 @@ Elements ScreenDecoder::setParents(Layers layers, ScreenAttributes& screenAttrib
 
 void ScreenDecoder::fillElementData(UIElement::Data& data, Attributes& attributes) const
 {
-	// RectF
-
 	// Allow these attributes not to be set, assuming they have a parent rect
 	float x = attributes.contains("x") ? attributes.getFloat("x") : 12345.0f;
 	float y = attributes.contains("y") ? attributes.getFloat("y") : 12345.0f;
@@ -255,7 +255,7 @@ void ScreenDecoder::fillBoxData(UIBox::Data& data, Attributes& attributes) const
 }
 
 
-void ScreenDecoder::fillTextBoxtData(UITextBox::Data& data, Attributes& attributes) const
+void ScreenDecoder::fillTextBoxData(UITextBox::Data& data, Attributes& attributes) const
 {
 	fillBoxData(data, attributes);
 
@@ -270,6 +270,7 @@ void ScreenDecoder::fillTextBoxtData(UITextBox::Data& data, Attributes& attribut
 	};
 
 	data.ptSize = attributes.contains("ptSize") ? attributes.getInt("ptSize") : 0;
+	data.aligment = attributes.contains("align") ? attributes.getString("align") : "";
 }
 
 

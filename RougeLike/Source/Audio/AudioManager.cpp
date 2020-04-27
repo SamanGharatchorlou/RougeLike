@@ -16,7 +16,7 @@ void AudioManager::init()
 
 
 
-void AudioManager::loadWav(const std::string name, const std::string filePath)
+void AudioManager::loadWav(const std::string& name, const std::string& filePath)
 {
 	Audio *audioWav = new Audio;
 
@@ -32,7 +32,7 @@ void AudioManager::loadWav(const std::string name, const std::string filePath)
 }
 
 
-void AudioManager::loadMUS(const std::string name, const std::string filePath)
+void AudioManager::loadMUS(const std::string& name, const std::string& filePath)
 {
 	Audio *audioMus = new Audio;
 
@@ -49,7 +49,7 @@ void AudioManager::loadMUS(const std::string name, const std::string filePath)
 
 
 // what if I put an invalid texture path???
-Audio* AudioManager::getAudio(const std::string label) const
+Audio* AudioManager::getAudio(const std::string& label) const
 {
 	auto search = AudioClips.find(label);
 

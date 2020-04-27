@@ -7,7 +7,7 @@
 class EnemyPropertyBag
 {
 public:
-	void readAttributes(std::string name);
+	void readAttributes(const std::string& name);
 
 public:
 	// Physics

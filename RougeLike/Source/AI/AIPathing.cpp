@@ -18,7 +18,7 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 
 	// verify end index()
 	// TODO: if enemy out of map bounds i.e. follows player into entrance/exit end.x/y == -1
-	if (!mMap->floorCollisionTile(endIndex.x, endIndex.y))
+	if (!mMap->floorCollisionTile(endIndex))
 	{
 		printf("hit I do need this...\n");
 		endIndex = nearestFloorTile(endIndex);
@@ -72,7 +72,7 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 
 					int newCost = cost[mMap->index(currentTile)] + 1; // replace 1 with the floor type
 
-					if (mMap->inBounds(index.x, index.y) &&
+					if (mMap->inBounds(index) &&
 						(cameFrom.get(index).isNegative() || newCost < cost[index]))
 					{
 						int priority = newCost + heuristic(endIndex, index);

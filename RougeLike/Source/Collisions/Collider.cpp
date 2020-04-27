@@ -38,7 +38,7 @@ void Collider::reset()
 
 
 // convert the player rect to just return the base of the player i.e. their effective feet area
-RectF Collider::getRectBase() const 
+RectF Collider::scaledRect() const
 {
 	RectF colliderRect = *mRect;
 
@@ -54,8 +54,8 @@ RectF Collider::getRectBase() const
 
 bool Collider::doesIntersect(Collider* collider) const
 {
-	RectF thisRect = getRectBase();
-	RectF thatRect = collider->getRect();
+	RectF thisRect = scaledRect();
+	RectF thatRect = collider->rect();
 
 	bool xOverlaps = thisRect.LeftPoint() < thatRect.RightPoint() && thisRect.RightPoint() > thatRect.LeftPoint();
 	bool yOverlaps = thisRect.TopPoint() < thatRect.BotPoint() && thisRect.BotPoint() > thatRect.TopPoint();

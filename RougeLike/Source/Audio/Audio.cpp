@@ -2,7 +2,7 @@
 #include "Audio.h"
 
 
-bool Audio::loadWav(const std::string filePath)
+bool Audio::loadWav(const std::string& filePath)
 {
 	mixer.gScratch = Mix_LoadWAV(filePath.c_str());
 
@@ -18,7 +18,7 @@ bool Audio::loadWav(const std::string filePath)
 	}
 }
 
-bool Audio::loadMUS(const std::string filePath)
+bool Audio::loadMUS(const std::string& filePath)
 {
 	mixer.gMusic = Mix_LoadMUS(filePath.c_str());
 

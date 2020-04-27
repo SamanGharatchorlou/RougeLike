@@ -67,7 +67,7 @@ int TextureManager::loadAllTextures(FileManager::Folder folder)
 
 
 // textures
-bool TextureManager::loadTexture(const std::string label, const std::string& fileName)
+bool TextureManager::loadTexture(const std::string& label, const std::string& fileName)
 {
 	Texture *texture = new Texture;
 

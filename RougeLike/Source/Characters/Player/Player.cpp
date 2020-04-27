@@ -113,9 +113,9 @@ void Player::render()
 		mFlip = SDL_FLIP_NONE;
 	}
 
-#if DRAW_PLAYER_RECT
-	debugDrawRect(rectA(), RenderColour(RenderColour::Green));
-	debugDrawRect(mCollider.getRectBase(), RenderColour(RenderColour::Blue));
+#if DRAW_PLAYER_RECTS
+	debugDrawRect(rect(), RenderColour(RenderColour::Green));
+	debugDrawRect(mCollider.scaledRect(), RenderColour(RenderColour::Blue));
 	debugDrawRects(mWeapon->getRects(), RenderColour(RenderColour::Yellow));
 #else
 	// Character

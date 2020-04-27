@@ -22,7 +22,7 @@ public:
 
 	void handleEvent(const Event event, EventData& data) override;
 
-	UIElement* find(std::string id);
+	UIElement* find(const std::string& id);
 
 
 private:

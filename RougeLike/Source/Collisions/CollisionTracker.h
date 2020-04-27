@@ -5,6 +5,8 @@ class Collider;
 class CollisionTracker
 {
 public:
+
+	void addAttacker(Collider* attackers);
 	void addAttackers(std::vector<Collider*> attackers);
 	void addDefender(Collider* collider);
 

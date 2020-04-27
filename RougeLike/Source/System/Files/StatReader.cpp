@@ -2,7 +2,7 @@
 #include "StatReader.h"
 
 
-XMLValueMap StatReader::getStats(FileManager::Folder folder, std::string config)
+XMLValueMap StatReader::getStats(FileManager::Folder folder, const std::string& config)
 {
 	std::string configFilePath = FileManager::Get()->filePath(folder, config);
 
@@ -24,7 +24,7 @@ XMLValueMap StatReader::getStats(FileManager::Folder folder, std::string config)
 
 		if (attributes.contains("type"))
 		{
-			std::string type = attributes.getString("type");
+			const std::string type = attributes.getString("type");
 
 			if (strcmp(type.c_str(), "int") == 0)
 			{

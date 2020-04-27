@@ -17,7 +17,7 @@ Attributes XMLParser::attributes(xmlNode node) const
 }
 
 
-std::string XMLParser::firstRootNodeValue(std::string label) const
+std::string XMLParser::firstRootNodeValue(const std::string& label) const
 {
 	xmlNode node = rootNode()->first_node(label.c_str());
 	

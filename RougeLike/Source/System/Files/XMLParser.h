@@ -17,7 +17,7 @@ public:
 		file = nullptr;
 	}
 
-	void parseXML(std::string filePath)
+	void parseXML(const std::string& filePath)
 	{
 		// TODO: this assert will not trigger for config/mapS/dungeon.xml i.e. map has extra S so file doesnt exist there
 		// but it will pass the assert, does the exists function work correctly?
@@ -36,7 +36,7 @@ public:
 	xmlNode rootNode() const;
 	Attributes attributes(xmlNode root) const;
 
-	std::string firstRootNodeValue(std::string label) const;
+	std::string firstRootNodeValue(const std::string& label) const;
 
 #if _DEBUG
 	std::string path;
