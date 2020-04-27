@@ -23,7 +23,7 @@
 	<Layer>
 		
 		<!-- Main Title -->
-		<TextBox id = "SelectionTitle" x = "0.15" y = "0.02" height = "0.2"  width = "0.7">
+		<TextBox id = "SelectionTitle" x = "0.15" y = "0.02" height = "0.12"  width = "0.7">
 			<text r = "0" g = "255" b = "0" >Character Selection</text>
 		</TextBox>
 
@@ -49,7 +49,7 @@
 		<Box id = "WeaponImg" parent = "WeaponBox" x = "0.75" y = "0.1" width = "0.1" height = "0.8" texture = "weapon_katana"></Box>
 
 		<!-- Weapon name -->
-		<TextBox id = "WeaponName" parent = "WeaponBox" x = "0.1" y = "0.4" height = "0.4"  width = "0.6">
+		<TextBox id = "WeaponName" parent = "WeaponBox" x = "0.1" y = "0.4" height = "0.3"  width = "0.6">
 			<text r = "0" g = "0" b = "0" >Basic Sword</text>
 		</TextBox>
 	</Layer>

@@ -83,9 +83,14 @@
     <ClCompile Include="Source\States\PreGameState.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyStates\EnemyPreAttack.cpp" />
     <ClCompile Include="Source\Map\TunnelGenerator.cpp" />
-    <ClCompile Include="Source\Map\MapLevel.cpp" />
     <ClCompile Include="Source\AI\AIPathMap.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyStates\EnemyWait.cpp" />
+    <ClCompile Include="Source\Map\Environment.cpp" />
+    <ClCompile Include="Source\Utilities\Shapes\Shape.cpp" />
+    <ClCompile Include="Source\Utilities\Shapes\Square.cpp" />
+    <ClCompile Include="Source\Characters\Enemies\Spawning\EnemySpawner.cpp" />
+    <ClCompile Include="Source\Characters\Attributes\PhysicsBody.cpp" />
+    <ClCompile Include="Source\Characters\Attributes\Knockback.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -190,10 +195,15 @@
     <ClInclude Include="Source\Characters\Enemies\EnemyStates\EnemyState.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyStates\EnemyClear.h" />
     <ClInclude Include="Source\Map\TunnelGenerator.h" />
-    <ClInclude Include="Source\Map\MapLevel.h" />
     <ClInclude Include="Source\AI\AIPathMap.h" />
     <ClInclude Include="Source\Map\MapBase.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyStates\EnemyWait.h" />
+    <ClInclude Include="Source\Map\Environment.h" />
+    <ClInclude Include="Source\Utilities\Shapes\Shape.h" />
+    <ClInclude Include="Source\Utilities\Shapes\Square.h" />
+    <ClInclude Include="Source\Characters\Enemies\Spawning\EnemySpawner.h" />
+    <ClInclude Include="Source\Characters\Attributes\PhysicsBody.h" />
+    <ClInclude Include="Source\Characters\Attributes\Knockback.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "Spawner.h"
 
-#include "Characters/Enemies/EnemyManager.h"
-#include "Characters/Enemies/Enemy.h"
 #include "Map/Map.h"
 
 // Find a random valid y tile at map position x
@@ -25,17 +23,4 @@ VectorF Spawner::findSpawnPoint(Map* map, int xPositionPercentage)
 
 	Index index(xTileIndex, randomYTile);
 	return map->tileRect(index).Center();
-}
-
-
-void EnemySpawner::spawnLevelPatrollers(Map* map, int xIncrement)
-{
-	for (unsigned int xPoint = xIncrement; xPoint < 100 - xIncrement; xPoint += xIncrement)
-	{
-		VectorF position = findSpawnPoint(map, xPoint);
-		mEnemies->spawn(EnemyType::Imp, EnemyState::Patrol, position);
-	}
-
-	//VectorF position = findSpawnPoint(map, 10);
-	//mEnemies->spawn(EnemyType::Imp, EnemyState::Patrol, position);
 }

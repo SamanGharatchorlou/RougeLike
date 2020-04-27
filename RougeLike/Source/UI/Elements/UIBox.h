@@ -10,6 +10,9 @@ public:
 	struct Data : public UIElement::Data
 	{
 		Texture* texture;
+#if _DEBUG
+		bool drawRect;
+#endif
 	};
 
 public:
@@ -28,4 +31,8 @@ public:
 
 protected:
 	Texture* mTexture;
+
+#if _DEBUG
+	bool mDrawRect;
+#endif
 };

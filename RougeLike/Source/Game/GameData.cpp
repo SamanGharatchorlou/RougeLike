@@ -12,7 +12,7 @@
 #include "Characters/Player/PlayerManager.h"
 #include "Characters/Enemies/EnemyManager.h"
 
-#include "Map/MapLevel.h"
+#include "Map/Environment.h"
 #include "Game/Camera.h"
 #include "Game/Cursor.h"
 
@@ -35,7 +35,7 @@ void GameData::init()
 	Camera::Get()->setViewport(window->size());
 
 	// Map Level
-	level = new MapLevel;
+	environment = new Environment;
 
 	// Audio
 	audioManager = new AudioManager;
@@ -66,7 +66,7 @@ void GameData::init()
 
 
 	// Setup gameinfo
-	GameInfo::Get()->map(level);
+	GameInfo::Get()->map(environment);
 
 	// Must be done AFTER everything has been new'd
 	setupObservers();
@@ -76,7 +76,7 @@ void GameData::init()
 void GameData::setupObservers()
 {
 	// Update the current map level
-	level->addObserver(scoreManager);
+	environment->addObserver(scoreManager);
 
 	// Update the UI with all scores
 	scoreManager->addObserver(uiManager);
@@ -110,7 +110,7 @@ void GameData::free()
 	delete uiManager;
 	delete scoreManager;
 
-	delete level;
+	delete environment;
 	delete cursor;
 
 	delete playerManager;

@@ -20,7 +20,7 @@ class AIPathMap;
 class Enemy
 {
 public:
-	Enemy(GameData* gameData, AIPathMap* map);
+	Enemy(GameData* gameData);
 	~Enemy() { }
 
 	// Core
@@ -29,6 +29,8 @@ public:
 	void fastUpdate(float dt);
 	void render();
 	void renderCharacter();
+
+	void setMap(AIPathMap* map) { mMap = map; }
 
 	// State handling
 	void addState(EnemyState::Type state);

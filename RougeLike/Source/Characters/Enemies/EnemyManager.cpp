@@ -2,17 +2,17 @@
 #include "Characters/Enemies/EnemyManager.h"
 
 #include "Game/GameData.h"
-#include "Map/MapLevel.h"
+#include "Map/Environment.h"
 #include "Game/Camera.h"
 #include "Characters/Player/PlayerManager.h"
 
-#include "Items/Spawner.h"
-
 #include "Characters/Enemies/Imp.h"
 
-// TEMP
+// State specific updates
 #include "Characters/Enemies/EnemyStates/EnemyRun.h"
 #include "Characters/Enemies/EnemyStates/EnemyAttack.h"
+
+#include "Utilities/Shapes/Square.h"
 
 // TODO: remove enemies once out of play, i.e. player has not killed them and moved onto the next level
 EnemyManager::EnemyManager(GameData* gameData) : mGameData(gameData), mSpawner(this) { }
@@ -34,7 +34,7 @@ EnemyManager::~EnemyManager()
 
 void EnemyManager::generatePathMap()
 {
-	mPathMap.build(mGameData->level->primaryMap(), 2, 2);
+	mPathMap.build(mGameData->environment->primaryMap(), 2, 2);
 }
 
 
@@ -54,7 +54,7 @@ void EnemyManager::addEnemiesToPool(EnemyType type, unsigned int count)
 
 		case EnemyType::Imp:
 		{
-			Imp* imp = new Imp(mGameData, &mPathMap);
+			Imp* imp = new Imp(mGameData);
 			imp->init();
 
 			enemyObject.first = imp;
@@ -86,6 +86,7 @@ void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF positio
 
 			enemy->propertyBag().pHealth.get().setFullHp();
 			enemy->spawn(state, position);
+			enemy->setMap(&mPathMap);
 			enemy->setAttackTarget(mTarget);
 
 			// subscribe to player weapon collisions
@@ -101,9 +102,20 @@ void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF positio
 
 void EnemyManager::spawnLevel()
 {
-	// TODO: can i just link this up to level and forget about updating it?
-	int xIncrement = 5;
-	mSpawner.spawnLevelPatrollers(mGameData->level->primaryMap(), 20);
+	// Update ai path map
+	generatePathMap();
+	
+	int minIncrement = clamp(10 - mGameData->environment->mapLevel() , 5, 10);
+	int maxIncrement = 15;
+
+	int xIncrement = randomNumberBetween(minIncrement, maxIncrement);
+	mSpawner.spawnPatrollers(mGameData->environment->primaryMap(), xIncrement);
+
+	float side = 50.0f;
+	PointList points{ VectorF(), VectorF(side, 0.0f), VectorF(side,side) , VectorF(0.0f, side) };
+	Square spawnSquare(points);
+
+	mSpawner.spawnShape(mGameData->environment->primaryMap(), 50, spawnSquare, EnemyType::Imp);
 }
 
 

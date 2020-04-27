@@ -1,20 +1,18 @@
 #include "pch.h"
 #include "Player.h"
 
-#include "States/State.h"
-
 #include "Game/GameData.h"
+#include "Game/Camera.h"
 #include "Game/Cursor.h"
 #include "Input/InputManager.h"
 #include "Graphics/TextureManager.h"
-#include "Game/Camera.h"
-
-#include "PlayerPropertyBag.h"
-
-#include "Weapons/Weapon.h"
 
 #include "System/Files/AnimationReader.h"
-#include "Map/MapLevel.h" // TODO: do i need both maplevel and map?
+#include "PlayerPropertyBag.h"
+#include "Weapons/Weapon.h"
+#include "States/State.h"
+
+#include "Map/Environment.h"
 #include "Map/Map.h"
 
 
@@ -26,7 +24,7 @@ Player::Player(GameData* gameData) :
 	mFlip(SDL_FLIP_NONE)
 {
 #if _DEBUG
-	mCollider.setName("enemy");
+	mCollider.setName("player");
 #endif
 }
 

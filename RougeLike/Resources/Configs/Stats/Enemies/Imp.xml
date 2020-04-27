@@ -19,7 +19,8 @@
 	<AttackSpeed type ="double">1</AttackSpeed>
 	<TackleChargeTime type = "float">1</TackleChargeTime>
 	<TackleDistance type = "float">2000</TackleDistance>
-	<TackleSpeed type = "float">200</TackleSpeed> <!-- attack vs tackle speed?? ->
+	<TackleSpeed type = "float">200</TackleSpeed> <!-- attack vs tackle speed?? -->
+	<KnockbackDistance type = "float">40</KnockbackDistance>
 
 	<!-- Patrol -->
 	<SightRange type = "float">50000</SightRange>

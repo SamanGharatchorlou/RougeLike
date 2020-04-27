@@ -20,6 +20,9 @@
 #define DRAW_ENEMY_RECT 0
 #define DRAW_ENEMY_TARGET_PATH 0
 
+// UI
+#define DRAW_UI_RECTS 0
+
 #else
 #define FRAMERATE_CAP 0
 #define PRINT_FRAMERATE 0
@@ -29,6 +32,7 @@
 #define DRAW_AI_PATH 0
 #define DRAW_ENEMY_TARGET_PATH 0
 #define DRAW_COLLECTABLE_RECT 0
+#define DRAW_UI_RECTS 0
 #endif
 
 struct RenderColour
@@ -77,5 +81,6 @@ struct RenderColour
 
 
 void debugDrawLine(VectorF pointA, VectorF pointB, RenderColour colour);
+void debugDrawRectOutline(RectF rect, RenderColour colour);
 void debugDrawRect(RectF rect, RenderColour colour);
 void debugDrawRects(std::vector<RectF> rects, RenderColour colour);

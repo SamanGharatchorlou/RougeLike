@@ -252,6 +252,13 @@ void ScreenDecoder::fillBoxData(UIBox::Data& data, Attributes& attributes) const
 	}
 	else
 		data.texture = nullptr;
+
+#if _DEBUG
+	if (attributes.contains("debugDraw"))
+		data.drawRect = true;
+	else
+		data.drawRect = false;
+#endif
 }
 
 

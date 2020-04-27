@@ -68,9 +68,8 @@ void Font::setText(const std::string& text)
 			if (mTexture == nullptr)
 				DebugPrint(Warning, "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
 			else
-				size = VectorF(static_cast<float>(textSurface->w), static_cast<float>(textSurface->h));
+				size = VectorF(textSurface->w, textSurface->h);
 
-			printf("string '%s' size: %f, %f\n", text.c_str(), size.x, size.y);
 			// loaded surface no longer needed
 			SDL_FreeSurface(textSurface);
 			textSurface = nullptr;

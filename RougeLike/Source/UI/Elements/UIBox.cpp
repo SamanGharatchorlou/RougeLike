@@ -4,13 +4,24 @@
 #include "Graphics/Texture.h"
 
 
-UIBox::UIBox(Data& data) : UIElement(data), mTexture(data.texture) { }
+UIBox::UIBox(Data& data) : UIElement(data), mTexture(data.texture)
+{
+#if _DEBUG
+	mDrawRect = data.drawRect;
+#endif
+
+}
 
 
 void UIBox::render()
 {
 	if(mTexture)
 		mTexture->render(mRect);
+
+#if _DEBUG
+	if (mDrawRect || DRAW_UI_RECTS)
+		debugDrawRectOutline(mRect, RenderColour::Blue);
+#endif
 }
 
 

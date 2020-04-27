@@ -41,18 +41,15 @@ public:
 
 
 private:
-	Camera() { }
+	Camera();
 	~Camera() { }
 
 
 private:
-	RectF mBoundaries;
-
-	RectF* mFollowingRect;
-
-	const RectF* mActiveRect;
-
 	RectF mRect;
+	RectF mBoundaries;
+	const RectF* mActiveRect;
+	RectF* mFollowingRect;
 
 	CameraShake shakeyCam;
 };

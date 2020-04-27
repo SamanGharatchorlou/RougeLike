@@ -15,15 +15,29 @@ void debugDrawLine(VectorF pointA, VectorF pointB, RenderColour colour)
 }
 
 
+void debugDrawRectOutline(RectF rect, RenderColour colour)
+{
+	SDL_SetRenderDrawColor(Renderer::Get()->sdlRenderer(), colour.r, colour.g, colour.b, colour.a);
+
+	//RectF rectb = Camera::Get()->toCameraCoords(rect);
+	SDL_Rect renderQuadb = { static_cast<int>(rect.x1),
+					static_cast<int>(rect.y1),
+					static_cast<int>(rect.Width()),
+					static_cast<int>(rect.Height()) };
+
+	SDL_RenderDrawRect(Renderer::Get()->sdlRenderer(), &renderQuadb);
+}
+
+
 void debugDrawRect(RectF rect, RenderColour colour)
 {
 	SDL_SetRenderDrawColor(Renderer::Get()->sdlRenderer(), colour.r, colour.g, colour.b, colour.a);
 
-	RectF rectb = Camera::Get()->toCameraCoords(rect);
-	SDL_Rect renderQuadb = { static_cast<int>(rectb.x1),
-					static_cast<int>(rectb.y1),
-					static_cast<int>(rectb.Width()),
-					static_cast<int>(rectb.Height()) };
+	rect = Camera::Get()->toCameraCoords(rect);
+	SDL_Rect renderQuadb = { static_cast<int>(rect.x1),
+					static_cast<int>(rect.y1),
+					static_cast<int>(rect.Width()),
+					static_cast<int>(rect.Height()) };
 
 	SDL_RenderFillRect(Renderer::Get()->sdlRenderer(), &renderQuadb);
 }
@@ -35,12 +49,13 @@ void debugDrawRects(std::vector<RectF> rects, RenderColour colour)
 	
 	for (unsigned int i = 0; i < rects.size(); i++)
 	{
-		RectF rectb = Camera::Get()->toCameraCoords(rects[i]);
-		SDL_Rect renderQuadb = { static_cast<int>(rectb.x1),
-						static_cast<int>(rectb.y1),
-						static_cast<int>(rectb.Width()),
-						static_cast<int>(rectb.Height()) };
+		RectF rect = Camera::Get()->toCameraCoords(rects[i]);
+		SDL_Rect renderQuadb = { static_cast<int>(rect.x1),
+						static_cast<int>(rect.y1),
+						static_cast<int>(rect.Width()),
+						static_cast<int>(rect.Height()) };
 
 		SDL_RenderFillRect(Renderer::Get()->sdlRenderer(), &renderQuadb);
 	}
 }
+

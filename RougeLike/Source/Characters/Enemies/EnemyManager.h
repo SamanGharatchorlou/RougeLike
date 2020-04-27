@@ -7,7 +7,7 @@
 #include "EnemyEnums.h"
 
 #include "Characters/Enemies/EnemyStates/EnemyState.h"
-#include "Items/Spawner.h"
+#include "Spawning/EnemySpawner.h"
 
 #include "AI/AIPathMap.h"
 

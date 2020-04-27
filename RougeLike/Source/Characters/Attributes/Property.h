@@ -62,6 +62,7 @@ class WeaponProperty : public Property<std::string> { };
 class TackleSpeedProperty : public Property<float> { };
 class TackleDistanceProperty : public Property<float> { };
 class TackleChangeTimeProperty : public Property<float> { };
+class KnockbackDistanceProperty : public Property<float> { };
 
 // Enemy Patrol
 class SightRangeProperty : public Property<float> { };

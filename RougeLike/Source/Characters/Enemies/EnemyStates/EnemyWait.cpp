@@ -5,14 +5,14 @@
 
 void EnemyWait::init()
 {
-	timer.restart();
+	timer.restart();	
 	mEnemy->getAnimator()->selectAnimation("Idle");
 }
 
 
 void EnemyWait::slowUpdate(float dt)
 {
-	if (timer.getSeconds() > 0.5f)
+	if (timer.getSeconds() > 2.0f)
 		mEnemy->popState();
 }
 

@@ -14,6 +14,8 @@ public:
 	void render() override;
 	void exit() override { }
 
+	void resume() override;
+
 	const Type type() const { return Type::Patrol; }
 
 private:

@@ -25,6 +25,7 @@ public:
 	TackleDistanceProperty pTackleDistance;
 	TackleSpeedProperty pTackleSpeed;
 	TackleChangeTimeProperty pTackleChargeTime;
+	KnockbackDistanceProperty pKnockbackDistance;
 
 	// Run
 	ChaseRangeProperty pChaseRange;

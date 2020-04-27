@@ -4,8 +4,9 @@
 #include "Game/GameData.h"
 
 #include "Game/Cursor.h"
-#include "Map/MapLevel.h"
+#include "Map/Environment.h"
 #include "UI/UIManager.h"
+
 #include "Characters/Player/PlayerManager.h"
 #include "Characters/Enemies/EnemyManager.h"
 #include "Items/Collectables/Collectables.h"
@@ -13,7 +14,7 @@
 
 RenderManager::RenderManager(GameData* gameData) :
 	mGameData(gameData),
-	mLevel(nullptr),
+	mEnvironment(nullptr),
 	mPlayer(nullptr),
 	mEnemies(nullptr),
 	mUIManager(nullptr) { }
@@ -23,13 +24,13 @@ void RenderManager::render()
 {
 	float renderDepth = mGameData->playerManager->rect()->Center().y;
 
-	mLevel->renderBottomLayer(mGameData->textureManager, renderDepth);
+	mEnvironment->renderBottomLayer(mGameData->textureManager, renderDepth);
 
 	mEnemies->render();
 
 	mPlayer->render();
 
-	mLevel->renderTopLayer(mGameData->textureManager, renderDepth);
+	mEnvironment->renderTopLayer(mGameData->textureManager, renderDepth);
 
 	mCollectables->render();
 	

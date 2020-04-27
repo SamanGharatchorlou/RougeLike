@@ -13,16 +13,8 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 	Index startingIndex = mMap->index(startPosition);
 	Index endIndex = mMap->index(endPosition);
 
-	if (startingIndex == endIndex)
+	if (!mMap->isValidIndex(endIndex) || startingIndex == endIndex || !mMap->floorCollisionTile(endIndex))
 		return Path();
-
-	// verify end index()
-	// TODO: if enemy out of map bounds i.e. follows player into entrance/exit end.x/y == -1
-	if (!mMap->floorCollisionTile(endIndex))
-	{
-		printf("hit I do need this...\n");
-		endIndex = nearestFloorTile(endIndex);
-	}
 
 	// End tile cannot be inaccessible or path finding will fail
 	PathTile& endTile = (*mMap)[endIndex];
@@ -38,11 +30,6 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 
 	Grid<Index> cameFrom(mMap->yCount(), mMap->xCount(), Index(-1,-1));
 	Grid<int> cost(mMap->yCount(), mMap->xCount(), 0);
-
-	// start search coming from no where with 0 cost
-	cameFrom[startingIndex] = Index(-1, -1);
-	cost[startingIndex] = 0;
-
 
 #if _DEBUG
 	int loopCounter = 0;
@@ -104,7 +91,6 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 
 		loopCounter++;
 #endif
-
 	}
 
 #if _DEBUG
@@ -184,7 +170,7 @@ void AIPathing::draw()
 
 // --- Private Functions --- //
 
-// Fix when playing is in wall, and invalid end path is given
+// Fix when player is in wall, and invalid end path is given
 Index AIPathing::nearestFloorTile(Index index) const
 {
 	const PathTile* wallTile = mMap->tile(index);

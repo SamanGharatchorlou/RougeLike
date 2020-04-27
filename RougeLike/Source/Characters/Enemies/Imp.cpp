@@ -4,7 +4,7 @@
 #include "Game/GameData.h"
 
 
-Imp::Imp(GameData* gameData, AIPathMap* map) : Enemy(gameData, map) { }
+Imp::Imp(GameData* gameData) : Enemy(gameData) { }
 
 
 void Imp::init()
@@ -20,7 +20,7 @@ void Imp::init()
 	mPhysics.setRect(RectF(VectorF(), size * colliderRatio));
 
 	mCollider.init(&mPhysics.rectRef());
-	mCollider.setDamage(propertyBag().pDamage.get());
+	mCollider.set(propertyBag().pDamage.get(), propertyBag().pKnockbackDistance.get());
 
 	Enemy::init();
 }

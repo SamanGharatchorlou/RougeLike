@@ -4,7 +4,7 @@
 
 #include "Characters/Enemies/Enemy.h"
 
-#include "Map/MapLevel.h" // TODO: do I need both map level and map here?
+#include "Map/Environment.h"
 #include "Map/Map.h"
 
 
@@ -28,7 +28,7 @@ void EnemyPatrol::fastUpdate(float dt)
 void EnemyPatrol::slowUpdate(float dt)
 {
 	if (hasReachedPositionTarget())
-		mEnemy->getStateMachine()->replaceState(new EnemyIdle(mEnemy));
+		mEnemy->addState(EnemyState::Wait);
 
 	if (canSeeAttackTarget())
 		mEnemy->replaceState(EnemyState::Alert);
@@ -41,12 +41,19 @@ void EnemyPatrol::render()
 }
 
 
+void EnemyPatrol::resume()
+{
+	mEnemy->getAnimator()->selectAnimation("Run");
+	setPatrolPoint();
+}
+
+
 // --- Private Functions -- //
 
 void EnemyPatrol::setPatrolPoint()
 {
 	// TODO: make this enemy get map
-	Map* map = mEnemy->getData()->level->primaryMap();
+	Map* map = mEnemy->getData()->environment->primaryMap();
 
 	VectorF position = mEnemy->position();
 	Index tilePositionIndex = map->index(position);
@@ -68,7 +75,7 @@ void EnemyPatrol::setPatrolPoint()
 
 bool EnemyPatrol::canSeeAttackTarget() const
 {
-	Map* map = mEnemy->getData()->level->primaryMap();
+	Map* map = mEnemy->getData()->environment->primaryMap();
 
 	VectorF position = mEnemy->position();
 	VectorF attackTargetPosition = mEnemy->attackTargetRect()->Center();

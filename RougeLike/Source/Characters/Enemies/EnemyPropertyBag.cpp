@@ -51,6 +51,10 @@ void EnemyPropertyBag::readAttributes(const std::string& name)
 	float tackleChargeTime = map.getFloat("TackleChargeTime");
 	pTackleChargeTime.set(tackleChargeTime);
 
+	// Knockback Distance
+	float knockbackDistance = map.getFloat("KnockbackDistance");
+	pKnockbackDistance.set(knockbackDistance);
+
 	// Sight Range
 	float sightRange = map.getFloat("SightRange");
 	pSightRange.set(sightRange);

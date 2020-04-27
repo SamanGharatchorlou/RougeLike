@@ -1,7 +1,7 @@
 #pragma once
 
 struct GameData;
-class MapLevel;
+class Environment;
 class PlayerManager;
 class EnemyManager;
 class UIManager;
@@ -15,7 +15,7 @@ class RenderManager
 public:
 	RenderManager(GameData* gameData);
 
-	void Set(MapLevel* level) { mLevel = level; }
+	void Set(Environment* environment) { mEnvironment = environment; }
 	void Set(PlayerManager* player) { mPlayer = player; }
 	void Set(EnemyManager* enemies) { mEnemies = enemies; }
 	void Set(UIManager* UI) { mUIManager = UI; }
@@ -28,7 +28,7 @@ public:
 private:
 	GameData* mGameData;
 
-	MapLevel* mLevel;
+	Environment* mEnvironment;
 	PlayerManager* mPlayer;;
 	EnemyManager* mEnemies;
 	UIManager* mUIManager;

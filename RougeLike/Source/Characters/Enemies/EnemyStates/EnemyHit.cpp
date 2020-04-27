@@ -4,13 +4,12 @@
 #include "Game/GameData.h"
 #include "Characters/Enemies/Enemy.h"
 
-#include "Collisions/DamageCollider.h"
-
 #include "Game/Camera.h"
 #include "Graphics/Texture.h"
 
-// TEMP
-#include "Map/MapLevel.h"
+#include "Collisions/DamageCollider.h"
+
+#include "Map/Environment.h"
 #include "Map/Map.h"
 
 
@@ -88,7 +87,7 @@ void EnemyHit::exit()
 // --- Private Functions --- //
 bool EnemyHit::canMove(VectorF velocity, float dt)
 {
-	Map* map = mEnemy->getData()->level->primaryMap();
+	Map* map = mEnemy->getData()->environment->primaryMap();
 
 	VectorF position = mEnemy->position() + (velocity * dt);
 	Index index = map->index(position);

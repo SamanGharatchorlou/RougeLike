@@ -18,7 +18,6 @@ public:
 
 private:
 	int mScore;
-
 	int mMapLevel;
 
 	bool updateUI;

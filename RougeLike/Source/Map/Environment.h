@@ -5,10 +5,10 @@
 class Map;
 class TextureManager;
 
-class MapLevel : public Dispatcher
+class Environment : public Dispatcher
 {
 public:
-	MapLevel();
+	Environment();
 
 	void init();
 
@@ -19,7 +19,7 @@ public:
 	void renderTopLayer(const TextureManager* tm, float depth);
 
 	Map* map(VectorF position) const;
-	Map* primaryMap() const { return mMap; }
+	Map* primaryMap() const { return mPrimaryMap; }
 
 	VectorF size() const;
 
@@ -27,6 +27,8 @@ public:
 	bool generateNextLevel(VectorF position) const;
 
 	RectF boundaries() const;
+
+	int mapLevel() const { return mMapLevel; }
 
 private:
 	void buildEntrance(float offset);
@@ -44,8 +46,10 @@ private:
 
 private:
 	Map* mEntrace;
-	Map* mMap;
+	Map* mPrimaryMap;
 	Map* mExit;
 
-	Vector2D<int> mapSize;
+	Vector2D<int> mMapSize;
+
+	int mMapLevel;
 };

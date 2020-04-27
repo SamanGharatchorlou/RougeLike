@@ -1,22 +1,22 @@
 #include "pch.h"
-#include "MapLevel.h"
+#include "Environment.h"
 
 #include "Game/Camera.h"
 #include "TunnelGenerator.h"
 #include "Map.h"
 
 
-MapLevel::MapLevel()
+Environment::Environment() : mMapLevel(1)
 {
-	mMap = new Map();
+	mPrimaryMap = new Map();
 	mEntrace = new Map();
 	mExit = nullptr;
 
-	mapSize = Vector2D<int>(30, 20);
+	mMapSize = Vector2D<int>(30, 20);
 };
 
 
-void MapLevel::init()
+void Environment::init()
 {
 	// create first entrace and level
 	buildEntrance(0.0f);
@@ -27,19 +27,20 @@ void MapLevel::init()
 }
 
 
-void MapLevel::nextLevel()
+void Environment::nextLevel()
 {
 	swapToEntrance();
 	buildLevel();
 
 	closeLevel();
 
+	mMapLevel++;
 	IncrementLevelEvent event;
 	notify(Event::IncrementMapLevel, event);
 }
 
 
-void MapLevel::closeLevelEntrace()
+void Environment::closeLevelEntrace()
 {
 	swapToExit();
 	buildExit();
@@ -48,51 +49,51 @@ void MapLevel::closeLevelEntrace()
 }
 
 
-void MapLevel::renderBottomLayer(const TextureManager* tm, float depth)
+void Environment::renderBottomLayer(const TextureManager* tm, float depth)
 {
 	Map* connectingTunnel = mExit ? mExit : mEntrace;
 	connectingTunnel->renderBottomLayer(tm, depth);
 
-	mMap->renderBottomLayer(tm, depth);
+	mPrimaryMap->renderBottomLayer(tm, depth);
 }
 
 
-void MapLevel::renderTopLayer(const TextureManager* tm, float depth)
+void Environment::renderTopLayer(const TextureManager* tm, float depth)
 {
 	Map* connectingTunnel = mExit ? mExit : mEntrace;
 	connectingTunnel->renderTopLayer(tm, depth);
 
-	mMap->renderTopLayer(tm, depth);
+	mPrimaryMap->renderTopLayer(tm, depth);
 }
 
 
-VectorF MapLevel::size() const
+VectorF Environment::size() const
 {
-	return mMap->size();
+	return mPrimaryMap->size();
 }
 
 
-Map* MapLevel::map(VectorF position) const
+Map* Environment::map(VectorF position) const
 {
 	if (mEntrace && position.x < mEntrace->getLastRect().RightPoint())
 		return mEntrace;
 
-	else if (mMap && position.x < mMap->getLastRect().LeftPoint())
-		return mMap;
+	else if (mPrimaryMap && position.x < mPrimaryMap->getLastRect().LeftPoint())
+		return mPrimaryMap;
 
 	else
 		return mExit;
 }
 
 
-bool MapLevel::generateNextLevel(VectorF position) const
+bool Environment::generateNextLevel(VectorF position) const
 {
-	if (position.x > mMap->getLastRect().RightPoint())
+	if (position.x > mPrimaryMap->getLastRect().RightPoint())
 	{
-		RectF lastRect = mMap->getLastRect(mMap->yCount() / 2);
+		RectF lastRect = mPrimaryMap->getLastRect(mPrimaryMap->yCount() / 2);
 
 		// Make sure its completely out of view
-		lastRect = lastRect.Translate(mMap->tileSize());
+		lastRect = lastRect.Translate(mPrimaryMap->tileSize());
 
 		return !Camera::Get()->inView(lastRect);
 	}
@@ -101,14 +102,14 @@ bool MapLevel::generateNextLevel(VectorF position) const
 }
 
 
-bool MapLevel::closeEntrance(VectorF position) const
+bool Environment::closeEntrance(VectorF position) const
 {
 	if (mEntrace && position.x > mEntrace->getLastRect().RightPoint())
 	{
-		RectF lastRect = mEntrace->getLastRect(mMap->yCount() / 2);
+		RectF lastRect = mEntrace->getLastRect(mPrimaryMap->yCount() / 2);
 
 		// Make sure its completely out of view
-		lastRect = lastRect.Translate(mMap->tileSize());
+		lastRect = lastRect.Translate(mPrimaryMap->tileSize());
 
 		return !Camera::Get()->inView(lastRect);
 	}
@@ -117,7 +118,7 @@ bool MapLevel::closeEntrance(VectorF position) const
 }
 
 
-RectF MapLevel::boundaries() const
+RectF Environment::boundaries() const
 {
 	float xLeft = 0.0f;
 	float xRight = 0.0f;
@@ -125,27 +126,27 @@ RectF MapLevel::boundaries() const
 	if (mEntrace)
 	{
 		xLeft = mEntrace->getFirstRect().LeftPoint();
-		xRight = mMap->getLastRect().RightPoint();
+		xRight = mPrimaryMap->getLastRect().RightPoint();
 	}
 	else
 	{
-		xLeft = mMap->getFirstRect().LeftPoint();
+		xLeft = mPrimaryMap->getFirstRect().LeftPoint();
 		xRight = mExit->getLastRect().RightPoint();
 	}
 
-	return RectF(xLeft, 0.0f, xRight, mMap->size().y);
+	return RectF(xLeft, 0.0f, xRight, mPrimaryMap->size().y);
 }
 
 
 // --- Private Functions --- //
 
-void MapLevel::buildEntrance(float offset)
+void Environment::buildEntrance(float offset)
 {
 	// Add a small buffer so the eixt tunnel takes up whole screen
 	VectorF size(VectorF(16.0f, 16.0f) * 3.0f); // TODO: hard coded
 	int width = (int)((Camera::Get()->size().x / size.x) * 1.5f);
 
-	mEntrace->init(Index(width, mapSize.y));
+	mEntrace->init(Index(width, mMapSize.y));
 
 	TunnelGenerator generator;
 	generator.buildSimpleLine(mEntrace->getData());
@@ -154,46 +155,46 @@ void MapLevel::buildEntrance(float offset)
 }
 
 
-void MapLevel::buildLevel()
+void Environment::buildLevel()
 {
 	ASSERT(Warning, mEntrace != nullptr, "Entrance cannot be null, did you forget to call swapToEntrace()?\n");
 
 	// Random map width between 90% and 120% of previous level
-	int mapMinX = (int)((float)mapSize.x * 0.9f);
-	int mapMaxX = (int)((float)mapSize.x * 1.2f);
+	int mapMinX = (int)((float)mMapSize.x * 0.9f);
+	int mapMaxX = (int)((float)mMapSize.x * 1.2f);
 
 	int mapWidth = randomNumberBetween(mapMinX, mapMaxX);
 
 	Index index(mEntrace->xCount() - 1, 0.0f);
 	float offset = mEntrace->tileRect(index).RightPoint();
 
-	buildRandomLevel(mapWidth, mapSize.y, offset);
+	buildRandomLevel(mapWidth, mMapSize.y, offset);
 }
 
 
-void MapLevel::buildRandomLevel(int width, int height, float offset)
+void Environment::buildRandomLevel(int width, int height, float offset)
 {
-	mapSize = Vector2D<int>(width, height);
+	mMapSize = Vector2D<int>(width, height);
 
-	mMap->init(Index(width, height));
+	mPrimaryMap->init(Index(width, height));
 
 	TunnelGenerator generator;
-	generator.buildRandom(mMap->getData());
+	generator.buildRandom(mPrimaryMap->getData());
 
-	mMap->populateData(VectorF(offset, 0.0f));
+	mPrimaryMap->populateData(VectorF(offset, 0.0f));
 }
 
 
-void MapLevel::buildExit()
+void Environment::buildExit()
 {
 	ASSERT(Warning, mExit != nullptr, "Exit cannot be null, did you forget to call swapToExit()?\n");
 
-	float offset = mMap->getLastRect().RightPoint();
+	float offset = mPrimaryMap->getLastRect().RightPoint();
 
 	// Add a small buffer so the eixt tunnel takes up whole screen
-	int width = (int)((Camera::Get()->size().x / mMap->tileSize().x) * 1.5f);
+	int width = (int)((Camera::Get()->size().x / mPrimaryMap->tileSize().x) * 1.5f);
 
-	mExit->init(Index(width, mapSize.y));
+	mExit->init(Index(width, mMapSize.y));
 
 	TunnelGenerator generator;
 	generator.buildSimpleLine(mExit->getData());
@@ -202,34 +203,34 @@ void MapLevel::buildExit()
 }
 
 
-void MapLevel::swapToEntrance()
+void Environment::swapToEntrance()
 {
 	mEntrace = mExit;
 	mExit = nullptr;
 }
 
 
-void MapLevel::swapToExit()
+void Environment::swapToExit()
 {
 	mExit = mEntrace;
 	mEntrace = nullptr;
 }
 
 
-void MapLevel::closeEntrance()
+void Environment::closeEntrance()
 {
-	mMap->addTileType(Index(0, mMap->yCount() / 2), MapTile::ColumnTop);
-	mMap->addTileType(Index(0, (mMap->yCount() / 2) + 1), MapTile::ColumnBot);
+	mPrimaryMap->addTileType(Index(0, mPrimaryMap->yCount() / 2), MapTile::ColumnTop);
+	mPrimaryMap->addTileType(Index(0, (mPrimaryMap->yCount() / 2) + 1), MapTile::ColumnBot);
 }
 
 
-void MapLevel::closeLevel()
+void Environment::closeLevel()
 {
 	mEntrace->addTileType(Index(0, mEntrace->yCount() / 2), MapTile::ColumnTop);
 	mEntrace->addTileType(Index(0, (mEntrace->yCount() / 2) + 1), MapTile::ColumnBot);
 
 	// Open entrance
-	mMap->setTileType(Index(0, mMap->yCount() / 2), MapTile::Floor);
-	mMap->setTileType(Index(0, (mMap->yCount() / 2) + 1), MapTile::Floor);
+	mPrimaryMap->setTileType(Index(0, mPrimaryMap->yCount() / 2), MapTile::Floor);
+	mPrimaryMap->setTileType(Index(0, (mPrimaryMap->yCount() / 2) + 1), MapTile::Floor);
 }
 

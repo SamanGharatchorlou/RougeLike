@@ -4,20 +4,16 @@
 
 #include "Game/GameData.h"
 #include "Input/InputManager.h"
+#include "Collisions/DamageCollider.h"
 
 #include "Player.h"
-
-#include "Weapons/Melee/MeleeWeapon.h"
-#include "Weapons/Ranged/RangedWeapon.h"
-
-#include "Map/MapLevel.h"
-#include "Map/Map.h"
 #include "Characters/Enemies/EnemyManager.h"
 
+#include "Map/Environment.h"
+#include "Map/Map.h"
+
+#include "Weapons/Melee/MeleeWeapon.h"
 #include "Characters/Attributes/Level.h"
-
-
-#include "Collisions/DamageCollider.h"
 
 
 PlayerManager::PlayerManager(GameData* gameData) : mGameData(gameData)
@@ -89,7 +85,7 @@ void PlayerManager::fastUpdate(float dt)
 	player->physics().resetAllowedMovement();
 
 	// Restricts movemoent from input, movement should happen after this
-	resolveWallCollisions(mGameData->level->map(rect()->Center()), dt);
+	resolveWallCollisions(mGameData->environment->map(rect()->Center()), dt);
 
 	// Movement, animations, weapon updates
 	player->fastUpdate(dt);
@@ -103,6 +99,7 @@ void PlayerManager::slowUpdate(float dt)
 { 
 	if (player->collider().gotHit())
 	{
+		// Take damage
 		const DamageCollider* damageCollider = static_cast<const DamageCollider*>(player->collider().getOtherCollider());
 		Damage damage = damageCollider->damage();
 		Health& hp = player->propertyBag()->pHealth.get();
@@ -110,6 +107,10 @@ void PlayerManager::slowUpdate(float dt)
 
 		SetHealthBarEvent event(hp);
 		notify(Event::SetHealth, event);
+
+		// Knockback
+		VectorF source = damageCollider->rect().Center();
+
 	}
 
 	player->slowUpdate(dt);
@@ -121,7 +122,7 @@ void PlayerManager::slowUpdate(float dt)
 	}
 
 	VectorF position = rect()->Center();
-	Vector2D<int> currentTile = mGameData->level->map(position)->index(position);
+	Vector2D<int> currentTile = mGameData->environment->map(position)->index(position);
 
 	if (tileIndex != currentTile)
 	{

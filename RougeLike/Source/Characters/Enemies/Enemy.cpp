@@ -11,10 +11,10 @@
 #include "Characters/Player/Player.h"
 
 
-Enemy::Enemy(GameData* gameData, AIPathMap* map) :
+Enemy::Enemy(GameData* gameData) :
 	mGameData(gameData),
-	mMap(map),
 	mStateMachine(new EnemyNullState),
+	mMap(nullptr),
 	mAttackTarget(nullptr),
 	mPositionTarget(nullptr)
 {
@@ -177,6 +177,7 @@ void Enemy::addState(EnemyState::Type state)
 	{
 	case EnemyState::Wait:
 		mStateMachine.addState(new EnemyWait(this));
+		break;
 			
 	case EnemyState::PreAttack:
 		mStateMachine.addState(new EnemyPreAttack(this));
@@ -190,11 +191,14 @@ void Enemy::addState(EnemyState::Type state)
 		mStateMachine.addState(new EnemyPatrol(this));
 		break;
 
+	case EnemyState::Idle:
+		mStateMachine.addState(new EnemyIdle(this));
+		break;
+
 	case EnemyState::None:
 		mStateMachine.addState(new EnemyNullState());
 		break;
 
-	case EnemyState::Idle:
 	case EnemyState::Run:
 	case EnemyState::Alert:
 	case EnemyState::Dead:

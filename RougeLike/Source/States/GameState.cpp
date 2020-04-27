@@ -10,7 +10,7 @@
 #include "UI/UIManager.h"
 #include "Managers/ScoreManager.h"
 
-#include "Map/MapLevel.h"
+#include "Map/Environment.h"
 #include "Game/Cursor.h"
 #include "Game/Camera.h"
 
@@ -38,18 +38,18 @@ void GameState::init()
 
 	// Entrance width
 	float entraceOffset = Camera::Get()->size().x * 1.5f;
-	mGameData->level->init();
+	mGameData->environment->init();
 
 	// Camera
-	VectorF cameraPosition = VectorF(0.0f, mGameData->level->size().y / 2.0f);
+	VectorF cameraPosition = VectorF(0.0f, mGameData->environment->size().y / 2.0f);
 	Camera::Get()->setPosition(cameraPosition);
-	Camera::Get()->setMapBoundaries(mGameData->level->boundaries());
+	Camera::Get()->setMapBoundaries(mGameData->environment->boundaries());
 
 	// UI
 	mGameData->uiManager->selectScreen(Screen::Game);
 
 	// Player
-	VectorF playerPosition = VectorF(Camera::Get()->getCenter().x, mGameData->level->size().y / 2.0f);
+	VectorF playerPosition = VectorF(Camera::Get()->getCenter().x, mGameData->environment->size().y / 2.0f);
 	mGameData->playerManager->rect()->SetLeftCenter(playerPosition);
 
 	// Camera
@@ -69,7 +69,7 @@ void GameState::init()
 	collectables.subscribeCollider(&mGameData->playerManager->get()->collider());
 
 	// rendering
-	mGameData->renderManager->Set(mGameData->level);
+	mGameData->renderManager->Set(mGameData->environment);
 	mGameData->renderManager->Set(mGameData->playerManager);
 	mGameData->renderManager->Set(enemies);
 	mGameData->renderManager->Set(mGameData->uiManager);
@@ -80,7 +80,7 @@ void GameState::init()
 	//enemies->spawn(EnemyType::Imp, 20);
 
 	Spawner itemSpawner;
-	VectorF position = itemSpawner.findSpawnPoint(mGameData->level->primaryMap(), 10);
+	VectorF position = itemSpawner.findSpawnPoint(mGameData->environment->primaryMap(), 10);
 
 	const std::string weaponName = "weapon_big_hammer";
 	WeaponCollectable* weaponPickup = new WeaponCollectable(weaponName, mGameData->textureManager->getTexture(weaponName));
@@ -133,10 +133,10 @@ void GameState::slowUpdate(float dt)
 	Camera::Get()->slowUpdate(dt);
 
 	// End current level, close old level exit, open new level entrance
-	if (mGameData->level->generateNextLevel(mGameData->playerManager->rect()->TopLeft()))
+	if (mGameData->environment->generateNextLevel(mGameData->playerManager->rect()->TopLeft()))
 	{
-		mGameData->level->nextLevel();
-		Camera::Get()->setMapBoundaries(mGameData->level->boundaries());
+		mGameData->environment->nextLevel();
+		Camera::Get()->setMapBoundaries(mGameData->environment->boundaries());
 
 		// end level
 		mGameData->enemies->destroyAllEnemies();
@@ -144,10 +144,10 @@ void GameState::slowUpdate(float dt)
 	}
 
 	// Close off new level entrance, open exit
-	if (mGameData->level->closeEntrance(mGameData->playerManager->rect()->TopLeft()))
+	if (mGameData->environment->closeEntrance(mGameData->playerManager->rect()->TopLeft()))
 	{
-		mGameData->level->closeLevelEntrace();
-		Camera::Get()->setMapBoundaries(mGameData->level->boundaries());
+		mGameData->environment->closeLevelEntrace();
+		Camera::Get()->setMapBoundaries(mGameData->environment->boundaries());
 	}
 }
 

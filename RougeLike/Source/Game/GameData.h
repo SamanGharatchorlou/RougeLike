@@ -6,7 +6,7 @@ class AudioManager;
 class InputManager;
 class RenderManager;
 class UIManager;
-class MapLevel;
+class Environment;
 class Cursor;
 class PlayerManager;
 class EnemyManager;
@@ -28,7 +28,7 @@ struct GameData
 	UIManager* uiManager = nullptr;
 	ScoreManager* scoreManager = nullptr;
 
-	MapLevel* level = nullptr;
+	Environment* environment = nullptr;
 	Cursor* cursor = nullptr;
 
 	PlayerManager* playerManager = nullptr;
@@ -55,7 +55,7 @@ public:
 	}
 
 
-	void map(MapLevel* map) { mMap = map; }
+	void map(Environment* map) { mMap = map; }
 
 	const VectorF mapDimentions() const;
 
@@ -65,5 +65,5 @@ private:
 	GameInfo() : mMap(nullptr)  { };
 	~GameInfo() { };
 
-	const MapLevel* mMap ;
+	const Environment* mMap ;
 };

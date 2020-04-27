@@ -8,7 +8,7 @@ class AIPathMap;
 class Imp : public Enemy
 {
 public:
-	Imp(GameData* gameData, AIPathMap* map);
+	Imp(GameData* gameData);
 
 	void init() override;
 
