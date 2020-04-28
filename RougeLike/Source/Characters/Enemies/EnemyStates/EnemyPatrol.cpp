@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "EnemyPatrol.h"
+
+#include "Game/GameData.h"
+
 #include "EnemyIdle.h"
 
 #include "Characters/Enemies/Enemy.h"

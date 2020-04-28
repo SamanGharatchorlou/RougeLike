@@ -1,12 +1,30 @@
 #include "pch.h"
 #include "EnemySpawner.h"
 
-#include "Utilities/Shapes/Shape.h"
+#include "Utilities/Shapes/Square.h"
+#include "Utilities/Shapes/Circle.h"
 
 #include "Characters/Enemies/EnemyManager.h"
 #include "Characters/Enemies/Enemy.h"
 
 #include "Map/Map.h"
+
+
+void EnemySpawner::spawnLevel(Map* map, int level)
+{
+	int minIncrement = clamp(10 - level, 5, 10);
+	int maxIncrement = 15;
+
+	int xIncrement = randomNumberBetween(minIncrement, maxIncrement);
+	spawnPatrollers(map, xIncrement);
+
+	Shape randomShape = pickRandomShape();
+	spawnShape(map, 30, randomShape, EnemyType::Imp);
+
+	randomShape = pickRandomShape();
+	spawnShape(map, 60, randomShape, EnemyType::Imp);
+}
+
 
 
 void EnemySpawner::spawnPatrollers(Map* map, int xIncrement)
@@ -16,7 +34,6 @@ void EnemySpawner::spawnPatrollers(Map* map, int xIncrement)
 		VectorF position = findSpawnPoint(map, xPoint);
 		mEnemies->spawn(EnemyType::Imp, EnemyState::Patrol, position);
 	}
-
 }
 
 
@@ -49,5 +66,30 @@ void EnemySpawner::spawnShape(Map* map, int xPoint, Shape shape, EnemyType type)
 	for (int i = 0; i < points.size(); i++)
 	{
 		mEnemies->spawn(type, EnemyState::Idle, topLeftPosition + points[i]);
+	}
+}
+
+
+
+Shape EnemySpawner::pickRandomShape()
+{
+	int randomNumber = randomNumberBetween(0, 2);
+
+	if (randomNumber == 0)
+	{
+		float length = 50.0f;
+		return Square(VectorF(), length);
+	}
+	else if (randomNumber == 1)
+	{
+		float length = 60.0f;
+		int pointCount = randomNumberBetween(6, 12);
+
+		return Circle(VectorF(), length, pointCount);
+	}
+	else
+	{
+		DebugPrint(Log, "picking this random shape number %d not connected to a shape. Returning empty shape.\n");
+		return Shape();
 	}
 }

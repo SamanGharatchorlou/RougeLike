@@ -9,9 +9,12 @@ void AIPathMap::build(Map* map, int xSplit, int ySplit)
 	Grid<MapTile> tileMap = map->getData();
 
 	// New larger path tile map
-	mData.clear(); // TODO: does this correctly clear the data?
+	mData.clear();
 	Index index(tileMap.xCount() * xSplit, tileMap.yCount() * ySplit);
 	mData.clearAndSet(index, PathTile());
+
+	occupiedTiles.clear();
+	toBeOccupiedTiles.clear();
 
 	// Split each tile into 4
 	for (unsigned int y = 0; y < map->yCount(); y++)

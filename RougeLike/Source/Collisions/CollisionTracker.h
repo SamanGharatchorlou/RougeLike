@@ -11,6 +11,7 @@ public:
 	void addDefender(Collider* collider);
 
 	void clearAttackers();
+	void removeDefender(Collider* collider);
 
 	void checkAttackerCollisions();
 	void checkDefenderCollisions();

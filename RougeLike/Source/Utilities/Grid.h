@@ -75,6 +75,9 @@ std::vector<T>& Grid<T>::operator [] (int y)
 template<class T>
 T& Grid<T>::operator [] (Vector2D<int> index)
 {
+	if (!inBounds(index))
+		printf("error\n");
+
 	ASSERT(Error, inBounds(index),
 		"Attempting to get out of bounds index %d, %d in data of size %d, %d \n",
 		index.x, index.y, xCount(), yCount());

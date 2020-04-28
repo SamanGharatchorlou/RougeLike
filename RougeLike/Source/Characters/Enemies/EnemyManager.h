@@ -43,7 +43,7 @@ public:
 	void generatePathMap();
 	void updateEnemyPaths();
 
-	void destroyAllEnemies();
+	void clearAllEnemies();
 
 	void clearAttackingColliders();
 	void addAttackingColliders(std::vector<Collider*> colliders);
@@ -64,7 +64,8 @@ public:
 
 
 private:
-	void deactivate(std::vector<Enemy*>::iterator& iter);
+
+	void clearAndRemove(std::vector<Enemy*>::iterator& iter);
 
 	void clearOccupiedTileInfo();
 	void updateOccupiedTiles();

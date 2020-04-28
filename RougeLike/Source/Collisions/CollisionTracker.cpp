@@ -45,6 +45,21 @@ void CollisionTracker::addDefender(Collider* collider)
 }
 
 
+void CollisionTracker::removeDefender(Collider* collider)
+{
+	for (std::vector<Collider*>::iterator iter = mDefenders.begin(); iter != mDefenders.end(); iter++)
+	{
+		if (collider == *iter)
+		{
+			mDefenders.erase(iter);
+			return;
+		}
+	}
+
+	DebugPrint(Log, "Attempting to remove collider from defending collider list where it is not contained\n");
+}
+
+
 void CollisionTracker::clearAttackers()
 {
 	mAttackers.clear();

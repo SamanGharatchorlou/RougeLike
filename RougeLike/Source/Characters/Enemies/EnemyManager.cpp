@@ -97,7 +97,7 @@ void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF positio
 		}
 	}
 
-	DebugPrint(Warning, "No available enemies of type %d in enemy pool, consider adding more\n", type);
+	DebugPrint(Warning, "No available enemies of type %d in enemy pool of size %d, consider adding more\n", type, mEnemyPool.size());
 }
 
 void EnemyManager::spawnLevel()
@@ -105,17 +105,7 @@ void EnemyManager::spawnLevel()
 	// Update ai path map
 	generatePathMap();
 	
-	int minIncrement = clamp(10 - mGameData->environment->mapLevel() , 5, 10);
-	int maxIncrement = 15;
-
-	int xIncrement = randomNumberBetween(minIncrement, maxIncrement);
-	mSpawner.spawnPatrollers(mGameData->environment->primaryMap(), xIncrement);
-
-	float side = 50.0f;
-	PointList points{ VectorF(), VectorF(side, 0.0f), VectorF(side,side) , VectorF(0.0f, side) };
-	Square spawnSquare(points);
-
-	mSpawner.spawnShape(mGameData->environment->primaryMap(), 50, spawnSquare, EnemyType::Imp);
+	mSpawner.spawnLevel(mGameData->environment->primaryMap(), mGameData->environment->mapLevel());
 }
 
 
@@ -150,7 +140,7 @@ void EnemyManager::slowUpdate(float dt)
 		// Clear out dead enemies
 		if (enemy->state() == EnemyState::None)
 		{
-			deactivate(iter);
+			clearAndRemove(iter);
 
 			if (iter == mActiveEnemies.end())
 				break;
@@ -232,12 +222,20 @@ void EnemyManager::render() const
 }
 
 
-void EnemyManager::destroyAllEnemies()
+void EnemyManager::clearAllEnemies()
 {
-	for (unsigned int i = 0; i < mActiveEnemies.size(); i++)
+	for (Enemy* enemy : mActiveEnemies)
 	{
-		mActiveEnemies[i]->addState(EnemyState::None);
+		enemy->clear();
+		mCollisionManager.removeDefender(enemy->getCollider());
 	}
+
+	for (EnemyObject& enemy : mEnemyPool)
+	{
+		 enemy.second = ObjectStatus::Available;
+	}
+
+	mActiveEnemies.clear();
 }
 
 
@@ -280,16 +278,19 @@ void EnemyManager::addAttackingColliders(std::vector<Collider*> colliders)
 
 
 // --- Private Functions --- //
-void EnemyManager::deactivate(std::vector<Enemy*>::iterator& iter)
+
+void EnemyManager::clearAndRemove(std::vector<Enemy*>::iterator& iter)
 {
-	// Find this enemy in the pool, deactivate and clear from active enemies
+	(*iter)->clear();
+	mCollisionManager.removeDefender((*iter)->getCollider());
+	
+	// Find this enemy in the pool
 	for (std::vector<EnemyObject>::iterator poolIter = mEnemyPool.begin(); poolIter != mEnemyPool.end(); poolIter++)
 	{
 		if (*iter == poolIter->first)
-			poolIter->second = ObjectStatus::Inactive;
+			poolIter->second = ObjectStatus::Available;
 	}
 
-	(*iter)->clear();
 	iter = mActiveEnemies.erase(iter);
 }
 

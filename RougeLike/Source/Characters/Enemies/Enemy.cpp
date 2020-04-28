@@ -82,19 +82,23 @@ void Enemy::renderCharacter()
 
 
 
+// Reset everything that needs to be recalculated when spawned
 void Enemy::clear()
 {
 	// Clear statemachine states (except null state at i = 0)
 	while (mStateMachine.size() > 1)
 	{
-		mStateMachine.popState();
-		mStateMachine.processStateChanges();
+		mStateMachine.forcePopState();
 	}
 
 	while (events.size() > 0)
 		events.pop();
 
+	
+	mMap = nullptr;
+	mPhysics.reset();
 	mFlip = SDL_FLIP_NONE;
+
 	mAttackTarget = nullptr;
 	mPositionTarget = nullptr;
 }

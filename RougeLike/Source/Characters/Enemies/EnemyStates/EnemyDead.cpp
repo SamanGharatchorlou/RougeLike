@@ -26,7 +26,7 @@ void EnemyDead::init()
 
 void EnemyDead::slowUpdate(float dt)
 {
-	mAlpha -= (Uint8)(200 * dt);
+	mAlpha -= (250 * dt);
 
 	// Remove enemy from play
 	if (mAlpha <= 10)

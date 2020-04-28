@@ -19,5 +19,5 @@ public:
 	const Type type() const { return Type::Dead; }
 
 private:
-	Uint8 mAlpha;
+	double mAlpha;
 };

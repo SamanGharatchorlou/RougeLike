@@ -91,6 +91,7 @@
     <ClCompile Include="Source\Characters\Enemies\Spawning\EnemySpawner.cpp" />
     <ClCompile Include="Source\Characters\Attributes\PhysicsBody.cpp" />
     <ClCompile Include="Source\Characters\Attributes\Knockback.cpp" />
+    <ClCompile Include="Source\Utilities\Shapes\Circle.cpp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -204,6 +205,7 @@
     <ClInclude Include="Source\Characters\Enemies\Spawning\EnemySpawner.h" />
     <ClInclude Include="Source\Characters\Attributes\PhysicsBody.h" />
     <ClInclude Include="Source\Characters\Attributes\Knockback.h" />
+    <ClInclude Include="Source\Utilities\Shapes\Circle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

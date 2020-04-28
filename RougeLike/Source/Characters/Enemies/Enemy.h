@@ -55,7 +55,7 @@ public:
 	VectorF		position() const { return mPhysics.position(); }
 
 	virtual RectF renderRect() const = 0;
-
+	 
 	// Systems
 	StateMachine<EnemyState>*	getStateMachine() { return &mStateMachine; }
 	Animator*					getAnimator() { return &mAnimator; }

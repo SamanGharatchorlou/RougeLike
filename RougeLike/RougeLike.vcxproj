@@ -33,6 +33,7 @@
     <ClCompile Include="Source\Characters\Enemies\EnemyStates\EnemyPreAttack.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyStates\EnemyWait.cpp" />
     <ClCompile Include="Source\Characters\Enemies\Spawning\EnemySpawner.cpp" />
+    <ClCompile Include="Source\Utilities\Shapes\Circle.cpp.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Shape.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Square.cpp" />
     <ClCompile Include="Source\Game\CameraShake.cpp" />
@@ -134,6 +135,7 @@
     <ClInclude Include="Source\Characters\Enemies\EnemyStates\EnemyState.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyStates\EnemyWait.h" />
     <ClInclude Include="Source\Characters\Enemies\Spawning\EnemySpawner.h" />
+    <ClInclude Include="Source\Utilities\Shapes\Circle.h" />
     <ClInclude Include="Source\Utilities\Shapes\Shape.h" />
     <ClInclude Include="Source\Utilities\Shapes\Square.h" />
     <ClInclude Include="Source\Events\Events.h" />
@@ -299,12 +301,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)SDL2\SDL2_mixer-2.0.4\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)SDL2\SDL2-2.0.10\include;$(ProjectDir)SDL2\SDL2_ttf-2.0.15\include;$(ProjectDir)SDL2\SDL2_image-2.0.5\include;$(ProjectDir)SDL2\rapidxml\Includes</IncludePath>
+    <IncludePath>$(ProjectDir)SDL2\SDL2_mixer-2.0.4\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)SDL2\SDL2-2.0.10\include;$(ProjectDir)SDL2\SDL2_ttf-2.0.15\include;$(ProjectDir)SDL2\SDL2_image-2.0.5\include;$(ProjectDir)SDL2\rapidxml\Include</IncludePath>
     <LibraryPath>$(ProjectDir)SDL2\SDL2-2.0.10\lib\x86;$(ProjectDir)SDL2\SDL2_ttf-2.0.15\lib\x86;$(ProjectDir)SDL2\SDL2_mixer-2.0.4\lib\x86;$(ProjectDir)SDL2\SDL2_image-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Users\Saman\Documents\Programming\Games\SDL\Libraries\SDL2-2.0.9\include;C:\Users\Saman\Documents\Programming\Games\SDL\Libraries\SDL2_ttf-2.0.15\include;C:\Users\Saman\Documents\Programming\Games\SDL\Libraries\SDL2_mixer-2.0.4\include;C:\Users\Saman\Documents\Programming\Games\SDL\Libraries\SDL2_image-2.0.4\include;C:\Users\Saman\Documents\Programming\Games\Libraries\rapidxml</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;C:\Users\Saman\Documents\Programming\Games\SDL\Libraries\SDL2-2.0.9\lib\x86;C:\Users\Saman\Documents\Programming\Games\SDL\Libraries\SDL2_ttf-2.0.15\lib\x86;C:\Users\Saman\Documents\Programming\Games\SDL\Libraries\SDL2_mixer-2.0.4\lib\x86;C:\Users\Saman\Documents\Programming\Games\SDL\Libraries\SDL2_image-2.0.4\lib\x86</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)SDL2\SDL2-2.0.10\include;$(ProjectDir)SDL2\SDL2_ttf-2.0.15\include;$(ProjectDir)SDL2\SDL2_mixer-2.0.4\include;$(ProjectDir)SDL2\SDL2_image-2.0.5\include;$(ProjectDir)SDL2\rapidxml\Include</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(ProjectDir)SDL2\SDL2-2.0.10\lib\x86;$(ProjectDir)SDL2\SDL2_ttf-2.0.15\lib\x86;$(ProjectDir)SDL2\SDL2_mixer-2.0.4\lib\x86;$(ProjectDir)SDL2\SDL2_image-2.0.5\lib\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\rapidxml\Includes;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\Source;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2-2.0.10\include;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2_ttf-2.0.15\include;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2_mixer-2.0.4\include;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2_image-2.0.5\include;$(IncludePath)</IncludePath>

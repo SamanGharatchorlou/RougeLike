@@ -138,6 +138,17 @@ float Physics::relativeSpeed() const
 }
 
 
+void Physics::reset()
+{
+	mRect.SetTopLeft(VectorF());
+	mVelocity = VectorF();
+	mAcceleration = VectorF();
+
+	resetHasForce();
+	resetAllowedMovement();
+}
+
+
 // --- Private Functions --- //
 void Physics::applyDrag()
 {

@@ -135,11 +135,12 @@ void GameState::slowUpdate(float dt)
 	// End current level, close old level exit, open new level entrance
 	if (mGameData->environment->generateNextLevel(mGameData->playerManager->rect()->TopLeft()))
 	{
+		printf("next level\n");
 		mGameData->environment->nextLevel();
 		Camera::Get()->setMapBoundaries(mGameData->environment->boundaries());
 
 		// end level
-		mGameData->enemies->destroyAllEnemies();
+		mGameData->enemies->clearAllEnemies();
 		mGameData->enemies->spawnLevel();
 	}
 

@@ -56,7 +56,7 @@ public:
 	void setPosition(VectorF position) { mRect.SetCenter(position); }
 	VectorF position() const { return mRect.Center(); }
 
-	// TEMP?
+	// Movement distance
 	float maxMovementDistance(float dt) const { return mMaxVelocity * dt; }
 	VectorF movementDistance(float dt) const { return mVelocity * dt; }
 
@@ -71,6 +71,9 @@ public:
 	// Movement
 	void resetAllowedMovement();
 	void restrictMovement(Direction direction, bool restriction);
+
+	// soft Reset
+	void reset();
 
 
 private:
