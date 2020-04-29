@@ -82,6 +82,10 @@ void WeaponStash::fillBasicWeaponData(XMLParser& parser, WeaponData* data)
 	float x = attributes.getFloat("x");
 	float y = attributes.getFloat("y");
 	data->handleOffset.set(x, y);
+
+	// Audio
+	data->audioHit = parser.firstRootNodeValue("AudioHit");
+	data->audioMiss = parser.firstRootNodeValue("AudioMiss");
 }
 
 

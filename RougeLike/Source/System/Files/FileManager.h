@@ -27,6 +27,13 @@ public:
 		Config_Stats_Player,
 		Config_Stats_Weapons,
 
+		Audio,
+		Audio_Bg,
+		Audio_Effects,
+		Audio_Effects_Attack,
+		Audio_Effects_GetHit,
+		Audio_Effects_Physics,
+
 		count
 	};
 

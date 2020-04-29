@@ -12,7 +12,11 @@
 
 
 
-MeleeWeapon::MeleeWeapon() : mSwingDirection(-1), mSwingSpeed(0.0f), mRotationSum(0.0), mAttacking(false)
+MeleeWeapon::MeleeWeapon() : 
+	mSwingDirection(-1), 
+	mSwingSpeed(0.0f), 
+	mRotationSum(0.0), 
+	mAttacking(false)
 {
 	// 4 blocks seems to be a good number of blocks
 	unsigned int blocks = 4;
@@ -72,6 +76,14 @@ void MeleeWeapon::updateStats(const PlayerPropertyBag* bag)
 
 void MeleeWeapon::attack()
 {
+	if (!mAttacking)
+	{
+		//mHasAudio = true;
+		//mAudio = &missSoundLabel();
+
+		mAudioToPlay = &missSoundLabel();
+	}
+
 	mAttacking = true;
 	overrideCursorControl(true);
 }
@@ -99,6 +111,16 @@ void MeleeWeapon::fastUpdate(float dt)
 
 			mDirection = rotateVector(mDirection, theta * -mSwingDirection);
 		}
+
+		for (const DamageCollider* collider : mBlockColliders)
+		{
+			if (collider->didHit())
+			{
+				mAudioToPlay = &hitSoundLabel();
+				mAudioToStop = &missSoundLabel();
+			}
+		}
+
 	}
 }
 
@@ -183,3 +205,8 @@ const float MeleeWeapon::knockbackDistance() const
 {
 	return mData->knockbackDistance;
 }
+
+
+// Audio
+const std::string& MeleeWeapon::hitSoundLabel() const { return mData->audioHit; };
+const std::string& MeleeWeapon::missSoundLabel() const { return mData->audioMiss; };

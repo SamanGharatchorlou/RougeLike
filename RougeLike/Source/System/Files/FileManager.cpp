@@ -18,14 +18,17 @@ FileManager::FileManager()
 	folderPaths[None]						= std::string("");
 	folderPaths[Root_Folder]				= std::string("\\Resources\\");
 
+	// Images
 	folderPaths[Image_UI]					= std::string("Images\\UI\\");
 	folderPaths[Image_Characters_Enemies]	= std::string("Images\\Characters\\Enemies\\");
 	folderPaths[Image_Characters_Player]	= std::string("Images\\Characters\\Player\\");
 	folderPaths[Image_Maps]					= std::string("Images\\Maps\\");
 	folderPaths[Image_Weapons]				= std::string("Images\\Weapons\\");
 
+	// Font
 	folderPaths[Font]						= std::string("Font\\");
 
+	// Configs
 	folderPaths[Configs]					= std::string("Configs\\");
 	folderPaths[Config_UI]					= std::string("Configs\\UIMenus\\");
 	folderPaths[Config_Map]					= std::string("Configs\\Map\\");
@@ -33,6 +36,14 @@ FileManager::FileManager()
 	folderPaths[Config_Stats_Enemies]		= std::string("Configs\\Stats\\Enemies\\");
 	folderPaths[Config_Stats_Player]		= std::string("Configs\\Stats\\Player\\");
 	folderPaths[Config_Stats_Weapons]		= std::string("Configs\\Stats\\Weapons\\");
+
+	// Audio
+	folderPaths[Audio] = std::string("Audio\\");
+	folderPaths[Audio_Bg] = std::string("Audio\\Background\\");
+	folderPaths[Audio_Effects] = std::string("Audio\\Effects\\");
+	folderPaths[Audio_Effects_Attack] = std::string("Audio\\Effects\\Attack\\");
+	folderPaths[Audio_Effects_GetHit] = std::string("Audio\\Effects\\GetHit\\");
+	folderPaths[Audio_Effects_Physics] = std::string("Audio\\Effects\\Physics\\");
 }
 
 

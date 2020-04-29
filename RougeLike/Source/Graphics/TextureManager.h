@@ -1,7 +1,6 @@
 #pragma once
 
 class Texture;
-class Font;
 
 class TextureManager
 {
@@ -12,8 +11,8 @@ public:
 
 	void init();
 
-	bool loadTexture(const std::string& label , const std::string& fileName);
 	int loadAllTextures(FileManager::Folder folder);
+	bool loadTexture(const std::string& label , const std::string& fileName);
 
 	Texture* getTexture(const std::string& label) const;
 

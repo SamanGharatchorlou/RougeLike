@@ -5,6 +5,7 @@
 
 #include "Managers/GameController.h"
 #include "Graphics/TextureManager.h"
+#include "Audio/AudioManager.h"
 #include "Graphics/RenderManager.h"
 #include "Input/InputManager.h"
 #include "UI/UIManager.h"
@@ -35,6 +36,7 @@ GameState::GameState(GameData* gameData, GameController* gameController) :
 void GameState::init()
 {
 	mGameData->cursor->setTexture(mGameData->textureManager->getTexture("GameCursor"));
+	//mGameData->audioManager->play("Ludumdum");
 
 	// Entrance width
 	float entraceOffset = Camera::Get()->size().x * 1.5f;

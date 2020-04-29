@@ -12,6 +12,8 @@ public:
 	bool loadWav(const std::string& filePath);
 	bool loadMUS(const std::string& filePath);
 
+	bool isPlaying() const;
+
 	void play() const;
 	void pause() const;
 	void stop() const;

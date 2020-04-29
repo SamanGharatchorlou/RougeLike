@@ -32,6 +32,63 @@ EnemyManager::~EnemyManager()
 }
 
 
+void EnemyManager::fastUpdate(float dt)
+{
+	if (mActiveEnemies.size() > 0)
+	{
+		for (auto enemy : mActiveEnemies)
+		{
+			enemy->fastUpdate(dt);
+		}
+
+		// TODO: move this
+		// Check for player weapon hitting enemy
+		mCollisionManager.checkAttackerDefenderCollisions();
+	}
+}
+
+
+void EnemyManager::slowUpdate(float dt)
+{
+	for (std::vector<Enemy*>::iterator iter = mActiveEnemies.begin(); iter != mActiveEnemies.end(); iter++)
+	{
+		Enemy* enemy = *iter;
+
+		// Handle enemy messages
+		while (enemy->hasEvent())
+			handleEnemyEvent(enemy);
+
+		// Update enemies
+		enemy->slowUpdate(dt);
+
+		// Clear out dead enemies
+		if (enemy->state() == EnemyState::None)
+		{
+			clearAndRemove(iter);
+
+			if (iter == mActiveEnemies.end())
+				break;
+		}
+	}
+
+	// Update weapon collider list
+	clearAttackingColliders();
+	addAttackingColliders(mGameData->playerManager->getWeaponColliders());
+
+#if _DEBUG // Police the pool and active enemy lists
+	int activeEnemies = 0;
+	for (unsigned int i = 0; i < mEnemyPool.size(); i++)
+	{
+		if (mEnemyPool[i].second == ObjectStatus::Active)
+			activeEnemies++;
+	}
+
+	ASSERT(Warning, activeEnemies == mActiveEnemies.size(),
+		"There is a mismatch between the number of active enemies in the pool(%d) and the number active in the active list %d\n",
+		activeEnemies, mActiveEnemies.size());
+#endif
+}
+
 void EnemyManager::generatePathMap()
 {
 	mPathMap.build(mGameData->environment->primaryMap(), 2, 2);
@@ -106,63 +163,6 @@ void EnemyManager::spawnLevel()
 	generatePathMap();
 	
 	mSpawner.spawnLevel(mGameData->environment->primaryMap(), mGameData->environment->mapLevel());
-}
-
-
-void EnemyManager::fastUpdate(float dt)
-{
-	if (mActiveEnemies.size() > 0)
-	{
-		for (auto enemy : mActiveEnemies)
-		{
-			enemy->fastUpdate(dt);
-		}
-
-		// Check for player weapon hitting enemy
-		mCollisionManager.checkDefenderCollisions();
-	}
-}
-
-
-void EnemyManager::slowUpdate(float dt)
-{
-	for (std::vector<Enemy*>::iterator iter = mActiveEnemies.begin(); iter != mActiveEnemies.end(); iter++)
-	{
-		Enemy* enemy = *iter;
-
-		// Handle enemy messages
-		while (enemy->hasEvent())
-			handleEnemyEvent(enemy);
-
-		// Update enemies
-		enemy->slowUpdate(dt);
-
-		// Clear out dead enemies
-		if (enemy->state() == EnemyState::None)
-		{
-			clearAndRemove(iter);
-
-			if (iter == mActiveEnemies.end())
-				break;
-		}
-	}
-
-	// Update weapon collider list
-	clearAttackingColliders();
-	addAttackingColliders(mGameData->playerManager->getWeaponColliders());
-
-#if _DEBUG // Police the pool and active enemy lists
-	int activeEnemies = 0;
-	for (unsigned int i = 0; i < mEnemyPool.size(); i++)
-	{
-		if (mEnemyPool[i].second == ObjectStatus::Active)
-			activeEnemies++;
-	}
-
-	ASSERT(Warning, activeEnemies == mActiveEnemies.size(),
-		"There is a mismatch between the number of active enemies in the pool(%d) and the number active in the active list %d\n",
-		activeEnemies, mActiveEnemies.size());
-#endif
 }
 
 

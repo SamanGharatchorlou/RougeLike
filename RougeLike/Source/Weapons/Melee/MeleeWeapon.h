@@ -17,6 +17,9 @@ public:
 	void fastUpdate(float dt) override;
 	void slowUpdate(float dt) override { };
 
+	const std::string& hitSoundLabel() const override;
+	const std::string& missSoundLabel() const override;
+
 	void updateAnchor(VectorF anchor) override;
 	void updateAimDirection(VectorF cursorPosition) override;
 

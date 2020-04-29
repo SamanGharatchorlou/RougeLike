@@ -20,6 +20,11 @@ public:
 	void fastUpdate(float dt) override;
 	void slowUpdate(float dt) override;
 
+	// TODO: Unimplemented functions
+	const std::string& hitSoundLabel() const override { return ""; };
+	const std::string& missSoundLabel() const override { return ""; };
+	// Unimplemented functions
+
 	void updateAnchor(VectorF anchor) override;
 	void updateAimDirection(VectorF cursorPosition) override;
 

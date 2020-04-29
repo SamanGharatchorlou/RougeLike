@@ -37,6 +37,7 @@ bool Audio::loadMUS(const std::string& filePath)
 void Audio::play() const
 {
 	// MUSIC
+	printf("play\n");
 	if (isMusic)
 	{
 		if (Mix_PlayingMusic() == 0)
@@ -74,4 +75,9 @@ void Audio::stop() const
 	{
 		Mix_HaltMusic();
 	}
+}
+
+bool Audio::isPlaying() const
+{
+	return Mix_PlayingMusic();
 }

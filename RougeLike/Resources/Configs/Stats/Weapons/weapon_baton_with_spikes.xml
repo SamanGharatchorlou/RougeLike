@@ -7,4 +7,8 @@
 	<ProjectileWidth>10</ProjectileWidth>
 	<ProjectileHeight>10</ProjectileHeight>
 	<QuiverSize>20</QuiverSize>
+
+	<!-- TEMP -->
+	<AudioHit>LightHit</AudioHit>
+	<AudioMiss>SwooshMiss1</AudioMiss>
 </Ranged>

@@ -18,6 +18,9 @@ struct WeaponData
 	Texture* texture = nullptr;
 	Damage damage;
 	VectorF handleOffset;
+
+	std::string audioMiss;
+	std::string audioHit;
 };
 
 

@@ -27,13 +27,8 @@ TextureManager::~TextureManager()
 // load all textures here
 void TextureManager::init() 
 {
-	FileManager* fm = FileManager::Get();
-
-	std::string config;
-	std::string textureFolder;
-	int fails = 0;
-
 	DebugPrint(Log, "\n--- Loading Textures ---\n");
+	int fails = 0;
 
 	DebugPrint(Log, "\nWeapon textures\n");
 	fails += loadAllTextures(FileManager::Image_Weapons);
@@ -78,7 +73,11 @@ bool TextureManager::loadTexture(const std::string& label, const std::string& fi
 		return true;
 	}
 	else
+	{
+		DebugPrint(Log, "Failure: texture NOT loaded '%s' at %s\n", label.c_str(), fileName.c_str());
 		return false;
+	}
+		
 }
 
 

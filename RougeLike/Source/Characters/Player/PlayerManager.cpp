@@ -4,6 +4,8 @@
 
 #include "Game/GameData.h"
 #include "Input/InputManager.h"
+#include "Audio/Audio.h"
+#include "Audio/AudioManager.h"
 #include "Collisions/DamageCollider.h"
 
 #include "Player.h"
@@ -97,6 +99,38 @@ void PlayerManager::fastUpdate(float dt)
 
 void PlayerManager::slowUpdate(float dt) 
 { 
+	// Play attack audio
+	WeaponAudioEvent audioEvent = player->weapon()->consumeAudioEvent();
+
+	if (!audioEvent.isEmpty())
+	{
+		if (audioEvent.mAudioToStop)
+		{
+			mGameData->audioManager->stop(*audioEvent.mAudioToStop);
+			printf("stopping %s\n", audioEvent.mAudioToStop->c_str());
+		}
+
+		if (audioEvent.mAudioToPlay)
+		{
+			Audio* audio = mGameData->audioManager->getAudio(*audioEvent.mAudioToPlay);
+
+			printf("play audio event\n");
+
+			if (!audio->isPlaying())
+			{
+				audio->play();
+				printf("audio is not playing, play something\n");
+			}
+			else
+			{
+				printf("There is already audio playing, cannot play %s\n", audioEvent.mAudioToPlay->c_str());
+			}
+
+		}
+	}
+
+
+	// Resolve player getting hit
 	if (player->collider().gotHit())
 	{
 		// Take damage
@@ -115,15 +149,15 @@ void PlayerManager::slowUpdate(float dt)
 
 	player->slowUpdate(dt);
 
+	// Level up
 	if (player->propertyBag()->pLevel.get().didLevelUp())
 	{
 		player->updateWeaponStats(player->propertyBag());
 		updateUIStats();
 	}
 
-	VectorF position = rect()->Center();
-	Vector2D<int> currentTile = mGameData->environment->map(position)->index(position);
-
+	// Update enemy paths when player changes tile
+	Vector2D<int> currentTile = mGameData->environment->map(rect()->Center())->index(rect()->Center());
 	if (tileIndex != currentTile)
 	{
 		tileIndex = currentTile;

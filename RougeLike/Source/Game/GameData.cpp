@@ -80,19 +80,18 @@ void GameData::setupObservers()
 
 	// Update the UI with all scores
 	scoreManager->addObserver(uiManager);
-
 	// Update the UI with the players hp and the stats attack, defence etc.
 	playerManager->addObserver(uiManager);
 
 	// Update enemy paths
 	playerManager->addObserver(enemies);
 
+
+
 	// Update the score
 	enemies->addObserver(scoreManager);
 	// Player gains exp
 	enemies->addObserver(playerManager);
-	// Update enemy paths
-	//enemies->addObserver(enemies);
 }
 
 

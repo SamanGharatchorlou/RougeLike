@@ -11,10 +11,17 @@ public:
 	void init();
 
 	// load music or clips
-	void loadWav(const std::string& name, const std::string& filePath);
-	void loadMUS(const std::string& name, const std::string& filePath);
+	int loadAllMUS(FileManager::Folder folder);
+	int loadAllWAV(FileManager::Folder folder);
+
+	bool loadWav(const std::string& name, const std::string& filePath);
+	bool loadMUS(const std::string& name, const std::string& filePath);
 
 	Audio* getAudio(const std::string& label) const;
+
+	bool isPlaying(const std::string& label) const;
+	void play(const std::string& label);
+	void stop(const std::string& label);
 
 	// audio control
 	void setVolume(int theVolume);
