@@ -22,7 +22,7 @@ public:
 	void setPosition(VectorF position) { mRect.SetCenter(position); }
 	void move(VectorF translation) { mRect.Translate(translation); }
 
-	Collider* getCollider() { return &mCollider; }
+	Collider* collider() { return &mCollider; }
 	bool pickedUp() { return mCollider.gotHit(); }
 
 #if DRAW_COLLECTABLE_RECT
@@ -32,9 +32,8 @@ public:
 protected:
 	Texture* mTexture;
 
-	Collider mCollider;
-
 	RectF mRect;
+	Collider mCollider;
 
 	std::string mValue;
 };
@@ -45,7 +44,6 @@ class WeaponCollectable : public Collectable
 {
 public:
 	WeaponCollectable(const std::string& value, Texture* texture);
-
 	void activate(PlayerManager* playerManager) override;
 
 };
@@ -53,6 +51,5 @@ public:
 class HealthCollectable : public Collectable
 {
 public:
-
 	void activate(PlayerManager* playerManager) override;
 };

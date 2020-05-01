@@ -1,83 +1,66 @@
 #include "pch.h"
 #include "Audio.h"
 
-
-bool Audio::loadWav(const std::string& filePath)
+// --- Sound --- //
+bool Sound::load(const std::string& filePath)
 {
-	mixer.gScratch = Mix_LoadWAV(filePath.c_str());
+	mChunk = Mix_LoadWAV(filePath.c_str());
 
-	if (mixer.gScratch == NULL)
+	if (!mChunk)
 	{
-		DebugPrint(Warning, "Failed to load audio file %s. SDL_mixer Error: %s\n", filePath, Mix_GetError());
+		DebugPrint(Warning, "Failed to load sound audio file %s. SDL_mixer Error: %s\n", filePath, Mix_GetError());
 		return false;
 	}
 	else
 	{
-		isMusic = false;
 		return true;
 	}
 }
 
-bool Audio::loadMUS(const std::string& filePath)
+void Sound::play(int channel)
 {
-	mixer.gMusic = Mix_LoadMUS(filePath.c_str());
+	Mix_PlayChannel(channel, mChunk, 0);
+}
 
-	if (mixer.gScratch == NULL)
+
+// --- Music --- //
+bool Music::load(const std::string& filePath)
+{
+	mMusic = Mix_LoadMUS(filePath.c_str());
+
+	if (!mMusic)
 	{
-		DebugPrint(Warning, "Failed to load audio file %s. SDL_mixer Error: %s\n", filePath, Mix_GetError());
+		DebugPrint(Warning, "Failed to load music audio file %s. SDL_mixer Error: %s\n", filePath, Mix_GetError());
 		return false;
 	}
 	else
 	{
-		isMusic = true;
 		return true;
 	}
 }
 
-void Audio::play() const
-{
-	// MUSIC
-	printf("play\n");
-	if (isMusic)
-	{
-		if (Mix_PlayingMusic() == 0)
-		{
-			//Play the music
-			Mix_PlayMusic(mixer.gMusic, -1);
-		}
-		else if (Mix_PausedMusic() == 1)
-		{
-			Mix_ResumeMusic();
-		}
-	}
 
-	// SOUND
-	else
+void Music::play(int channel)
+{
+	if (!Mix_PlayingMusic())
 	{
-		Mix_PlayChannel(-1, mixer.gScratch, 0);
+		Mix_PlayMusic(mMusic, -1);
+	}
+	else if (Mix_PausedMusic() == 1)
+	{
+		Mix_ResumeMusic();
 	}
 }
 
-void Audio::pause() const
+void Music::pause(int channel)
 {
-	if (isMusic)
+	if (Mix_PlayingMusic() == 1)
 	{
-		if (Mix_PlayingMusic() == 1)
-		{
-			Mix_PauseMusic();
-		}
+		Mix_PauseMusic();
 	}
 }
 
-void Audio::stop() const
+void Music::stop(int channel)
 {
-	if (isMusic)
-	{
-		Mix_HaltMusic();
-	}
-}
-
-bool Audio::isPlaying() const
-{
-	return Mix_PlayingMusic();
+	Mix_HaltMusic();
 }

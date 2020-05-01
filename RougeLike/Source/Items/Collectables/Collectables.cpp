@@ -3,6 +3,7 @@
 
 #include "Game/Camera.h"
 #include "Game/GameData.h"
+#include "Collisions/CollisionManager.h"
 
 
 Collectables::Collectables(GameData* gameData) : mGameData(gameData) 
@@ -16,14 +17,15 @@ void Collectables::spawn(Collectable* collectable, VectorF position)
 {
 	collectable->setPosition(position);
 	mCollectables.push_back(collectable);
-	mCollisionTracker.addDefender(collectable->getCollider());
+	//mCollisionTracker.addDefender(collectable->getCollider());
+
+	std::vector<Collider*> collider { collectable->collider() };
+	mGameData->collisionManager->addDefenders(CollisionManager::Player_Hit_Collectable, collider);
 }
 
 
 void Collectables::slowUpdate(float dt)
 {
-	mCollisionTracker.checkDefenderCollisions();
-
 	float oscillation = std::sin(timer.getSeconds() * dt * 500);
 	VectorF oscillationVector = VectorF(oscillation, oscillation);
 
@@ -64,10 +66,4 @@ void Collectables::render()
 #endif
 		}
 	}
-}
-
-
-void Collectables::subscribeCollider(Collider* collider)
-{
-	mCollisionTracker.addAttacker(collider);
 }

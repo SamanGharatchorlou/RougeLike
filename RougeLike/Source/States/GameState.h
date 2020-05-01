@@ -30,6 +30,15 @@ public:
 	Collectables collectables;
 
 private:
+	void initCamera();
+	void initUI();
+	void initMap();
+	void initPlayer();
+	void initEnemies();
+	void initCollectables();
+	void initRendering();
+
+private:
 	GameController* mGameController;
 	GameData* mGameData;
 };

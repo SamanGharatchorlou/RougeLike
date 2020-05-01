@@ -8,7 +8,7 @@
 void PlayerPropertyBag::readAttributes(const std::string& name)
 {
 	StatReader statReader;
-	XMLValueMap map = statReader.getStats(FileManager::Config_Stats_Player, name);
+	XMLValueMap map = statReader.getStats(FileManager::Config_Player, name);
 
 
 	// Weapon

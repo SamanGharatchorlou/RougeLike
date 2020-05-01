@@ -5,6 +5,7 @@
 #include "Game/Camera.h"
 #include "Game/Cursor.h"
 #include "Input/InputManager.h"
+#include "Audio/AudioManager.h"
 #include "Graphics/TextureManager.h"
 
 #include "System/Files/AnimationReader.h"
@@ -14,6 +15,7 @@
 
 #include "Map/Environment.h"
 #include "Map/Map.h"
+
 
 
 Player::Player(GameData* gameData) : 
@@ -68,6 +70,10 @@ void Player::handleInput()
 
 	if (mGameData->inputManager->isCursorPressed())
 	{
+		// Play miss sound
+		if (!mWeapon->isAttacking())
+			mGameData->audioManager->playSound(mWeapon->missSoundLabel(), this);
+
 		mWeapon->attack();
 	}
 }
@@ -94,6 +100,16 @@ void Player::slowUpdate(float dt)
 {
 	mWeapon->slowUpdate(dt);
 	mAnimator.slowUpdate(dt);
+
+	if (mWeapon->didHit())
+	{
+		// Play hit sound
+		if (mGameData->audioManager->isPlaying(mWeapon->missSoundLabel(), this))
+		{
+			mGameData->audioManager->stop(mWeapon->missSoundLabel(), this);
+			mGameData->audioManager->playSound(mWeapon->hitSoundLabel(), this);
+		}
+	}
 
 	updateState();
 }

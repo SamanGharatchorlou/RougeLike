@@ -10,6 +10,7 @@
 #include "Input/InputManager.h"
 #include "UI/UIManager.h"
 #include "Managers/ScoreManager.h"
+#include "Collisions/CollisionManager.h"
 
 #include "Map/Environment.h"
 #include "Game/Cursor.h"
@@ -35,52 +36,35 @@ GameState::GameState(GameData* gameData, GameController* gameController) :
 
 void GameState::init()
 {
-	mGameData->cursor->setTexture(mGameData->textureManager->getTexture("GameCursor"));
-	//mGameData->audioManager->play("Ludumdum");
-
 	// Entrance width
-	float entraceOffset = Camera::Get()->size().x * 1.5f;
-	mGameData->environment->init();
+	initMap();
 
 	// Camera
-	VectorF cameraPosition = VectorF(0.0f, mGameData->environment->size().y / 2.0f);
-	Camera::Get()->setPosition(cameraPosition);
-	Camera::Get()->setMapBoundaries(mGameData->environment->boundaries());
+	initCamera();
 
 	// UI
-	mGameData->uiManager->selectScreen(Screen::Game);
+	initUI();
 
 	// Player
-	VectorF playerPosition = VectorF(Camera::Get()->getCenter().x, mGameData->environment->size().y / 2.0f);
-	mGameData->playerManager->rect()->SetLeftCenter(playerPosition);
-
-	// Camera
-	Camera::Get()->follow(mGameData->playerManager->rect());
+	initPlayer();
 
 	// Enemies
-	EnemyManager* enemies = mGameData->enemies;
-	enemies->addEnemiesToPool(EnemyType::Imp, 50); // TODO: what should this starting value be?
-	enemies->setTarget(mGameData->playerManager->rect());
-	enemies->spawnLevel();
+	initEnemies();
 
-	// TEMP
-	enemies->generatePathMap();
+	// Collectables
+	initCollectables();
 
-	// Collectables 
-	// TODO?: change this to items, item manager (its not really a manager)
-	collectables.subscribeCollider(&mGameData->playerManager->get()->collider());
+	// Start Audio
+	//mGameData->audioManager->playMusic("Ludumdum");
 
-	// rendering
-	mGameData->renderManager->Set(mGameData->environment);
-	mGameData->renderManager->Set(mGameData->playerManager);
-	mGameData->renderManager->Set(enemies);
-	mGameData->renderManager->Set(mGameData->uiManager);
-	mGameData->renderManager->Set(&collectables);
+	// Rendering
+	initRendering();
 
+	FileManager::Get()->allFilesInFolder(FileManager::Audio_Sound);
+}
 
-	// Test spawning
-	//enemies->spawn(EnemyType::Imp, 20);
-
+void GameState::initCollectables()
+{
 	Spawner itemSpawner;
 	VectorF position = itemSpawner.findSpawnPoint(mGameData->environment->primaryMap(), 10);
 
@@ -120,6 +104,8 @@ void GameState::fastUpdate(float dt)
 	mGameData->enemies->fastUpdate(dt);
 
 	Camera::Get()->fastUpdate(dt);
+
+	mGameData->collisionManager->processCollisions();
 }
 
 
@@ -137,7 +123,6 @@ void GameState::slowUpdate(float dt)
 	// End current level, close old level exit, open new level entrance
 	if (mGameData->environment->generateNextLevel(mGameData->playerManager->rect()->TopLeft()))
 	{
-		printf("next level\n");
 		mGameData->environment->nextLevel();
 		Camera::Get()->setMapBoundaries(mGameData->environment->boundaries());
 
@@ -152,6 +137,9 @@ void GameState::slowUpdate(float dt)
 		mGameData->environment->closeLevelEntrace();
 		Camera::Get()->setMapBoundaries(mGameData->environment->boundaries());
 	}
+
+	// End of slow frame
+	mGameData->collisionManager->resetColliders();
 }
 
 
@@ -179,4 +167,55 @@ void GameState::enter()
 void GameState::resume()
 {
 	mGameData->cursor->setTexture(mGameData->textureManager->getTexture("GameCursor"));
+}
+
+
+// --- Private Functions --- //
+
+void GameState::initUI()
+{
+	mGameData->cursor->setTexture(mGameData->textureManager->getTexture("GameCursor"));
+	mGameData->uiManager->selectScreen(Screen::Game);
+}
+
+void GameState::initCamera()
+{
+	VectorF cameraPosition = VectorF(0.0f, mGameData->environment->size().y / 2.0f);
+	Camera::Get()->setPosition(cameraPosition);
+	Camera::Get()->setMapBoundaries(mGameData->environment->boundaries());
+}
+
+void GameState::initMap()
+{
+	float entraceOffset = Camera::Get()->size().x * 1.5f;
+	mGameData->environment->init();
+}
+
+void GameState::initPlayer()
+{
+	VectorF playerPosition = VectorF(Camera::Get()->getCenter().x, mGameData->environment->size().y / 2.0f);
+	mGameData->playerManager->rect()->SetLeftCenter(playerPosition);
+
+	// Camera
+	Camera::Get()->follow(mGameData->playerManager->rect());
+}
+
+void GameState::initEnemies()
+{
+	EnemyManager* enemies = mGameData->enemies;
+	enemies->addEnemiesToPool(EnemyType::Imp, 50); // TODO: what should this starting value be?
+	enemies->setTarget(mGameData->playerManager->rect());
+	enemies->spawnLevel();
+
+	// init AI pathing
+	enemies->generatePathMap();
+}
+
+void GameState::initRendering()
+{
+	mGameData->renderManager->Set(mGameData->environment);
+	mGameData->renderManager->Set(mGameData->playerManager);
+	mGameData->renderManager->Set(mGameData->enemies);
+	mGameData->renderManager->Set(mGameData->uiManager);
+	mGameData->renderManager->Set(&collectables);
 }

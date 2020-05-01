@@ -30,18 +30,7 @@ void TextureManager::init()
 	DebugPrint(Log, "\n--- Loading Textures ---\n");
 	int fails = 0;
 
-	DebugPrint(Log, "\nWeapon textures\n");
-	fails += loadAllTextures(FileManager::Image_Weapons);
-
-	DebugPrint(Log, "\nUI Components\n");
-	fails += loadAllTextures(FileManager::Image_UI);
-
-	DebugPrint(Log, "\nMap tiles\n");
-	fails += loadAllTextures(FileManager::Image_Maps);
-	
-	DebugPrint(Log, "\nCharacters\n");
-	fails += loadAllTextures(FileManager::Image_Characters_Enemies);
-	fails += loadAllTextures(FileManager::Image_Characters_Player);
+	fails += loadAllTextures(FileManager::Image);
 
 	DebugPrint(Log, "\n--- Texture Loading Complete: %d Failures ---\n\n", fails);
 }
@@ -50,7 +39,7 @@ void TextureManager::init()
 int TextureManager::loadAllTextures(FileManager::Folder folder)
 {
 	int fails = 0;
-	std::vector<std::string> imagePaths = FileManager::Get()->fullPathsInFolder(folder);
+	std::vector<std::string> imagePaths = FileManager::Get()->allFilesInFolder(folder);
 
 	for (const std::string& path : imagePaths)
 	{

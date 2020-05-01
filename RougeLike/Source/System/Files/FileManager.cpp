@@ -19,11 +19,11 @@ FileManager::FileManager()
 	folderPaths[Root_Folder]				= std::string("\\Resources\\");
 
 	// Images
-	folderPaths[Image_UI]					= std::string("Images\\UI\\");
-	folderPaths[Image_Characters_Enemies]	= std::string("Images\\Characters\\Enemies\\");
-	folderPaths[Image_Characters_Player]	= std::string("Images\\Characters\\Player\\");
-	folderPaths[Image_Maps]					= std::string("Images\\Maps\\");
-	folderPaths[Image_Weapons]				= std::string("Images\\Weapons\\");
+	folderPaths[Image]						= std::string("Images\\");
+
+	// Audio
+	folderPaths[Audio_Music]				= std::string("Audio\\Music\\");
+	folderPaths[Audio_Sound]				= std::string("Audio\\Sound\\");
 
 	// Font
 	folderPaths[Font]						= std::string("Font\\");
@@ -33,17 +33,9 @@ FileManager::FileManager()
 	folderPaths[Config_UI]					= std::string("Configs\\UIMenus\\");
 	folderPaths[Config_Map]					= std::string("Configs\\Map\\");
 	folderPaths[Config_Animations]			= std::string("Configs\\Animations\\");
-	folderPaths[Config_Stats_Enemies]		= std::string("Configs\\Stats\\Enemies\\");
-	folderPaths[Config_Stats_Player]		= std::string("Configs\\Stats\\Player\\");
-	folderPaths[Config_Stats_Weapons]		= std::string("Configs\\Stats\\Weapons\\");
-
-	// Audio
-	folderPaths[Audio] = std::string("Audio\\");
-	folderPaths[Audio_Bg] = std::string("Audio\\Background\\");
-	folderPaths[Audio_Effects] = std::string("Audio\\Effects\\");
-	folderPaths[Audio_Effects_Attack] = std::string("Audio\\Effects\\Attack\\");
-	folderPaths[Audio_Effects_GetHit] = std::string("Audio\\Effects\\GetHit\\");
-	folderPaths[Audio_Effects_Physics] = std::string("Audio\\Effects\\Physics\\");
+	folderPaths[Config_Enemies]				= std::string("Configs\\Objects\\Enemies\\");
+	folderPaths[Config_Player]				= std::string("Configs\\Objects\\Player\\");
+	folderPaths[Config_Weapons]				= std::string("Configs\\Objects\\Weapons\\");
 }
 
 
@@ -140,10 +132,7 @@ std::vector<std::string> FileManager::fullPathsInFolder(const Folder folder) con
 {
 	std::vector<std::string> fileNameList;
 
-	// Not calling this first doesnt compile??
-	std::string folderPath = this->folderPath(folder);
-
-	for (const auto fullFilePath : fs::directory_iterator(folderPath))
+	for (const auto& fullFilePath : fs::directory_iterator(this->folderPath(folder)))
 	{
 		fileNameList.push_back(fullFilePath.path().string());
 	}
@@ -156,15 +145,40 @@ std::vector<std::string> FileManager::fileNamesInFolder(const Folder folder) con
 {
 	std::vector<std::string> fileNameList;
 
-	// Not calling this first doesnt compile??
-	std::string folderPath = this->folderPath(folder);
-
-	for (const auto fullFilePath : fs::directory_iterator(folderPath))
+	for (const auto& fullFilePath : fs::directory_iterator(this->folderPath(folder)))
 	{
 		fileNameList.push_back(fileName(fullFilePath.path().string()));
 	}
 
 	return fileNameList;
+}
+
+
+std::vector<std::string> FileManager::allFilesInFolder(const Folder folder) const
+{
+	std::vector<std::string> fileNameList;
+
+	for (const auto& path : fs::directory_iterator(this->folderPath(folder)))
+	{
+		if (fs::is_directory(path))
+			addFilesToList(fileNameList, path.path());
+		else
+			fileNameList.push_back(path.path().string());
+	}
+
+	return fileNameList;
+}
+
+// Recursivly finds all the file names
+void FileManager::addFilesToList(std::vector<std::string>& fileList, const fs::path& directoryPath) const
+{
+	for (const auto& path : fs::directory_iterator(directoryPath))
+	{
+		if (fs::is_directory(path))
+			addFilesToList(fileList, path);
+		else
+			fileList.push_back(path.path().string());
+	}
 }
 
 

@@ -161,6 +161,7 @@ void GameController::run()
 
 		// Slow update runs once per frame
 		mGameStateMachine.getActiveState().slowUpdate(dt);
+		mGameData.audioManager->slowUpdate();
 
 		mGameData.uiManager->update();
 

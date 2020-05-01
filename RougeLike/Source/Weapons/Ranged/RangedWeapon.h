@@ -23,6 +23,7 @@ public:
 	// TODO: Unimplemented functions
 	const std::string& hitSoundLabel() const override { return ""; };
 	const std::string& missSoundLabel() const override { return ""; };
+	bool didHit() const override { return false; }
 	// Unimplemented functions
 
 	void updateAnchor(VectorF anchor) override;

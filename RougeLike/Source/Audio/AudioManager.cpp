@@ -7,92 +7,34 @@ AudioManager::AudioManager()
 	DebugPrint(Log, "Audio manager created\n");
 }
 
+// -- Audio Loading -- //
 void AudioManager::init()
 {
 	DebugPrint(Log, "\n--- Loading Audio ---\n");
 	int fails = 0;
 
 	DebugPrint(Log, "\nBackground Music\n");
-	fails += loadAllMUS(FileManager::Audio_Bg);
+	fails += loadAllMusic(FileManager::Audio_Music);
 
 	DebugPrint(Log, "\nAudio Effects\n");
-	fails += loadAllWAV(FileManager::Audio_Effects_Attack);
-	fails += loadAllWAV(FileManager::Audio_Effects_GetHit);
-	fails += loadAllWAV(FileManager::Audio_Effects_Physics);
+	fails += loadAllSound(FileManager::Audio_Sound);
 
 	DebugPrint(Log, "\n--- Audio Loading Complete: %d Failures ---\n\n", fails);
 }
 
 
-int AudioManager::loadAllMUS(FileManager::Folder folder)
+void AudioManager::slowUpdate()
 {
-	int fails = 0;
-	std::vector<std::string> imagePaths = FileManager::Get()->fullPathsInFolder(folder);
-
-	for (const std::string& path : imagePaths)
-	{
-		fails += !loadMUS(FileManager::Get()->fileName(path), path);
-	}
-
-	return fails;
-}
-
-int AudioManager::loadAllWAV(FileManager::Folder folder)
-{
-	int fails = 0;
-	std::vector<std::string> imagePaths = FileManager::Get()->fullPathsInFolder(folder);
-
-	for (const std::string& path : imagePaths)
-	{
-		fails += !loadWav(FileManager::Get()->fileName(path), path);
-	}
-
-	return fails;
+	mSoundController.slowUpdate();
 }
 
 
-bool AudioManager::loadWav(const std::string& name, const std::string& filePath)
-{
-	Audio *audioWav = new Audio;
 
-	if (audioWav->loadWav(filePath))
-	{
-		AudioClips[name] = audioWav;
-		DebugPrint(Log, "Successfully loaded audio '%s' at %s\n", name.c_str(), filePath.c_str());
-		return true;
-	}
-	else
-	{
-		DebugPrint(Warning, "Failure: audio NOT loaded '%s' at %s\n. SDL_mixer Error: %s\n", name.c_str(), filePath.c_str(), Mix_GetError());
-		return false;
-	}
-}
-
-
-bool AudioManager::loadMUS(const std::string& name, const std::string& filePath)
-{
-	Audio *audioMus = new Audio;
-
-	if (audioMus->loadMUS(filePath))
-	{
-		AudioClips[name] = audioMus;
-		DebugPrint(Log, "Successfully loaded music '%s' at %s\n", name.c_str(), filePath.c_str());
-		return true;
-	}
-	else
-	{
-		DebugPrint(Warning, "Failure: music NOT loaded '%s' at %s\n. SDL_mixer Error: %s\n", name.c_str(), filePath.c_str(), Mix_GetError());
-		return false;
-	}
-}
-
-
-// what if I put an invalid texture path???
 Audio* AudioManager::getAudio(const std::string& label) const
 {
-	auto search = AudioClips.find(label);
+	auto search = mAudioBank.find(label);
 
-	if (search != AudioClips.end())
+	if (search != mAudioBank.end())
 	{
 		return search->second;
 	}
@@ -103,6 +45,8 @@ Audio* AudioManager::getAudio(const std::string& label) const
 	}
 }
 
+
+// -- Audio Control -- //
 void AudioManager::toggleMute() const
 {
 	if (Mix_VolumeMusic(-1) == 0 && Mix_Volume(-1, -1) == 0)
@@ -121,14 +65,14 @@ void AudioManager::toggleMute() const
 
 void AudioManager::pauseMusic() const
 {
-	for (auto iter = AudioClips.begin(); iter != AudioClips.end(); iter++)
-	{
-		if (iter->second->isMusic)
-		{
-			iter->second->pause();
-			break;
-		}
-	}
+	//for (auto iter = mAudioBank.begin(); iter != mAudioBank.end(); iter++)
+	//{
+	//	if (iter->second->isMusic)
+	//	{
+	//		iter->second->pause();
+	//		break;
+	//	}
+	//}
 }
 
 
@@ -140,22 +84,83 @@ void AudioManager::setVolume(int theVolume)
 }
 
 
-void AudioManager::play(const std::string& label)
+void AudioManager::playSound(const std::string& label, void* sourceId)
 {
 	Audio* audio = getAudio(label);
-	audio->play();
+
+	if (audio)
+		mSoundController.playSound(audio, sourceId);
 }
 
-bool AudioManager::isPlaying(const std::string& label) const
+void AudioManager::playMusic(const std::string& label)
 {
 	Audio* audio = getAudio(label);
-	return audio->isPlaying();
+
+	if (audio)
+		mSoundController.playMusic(audio);
 }
 
-void AudioManager::stop(const std::string& label)
+void AudioManager::stop(const std::string& label, void* sourceId)
 {
-	getAudio(label)->stop();
+	Audio* audio = getAudio(label);
+
+	if (audio)
+		mSoundController.stopSound(audio, sourceId);
+}
+
+
+bool AudioManager::isPlaying(const std::string& label, void* sourceId)
+{
+	Audio* audio = getAudio(label);
+
+	if (audio)
+		 return mSoundController.isPlaying(audio, sourceId);
 }
 
 
 
+// --- Private Functions --- //
+int AudioManager::loadAllMusic(FileManager::Folder folder)
+{
+	int fails = 0;
+	std::vector<std::string> imagePaths = FileManager::Get()->fullPathsInFolder(folder);
+
+	for (const std::string& path : imagePaths)
+	{
+		Audio *audio = new Music;
+		fails += !loadAudio(audio, FileManager::Get()->fileName(path), path);
+	}
+
+	return fails;
+}
+
+
+int AudioManager::loadAllSound(FileManager::Folder folder)
+{
+	int fails = 0;
+	std::vector<std::string> imagePaths = FileManager::Get()->allFilesInFolder(folder);
+
+	for (const std::string& path : imagePaths)
+	{
+		Audio *audio = new Sound;
+		fails += !loadAudio(audio, FileManager::Get()->fileName(path), path);
+	}
+
+	return fails;
+}
+
+
+bool AudioManager::loadAudio(Audio* audio, const std::string& name, const std::string& filePath)
+{
+	if (audio->load(filePath))
+	{
+		mAudioBank[name] = audio;
+		DebugPrint(Log, "Successfully loaded music '%s' at %s\n", name.c_str(), filePath.c_str());
+		return true;
+	}
+	else
+	{
+		DebugPrint(Warning, "Failure: music NOT loaded '%s' at %s\n. SDL_mixer Error: %s\n", name.c_str(), filePath.c_str(), Mix_GetError());
+		return false;
+	}
+}

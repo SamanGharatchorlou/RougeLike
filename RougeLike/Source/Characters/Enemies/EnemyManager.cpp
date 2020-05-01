@@ -2,6 +2,7 @@
 #include "Characters/Enemies/EnemyManager.h"
 
 #include "Game/GameData.h"
+#include "Collisions/CollisionManager.h"
 #include "Map/Environment.h"
 #include "Game/Camera.h"
 #include "Characters/Player/PlayerManager.h"
@@ -40,16 +41,14 @@ void EnemyManager::fastUpdate(float dt)
 		{
 			enemy->fastUpdate(dt);
 		}
-
-		// TODO: move this
-		// Check for player weapon hitting enemy
-		mCollisionManager.checkAttackerDefenderCollisions();
 	}
 }
 
 
 void EnemyManager::slowUpdate(float dt)
 {
+	std::vector<Collider*> attackingColliders;
+
 	for (std::vector<Enemy*>::iterator iter = mActiveEnemies.begin(); iter != mActiveEnemies.end(); iter++)
 	{
 		Enemy* enemy = *iter;
@@ -69,11 +68,14 @@ void EnemyManager::slowUpdate(float dt)
 			if (iter == mActiveEnemies.end())
 				break;
 		}
+
+		Collider* collider = getAttackingCollider(enemy);
+		if (collider)
+			attackingColliders.push_back(collider);
 	}
 
-	// Update weapon collider list
-	clearAttackingColliders();
-	addAttackingColliders(mGameData->playerManager->getWeaponColliders());
+	mGameData->collisionManager->removeAllAttackers(CollisionManager::Enemy_Hit_Player);
+	mGameData->collisionManager->addAttackers(CollisionManager::Enemy_Hit_Player, attackingColliders);
 
 #if _DEBUG // Police the pool and active enemy lists
 	int activeEnemies = 0;
@@ -146,8 +148,10 @@ void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF positio
 			enemy->setMap(&mPathMap);
 			enemy->setAttackTarget(mTarget);
 
-			// subscribe to player weapon collisions
-			mCollisionManager.addDefender(enemy->getCollider());
+			std::vector<Collider*> defendingCollider;
+			defendingCollider.push_back(enemy->getCollider());
+
+			mGameData->collisionManager->addDefenders(CollisionManager::PlayerWeapon_Hit_Enemy, defendingCollider);
 
 			mActiveEnemies.push_back(enemy);
 			return;
@@ -161,7 +165,6 @@ void EnemyManager::spawnLevel()
 {
 	// Update ai path map
 	generatePathMap();
-	
 	mSpawner.spawnLevel(mGameData->environment->primaryMap(), mGameData->environment->mapLevel());
 }
 
@@ -227,7 +230,7 @@ void EnemyManager::clearAllEnemies()
 	for (Enemy* enemy : mActiveEnemies)
 	{
 		enemy->clear();
-		mCollisionManager.removeDefender(enemy->getCollider());
+		mGameData->collisionManager->removeDefender(CollisionManager::PlayerWeapon_Hit_Enemy, enemy->getCollider());
 	}
 
 	for (EnemyObject& enemy : mEnemyPool)
@@ -242,39 +245,21 @@ void EnemyManager::clearAllEnemies()
 // --- Collisions --- //
 
 // Enemies are attacking with these colliders
-std::vector<Collider*> EnemyManager::getAttackingColliders() const
+Collider* EnemyManager::getAttackingCollider(Enemy* enemy) const
 {
-	std::vector<Collider*> colliders;
-
-	for (Enemy* enemy : mActiveEnemies)
+	if (enemy->state() == EnemyState::Attack)
 	{
-		if (enemy->state() == EnemyState::Attack)
+		const EnemyAttack* attackState = static_cast<const EnemyAttack*>(&(enemy->getStateMachine()->getActiveState()));
+
+		if (!attackState->didConnectWithTarget())
 		{
-			const EnemyAttack* attackState = static_cast<const EnemyAttack*>(&(enemy->getStateMachine()->getActiveState()));
-
-			if (!attackState->didConnectWithTarget())
-			{
-				colliders.push_back(enemy->getCollider());
-			}
+			return enemy->getCollider();
 		}
-
 	}
 
-	return colliders;
+	return nullptr;
 }
 
-
-// Enemies being attacked by these colliders
-void EnemyManager::clearAttackingColliders()
-{
-	mCollisionManager.clearAttackers();
-}
-
-
-void EnemyManager::addAttackingColliders(std::vector<Collider*> colliders)
-{
-	mCollisionManager.addAttackers(colliders);
-}
 
 
 // --- Private Functions --- //
@@ -282,7 +267,9 @@ void EnemyManager::addAttackingColliders(std::vector<Collider*> colliders)
 void EnemyManager::clearAndRemove(std::vector<Enemy*>::iterator& iter)
 {
 	(*iter)->clear();
-	mCollisionManager.removeDefender((*iter)->getCollider());
+	//mCollisionManager.removeDefender((*iter)->getCollider());
+
+	mGameData->collisionManager->removeDefender(CollisionManager::PlayerWeapon_Hit_Enemy, (*iter)->getCollider());
 	
 	// Find this enemy in the pool
 	for (std::vector<EnemyObject>::iterator poolIter = mEnemyPool.begin(); poolIter != mEnemyPool.end(); poolIter++)

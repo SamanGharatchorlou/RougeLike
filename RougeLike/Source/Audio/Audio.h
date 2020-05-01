@@ -9,18 +9,38 @@ union uMixer
 class Audio
 {
 public:
-	bool loadWav(const std::string& filePath);
-	bool loadMUS(const std::string& filePath);
+	virtual bool load(const std::string& filePath) = 0;
 
-	bool isPlaying() const;
+	virtual void play(int channel) = 0;
+	virtual void pause(int channel) { };
+	virtual void stop(int channel) { };
+};
 
-	void play() const;
-	void pause() const;
-	void stop() const;
 
-	bool isMusic;
+
+class Sound : public Audio
+{
+public:
+	bool load(const std::string& filePath) override;
+
+	void play(int channel);
 
 private:
 
-	uMixer mixer;
+	Mix_Chunk *mChunk;
+};
+
+
+class Music : public Audio
+{
+public:
+	bool load(const std::string& filePath) override;
+
+	void play(int channel);
+	void pause(int channel);
+	void stop(int channel);
+
+private:
+
+	Mix_Music *mMusic;
 };

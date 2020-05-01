@@ -6,7 +6,7 @@
 void EnemyPropertyBag::readAttributes(const std::string& name)
 {
 	StatReader statReader;
-	XMLValueMap map = statReader.getStats(FileManager::Config_Stats_Enemies, name);
+	XMLValueMap map = statReader.getStats(FileManager::Config_Enemies, name);
 
 	// --- Physics --- //
 

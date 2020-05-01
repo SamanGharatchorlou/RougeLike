@@ -23,12 +23,10 @@ void Collectable::render(RectF rect) const
 }
 
 
-
 // --- Weapon pickup --- //
 WeaponCollectable::WeaponCollectable(const std::string& weaponName, Texture* texture)
 {
 	RectF rect(VectorF(), texture->originalDimentions);
-
 	init(weaponName, texture, rect);
 }
 
@@ -44,6 +42,5 @@ void WeaponCollectable::activate(PlayerManager* playerManager)
 void HealthCollectable::activate(PlayerManager* playerManager)
 {
 	int health = std::stoi(mValue);
-
 	playerManager->get()->propertyBag()->pHealth.get().increase(health);
 }

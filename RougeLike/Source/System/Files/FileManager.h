@@ -9,9 +9,10 @@ public:
 		None,
 		Root_Folder,
 
+		Image,
 		Image_UI,
-		Image_Characters_Enemies,
-		Image_Characters_Player,
+		Image_Enemies,
+		Image_Player,
 		Image_Maps,
 		Image_Weapons,
 
@@ -23,13 +24,13 @@ public:
 		Config_UI,
 		Config_Map,
 		Config_Animations,
-		Config_Stats_Enemies,
-		Config_Stats_Player,
-		Config_Stats_Weapons,
+		Config_Enemies,
+		Config_Player,
+		Config_Weapons,
 
 		Audio,
-		Audio_Bg,
-		Audio_Effects,
+		Audio_Music,
+		Audio_Sound,
 		Audio_Effects_Attack,
 		Audio_Effects_GetHit,
 		Audio_Effects_Physics,
@@ -51,6 +52,11 @@ public:
 	bool readFile(const Folder folder, const std::string& fileName, std::string& outBuffer);
 
 	std::string fileName(const std::string& filePath) const;
+
+	std::vector<std::string> allFilesInFolder(const Folder folder) const;
+
+private:
+	void addFilesToList(std::vector<std::string>& fileList, const fs::path& directoryPath) const;
 
 private:
 	FileManager();

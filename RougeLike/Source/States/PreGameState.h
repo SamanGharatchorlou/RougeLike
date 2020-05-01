@@ -26,6 +26,8 @@ private:
 	void selectCharacter();
 	void enterGame();
 
+	void initCollisions();
+
 private:
 	GameController* mGameController;
 	GameData* mGameData;

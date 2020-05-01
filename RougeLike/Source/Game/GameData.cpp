@@ -9,6 +9,7 @@
 #include "Graphics/RenderManager.h"
 #include "UI/UIManager.h"
 #include "Managers/ScoreManager.h"
+#include "Collisions/CollisionManager.h"
 #include "Characters/Player/PlayerManager.h"
 #include "Characters/Enemies/EnemyManager.h"
 
@@ -64,6 +65,9 @@ void GameData::init()
 	// Enemies
 	enemies = new EnemyManager(this);
 
+	// Collision Trackers
+	collisionManager = new CollisionManager;
+
 
 	// Setup gameinfo
 	GameInfo::Get()->map(environment);
@@ -87,7 +91,6 @@ void GameData::setupObservers()
 	playerManager->addObserver(enemies);
 
 
-
 	// Update the score
 	enemies->addObserver(scoreManager);
 	// Player gains exp
@@ -108,6 +111,7 @@ void GameData::free()
 	delete renderManager;
 	delete uiManager;
 	delete scoreManager;
+	delete collisionManager;
 
 	delete environment;
 	delete cursor;

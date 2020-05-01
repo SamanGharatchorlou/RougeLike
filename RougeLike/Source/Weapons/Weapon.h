@@ -20,7 +20,7 @@ struct WeaponAudioEvent
 class Weapon
 {
 public:
-	Weapon() : mHasAudio(false), mOverrideCursorControl(false), mAudio(nullptr) { }
+	Weapon() : mOverrideCursorControl(false), mAttacking(false) { }
 	virtual ~Weapon() { };
 
 	virtual void attack() = 0;
@@ -28,21 +28,16 @@ public:
 	virtual void fastUpdate(float dt) = 0;
 	virtual void slowUpdate(float dt) = 0;
 
-	//bool consumeAudioEvent();
-	//const std::string* consumeAudioEvent();
-
-	//WeaponAudioEvent* consumeAudioEvent();
-
-	WeaponAudioEvent consumeAudioEvent();
-
 	virtual const std::string& hitSoundLabel() const = 0;
 	virtual const std::string& missSoundLabel() const = 0;
+
+	bool isAttacking() const { return mAttacking; }
+	virtual bool didHit() const = 0;
 
 	virtual void updateAnchor(VectorF anchor) = 0;
 	virtual void updateAimDirection(VectorF cursorPosition) = 0;
 
 	virtual void equipt(const WeaponData* data) = 0;
-
 	virtual void updateStats(const PlayerPropertyBag* bag) = 0;
 
 	virtual const std::vector<Collider*> getColliders() = 0;
@@ -57,13 +52,9 @@ protected:
 	RectF mRect;
 	VectorF mDirection;
 
+	bool mAttacking;
 	bool mOverrideCursorControl;
 
-	bool mHasAudio;
-	const std::string* mAudio;
-
-	// WeaponAudioEvent mAudioEvent;
 	const std::string* mAudioToPlay;
 	const std::string* mAudioToStop;
-
 };

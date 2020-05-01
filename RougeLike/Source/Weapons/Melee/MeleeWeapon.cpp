@@ -11,12 +11,10 @@
 #include "Collisions/DamageCollider.h"
 
 
-
 MeleeWeapon::MeleeWeapon() : 
 	mSwingDirection(-1), 
 	mSwingSpeed(0.0f), 
-	mRotationSum(0.0), 
-	mAttacking(false)
+	mRotationSum(0.0)
 {
 	// 4 blocks seems to be a good number of blocks
 	unsigned int blocks = 4;
@@ -76,14 +74,6 @@ void MeleeWeapon::updateStats(const PlayerPropertyBag* bag)
 
 void MeleeWeapon::attack()
 {
-	if (!mAttacking)
-	{
-		//mHasAudio = true;
-		//mAudio = &missSoundLabel();
-
-		mAudioToPlay = &missSoundLabel();
-	}
-
 	mAttacking = true;
 	overrideCursorControl(true);
 }
@@ -111,17 +101,21 @@ void MeleeWeapon::fastUpdate(float dt)
 
 			mDirection = rotateVector(mDirection, theta * -mSwingDirection);
 		}
-
-		for (const DamageCollider* collider : mBlockColliders)
-		{
-			if (collider->didHit())
-			{
-				mAudioToPlay = &hitSoundLabel();
-				mAudioToStop = &missSoundLabel();
-			}
-		}
-
 	}
+}
+
+
+bool MeleeWeapon::didHit() const
+{
+	for (const DamageCollider* collider : mBlockColliders)
+	{
+		if (collider->didHit())
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 
@@ -184,7 +178,7 @@ const std::vector<Collider*> MeleeWeapon::getColliders()
 {
 	std::vector<Collider*> colliders;
 
-	if (mAttacking)
+	//if (mAttacking)
 	{
 		for (unsigned int i = 0; i < mBlockColliders.size(); i++)
 		{

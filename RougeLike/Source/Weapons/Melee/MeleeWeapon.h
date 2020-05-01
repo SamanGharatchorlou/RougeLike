@@ -16,9 +16,12 @@ public:
 
 	void fastUpdate(float dt) override;
 	void slowUpdate(float dt) override { };
+	void render() override;
 
 	const std::string& hitSoundLabel() const override;
 	const std::string& missSoundLabel() const override;
+
+	bool didHit() const override;
 
 	void updateAnchor(VectorF anchor) override;
 	void updateAimDirection(VectorF cursorPosition) override;
@@ -37,7 +40,6 @@ public:
 
 	void flipSide() { mSwingDirection *= -1; }
 
-	void render() override;
 
 
 private:
@@ -49,8 +51,6 @@ private:
 
 	std::vector<RectF> mBlockRects;
 	std::vector<DamageCollider*> mBlockColliders;
-	
-	bool mAttacking;
 
 	int mSwingDirection;
 	float mRotationSum;

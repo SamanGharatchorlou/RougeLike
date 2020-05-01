@@ -4,8 +4,8 @@
 
 #include "Game/GameData.h"
 #include "Input/InputManager.h"
-#include "Audio/Audio.h"
-#include "Audio/AudioManager.h"
+#include "Collisions/CollisionManager.h"
+
 #include "Collisions/DamageCollider.h"
 
 #include "Player.h"
@@ -36,7 +36,10 @@ void PlayerManager::init()
 {
 	weaponStash.load(mGameData->textureManager);
 
-	collisionTracker.addDefender(&player->collider());
+	// Collision tracking
+	std::vector<Collider*> collider { &player->collider() };
+	mGameData->collisionManager->addDefenders(CollisionManager::Enemy_Hit_Player, collider);
+	mGameData->collisionManager->addAttackers(CollisionManager::Player_Hit_Collectable, collider);
 }
 
 
@@ -44,6 +47,9 @@ void PlayerManager::selectCharacter(const std::string& character)
 {
 	player->init(character);
 	selectWeapon(player->propertyBag()->pWeapon.get());
+
+	mGameData->collisionManager->removeAllAttackers(CollisionManager::PlayerWeapon_Hit_Enemy);
+	mGameData->collisionManager->addAttackers(CollisionManager::PlayerWeapon_Hit_Enemy, player->weapon()->getColliders());
 
 	updateUIStats();
 }
@@ -53,16 +59,12 @@ void PlayerManager::selectWeapon(const std::string& weaponName)
 {
 	Weapon* weapon = weaponStash.getWeapon(weaponName);
 	player->equiptWeapon(weapon);
+
+	//mGameData->collisionManager->addAttackers(CollisionManager::PlayerWeapon_Hit_Enemy, getWeaponColliders());
 }
 
 
 RectF* PlayerManager::rect() { return &player->rectRef(); }
-
-
-std::vector<Collider*> PlayerManager::getWeaponColliders() 
-{ 
-	return player->weapon()->getColliders();
-}
 
 
 void PlayerManager::preProcess() { player->processStateChanges(); }
@@ -75,7 +77,6 @@ void PlayerManager::handleInput()
 	//if (mGameData->inputManager->getButton(Button::E).isPressed())
 	//{
 	//	TraumaEvent event(100);
-
 	//	notify(Event::Trauma, event);
 	//}
 }
@@ -91,60 +92,24 @@ void PlayerManager::fastUpdate(float dt)
 
 	// Movement, animations, weapon updates
 	player->fastUpdate(dt);
-
-	// Test for enemy attacking player collisions
-	collisionTracker.checkAttackerDefenderCollisions();
 }
 
 
 void PlayerManager::slowUpdate(float dt) 
 { 
-	// Play attack audio
-	WeaponAudioEvent audioEvent = player->weapon()->consumeAudioEvent();
-
-	if (!audioEvent.isEmpty())
-	{
-		if (audioEvent.mAudioToStop)
-		{
-			mGameData->audioManager->stop(*audioEvent.mAudioToStop);
-			printf("stopping %s\n", audioEvent.mAudioToStop->c_str());
-		}
-
-		if (audioEvent.mAudioToPlay)
-		{
-			Audio* audio = mGameData->audioManager->getAudio(*audioEvent.mAudioToPlay);
-
-			printf("play audio event\n");
-
-			if (!audio->isPlaying())
-			{
-				audio->play();
-				printf("audio is not playing, play something\n");
-			}
-			else
-			{
-				printf("There is already audio playing, cannot play %s\n", audioEvent.mAudioToPlay->c_str());
-			}
-
-		}
-	}
-
-
 	// Resolve player getting hit
 	if (player->collider().gotHit())
 	{
 		// Take damage
 		const DamageCollider* damageCollider = static_cast<const DamageCollider*>(player->collider().getOtherCollider());
-		Damage damage = damageCollider->damage();
 		Health& hp = player->propertyBag()->pHealth.get();
-		hp.takeDamage(damage);
+		hp.takeDamage(damageCollider->damage());
 
 		SetHealthBarEvent event(hp);
 		notify(Event::SetHealth, event);
 
 		// Knockback
-		VectorF source = damageCollider->rect().Center();
-
+		//VectorF source = damageCollider->rect().Center();
 	}
 
 	player->slowUpdate(dt);
@@ -165,10 +130,6 @@ void PlayerManager::slowUpdate(float dt)
 		UpdateAIPathMapEvent updateAIPathMapEvent;
 		notify(Event::UpdateAIPathMap, updateAIPathMapEvent);
 	}
-
-	// Reset collider info for next frame
-	updateTrackedColliders();
-	player->collider().reset();
 }
  
 
@@ -206,13 +167,6 @@ void PlayerManager::render()
 
 
 // --- Private Functions --- //
-void PlayerManager::updateTrackedColliders()
-{
-	// Enemy attacking player
-	collisionTracker.clearAttackers();
-	collisionTracker.addAttackers(mGameData->enemies->getAttackingColliders());
-}
-
 
 void PlayerManager::resolveWallCollisions(const Map* map, float dt)
 {

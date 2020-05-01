@@ -5,17 +5,18 @@ class Collider;
 class CollisionTracker
 {
 public:
-
-	void addAttacker(Collider* attackers);
-	void addAttackers(std::vector<Collider*> attackers);
-	void addDefender(Collider* collider);
+	void addAttackers(std::vector<Collider*> colliders);
+	void addDefenders(std::vector<Collider*> colliders);
 
 	void clearAttackers();
 	void removeDefender(Collider* collider);
 
-	void checkAttackerCollisions();
-	void checkDefenderCollisions();
-	void checkAttackerDefenderCollisions();
+	void checkCollisions();
+	void resetColliders();
+
+private:
+	void addAttacker(Collider* colliders);
+	void addDefender(Collider* colliders);
 
 private:
 	std::vector<Collider*> mAttackers;

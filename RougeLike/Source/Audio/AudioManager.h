@@ -1,6 +1,8 @@
 #pragma once
 
-class Audio;
+#include "SoundController.h"
+
+//class Audio;
 
 class AudioManager
 {
@@ -9,29 +11,33 @@ public:
 	~AudioManager() { };
 
 	void init();
-
-	// load music or clips
-	int loadAllMUS(FileManager::Folder folder);
-	int loadAllWAV(FileManager::Folder folder);
-
-	bool loadWav(const std::string& name, const std::string& filePath);
-	bool loadMUS(const std::string& name, const std::string& filePath);
+	void slowUpdate();
 
 	Audio* getAudio(const std::string& label) const;
 
-	bool isPlaying(const std::string& label) const;
-	void play(const std::string& label);
-	void stop(const std::string& label);
+	void playMusic(const std::string& label);
+	void playSound(const std::string& label, void* sourceId);
+	void stop(const std::string& label, void* sourceId);
+
+	bool isPlaying(const std::string& label, void* sourced);
 
 	// audio control
 	void setVolume(int theVolume);
 
 	void pauseMusic() const;
-	void toggleMute() const ;
+	void toggleMute() const;
+
 
 private:
+	int loadAllMusic(FileManager::Folder folder);
+	int loadAllSound(FileManager::Folder folder);
 
-	std::unordered_map<std::string, Audio*> AudioClips;
+	bool loadAudio(Audio* audio, const std::string& name, const std::string& filePath);
+
+private:
+	std::unordered_map<std::string, Audio*> mAudioBank;
+
+	SoundController mSoundController;
 
 	int volume;
 };

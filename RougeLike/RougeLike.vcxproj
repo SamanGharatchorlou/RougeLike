@@ -22,6 +22,7 @@
     <ClCompile Include="Source\AI\AIPathing.cpp" />
     <ClCompile Include="Source\AI\AIPathMap.cpp" />
     <ClCompile Include="Source\Animations\Animator.cpp" />
+    <ClCompile Include="Source\Audio\SoundController.cpp" />
     <ClCompile Include="Source\Characters\Attributes\Knockback.cpp" />
     <ClCompile Include="Source\Characters\Attributes\Level.cpp" />
     <ClCompile Include="Source\Characters\Attributes\Physics.cpp" />
@@ -33,6 +34,7 @@
     <ClCompile Include="Source\Characters\Enemies\EnemyStates\EnemyPreAttack.cpp" />
     <ClCompile Include="Source\Characters\Enemies\EnemyStates\EnemyWait.cpp" />
     <ClCompile Include="Source\Characters\Enemies\Spawning\EnemySpawner.cpp" />
+    <ClCompile Include="Source\Collisions\CollisionManager.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Circle.cpp.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Shape.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Square.cpp" />
@@ -120,6 +122,7 @@
     <ClInclude Include="Source\AI\AIPathing.h" />
     <ClInclude Include="Source\AI\AIPathMap.h" />
     <ClInclude Include="Source\Animations\Animator.h" />
+    <ClInclude Include="Source\Audio\SoundController.h" />
     <ClInclude Include="Source\Characters\Attributes\Damage.h" />
     <ClInclude Include="Source\Characters\Attributes\Knockback.h" />
     <ClInclude Include="Source\Characters\Attributes\Level.h" />
@@ -135,6 +138,7 @@
     <ClInclude Include="Source\Characters\Enemies\EnemyStates\EnemyState.h" />
     <ClInclude Include="Source\Characters\Enemies\EnemyStates\EnemyWait.h" />
     <ClInclude Include="Source\Characters\Enemies\Spawning\EnemySpawner.h" />
+    <ClInclude Include="Source\Collisions\CollisionManager.h" />
     <ClInclude Include="Source\Utilities\Shapes\Circle.h" />
     <ClInclude Include="Source\Utilities\Shapes\Shape.h" />
     <ClInclude Include="Source\Utilities\Shapes\Square.h" />

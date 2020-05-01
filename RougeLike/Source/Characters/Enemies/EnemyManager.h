@@ -45,9 +45,6 @@ public:
 
 	void clearAllEnemies();
 
-	void clearAttackingColliders();
-	void addAttackingColliders(std::vector<Collider*> colliders);
-
 	void addEnemiesToPool(EnemyType type, unsigned int count);
 
 	void spawnLevel();
@@ -57,10 +54,7 @@ public:
 
 	Enemy* getEnemy(unsigned int index) const;
 
-	std::vector<Collider*> getAttackingColliders() const;
-
 	unsigned int size() const { return mActiveEnemies.size(); }
-
 
 
 private:
@@ -72,6 +66,7 @@ private:
 
 	void handleEnemyEvent(Enemy* enemy);
 
+	Collider* getAttackingCollider(Enemy* enemy) const;
 
 private:
 	GameData* mGameData;
@@ -82,7 +77,7 @@ private:
 	std::vector<Enemy*> mActiveEnemies;
 
 	// Player weapon <-> enemy
-	CollisionTracker mCollisionManager;
+	//CollisionTracker mCollisionManager;
 
 	RectF* mTarget;
 

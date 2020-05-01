@@ -29,11 +29,8 @@ public:
 	void selectWeapon(const std::string& weaponName);
 
 	Player* get() { return player; }
-
 	RectF* rect();
 	VectorF position() const;
-
-	std::vector<Collider*> getWeaponColliders();
 
 	void handleEvent(const Event event, EventData& data) override;
 
@@ -43,8 +40,6 @@ private:
 	bool doesCollideRight		(const Map* map, const VectorF point, float dt) const;
 	bool doesCollideTop			(const Map* map, const VectorF point, float dt) const;
 	bool doesCollideBot			(const Map* map, const VectorF point, float dt) const;
-
-	void updateTrackedColliders();
 
 	void updateUIStats();
 
@@ -58,7 +53,7 @@ private:
 
 	WeaponStash weaponStash;
 
-	CollisionTracker collisionTracker;
+	//CollisionTracker collisionTracker;
 
 	Vector2D<int> tileIndex;
 };

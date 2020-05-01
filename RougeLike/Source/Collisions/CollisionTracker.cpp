@@ -4,44 +4,21 @@
 #include "Collider.h"
 
 
-void CollisionTracker::addAttacker(Collider* collider)
-{
-#if _DEBUG
-	for (auto attacker : mAttackers)
-	{
-		if (collider == attacker)
-		{
-			DebugPrint(Log, "Attacking collider is already subscribed with the collider manager\n");
-		}
-	}
-#endif
-
-	mAttackers.push_back(collider);
-}
-
-
 void CollisionTracker::addAttackers(std::vector<Collider*> colliders)
 {
-	for (Collider* attacker : colliders)
+	for (Collider* collider : colliders)
 	{
-		addAttacker(attacker);
+		addAttacker(collider);
 	}
 }
 
 
-void CollisionTracker::addDefender(Collider* collider)
+void CollisionTracker::addDefenders(std::vector<Collider*> colliders)
 {
-#if _DEBUG
-	for (auto defender : mDefenders)
+	for (Collider* collider : colliders)
 	{
-		if (collider == defender)
-		{
-			DebugPrint(Log, "Defending collider is already subscribed with the collider manager\n");
-		}
+		addDefender(collider);
 	}
-#endif
-
-	mDefenders.push_back(collider);
 }
 
 
@@ -66,46 +43,7 @@ void CollisionTracker::clearAttackers()
 }
 
 
-
-void CollisionTracker::checkAttackerCollisions()
-{
-	for (unsigned int j = 0; j < mAttackers.size(); j++)
-	{
-		for (unsigned int i = 0; i < mDefenders.size(); i++)
-		{
-			// check pixle collision
-			if (mAttackers[j]->doesIntersect(mDefenders[i]))
-			{
-				mAttackers[j]->hasCollidedWith(mDefenders[i]);
-				mAttackers[j]->setDidHit(true);
-			}
-		}
-	}
-}
-
-
-
-void CollisionTracker::checkDefenderCollisions()
-{
-	for (unsigned int j = 0; j < mAttackers.size(); j++)
-	{
-		for (unsigned int i = 0; i < mDefenders.size(); i++)
-		{
-			// check pixle collision
-			if (mAttackers[j]->doesIntersect(mDefenders[i]))
-			{
-				// Defender
-				mDefenders[i]->setGotHit(true);
-				mDefenders[i]->hasCollidedWith(mAttackers[j]);
-			}
-		}
-	}
-}
-
-
-
-
-void CollisionTracker::checkAttackerDefenderCollisions()
+void CollisionTracker::checkCollisions()
 {
 	for (unsigned int j = 0; j < mAttackers.size(); j++)
 	{
@@ -124,4 +62,52 @@ void CollisionTracker::checkAttackerDefenderCollisions()
 			}
 		}
 	}
+}
+
+
+void CollisionTracker::resetColliders()
+{
+	for (unsigned int i = 0; i < mAttackers.size(); i++)
+	{
+		mAttackers[i]->reset();
+	}
+	
+	for (unsigned int i = 0; i < mDefenders.size(); i++)
+	{
+		mDefenders[i]->reset();
+	}
+}
+
+
+// --- Private Functions --- //
+
+void CollisionTracker::addDefender(Collider* collider)
+{
+#if _DEBUG
+	for (auto defender : mDefenders)
+	{
+		if (collider == defender)
+		{
+			DebugPrint(Log, "Defending collider is already subscribed with the collider manager\n");
+		}
+	}
+#endif
+
+	mDefenders.push_back(collider);
+}
+
+
+void CollisionTracker::addAttacker(Collider* collider)
+{
+#if _DEBUG
+	for (auto attacker : mAttackers)
+	{
+		if (collider == attacker)
+		{
+			DebugPrint(Log, "Attacking collider is already subscribed with the collider manager\n");
+		}
+	}
+#endif
+
+	mAttackers.push_back(collider);
 }
