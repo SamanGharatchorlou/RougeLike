@@ -11,9 +11,9 @@
 #include "Graphics/RenderManager.h"
 
 #include "Graphics/TextureManager.h"
-#include "UI/Screens/CharacterSelectionScreen.h"
+#include "UI/Screens/CharacterselectionScreen.h"
 
-#include "Characters/Player/PlayerManager.h"
+#include "Objects/Player/PlayerManager.h"
 
 
 PreGameState::PreGameState(GameData* gameData, GameController* gameController) :
@@ -25,7 +25,7 @@ PreGameState::PreGameState(GameData* gameData, GameController* gameController) :
 
 void PreGameState::init()
 {	
-	// Setup collision tracking (before setting up any characters)
+	// Setup collision tracking (before setting up any Objects)
 	initCollisions();
 
 	mGameData->uiManager->selectScreen(Screen::CharacterSelection);

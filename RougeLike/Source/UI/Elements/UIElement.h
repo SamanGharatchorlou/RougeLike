@@ -26,6 +26,8 @@ public:
 	UIElement() : mParent(nullptr) { }
 	UIElement(Data& data);
 
+	virtual ~UIElement() { };
+
 	const std::string& id() const { return mId; }
 
 	void setRect(RectF rect);

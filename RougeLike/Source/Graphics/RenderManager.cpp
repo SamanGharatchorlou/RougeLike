@@ -7,8 +7,8 @@
 #include "Map/Environment.h"
 #include "UI/UIManager.h"
 
-#include "Characters/Player/PlayerManager.h"
-#include "Characters/Enemies/EnemyManager.h"
+#include "Objects/Player/PlayerManager.h"
+#include "Objects/Enemies/EnemyManager.h"
 #include "Items/Collectables/Collectables.h"
 
 

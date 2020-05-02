@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Characters/Attributes/Health.h"
+#include "Objects/Attributes/Health.h"
 
 
 enum class Event

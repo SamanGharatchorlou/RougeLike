@@ -16,12 +16,12 @@
 #include "Game/Cursor.h"
 #include "Game/Camera.h"
 
-#include "Characters/Player/PlayerManager.h"
-#include "Characters/Enemies/EnemyManager.h"
+#include "Objects/Player/PlayerManager.h"
+#include "Objects/Enemies/EnemyManager.h"
 
 // TEMp
 #include "Items/Spawner.h"
-#include "Characters/Player/Player.h"
+#include "Objects/Player/Player.h"
 
 
 GameState::GameState(GameData* gameData, GameController* gameController) : 

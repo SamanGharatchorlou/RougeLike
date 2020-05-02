@@ -18,6 +18,7 @@ public:
 public:
 	UIBox() : mTexture(nullptr) { }
 	UIBox(Data& data);
+	~UIBox() { }
 
 	void setTexture(Texture* texture) { mTexture = texture; }
 

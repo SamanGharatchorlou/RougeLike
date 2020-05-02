@@ -27,6 +27,7 @@ public:
 
 public:
 	UITextBox(Data& data);
+	~UITextBox() { }
 
 	void setText(const std::string& text) { mText.setText(text); }
 

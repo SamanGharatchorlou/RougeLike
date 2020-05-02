@@ -13,8 +13,8 @@
 #include "Graphics/RenderManager.h"
 #include "UI/UIManager.h"
 #include "Managers/ScoreManager.h"
-#include "Characters/Player/PlayerManager.h"
-#include "Characters/Enemies/EnemyManager.h"
+#include "Objects/Player/PlayerManager.h"
+#include "Objects/Enemies/EnemyManager.h"
 
 #include "Map/Map.h"
 #include "Game/Camera.h"

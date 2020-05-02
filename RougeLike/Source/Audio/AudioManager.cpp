@@ -7,6 +7,18 @@ AudioManager::AudioManager()
 	DebugPrint(Log, "Audio manager created\n");
 }
 
+
+AudioManager::~AudioManager()
+{
+	for (std::pair<std::string, Audio*> audio : mAudioBank)
+	{
+		delete audio.second;
+		audio.second = nullptr;
+		audio.first = "";
+	}
+}
+
+
 // -- Audio Loading -- //
 void AudioManager::init()
 {

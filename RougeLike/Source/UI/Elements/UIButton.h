@@ -32,6 +32,7 @@ public:
 public:
 	UIButton();
 	UIButton(Data& data);
+	~UIButton() { }
 
 	void setPressed(bool isPressed);
 	void setReleased(bool isReleased);

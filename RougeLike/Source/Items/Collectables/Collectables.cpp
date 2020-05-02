@@ -17,7 +17,6 @@ void Collectables::spawn(Collectable* collectable, VectorF position)
 {
 	collectable->setPosition(position);
 	mCollectables.push_back(collectable);
-	//mCollisionTracker.addDefender(collectable->getCollider());
 
 	std::vector<Collider*> collider { collectable->collider() };
 	mGameData->collisionManager->addDefenders(CollisionManager::Player_Hit_Collectable, collider);
@@ -30,20 +29,23 @@ void Collectables::slowUpdate(float dt)
 	VectorF oscillationVector = VectorF(oscillation, oscillation);
 
 	std::vector<Collectable*>::iterator iter;
-	for (iter = mCollectables.begin(); iter != mCollectables.end(); iter++)
+	for (iter = mCollectables.begin(); iter != mCollectables.end(); )
 	{
-		(*iter)->move(oscillationVector);
+		Collectable* collectable = *iter;
 
-		if ((*iter)->pickedUp())
+		collectable->move(oscillationVector);
+
+		if (collectable->pickedUp())
 		{
-			(*iter)->activate(mGameData->playerManager);
-			
-			// Destroy the collectable
-			mCollectables.erase(iter);
+			collectable->activate(mGameData->playerManager);
 
-			// TODO: how to delete this???
-			//delete *iter;
-			break;
+			// Destroy the collectable
+			iter = mCollectables.erase(iter);
+			delete collectable;
+		}
+		else
+		{
+			iter++;
 		}
 	}
 }

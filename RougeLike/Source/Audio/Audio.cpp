@@ -2,6 +2,14 @@
 #include "Audio.h"
 
 // --- Sound --- //
+
+Sound::~Sound()
+{
+	Mix_FreeChunk(mChunk);
+	mChunk = nullptr;
+}
+
+
 bool Sound::load(const std::string& filePath)
 {
 	mChunk = Mix_LoadWAV(filePath.c_str());
@@ -24,6 +32,14 @@ void Sound::play(int channel)
 
 
 // --- Music --- //
+
+Music::~Music()
+{
+	Mix_FreeMusic(mMusic);
+	mMusic = nullptr;
+}
+
+
 bool Music::load(const std::string& filePath)
 {
 	mMusic = Mix_LoadMUS(filePath.c_str());
@@ -52,6 +68,7 @@ void Music::play(int channel)
 	}
 }
 
+
 void Music::pause(int channel)
 {
 	if (Mix_PlayingMusic() == 1)
@@ -59,6 +76,7 @@ void Music::pause(int channel)
 		Mix_PauseMusic();
 	}
 }
+
 
 void Music::stop(int channel)
 {

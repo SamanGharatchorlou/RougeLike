@@ -10,8 +10,8 @@
 #include "UI/UIManager.h"
 #include "Managers/ScoreManager.h"
 #include "Collisions/CollisionManager.h"
-#include "Characters/Player/PlayerManager.h"
-#include "Characters/Enemies/EnemyManager.h"
+#include "Objects/Player/PlayerManager.h"
+#include "Objects/Enemies/EnemyManager.h"
 
 #include "Map/Environment.h"
 #include "Game/Camera.h"

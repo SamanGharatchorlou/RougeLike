@@ -44,7 +44,7 @@ XMLValueMap StatReader::getStats(FileManager::Folder folder, const std::string& 
 
 				ASSERT(Warning, strlen(string) < 25, 
 					"The %s attribute of length %d from %s is too big to fit into the union value char. \
-					It must be less than 25 characters, either reduce the text size or increase the value union data type\n", 
+					It must be less than 25 Objects, either reduce the text size or increase the value union data type\n", 
 					name.c_str(), strlen(string), configFilePath.c_str());
 
 				strcpy_s(stat.c, string);

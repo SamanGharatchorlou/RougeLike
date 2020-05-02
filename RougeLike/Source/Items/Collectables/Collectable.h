@@ -9,7 +9,6 @@ class Collectable
 {
 public:
 	Collectable() : mTexture(nullptr) { }
-
 	virtual ~Collectable() { };
 
 	void init(const std::string& value, Texture* texture, RectF rect);

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Collider.h"
-#include "Characters/Attributes/Damage.h"
+#include "Objects/Attributes/Damage.h"
 
 
 class DamageCollider : public Collider

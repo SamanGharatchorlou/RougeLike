@@ -8,7 +8,7 @@ class AudioManager
 {
 public:
 	AudioManager();
-	~AudioManager() { };
+	~AudioManager();
 
 	void init();
 	void slowUpdate();
