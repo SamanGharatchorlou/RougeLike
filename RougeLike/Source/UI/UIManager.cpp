@@ -118,8 +118,8 @@ void UIManager::handleInput()
 
 	VectorF change; 
 	float movementSpeed = 1.0f; // pixels moved per press
-	int holdSpeed = 20; // larger is slower, using % for it
-	int holdDelay = 250;
+	int holdSpeed = 1; // larger is slower, using % for it
+	int holdDelay = 10;
 
 	// LEFT
 	if (mGameData->inputManager->isPressed(Button::UILeft) && !elementId.empty())

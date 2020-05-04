@@ -1,46 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <screen>
 
-	<layer>
-		<Box id = "StatBox" x = "1.0" y = "0.5" width = "0.3" height = "0.4" texture = "BlackHealthBar"></Box>
-	</layer>
-
-
-	<layer>
-
-		<!-- Attack -->
-		<TextBox id = "Atk str" parent = "StatBox" x = "0" y = "0" height = "0.1" width ="0.5">
-			<text r = "0" g = "255" b = "0" >Attack Damage</text>
-		</TextBox>
-		<TextBox id = "Atk val" parent = "StatBox" x = "0.75" y = "0" height = "0.1" width ="0.5">
-			<text r = "0" g = "255" b = "0" >0</text>
-		</TextBox>
-
-		<!-- Defence -->
-		<TextBox id = "Def str" parent = "StatBox" x = "0" y = "0.25" height = "0.1" width ="0.5">
-			<text r = "0" g = "255" b = "0" >Defence</text>
-		</TextBox>
-		<TextBox id = "Def val" parent = "StatBox" x = "0.75" y = "0.25" height = "0.1" width ="0.5">
-			<text r = "0" g = "255" b = "0" >0</text>
-		</TextBox>
-		
-	</layer>
-
 	<!-- Player health bar -->
 	<layer>
-		<TextBox id = "HP" x = "0.02" y = "0.925" width = "0.05" height = "0.05">
+		<TextBox id = "HP" x = "28.020" y = "700.925" width = "42.000" height = "38.000">
 			<text r = "255" g = "0" b = "0">HP</text>
 		</TextBox>
-		<Box id = "BlackHealth" x = "0.065" y = "0.945" width = "0.2" height = "0.02" texture = "BlackHealthBar"></Box>
-		<Box id = "RedHealth"   parent = "BlackHealth" x = "0" y = "0" width = "1" height = "1" texture = "RedHealthBar"></Box>
+		<Box id = "BlackHealth" x = "76.065" y = "712.945" width = "274.000" height = "24.000" texture = "BlackHealthBar"></Box>
+		<Box id = "RedHealth"   parent = "BlackHealth" x = "0" y = "0" width = "274.000" height = "24.000" texture = "RedHealthBar"></Box>
 	</layer>
 
 	<!-- Map level -->
 	<layer>
-		<TextBox id = "MapLevel str" x = "0.45" y = "0.025" width = "0.12" height = "0.065">
+		<TextBox id = "MapLevel str" x = "756.450" y = "12.025" width = "144.000" height = "54.000">
 			<text r = "0" g = "255" b = "0">Level: </text>
 		</TextBox>
-		<TextBox id = "MapLevel val" parent = "MapLevel str" x = "1" y = "0" width = "1" height = "1">
+		<TextBox id = "MapLevel val" parent = "MapLevel str" x = "132.000" y = "2.000" width = "92.000" height = "52.000">
 			<text r = "0" g = "255" b = "0">0</text>
 		</TextBox>
 
@@ -48,10 +23,10 @@
 		
 	<layer>
 		<!-- Score -->
-		<TextBox id = "Score str" x = "0.025" y = "0.025" width = "0.12" height = "0.065">
+		<TextBox id = "Score str" x = "26.025" y = "12.025" width = "140.000" height = "52.000">
 			<text r = "0" g = "255" b = "0" >Score: </text>
-		</TextBox>
-		<TextBox id = "Score val" parent = "Score str" x = "1" y = "0" height = "1" width ="1">
+		</TextBox>  
+		<TextBox id = "Score val" parent = "Score str" x = "128.000" y = "2.000" width = "92.000" height = "52.000">
 			<text r = "0" g = "255" b = "0" >0</text>
 		</TextBox>
 
