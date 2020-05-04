@@ -20,6 +20,9 @@ public:
 	inline void setGotHit(bool collisionStatus) { mGotHit = collisionStatus; }
 	inline bool gotHit() const { return mGotHit; }
 
+	// TEMP
+	bool contains(VectorF position);
+
 	const RectF rect() const { return *mRect; }
 	RectF scaledRect() const;
 

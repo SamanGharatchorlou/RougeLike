@@ -20,23 +20,23 @@ PauseState::PauseState(GameData* gameData, GameController* gameController) :
 void PauseState::init() 
 {
 	mGameData->uiManager->selectScreen(Screen::Pause);
-	pauseScreen = static_cast<PauseScreen*>(mGameData->uiManager->getActiveScreen());
+	mGameData->uiManager->setCursorTexture(mGameData->textureManager->getTexture("UICursor"));
 
-	mGameData->cursor->setTexture(mGameData->textureManager->getTexture("UICursor"));
+	mPauseScreen = static_cast<PauseScreen*>(mGameData->uiManager->getActiveScreen());
 }
 
 
 void PauseState::slowUpdate(float dt)
 {
-	if (pauseScreen->resumeGame())
+	if (mPauseScreen->resumeGame())
 	{
 		resumeGame();
 	}
-	else if (pauseScreen->quitGame())
+	else if (mPauseScreen->quitGame())
 	{
 		quitGame();
 	}
-	else if (pauseScreen->restartGame())
+	else if (mPauseScreen->restartGame())
 	{
 		restartGame();
 	}

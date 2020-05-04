@@ -7,7 +7,6 @@ class InputManager;
 class RenderManager;
 class UIManager;
 class Environment;
-class Cursor;
 class PlayerManager;
 class EnemyManager;
 class ScoreManager;
@@ -31,7 +30,6 @@ struct GameData
 	CollisionManager* collisionManager = nullptr;
 
 	Environment* environment = nullptr;
-	Cursor* cursor = nullptr;
 
 	PlayerManager* playerManager = nullptr;
 	EnemyManager* enemies = nullptr;

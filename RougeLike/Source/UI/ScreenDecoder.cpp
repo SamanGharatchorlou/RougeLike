@@ -315,6 +315,7 @@ void ScreenDecoder::setRect(UIElement* element)
 	// No need to convert to pixles as parent already has been
 	if (element->parent() != nullptr)
 	{
+		/*
 		RectF parentRect = element->parent()->rect();
 
 		float x = (relativeRect.x1 == 12345.0f) ? 0.0f : relativeRect.x1;
@@ -328,11 +329,28 @@ void ScreenDecoder::setRect(UIElement* element)
 
 		absoluteRect.SetWidth(width * parentRect.Width());
 		absoluteRect.SetHeight(height * parentRect.Height());
+		*/
+
+
+		RectF parentRect = element->parent()->rect();
+
+		float x = (relativeRect.x1 == 12345.0f) ? 0.0f : relativeRect.x1;
+		float y = (relativeRect.y1 == 12345.0f) ? 0.0f : relativeRect.y1;
+
+		absoluteRect.x1 = parentRect.x1 + x;
+		absoluteRect.y1 = parentRect.y1 + y;
+
+		float width = relativeRect.Width() == 0.0f ? 1.0f : relativeRect.Width();
+		float height = relativeRect.Height() == 0.0f ? 1.0f : relativeRect.Height();
+
+		absoluteRect.SetWidth(width);
+		absoluteRect.SetHeight(height);
 	}
 	// Convert relative positions to pixles
 	else
 	{
 		VectorF screenSize = Camera::Get()->size();
+		screenSize = VectorF(1.0f, 1.0f);
 
 		absoluteRect.x1 = relativeRect.x1 * screenSize.x;
 		absoluteRect.y1 = relativeRect.y1 * screenSize.y;

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen>
+
+	<!-- Background -->
+	<layer>
+		<Box id = "Background" x = "0" y = "0" width = "1" height = "1" texture = "bg"></Box>
+	</layer>
+
+
+	<!-- Large table -->
+	<layer>
+		<Box id = "MainPanel"  x = "0.15" y = "0.05" width = "0.7" height = "0.9" texture = "Main panel"></Box>
+	</layer>
+
+
+	<layer>
+		<Box id = "Title2" parent = "MainPanel" x = "0" y = "-0.03" width = "1" height = "0.1" texture = "Name element 02"></Box>
+		<Box id = "Title1" parent = "MainPanel" x = "0.0725" y = "-0.03" width = "0.855" height = "0.084" texture = "Name element 01"></Box>
+
+		<Box id = "LowerPanelElement" parent = "MainPanel" x = "0.0375" y = "0.895" width = "0.925" height = "0.07" texture = "Lower panel element"></Box>
+	</layer>
+
+</screen>

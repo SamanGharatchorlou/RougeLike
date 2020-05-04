@@ -13,15 +13,14 @@ void InputManager::init()
 void InputManager::update()
 {
 	// Reset cursor states
-#if _DEBUG
-	if ((mCursor->isHeld() || mCursor->isPressed()) && mCursor->isReleased())
-	{
-		DebugPrint(Warning, "Cursor is being pressed and released at the same time\n");
-	}
-#endif
+//#if _DEBUG
+//	if ((mCursor->isHeld() || mCursor->isPressed()) && mCursor->isReleased())
+//	{
+//		DebugPrint(Warning, "Cursor is being pressed and released at the same time\n");
+//	}
+//#endif
 
-	mCursor->setPressed(false);
-	mCursor->setReleased(false);
+	mCursor.clearInputs();
 
 	// Reset button states
 	for (Button& button : mButtons)
@@ -29,7 +28,7 @@ void InputManager::update()
 #if _DEBUG
 		if ( (button.isHeld() || button.isPressed()) && button.isReleased())
 		{
-			DebugPrint(Warning, "Button key %d is being pressed and released at the same time\n", button.getKey());
+			DebugPrint(Warning, "Button key %d is being pressed and released at the same time\n", button.key());
 		}
 #endif
 		button.setPressed(false);
@@ -37,28 +36,54 @@ void InputManager::update()
 
 		if (button.isHeld())
 			button.incrementHeldFrame();
+		else
+			button.setHeldFrames(0);
 	}
 }
 
 
 void InputManager::processInputEvent(SDL_Event& event)
 {
-	// Mouse events
+	// Mouse movement
 	if (event.type == SDL_MOUSEMOTION)
 	{
 		int x, y;
 		SDL_GetMouseState(&x, &y);
 
-		mCursor->setPosition((float)x, (float)y);
-		mCursor->setMotion(true);
+		mCursor.setPosition((float)x, (float)y);
+		mCursor.setMotion(true);
 	}
+	// Buttons
 	else if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP)
 	{
-		if (!mCursor->isHeld())
-			mCursor->setPressed(event.type == SDL_MOUSEBUTTONDOWN);
+		SDL_MouseButtonEvent buttonEvent = event.button;
 
-		mCursor->setHeld(event.type == SDL_MOUSEBUTTONDOWN);
-		mCursor->setReleased(event.type == SDL_MOUSEBUTTONUP);
+		Cursor::ButtonType buttonType;
+		bool isHeld = false;
+		bool isPressed = false;
+		bool isReleased = false;
+
+		if (buttonEvent.button == Button::LeftClick)
+			buttonType = Cursor::Left;
+		else if (buttonEvent.button == Button::rightClick)
+			buttonType = Cursor::Right;
+		else
+			DebugPrint(Log, "Mouse button type %d not left or right\n", buttonEvent.button);
+
+		// Get input data
+		Button cursorButton = mCursor.getButton(buttonType);
+
+		if (!cursorButton.isHeld())
+			isPressed = (event.type == SDL_MOUSEBUTTONDOWN);
+
+		isHeld = (event.type == SDL_MOUSEBUTTONDOWN);
+		isReleased = (event.type == SDL_MOUSEBUTTONUP);
+
+		// Set input data
+		cursorButton.setHeld(isHeld);
+		cursorButton.setPressed(isPressed);
+		cursorButton.setReleased(isReleased);
+		mCursor.setButton(buttonType, cursorButton);
 	}
 
 	// Button events
@@ -77,6 +102,8 @@ void InputManager::processInputEvent(SDL_Event& event)
 			}
 		}
 	}
+
+	//mCursor->setButtonStates(getButton(Button::LeftClick), getButton(Button::rightClick));
 }
 
 
@@ -104,10 +131,19 @@ void InputManager::bindDefaultButtons()
 	mButtons[index++].bindToKey(Button::Left);
 	mButtons[index++].bindToKey(Button::Right);
 
+#if UI_EDITOR
+	mButtons[index++].bindToKey(Button::UILeft);
+	mButtons[index++].bindToKey(Button::UIRight);
+	mButtons[index++].bindToKey(Button::UIDown);
+	mButtons[index++].bindToKey(Button::UIUp);
+#endif
+
 	// Game state
 	mButtons[index++].bindToKey(Button::Pause);
 	mButtons[index++].bindToKey(Button::Esc);
 	mButtons[index++].bindToKey(Button::Quit);
+	mButtons[index++].bindToKey(Button::Enter);
+	mButtons[index++].bindToKey(Button::Ctrl);
 
 	// Keys
 	mButtons[index++].bindToKey(Button::E);
@@ -115,7 +151,9 @@ void InputManager::bindDefaultButtons()
 	ASSERT(Warning, index < maxButtons, "Attempting to bind too many buttons, you need to increase the size of 'maxButtons'\n");
 }
 
+
 // Cursor
-bool InputManager::isCursorPressed() const { return mCursor->isPressed(); }
-bool InputManager::isCursorReleased() const { return mCursor->isReleased(); }
-bool InputManager::isCursorHeld() const { return mCursor->isHeld(); }
+void InputManager::setCursorSize(VectorF size) { mCursor.setSize(size); }
+bool InputManager::isCursorPressed(Cursor::ButtonType button) const { return mCursor.isPressed(button); }
+bool InputManager::isCursorReleased(Cursor::ButtonType button) const { return mCursor.isReleased(button); }
+bool InputManager::isCursorHeld(Cursor::ButtonType button) const { return mCursor.isHeld(button); }

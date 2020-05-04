@@ -15,7 +15,6 @@
 
 #include "Map/Environment.h"
 #include "Game/Camera.h"
-#include "Game/Cursor.h"
 
 // GameInfo
 #include "Map/Map.h"
@@ -28,12 +27,13 @@ void GameData::init()
 	textureManager = new TextureManager;
 	textureManager->init();
 
-	// Cursor
-	cursor = new Cursor;
-	cursor->setSize(25.0f, 25.0f);
-
 	// Set camera before UIManager
 	Camera::Get()->setViewport(window->size());
+
+	// Input
+	inputManager = new InputManager;
+	inputManager->init();
+	inputManager->setCursorSize(VectorF(25.0f, 25.0f));
 
 	// Map Level
 	environment = new Environment;
@@ -42,12 +42,8 @@ void GameData::init()
 	audioManager = new AudioManager;
 	audioManager->init();
 
-	// Input
-	inputManager = new InputManager(cursor);
-	inputManager->init();
-
 	// UI
-	uiManager = new UIManager(this);
+	uiManager = new UIManager(this, inputManager->getCursor());
 	uiManager->init();
 
 	// Rendering
@@ -95,6 +91,10 @@ void GameData::setupObservers()
 	enemies->addObserver(scoreManager);
 	// Player gains exp
 	enemies->addObserver(playerManager);
+
+
+
+
 }
 
 
@@ -114,7 +114,6 @@ void GameData::free()
 	delete collisionManager;
 
 	delete environment;
-	delete cursor;
 
 	delete playerManager;
 	delete enemies;

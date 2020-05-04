@@ -7,7 +7,7 @@ struct GameData;
 class CharacterSelectionScreen : public Screen
 {
 public:
-	CharacterSelectionScreen(GameData* gameData, std::vector<UILayer*> layers);
+	CharacterSelectionScreen(GameData* gameData);
 
 	void enter() override { }
 	void exit() override { };

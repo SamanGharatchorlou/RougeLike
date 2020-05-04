@@ -13,6 +13,10 @@ enum class Event
 	IncrementMapLevel,
 
 	UpdateTextBox,
+#if UI_EDITOR
+	MoveUIElement,
+	ChangeUIElementSize,
+#endif
 
 	Trauma,
 
@@ -86,3 +90,15 @@ struct UpdateAIPathMapEvent : public EventData
 	UpdateAIPathMapEvent() { };
 	~UpdateAIPathMapEvent() { }
 };
+
+
+#if UI_EDITOR
+struct EditUIRectEvent : public EventData
+{
+	EditUIRectEvent(const std::string& id, VectorF change) : mId(id), mChange(change) { };
+	~EditUIRectEvent() { };
+
+	const std::string mId;
+	VectorF mChange;
+};
+#endif

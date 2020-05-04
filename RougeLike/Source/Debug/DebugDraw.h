@@ -21,7 +21,9 @@
 #define DRAW_ENEMY_TARGET_PATH 0
 
 // UI
-#define DRAW_UI_RECTS 0
+#define DRAW_UI_RECTS 1
+#define UI_EDITOR 1
+#define DEBUG_CURSOR 1
 
 #else
 #define FRAMERATE_CAP 0
@@ -33,6 +35,8 @@
 #define DRAW_ENEMY_TARGET_PATH 0
 #define DRAW_COLLECTABLE_RECT 0
 #define DRAW_UI_RECTS 0
+#define UI_EDITOR 0
+#define DEBUG_CURSOR 0
 #endif
 
 struct RenderColour

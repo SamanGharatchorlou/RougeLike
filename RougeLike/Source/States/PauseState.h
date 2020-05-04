@@ -28,5 +28,5 @@ private:
 	GameController* mGameController;
 	GameData* mGameData;
 
-	PauseScreen* pauseScreen;
+	PauseScreen* mPauseScreen;
 };

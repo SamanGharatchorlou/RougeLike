@@ -55,7 +55,7 @@ void GameState::init()
 	initCollectables();
 
 	// Start Audio
-	mGameData->audioManager->playMusic("Ludumdum");
+	//mGameData->audioManager->playMusic("Ludumdum");
 
 	// Rendering
 	initRendering();
@@ -90,6 +90,7 @@ void GameState::handleInput()
 	
 	if (mGameData->inputManager->isPressed(Button::Pause))
 	{
+		//mGameData->uiManager->refresh(Screen::Game);
 		mGameController->getStateMachine()->addState(new PauseState(mGameData, mGameController));
 	}
 
@@ -160,13 +161,13 @@ void GameState::render()
 
 void GameState::enter()
 {
-	mGameData->cursor->setTexture(mGameData->textureManager->getTexture("GameCursor"));
+	mGameData->uiManager->setCursorTexture(mGameData->textureManager->getTexture("GameCursor"));
 }
 
 
 void GameState::resume()
 {
-	mGameData->cursor->setTexture(mGameData->textureManager->getTexture("GameCursor"));
+	mGameData->uiManager->setCursorTexture(mGameData->textureManager->getTexture("GameCursor"));
 }
 
 
@@ -174,7 +175,7 @@ void GameState::resume()
 
 void GameState::initUI()
 {
-	mGameData->cursor->setTexture(mGameData->textureManager->getTexture("GameCursor"));
+	mGameData->uiManager->setCursorTexture(mGameData->textureManager->getTexture("GameCursor"));
 	mGameData->uiManager->selectScreen(Screen::Game);
 }
 

@@ -3,8 +3,8 @@
 #include "Game/GameData.h"
 
 
-PauseScreen::PauseScreen(GameData* gameData, std::vector<UILayer*> layers) :
-	Screen(gameData, layers), 
+PauseScreen::PauseScreen(GameData* gameData) :
+	Screen(gameData), 
 	mResumeGame(false), mQuitGame(false), mRestartGame(false) { }
 
 

@@ -20,10 +20,10 @@ public:
 	};
 
 public:
-	Screen(GameData* gameData, std::vector<UILayer*> layers);
+	Screen(GameData* gameData);
 	~Screen();
 
-	void init(ScreenAttributes screenAtributes);
+	void set(std::vector<UILayer*> layers);
 	void handleInput();
 
 	virtual void render();

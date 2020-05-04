@@ -68,7 +68,7 @@ void Player::handleInput()
 {
 	mPhysics.handleInput(mGameData->inputManager);
 
-	if (mGameData->inputManager->isCursorPressed())
+	if (mGameData->inputManager->isCursorPressed(Cursor::Left))
 	{
 		// Play miss sound
 		if (!mWeapon->isAttacking())
@@ -92,7 +92,7 @@ void Player::fastUpdate(float dt)
 
 	// Weapon
 	mWeapon->updateAnchor(rect().TopLeft());
-	mWeapon->updateAimDirection(mGameData->cursor->getPosition());
+	mWeapon->updateAimDirection(mGameData->inputManager->cursorPosition());
 }
 
 

@@ -1,39 +1,45 @@
 #pragma once
 
+#include "Input/Button.h"
+
 class Texture;
 
 class Cursor
 {
 public:
-	Cursor() { }
+	enum ButtonType
+	{
+		Left,
+		Right
+	};
+
+public:
+	Cursor();
+	void render();
 
 	void setTexture(Texture* texture) { mTexture = texture; }
-
-	void setSize(float x, float y) { mRect.SetSize(x, y); }
+	void setSize(VectorF size) { mRect.SetSize(size); }
 
 	void setPosition(float x, float y) { mRect.SetCenter(x, y); }
-	VectorF getPosition() const { return mRect.Center(); }
+	VectorF position() const { return mRect.Center(); }
 
+	Button getButton(ButtonType type) const { return mButtons[type]; }
+	void setButton(ButtonType type, Button button);
+	void setMotion(bool isMoving) { mMoving = isMoving; }
+
+	void clearInputs();
 
 	// Inputs
 	bool isMoving() const { return mMoving; }
-	bool isHeld() const { return mHeld; }
-	bool isPressed() const { return mPressed; }
-	bool isReleased() const { return mReleased; }
+	bool isHeld(ButtonType type = ButtonType::Left) const;	
+	bool isPressed(ButtonType type = ButtonType::Left) const;
+	bool isReleased(ButtonType type = ButtonType::Left) const;
 
-	void setMotion(bool isMoving) { mMoving = isMoving; }
-	void setHeld(bool isHeld) { mHeld = isHeld; }
-	void setPressed(bool isPressed) { mPressed = isPressed; }
-	void setReleased(bool isReleased) { mReleased = isReleased; }
 
-	void render();
-
-private:
+public:
 	RectF mRect;
 	Texture* mTexture;
 
 	bool mMoving;
-	bool mHeld;
-	bool mPressed;
-	bool mReleased;
+	Button mButtons[2]; 
 };

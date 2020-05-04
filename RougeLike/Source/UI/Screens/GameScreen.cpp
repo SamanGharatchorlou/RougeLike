@@ -2,8 +2,7 @@
 #include "GameScreen.h"
 
 
-GameScreen::GameScreen(GameData* gameData, std::vector<UILayer*> layers) :
-	Screen(gameData, layers)
+GameScreen::GameScreen(GameData* gameData) : Screen(gameData)
 { 
 
 }

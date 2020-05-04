@@ -7,7 +7,7 @@ struct GameData;
 class PauseScreen : public Screen
 {
 public:
-	PauseScreen(GameData* gameData, std::vector<UILayer*> layers);
+	PauseScreen(GameData* gameData);
 
 	void enter() override { }
 	void exit() override;

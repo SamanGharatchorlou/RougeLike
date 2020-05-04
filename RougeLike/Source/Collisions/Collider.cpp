@@ -68,3 +68,12 @@ void Collider::hasCollidedWith(Collider* collider)
 {
 	mOtherCollider = collider;
 }
+
+
+bool Collider::contains(VectorF position)
+{
+	bool xOverlaps = mRect->LeftPoint() < position.x && mRect->RightPoint() > position.x;
+	bool yOverlaps = mRect->TopPoint() < position.y && mRect->BotPoint() > position.y;
+
+	return xOverlaps && yOverlaps;
+}

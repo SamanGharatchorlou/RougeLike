@@ -149,7 +149,7 @@ void GameController::run()
 		mGameData.uiManager->handleInput();
 
 #if _DEBUG // show mouse position in screen title
-		VectorF pos = mGameData.cursor->getPosition();
+		VectorF pos = mGameData.inputManager->cursorPosition();
 		std::stringstream ss;
 		ss << "X: " << pos.x << " Y: " << pos.y;
 		mGameData.window->setTitle(ss.str().c_str());

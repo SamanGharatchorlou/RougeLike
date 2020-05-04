@@ -2,10 +2,17 @@
 #include "Screen.h"
 
 #include "Game/GameData.h"
-#include "Game/Cursor.h"
+#include "Input/InputManager.h"
 
-Screen::Screen(GameData* gameData, std::vector<UILayer*> layers) :
-	mGameData(gameData), mLayers(layers) { }
+
+
+Screen::Screen(GameData* gameData) : mGameData(gameData) { }
+
+
+void Screen::set(std::vector<UILayer*> layers)
+{
+	mLayers = layers;
+}
 
 
 Screen::~Screen()
@@ -29,21 +36,21 @@ void Screen::handleInput()
 	}
 
 	// Apply highlighted button textures
-	if (mGameData->cursor->isHeld() )
+	if (mGameData->inputManager->isCursorHeld(Cursor::Left))
 	{
 		for (UILayer* layer : mLayers)
 		{
-			layer->onPress(mGameData->cursor->getPosition());
+			layer->onPress(mGameData->inputManager->cursorPosition());
 		}
 	}
 
 	// Apply button actions
-	if (mGameData->cursor->isReleased())
+	if (mGameData->inputManager->isCursorReleased(Cursor::Left))
 	{
 		for (UILayer* layer : mLayers)
 		{
 			// Get all actions for this layer
-			std::queue<UIButton::Action> layerActions = layer->onRelease(mGameData->cursor->getPosition());
+			std::queue<UIButton::Action> layerActions = layer->onRelease(mGameData->inputManager->cursorPosition());
 
 			// Merge into Screen actions (i.e. all layers)
 			while (!layerActions.empty())

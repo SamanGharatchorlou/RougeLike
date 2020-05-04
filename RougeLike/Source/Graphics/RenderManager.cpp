@@ -35,8 +35,6 @@ void RenderManager::render()
 	mCollectables->render();
 	
 	mUIManager->render();
-
-	mGameData->cursor->render();
 }
 
 //void RenderManager::add(Renderable* renderable)

@@ -1,15 +1,14 @@
 #pragma once
 
 #include "Button.h"
+#include "Game/Cursor.h"
 
-class Cursor;
-
-static constexpr int maxButtons = 10;
+static constexpr int maxButtons = 20;
 
 class InputManager
 {
 public:
-	InputManager(Cursor* cursor) : mCursor(cursor) { }
+	InputManager() { }
 	~InputManager() { }
 
 	void init();
@@ -26,10 +25,14 @@ public:
 	int getHeldFrames(Button::Key key) const { return getButton(key).getHeldFrames(); }
 
 	// Cursor
-	bool isCursorPressed() const;
-	bool isCursorReleased() const;
-	bool isCursorHeld() const;
+	Cursor* getCursor() { return &mCursor; }
 
+	VectorF cursorPosition() const { return mCursor.position(); }
+
+	void setCursorSize(VectorF size);
+	bool isCursorPressed(Cursor::ButtonType type) const;
+	bool isCursorReleased(Cursor::ButtonType type) const;
+	bool isCursorHeld(Cursor::ButtonType type) const;
 
 private:
 	void bindDefaultButtons();
@@ -37,5 +40,5 @@ private:
 
 private:
 	Button mButtons[maxButtons];
-	Cursor* mCursor;
+	Cursor mCursor;
 };

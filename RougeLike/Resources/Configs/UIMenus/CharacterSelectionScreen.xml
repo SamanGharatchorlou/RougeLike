@@ -3,60 +3,66 @@
 
 	<!-- Background -->
 	<layer>
-		<Box id = "Background" x = "0" y = "0" width = "1" height = "1" texture = "bg"></Box>
+		<Box id = "Background" x = "0" y = "0" width = "1024" height = "768" texture = "bg"></Box>
 	</layer>
+
 
 	<!-- Large table -->
 	<layer>
-		<Box id = "largeTable"  x = "0.1" y = "0.15" width = "0.8" height = "0.85" texture = "table_wide"></Box>
+		<Box id = "MainPanel"  x = "148.000" y = "35" width = "728.800" height = "714.200" texture = "Main panel"></Box>
+	</layer>
+
+	<layer>
+		<Box id = "UpperPanelElement" parent = "MainPanel" x = "27.000" y = "26.000" width = "675.000" height = "55.000" texture = "Upper panel element"></Box>
+		<Box id = "MidPanelElement" parent = "MainPanel" x = "27.000" y = "83.000" width = "675.000" height = "437.000" texture = "Mid panel element"></Box>
+		<Box id = "LowerPanelElement" parent = "MainPanel" x = "27.000" y = "525.000" width = "675.000" height = "167.000" texture = "Lower panel element"></Box>
+	</layer>
+
+	<layer>
+		<Box id = "Title2" parent = "MainPanel" x = "1.000" y = "-21.000" width = "727.800" height = "69.000" texture = "Name element 02"></Box>
+		<Box id = "Title1" parent = "MainPanel" x = "54.000" y = "-18.030" width = "621.000" height = "53.000" texture = "Name element 01"></Box>
+		<TextBox id = "ScreenTitle" parent = "Title1" align = "Center" x = "0" y = "0" width = "621.000" height = "53.000" >
+			<text r = "0" g = "0" b = "0" >Character Selection</text>
+		</TextBox>
+
+		<Box id= "CharacterPanel" parent = "MainPanel"  x = "58.000" y = "221.000" width = "617.000" height = "284.000" texture = "panel"></Box>
+
+
+		<Box id= "Description" parent = "MainPanel"  x = "57.000" y = "549.000" width = "620.000" height = "133.000" texture = "Note"></Box>
+
+	</layer>
+
+	<layer>
+		<Button id = "CharacterNamePanel" parent = "MainPanel" x = "85.000" y = "103.000" width = "562.000" height = "105.000" texture = "Big button Released"></Box>
+		<Box id= "CharacterBox" parent = "MainPanel"  x = "83.000" y = "239.000" width = "203.000" height = "245.000" texture = "SingleSoldier"></Box>
+
+		<!-- Weapon -->
+		<Box id = "WeaponImg" parent = "MainPanel" x = "585.750" y = "239.100" width = "42.000" height = "246.000" texture = "weapon_katana"></Box>
+		<TextBox id = "WeaponName" parent = "MainPanel" x = "301.100" y = "240.400" width = "262.000" height = "66.000">
+			<text r = "0" g = "0" b = "0" >Basic Sword</text>
+		</TextBox>
+
+	</layer>
+
+	<layer>
+		<TextBox id = "CharacterName" parent = "CharacterNamePanel" align = "Center" x = "192.000" y = "11.000" width = "361.000" height = "59.000" >
+			<text r = "0" g = "0" b = "0" >Knight</text>
+		</TextBox>
+		<Button id = "PlayButton" parent = "MainPanel" x = "107.000" y = "89.000" width = "147.000" height = "109.000" texture = "Blank icon" action = "SelectSoldier_4"></Box>
+	</layer>
+
+	<layer>
+		<Box id = "PlayIcon" parent = "MainPanel" x = "154.000" y = "108.000" width = "57.000" height = "61.000" texture = "New game icon"></Box>
 	</layer>
 
 
-	<!-- Mid layer -->
-	<Layer>
-		<!-- Character selection box -->
-		<Button id= "CharacterBox" x = "0.2" y = "0.25" width = "0.2" height = "0.3" texture = "plainwindow" textureSelected = "plainwindow" action = "SelectSoldier_4"></Button>
 
-		<!-- Weapon box -->
-		<Box id = "WeaponBox" parent = "CharacterBox" x = "0" y = "1.25" width = "1" height = "0.5" texture = "window"></Box>
-	</Layer>
-
-
+		<!-- Top layer -->
 	<Layer>
 
-		
-		<!-- Main Title -->
-		<TextBox id = "SelectionTitle" x = "0.15" y = "0.02" height = "0.12"  width = "0.7">
-			<text r = "0" g = "255" b = "0" >Character Selection</text>
-		</TextBox>
 
-
-		<!-- Character selection box -->
-		<TextBox id = "CharacterLabel" parent = "CharacterBox" align = "Center" x = "0" y = "-0.2" height = "0.2"  width = "1">
-			<text r = "0" g = "255" b = "0" >Character</text>
-		</TextBox>
-		<Box id = "CharacterImg" parent = "CharacterBox" x = "0.2" y = "0.15" width = "0.6" height = "0.7" texture = "SingleSoldier"></Box>
-
-		<!-- Weapon Info -->
-		<TextBox id = "WeaponLabel" parent = "WeaponBox" align = "Center" x = "0" y = "-0.40" height = "0.4"  width = "1">
-			<text r = "0" g = "255" b = "0" >Weapon</text>
-		</TextBox>
 
 
 	</Layer>
-
-	<!-- Top layer -->
-	<Layer>
-
-		<!-- Weapon image -->
-		<Box id = "WeaponImg" parent = "WeaponBox" x = "0.75" y = "0.1" width = "0.1" height = "0.8" texture = "weapon_katana"></Box>
-
-		<!-- Weapon name -->
-		<TextBox id = "WeaponName" parent = "WeaponBox" x = "0.1" y = "0.4" height = "0.3"  width = "0.6">
-			<text r = "0" g = "0" b = "0" >Basic Sword</text>
-		</TextBox>
-	</Layer>
-
-
 
 </screen>

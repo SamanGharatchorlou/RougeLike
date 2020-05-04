@@ -7,7 +7,7 @@ struct GameData;
 class GameScreen : public Screen
 {
 public:
-	GameScreen(GameData* gameData, std::vector<UILayer*> layers);
+	GameScreen(GameData* gameData);
 
 	void enter() override {}
 	void update() override { }

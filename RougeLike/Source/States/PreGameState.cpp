@@ -5,6 +5,7 @@
 
 #include "Managers/GameController.h"
 
+#include "Input/InputManager.h"
 #include "Game/Cursor.h"
 #include "UI/UIManager.h"
 #include "Collisions/CollisionManager.h"
@@ -14,6 +15,10 @@
 #include "UI/Screens/CharacterselectionScreen.h"
 
 #include "Objects/Player/PlayerManager.h"
+
+
+// TEMP
+#include "Events/Events.h"
 
 
 PreGameState::PreGameState(GameData* gameData, GameController* gameController) :
@@ -31,10 +36,16 @@ void PreGameState::init()
 	mGameData->uiManager->selectScreen(Screen::CharacterSelection);
 	selectionScreen = static_cast<CharacterSelectionScreen*>(mGameData->uiManager->getActiveScreen());
 	
-	mGameData->cursor->setTexture(mGameData->textureManager->getTexture("UICursor"));
+	mGameData->uiManager->setCursorTexture(mGameData->textureManager->getTexture("UICursor"));
 
 	// Player
 	mGameData->playerManager->init();
+}
+
+
+void PreGameState::handleInput()
+{
+
 }
 
 
@@ -59,10 +70,7 @@ void PreGameState::render()
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderClear(renderer);
 
-
 	mGameData->uiManager->render();
-
-	mGameData->cursor->render();
 
 	// update window surface
 	SDL_RenderPresent(renderer);
