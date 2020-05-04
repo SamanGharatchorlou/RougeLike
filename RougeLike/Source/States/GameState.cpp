@@ -55,7 +55,7 @@ void GameState::init()
 	initCollectables();
 
 	// Start Audio
-	//mGameData->audioManager->playMusic("Ludumdum");
+	mGameData->audioManager->playMusic("Ludumdum");
 
 	// Rendering
 	initRendering();

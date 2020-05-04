@@ -3,24 +3,27 @@
 
 	<!-- Background -->
 	<layer>
-		<Box id = "Background" x = "0" y = "0" width = "1" height = "1" texture = "BlackHealthBar"></Box>
+		<Box id = "Background" x = "0" y = "0" width = "1" height = "1" texture = "bg"></Box>
 	</layer>
 
-	<!-- Bottom Layer -->
+	<!-- Large table -->
 	<layer>
+		<Box id = "largeTable"  x = "0.1" y = "0.15" width = "0.8" height = "0.85" texture = "table_wide"></Box>
+	</layer>
 
+
+	<!-- Mid layer -->
+	<Layer>
 		<!-- Character selection box -->
-		<Box id = "CharacterBox" x = "0.2" y = "0.25" width = "0.3" height = "0.4" texture = "GreyBox"></Box>
-		<Button id= "SelectionBox" parent = "CharacterBox" texture = "GreyBox" textureSelected = "BlackHealthBar" action = "SelectSoldier_4"></Button>
+		<Button id= "CharacterBox" x = "0.2" y = "0.25" width = "0.2" height = "0.3" texture = "plainwindow" textureSelected = "plainwindow" action = "SelectSoldier_4"></Button>
 
 		<!-- Weapon box -->
-		<Box id = "WeaponBox" parent = "CharacterBox" x = "0" y = "1.25" width = "1" height = "0.5" texture = "RedHealthBar"></Box>
+		<Box id = "WeaponBox" parent = "CharacterBox" x = "0" y = "1.25" width = "1" height = "0.5" texture = "window"></Box>
+	</Layer>
 
-	</layer>
 
-
-	<!-- Top layer -->
 	<Layer>
+
 		
 		<!-- Main Title -->
 		<TextBox id = "SelectionTitle" x = "0.15" y = "0.02" height = "0.12"  width = "0.7">
@@ -42,7 +45,7 @@
 
 	</Layer>
 
-
+	<!-- Top layer -->
 	<Layer>
 
 		<!-- Weapon image -->

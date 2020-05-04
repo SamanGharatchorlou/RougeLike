@@ -46,7 +46,6 @@ void SoundController::playSound(Audio* audio, void* sourceId)
 			if (sourceIds[i] == sourceId && playingAudio[i] == audio)
 			{
 				audio->play(i);
-				printf("audio is already playing, play over\n");
 				return;
 			}
 		}
@@ -62,7 +61,18 @@ void SoundController::playSound(Audio* audio, void* sourceId)
 			channels[i] = true;
 			sourceIds[i] = sourceId;
 			playingAudio[i] = audio;
-			printf("playing audio from free channel\n");
+
+			// TEMP
+			int counter = 0;
+			for (int i = 0; i < MIX_CHANNELS; i++)
+			{
+				if (channels[i] == true)
+				{
+					counter++;
+				}
+			}
+			printf("%d channels are being used\n", counter);
+
 			return;
 		}
 	}
