@@ -71,7 +71,6 @@ void SoundController::playSound(Audio* audio, void* sourceId)
 					counter++;
 				}
 			}
-			printf("%d channels are being used\n", counter);
 
 			return;
 		}

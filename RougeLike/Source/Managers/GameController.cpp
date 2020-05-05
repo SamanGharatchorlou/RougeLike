@@ -139,7 +139,8 @@ void GameController::run()
 		mGameStateMachine.getActiveState().preProcess();
 
 		// handle input events
-		mGameData.inputManager->update();
+		mGameData.inputManager->resetInputEvents();
+
 		while (SDL_PollEvent(&event))
 		{
 			mGameData.inputManager->processInputEvent(event);

@@ -30,15 +30,12 @@ private:
 	Elements setParents(Layers layers, ScreenAttributes& screenAttributes);
 	void setChildren(Elements parernts, Layers layers);
 	void setRects(Layers layers);
+	void setRect(UIElement* element);
 
 	void fillElementData	(UIElement::Data& data,		Attributes& attributes) const;
 	void fillBoxData		(UIBox::Data& data,			Attributes& attributes) const;
 	void fillTextBoxData	(UITextBox::Data& data,		Attributes& attributes) const;
 	void fillButtonData		(UIButton::Data& data,		Attributes& attributes) const;
-
-	void setRect(UIElement* element);
-
-	UIButton::Action getAction(const std::string& action) const;
 
 	UIElement* findElement(Layers layers, const std::string& id);
 

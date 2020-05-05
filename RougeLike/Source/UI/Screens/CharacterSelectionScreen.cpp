@@ -15,39 +15,32 @@ CharacterSelectionScreen::CharacterSelectionScreen(GameData* gameData) :
 
 void CharacterSelectionScreen::update()
 {
-	while (!mActions.empty())
+	UIButton* button = mGameData->uiManager->findButton("PlayButton");
+
+	if (button)
 	{
-		switch (mActions.front())
+		if (button->isReleased())
 		{
-		case UIButton::SelectSoldier_4:
 			mSelectedCharacter = "Soldier.xml";
 			mEnterGame = true;
-
-			break;
-		default:
-			break;
 		}
 
-		mActions.pop();
-	}
+		UIBox* boxComponent = static_cast<UIBox*>(mGameData->uiManager->findElement("CharacterNamePanel"));
 
-	// textureSelected = "Big button Pressed"
-
-	UIElement* element = mGameData->uiManager->find("PlayButton");
-
-	if (element)
-	{
-		UIButton* button = static_cast<UIButton*>(element);
-		if (button->isPressed())
+		if (boxComponent)
 		{
-			UIElement* buttonPanel = mGameData->uiManager->find("CharacterNamePanel");
+			Texture* texture;
 
-			UIButton* button = static_cast<UIButton*>(buttonPanel);
-			if (button)
+			if (button->isHeld())
 			{
-				Texture* texture = mGameData->textureManager->getTexture("Big button Pressed");
-				button->setTexture(texture);
+				texture = mGameData->textureManager->getTexture("Big button Pressed");
 			}
+			else
+			{
+				texture = mGameData->textureManager->getTexture("Big button Released");
+			}
+
+			boxComponent->setTexture(texture);
 		}
 	}
 }

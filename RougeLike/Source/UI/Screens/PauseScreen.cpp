@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "PauseScreen.h"
-#include "Game/GameData.h"
+
+#include  "Graphics/TextureManager.h"
+#include "UI/UIManager.h"
 
 
 PauseScreen::PauseScreen(GameData* gameData) :
@@ -8,27 +10,82 @@ PauseScreen::PauseScreen(GameData* gameData) :
 	mResumeGame(false), mQuitGame(false), mRestartGame(false) { }
 
 
+
+
 void PauseScreen::update()
 {
-	while (!mActions.empty())
-	{
-		switch (mActions.front())
-		{
-		case UIButton::ResumeGame_1:
-			mResumeGame = true;
-			break;
-		case UIButton::QuitGame_2:
-			mQuitGame = true;
-			break;
-		case UIButton::RestartGame_3:
-			mRestartGame = true;
-		default:
-			break;
-		}
+	updateBoxTexture("ResumeButton", "ResumePanel");
+	updateBoxTexture("SettingsButton", "SettingsPanel");
+	updateBoxTexture("RestartButton", "RestartPanel");
+	updateBoxTexture("QuitButton", "QuitPanel");
 
-		mActions.pop();
+	UIButton* resumeButton = mGameData->uiManager->findButton("ResumeButton");
+	if (resumeButton)
+	{
+		if (resumeButton->isReleased())
+		{
+			mResumeGame = true;
+		}
+	}
+
+	UIButton* settingsButton = mGameData->uiManager->findButton("SettingsButton");
+	if (settingsButton)
+	{
+		if (settingsButton->isReleased())
+		{
+			// todo: add logic
+		}
+	}
+
+	UIButton* restartButton = mGameData->uiManager->findButton("RestartButton");
+	if (restartButton)
+	{
+		if (restartButton->isReleased())
+		{
+			// todo: add logic
+		}
+	}
+
+	UIButton* quitButton = mGameData->uiManager->findButton("QuitButton");
+	if (quitButton)
+	{
+		if (quitButton->isReleased())
+		{
+			mQuitGame = true;
+		}
+	}
+
+
+}
+
+
+// Change the box texture when the button is pressed
+void PauseScreen::updateBoxTexture(std::string buttonId, std::string boxId)
+{
+	UIButton* button = mGameData->uiManager->findButton(buttonId);
+
+	if (button)
+	{
+		UIBox* boxComponent = static_cast<UIBox*>(mGameData->uiManager->findElement(boxId));
+
+		if (boxComponent)
+		{
+			Texture* texture;
+
+			if (button->isHeld())
+			{
+				texture = mGameData->textureManager->getTexture("Big button Pressed");
+			}
+			else
+			{
+				texture = mGameData->textureManager->getTexture("Big button Released");
+			}
+
+			boxComponent->setTexture(texture);
+		}
 	}
 }
+
 
 void PauseScreen::exit()
 {

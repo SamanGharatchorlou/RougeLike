@@ -10,7 +10,8 @@ public:
 	enum ButtonType
 	{
 		Left,
-		Right
+		Right,
+		Count
 	};
 
 public:
@@ -34,7 +35,6 @@ public:
 	bool isHeld(ButtonType type = ButtonType::Left) const;	
 	bool isPressed(ButtonType type = ButtonType::Left) const;
 	bool isReleased(ButtonType type = ButtonType::Left) const;
-
 
 public:
 	RectF mRect;

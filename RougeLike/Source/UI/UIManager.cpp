@@ -96,7 +96,237 @@ void UIManager::init()
 
 void UIManager::handleInput()
 {
+	InputManager* input = mGameData->inputManager;
+
 # if UI_EDITOR
+	debugEditUI();
+#endif
+
+	// Reset all button states
+	for (UILayer* layer : activeScreen->layers())
+	{
+		for (UIElement* element : layer->elements())
+		{
+			if (element->isButton())
+			{
+				UIButton* button = static_cast<UIButton*>(element);
+
+				if (button->id() == "PlayButton")
+					printf("");
+
+				button->reset();
+
+				if (button->isPointInBounds(mCursor->position()))
+				{
+					button->setPressed(input->isCursorPressed(Cursor::Left));
+					button->setHeld(input->isCursorHeld(Cursor::Left));
+					button->setReleased(input->isCursorReleased(Cursor::Left));
+				}
+				else
+				{
+					button->reset();
+				}
+			}
+		}
+	}
+}
+
+
+void UIManager::update() 
+{ 
+	activeScreen->update(); 
+}
+
+
+void UIManager::render()
+{
+	activeScreen->render();
+
+	if (!elementId.empty())
+	{
+		UIElement* element = findElement(elementId);
+		if(element)
+			debugDrawRectOutline(element->rect(), RenderColour::Red);
+	}
+
+	mCursor->render();
+}
+
+
+void UIManager::refresh(Screen::Type screenType)
+{
+	for (Screen* screen : screens)
+	{
+		if (screen->type() == screenType)
+		{
+			ScreenDecoder screenDecoder(mGameData->textureManager);
+
+			std::string screenPath = FileManager::Get()->folderPath(FileManager::Config_UI);
+			std::string screenName = typeToString(screenType);
+
+			ScreenAttributes attributes = screenDecoder.getScreenAttributes(screenPath + screenName + ".xml");
+			std::vector<UILayer*> screenLayers = screenDecoder.buildUIScreenLayers(attributes);
+
+			screen->set(screenLayers);
+		}
+	}
+}
+
+
+std::string UIManager::typeToString(Screen::Type screenType)
+{
+	if (screenType == Screen::Game)
+	{
+		return "GameScreen";
+	}
+	else if (screenType == Screen::Pause)
+	{
+		return "PasueScreen";
+	}
+	else if (screenType == Screen::CharacterSelection)
+	{
+		return "CharacterSelectionScreen";
+	}
+	else
+	{
+		DebugPrint(Warning, "No screen is associated with the screen type enum %d\n", screenType);
+		return "";
+	}
+}
+
+
+UIElement* UIManager::findElement(const std::string& id)
+{
+	for (UILayer* layer : activeScreen->layers())
+	{
+		for (UIElement* element : layer->elements())
+		{
+			if (element->id() == id)
+				return element;
+		}
+	}
+
+	DebugPrint(Warning, "No element with the id %s was found on the current active screen\n", id.c_str());
+	return nullptr;
+}
+
+
+UIButton* UIManager::findButton(const std::string& id)
+{
+	for (UILayer* layer : activeScreen->layers())
+	{
+		for (UIElement* element : layer->elements())
+		{
+			if (element->id() == id)
+			{
+				if (element->isButton())
+					return static_cast<UIButton*>(element);
+				else
+					DebugPrint(Log, "Attemping to use UIManager::findButton on a none button element, ID: '%s'\n", id.c_str());
+			}
+		}
+	}
+
+	DebugPrint(Warning, "No element with the id %s was found on the current active screen\n", id.c_str());
+	return nullptr;
+}
+
+
+void UIManager::handleEvent(Event event, EventData& data)
+{
+	switch (event)
+	{
+	case Event::UpdateTextBox:
+	{
+		UpdateTextBoxEvent eventData = static_cast<UpdateTextBoxEvent&>(data);
+
+		UIElement* element = findElement(eventData.mId);
+
+		if (element != nullptr && element->type() == UIElement::Type::TextBox)
+		{
+			UITextBox* text = static_cast<UITextBox*>(element);
+			std::string score = std::to_string(eventData.mValue);
+
+			text->setText(score);
+		}
+
+		break;
+	}
+	case Event::SetHealth:
+	{
+		SetHealthBarEvent eventData = static_cast<SetHealthBarEvent&>(data);
+
+		UIElement* redHealth = findElement("RedHealth");
+		UIElement* blackHealth = findElement("BlackHealth");
+
+		if (redHealth != nullptr && redHealth->type() == UIElement::Type::Box &&
+			blackHealth != nullptr && blackHealth->type() == UIElement::Type::Box)
+		{
+			UIBox* redHealthBar = static_cast<UIBox*>(redHealth);
+			UIBox* blackHealthBar = static_cast<UIBox*>(blackHealth);
+
+			RectF hpRect = redHealthBar->rect();
+			RectF maxHpRect = blackHealthBar->rect();
+
+			hpRect.SetWidth(maxHpRect.Width() * eventData.health.getPercentage());
+
+			redHealthBar->setRect(hpRect);
+		}
+
+		break;
+	}
+# if UI_EDITOR
+	case Event::MoveUIElement:
+	{
+		EditUIRectEvent eventData = static_cast<EditUIRectEvent&>(data);
+		UIElement* element = findElement(eventData.mId);
+
+		if (element != nullptr)
+		{
+			VectorF movement = eventData.mChange;
+			RectF rect = element->rect();
+			rect = rect.Translate(movement);
+			element->setRect(rect);
+		}
+
+		break;
+	}
+
+	case Event::ChangeUIElementSize:
+	{
+		EditUIRectEvent eventData = static_cast<EditUIRectEvent&>(data);
+		UIElement* element = findElement(eventData.mId);
+
+		if (element != nullptr)
+		{
+			VectorF sizeChange = eventData.mChange;
+			RectF rect = element->rect();
+			rect.SetSize(rect.Size() + sizeChange);
+
+			element->setRect(rect);
+		}
+
+		break;
+	}
+#endif
+	default:
+		break;
+	}
+}
+
+
+void UIManager::setCursorTexture(Texture* texture) 
+{ 
+	mCursor->setTexture(texture); 
+}
+
+
+
+// --- Private Functions --- //
+
+// Debugging
+void UIManager::debugEditUI()
+{
 	if (mGameData->inputManager->isCursorPressed(Cursor::Right))
 	{
 		VectorF cursorPosition = mCursor->position();
@@ -116,10 +346,10 @@ void UIManager::handleInput()
 		}
 	}
 
-	VectorF change; 
+	VectorF change;
 	float movementSpeed = 1.0f; // pixels moved per press
 	int holdSpeed = 1; // larger is slower, using % for it
-	int holdDelay = 10;
+	int holdDelay = 15;
 
 	// LEFT
 	if (mGameData->inputManager->isPressed(Button::UILeft) && !elementId.empty())
@@ -183,188 +413,17 @@ void UIManager::handleInput()
 			handleEvent(Event::MoveUIElement, event);
 	}
 
-
 	if (mGameData->inputManager->isPressed(Button::Enter) && !elementId.empty())
 	{
-		UIElement* element = find(elementId);
+		UIElement* element = findElement(elementId);
 		RectF rect = element->rect();
 
 		const UIElement* parent = element->parent();
 
-		if(parent)
+		if (parent)
 			rect = rect.Translate(parent->rect().TopLeft() * -1.0f);
 
 		DebugPrint(Log, "Element %s rect\nx = \"%.3f\" y = \"%.3f\" width = \"%.3f\" height = \"%.3f\"\n\n", element->id().c_str(), rect.x1, rect.y1, rect.Width(), rect.Height());
 	}
-#endif
-
-	activeScreen->handleInput();
 }
 
-
-void UIManager::render()
-{
-	activeScreen->render();
-
-	if (!elementId.empty())
-	{
-		UIElement* element = find(elementId);
-		debugDrawRectOutline(element->rect(), RenderColour::Red);
-	}
-
-	mCursor->render();
-}
-
-
-
-void UIManager::refresh(Screen::Type screenType)
-{
-	for (Screen* screen : screens)
-	{
-		if (screen->type() == screenType)
-		{
-			ScreenDecoder screenDecoder(mGameData->textureManager);
-
-			std::string screenPath = FileManager::Get()->folderPath(FileManager::Config_UI);
-			std::string screenName = typeToString(screenType);
-
-			ScreenAttributes attributes = screenDecoder.getScreenAttributes(screenPath + screenName + ".xml");
-			std::vector<UILayer*> screenLayers = screenDecoder.buildUIScreenLayers(attributes);
-
-			screen->set(screenLayers);
-		}
-	}
-}
-
-
-
-std::string UIManager::typeToString(Screen::Type screenType)
-{
-	if (screenType == Screen::Game)
-	{
-		return "GameScreen";
-	}
-	else if (screenType == Screen::Pause)
-	{
-		return "PasueScreen";
-	}
-	else if (screenType == Screen::CharacterSelection)
-	{
-		return "CharacterSelectionScreen";
-	}
-	else
-	{
-		DebugPrint(Warning, "No screen is associated with the screen type enum %d\n", screenType);
-		return "";
-	}
-}
-
-
-
-UIElement* UIManager::find(const std::string& id)
-{
-	for (Screen* screen : screens)
-	{
-		for (UILayer* layer : screen->layers())
-		{
-			for (UIElement* element : layer->elements())
-			{
-				if (element->id() == id)
-					return element;
-			}
-		}
-	}
-
-	DebugPrint(Warning, "No element with the id %s was found\n", id.c_str());
-	return nullptr;
-}
-
-
-
-void UIManager::handleEvent(Event event, EventData& data)
-{
-	switch (event)
-	{
-	case Event::UpdateTextBox:
-	{
-		UpdateTextBoxEvent eventData = static_cast<UpdateTextBoxEvent&>(data);
-
-		UIElement* element = find(eventData.mId);
-
-		if (element != nullptr && element->type() == UIElement::Type::TextBox)
-		{
-			UITextBox* text = static_cast<UITextBox*>(element);
-			std::string score = std::to_string(eventData.mValue);
-
-			text->setText(score);
-		}
-
-		break;
-	}
-	case Event::SetHealth:
-	{
-		SetHealthBarEvent eventData = static_cast<SetHealthBarEvent&>(data);
-
-		UIElement* redHealth = find("RedHealth");
-		UIElement* blackHealth = find("BlackHealth");
-
-		if (redHealth != nullptr && redHealth->type() == UIElement::Type::Box &&
-			blackHealth != nullptr && blackHealth->type() == UIElement::Type::Box)
-		{
-			UIBox* redHealthBar = static_cast<UIBox*>(redHealth);
-			UIBox* blackHealthBar = static_cast<UIBox*>(blackHealth);
-
-			RectF hpRect = redHealthBar->rect();
-			RectF maxHpRect = blackHealthBar->rect();
-
-			hpRect.SetWidth(maxHpRect.Width() * eventData.health.getPercentage());
-
-			redHealthBar->setRect(hpRect);
-		}
-
-		break;
-	}
-# if UI_EDITOR
-	case Event::MoveUIElement:
-	{
-		EditUIRectEvent eventData = static_cast<EditUIRectEvent&>(data);
-		UIElement* element = find(eventData.mId);
-
-		if (element != nullptr)
-		{
-			VectorF movement = eventData.mChange;
-			RectF rect = element->rect();
-			rect = rect.Translate(movement);
-			element->setRect(rect);
-		}
-
-		break;
-	}
-
-	case Event::ChangeUIElementSize:
-	{
-		EditUIRectEvent eventData = static_cast<EditUIRectEvent&>(data);
-		UIElement* element = find(eventData.mId);
-
-		if (element != nullptr)
-		{
-			VectorF sizeChange = eventData.mChange;
-			RectF rect = element->rect();
-			rect.SetSize(rect.Size() + sizeChange);
-
-			element->setRect(rect);
-		}
-
-		break;
-	}
-#endif
-	default:
-		break;
-	}
-}
-
-
-void UIManager::setCursorTexture(Texture* texture) 
-{ 
-	mCursor->setTexture(texture); 
-}

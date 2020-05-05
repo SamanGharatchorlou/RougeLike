@@ -43,6 +43,8 @@ public:
 	Button() { mHeldFrames = 0; mHeld = mPressed = mReleased = false; }
 	void bindToKey(Key key) { mKeyBinding = key; }
 
+	void reset();
+
 	bool isHeld() const { return mHeld; }
 	bool isPressed() const { return mPressed; }
 	bool isReleased() const { return mReleased; }
@@ -56,9 +58,8 @@ public:
 	const Key key() const { return mKeyBinding; }
 
 	int getHeldFrames() const { return mHeldFrames; }
-	void incrementHeldFrame() { ++mHeldFrames; }
-	void setHeldFrames(int heldFrames) { mHeldFrames = heldFrames; }
-
+	void setHeldFrames(int frames) { mHeldFrames = frames; }
+	void incrementHeldFrames() { mHeldFrames++; }
 
 private:
 	int mHeldFrames;

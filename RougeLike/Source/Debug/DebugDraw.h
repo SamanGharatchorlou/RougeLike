@@ -3,7 +3,7 @@
 #if _DEBUG
 
 // Framerate
-#define FRAMERATE_CAP 0 // Use the FPS cap you want
+#define FRAMERATE_CAP 60 // Use the FPS cap you want
 #define PRINT_FRAMERATE 0
 
 // Player
@@ -21,7 +21,7 @@
 #define DRAW_ENEMY_TARGET_PATH 0
 
 // UI
-#define DRAW_UI_RECTS 1
+#define DRAW_UI_RECTS 0
 #define UI_EDITOR 1
 #define DEBUG_CURSOR 1
 

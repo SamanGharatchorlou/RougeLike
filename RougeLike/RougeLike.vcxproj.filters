@@ -97,6 +97,7 @@
     <ClCompile Include="Source\Objects\Effects\KnockbackEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectHandler.cpp" />
     <ClCompile Include="Source\Objects\Effects\SlowEffect.cpp" />
+    <ClCompile Include="Source\Input\Button.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />

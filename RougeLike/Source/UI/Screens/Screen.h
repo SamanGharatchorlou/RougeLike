@@ -19,27 +19,23 @@ public:
 		CharacterSelection
 	};
 
+
 public:
 	Screen(GameData* gameData);
 	~Screen();
 
 	void set(std::vector<UILayer*> layers);
-	void handleInput();
-
-	virtual void render();
+	std::vector<UILayer*> layers() const { return mLayers; }
 
 	virtual void update() = 0;
 	virtual void enter() = 0;
 	virtual void exit() = 0;
+	virtual void render();
 
 	virtual Type type() = 0;
 
-	std::vector<UILayer*> layers() const { return mLayers; }
 
 protected:
 	GameData* mGameData;
-
 	std::vector<UILayer*> mLayers;
-
-	std::queue<UIButton::Action> mActions;
 };

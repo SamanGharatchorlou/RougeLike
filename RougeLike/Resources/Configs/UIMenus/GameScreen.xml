@@ -12,10 +12,10 @@
 
 	<!-- Map level -->
 	<layer>
-		<TextBox id = "MapLevel str" x = "756.450" y = "12.025" width = "144.000" height = "54.000">
-			<text r = "0" g = "255" b = "0">Level: </text>
+		<TextBox id = "MapLevel str" x = "756.450" y = "12.025" width = "226.000" height = "54.000">
+			<text r = "0" g = "255" b = "0">Level:</text>
 		</TextBox>
-		<TextBox id = "MapLevel val" parent = "MapLevel str" x = "132.000" y = "2.000" width = "92.000" height = "52.000">
+		<TextBox id = "MapLevel val" parent = "MapLevel str" x = "130.000" y = "0.000" width = "96.000" height = "54.000">
 			<text r = "0" g = "255" b = "0">0</text>
 		</TextBox>
 
@@ -23,10 +23,10 @@
 		
 	<layer>
 		<!-- Score -->
-		<TextBox id = "Score str" x = "26.025" y = "12.025" width = "140.000" height = "52.000">
-			<text r = "0" g = "255" b = "0" >Score: </text>
+		<TextBox id = "Score str" x = "26.025" y = "12.025" width = "218.000" height = "52.000">
+			<text r = "0" g = "255" b = "0" >Score:</text>
 		</TextBox>  
-		<TextBox id = "Score val" parent = "Score str" x = "128.000" y = "2.000" width = "92.000" height = "52.000">
+		<TextBox id = "Score val" parent = "Score str" x = "126.000" y = "0.000" width = "92.000" height = "52.000">
 			<text r = "0" g = "255" b = "0" >0</text>
 		</TextBox>
 

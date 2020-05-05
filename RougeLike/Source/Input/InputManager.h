@@ -12,8 +12,9 @@ public:
 	~InputManager() { }
 
 	void init();
+
+	void resetInputEvents();
 	void processInputEvent(SDL_Event& event);
-	void update();
 
 	// Buttons
 	const Button& getButton(Button::Key key) const;
@@ -35,6 +36,10 @@ public:
 	bool isCursorHeld(Cursor::ButtonType type) const;
 
 private:
+	void processMouseMovementEvent(SDL_Event& event);
+	void processMouseButtonEvent(SDL_Event& event);
+	void processButtonEvent(SDL_Event& event);
+
 	void bindDefaultButtons();
 
 

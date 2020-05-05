@@ -23,6 +23,7 @@
     <ClCompile Include="Source\AI\AIPathMap.cpp" />
     <ClCompile Include="Source\Animations\Animator.cpp" />
     <ClCompile Include="Source\Audio\SoundController.cpp" />
+    <ClCompile Include="Source\Input\Button.cpp" />
     <ClCompile Include="Source\Objects\Attributes\Knockback.cpp" />
     <ClCompile Include="Source\Objects\Attributes\Level.cpp" />
     <ClCompile Include="Source\Objects\Attributes\Physics.cpp" />

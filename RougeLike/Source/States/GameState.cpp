@@ -95,7 +95,6 @@ void GameState::handleInput()
 	}
 
 	mGameData->playerManager->handleInput();
-	mGameData->uiManager->handleInput();
 }
 
 

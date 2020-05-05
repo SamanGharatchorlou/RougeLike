@@ -26,7 +26,6 @@ void Cursor::clearInputs()
 }
 
 
-
 // Query Input
 bool Cursor::isHeld(ButtonType type) const
 {

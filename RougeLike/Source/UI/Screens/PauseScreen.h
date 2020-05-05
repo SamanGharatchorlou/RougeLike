@@ -9,15 +9,22 @@ class PauseScreen : public Screen
 public:
 	PauseScreen(GameData* gameData);
 
+	void update() override;
+	
+
 	void enter() override { }
 	void exit() override;
-	void update() override;
 
 	bool quitGame() const { return mQuitGame; }
 	bool resumeGame() const { return mResumeGame; }
 	bool restartGame() const { return mRestartGame; }
 
 	Type type() override { return Type::Pause; }
+
+
+private:
+	void updateBoxTexture(std::string buttonId, std::string boxId);
+
 
 private:
 	bool mResumeGame;

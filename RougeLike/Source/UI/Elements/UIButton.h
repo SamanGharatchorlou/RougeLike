@@ -1,31 +1,18 @@
 #pragma once
+
 #include "UIBox.h"
+#include "Input/Button.h"
+
 
 class Texture;
 
 class UIButton : public UIBox
 {
 public:
-	enum Action
-	{
-		None_0,
-
-		// Pause Screen
-		ResumeGame_1,
-		QuitGame_2,
-		RestartGame_3,
-
-		// Character Selection Screen
-		SelectSoldier_4,
-
-		COUNT
-	};
 
 	struct Data : public UIBox::Data
 	{
-		// default texture from UIBox is used for the default
 		Texture* highlightedTexture;
-		Action action;
 	};
 
 
@@ -34,13 +21,16 @@ public:
 	UIButton(Data& data);
 	~UIButton() { }
 
+	void reset();
+
+	void setHeld(bool isHeld);
 	void setPressed(bool isPressed);
 	void setReleased(bool isReleased);
 
-	inline bool isPressed() const { return mIsPressed; }
-	inline bool isReleased() const { return mIsReleased; }
-
-	const Action getAction() const { return mAction; }
+	inline bool isPressed() const { return mButton.isPressed(); }
+	inline bool isReleased() const { return mButton.isReleased(); }
+	inline bool isHeld() const { return mButton.isHeld(); }
+	inline int holdCount() const { return mButton.getHeldFrames(); }
 
 	virtual bool isButton() const { return true; }
 	virtual bool hasText() const { return false; }
@@ -50,8 +40,5 @@ private:
 	Texture* mDefault;
 	Texture* mHighlighted;
 
-	Action mAction;	
-	
-	bool mIsPressed;
-	bool mIsReleased;
+	Button mButton;
 };
