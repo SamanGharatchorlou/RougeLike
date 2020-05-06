@@ -18,6 +18,7 @@ public:
 public:
 	void processCollisions();
 	void resetColliders();
+	void clearColliders();
 
 	CollisionTracker* getTracker(Tracker id);
 	void addNewCollisionTracker(Tracker id);
@@ -26,6 +27,7 @@ public:
 	void addDefenders(Tracker id, std::vector<Collider*> defenders);
 
 	void removeDefender(Tracker id, Collider* defender);
+	void removeAllDefenders(Tracker id);
 	void removeAllAttackers(Tracker id);
 
 private:

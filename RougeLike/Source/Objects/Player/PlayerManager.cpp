@@ -32,13 +32,21 @@ PlayerManager::~PlayerManager()
 	player = nullptr;
 }
 
+void PlayerManager::reset()
+{
+	tileIndex.zero();
+	player->reset();
+}
 
-void PlayerManager::init()
+void PlayerManager::loadWeaponStash()
 {
 	weaponStash.load(mGameData->textureManager);
+}
 
-	// Collision tracking
-	std::vector<Collider*> collider { &player->collider() };
+void PlayerManager::initCollisions()
+{
+	std::vector<Collider*> collider{ &player->collider() };
+
 	mGameData->collisionManager->addDefenders(CollisionManager::Enemy_Hit_Player, collider);
 	mGameData->collisionManager->addAttackers(CollisionManager::Player_Hit_Collectable, collider);
 }
@@ -63,9 +71,6 @@ void PlayerManager::selectWeapon(const std::string& weaponName)
 
 
 RectF* PlayerManager::rect() { return &player->rectRef(); }
-
-
-void PlayerManager::preProcess() { player->processStateChanges(); }
 
 void PlayerManager::handleInput() 
 { 

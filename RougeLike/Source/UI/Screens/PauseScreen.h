@@ -30,4 +30,5 @@ private:
 	bool mResumeGame;
 	bool mQuitGame;
 	bool mRestartGame;
+	bool mOpenSettings;
 };

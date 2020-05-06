@@ -34,36 +34,3 @@ struct GameData
 	PlayerManager* playerManager = nullptr;
 	EnemyManager* enemies = nullptr;
 };
-
-
-// Read only game info
-struct GameInfo
-{
-public:
-	// TODO: having a const version doesnt work???
-	//static const GameInfo* Get()
-	//{
-	//	static GameInfo instance;
-	//	return &instance;
-	//}
-
-	// Only use in GameData when initing the data
-	static GameInfo* Get()
-	{
-		static GameInfo instance;
-		return &instance;
-	}
-
-
-	void map(Environment* map) { mMap = map; }
-
-	const VectorF mapDimentions() const;
-
-	bool isWall(VectorF position) const;
-
-private:
-	GameInfo() : mMap(nullptr)  { };
-	~GameInfo() { };
-
-	const Environment* mMap ;
-};

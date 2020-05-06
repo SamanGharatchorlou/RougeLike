@@ -82,6 +82,7 @@ GameController::GameController(const char* gameTitle) : quit(false), mGameStateM
 // destory all SDL subsystems
 GameController::~GameController()
 {
+	mGameStateMachine.clearStates();
 	mGameData.free();
 
 	// delete globals
@@ -135,9 +136,6 @@ void GameController::run()
 		// change state, init if required
 		mGameStateMachine.processStateChanges();
 
-		// process state changes other objects like players, enemies etc.
-		mGameStateMachine.getActiveState().preProcess();
-
 		// handle input events
 		mGameData.inputManager->resetInputEvents();
 
@@ -162,8 +160,14 @@ void GameController::run()
 
 		// Slow update runs once per frame
 		mGameStateMachine.getActiveState().slowUpdate(dt);
-		mGameData.audioManager->slowUpdate();
 
+		if (restart)
+		{
+			restartGame();
+			continue;
+		}
+
+		mGameData.audioManager->slowUpdate();
 		mGameData.uiManager->update();
 
 		mGameStateMachine.getActiveState().render();
@@ -208,13 +212,15 @@ void GameController::run()
 // then restart it all again
 void GameController::restartGame()
 {
-	//// Remove all states
-	//while (mGameStateMachine.size() > 1)
-	//{
-	//	mGameStateMachine.popState();
-	//	mGameStateMachine.processStateChanges();
-	//}
+	// Remove all states
+	while (mGameStateMachine.size() > 1)
+	{
+		mGameStateMachine.popState();
+		mGameStateMachine.processStateChanges();
+	}
 
-	//mGameStateMachine.addState(new GameState(&mGameData, this));
-	DebugPrint(Log, "Restart game unimplemented\n");
+	mGameData.uiManager->clearScreens();
+	mGameData.uiManager->init();
+
+	mGameStateMachine.addState(new GameState(&mGameData, this));
 }

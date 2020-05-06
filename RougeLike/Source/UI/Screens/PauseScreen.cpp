@@ -33,7 +33,7 @@ void PauseScreen::update()
 	{
 		if (settingsButton->isReleased())
 		{
-			// todo: add logic
+			mOpenSettings = true;
 		}
 	}
 
@@ -42,7 +42,7 @@ void PauseScreen::update()
 	{
 		if (restartButton->isReleased())
 		{
-			// todo: add logic
+			mRestartGame = true;
 		}
 	}
 

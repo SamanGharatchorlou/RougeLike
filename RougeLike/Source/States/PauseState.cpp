@@ -26,6 +26,21 @@ void PauseState::init()
 }
 
 
+void PauseState::handleInput()
+{
+	if (mGameData->inputManager->isPressed(Button::Esc) ||
+		mGameData->inputManager->isPressed(Button::Quit))
+	{
+		quitGame();
+	}
+
+	if (mGameData->inputManager->isPressed(Button::Pause))
+	{
+		resumeGame();
+	}
+}
+
+
 void PauseState::slowUpdate(float dt)
 {
 	if (mPauseScreen->resumeGame())
@@ -43,19 +58,7 @@ void PauseState::slowUpdate(float dt)
 }
 
 
-void PauseState::handleInput()
-{
-	if (mGameData->inputManager->isPressed(Button::Esc) ||
-		mGameData->inputManager->isPressed(Button::Quit))
-	{
-		quitGame();
-	}
 
-	if (mGameData->inputManager->isPressed(Button::Pause))
-	{
-		resumeGame();
-	}
-}
 
 
 void PauseState::render() 

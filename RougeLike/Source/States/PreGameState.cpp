@@ -39,7 +39,7 @@ void PreGameState::init()
 	mGameData->uiManager->setCursorTexture(mGameData->textureManager->getTexture("UICursor"));
 
 	// Player
-	mGameData->playerManager->init();
+	mGameData->playerManager->loadWeaponStash();
 }
 
 
@@ -54,7 +54,7 @@ void PreGameState::slowUpdate(float dt)
 	if (selectionScreen->enterGame())
 	{
 		selectCharacter();
-		enterGame();
+		mGameController->getStateMachine()->replaceState(new GameState(mGameData, mGameController));
 	}
 }
 
@@ -83,11 +83,6 @@ void PreGameState::selectCharacter()
 	mGameData->playerManager->selectCharacter(selectionScreen->selectCharacter());
 }
 
-void PreGameState::enterGame()
-{
-	mGameController->getStateMachine()->replaceState(new GameState(mGameData, mGameController));
-	mGameData->uiManager->selectScreen(Screen::Game);
-}
 
 void PreGameState::initCollisions()
 {

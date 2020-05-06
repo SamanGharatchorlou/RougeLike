@@ -34,6 +34,9 @@ public:
 	EnemyManager(GameData* gameData);
 	~EnemyManager();
 
+	void clear();
+
+	void init();
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
 	void render() const;
@@ -75,9 +78,6 @@ private:
 
 	std::vector<EnemyObject> mEnemyPool;
 	std::vector<Enemy*> mActiveEnemies;
-
-	// Player weapon <-> enemy
-	//CollisionTracker mCollisionManager;
 
 	RectF* mTarget;
 

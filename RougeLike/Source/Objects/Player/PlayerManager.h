@@ -23,12 +23,14 @@ public:
 	PlayerManager(GameData* gameData);
 	~PlayerManager();
 
-	void init();
-	void preProcess();
+	void reset();
+
 	void handleInput();
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
 	void render();
+
+	void loadWeaponStash();
 
 	void selectCharacter(const std::string& character);
 	void selectWeapon(const std::string& weaponName);
@@ -37,6 +39,7 @@ public:
 	RectF* rect();
 	VectorF position() const;
 
+	void initCollisions();
 	void handleEvent(const Event event, EventData& data) override;
 
 private:

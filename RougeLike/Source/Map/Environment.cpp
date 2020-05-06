@@ -16,6 +16,21 @@ Environment::Environment() : mMapLevel(1)
 };
 
 
+void Environment::restart()
+{
+	delete mPrimaryMap;
+
+	if(mEntrace)
+		delete mEntrace;
+	if(mExit)
+		delete mExit;
+
+	mPrimaryMap = new Map();
+	mEntrace = new Map();
+	mExit = nullptr;
+}
+
+
 void Environment::init()
 {
 	// create first entrace and level

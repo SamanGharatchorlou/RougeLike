@@ -23,10 +23,8 @@ public:
 	void resume() { };
 
 private:
-	void selectCharacter();
-	void enterGame();
-
 	void initCollisions();
+	void selectCharacter();
 
 private:
 	GameController* mGameController;

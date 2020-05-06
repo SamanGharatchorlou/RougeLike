@@ -11,6 +11,7 @@ public:
 	Environment();
 
 	void init();
+	void restart();
 
 	void nextLevel();
 	void closeLevelEntrace();

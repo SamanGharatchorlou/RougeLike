@@ -7,6 +7,8 @@ class ScoreManager : public Observer, public Dispatcher
 {
 public:
 	ScoreManager();
+	
+	void reset();
 
 	void slowUpdate();
 

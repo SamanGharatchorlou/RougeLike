@@ -16,15 +16,13 @@ public:
 
 	// mandatory functions must be defined
 	void init() override;
-	void preProcess() override;
 	void slowUpdate(float dt) override;
 	void fastUpdate(float dt) override;
 	void handleInput() override;
 	void render() override;
-	void exit() override { };
 
-	void enter();
-	void resume();
+	void resume() override;
+	void exit() override;
 
 	// TEMP
 	Collectables collectables;

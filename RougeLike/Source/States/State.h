@@ -17,7 +17,6 @@ struct State
 	virtual void exit() = 0;
 
 	// optional functions
-	virtual void preProcess() { }
 	virtual void pause() {  }
 	virtual void resume() {  }
 };

@@ -18,6 +18,15 @@ void CollisionManager::resetColliders()
 	}
 }
 
+void CollisionManager::clearColliders()
+{
+	for (int i = 0; i < mCollisionTrackers.size(); i++)
+	{
+		mCollisionTrackers[i].second.clearAttackers();
+		mCollisionTrackers[i].second.clearDefenders();
+	}
+}
+
 
 void CollisionManager::addNewCollisionTracker(Tracker id)
 {
@@ -70,6 +79,15 @@ void CollisionManager::removeAllAttackers(Tracker id)
 
 	if (tracker)
 		tracker->clearAttackers();
+}
+
+
+void CollisionManager::removeAllDefenders(Tracker id)
+{
+	CollisionTracker* tracker = getTracker(id);
+
+	if (tracker)
+		tracker->clearDefenders();
 }
 
 

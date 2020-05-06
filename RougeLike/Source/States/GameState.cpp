@@ -36,6 +36,8 @@ GameState::GameState(GameData* gameData, GameController* gameController) :
 
 void GameState::init()
 {
+	mGameData->uiManager->selectScreen(Screen::CharacterSelection);
+
 	// Entrance width
 	initMap();
 
@@ -57,6 +59,9 @@ void GameState::init()
 	// Start Audio
 	//mGameData->audioManager->playMusic("Ludumdum");
 
+	// Set cursor
+	mGameData->uiManager->setCursorTexture(mGameData->textureManager->getTexture("GameCursor"));
+
 	// Rendering
 	initRendering();
 
@@ -72,12 +77,6 @@ void GameState::initCollectables()
 	WeaponCollectable* weaponPickup = new WeaponCollectable(weaponName, mGameData->textureManager->getTexture(weaponName));
 
 	collectables.spawn(weaponPickup, position);
-}
-
-
-void GameState::preProcess()
-{
-	mGameData->playerManager->preProcess();
 }
 
 
@@ -158,15 +157,19 @@ void GameState::render()
 }
 
 
-void GameState::enter()
+void GameState::resume()
 {
 	mGameData->uiManager->setCursorTexture(mGameData->textureManager->getTexture("GameCursor"));
 }
 
 
-void GameState::resume()
+void GameState::exit()
 {
-	mGameData->uiManager->setCursorTexture(mGameData->textureManager->getTexture("GameCursor"));
+	mGameData->enemies->clear();
+	mGameData->playerManager->reset();
+	mGameData->environment->restart();
+	mGameData->scoreManager->reset();
+	mGameData->collisionManager->clearColliders();
 }
 
 
@@ -193,6 +196,8 @@ void GameState::initMap()
 
 void GameState::initPlayer()
 {
+	mGameData->playerManager->initCollisions();
+
 	VectorF playerPosition = VectorF(Camera::Get()->getCenter().x, mGameData->environment->size().y / 2.0f);
 	mGameData->playerManager->rect()->SetLeftCenter(playerPosition);
 
@@ -203,7 +208,6 @@ void GameState::initPlayer()
 void GameState::initEnemies()
 {
 	EnemyManager* enemies = mGameData->enemies;
-	enemies->addEnemiesToPool(EnemyType::Imp, 50); // TODO: what should this starting value be?
 	enemies->setTarget(mGameData->playerManager->rect());
 	enemies->spawnLevel();
 

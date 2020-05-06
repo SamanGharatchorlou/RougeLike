@@ -8,6 +8,14 @@ ScoreManager::ScoreManager() : mScore(0), mMapLevel(0), updateUI(true)
 }
 
 
+void ScoreManager::reset()
+{
+	mScore = 0;
+	mMapLevel = 0;
+	updateUI = true;
+}
+
+
 void ScoreManager::slowUpdate()
 {
 	if (updateUI)

@@ -8,6 +8,8 @@ public:
 	PlayerPropertyBag() { }
 	void readAttributes(const std::string& name);
 
+	void resetAttributes();
+
 public:
 
 	// Physics
@@ -33,6 +35,10 @@ public:
 	MovementSpeedUpRate pMovementSpdUp;
 
 	WeaponProperty pWeapon;
+
+
+private:
+	std::string attributeName;
 };
 
 

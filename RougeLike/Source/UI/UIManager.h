@@ -13,6 +13,7 @@ public:
 	UIManager(GameData* gameData, Cursor* cursor);
 	~UIManager();
 
+	void clearScreens();
 	void refresh(Screen::Type screenType);
 	void selectScreen(Screen::Type screenType);
 

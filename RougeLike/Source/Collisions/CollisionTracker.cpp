@@ -43,6 +43,12 @@ void CollisionTracker::clearAttackers()
 }
 
 
+void CollisionTracker::clearDefenders()
+{
+	mDefenders.clear();
+}
+
+
 void CollisionTracker::checkCollisions()
 {
 	for (unsigned int j = 0; j < mAttackers.size(); j++)

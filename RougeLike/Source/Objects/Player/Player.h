@@ -7,7 +7,6 @@
 
 struct GameData;
 class Weapon;
-struct WeaponData;
 class PlayerPropertyBag;
 
 
@@ -17,8 +16,9 @@ public:
 	Player(GameData* gameData);
 	~Player();
 
+	void reset();
+
 	void init(const std::string& characterConfig);
-	void processStateChanges() { }
 	void handleInput();
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);

@@ -9,6 +9,7 @@ public:
 	void addDefenders(std::vector<Collider*> colliders);
 
 	void clearAttackers();
+	void clearDefenders();
 	void removeDefender(Collider* collider);
 
 	void checkCollisions();

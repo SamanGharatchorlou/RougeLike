@@ -15,9 +15,8 @@
 
 #include "Utilities/Shapes/Square.h"
 
-// TODO: remove enemies once out of play, i.e. player has not killed them and moved onto the next level
-EnemyManager::EnemyManager(GameData* gameData) : mGameData(gameData), mSpawner(this) { }
 
+EnemyManager::EnemyManager(GameData* gameData) : mGameData(gameData), mSpawner(this) { }
 
 EnemyManager::~EnemyManager()
 {
@@ -30,6 +29,20 @@ EnemyManager::~EnemyManager()
 
 	mActiveEnemies.clear();
 	mEnemyPool.clear();
+}
+
+
+void EnemyManager::clear()
+{
+	clearAllEnemies();
+	mTarget = nullptr;
+	mPathMap.clear();
+}
+
+
+void EnemyManager::init()
+{
+	addEnemiesToPool(EnemyType::Imp, 50);
 }
 
 
@@ -90,6 +103,7 @@ void EnemyManager::slowUpdate(float dt)
 		activeEnemies, mActiveEnemies.size());
 #endif
 }
+
 
 void EnemyManager::generatePathMap()
 {
@@ -160,6 +174,7 @@ void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF positio
 
 	DebugPrint(Warning, "No available enemies of type %d in enemy pool of size %d, consider adding more\n", type, mEnemyPool.size());
 }
+
 
 void EnemyManager::spawnLevel()
 {
@@ -292,6 +307,7 @@ void EnemyManager::updateOccupiedTiles()
 		mPathMap.addOccupiedTile(position);
 	}
 }
+
 
 void EnemyManager::clearOccupiedTileInfo()
 {

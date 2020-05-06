@@ -37,6 +37,12 @@ Player::~Player()
 	mBag = nullptr;
 }
 
+void Player::reset()
+{
+	propertyBag()->resetAttributes();
+	mStateMachine.clearStates();
+}
+
 
 void Player::init(const std::string& characterConfig)
 {

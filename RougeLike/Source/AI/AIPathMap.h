@@ -9,6 +9,7 @@ class AIPathMap : public MapBase<PathTile>
 {
 public:
 	void build(Map* map, int xSplit, int ySplit);
+	void clear();
 
 	const Index index(VectorF position) const;
 	const Index index(const PathTile* tile) const;

@@ -37,6 +37,8 @@ void EnemyHit::init()
 
 	// Store knockback info before collision info is reset (next fast frame)
 	mKnockbackForce = damageCollider->knockbackforce(); 
+
+	printf("hit\n");
 }
 
 

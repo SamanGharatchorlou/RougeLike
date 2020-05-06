@@ -22,8 +22,7 @@
 
 void GameData::init()
 {
-
-	// Texture Manager: must be before cursor
+	// Texture Manager
 	textureManager = new TextureManager;
 	textureManager->init();
 
@@ -52,21 +51,15 @@ void GameData::init()
 	// Score Manager
 	scoreManager = new ScoreManager;
 
-	// Player
-	playerManager = new PlayerManager(this);
-
-	// TEMP
-	playerManager->addObserver(Camera::Get()->getShake());
-
-	// Enemies
-	enemies = new EnemyManager(this);
-
 	// Collision Trackers
 	collisionManager = new CollisionManager;
 
+	// Player
+	playerManager = new PlayerManager(this);
 
-	// Setup gameinfo
-	GameInfo::Get()->map(environment);
+	// Enemies
+	enemies = new EnemyManager(this);
+	enemies->init();
 
 	// Must be done AFTER everything has been new'd
 	setupObservers();
@@ -80,57 +73,37 @@ void GameData::setupObservers()
 
 	// Update the UI with all scores
 	scoreManager->addObserver(uiManager);
+
 	// Update the UI with the players hp and the stats attack, defence etc.
 	playerManager->addObserver(uiManager);
-
 	// Update enemy paths
 	playerManager->addObserver(enemies);
-
+	playerManager->addObserver(Camera::Get()->getShake());
 
 	// Update the score
 	enemies->addObserver(scoreManager);
 	// Player gains exp
 	enemies->addObserver(playerManager);
-
-
-
-
 }
 
 
 void GameData::free()
 {
-	// destory window (created in gamecontroller)
-	delete window;
+	delete enemies;
+	delete playerManager;
 
-	// managers
-	// ERROR: when there are no textures or audio files in the map gives error... why?
-	delete textureManager;
-	delete audioManager;
-	delete inputManager;
-	delete renderManager;
-	delete uiManager;
-	delete scoreManager;
 	delete collisionManager;
-
 	delete environment;
 
-	delete playerManager;
-	delete enemies;
+	delete scoreManager;
+	delete uiManager;
+
+	delete inputManager;
+	delete textureManager;
+	delete audioManager;
+	delete renderManager;
+
+	delete window;
 
 	DebugPrint(Log, "All game data has been deleted\n");
-}
-
-
-
-// -- Game Info -- //
-const VectorF GameInfo::mapDimentions() const
-{
-	return mMap->size();
-}
-
-bool GameInfo::isWall(VectorF position) const
-{
-	const MapTile* tile = mMap->map(position)->tile(position);
-	return tile ? tile->hasCollisionType(MapTile::Wall) : false;
 }

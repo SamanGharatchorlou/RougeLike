@@ -55,39 +55,41 @@ void RangedWeapon::fastUpdate(float dt)
 
 void RangedWeapon::slowUpdate(float dt)
 {
-	for (std::list<Projectile*>::iterator iter = travelingProjectiles.begin(); iter != travelingProjectiles.end(); iter++)
-	{
-		VectorF position = (*iter)->position();
+	// NOTE: The GameInfo object was removed, can this be implemented without it? (date: 06/05/2020)
+	//for (std::list<Projectile*>::iterator iter = travelingProjectiles.begin(); iter != travelingProjectiles.end(); iter++)
+	//{
+	//	VectorF position = (*iter)->position();
 
-		// Lost projectil from wall collision
-		if (GameInfo::Get()->isWall(position))
-		{
-			quiver.lostProjectile(*iter);
-			travelingProjectiles.erase(iter);
-			break;
-		}
+	//	
+	//	// Lost projectil from wall collision
+	//	if (GameInfo::Get()->isWall(position))
+	//	{
+	//		quiver.lostProjectile(*iter);
+	//		travelingProjectiles.erase(iter);
+	//		break;
+	//	}
 
-		// Lost projectile from out of bounds
-		VectorF mapBoundaries = GameInfo::Get()->mapDimentions();
+	//	// Lost projectile from out of bounds
+	//	VectorF mapBoundaries = GameInfo::Get()->mapDimentions();
 
-		bool outOfBounds =
-			position.x < 0.0f || position.x > mapBoundaries.x ||
-			position.y < 0.0f || position.y > mapBoundaries.y;
+	//	bool outOfBounds =
+	//		position.x < 0.0f || position.x > mapBoundaries.x ||
+	//		position.y < 0.0f || position.y > mapBoundaries.y;
 
-		if (outOfBounds)
-		{
-			quiver.lostProjectile(*iter);
-			travelingProjectiles.erase(iter);
-			break;
-		}
+	//	if (outOfBounds)
+	//	{
+	//		quiver.lostProjectile(*iter);
+	//		travelingProjectiles.erase(iter);
+	//		break;
+	//	}
 
-		if ((*iter)->hasCollided())
-		{
-			quiver.lostProjectile(*iter);
-			travelingProjectiles.erase(iter);
-			break;
-		}
-	}
+	//	if ((*iter)->hasCollided())
+	//	{
+	//		quiver.lostProjectile(*iter);
+	//		travelingProjectiles.erase(iter);
+	//		break;
+	//	}
+	//}
 }
 
 void RangedWeapon::equipt(const WeaponData* data)

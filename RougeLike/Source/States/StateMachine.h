@@ -11,6 +11,8 @@ public:
 	StateMachine(T* nullState);
 	~StateMachine();
 
+	void clearStates();
+
 	void addState(T* state);
 	void popState();
 	void replaceState(T* state);
@@ -40,6 +42,14 @@ StateMachine<T>::StateMachine(T* nullState)
 template<class T>
 StateMachine<T>::~StateMachine()
 {
+	clearStates();
+	DebugPrint(Log, "StateMachine destroyed\n");
+}
+
+
+template<class T>
+void StateMachine<T>::clearStates()
+{
 	while (states.size() > 0)
 	{
 		states.top()->exit();
@@ -47,10 +57,7 @@ StateMachine<T>::~StateMachine()
 		delete states.top();
 		states.pop();
 	}
-
-	DebugPrint(Log, "StateMachine destroyed\n");
 }
-
 
 
 template<class T>

@@ -4,6 +4,14 @@
 #include "Map/Map.h"
 
 
+void AIPathMap::clear()
+{
+	clearOccupiedTiles();
+	clearToBeOccupiedTiles();
+	mData.clear();
+}
+
+
 void AIPathMap::build(Map* map, int xSplit, int ySplit)
 {
 	Grid<MapTile> tileMap = map->getData();

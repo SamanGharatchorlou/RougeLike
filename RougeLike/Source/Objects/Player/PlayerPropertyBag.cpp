@@ -7,6 +7,8 @@
 
 void PlayerPropertyBag::readAttributes(const std::string& name)
 {
+	attributeName = name;
+
 	StatReader statReader;
 	XMLValueMap map = statReader.getStats(FileManager::Config_Player, name);
 
@@ -82,4 +84,11 @@ void PlayerPropertyBag::readAttributes(const std::string& name)
 	// Movement Speed up rate
 	int movementSpdUp = map.getInt("MovementSpeedUpRate");
 	pMovementSpdUp.set(movementSpdUp);
+}
+
+
+
+void PlayerPropertyBag::resetAttributes()
+{
+	readAttributes(attributeName);
 }

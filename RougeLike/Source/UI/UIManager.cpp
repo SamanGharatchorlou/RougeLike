@@ -34,6 +34,19 @@ UIManager::~UIManager()
 }
 
 
+void UIManager::clearScreens()
+{
+	activeScreen = nullptr;
+
+	for (Screen* screen : screens)
+	{
+		delete screen;
+	}
+
+	screens.clear();
+}
+
+
 void UIManager::selectScreen(Screen::Type screenType)
 {
 	if (activeScreen)
@@ -134,22 +147,28 @@ void UIManager::handleInput()
 
 void UIManager::update() 
 { 
-	activeScreen->update(); 
+	if(activeScreen)
+		activeScreen->update(); 
 }
 
 
 void UIManager::render()
 {
-	activeScreen->render();
-
-	if (!elementId.empty())
+	if (activeScreen)
 	{
-		UIElement* element = findElement(elementId);
-		if(element)
-			debugDrawRectOutline(element->rect(), RenderColour::Red);
-	}
+		activeScreen->render();
 
-	mCursor->render();
+#if UI_EDITOR
+		if (!elementId.empty())
+		{
+			UIElement* element = findElement(elementId);
+			if (element)
+				debugDrawRectOutline(element->rect(), RenderColour::Red);
+		}
+#endif
+
+		mCursor->render();
+	}
 }
 
 
