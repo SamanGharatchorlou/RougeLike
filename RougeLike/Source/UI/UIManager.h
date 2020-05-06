@@ -10,7 +10,7 @@ class Cursor;
 class UIManager : public Observer
 {
 public:
-	UIManager(GameData* gameData, Cursor* cursor);
+	UIManager(GameData* gameData);
 	~UIManager();
 
 	void clearScreens();
@@ -33,16 +33,16 @@ public:
 	void setCursorTexture(Texture* texture);
 
 private:
-	void debugEditUI();
-
-private:
 	GameData* mGameData;
 	Cursor* mCursor;
 
 	Screen* activeScreen;
 	std::vector<Screen*> screens;
 
+
 #if UI_EDITOR
+private:
+	void debugEditUI();
 	std::string elementId;
 #endif
 };

@@ -13,10 +13,10 @@ class Screen
 public:
 	enum Type
 	{
-		Start,
-		Pause,
+		CharacterSelection,
 		Game,
-		CharacterSelection
+		Pause,
+		Settings
 	};
 
 

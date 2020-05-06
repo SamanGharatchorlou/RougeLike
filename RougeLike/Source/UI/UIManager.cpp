@@ -1,21 +1,17 @@
 #include "pch.h"
 #include "UIManager.h"
 
-#include "UI/Screens/GameScreen.h"
-#include "UI/Screens/PauseScreen.h"
-#include "UI/Screens/CharacterSelectionScreen.h"
-
-#include "ScreenDecoder.h"
 #include "Game/GameData.h"
+#include "ScreenDecoder.h"
+#include "Screens/ScreenHeaders.h"
 
 // TEMP
 #include "Input/InputManager.h"
-#include "Game/Cursor.h"
 #include "Collisions/Collider.h"
 
 
 
-UIManager::UIManager(GameData* gameData, Cursor* cursor) : mGameData(gameData), mCursor(cursor)
+UIManager::UIManager(GameData* gameData) : mGameData(gameData)
 {
 #if UI_EDITOR
 	elementId = "";
@@ -93,7 +89,10 @@ void UIManager::init()
 			screen = new PauseScreen(mGameData);
 
 		else if (screenName == "CharacterSelectionScreen")
-			screen = new CharacterSelectionScreen(mGameData); 
+			screen = new CharacterSelectionScreen(mGameData);
+
+		else if (screenName == "SettingsScreen")
+			screen = new SettingsScreen(mGameData);
 
 		if (screen)
 		{
@@ -111,7 +110,7 @@ void UIManager::handleInput()
 {
 	InputManager* input = mGameData->inputManager;
 
-# if UI_EDITOR
+#if UI_EDITOR
 	debugEditUI();
 #endif
 
@@ -129,7 +128,7 @@ void UIManager::handleInput()
 
 				button->reset();
 
-				if (button->isPointInBounds(mCursor->position()))
+				if (button->isPointInBounds(input->cursorPosition()))
 				{
 					button->setPressed(input->isCursorPressed(Cursor::Left));
 					button->setHeld(input->isCursorHeld(Cursor::Left));
@@ -166,8 +165,8 @@ void UIManager::render()
 				debugDrawRectOutline(element->rect(), RenderColour::Red);
 		}
 #endif
-
-		mCursor->render();
+		
+		mGameData->inputManager->getCursor()->render();
 	}
 }
 
@@ -336,27 +335,27 @@ void UIManager::handleEvent(Event event, EventData& data)
 
 void UIManager::setCursorTexture(Texture* texture) 
 { 
-	mCursor->setTexture(texture); 
+	mGameData->inputManager->getCursor()->setTexture(texture); 
 }
 
 
 
 // --- Private Functions --- //
 
-// Debugging
+#if UI_EDITOR
 void UIManager::debugEditUI()
 {
-	if (mGameData->inputManager->isCursorPressed(Cursor::Right))
-	{
-		VectorF cursorPosition = mCursor->position();
+	InputManager* input = mGameData->inputManager;
 
+	if (input->isCursorPressed(Cursor::Right))
+	{
 		for (UILayer* layer : activeScreen->layers())
 		{
 			for (UIElement* element : layer->elements())
 			{
 				Collider collider(&element->rect());
 
-				if (collider.contains(mCursor->position()))
+				if (collider.contains(input->cursorPosition()))
 				{
 					elementId = element->id();
 					// No break so we select the highest element
@@ -371,52 +370,52 @@ void UIManager::debugEditUI()
 	int holdDelay = 15;
 
 	// LEFT
-	if (mGameData->inputManager->isPressed(Button::UILeft) && !elementId.empty())
+	if (input->isPressed(Button::UILeft) && !elementId.empty())
 	{
 		change += VectorF(-movementSpeed, 0.0f);
 	}
-	else if (mGameData->inputManager->isHeld(Button::UILeft) && !elementId.empty())
+	else if (input->isHeld(Button::UILeft) && !elementId.empty())
 	{
-		if (mGameData->inputManager->getHeldFrames(Button::UILeft) > holdDelay && mGameData->inputManager->getHeldFrames(Button::UILeft) % holdSpeed == 0)
+		if (input->getHeldFrames(Button::UILeft) > holdDelay && input->getHeldFrames(Button::UILeft) % holdSpeed == 0)
 		{
 			change += VectorF(-movementSpeed, 0.0f);
 		}
 	}
 
 	// RIGHT
-	if (mGameData->inputManager->isPressed(Button::UIRight) && !elementId.empty())
+	if (input->isPressed(Button::UIRight) && !elementId.empty())
 	{
 		change += VectorF(+movementSpeed, 0.0f);
 	}
-	else if (mGameData->inputManager->isHeld(Button::UIRight) && !elementId.empty())
+	else if (input->isHeld(Button::UIRight) && !elementId.empty())
 	{
-		if (mGameData->inputManager->getHeldFrames(Button::UIRight) > holdDelay && mGameData->inputManager->getHeldFrames(Button::UIRight) % holdSpeed == 0)
+		if (input->getHeldFrames(Button::UIRight) > holdDelay && input->getHeldFrames(Button::UIRight) % holdSpeed == 0)
 		{
 			change += VectorF(+movementSpeed, 0.0f);
 		}
 	}
 
 	// UP
-	if (mGameData->inputManager->isPressed(Button::UIUp) && !elementId.empty())
+	if (input->isPressed(Button::UIUp) && !elementId.empty())
 	{
 		change += VectorF(0.0f, -movementSpeed);
 	}
-	else if (mGameData->inputManager->isHeld(Button::UIUp) && !elementId.empty())
+	else if (input->isHeld(Button::UIUp) && !elementId.empty())
 	{
-		if (mGameData->inputManager->getHeldFrames(Button::UIUp) > holdDelay && mGameData->inputManager->getHeldFrames(Button::UIUp) % holdSpeed == 0)
+		if (input->getHeldFrames(Button::UIUp) > holdDelay && input->getHeldFrames(Button::UIUp) % holdSpeed == 0)
 		{
 			change += VectorF(0.0f, -movementSpeed);
 		}
 	}
 
 	// DOWN
-	if (mGameData->inputManager->isPressed(Button::UIDown) && !elementId.empty())
+	if (input->isPressed(Button::UIDown) && !elementId.empty())
 	{
 		change += VectorF(0.0f, +movementSpeed);
 	}
-	else if (mGameData->inputManager->isHeld(Button::UIDown) && !elementId.empty())
+	else if (input->isHeld(Button::UIDown) && !elementId.empty())
 	{
-		if (mGameData->inputManager->getHeldFrames(Button::UIDown) > holdDelay && mGameData->inputManager->getHeldFrames(Button::UIDown) % holdSpeed == 0)
+		if (input->getHeldFrames(Button::UIDown) > holdDelay && input->getHeldFrames(Button::UIDown) % holdSpeed == 0)
 		{
 			change += VectorF(0.0f, +movementSpeed);
 		}
@@ -426,13 +425,13 @@ void UIManager::debugEditUI()
 	{
 		EditUIRectEvent event(elementId, change);
 
-		if (mGameData->inputManager->isHeld(Button::Ctrl))
+		if (input->isHeld(Button::Ctrl))
 			handleEvent(Event::ChangeUIElementSize, event);
 		else
 			handleEvent(Event::MoveUIElement, event);
 	}
 
-	if (mGameData->inputManager->isPressed(Button::Enter) && !elementId.empty())
+	if (input->isPressed(Button::Enter) && !elementId.empty())
 	{
 		UIElement* element = findElement(elementId);
 		RectF rect = element->rect();
@@ -445,4 +444,4 @@ void UIManager::debugEditUI()
 		DebugPrint(Log, "Element %s rect\nx = \"%.3f\" y = \"%.3f\" width = \"%.3f\" height = \"%.3f\"\n\n", element->id().c_str(), rect.x1, rect.y1, rect.Width(), rect.Height());
 	}
 }
-
+#endif

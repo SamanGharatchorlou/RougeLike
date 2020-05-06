@@ -42,7 +42,7 @@ void GameData::init()
 	audioManager->init();
 
 	// UI
-	uiManager = new UIManager(this, inputManager->getCursor());
+	uiManager = new UIManager(this);
 	uiManager->init();
 
 	// Rendering

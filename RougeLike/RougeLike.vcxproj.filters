@@ -98,6 +98,7 @@
     <ClCompile Include="Source\Objects\Effects\EffectHandler.cpp" />
     <ClCompile Include="Source\Objects\Effects\SlowEffect.cpp" />
     <ClCompile Include="Source\Input\Button.cpp" />
+    <ClCompile Include="Source\UI\Screens\SettingsScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -218,6 +219,8 @@
     <ClInclude Include="Source\Objects\Effects\KnockbackEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectHandler.h" />
     <ClInclude Include="Source\Objects\Effects\SlowEffect.h" />
+    <ClInclude Include="Source\UI\Screens\SettingsScreen.h" />
+    <ClInclude Include="Source\UI\Screens\ScreenHeaders.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

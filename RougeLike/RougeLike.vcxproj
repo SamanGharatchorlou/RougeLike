@@ -39,6 +39,7 @@
     <ClCompile Include="Source\Objects\Enemies\EnemyStates\EnemyWait.cpp" />
     <ClCompile Include="Source\Objects\Enemies\Spawning\EnemySpawner.cpp" />
     <ClCompile Include="Source\Collisions\CollisionManager.cpp" />
+    <ClCompile Include="Source\UI\Screens\SettingsScreen.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Circle.cpp.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Shape.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Square.cpp" />
@@ -147,6 +148,8 @@
     <ClInclude Include="Source\Objects\Enemies\EnemyStates\EnemyWait.h" />
     <ClInclude Include="Source\Objects\Enemies\Spawning\EnemySpawner.h" />
     <ClInclude Include="Source\Collisions\CollisionManager.h" />
+    <ClInclude Include="Source\UI\Screens\ScreenHeaders.h" />
+    <ClInclude Include="Source\UI\Screens\SettingsScreen.h" />
     <ClInclude Include="Source\Utilities\Shapes\Circle.h" />
     <ClInclude Include="Source\Utilities\Shapes\Shape.h" />
     <ClInclude Include="Source\Utilities\Shapes\Square.h" />

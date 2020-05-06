@@ -55,10 +55,11 @@ void PauseState::slowUpdate(float dt)
 	{
 		restartGame();
 	}
+	else if (mPauseScreen->openSettings())
+	{
+		mGameData->uiManager->selectScreen(Screen::Settings);
+	}
 }
-
-
-
 
 
 void PauseState::render() 

@@ -11,13 +11,13 @@ public:
 
 	void update() override;
 	
-
 	void enter() override { }
 	void exit() override;
 
 	bool quitGame() const { return mQuitGame; }
 	bool resumeGame() const { return mResumeGame; }
 	bool restartGame() const { return mRestartGame; }
+	bool openSettings() const { return mOpenSettings; }
 
 	Type type() override { return Type::Pause; }
 
