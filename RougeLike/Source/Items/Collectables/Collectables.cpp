@@ -5,6 +5,10 @@
 #include "Game/GameData.h"
 #include "Collisions/CollisionManager.h"
 
+#include "Items/Spawner.h"
+#include "Map/Environment.h"
+#include "Graphics/TextureManager.h"
+
 
 Collectables::Collectables(GameData* gameData) : mGameData(gameData) 
 { 
@@ -67,5 +71,35 @@ void Collectables::render()
 			mCollectables[i]->render(cameraRect);
 #endif
 		}
+	}
+}
+
+
+
+void Collectables::spawnRandomItem(ItemType itemType)
+{
+	Spawner itemSpawner;
+	int randomXPosition = randomNumberBetween(10, 95);
+	VectorF position = itemSpawner.findSpawnPoint(mGameData->environment->primaryMap(), randomXPosition);
+
+	std::vector<std::string> itemNameList = itemNames(itemType);
+	const std::string weaponName = itemNameList[randomNumberBetween(0, itemNameList.size())];
+
+	WeaponCollectable* weaponPickup = new WeaponCollectable(weaponName, mGameData->textureManager->getTexture(weaponName));
+	spawn(weaponPickup, position);
+}
+
+
+
+/// --- Private Functions ---///
+std::vector<std::string> Collectables::itemNames(ItemType type)
+{
+	switch (type)
+	{
+	case Collectables::MeleeWeapon:
+		return FileManager::Get()->fileNamesInFolder(FileManager::Config_MeleeWeapons);
+	default:
+		DebugPrint(Log, "Unrecognised ItemType %d, cannot get item name list for item spawn\n", type);
+		break;
 	}
 }

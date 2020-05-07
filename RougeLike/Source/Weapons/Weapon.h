@@ -28,8 +28,9 @@ public:
 	virtual void fastUpdate(float dt) = 0;
 	virtual void slowUpdate(float dt) = 0;
 
-	virtual const std::string& hitSoundLabel() const = 0;
-	virtual const std::string& missSoundLabel() const = 0;
+	virtual bool canPlayHitSound() { return mCanPlayHitSound; }
+	virtual const std::string& hitSoundLabel() = 0;
+	virtual const std::string& missSoundLabel() = 0;
 
 	bool isAttacking() const { return mAttacking; }
 	virtual bool didHit() const = 0;
@@ -55,6 +56,7 @@ protected:
 	bool mAttacking;
 	bool mOverrideCursorControl;
 
+	bool mCanPlayHitSound;
 	const std::string* mAudioToPlay;
 	const std::string* mAudioToStop;
 };

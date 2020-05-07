@@ -27,13 +27,12 @@ public:
 		Config_Enemies,
 		Config_Player,
 		Config_Weapons,
+		Config_MeleeWeapons,
 
 		Audio,
 		Audio_Music,
 		Audio_Sound,
-		Audio_Effects_Attack,
-		Audio_Effects_GetHit,
-		Audio_Effects_Physics,
+		Audio_SoundGroups,
 
 		count
 	};
@@ -44,16 +43,22 @@ public:
 
 	std::string folderPath(const Folder folder) const;
 	std::string filePath(const Folder folder, const std::string& fileName) const;
+	std::string filePath(const std::string& directoryPath, const std::string& itemName) const;
 	std::string XMLFilePath(const Folder folder, const std::string& fileName) const;
 
 	std::vector<std::string> fullPathsInFolder(const Folder folder) const;
+	std::vector<std::string> fullPathsInFolder(const std::string& directoryPath) const;
 	std::vector<std::string> fileNamesInFolder(const Folder folder) const;
+
+	int fileCount(const std::string& directoryPath) const;
 
 	bool readFile(const Folder folder, const std::string& fileName, std::string& outBuffer);
 
 	std::string fileName(const std::string& filePath) const;
 
 	std::vector<std::string> allFilesInFolder(const Folder folder) const;
+	std::vector<std::string> foldersInFolder(const Folder folder) const;
+
 
 private:
 	void addFilesToList(std::vector<std::string>& fileList, const fs::path& directoryPath) const;

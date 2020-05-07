@@ -8,7 +8,7 @@ SoundController::SoundController()
 {
 	for (int i = 0; i < MIX_CHANNELS; i++)
 	{
-		channels[i] = false;
+		channels[i] = Free;
 		sourceIds[i] = nullptr;
 		playingAudio[i] = nullptr;
 	}
@@ -17,15 +17,51 @@ SoundController::SoundController()
 
 void SoundController::slowUpdate()
 {
+#if _DEBUG
+	int counter = 0;
+#endif
+
 	for (int i = 0; i < MIX_CHANNELS; i++)
 	{
-		if (channels[i] == true && !Mix_Playing(i))
+		// Free up channels after audio has stopped playing
+		if (channels[i] == Playing && !Mix_Playing(i))
 		{
-			channels[i] = false;
+			channels[i] = Free;
 			sourceIds[i] = nullptr;
 			playingAudio[i] = nullptr;
 		}
+
+#if _DEBUG
+		if (channels[i] != Free)
+		{
+			counter++;
+		}
+
+		if (channels[i] != Paused)
+		{
+			pauseTimers[i].stop();
+		}
+#endif
 	}
+
+#if _DEBUG // Check channels aren't getting clogged up with paused audio
+	if (counter >= 7)
+	{
+		int playingCounter = 0;
+		int pauseCounter = 0;
+
+		for (int i = 0; i < MIX_CHANNELS; i++)
+		{
+			if (channels[i] == Playing)
+				playingCounter++;
+			else if (channels[i] == Paused)
+				pauseCounter++;
+		}
+
+		DebugPrint(Log, "7 or more out the the 8 audio channels are being used. %d channels are playing and %d channels are paused\n", playingCounter, pauseCounter);
+	}
+#endif
+
 }
 
 
@@ -40,7 +76,7 @@ void SoundController::playSound(Audio* audio, void* sourceId)
 	// Check if the source is already playing this sound
 	for (int i = 0; i < MIX_CHANNELS; i++)
 	{
-		if (channels[i] == true)
+		if (channels[i] == Playing)
 		{
 			// This source is already playing, replay on same channel
 			if (sourceIds[i] == sourceId && playingAudio[i] == audio)
@@ -54,24 +90,13 @@ void SoundController::playSound(Audio* audio, void* sourceId)
 	// Find free channel
 	for (int i = 0; i < MIX_CHANNELS; i++)
 	{
-		if (channels[i] == false)
+		if (channels[i] == Free)
 		{
 			audio->play(i);
 
-			channels[i] = true;
+			channels[i] = Playing;
 			sourceIds[i] = sourceId;
 			playingAudio[i] = audio;
-
-			// TEMP
-			int counter = 0;
-			for (int i = 0; i < MIX_CHANNELS; i++)
-			{
-				if (channels[i] == true)
-				{
-					counter++;
-				}
-			}
-
 			return;
 		}
 	}
@@ -80,21 +105,68 @@ void SoundController::playSound(Audio* audio, void* sourceId)
 }
 
 
+void SoundController::pauseSound(Audio* audio, void* sourceId)
+{
+	for (int i = 0; i < MIX_CHANNELS; i++)
+	{
+		if (channels[i] == Playing && playingAudio[i] == audio && sourceIds[i] == sourceId)
+		{
+			Mix_Pause(i);
+			channels[i] = Paused;
+			printf("pausing sound\n");
+#if _DEBUG
+			pauseTimers[i].start();
+#endif
+
+			return;
+		}
+	}
+
+	DebugPrint(Warning, "Could not pause audio, place a breakpoint here to find out why\n");
+}
+
+
+void SoundController::resumeSound(Audio* audio, void* sourceId)
+{
+	for (int i = 0; i < MIX_CHANNELS; i++)
+	{
+		if (playingAudio[i] == audio && sourceIds[i] == sourceId)
+		{
+			if (channels[i] == Paused)
+			{
+				Mix_Resume(i);
+				channels[i] = Playing;
+				return;
+			}
+			else if (channels[i] == Playing)
+			{
+				// Do nothing
+				return;
+			}
+		}
+	}
+
+	DebugPrint(Warning, "Could not resume audio, place a breakpoint here to find out why\n");
+}
+
 
 void SoundController::stopSound(Audio* audio, void* sourceId)
 {
 	for (int i = 0; i < MIX_CHANNELS; i++)
 	{
-		if (channels[i] == true && playingAudio[i] == audio && sourceIds[i] == sourceId)
+		if (channels[i] >= Playing && playingAudio[i] == audio && sourceIds[i] == sourceId)
 		{
 			Mix_HaltChannel(i);
 
-			channels[i] = false;
+			channels[i] = Free;
 			sourceIds[i] = nullptr;
 			playingAudio[i] = nullptr;
 			return;
 		}
 	}
+
+
+	DebugPrint(Warning, "Could not stop audio, place a breakpoint here to find out why\n");
 }
 
 
@@ -102,7 +174,7 @@ bool SoundController::isPlaying(Audio* audio, void* sourceId)
 {
 	for (int i = 0; i < MIX_CHANNELS; i++)
 	{
-		if (channels[i] == true && playingAudio[i] == audio && sourceIds[i] == sourceId)
+		if (channels[i] == Playing && playingAudio[i] == audio && sourceIds[i] == sourceId)
 		{
 			return true;
 		}

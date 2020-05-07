@@ -78,7 +78,9 @@ void Player::handleInput()
 	{
 		// Play miss sound
 		if (!mWeapon->isAttacking())
+		{
 			mGameData->audioManager->playSound(mWeapon->missSoundLabel(), this);
+		}
 
 		mWeapon->attack();
 	}
@@ -99,6 +101,8 @@ void Player::fastUpdate(float dt)
 	// Weapon
 	mWeapon->updateAnchor(rect().TopLeft());
 	mWeapon->updateAimDirection(mGameData->inputManager->cursorPosition());
+
+
 }
 
 
@@ -110,9 +114,8 @@ void Player::slowUpdate(float dt)
 	if (mWeapon->didHit())
 	{
 		// Play hit sound
-		if (mGameData->audioManager->isPlaying(mWeapon->missSoundLabel(), this))
+		if (mGameData->audioManager->isPlaying(mWeapon->missSoundLabel(), this) && mWeapon->canPlayHitSound())
 		{
-			mGameData->audioManager->stop(mWeapon->missSoundLabel(), this);
 			mGameData->audioManager->playSound(mWeapon->hitSoundLabel(), this);
 		}
 	}

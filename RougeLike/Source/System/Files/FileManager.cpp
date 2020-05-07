@@ -24,6 +24,7 @@ FileManager::FileManager()
 	// Audio
 	folderPaths[Audio_Music]				= std::string("Audio\\Music\\");
 	folderPaths[Audio_Sound]				= std::string("Audio\\Sound\\");
+	folderPaths[Audio_SoundGroups]			= std::string("Audio\\SoundGroups\\");
 
 	// Font
 	folderPaths[Font]						= std::string("Font\\");
@@ -36,6 +37,7 @@ FileManager::FileManager()
 	folderPaths[Config_Enemies]				= std::string("Configs\\Objects\\Enemies\\");
 	folderPaths[Config_Player]				= std::string("Configs\\Objects\\Player\\");
 	folderPaths[Config_Weapons]				= std::string("Configs\\Objects\\Weapons\\");
+	folderPaths[Config_MeleeWeapons]		= std::string("Configs\\Objects\\Weapons\\Melee\\");
 }
 
 
@@ -128,11 +130,67 @@ std::string FileManager::fileName(const std::string& filePath) const
 }
 
 
+std::string FileManager::filePath(const std::string& directoryPath, const std::string& itemName) const
+{
+	fs::path dirPath = fs::path(directoryPath);
+	if (!fs::is_directory(dirPath))
+		DebugPrint(Log, "Item at path '%s' is not a directoy. Cannot search for file '%s'.\n", directoryPath.c_str(), itemName.c_str());
+	else
+	{
+
+		for (const auto& filePath : fs::directory_iterator(dirPath))
+		{
+			std::string path = filePath.path().string();
+			if (fileName(path) == itemName)
+			{
+				return path;
+			}
+		}
+
+		DebugPrint(Log, "No file with name '%s' contained within directory '%s'\n", itemName.c_str(), directoryPath.c_str());
+	}
+
+	return std::string("");
+}
+
+
+int FileManager::fileCount(const std::string& directoryPath) const
+{
+	int directoryFileCount = 0;
+
+	fs::path dirPath = fs::path(directoryPath);
+	if (!fs::is_directory(dirPath))
+	{
+		DebugPrint(Log, "Item at path '%s' is not a directoy, file count = 0.\n", directoryPath.c_str());
+		return directoryFileCount;
+	}
+
+	for (const auto& filePath : fs::directory_iterator(dirPath))
+	{
+		directoryFileCount++;
+	}
+
+	return directoryFileCount;
+}
+
+
 std::vector<std::string> FileManager::fullPathsInFolder(const Folder folder) const
 {
 	std::vector<std::string> fileNameList;
 
 	for (const auto& fullFilePath : fs::directory_iterator(this->folderPath(folder)))
+	{
+		fileNameList.push_back(fullFilePath.path().string());
+	}
+
+	return fileNameList;
+}
+
+std::vector<std::string> FileManager::fullPathsInFolder(const std::string& directoryPath) const
+{
+	std::vector<std::string> fileNameList;
+
+	for (const auto& fullFilePath : fs::directory_iterator(directoryPath))
 	{
 		fileNameList.push_back(fullFilePath.path().string());
 	}
@@ -168,6 +226,23 @@ std::vector<std::string> FileManager::allFilesInFolder(const Folder folder) cons
 
 	return fileNameList;
 }
+
+
+std::vector<std::string> FileManager::foldersInFolder(const Folder folder) const
+{
+	std::vector<std::string> folderPathsList;
+
+	for (const auto& path : fs::directory_iterator(this->folderPath(folder)))
+	{
+		if (fs::is_directory(path))
+		{
+			folderPathsList.push_back(path.path().string());
+		}
+	}
+
+	return folderPathsList;
+}
+
 
 // Recursivly finds all the file names
 void FileManager::addFilesToList(std::vector<std::string>& fileList, const fs::path& directoryPath) const

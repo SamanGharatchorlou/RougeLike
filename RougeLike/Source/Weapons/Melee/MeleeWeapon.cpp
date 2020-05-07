@@ -76,6 +76,7 @@ void MeleeWeapon::attack()
 {
 	mAttacking = true;
 	overrideCursorControl(true);
+	mCanPlayHitSound = true;
 }
 
 
@@ -85,21 +86,11 @@ void MeleeWeapon::fastUpdate(float dt)
 	{
 		if (mRotationSum > maxSwingAngle())
 		{
-			mRotationSum = 0.0f;
-			mAttacking = false;
-
-			flipSide();
-			overrideCursorControl(false);
+			endAttack();
 		}
 		else
 		{
-			float theta = mSwingSpeed * dt;
-			mRotationSum += theta;
-
-			if (mRotationSum > maxSwingAngle())
-				theta = maxSwingAngle() - mRotationSum;
-
-			mDirection = rotateVector(mDirection, theta * -mSwingDirection);
+			continueAttack(dt);
 		}
 	}
 }
@@ -149,6 +140,44 @@ void MeleeWeapon::render()
 }
 
 
+
+const std::vector<Collider*> MeleeWeapon::getColliders()
+{
+	std::vector<Collider*> colliders;
+
+	if (mAttacking)
+	{
+		for (unsigned int i = 0; i < mBlockColliders.size(); i++)
+		{
+			colliders.push_back(mBlockColliders[i]);
+		}
+	}
+
+	return colliders;
+}
+
+
+const float MeleeWeapon::maxSwingAngle() const
+{ 
+	return mData->swingArc; 
+}
+
+const float MeleeWeapon::knockbackDistance() const
+{
+	return mData->knockbackDistance;
+}
+
+
+// Audio
+const std::string& MeleeWeapon::hitSoundLabel() 
+{ 
+	mCanPlayHitSound = false;
+	return mData->audioHit; 
+};
+const std::string& MeleeWeapon::missSoundLabel() { return mData->audioMiss; };
+
+
+/// --- Private Functions --- ///
 void MeleeWeapon::updateWeaponBlocks()
 {
 	VectorF weaponVector = mDirection.normalise() * mRect.Height();
@@ -173,34 +202,24 @@ void MeleeWeapon::updateWeaponBlocks()
 	}
 }
 
-
-const std::vector<Collider*> MeleeWeapon::getColliders()
+void MeleeWeapon::continueAttack(float dt)
 {
-	std::vector<Collider*> colliders;
+	float theta = mSwingSpeed * dt;
+	mRotationSum += theta;
 
-	//if (mAttacking)
-	{
-		for (unsigned int i = 0; i < mBlockColliders.size(); i++)
-		{
-			colliders.push_back(mBlockColliders[i]);
-		}
-	}
+	if (mRotationSum > maxSwingAngle())
+		theta = maxSwingAngle() - mRotationSum;
 
-	return colliders;
+	mDirection = rotateVector(mDirection, theta * -mSwingDirection);
 }
 
 
-const float MeleeWeapon::maxSwingAngle() const
-{ 
-	return mData->swingArc; 
-}
-
-const float MeleeWeapon::knockbackDistance() const
+void MeleeWeapon::endAttack()
 {
-	return mData->knockbackDistance;
+	mRotationSum = 0.0f;
+	mAttacking = false;
+
+	flipSide();
+	overrideCursorControl(false);
+	mCanPlayHitSound = false;
 }
-
-
-// Audio
-const std::string& MeleeWeapon::hitSoundLabel() const { return mData->audioHit; };
-const std::string& MeleeWeapon::missSoundLabel() const { return mData->audioMiss; };

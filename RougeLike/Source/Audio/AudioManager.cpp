@@ -31,6 +31,9 @@ void AudioManager::init()
 	DebugPrint(Log, "\nAudio Effects\n");
 	fails += loadAllSound(FileManager::Audio_Sound);
 
+	DebugPrint(Log, "\nSound Groups\n");
+	fails += loadAllSoundGroups(FileManager::Audio_SoundGroups);
+
 	DebugPrint(Log, "\n--- Audio Loading Complete: %d Failures ---\n\n", fails);
 }
 
@@ -120,6 +123,21 @@ void AudioManager::stop(const std::string& label, void* sourceId)
 		mSoundController.stopSound(audio, sourceId);
 }
 
+void AudioManager::pause(const std::string& label, void* sourceId)
+{
+	Audio* audio = getAudio(label);
+
+	if (audio)
+		mSoundController.pauseSound(audio, sourceId);
+}
+
+void AudioManager::resume(const std::string& label, void* sourceId)
+{
+	Audio* audio = getAudio(label);
+
+	if (audio)
+		mSoundController.resumeSound(audio, sourceId);
+}
 
 bool AudioManager::isPlaying(const std::string& label, void* sourceId)
 {
@@ -162,17 +180,33 @@ int AudioManager::loadAllSound(FileManager::Folder folder)
 }
 
 
+int AudioManager::loadAllSoundGroups(FileManager::Folder folder)
+{
+	int fails = 0;
+	std::vector<std::string> folderPaths = FileManager::Get()->foldersInFolder(folder);
+
+	for (const std::string& path : folderPaths)
+	{
+		Audio* soundGroup =  new AudioGroup;
+		fails += !loadAudio(soundGroup, FileManager::Get()->fileName(path), path);
+	}
+
+	return fails;
+}
+
+
 bool AudioManager::loadAudio(Audio* audio, const std::string& name, const std::string& filePath)
 {
 	if (audio->load(filePath))
 	{
 		mAudioBank[name] = audio;
-		DebugPrint(Log, "Successfully loaded music '%s' at %s\n", name.c_str(), filePath.c_str());
+		DebugPrint(Log, "Successfully loaded audio '%s' at %s\n", name.c_str(), filePath.c_str());
 		return true;
 	}
 	else
 	{
-		DebugPrint(Warning, "Failure: music NOT loaded '%s' at %s\n. SDL_mixer Error: %s\n", name.c_str(), filePath.c_str(), Mix_GetError());
+		DebugPrint(Warning, "Failure: audio NOT loaded '%s' at %s\n. SDL_mixer Error: %s\n", name.c_str(), filePath.c_str(), Mix_GetError());
 		return false;
 	}
 }
+

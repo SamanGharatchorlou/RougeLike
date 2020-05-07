@@ -5,7 +5,7 @@
 
 EnemyPreAttack::EnemyPreAttack(Enemy* enemy) : EnemyState(enemy)
 {
-	mEnemy->getCollider()->setDidHit(false);
+	mEnemy->collider()->setDidHit(false);
 }
 
 

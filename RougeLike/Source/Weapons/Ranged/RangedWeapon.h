@@ -21,8 +21,8 @@ public:
 	void slowUpdate(float dt) override;
 
 	// TODO: Unimplemented functions
-	const std::string& hitSoundLabel() const override { return ""; };
-	const std::string& missSoundLabel() const override { return ""; };
+	const std::string& hitSoundLabel() override { return ""; };
+	const std::string& missSoundLabel() override { return ""; };
 	bool didHit() const override { return false; }
 	// Unimplemented functions
 

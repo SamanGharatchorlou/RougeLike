@@ -27,7 +27,7 @@
 GameState::GameState(GameData* gameData, GameController* gameController) : 
 	mGameData(gameData)
 	, mGameController(gameController)
-	, collectables(gameData)
+	, mCollectables(gameData)
 {
 	// random seed
 	srand((unsigned int)time(NULL));
@@ -53,9 +53,6 @@ void GameState::init()
 	// Enemies
 	initEnemies();
 
-	// Collectables
-	initCollectables();
-
 	// Start Audio
 	//mGameData->audioManager->playMusic("Ludumdum");
 
@@ -68,17 +65,6 @@ void GameState::init()
 	FileManager::Get()->allFilesInFolder(FileManager::Audio_Sound);
 }
 
-void GameState::initCollectables()
-{
-	Spawner itemSpawner;
-	VectorF position = itemSpawner.findSpawnPoint(mGameData->environment->primaryMap(), 10);
-
-	const std::string weaponName = "weapon_big_hammer";
-	WeaponCollectable* weaponPickup = new WeaponCollectable(weaponName, mGameData->textureManager->getTexture(weaponName));
-
-	collectables.spawn(weaponPickup, position);
-}
-
 
 void GameState::handleInput()
 {
@@ -89,7 +75,6 @@ void GameState::handleInput()
 	
 	if (mGameData->inputManager->isPressed(Button::Pause))
 	{
-		//mGameData->uiManager->refresh(Screen::Game);
 		mGameController->getStateMachine()->addState(new PauseState(mGameData, mGameController));
 	}
 
@@ -115,19 +100,14 @@ void GameState::slowUpdate(float dt)
 
 	mGameData->scoreManager->slowUpdate();
 
-	collectables.slowUpdate(dt);
+	mCollectables.slowUpdate(dt);
 
 	Camera::Get()->slowUpdate(dt);
 
 	// End current level, close old level exit, open new level entrance
 	if (mGameData->environment->generateNextLevel(mGameData->playerManager->rect()->TopLeft()))
 	{
-		mGameData->environment->nextLevel();
-		Camera::Get()->setMapBoundaries(mGameData->environment->boundaries());
-
-		// end level
-		mGameData->enemies->clearAllEnemies();
-		mGameData->enemies->spawnLevel();
+		nextLevel();
 	}
 
 	// Close off new level entrance, open exit
@@ -173,7 +153,7 @@ void GameState::exit()
 }
 
 
-// --- Private Functions --- //
+/// --- Private Functions --- ///
 
 void GameState::initUI()
 {
@@ -221,5 +201,18 @@ void GameState::initRendering()
 	mGameData->renderManager->Set(mGameData->playerManager);
 	mGameData->renderManager->Set(mGameData->enemies);
 	mGameData->renderManager->Set(mGameData->uiManager);
-	mGameData->renderManager->Set(&collectables);
+	mGameData->renderManager->Set(&mCollectables);
+}
+
+
+void GameState::nextLevel()
+{
+	mGameData->environment->nextLevel();
+	Camera::Get()->setMapBoundaries(mGameData->environment->boundaries());
+
+	// end level
+	mGameData->enemies->clearAllEnemies();
+	mGameData->enemies->spawnLevel();
+
+	mCollectables.spawnRandomItem(Collectables::MeleeWeapon);
 }

@@ -1,10 +1,6 @@
 #pragma once
 
-union uMixer
-{
-	Mix_Music *gMusic;
-	Mix_Chunk *gScratch;
-};
+
 
 class Audio
 {
@@ -35,6 +31,7 @@ private:
 };
 
 
+
 class Music : public Audio
 {
 public:
@@ -48,6 +45,20 @@ public:
 	void stop(int channel) override;
 
 private:
-
 	Mix_Music *mMusic;
+};
+
+
+
+class AudioGroup : public Audio
+{
+public:
+	AudioGroup() { }
+
+	bool load(const std::string& directoryPath) override;
+
+	void play(int channel) override;
+
+private:
+	std::vector<Audio*> group;
 };

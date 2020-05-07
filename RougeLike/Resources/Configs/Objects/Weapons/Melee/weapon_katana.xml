@@ -5,6 +5,6 @@
 	<SwingAngle>190</SwingSpeed>
 	<KnockbackDistance>40</KnockbackDistance>
 	<PommelOffset x = "2" y = "-20"></PommelOffset>
-	<AudioHit>LightHit</AudioHit>
-	<AudioMiss>SwooshMiss1</AudioMiss>
+	<AudioHit>ShortSwordHit</AudioHit>
+	<AudioMiss>ShortSwordSwoosh</AudioMiss>
 </Melee>

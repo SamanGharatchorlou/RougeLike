@@ -1,8 +1,6 @@
 #pragma once
 
 #include "State.h"
-
-// TEMP
 #include "Items/Collectables/Collectables.h"
 
 class GameController;
@@ -24,8 +22,6 @@ public:
 	void resume() override;
 	void exit() override;
 
-	// TEMP
-	Collectables collectables;
 
 private:
 	void initCamera();
@@ -33,10 +29,13 @@ private:
 	void initMap();
 	void initPlayer();
 	void initEnemies();
-	void initCollectables();
 	void initRendering();
+
+	void nextLevel();
 
 private:
 	GameController* mGameController;
 	GameData* mGameData;
+
+	Collectables mCollectables;
 };

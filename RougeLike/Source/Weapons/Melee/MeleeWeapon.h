@@ -18,8 +18,9 @@ public:
 	void slowUpdate(float dt) override { };
 	void render() override;
 
-	const std::string& hitSoundLabel() const override;
-	const std::string& missSoundLabel() const override;
+	bool canPlayHitSound() { return mCanPlayHitSound; }
+	const std::string& hitSoundLabel() override;
+	const std::string& missSoundLabel() override;
 
 	bool didHit() const override;
 
@@ -44,6 +45,9 @@ public:
 
 private:
 	void updateWeaponBlocks();
+
+	void continueAttack(float dt);
+	void endAttack();
 
 
 private:

@@ -9,7 +9,7 @@ EnemyAttack::EnemyAttack(Enemy* enemy) :
 	mHasAttacked(false),
 	hitCounter(0)
 { 
-	mEnemy->getCollider()->setDidHit(false);
+	mEnemy->collider()->setDidHit(false);
 }
 
 
@@ -68,7 +68,7 @@ void EnemyAttack::render()
 
 void EnemyAttack::updateHasAttackedStatus()
 {
-	if (mEnemy->getCollider()->didHit() || hitCounter > 0)
+	if (mEnemy->collider()->didHit() || hitCounter > 0)
 		hitCounter++;
 
 	if (!mHasAttacked)

@@ -59,7 +59,7 @@ public:
 	// Systems
 	StateMachine<EnemyState>*	getStateMachine() { return &mStateMachine; }
 	Animator*					getAnimator() { return &mAnimator; }
-	DamageCollider*				getCollider() { return &mCollider; }
+	DamageCollider*				collider() { return &mCollider; }
 	Physics&					physics() { return mPhysics; }
 	AIPathMap*					getMap() { return mMap; }
 

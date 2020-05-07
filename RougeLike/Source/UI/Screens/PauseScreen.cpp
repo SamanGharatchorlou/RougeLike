@@ -1,8 +1,9 @@
 #include "pch.h"
 #include "PauseScreen.h"
 
-#include  "Graphics/TextureManager.h"
+#include "Game/GameData.h"
 #include "UI/UIManager.h"
+#include  "Graphics/TextureManager.h"
 
 
 PauseScreen::PauseScreen(GameData* gameData) :

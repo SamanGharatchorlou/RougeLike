@@ -73,6 +73,11 @@ void EnemyManager::slowUpdate(float dt)
 		// Update enemies
 		enemy->slowUpdate(dt);
 
+		if (enemy->state() == EnemyState::Dead)
+		{
+			mGameData->collisionManager->removeDefender(CollisionManager::Enemy_Hit_Player, enemy->collider());
+		}
+
 		// Clear out dead enemies
 		if (enemy->state() == EnemyState::None)
 		{
@@ -163,7 +168,7 @@ void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF positio
 			enemy->setAttackTarget(mTarget);
 
 			std::vector<Collider*> defendingCollider;
-			defendingCollider.push_back(enemy->getCollider());
+			defendingCollider.push_back(enemy->collider());
 
 			mGameData->collisionManager->addDefenders(CollisionManager::PlayerWeapon_Hit_Enemy, defendingCollider);
 
@@ -245,7 +250,7 @@ void EnemyManager::clearAllEnemies()
 	for (Enemy* enemy : mActiveEnemies)
 	{
 		enemy->clear();
-		mGameData->collisionManager->removeDefender(CollisionManager::PlayerWeapon_Hit_Enemy, enemy->getCollider());
+		mGameData->collisionManager->removeDefender(CollisionManager::PlayerWeapon_Hit_Enemy, enemy->collider());
 	}
 
 	for (EnemyObject& enemy : mEnemyPool)
@@ -268,7 +273,7 @@ Collider* EnemyManager::getAttackingCollider(Enemy* enemy) const
 
 		if (!attackState->didConnectWithTarget())
 		{
-			return enemy->getCollider();
+			return enemy->collider();
 		}
 	}
 
@@ -282,9 +287,7 @@ Collider* EnemyManager::getAttackingCollider(Enemy* enemy) const
 void EnemyManager::clearAndRemove(std::vector<Enemy*>::iterator& iter)
 {
 	(*iter)->clear();
-	//mCollisionManager.removeDefender((*iter)->getCollider());
-
-	mGameData->collisionManager->removeDefender(CollisionManager::PlayerWeapon_Hit_Enemy, (*iter)->getCollider());
+	mGameData->collisionManager->removeDefender(CollisionManager::PlayerWeapon_Hit_Enemy, (*iter)->collider());
 	
 	// Find this enemy in the pool
 	for (std::vector<EnemyObject>::iterator poolIter = mEnemyPool.begin(); poolIter != mEnemyPool.end(); poolIter++)

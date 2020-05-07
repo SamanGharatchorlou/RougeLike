@@ -2,7 +2,9 @@
 
 #include "SoundController.h"
 
-//class Audio;
+
+
+
 
 class AudioManager
 {
@@ -17,7 +19,11 @@ public:
 
 	void playMusic(const std::string& label);
 	void playSound(const std::string& label, void* sourceId);
+
+	void pause(const std::string& label, void* sourceId);
+	void resume(const std::string& label, void* sourceId);
 	void stop(const std::string& label, void* sourceId);
+
 
 	bool isPlaying(const std::string& label, void* sourced);
 
@@ -31,13 +37,14 @@ public:
 private:
 	int loadAllMusic(FileManager::Folder folder);
 	int loadAllSound(FileManager::Folder folder);
+	int loadAllSoundGroups(FileManager::Folder folder);
 
 	bool loadAudio(Audio* audio, const std::string& name, const std::string& filePath);
 
 private:
-	std::unordered_map<std::string, Audio*> mAudioBank;
-
 	SoundController mSoundController;
+
+	std::unordered_map<std::string, Audio*> mAudioBank;
 
 	int volume;
 };

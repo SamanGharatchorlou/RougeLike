@@ -1,8 +1,9 @@
 #include "pch.h"
 #include "CharacterSelectionScreen.h"
 
-#include  "Graphics/TextureManager.h"
+#include "Game/GameData.h"
 #include "UI/UIManager.h"
+#include  "Graphics/TextureManager.h"
 
 
 CharacterSelectionScreen::CharacterSelectionScreen(GameData* gameData) :

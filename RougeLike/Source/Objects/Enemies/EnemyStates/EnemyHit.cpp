@@ -29,7 +29,7 @@ void EnemyHit::init()
 	mEnemy->facePoint(attackTargetPosition);
 
 	// Attackers weapon collider info
-	const DamageCollider* damageCollider = static_cast<const DamageCollider*>(mEnemy->getCollider()->getOtherCollider());
+	const DamageCollider* damageCollider = static_cast<const DamageCollider*>(mEnemy->collider()->getOtherCollider());
 
 	// Set/reduce hp
 	Health health = mEnemy->propertyBag().pHealth.get() - damageCollider->damage();
@@ -37,8 +37,6 @@ void EnemyHit::init()
 
 	// Store knockback info before collision info is reset (next fast frame)
 	mKnockbackForce = damageCollider->knockbackforce(); 
-
-	printf("hit\n");
 }
 
 
