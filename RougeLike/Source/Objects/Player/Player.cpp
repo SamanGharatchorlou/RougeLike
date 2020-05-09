@@ -8,7 +8,6 @@
 #include "Audio/AudioManager.h"
 #include "Graphics/TextureManager.h"
 
-#include "System/Files/AnimationReader.h"
 #include "PlayerPropertyBag.h"
 #include "Weapons/Weapon.h"
 #include "States/State.h"
@@ -19,11 +18,10 @@
 
 
 Player::Player(GameData* gameData) : 
-	mGameData(gameData),
+	Actor(gameData),
 	mStateMachine(new NullState),
 	mBag(new PlayerPropertyBag),
-	mWeapon(nullptr),
-	mFlip(SDL_FLIP_NONE)
+	mWeapon(nullptr)
 {
 #if _DEBUG
 	mCollider.setName("player");
@@ -46,19 +44,15 @@ void Player::reset()
 
 void Player::init(const std::string& characterConfig)
 {
+	Actor::init(characterConfig);
+
 	// Setup stats
 	propertyBag()->readAttributes(characterConfig);
 
-	// Setup animations
-	initAnimations(characterConfig);
-
 	// init physics
 	Physics::Data physicsData;
-	physicsData.force = mBag->pForce.get();
-	physicsData.maxVelocity = mBag->pMaxVelocity.get();
-	physicsData.dragFactor = mBag->pDragFactor.get();
-	physicsData.mass = mBag->pMass.get();
-
+	physicsData.force = mBag->get(PropertyType::Force)->value();
+	physicsData.maxVelocity = mBag->get(PropertyType::MaxVelocity)->value();
 	mPhysics.init(physicsData);
 
 	// rect tweak
@@ -127,13 +121,13 @@ void Player::slowUpdate(float dt)
 void Player::render()
 {	
 	// Flip sprite
-	if (mFlip == SDL_FLIP_NONE && mPhysics.direction().x < 0)
+	if (mPhysics.flip() == SDL_FLIP_NONE && mPhysics.direction().x < 0)
 	{
-		mFlip = SDL_FLIP_HORIZONTAL;
+		mPhysics.setFlip(SDL_FLIP_HORIZONTAL);
 	}
-	else if (mFlip == SDL_FLIP_HORIZONTAL && mPhysics.direction().x > 0)
+	else if (mPhysics.flip() == SDL_FLIP_HORIZONTAL && mPhysics.direction().x > 0)
 	{
-		mFlip = SDL_FLIP_NONE;
+		mPhysics.setFlip(SDL_FLIP_NONE);
 	}
 
 #if DRAW_PLAYER_RECTS
@@ -141,9 +135,8 @@ void Player::render()
 	debugDrawRect(mCollider.scaledRect(), RenderColour(RenderColour::Blue));
 	debugDrawRects(mWeapon->getRects(), RenderColour(RenderColour::Yellow));
 #else
-	// Character
-	RectF rect = Camera::Get()->toCameraCoords(renderRect());
-	mAnimator.getSpriteTile()->render(rect, mFlip);
+
+	Actor::render();
 
 	// Weapon
 	mWeapon->render();
@@ -157,6 +150,7 @@ RectF Player::renderRect() const
 	RectF renderRect = rect();
 	VectorF size = renderRect.Size();
 
+	// scale render rect by 1.75
 	renderRect.SetSize(size * 1.75f);
 
 	VectorF sizeDiff = renderRect.Size() - size;
@@ -194,22 +188,6 @@ void Player::updateState()
 
 
 // -- Private Functions -- //
-
-void Player::initAnimations(const std::string& config)
-{
-	// config reader
-	AnimationReader reader(config);
-
-	// Setup sprite sheet
-	TilesetData spriteSheetData = reader.readTilesetData(mGameData->textureManager);
-	Tileset spriteSheet(spriteSheetData);
-
-	// Setup animations
-	Animations animationData = reader.readAnimationData();
-	mAnimator.init(spriteSheet, animationData);
-}
-
-
 
 void Player::selectAnimation()
 {

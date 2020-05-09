@@ -1,24 +1,20 @@
 #pragma once
 
 #include "Damage.h"
+#include "Objects/Properties/PropertyBase.h"
+#include "Utilities/Helpers.h"
 
-class Health
+class Health : public PropertyBase
 {
 public:
-	Health() : hp(0), maxHp(0) { }
-	Health(int maxHealth) : maxHp(maxHealth), hp(maxHealth) { }
+	Health() : PropertyBase(PropertyType::Health), hp(0), maxHp(0) { }
+	Health(int maxHealth) : PropertyBase(PropertyType::Health), maxHp(maxHealth), hp(maxHealth) { }
 
 	void set(int health) { hp = health; }
-	int value() const { return hp; }
+	float value() const override { return (float)hp; }
 	float getPercentage() const { return (float)hp / (float)maxHp; }
 
-	void increase(int health)
-	{
-		hp += health;
-
-		// TODO: how can I use clamp here, there's no pch included...
-		hp = clamp(hp, 0, maxHp);
-	}
+	void increase(int health) { hp = clamp(hp + health, 0, maxHp); }
 
 	int getMax() const { return maxHp; }
 	void increaseMax(Health health) { hp += health.value(); maxHp += health.value(); }

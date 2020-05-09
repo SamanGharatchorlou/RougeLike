@@ -66,17 +66,12 @@ void EnemyManager::slowUpdate(float dt)
 	{
 		Enemy* enemy = *iter;
 
-		// Handle enemy messages
-		while (enemy->hasEvent())
-			handleEnemyEvent(enemy);
-
 		// Update enemies
 		enemy->slowUpdate(dt);
 
-		if (enemy->state() == EnemyState::Dead)
-		{
-			mGameData->collisionManager->removeDefender(CollisionManager::Enemy_Hit_Player, enemy->collider());
-		}
+		// Handle enemy messages
+		while (enemy->hasEvent())
+			handleEnemyEvent(enemy);
 
 		// Clear out dead enemies
 		if (enemy->state() == EnemyState::None)
@@ -287,8 +282,7 @@ Collider* EnemyManager::getAttackingCollider(Enemy* enemy) const
 void EnemyManager::clearAndRemove(std::vector<Enemy*>::iterator& iter)
 {
 	(*iter)->clear();
-	mGameData->collisionManager->removeDefender(CollisionManager::PlayerWeapon_Hit_Enemy, (*iter)->collider());
-	
+
 	// Find this enemy in the pool
 	for (std::vector<EnemyObject>::iterator poolIter = mEnemyPool.begin(); poolIter != mEnemyPool.end(); poolIter++)
 	{
@@ -324,6 +318,13 @@ void EnemyManager::handleEnemyEvent(Enemy* enemy)
 	EventPacket ep = enemy->popEvent();
 
 	notify(ep.event, *ep.data);
+
+	switch (ep.event)
+	{
+	case Event::EnemyDead:
+		mGameData->collisionManager->removeDefender(CollisionManager::PlayerWeapon_Hit_Enemy, enemy->collider());
+		break;
+	}
 
 	ep.free();
 }

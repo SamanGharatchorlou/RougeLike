@@ -14,6 +14,10 @@ void Collectable::init(const std::string& value, Texture* texture, RectF rect)
 	mRect = rect;
 
 	mCollider.init(&mRect, VectorF(2.5f, 1.5f));
+
+#if _DEBUG
+	mCollider.setName(value + "_collectable");
+#endif
 }
 
 
@@ -42,5 +46,5 @@ void WeaponCollectable::activate(PlayerManager* playerManager)
 void HealthCollectable::activate(PlayerManager* playerManager)
 {
 	int health = std::stoi(mValue);
-	playerManager->get()->propertyBag()->pHealth.get().increase(health);
+//	playerManager->get()->propertyBag()->pHealth.get().increase(health);
 }

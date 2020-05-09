@@ -55,7 +55,9 @@ void PlayerManager::initCollisions()
 void PlayerManager::selectCharacter(const std::string& character)
 {
 	player->init(character);
-	selectWeapon(player->propertyBag()->pWeapon.get());
+
+	// Starting weapon
+	selectWeapon("weapon_katana");
 
 	mGameData->collisionManager->removeAllAttackers(CollisionManager::PlayerWeapon_Hit_Enemy);
 
@@ -118,7 +120,8 @@ void PlayerManager::slowUpdate(float dt)
 	player->slowUpdate(dt);
 
 	// Level up
-	if (player->propertyBag()->pLevel.get().didLevelUp())
+	Level* playerLevel = static_cast<Level*>(player->propertyBag()->get(PropertyType::Level));
+	if (playerLevel->didLevelUp())
 	{
 		player->updateWeaponStats(player->propertyBag());
 		updateUIStats();
@@ -178,10 +181,10 @@ void PlayerManager::processHit()
 {
 	// Take damage
 	const DamageCollider* damageCollider = static_cast<const DamageCollider*>(player->collider().getOtherCollider());
-	Health& hp = player->propertyBag()->pHealth.get();
-	hp.takeDamage(damageCollider->damage());
+	Health* hp = static_cast<Health*>(player->propertyBag()->get(PropertyType::Health));
+	hp->takeDamage(damageCollider->damage());
 
-	SetHealthBarEvent event(hp);
+	SetHealthBarEvent event(*hp);
 	notify(Event::SetHealth, event);
 
 	// Knockback

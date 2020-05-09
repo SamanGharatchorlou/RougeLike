@@ -11,8 +11,6 @@ public:
 	{
 		float force = 0.0f;
 		float maxVelocity = 0.0f;
-		float dragFactor = 0.0f;
-		float mass = 0.0f;
 	};
 
 	enum Direction
@@ -75,6 +73,9 @@ public:
 	// soft Reset
 	void reset();
 
+	void facePoint(VectorF point);
+	void setFlip(SDL_RendererFlip flip) { mFlip = flip; }
+	SDL_RendererFlip flip() const { return mFlip; }
 
 private:
 	void applyDrag();
@@ -92,4 +93,6 @@ private:
 	float mMaxVelocity;
 	float mDragFactor; // 0 is large, 1 is small
 	float mMass;
+
+	SDL_RendererFlip mFlip;
 };

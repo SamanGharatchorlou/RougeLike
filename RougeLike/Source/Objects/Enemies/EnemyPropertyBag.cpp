@@ -6,9 +6,11 @@
 void EnemyPropertyBag::readAttributes(const std::string& name)
 {
 	StatReader statReader;
-	XMLValueMap map = statReader.getStats(FileManager::Config_Enemies, name);
+	ValueMap map = statReader.getStats(FileManager::Config_Enemies, name);
 
 	// --- Physics --- //
+
+	/*
 
 	// Force
 	float force = map.getFloat("Force");
@@ -18,22 +20,22 @@ void EnemyPropertyBag::readAttributes(const std::string& name)
 	float maxVelocity = map.getFloat("MaxVelocity");
 	pMaxVelocity.set(maxVelocity);
 
-	// Drag force
-	float dragFactor = map.getFloat("DragFactor");
-	pDragFactor.set(dragFactor);
+	//// Drag force
+	//float dragFactor = map.getFloat("DragFactor");
+	//pDragFactor.set(dragFactor);
 
-	// Mass
-	float mass = map.getFloat("Mass");
-	pMass.set(mass);
+	//// Mass
+	//float mass = map.getFloat("Mass");
+	//pMass.set(mass);
 
 
 	// Health
 	Health health(map.getInt("Health"));
 	pHealth.set(health);
 
-	// Movement
-	int movementSpeed = map.getInt("MovementSpeed");
-	pMovementSpeed.set(movementSpeed);
+	//// Movement
+	//int movementSpeed = map.getInt("MovementSpeed");
+	//pMovementSpeed.set(movementSpeed);
 
 	// Damage
 	Damage damage(map.getInt("AttackDamage"));
@@ -82,4 +84,6 @@ void EnemyPropertyBag::readAttributes(const std::string& name)
 	// Experience
 	int exp = map.getInt("Experience");
 	pExp.set(exp);
+
+	*/
 }

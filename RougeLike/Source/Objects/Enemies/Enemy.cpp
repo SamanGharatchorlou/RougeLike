@@ -30,8 +30,8 @@ void Enemy::init()
 	Physics::Data physicsData;
 	physicsData.force = mBag.pForce.get();
 	physicsData.maxVelocity = mBag.pMaxVelocity.get();
-	physicsData.dragFactor = mBag.pDragFactor.get();
-	physicsData.mass = mBag.pMass.get();
+	//physicsData.dragFactor = mBag.pDragFactor.get();
+	//physicsData.mass = mBag.pMass.get();
 
 	mPhysics.init(physicsData);
 }
@@ -76,7 +76,7 @@ void Enemy::renderCharacter()
 #if DRAW_ENEMY_RECT
 	debugDrawRect(mRect, RenderColour(RenderColour::Red));
 #else
-	mAnimator.getSpriteTile()->render(rect, mFlip);
+	mAnimator.getSpriteTile()->render(rect, mPhysics.flip());
 #endif
 }
 
@@ -97,7 +97,6 @@ void Enemy::clear()
 	
 	mMap = nullptr;
 	mPhysics.reset();
-	mFlip = SDL_FLIP_NONE;
 
 	mAttackTarget = nullptr;
 	mPositionTarget = nullptr;
@@ -123,15 +122,6 @@ void Enemy::accellerateTowards(VectorF position)
 	VectorF direction = position - mPhysics.position();
 	mPhysics.accellerate(direction); 
 }
-
-void Enemy::facePoint(VectorF point)
-{
-	if (point.x > position().x) // -->
-		mFlip = SDL_FLIP_NONE;
-	else // <--
-		mFlip = SDL_FLIP_HORIZONTAL;
-}
-
 
 
 void Enemy::replaceState(EnemyState::Type state)

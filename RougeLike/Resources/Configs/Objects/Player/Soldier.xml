@@ -1,28 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Stats>
 	<!-- Attributes -->
-	<Level type = "int">1</Level>
-
-	<Health type = "int">100</Health>
-	<HealthUpRate type = "int">10</HealthUpRate>
-
-	<Defence type = "int">10</Defence>
-	<DefenceUpRate type = "int">4</DefenceUpRate>
-
-	<AttackDamage type = "int">10</AttackDamage>
-	<AttackDamageUpRate type = "int">2</AttackDamageUpRate>
-
-	<AttackSpeed type = "float">10</AttackSpeed>
-	<AttackSpeedUpRate type = "float">0.5</AttackSpeedUpRate>
-
-	<MovementSpeed type = "int">1</MovementSpeed>
-	<MovementSpeedUpRate type = "int">0</MovementSpeedUpRate>
+	<Level>1</Level>
+	<Health>100</Health>
+	<AttackSpeed>10</AttackSpeed>
 
 	<!-- Physics -->
-	<Force type = "float">8000</Force>
-	<MaxVelocity type = "float">300</MaxVelocity>
-	<DragFactor type = "float">0.85</DragFactor>
-	<Mass type = "float">1</Mass>
+	<Force>8000</Force>
+	<MaxVelocity>300</MaxVelocity>
 
-	<Weapon type = "string">weapon_big_hammer</Weapon>
+	<!--<Weapon type = "string">weapon_big_hammer</Weapon>-->
 </Stats>

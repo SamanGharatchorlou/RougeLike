@@ -1,8 +1,10 @@
 #pragma once
+
 #include "Objects/Attributes/Property.h"
+#include "Objects/Properties/PropertyBag.h"
 
 
-class PlayerPropertyBag
+class PlayerPropertyBag : public PropertyBag
 {
 public:
 	PlayerPropertyBag() { }
@@ -10,32 +12,10 @@ public:
 
 	void resetAttributes();
 
+	void fillProperties(ValueMap& valueMap);
+
 public:
-
-	// Physics
-	ForceProperty pForce;
-	MaxVelocityProperty pMaxVelocity;
-	DragFactorProperty pDragFactor;
-	MassProperty pMass;
-
-	// Attributes
-	LevelProperty pLevel;
-
-	HealthProperty pHealth;
-	DefenceProperty pDefence;
-	AttackDamageProperty pAttackDmg;
-	AttackSpeedProperty pAttackSpd;
-	MovementSpeedProperty pMovementSpd;
-
-	// Attributes - Level up rates
-	HealthUpRate pHealthUp;
-	DefenceUpRate pDefenceUp;
-	AttackDamageUpRate pAttackDmgUp;
-	AttackSpeedUpRate pAttackSpdUp;
-	MovementSpeedUpRate pMovementSpdUp;
-
 	WeaponProperty pWeapon;
-
 
 private:
 	std::string attributeName;

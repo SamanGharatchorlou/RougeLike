@@ -63,11 +63,11 @@ void MeleeWeapon::equipt(const WeaponData* data)
 
 void MeleeWeapon::updateStats(const PlayerPropertyBag* bag)
 {
-	mSwingSpeed = mData->swingSpeed * (1 + (bag->pAttackSpd.get() / 100));
+	mSwingSpeed = mData->swingSpeed * (1 + (bag->get(PropertyType::AttackSpeed)->value() / 100));
 
 	for (unsigned int i = 0; i < mBlockColliders.size(); i++)
 	{
-		mBlockColliders[i]->set(mData->damage + bag->pAttackDmg.get(), mData->knockbackDistance);
+		mBlockColliders[i]->set(mData->damage, mData->knockbackDistance);
 	}
 }
 

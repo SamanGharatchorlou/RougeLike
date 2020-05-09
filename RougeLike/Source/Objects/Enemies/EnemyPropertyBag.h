@@ -13,12 +13,8 @@ public:
 	// Physics
 	ForceProperty pForce;
 	MaxVelocityProperty pMaxVelocity;
-	DragFactorProperty pDragFactor;
-	MassProperty pMass;
-
 
 	HealthProperty pHealth;
-	MovementSpeedProperty pMovementSpeed;
 
 	// Attack
 	AttackDamageProperty pDamage;

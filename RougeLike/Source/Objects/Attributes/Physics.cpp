@@ -7,8 +7,8 @@ void Physics::init(Data data)
 {
 	mForce = data.force;
 	mMaxVelocity = data.maxVelocity;
-	mDragFactor = data.dragFactor;
-	mMass = data.mass;
+	mDragFactor = 0.85f;
+	mMass = 1.0f;
 }
 
 
@@ -106,11 +106,6 @@ void Physics::accellerate(VectorF acceleration)
 }
 
 
-
-
-
-
-
 void Physics::resetAllowedMovement()
 {
 	for (int i = 0; i < Direction::Directions; i++)
@@ -143,6 +138,7 @@ void Physics::reset()
 	mRect.SetTopLeft(VectorF());
 	mVelocity = VectorF();
 	mAcceleration = VectorF();
+	mFlip = SDL_FLIP_NONE;
 
 	resetHasForce();
 	resetAllowedMovement();
@@ -182,4 +178,13 @@ void Physics::applyDrag()
 	{
 		mVelocity.y = mVelocity.y * mDragFactor;
 	}
+}
+
+
+void Physics::facePoint(VectorF point)
+{
+	if (point.x > position().x)		// -->
+		mFlip = SDL_FLIP_NONE;
+	else							// <--
+		mFlip = SDL_FLIP_HORIZONTAL;
 }

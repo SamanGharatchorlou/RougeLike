@@ -24,6 +24,7 @@
     <ClCompile Include="Source\Animations\Animator.cpp" />
     <ClCompile Include="Source\Audio\SoundController.cpp" />
     <ClCompile Include="Source\Input\Button.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\Ability.cpp" />
     <ClCompile Include="Source\Objects\Attributes\Knockback.cpp" />
     <ClCompile Include="Source\Objects\Attributes\Level.cpp" />
     <ClCompile Include="Source\Objects\Attributes\Physics.cpp" />
@@ -39,6 +40,8 @@
     <ClCompile Include="Source\Objects\Enemies\EnemyStates\EnemyWait.cpp" />
     <ClCompile Include="Source\Objects\Enemies\Spawning\EnemySpawner.cpp" />
     <ClCompile Include="Source\Collisions\CollisionManager.cpp" />
+    <ClCompile Include="Source\Objects\Actor.cpp" />
+    <ClCompile Include="Source\Objects\Properties\PropertyBag.cpp" />
     <ClCompile Include="Source\UI\Screens\SettingsScreen.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Circle.cpp.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Shape.cpp" />
@@ -128,6 +131,8 @@
     <ClInclude Include="Source\AI\AIPathMap.h" />
     <ClInclude Include="Source\Animations\Animator.h" />
     <ClInclude Include="Source\Audio\SoundController.h" />
+    <ClInclude Include="Source\Objects\Abilities\Ability.h" />
+    <ClInclude Include="Source\Objects\Actor.h" />
     <ClInclude Include="Source\Objects\Attributes\Damage.h" />
     <ClInclude Include="Source\Objects\Attributes\Knockback.h" />
     <ClInclude Include="Source\Objects\Attributes\Level.h" />
@@ -148,6 +153,8 @@
     <ClInclude Include="Source\Objects\Enemies\EnemyStates\EnemyWait.h" />
     <ClInclude Include="Source\Objects\Enemies\Spawning\EnemySpawner.h" />
     <ClInclude Include="Source\Collisions\CollisionManager.h" />
+    <ClInclude Include="Source\Objects\Properties\PropertyBag.h" />
+    <ClInclude Include="Source\Objects\Properties\PropertyBase.h" />
     <ClInclude Include="Source\UI\Screens\ScreenHeaders.h" />
     <ClInclude Include="Source\UI\Screens\SettingsScreen.h" />
     <ClInclude Include="Source\Utilities\Shapes\Circle.h" />

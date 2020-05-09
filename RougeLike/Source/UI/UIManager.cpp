@@ -123,11 +123,6 @@ void UIManager::handleInput()
 			{
 				UIButton* button = static_cast<UIButton*>(element);
 
-				if (button->id() == "PlayButton")
-					printf("");
-
-				button->reset();
-
 				if (button->isPointInBounds(input->cursorPosition()))
 				{
 					button->setPressed(input->isCursorPressed(Cursor::Left));
@@ -137,6 +132,7 @@ void UIManager::handleInput()
 				else
 				{
 					button->reset();
+					button->setHeld(false);
 				}
 			}
 		}

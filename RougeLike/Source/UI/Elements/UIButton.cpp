@@ -31,13 +31,17 @@ void UIButton::reset()
 void UIButton::setPressed(bool isPressed) 
 { 
 	mButton.setPressed(isPressed);
-	setTexture(isPressed ? mHighlighted : mDefault);
 }
 
 
 void UIButton::setHeld(bool isHeld)
 {
 	mButton.setHeld(isHeld);
+
+	if (isHeld)
+		setTexture(mHighlighted);
+	else
+		setTexture(mDefault);
 }
 
 

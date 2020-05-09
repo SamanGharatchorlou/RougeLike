@@ -1,18 +1,21 @@
 #pragma once
 
-class Level
+#include "Objects/Properties/PropertyBase.h"
+
+class Level : public PropertyBase
 {
 public:
-	Level() : level(1), currentExp(0), totalExp(0), levelledUp(false) { }
+	Level() : PropertyBase(PropertyType::Level), level(1), currentExp(0), totalExp(0), levelledUp(false) { }
 
 	void gainExp(int exp);
 
 	int getCurrentExp() const { return currentExp; }
-	int getLevel() const { return level; }
+	float value() const { return (float)level; }
 
 	int nextLevelExp();
 
 	bool didLevelUp();
+
 
 private:
 	int level;

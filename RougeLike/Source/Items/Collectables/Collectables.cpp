@@ -43,8 +43,9 @@ void Collectables::slowUpdate(float dt)
 		{
 			collectable->activate(mGameData->playerManager);
 
-			// Destroy the collectable
+			// Destroy the collectable from game
 			iter = mCollectables.erase(iter);
+			mGameData->collisionManager->removeDefender(CollisionManager::Player_Hit_Collectable, collectable->collider());
 			delete collectable;
 		}
 		else
@@ -53,6 +54,7 @@ void Collectables::slowUpdate(float dt)
 		}
 	}
 }
+
 
 
 void Collectables::render()

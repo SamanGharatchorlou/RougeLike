@@ -6,15 +6,38 @@
 
 	<layer>
 		<Box id = "UpperPanelElement" parent = "MainPanel" x = "20.000" y = "26.000" width = "460.000" height = "55.000" texture = "Upper panel element"></Box>
-		<Box id = "MidPanelElement" parent = "MainPanel" x = "20.000" y = "85.000" width = "460.000" height = "437.000" texture = "Mid panel element"></Box>
-		<Box id = "LowerPanelElement" parent = "MainPanel" x = "20.000" y = "526.000" width = "460.000" height = "54.000" texture = "Lower panel element"></Box>
+		<Box id = "MidPanelElement1" parent = "MainPanel" x = "20.000" y = "86.000" width = "460.000" height = "115.000" texture = "Mid section panel 01"></Box>
+		<Box id = "MidPanelElement2" parent = "MainPanel" x = "20.000" y = "253.000" width = "460.000" height = "168.000" texture = "Mid section panel 02"></Box>
+		<Box id = "LowerPanelElement" parent = "MainPanel" x = "20.000" y = "425.000" width = "460.000" height = "54.000" texture = "Lower panel element"></Box>
 	</layer>
 
 	<layer>
-		<Box id = "Title2" parent = "MainPanel" x = "0.000" y = "-18.000" width = "500.800" height = "57.000" texture = "Name element 02"></Box>
-		<Box id = "Title1" parent = "MainPanel" x = "36.000" y = "-14.030" width = "428.000" height = "45.000" texture = "Name element 01"></Box>
+
+		<Box id = "Title2" parent = "MainPanel" x = "0.000" y = "-18.000" width = "500.800" height = "57.000" texture = "Settings name element 02"></Box>
+		<Box id = "Title1" parent = "MainPanel" x = "30.000" y = "-17.030" width = "386.000" height = "48.000" texture = "Name element 01"></Box>
 		<TextBox id = "ScreenTitle" parent = "Title1" align = "Center" x = "0.000" y = "0.000" width = "428.000" height = "45.000" >
 			<text r = "0" g = "0" b = "0" >SETTINGS</text>
+		</TextBox>
+	</layer>
+
+	<layer>
+		<Button id = "CloseButton" parent = "Title1" x = "390.000" y = "3.000" width = "50.000" height = "43.000" texture = "Close But Released" textureSelected = "Close But Pressed"></Button>
+
+	</layer>
+
+	<layer>
+		<!-- Music -->
+		<Box id = "MusicBarEmpty" parent = "MidPanelElement1" x = "15.000" y = "67.000" width = "425.000" height = "30.000" texture = "Bar empty"></Box>
+		<Box id = "MusicBarGreen" parent = "MidPanelElement1" x = "18.000" y = "71.000" width = "419.000" height = "20.000" texture = "Bar line"></Box>
+		<TextBox id = "MusicString" parent = "MidPanelElement1" align = "Center" x = "13.000" y = "11.000" width = "287.000" height = "39.000" >
+			<text r = "255" g = "255" b = "255" >Music Volume</text>
+		</TextBox>
+
+		<!-- Sound -->
+		<Box id = "SoundBarEmpty" parent = "MidPanelElement2" x = "15.000" y = "67.000" width = "425.000" height = "30.000" texture = "Bar empty"></Box>	
+		<Box id = "SoundBarGreen" parent = "MidPanelElement2" x = "18.000" y = "71.000" width = "419.000" height = "20.000" texture = "Bar full"></Box>	
+		<TextBox id = "SoundString" parent = "MidPanelElement2" align = "Center" x = "13.000" y = "11.000" width = "287.000" height = "39.000">
+			<text r = "255" g = "255" b = "255" >Sound Volume</text>
 		</TextBox>
 	</layer>
 	

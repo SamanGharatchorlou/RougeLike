@@ -1,16 +1,13 @@
 #pragma once
 
-#include "Objects/Attributes/Physics.h"
+#include "Objects/Actor.h"
 #include "States/StateMachine.h"
-#include "Animations/Animator.h"
-#include "Collisions/Collider.h"
 
-struct GameData;
 class Weapon;
 class PlayerPropertyBag;
 
 
-class Player
+class Player : public Actor
 {
 public:
 	Player(GameData* gameData);
@@ -31,12 +28,6 @@ public:
 	// Movement states
 	void updateState();
 
-	RectF&		rectRef()	{ return mPhysics.rectRef(); }
-	RectF		rect() const { return mPhysics.rect(); }
-
-	Collider&	collider()	{ return mCollider; }
-	Physics&	physics()	{ return mPhysics; }
-
 	Weapon*		weapon()		{ return mWeapon; }
 
 	PlayerPropertyBag* propertyBag() { return mBag; }
@@ -45,23 +36,16 @@ public:
 private:
 	// Animations
 	void selectAnimation();
-	void initAnimations(const std::string& config);
 
 	RectF renderRect() const; // TODO: move this into physics, enemy also has this but isn't using physics yet
 
-private:
-	GameData* mGameData;
 
+private:
 	PlayerPropertyBag* mBag; // TODO: does this need to be a pointer?
 
 	StateMachine<State> mStateMachine;
-	Animator mAnimator;
-	Collider mCollider;
-	Physics mPhysics;
 
 	Weapon* mWeapon;
-
-	SDL_RendererFlip mFlip;
 
 	bool mMoving;
 };

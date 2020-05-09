@@ -99,6 +99,9 @@
     <ClCompile Include="Source\Objects\Effects\SlowEffect.cpp" />
     <ClCompile Include="Source\Input\Button.cpp" />
     <ClCompile Include="Source\UI\Screens\SettingsScreen.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\Ability.cpp" />
+    <ClCompile Include="Source\Objects\Actor.cpp" />
+    <ClCompile Include="Source\Objects\Properties\PropertyBag.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -221,6 +224,10 @@
     <ClInclude Include="Source\Objects\Effects\SlowEffect.h" />
     <ClInclude Include="Source\UI\Screens\SettingsScreen.h" />
     <ClInclude Include="Source\UI\Screens\ScreenHeaders.h" />
+    <ClInclude Include="Source\Objects\Abilities\Ability.h" />
+    <ClInclude Include="Source\Objects\Actor.h" />
+    <ClInclude Include="Source\Objects\Properties\PropertyBag.h" />
+    <ClInclude Include="Source\Objects\Properties\PropertyBase.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

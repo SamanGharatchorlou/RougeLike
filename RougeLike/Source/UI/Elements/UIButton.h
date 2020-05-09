@@ -9,7 +9,6 @@ class Texture;
 class UIButton : public UIBox
 {
 public:
-
 	struct Data : public UIBox::Data
 	{
 		Texture* highlightedTexture;

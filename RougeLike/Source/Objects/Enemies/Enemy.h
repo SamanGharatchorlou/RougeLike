@@ -77,9 +77,9 @@ public:
 	void			accellerateTowards(VectorF position);
 	void			move(VectorF velocity, float dt) { mPhysics.move(velocity, dt); }
 
-	void facePoint(VectorF point);
-	void setFlip(SDL_RendererFlip flip) { mFlip = flip; }
-	SDL_RendererFlip flip() const { return mFlip; }
+	void facePoint(VectorF point) { mPhysics.facePoint(point); }
+	void setFlip(SDL_RendererFlip flip) { mPhysics.setFlip(flip); }
+	SDL_RendererFlip flip() const { return mPhysics.flip(); }
 
 	void spawn(EnemyState::Type state, VectorF position);
 
@@ -93,12 +93,9 @@ protected:
 	AIPathMap* mMap;
 	
 	StateMachine<EnemyState> mStateMachine;
-
 	DamageCollider mCollider;
 	Animator mAnimator;
 	Physics mPhysics;
-
-	SDL_RendererFlip mFlip;
 
 	EnemyPropertyBag mBag;
 
