@@ -23,15 +23,11 @@ public:
 
 	// Weapon
 	void equiptWeapon(Weapon* weapon);
-	void updateWeaponStats(const PlayerPropertyBag* bag);
 
 	// Movement states
 	void updateState();
 
 	Weapon*		weapon()		{ return mWeapon; }
-
-	PlayerPropertyBag* propertyBag() { return mBag; }
-
 
 private:
 	// Animations
@@ -41,8 +37,6 @@ private:
 
 
 private:
-	PlayerPropertyBag* mBag; // TODO: does this need to be a pointer?
-
 	StateMachine<State> mStateMachine;
 
 	Weapon* mWeapon;

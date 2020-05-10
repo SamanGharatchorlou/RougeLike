@@ -32,8 +32,8 @@ void EnemyHit::init()
 	const DamageCollider* damageCollider = static_cast<const DamageCollider*>(mEnemy->collider()->getOtherCollider());
 
 	// Set/reduce hp
-	Health health = mEnemy->propertyBag().pHealth.get() - damageCollider->damage();
-	mEnemy->propertyBag().pHealth.set(health);
+	Health* health = static_cast<Health*>(mEnemy->propertyBag().get("Health"));
+	*health = *health - damageCollider->damage();
 
 	// Store knockback info before collision info is reset (next fast frame)
 	mKnockbackForce = damageCollider->knockbackforce(); 
@@ -52,9 +52,11 @@ void EnemyHit::fastUpdate(float dt)
 
 void EnemyHit::slowUpdate(float dt)
 {
-	if (decayTimer.getSeconds() > mEnemy->propertyBag().pHurtTime.get())
+	if (decayTimer.getSeconds() > mEnemy->propertyBag().value("HurtTime"));
 	{
-		if (mEnemy->propertyBag().pHealth.get().isDead())
+		Health* health = static_cast<Health*>(mEnemy->propertyBag().get("Health"));
+
+		if (health->isDead())
 			mEnemy->replaceState(EnemyState::Dead);
 		else
 			mEnemy->replaceState(EnemyState::Run);

@@ -3,19 +3,16 @@
 	<!-- Physics -->
 	<Force type = "float">500</Force>
 	<MaxVelocity type = "float">70</MaxVelocity>
-	<DragFactor type = "float">0</DragFactor>
-	<Mass type = "float">1</Mass>
 
 	<!-- General Attributes -->
 	<Health type = "int">250</Health>
-	<MovementSpeed type = "int">80</MovementSpeed>
 
 	<!-- Data values -->
 	<Score type ="int">50></Score>
 	<Experience type = "int">2000</Experience>
 
 	<!-- Attack -->
-	<AttackDamage type = "int">10</AttackDamage>
+	<Damage type = "int">10</Damage>
 	<AttackSpeed type ="double">1</AttackSpeed>
 	<TackleChargeTime type = "float">1</TackleChargeTime>
 	<TackleDistance type = "float">2000</TackleDistance>

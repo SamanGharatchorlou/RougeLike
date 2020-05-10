@@ -6,7 +6,6 @@
 #include "Animations/Animator.h"
 #include "Collisions/EnemyCollider.h"
 
-//#include "Objects/Attributes/Movement.h"
 #include "Objects/Attributes/Physics.h"
 
 #include "EnemyPropertyBag.h"
@@ -43,6 +42,7 @@ public:
 	// Data
 	const GameData* getData() { return mGameData; }
 	EnemyPropertyBag& propertyBag() { return mBag; }
+	float getProperty(const std::string& property) const;
 	virtual const EnemyType type() const = 0;
 
 	// Events

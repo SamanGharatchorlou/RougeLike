@@ -20,7 +20,6 @@
 Player::Player(GameData* gameData) : 
 	Actor(gameData),
 	mStateMachine(new NullState),
-	mBag(new PlayerPropertyBag),
 	mWeapon(nullptr)
 {
 #if _DEBUG
@@ -31,13 +30,12 @@ Player::Player(GameData* gameData) :
 
 Player::~Player()
 {
-	delete mBag;
-	mBag = nullptr;
+	// todo delete property bag
 }
 
 void Player::reset()
 {
-	propertyBag()->resetAttributes();
+	propertyBag()->resetProperties();
 	mStateMachine.clearStates();
 }
 
@@ -46,13 +44,17 @@ void Player::init(const std::string& characterConfig)
 {
 	Actor::init(characterConfig);
 
+	PlayerPropertyBag* propertyBag = new PlayerPropertyBag;
+	propertyBag->readProperties(characterConfig);
+	setPropertyBag(propertyBag);
+
 	// Setup stats
-	propertyBag()->readAttributes(characterConfig);
+	//propertyBag()->readAttributes(characterConfig);
 
 	// init physics
 	Physics::Data physicsData;
-	physicsData.force = mBag->get(PropertyType::Force)->value();
-	physicsData.maxVelocity = mBag->get(PropertyType::MaxVelocity)->value();
+	physicsData.force = getPropertyValue("Force");
+	physicsData.maxVelocity = getPropertyValue("MaxVelocity");
 	mPhysics.init(physicsData);
 
 	// rect tweak
@@ -83,27 +85,29 @@ void Player::handleInput()
 
 void Player::fastUpdate(float dt)
 {
-	mPhysics.fastUpdate(dt);
-	mAnimator.fastUpdate(dt);
+	Actor::fastUpdate(dt);
+
+	//mPhysics.fastUpdate(dt);
+	//mAnimator.fastUpdate(dt);
 	mWeapon->fastUpdate(dt);
 	
-	if (mPhysics.isMoving())
-		mAnimator.setSpeedFactor(mPhysics.relativeSpeed());
-	else
-		mAnimator.setSpeedFactor(1.0f);
+	//if (mPhysics.isMoving())
+	//	mAnimator.setSpeedFactor(mPhysics.relativeSpeed());
+	//else
+	//	mAnimator.setSpeedFactor(1.0f);
 
 	// Weapon
 	mWeapon->updateAnchor(rect().TopLeft());
 	mWeapon->updateAimDirection(mGameData->inputManager->cursorPosition());
-
-
 }
 
 
 void Player::slowUpdate(float dt)
 {
-	mWeapon->slowUpdate(dt);
-	mAnimator.slowUpdate(dt);
+	Actor::slowUpdate(dt);
+
+	mWeapon->slowUpdate(dt);/*
+	mAnimator.slowUpdate(dt);*/
 
 	if (mWeapon->didHit())
 	{
@@ -164,13 +168,6 @@ RectF Player::renderRect() const
 void Player::equiptWeapon(Weapon* weapon)
 {
 	mWeapon = weapon;
-	updateWeaponStats(mBag);
-}
-
-
-void Player::updateWeaponStats(const PlayerPropertyBag* bag)
-{
-	mWeapon->updateStats(bag);
 }
 
 

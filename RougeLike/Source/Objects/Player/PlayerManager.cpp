@@ -23,7 +23,7 @@ PlayerManager::PlayerManager(GameData* gameData) : mGameData(gameData)
 {
 	player = new Player(gameData);
 
-	statManager.init(player->propertyBag());
+	//statManager.init(player->propertyBag());
 }
 
 PlayerManager::~PlayerManager()
@@ -120,10 +120,9 @@ void PlayerManager::slowUpdate(float dt)
 	player->slowUpdate(dt);
 
 	// Level up
-	Level* playerLevel = static_cast<Level*>(player->propertyBag()->get(PropertyType::Level));
+	Level* playerLevel = static_cast<Level*>(player->propertyBag()->get("Level"));
 	if (playerLevel->didLevelUp())
 	{
-		player->updateWeaponStats(player->propertyBag());
 		updateUIStats();
 	}
 
@@ -181,7 +180,7 @@ void PlayerManager::processHit()
 {
 	// Take damage
 	const DamageCollider* damageCollider = static_cast<const DamageCollider*>(player->collider().getOtherCollider());
-	Health* hp = static_cast<Health*>(player->propertyBag()->get(PropertyType::Health));
+	Health* hp = static_cast<Health*>(player->propertyBag()->get("Health"));
 	hp->takeDamage(damageCollider->damage());
 
 	SetHealthBarEvent event(*hp);

@@ -10,7 +10,7 @@ Imp::Imp(GameData* gameData) : Enemy(gameData) { }
 void Imp::init()
 {
 	initAnimations("Imp.xml");
-	mBag.readAttributes("Imp.xml");
+	mBag.readProperties("Imp.xml");
 
 	// Size
 	VectorF size = mAnimator.getSpriteTile()->getRect().Size() * 1.5f;
@@ -20,7 +20,7 @@ void Imp::init()
 	mPhysics.setRect(RectF(VectorF(), size * colliderRatio));
 
 	mCollider.init(&mPhysics.rectRef());
-	mCollider.set(propertyBag().pDamage.get(), propertyBag().pKnockbackDistance.get());
+	mCollider.set(propertyBag().value("Damage"), propertyBag().value("KnockbackDistance"));
 
 	Enemy::init();
 }

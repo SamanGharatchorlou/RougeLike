@@ -1,14 +1,15 @@
 #pragma once
 
 #include "Damage.h"
-#include "Objects/Properties/PropertyBase.h"
+//#include "Objects/Attributes/Property.h"
+#include "Property.h"
 #include "Utilities/Helpers.h"
 
-class Health : public PropertyBase
+class Health : public Property
 {
 public:
-	Health() : PropertyBase(PropertyType::Health), hp(0), maxHp(0) { }
-	Health(int maxHealth) : PropertyBase(PropertyType::Health), maxHp(maxHealth), hp(maxHealth) { }
+	Health() : hp(0), maxHp(0) { }
+	Health(int maxHealth) : maxHp(maxHealth), hp(maxHealth) { }
 
 	void set(int health) { hp = health; }
 	float value() const override { return (float)hp; }

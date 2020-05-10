@@ -25,21 +25,5 @@ ValueMap StatReader::getStats(FileManager::Folder folder, const std::string& con
 		node = node->next_sibling();
 	}
 
-#if _DEBUG
-	int statCounter = 0;
-	xmlNode statNode = rootNode->first_node();
-	while (statNode != nullptr)
-	{
-		statCounter++;
-		statNode = statNode->next_sibling();
-	}
-
-	if (statCounter != valueMap.size())
-	{
-		DebugPrint(Log, "%d stats from the %s config file have not been added to the map\n", 
-			statCounter - valueMap.size(), config.c_str());
-	}
-#endif
-
 	return valueMap;
 }

@@ -28,7 +28,7 @@ void EnemyIdle::slowUpdate(float dt)
 bool EnemyIdle::canSeeAttackTarget() const
 {
 	VectorF attackTargetPosition = mEnemy->attackTargetRect()->Center();
-	return distanceSquared(attackTargetPosition, mEnemy->position()) < mEnemy->propertyBag().pSightRange.get();
+	return distanceSquared(attackTargetPosition, mEnemy->position()) < mEnemy->propertyBag().value("SightRange");
 }
 
 

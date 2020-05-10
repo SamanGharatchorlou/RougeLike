@@ -83,7 +83,7 @@ bool EnemyPatrol::canSeeAttackTarget() const
 	VectorF position = mEnemy->position();
 	VectorF attackTargetPosition = mEnemy->attackTargetRect()->Center();
 
-	bool isNearby = distanceSquared(attackTargetPosition, position) < mEnemy->propertyBag().pSightRange.get();
+	bool isNearby = distanceSquared(attackTargetPosition, position) < mEnemy->propertyBag().value("SightRange");
 	bool hasLineOfSight = false;
 
 	if (!isNearby)

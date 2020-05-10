@@ -5,68 +5,85 @@
 #include "Objects/Attributes/Level.h"
 
 
-PropertyBag::PropertyBag()
+
+Property* PropertyBag::get(const std::string& name) const
 {
-	mPropertyTypeTable["Level"] = PropertyType::Level;
-	mPropertyTypeTable["Health"] = PropertyType::Health;
-	mPropertyTypeTable["AttackSpeed"] = PropertyType::AttackSpeed;
-	mPropertyTypeTable["Force"] = PropertyType::Force;
-	mPropertyTypeTable["MaxVelocity"] = PropertyType::MaxVelocity;
+	PropertyMap::const_iterator iter = mProperties.find(name);
+
+	if (iter != mProperties.end())
+	{
+		return iter->second;
+	}
+	else
+	{
+		DebugPrint(Warning, "The property map does not contain the '%s' property, returning nullptr\n", name.c_str());
+		return nullptr;
+	}
+}
+
+float PropertyBag::value(const std::string& name) const
+{
+	Property* property = get(name);
+	return property ? property->value() : NULL;
 }
 
 
-PropertyBase* PropertyBag::get(PropertyType type) const
+void PropertyBag::resetProperties()
 {
-	for (int i = 0; i < mProperties.size(); i++)
+	readProperties(mConfigFile);
+}
+
+
+
+/// --- Private Functions --- ///
+ValueMap PropertyBag::readConfigValues(FileManager::Folder folder, const std::string& config)
+{
+	std::string configFilePath = FileManager::Get()->filePath(folder, config);
+
+	XMLParser parser;
+	parser.parseXML(configFilePath);
+
+	ValueMap valueMap;
+	float value = 0.0f;
+
+	xmlNode rootNode = parser.rootNode();
+	xmlNode node = rootNode->first_node();
+
+	while (node != nullptr)
 	{
-		if (mProperties[i]->type() == type)
-			return mProperties[i];
+		std::string name = node->name();
+		float nodeValue = std::stof(node->value());
+		bool hasBeenRead = false;
+
+		valueMap[name] = Value(nodeValue, hasBeenRead);
+
+		node = node->next_sibling();
 	}
 
-	DebugPrint(Log, "No property of type %d containted within the property list\n", type);
+	return valueMap;
 }
 
 
 void PropertyBag::fillProperties(ValueMap& valueMap)
 {
-	std::string name = "";
-	float value = 0.0f;
-
 	for (ValueMap::iterator iter = valueMap.begin(); iter != valueMap.end(); iter++)
 	{
-		name = iter->first;
-		value = iter->second;
-		PropertyType type = mPropertyTypeTable[name];
+		Value value = iter->second;
 
-		switch (type)
+		if (value.second == false)
 		{
-		case PropertyType::Health:
-		{
-			Health* health = new Health(value);
-			mProperties.push_back(health);
-			break;
+			std::string name = iter->first;
 
+			if (name == "Health")
+			{
+				Health* health = new Health(value.first);
+				mProperties[name] = health;
+			}
+			else
+			{
+				PropertyValue* property = new PropertyValue(value.first);
+				mProperties[name] = property;
+			}
 		}
-		case PropertyType::Level:
-		{
-			Level* level = new Level();
-			mProperties.push_back(level);
-			break;
-		}
-		case PropertyType::AttackDamage:
-		case PropertyType::AttackSpeed:
-		case PropertyType::Force:
-		case PropertyType::MaxVelocity:
-		{
-			PropertyValue* property = new PropertyValue(type);
-			property->setValue(value);
-			mProperties.push_back(property);
-			break;
-		}
-		default:
-			break;
-		}
-
 	}
-
 }

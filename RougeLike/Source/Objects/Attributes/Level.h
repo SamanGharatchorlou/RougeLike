@@ -1,16 +1,16 @@
 #pragma once
 
-#include "Objects/Properties/PropertyBase.h"
+#include "Objects/Attributes/Property.h"
 
-class Level : public PropertyBase
+class Level : public Property
 {
 public:
-	Level() : PropertyBase(PropertyType::Level), level(1), currentExp(0), totalExp(0), levelledUp(false) { }
+	Level() : level(1), currentExp(0), totalExp(0), levelledUp(false) { }
 
 	void gainExp(int exp);
 
 	int getCurrentExp() const { return currentExp; }
-	float value() const { return (float)level; }
+	float value() const override { return (float)level; }
 
 	int nextLevelExp();
 

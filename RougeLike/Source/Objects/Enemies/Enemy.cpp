@@ -28,8 +28,8 @@ Enemy::Enemy(GameData* gameData) :
 void Enemy::init()
 {
 	Physics::Data physicsData;
-	physicsData.force = mBag.pForce.get();
-	physicsData.maxVelocity = mBag.pMaxVelocity.get();
+	physicsData.force = mBag.value("Force"); // mBag.pForce.get();
+	physicsData.maxVelocity = mBag.value("MaxVelocity");// mBag.pMaxVelocity.get();
 	//physicsData.dragFactor = mBag.pDragFactor.get();
 	//physicsData.mass = mBag.pMass.get();
 
@@ -121,6 +121,12 @@ void Enemy::accellerateTowards(VectorF position)
 {
 	VectorF direction = position - mPhysics.position();
 	mPhysics.accellerate(direction); 
+}
+
+
+float Enemy::getProperty(const std::string& property) const
+{
+	return 0.0f;
 }
 
 

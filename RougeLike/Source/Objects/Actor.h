@@ -5,6 +5,7 @@
 #include "Collisions/Collider.h"
 
 struct GameData;
+class PropertyBag;
 
 class Actor
 {
@@ -12,10 +13,13 @@ public:
 	Actor(GameData* gameData) : mGameData(gameData) { }
 
 	void init(const std::string& characterConfig);
-	void handleInput();
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
 	void render();
+
+	void setPropertyBag(PropertyBag* bag) { mPropertyBag = bag; }
+	PropertyBag* propertyBag() const { return mPropertyBag; }
+	float getPropertyValue(const std::string& property) const;
 
 	Animator&	animator() { return mAnimator; }
 	Collider&	collider() { return mCollider; }
@@ -32,6 +36,8 @@ protected:
 
 protected:
 	GameData* mGameData;
+
+	PropertyBag* mPropertyBag;
 
 	Animator mAnimator;
 	Collider mCollider;

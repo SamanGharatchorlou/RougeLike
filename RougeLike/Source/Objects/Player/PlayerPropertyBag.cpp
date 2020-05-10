@@ -1,29 +1,35 @@
 #include "pch.h"
 #include "PlayerPropertyBag.h"
-#include "System/Files/StatReader.h"
 
 #include "Objects/Attributes/Level.h"
-#include "Objects/Attributes/Health.h"
 
-void PlayerPropertyBag::readAttributes(const std::string& name)
+
+void PlayerPropertyBag::readProperties(const std::string& config)
 {
-	attributeName = name;
+	mConfigFile = config;
 
-	StatReader statReader;
-	ValueMap map = statReader.getStats(FileManager::Config_Player, name);
+	ValueMap map = readConfigValues(FileManager::Config_Player, config);
 
-	PropertyBag::fillProperties(map);
+	fillProperties(map);
 }
-
-
-
-void PlayerPropertyBag::resetAttributes()
-{
-	readAttributes(attributeName);
-} 
 
 
 void PlayerPropertyBag::fillProperties(ValueMap& valueMap)
 {
+	for (ValueMap::iterator iter = valueMap.begin(); iter != valueMap.end(); iter++)
+	{
+		std::string name = iter->first;
+		Value value = iter->second;
 
+		if (name == "Level")
+		{
+			Level* level = new Level;
+			mProperties[name] = level;
+
+			// Set has been visited bool to true
+			iter->second.second = true;
+		}
+	}
+
+	PropertyBag::fillProperties(valueMap);
 }

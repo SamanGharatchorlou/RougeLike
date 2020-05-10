@@ -13,7 +13,13 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 	Index startingIndex = mMap->index(startPosition);
 	Index endIndex = mMap->index(endPosition);
 
-	if (!mMap->isValidIndex(endIndex) || startingIndex == endIndex || !mMap->floorCollisionTile(endIndex))
+	// TEMP
+	if (!mMap->isValidIndex(startingIndex))
+		printf("pause\n");
+
+	if (!mMap->isValidIndex(endIndex) || 
+		startingIndex == endIndex || 
+		!mMap->floorCollisionTile(endIndex))
 		return Path();
 
 	// End tile cannot be inaccessible or path finding will fail

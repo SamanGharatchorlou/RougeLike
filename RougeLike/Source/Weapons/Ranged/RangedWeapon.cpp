@@ -103,12 +103,6 @@ void RangedWeapon::equipt(const WeaponData* data)
 }
 
 
-void RangedWeapon::updateStats(const PlayerPropertyBag* bag)
-{
-
-}
-
-
 // Follow character
 void RangedWeapon::updateAnchor(VectorF anchor)
 {

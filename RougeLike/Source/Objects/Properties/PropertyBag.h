@@ -1,21 +1,27 @@
 #pragma once
 
 #include "Objects/Attributes/Property.h"
-#include "Objects/Properties/PropertyBase.h"
 
-using ValueMap = std::unordered_map<std::string, float>;
+using Value = std::pair<float, bool>;
+using ValueMap = std::unordered_map<std::string, Value>;
+using PropertyMap = std::unordered_map<std::string, Property*>;
 
 
 class PropertyBag
 {
 public:
-	PropertyBag();
+	virtual void readProperties(const std::string& config) = 0;	
+	
+	void resetProperties();
 
-	PropertyBase* get(PropertyType type) const;
+	Property* get(const std::string& name) const;
+	float value(const std::string& name) const;
 
-	std::vector<PropertyBase*> mProperties;
-
-	std::unordered_map<std::string, PropertyType> mPropertyTypeTable;
-
+protected:
+	ValueMap readConfigValues(FileManager::Folder folder, const std::string& config);
 	void fillProperties(ValueMap& valueMap);
+
+protected:
+	std::string mConfigFile;
+	PropertyMap mProperties;
 };

@@ -28,7 +28,6 @@ public:
 	void updateAimDirection(VectorF cursorPosition) override;
 
 	void equipt(const WeaponData* data) override;
-	void updateStats(const PlayerPropertyBag* bag) override;
 
 	// Stats
 	const float getAngle() const { return getRotation(mDirection); }

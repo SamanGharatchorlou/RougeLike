@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "StatManager.h"
 
+#include "Level.h"
+
 
 void StatManager::init(PlayerPropertyBag* propertyBag)
 {
@@ -10,6 +12,6 @@ void StatManager::init(PlayerPropertyBag* propertyBag)
 
 void StatManager::gainExp(int exp)
 {
-	Level* playerLevel = static_cast<Level*>(bag->get(PropertyType::Level));
+	Level* playerLevel = static_cast<Level*>(bag->get("Level"));
 	playerLevel->gainExp(exp);
 }

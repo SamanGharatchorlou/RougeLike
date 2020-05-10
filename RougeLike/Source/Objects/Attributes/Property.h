@@ -1,9 +1,31 @@
 #pragma once
 
-#include "Health.h"
-#include "Damage.h"
-#include "Level.h"
+class Property
+{
+public:
+	Property() { }
+	virtual ~Property() { };
+	
+	virtual float value() const = 0;
+};
 
+
+
+class PropertyValue : public Property
+{
+public:
+	PropertyValue(float value) : mValue(value) { }
+
+	void setValue(float value) { mValue = value; }
+	float value() const { return mValue; }
+
+private:
+	float mValue;
+};
+
+
+
+/*
 
 // TODO: turn this into a map of <string, property>
 template<typename T>
@@ -78,3 +100,5 @@ class AttentionTimeProperty : public Property<float> { };
 // Enemy - Data values
 class ScoreProperty : public Property<int> { };
 class ExperienceProperty : public Property<int> { };
+
+*/

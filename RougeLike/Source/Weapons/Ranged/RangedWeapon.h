@@ -30,7 +30,6 @@ public:
 	void updateAimDirection(VectorF cursorPosition) override;
 
 	void equipt(const WeaponData* data) override;
-	void updateStats(const PlayerPropertyBag* bag) override;
 
 	const std::vector<Collider*> getColliders() override;
 

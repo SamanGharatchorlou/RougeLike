@@ -5,18 +5,6 @@ class Collider;
 class PlayerPropertyBag;
 
 
-struct WeaponAudioEvent
-{
-	WeaponAudioEvent(const std::string* audioToPlay, const std::string* audioToStop) : mAudioToPlay(audioToPlay), mAudioToStop(audioToStop) { }
-	WeaponAudioEvent() : mAudioToPlay(nullptr), mAudioToStop(nullptr) { };
-
-	bool isEmpty() const { return !mAudioToPlay && !mAudioToStop; }
-	const std::string* mAudioToPlay;
-	const std::string* mAudioToStop;
-};
-
-
-
 class Weapon
 {
 public:
@@ -39,7 +27,6 @@ public:
 	virtual void updateAimDirection(VectorF cursorPosition) = 0;
 
 	virtual void equipt(const WeaponData* data) = 0;
-	virtual void updateStats(const PlayerPropertyBag* bag) = 0;
 
 	virtual const std::vector<Collider*> getColliders() = 0;
 	virtual const std::vector<RectF> getRects() const = 0;

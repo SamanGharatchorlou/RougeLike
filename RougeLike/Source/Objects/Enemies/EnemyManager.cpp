@@ -157,7 +157,8 @@ void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF positio
 			Enemy* enemy = mEnemyPool[i].first;
 			mEnemyPool[i].second = ObjectStatus::Active;
 
-			enemy->propertyBag().pHealth.get().setFullHp();
+			// TODO: add some kind of reset attribute thing here?
+			//enemy->propertyBag().pHealth.get().setFullHp();
 			enemy->spawn(state, position);
 			enemy->setMap(&mPathMap);
 			enemy->setAttackTarget(mTarget);

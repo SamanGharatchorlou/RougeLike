@@ -20,7 +20,7 @@ void EnemyAlert::fastUpdate(float dt)
 
 void EnemyAlert::slowUpdate(float dt)
 {
-	if (timer.getSeconds() > mEnemy->propertyBag().pAttentionTime.get())
+	if (timer.getSeconds() > mEnemy->propertyBag().value("AttentionTime"))
 	{
 		mEnemy->replaceState(EnemyState::Run);
 	}

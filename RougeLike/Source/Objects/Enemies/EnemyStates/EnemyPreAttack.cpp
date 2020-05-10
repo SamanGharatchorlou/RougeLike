@@ -27,7 +27,7 @@ void EnemyPreAttack::slowUpdate(float dt)
 		mEnemy->popState();
 
 	// begin attack
-	if (timer.getSeconds() > mEnemy->propertyBag().pTackleChargeTime.get())
+	if (timer.getSeconds() > mEnemy->propertyBag().value("TackleChargeTime"))
 		mEnemy->replaceState(EnemyState::Attack);
 }
 
@@ -43,5 +43,5 @@ bool EnemyPreAttack::inAttackRange() const
 	VectorF currentPosition = mEnemy->position();
 	VectorF nearestTargetSide = closestRectSide(currentPosition, *mEnemy->attackTargetRect());
 
-	return distanceSquared(currentPosition, nearestTargetSide) < (mEnemy->propertyBag().pTackleDistance.get());
+	return distanceSquared(currentPosition, nearestTargetSide) < (mEnemy->propertyBag().value("TackleDistance"));
 }
