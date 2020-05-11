@@ -13,11 +13,11 @@ EnemyDead::EnemyDead(Enemy* enemy) : EnemyState(enemy), mAlpha(alphaMax) { }
 
 void EnemyDead::init()
 {
-	mEnemy->getAnimator()->selectAnimation("Dead");
+	mEnemy->animator().selectAnimation("Dead");
 
 	// Let everyone know he has died
-	int score = mEnemy->propertyBag().value("Score");
-	int exp = mEnemy->propertyBag().value("Exp");
+	const float score = mEnemy->getPropertyValue("Score");
+	const float exp = mEnemy->getPropertyValue("Experience");
 	EnemyDeadEvent* dataPtr = new EnemyDeadEvent(score, exp);
 
 	mEnemy->pushEvent(EventPacket(Event::EnemyDead, dataPtr));
@@ -43,7 +43,7 @@ void EnemyDead::render()
 #if DRAW_ENEMY_RECT
 	debugDrawRect(mEnemy->rect(), RenderColour(RenderColour::Red));
 #else
-	mEnemy->getAnimator()->getSpriteTile()->render(rect, mEnemy->flip(), mAlpha);
+	mEnemy->animator().getSpriteTile()->render(rect, mEnemy->flip(), mAlpha);
 #endif
 
 }

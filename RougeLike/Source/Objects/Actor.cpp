@@ -30,7 +30,6 @@ void Actor::fastUpdate(float dt)
 void Actor::slowUpdate(float dt)
 {
 	mAnimator.slowUpdate(dt);
-
 }
 
 
@@ -39,7 +38,6 @@ void Actor::render()
 	RectF rect = renderRect();
 	rect = Camera::Get()->toCameraCoords(rect);
 
-	printf("left point %f\n", rect.LeftPoint());
 	mAnimator.getSpriteTile()->render(rect, mPhysics.flip());
 }
 
@@ -48,6 +46,11 @@ void Actor::render()
 float Actor::getPropertyValue(const std::string& property) const 
 { 
 	return mPropertyBag->value(property); 
+}
+
+Property* Actor::getProperty(const std::string& property) const
+{
+	return mPropertyBag->get(property);
 }
 
 /// --- Private Functions --- ///

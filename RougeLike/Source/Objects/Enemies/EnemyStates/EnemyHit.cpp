@@ -20,9 +20,9 @@ void EnemyHit::init()
 {
 	decayTimer.restart();
 
-	mEnemy->getAnimator()->selectAnimation("Hit");
+	mEnemy->animator().selectAnimation("Hit");
 
-	Texture* texture = mEnemy->getAnimator()->getSpriteTexture();
+	Texture* texture = mEnemy->animator().getSpriteTexture();
 	texture->modifyAlpha(-100);
 
 	attackTargetPosition = mEnemy->attackTargetRect()->Center();
@@ -32,7 +32,7 @@ void EnemyHit::init()
 	const DamageCollider* damageCollider = static_cast<const DamageCollider*>(mEnemy->collider()->getOtherCollider());
 
 	// Set/reduce hp
-	Health* health = static_cast<Health*>(mEnemy->propertyBag().get("Health"));
+	Health* health = static_cast<Health*>(mEnemy->getProperty("Health"));
 	*health = *health - damageCollider->damage();
 
 	// Store knockback info before collision info is reset (next fast frame)
@@ -52,9 +52,9 @@ void EnemyHit::fastUpdate(float dt)
 
 void EnemyHit::slowUpdate(float dt)
 {
-	if (decayTimer.getSeconds() > mEnemy->propertyBag().value("HurtTime"));
+	if (decayTimer.getSeconds() > mEnemy->getPropertyValue("HurtTime"));
 	{
-		Health* health = static_cast<Health*>(mEnemy->propertyBag().get("Health"));
+		Health* health = static_cast<Health*>(mEnemy->getProperty("Health"));
 
 		if (health->isDead())
 			mEnemy->replaceState(EnemyState::Dead);
@@ -72,14 +72,14 @@ void EnemyHit::render()
 #if DRAW_ENEMY_RECT
 	debugDrawRect(mEnemy->rect(), RenderColour(RenderColour::Red));
 #else
-	mEnemy->getAnimator()->getSpriteTile()->render(rect, mEnemy->flip());
+	mEnemy->animator().getSpriteTile()->render(rect, mEnemy->flip());
 #endif
 }
 
 
 void EnemyHit::exit()
 {
-	Texture* texture = mEnemy->getAnimator()->getSpriteTexture();
+	Texture* texture = mEnemy->animator().getSpriteTexture();
 	texture->setAlpha(alphaMax);
 
 	mEnemy->facePoint(mEnemy->attackTargetRect()->Center());

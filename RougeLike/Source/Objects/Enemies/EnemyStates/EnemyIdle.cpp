@@ -7,7 +7,7 @@
 void EnemyIdle::init()
 {
 	timer.restart();
-	mEnemy->getAnimator()->selectAnimation("Idle");
+	mEnemy->animator().selectAnimation("Idle");
 
 	mEnemy->setFlip(static_cast<SDL_RendererFlip>(randomNumberBetween(0, 2)));
 }
@@ -28,7 +28,7 @@ void EnemyIdle::slowUpdate(float dt)
 bool EnemyIdle::canSeeAttackTarget() const
 {
 	VectorF attackTargetPosition = mEnemy->attackTargetRect()->Center();
-	return distanceSquared(attackTargetPosition, mEnemy->position()) < mEnemy->propertyBag().value("SightRange");
+	return distanceSquared(attackTargetPosition, mEnemy->position()) < mEnemy->getPropertyValue("SightRange");
 }
 
 

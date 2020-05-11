@@ -45,10 +45,10 @@ struct EventPacket
 // TODO: make the EventData base class private?
 struct EnemyDeadEvent : public EventData
 {
-	EnemyDeadEvent(int score, int exp) : mScore(score), mExp(exp) { }
+	EnemyDeadEvent(const float score, const float exp) : mScore(score), mExp(exp) { }
 	~EnemyDeadEvent() { }
-	const int mScore;
-	const int mExp;
+	const float mScore;
+	const float mExp;
 };
 
 

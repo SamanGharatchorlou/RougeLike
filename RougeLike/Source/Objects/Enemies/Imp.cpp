@@ -7,25 +7,6 @@
 Imp::Imp(GameData* gameData) : Enemy(gameData) { }
 
 
-void Imp::init()
-{
-	initAnimations("Imp.xml");
-	mBag.readProperties("Imp.xml");
-
-	// Size
-	VectorF size = mAnimator.getSpriteTile()->getRect().Size() * 1.5f;
-	colliderRatio = VectorF(0.75f, 1.0f);
-	RectF rect = RectF(VectorF(), size * colliderRatio);
-
-	mPhysics.setRect(RectF(VectorF(), size * colliderRatio));
-
-	mCollider.init(&mPhysics.rectRef());
-	mCollider.set(propertyBag().value("Damage"), propertyBag().value("KnockbackDistance"));
-
-	Enemy::init();
-}
-
-
 RectF Imp::renderRect() const
 {
 	RectF rect = mPhysics.rect();
@@ -35,5 +16,5 @@ RectF Imp::renderRect() const
 	VectorF sizeDiff = rect.Size() - size;
 
 	// Tweak position
-	return rect.Translate((sizeDiff.x * -1) + 2.0f, (sizeDiff.y * -1) + 2.0f);;
+	return rect.Translate((sizeDiff.x * -1) + 2.0f, (sizeDiff.y * -1) + 2.0f);
 }

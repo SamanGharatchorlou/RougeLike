@@ -7,7 +7,7 @@
 
 void EnemyAlert::init()
 {
-	mEnemy->getAnimator()->selectAnimation("Hit");
+	mEnemy->animator().selectAnimation("Hit");
 	timer.restart();
 }
 
@@ -20,7 +20,7 @@ void EnemyAlert::fastUpdate(float dt)
 
 void EnemyAlert::slowUpdate(float dt)
 {
-	if (timer.getSeconds() > mEnemy->propertyBag().value("AttentionTime"))
+	if (timer.getSeconds() > mEnemy->getPropertyValue("AttentionTime"))
 	{
 		mEnemy->replaceState(EnemyState::Run);
 	}

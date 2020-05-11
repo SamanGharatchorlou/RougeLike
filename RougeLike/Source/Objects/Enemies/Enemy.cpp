@@ -11,54 +11,81 @@
 #include "Objects/Player/Player.h"
 
 
+
+#include "Collisions/DamageCollider.h"
+
+
 Enemy::Enemy(GameData* gameData) :
-	mGameData(gameData),
+	Actor(gameData),
 	mStateMachine(new EnemyNullState),
 	mMap(nullptr),
 	mAttackTarget(nullptr),
 	mPositionTarget(nullptr)
 {
 	setFlip(static_cast<SDL_RendererFlip>(randomNumberBetween(0, 2)));
+}
+
+
+void Enemy::init(const std::string& characterConfig)
+{
+	Actor::init(characterConfig);
+
+	// Property bag
+	EnemyPropertyBag* propertyBag = new EnemyPropertyBag;
+	propertyBag->readProperties(characterConfig);
+	setPropertyBag(propertyBag);
+
+	// Physics
+	Physics::Data physicsData;
+	physicsData.force = getPropertyValue("Force");
+	physicsData.maxVelocity = getPropertyValue("MaxVelocity");
+	mPhysics.init(physicsData);
+
+	VectorF size = mAnimator.getSpriteTile()->getRect().Size() * 1.5f;
+	colliderRatio = VectorF(0.75f, 1.0f);
+	mPhysics.setRect(RectF(VectorF(), size * colliderRatio));
+
+
+	// Collider
+	DamageCollider* collider = new DamageCollider;
+	collider->init(&mPhysics.rectRef());
+	
+	Damage* damage = static_cast<Damage*>(getProperty("Damage"));
+	collider->initDamage(*damage, getPropertyValue("KnockbackDistance"));
+	setCollider(collider);
 #if _DEBUG
-	mCollider.setName("enemy");
+	mCollider->setName("enemy");
 #endif
 }
 
 
-void Enemy::init()
+DamageCollider* Enemy::damageCollider() const
 {
-	Physics::Data physicsData;
-	physicsData.force = mBag.value("Force"); // mBag.pForce.get();
-	physicsData.maxVelocity = mBag.value("MaxVelocity");// mBag.pMaxVelocity.get();
-	//physicsData.dragFactor = mBag.pDragFactor.get();
-	//physicsData.mass = mBag.pMass.get();
-
-	mPhysics.init(physicsData);
+	return static_cast<DamageCollider*>(mCollider);
 }
 
 
 void Enemy::fastUpdate(float dt)
 {
 	mPhysics.resetHasForce();
+	Actor::fastUpdate(dt);
 
 	mStateMachine.getActiveState().fastUpdate(dt);
-	mPhysics.fastUpdate(dt);
-	mAnimator.fastUpdate(dt);
 }
 
 
 void Enemy::slowUpdate(float dt)
 {
+	Actor::slowUpdate(dt);
 	// Reset alpha for enemies sharing the same texture
 	mAnimator.getSpriteTexture()->setAlpha(alphaMax);
 
 	mStateMachine.processStateChanges();
-
 	mStateMachine.getActiveState().slowUpdate(dt);
-	mAnimator.slowUpdate(dt);
 
+	// TODO: do i need this?
 	// reset collider data for next frame
-	mCollider.reset();
+	//mCollider.reset();
 }
 
 
@@ -70,13 +97,10 @@ void Enemy::render()
 
 void Enemy::renderCharacter()
 {
-	RectF rect = renderRect();
-	rect = Camera::Get()->toCameraCoords(rect);
+	Actor::render();
 
 #if DRAW_ENEMY_RECT
 	debugDrawRect(mRect, RenderColour(RenderColour::Red));
-#else
-	mAnimator.getSpriteTile()->render(rect, mPhysics.flip());
 #endif
 }
 
@@ -105,7 +129,7 @@ void Enemy::clear()
 
 void Enemy::resolvePlayerWeaponCollisions()
 {
-	if (mCollider.gotHit())
+	if (mCollider->gotHit())
 		replaceState(EnemyState::Hit);
 }
 
@@ -121,12 +145,6 @@ void Enemy::accellerateTowards(VectorF position)
 {
 	VectorF direction = position - mPhysics.position();
 	mPhysics.accellerate(direction); 
-}
-
-
-float Enemy::getProperty(const std::string& property) const
-{
-	return 0.0f;
 }
 
 

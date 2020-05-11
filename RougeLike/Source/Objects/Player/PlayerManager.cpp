@@ -3,40 +3,76 @@
 #include "PlayerManager.h"
 
 #include "Game/GameData.h"
+#include "Game/Cursor.h"
 #include "Input/InputManager.h"
+#include "Audio/AudioManager.h"
 #include "Collisions/CollisionManager.h"
-
 #include "Collisions/DamageCollider.h"
-
-#include "Player.h"
-#include "Objects/Enemies/EnemyManager.h"
 
 #include "Map/Environment.h"
 #include "Map/Map.h"
 
 #include "Weapons/Melee/MeleeWeapon.h"
-#include "Objects/Attributes/Level.h"
-
 #include "Objects/Effects/KnockbackEffect.h"
 
-PlayerManager::PlayerManager(GameData* gameData) : mGameData(gameData)
-{
-	player = new Player(gameData);
+#include "PlayerPropertyBag.h"
+#include "States/State.h"
 
-	//statManager.init(player->propertyBag());
+
+PlayerManager::PlayerManager(GameData* gameData) :
+	Actor(gameData),
+	mStateMachine(new NullState),
+	mWeapon(nullptr)
+{
+
 }
 
 PlayerManager::~PlayerManager()
 {
-	delete player;
-	player = nullptr;
+	delete mPropertyBag;
+	delete mCollider;
 }
+
+
+void PlayerManager::init(const std::string& characterConfig)
+{
+	Actor::init(characterConfig);
+
+	// Property bag
+	PlayerPropertyBag* propertyBag = new PlayerPropertyBag;
+	propertyBag->readProperties(characterConfig);
+	setPropertyBag(propertyBag);
+
+	statManager.init(propertyBag);
+
+	// Physics
+	Physics::Data physicsData;
+	physicsData.force = getPropertyValue("Force");
+	physicsData.maxVelocity = getPropertyValue("MaxVelocity");
+	mPhysics.init(physicsData);
+	VectorF size = mAnimator.getSpriteTile()->getRect().Size() * 1.2f;
+	mPhysics.setRect(RectF(VectorF(), size));
+
+	// Collider
+	Collider* collider = new Collider;
+	VectorF colliderScale = VectorF(1.0f, 0.25f); // only with walls
+	collider->init(&mPhysics.rectRef(), colliderScale);
+	setCollider(collider);
+#if _DEBUG
+	mCollider->setName("player");
+#endif
+
+}
+
 
 void PlayerManager::reset()
 {
 	tileIndex.zero();
-	player->reset();
+
+	propertyBag()->resetProperties();
+	mStateMachine.clearStates();
 }
+
 
 void PlayerManager::loadWeaponStash()
 {
@@ -45,58 +81,56 @@ void PlayerManager::loadWeaponStash()
 
 void PlayerManager::initCollisions()
 {
-	std::vector<Collider*> collider{ &player->collider() };
-
-	mGameData->collisionManager->addDefenders(CollisionManager::Enemy_Hit_Player, collider);
-	mGameData->collisionManager->addAttackers(CollisionManager::Player_Hit_Collectable, collider);
+	std::vector<Collider*> playerCollider { collider() };
+	mGameData->collisionManager->addDefenders(CollisionManager::Enemy_Hit_Player, playerCollider);
+	mGameData->collisionManager->addAttackers(CollisionManager::Player_Hit_Collectable, playerCollider);
 }
 
 
 void PlayerManager::selectCharacter(const std::string& character)
 {
-	player->init(character);
+	init(character);
 
 	// Starting weapon
 	selectWeapon("weapon_katana");
-
-	mGameData->collisionManager->removeAllAttackers(CollisionManager::PlayerWeapon_Hit_Enemy);
-
-	updateUIStats();
 }
 
 
 void PlayerManager::selectWeapon(const std::string& weaponName)
 {
-	Weapon* weapon = weaponStash.getWeapon(weaponName);
-	player->equiptWeapon(weapon);
+	mWeapon = weaponStash.getWeapon(weaponName);
 }
 
 
-RectF* PlayerManager::rect() { return &player->rectRef(); }
-
 void PlayerManager::handleInput() 
 { 
-	player->handleInput();
+	mPhysics.handleInput(mGameData->inputManager);
 
-	//// TEMP
-	//if (mGameData->inputManager->getButton(Button::E).isPressed())
-	//{
-	//	TraumaEvent event(100);
-	//	notify(Event::Trauma, event);
-	//}
+	if (mGameData->inputManager->isCursorPressed(Cursor::Left))
+	{
+		// Play miss sound
+		if (!mWeapon->isAttacking())
+		{
+			mGameData->audioManager->playSound(mWeapon->missSoundLabel(), this);
+		}
+
+		mWeapon->attack();
+	}
 }
 
 
 void PlayerManager::fastUpdate(float dt)
 {
-	// resolve collisions before any movement takes place!
-	player->physics().resetAllowedMovement();
-
 	// Restricts movemoent from input, movement should happen after this
-	resolveWallCollisions(mGameData->environment->map(rect()->Center()), dt);
+	resolveWallCollisions(mGameData->environment->map(rect().Center()), dt);
 
 	// Movement, animations, weapon updates
-	player->fastUpdate(dt);
+	Actor::fastUpdate(dt);
+
+	// Weapon
+	mWeapon->fastUpdate(dt);
+	mWeapon->updateAnchor(rect().TopLeft());
+	mWeapon->updateAimDirection(mGameData->inputManager->cursorPosition());
 
 	mEffectHandler.fastUpdate(dt);
 }
@@ -104,30 +138,38 @@ void PlayerManager::fastUpdate(float dt)
 
 void PlayerManager::slowUpdate(float dt) 
 { 
+	Actor::slowUpdate(dt);
+	mWeapon->slowUpdate(dt);
+	mEffectHandler.slowUpdate(dt);
+	
+	std::string animation = mPhysics.isMoving() ? "Run" : "Idle";
+	mAnimator.selectAnimation(animation);
+
 	mGameData->collisionManager->removeAllAttackers(CollisionManager::PlayerWeapon_Hit_Enemy);
 
-	if (player->weapon()->isAttacking())
+	if (weapon()->isAttacking())
 	{
-		mGameData->collisionManager->addAttackers(CollisionManager::PlayerWeapon_Hit_Enemy, player->weapon()->getColliders());
+		mGameData->collisionManager->addAttackers(CollisionManager::PlayerWeapon_Hit_Enemy, weapon()->getColliders());
+
+		if (mWeapon->didHit())
+		{
+			// Play hit sound
+			if (mGameData->audioManager->isPlaying(mWeapon->missSoundLabel(), this) && mWeapon->canPlayHitSound())
+			{
+				mGameData->audioManager->playSound(mWeapon->hitSoundLabel(), this);
+			}
+		}
 	}
 
 	// Resolve player getting hit
-	if (player->collider().gotHit())
+	if (collider()->gotHit())
 	{
 		processHit();
 	}
 
-	player->slowUpdate(dt);
-
-	// Level up
-	Level* playerLevel = static_cast<Level*>(player->propertyBag()->get("Level"));
-	if (playerLevel->didLevelUp())
-	{
-		updateUIStats();
-	}
 
 	// Update enemy paths when player changes tile
-	Vector2D<int> currentTile = mGameData->environment->map(rect()->Center())->index(rect()->Center());
+	Vector2D<int> currentTile = mGameData->environment->map(rect().Center())->index(rect().Center());
 	if (tileIndex != currentTile)
 	{
 		tileIndex = currentTile;
@@ -135,24 +177,6 @@ void PlayerManager::slowUpdate(float dt)
 		UpdateAIPathMapEvent updateAIPathMapEvent;
 		notify(Event::UpdateAIPathMap, updateAIPathMapEvent);
 	}
-
-	mEffectHandler.slowUpdate(dt);
-}
-
-
-void PlayerManager::updateUIStats()
-{
-	//UpdateTextBoxEvent attackStat("Atk val", player->propertyBag()->pAttackDmg.get().value());
-	//notify(Event::UpdateTextBox, attackStat);
-
-	//UpdateTextBoxEvent defenceStat("Def val", player->propertyBag()->pDefence.get());
-	//notify(Event::UpdateTextBox, defenceStat);
-}
-
-
-VectorF PlayerManager::position() const
-{
-	return player->rect().Center();
 }
 
 
@@ -161,7 +185,6 @@ void PlayerManager::handleEvent(const Event event, EventData& data)
 	if (event == Event::EnemyDead)
 	{
 		EnemyDeadEvent eventData = static_cast<EnemyDeadEvent&>(data);
-
 		statManager.gainExp(eventData.mExp);
 	}
 }
@@ -169,18 +192,55 @@ void PlayerManager::handleEvent(const Event event, EventData& data)
 
 void PlayerManager::render()
 {
-	player->render();
+	// Flip sprite
+	if (mPhysics.flip() == SDL_FLIP_NONE && mPhysics.direction().x < 0)
+	{
+		mPhysics.setFlip(SDL_FLIP_HORIZONTAL);
+	}
+	else if (mPhysics.flip() == SDL_FLIP_HORIZONTAL && mPhysics.direction().x > 0)
+	{
+		mPhysics.setFlip(SDL_FLIP_NONE);
+	}
+
+#if DRAW_PLAYER_RECTS
+	debugDrawRect(rect(), RenderColour(RenderColour::Green));
+	debugDrawRect(mCollider.scaledRect(), RenderColour(RenderColour::Blue));
+	debugDrawRects(mWeapon->getRects(), RenderColour(RenderColour::Yellow));
+#else
+
+	Actor::render();
+
+	// Weapon
+	mWeapon->render();
+#endif
+
 	mEffectHandler.render();
 }
 
 
 // --- Private Functions --- //
 
+RectF PlayerManager::renderRect() const
+{
+	RectF renderRect = rect();
+	VectorF size = renderRect.Size();
+
+	// scale render rect by 1.75
+	renderRect.SetSize(size * 1.75f);
+	VectorF sizeDiff = renderRect.Size() - size;
+
+	renderRect = renderRect.Translate(sizeDiff.x / 2.0f * -1, sizeDiff.y * -1);
+
+	return renderRect;
+}
+
+
+
 void PlayerManager::processHit()
 {
 	// Take damage
-	const DamageCollider* damageCollider = static_cast<const DamageCollider*>(player->collider().getOtherCollider());
-	Health* hp = static_cast<Health*>(player->propertyBag()->get("Health"));
+	const DamageCollider* damageCollider = static_cast<const DamageCollider*>(collider()->getOtherCollider());
+	Health* hp = static_cast<Health*>(propertyBag()->get("Health"));
 	hp->takeDamage(damageCollider->damage());
 
 	SetHealthBarEvent event(*hp);
@@ -189,15 +249,18 @@ void PlayerManager::processHit()
 	// Knockback
 	VectorF source = damageCollider->rect().Center();
 	float force = damageCollider->knockbackforce();
-	KnockbackEffect* effect = new KnockbackEffect(&player->physics(), source, force);
+	KnockbackEffect* effect = new KnockbackEffect(physics(), source, force);
 
 	mEffectHandler.addEffect(effect);
 }
 
 
+// Wall Collisions
 void PlayerManager::resolveWallCollisions(const Map* map, float dt)
 {
-	RectF collisionRect = player->collider().scaledRect();
+	physics()->resetAllowedMovement();
+
+	RectF collisionRect = collider()->scaledRect();
 
 	bool restrictLeft =		doesCollideLeft	(map, collisionRect.TopLeft(), dt)	|| 
 							doesCollideLeft	(map, collisionRect.BotLeft(), dt);
@@ -211,10 +274,10 @@ void PlayerManager::resolveWallCollisions(const Map* map, float dt)
 	bool restrictDown =		doesCollideBot	(map, collisionRect.BotLeft(),  dt)	|| 
 							doesCollideBot	(map, collisionRect.BotRight(), dt);
 
-	player->physics().restrictMovement(Physics::Up, restrictUp);
-	player->physics().restrictMovement(Physics::Down, restrictDown);
-	player->physics().restrictMovement(Physics::Right, restrictRight);
-	player->physics().restrictMovement(Physics::Left, restrictLeft);
+	physics()->restrictMovement(Physics::Up, restrictUp);
+	physics()->restrictMovement(Physics::Down, restrictDown);
+	physics()->restrictMovement(Physics::Right, restrictRight);
+	physics()->restrictMovement(Physics::Left, restrictLeft);
 }
 
 
@@ -233,7 +296,7 @@ bool PlayerManager::doesCollideLeft(const Map* map, const VectorF point, float d
 
 		if (leftTile && leftTile->hasCollisionType(MapTile::Right ^ MapTile::Wall))
 		{
-			float xFuturePosition = point.x - player->physics().maxMovementDistance(dt);
+			float xFuturePosition = point.x - physics()->maxMovementDistance(dt);
 			willCollide = xFuturePosition < leftTile->rect().RightPoint();
 		}
 	}
@@ -257,7 +320,7 @@ bool PlayerManager::doesCollideRight(const Map* map, const VectorF point, float 
 
 		if (rightTile && rightTile->hasCollisionType(MapTile::Left ^ MapTile::Wall))
 		{
-			float xFuturePosition = point.x + player->physics().maxMovementDistance(dt);
+			float xFuturePosition = point.x + physics()->maxMovementDistance(dt);
 			willCollide = xFuturePosition > rightTile->rect().LeftPoint();
 		}
 	}
@@ -281,7 +344,7 @@ bool PlayerManager::doesCollideTop(const Map* map, const VectorF point, float dt
 
 		if (upTile && upTile->hasCollisionType(MapTile::Bot))
 		{
-			float yFuturePosition = point.y - (player->physics().maxMovementDistance(dt));
+			float yFuturePosition = point.y - physics()->maxMovementDistance(dt);
 			willCollide = yFuturePosition < upTile->rect().BotPoint();
 		}
 	}
@@ -305,7 +368,7 @@ bool PlayerManager::doesCollideBot(const Map* map, const VectorF point, float dt
 
 		if (downTile && downTile->hasCollisionType(MapTile::Top))
 		{
-			float yFuturePosition = point.y + (player->physics().maxMovementDistance(dt));
+			float yFuturePosition = point.y + (physics()->maxMovementDistance(dt));
 			willCollide = yFuturePosition > downTile->rect().TopPoint();
 		}
 	}

@@ -50,7 +50,9 @@ private:
 	Tileset mSpriteSheet;
 	Animations mAnimations;
 
-	Animation mActiveAnimation;
+	//Animation mActiveAnimation;
+	std::string mActiveAnimation;
+
 
 	float speedFactor;
 

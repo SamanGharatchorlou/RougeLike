@@ -3,44 +3,44 @@
 #include "Events/Dispatcher.h"
 #include "Events/Observer.h"
 
+#include "Objects/Actor.h"
+#include "States/StateMachine.h"
+
 #include "Weapons/WeaponStash.h"
-#include "Collisions/CollisionTracker.h"
 #include "Objects/Attributes/StatManager.h"
 
 #include "Objects/Effects/EffectHandler.h"
 
 struct GameData;
-class Player;
 class Map;
+class Weapon;
+class PlayerPropertyBag;
 
 
-// TEMP
-class Effect;
-
-class PlayerManager : public Dispatcher, public Observer
+class PlayerManager : public Dispatcher, public Observer, public Actor
 {
 public:
 	PlayerManager(GameData* gameData);
 	~PlayerManager();
 
-	void reset();
-
+	void init(const std::string& characterConfig);
 	void handleInput();
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
 	void render();
 
+	void reset();
+
+	void initCollisions();
+
 	void loadWeaponStash();
+	Weapon*		weapon() { return mWeapon; }
 
 	void selectCharacter(const std::string& character);
 	void selectWeapon(const std::string& weaponName);
 
-	Player* get() { return player; }
-	RectF* rect();
-	VectorF position() const;
-
-	void initCollisions();
 	void handleEvent(const Event event, EventData& data) override;
+
 
 private:
 	void processHit();
@@ -53,11 +53,11 @@ private:
 
 	void updateUIStats();
 
+	RectF renderRect() const;
 
 private:
-	GameData* mGameData;
 
-	Player* player;
+	StateMachine<State> mStateMachine;
 
 	StatManager statManager;
 	WeaponStash weaponStash;
@@ -65,4 +65,8 @@ private:
 	Vector2D<int> tileIndex;
 
 	EffectHandler mEffectHandler;
+
+	Weapon* mWeapon;
+
+	bool mMoving;
 };

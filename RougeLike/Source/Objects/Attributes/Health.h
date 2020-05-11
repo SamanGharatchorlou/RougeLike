@@ -12,7 +12,7 @@ public:
 	Health(int maxHealth) : maxHp(maxHealth), hp(maxHealth) { }
 
 	void set(int health) { hp = health; }
-	float value() const override { return (float)hp; }
+	const float value() const override { return (float)hp; }
 	float getPercentage() const { return (float)hp / (float)maxHp; }
 
 	void increase(int health) { hp = clamp(hp + health, 0, maxHp); }

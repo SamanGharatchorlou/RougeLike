@@ -13,7 +13,7 @@ EnemyRun::EnemyRun(Enemy* enemy) :
 
 void EnemyRun::init()
 {
-	mEnemy->getAnimator()->selectAnimation("Run");
+	mEnemy->animator().selectAnimation("Run");
 	updatePath();
 }
 
@@ -67,7 +67,7 @@ void EnemyRun::render()
 
 void EnemyRun::resume()
 {
-	mEnemy->getAnimator()->selectAnimation("Run");
+	mEnemy->animator().selectAnimation("Run");
 	
 	if(!inAttackRange())
 		updatePath();
@@ -96,12 +96,12 @@ bool EnemyRun::inAttackRange() const
 	VectorF position = mEnemy->rect().Center();
 	VectorF nearestTargetSide = closestRectSide(position, *mEnemy->attackTargetRect());
 
-	return distanceSquared(position, nearestTargetSide) < (mEnemy->propertyBag().value("TackleDistance") * 0.8f);
+	return distanceSquared(position, nearestTargetSide) < (mEnemy->getPropertyValue("TackleDistance") * 0.8f);
 }
 
 
 // --- Private Functions ---
 bool EnemyRun::inChaseRange() const
 {
-	return distanceSquared(mEnemy->attackTargetRect()->Center(), mEnemy->position()) < mEnemy->propertyBag().value("ChaseRange");
+	return distanceSquared(mEnemy->attackTargetRect()->Center(), mEnemy->position()) < mEnemy->getPropertyValue("ChaseRange");
 }

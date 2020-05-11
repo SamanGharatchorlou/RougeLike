@@ -1,14 +1,15 @@
 #pragma once
 
+#include "Property.h"
 
-class Damage
+class Damage : public Property
 {
 public:
 	Damage() : attackDamage(0) { }
-	Damage(int dmg) : attackDamage(dmg) { }
+	Damage(float dmg) : attackDamage(dmg) { }
 
-	void set(int damage) { attackDamage = damage; }
-	const int value() const { return attackDamage; }
+	void set(float damage) { attackDamage = damage; }
+	const float value() const { return attackDamage; }
 
 	inline Damage operator + (Damage damage) const
 	{
@@ -23,5 +24,5 @@ public:
 
 	// TODO: add effect damage e.g. fire, ice etc
 private:
-	int attackDamage;
+	float attackDamage;
 };

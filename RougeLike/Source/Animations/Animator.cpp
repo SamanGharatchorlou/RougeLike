@@ -10,11 +10,13 @@ void Animator::init(Tileset spriteSheet, Animations animations)
 
 void Animator::slowUpdate(float dt)
 {
-	if (timer.getSeconds() >= mActiveAnimation.speed / speedFactor)
+	Animation& animation = mAnimations[mActiveAnimation];
+
+	if (timer.getSeconds() >= animation.speed / speedFactor)
 	{
-		if (++animationIndex >= mActiveAnimation.startingIndex + mActiveAnimation.count)
+		if (++animationIndex >= animation.startingIndex + animation.count)
 		{
-			animationIndex = mActiveAnimation.startingIndex;
+			animationIndex = animation.startingIndex;
 		}
 
 		timer.restart();
@@ -24,9 +26,13 @@ void Animator::slowUpdate(float dt)
 
 void Animator::selectAnimation(const std::string& name)
 {
-	timer.restart();
-	mActiveAnimation = mAnimations[name];
-	animationIndex = mActiveAnimation.startingIndex;
+	if (mActiveAnimation != name)
+	{
+		printf("chaning\n");
+		timer.restart();
+		mActiveAnimation = name;
+		animationIndex = mAnimations[mActiveAnimation].startingIndex;
+	}
 }
 
 

@@ -6,7 +6,7 @@
 void EnemyWait::init()
 {
 	timer.restart();	
-	mEnemy->getAnimator()->selectAnimation("Idle");
+	mEnemy->animator().selectAnimation("Idle");
 }
 
 

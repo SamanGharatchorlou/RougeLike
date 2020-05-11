@@ -1,10 +1,6 @@
 #pragma once
 
-#include "Events/Dispatcher.h"
-
 #include "States/StateMachine.h"
-#include "Animations/Animator.h"
-#include "Collisions/EnemyCollider.h"
 
 #include "Objects/Attributes/Physics.h"
 
@@ -12,18 +8,24 @@
 #include "EnemyStates/EnemyState.h"
 #include "EnemyEnums.h"
 
+#include "Objects/Actor.h"
+
+#include "Events/Dispatcher.h"
+
 
 struct GameData;
 class AIPathMap;
+class DamageCollider;
 
-class Enemy
+
+class Enemy : public Actor
 {
 public:
 	Enemy(GameData* gameData);
 	~Enemy() { }
 
 	// Core
-	virtual void init();
+	virtual void init(const std::string& characterConfig);
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
 	void render();
@@ -41,8 +43,7 @@ public:
 
 	// Data
 	const GameData* getData() { return mGameData; }
-	EnemyPropertyBag& propertyBag() { return mBag; }
-	float getProperty(const std::string& property) const;
+
 	virtual const EnemyType type() const = 0;
 
 	// Events
@@ -58,10 +59,9 @@ public:
 	 
 	// Systems
 	StateMachine<EnemyState>*	getStateMachine() { return &mStateMachine; }
-	Animator*					getAnimator() { return &mAnimator; }
-	DamageCollider*				collider() { return &mCollider; }
-	Physics&					physics() { return mPhysics; }
 	AIPathMap*					getMap() { return mMap; }
+
+	DamageCollider*				damageCollider() const;
 
 	// Dynamics
 	void resolvePlayerWeaponCollisions();
@@ -89,15 +89,9 @@ protected:
 
 
 protected:
-	GameData* mGameData;
 	AIPathMap* mMap;
 	
 	StateMachine<EnemyState> mStateMachine;
-	DamageCollider mCollider;
-	Animator mAnimator;
-	Physics mPhysics;
-
-	EnemyPropertyBag mBag;
 
 	const RectF* mAttackTarget;
 	const RectF* mPositionTarget;

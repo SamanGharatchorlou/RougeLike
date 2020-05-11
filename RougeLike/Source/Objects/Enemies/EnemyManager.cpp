@@ -128,7 +128,7 @@ void EnemyManager::addEnemiesToPool(EnemyType type, unsigned int count)
 		case EnemyType::Imp:
 		{
 			Imp* imp = new Imp(mGameData);
-			imp->init();
+			imp->init("Imp.xml"); // TODO: better way to feed this in?
 
 			enemyObject.first = imp;
 			enemyObject.second = ObjectStatus::Available;

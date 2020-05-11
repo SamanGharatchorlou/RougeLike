@@ -107,13 +107,13 @@ void GameState::slowUpdate(float dt)
 	Camera::Get()->slowUpdate(dt);
 
 	// End current level, close old level exit, open new level entrance
-	if (mGameData->environment->generateNextLevel(mGameData->playerManager->rect()->TopLeft()))
+	if (mGameData->environment->generateNextLevel(mGameData->playerManager->rect().TopLeft()))
 	{
 		nextLevel();
 	}
 
 	// Close off new level entrance, open exit
-	if (mGameData->environment->closeEntrance(mGameData->playerManager->rect()->TopLeft()))
+	if (mGameData->environment->closeEntrance(mGameData->playerManager->rect().TopLeft()))
 	{
 		mGameData->environment->closeLevelEntrace();
 		Camera::Get()->setMapBoundaries(mGameData->environment->boundaries());
@@ -181,16 +181,16 @@ void GameState::initPlayer()
 	mGameData->playerManager->initCollisions();
 
 	VectorF playerPosition = VectorF(Camera::Get()->getCenter().x, mGameData->environment->size().y / 2.0f);
-	mGameData->playerManager->rect()->SetLeftCenter(playerPosition);
+	mGameData->playerManager->rectRef().SetLeftCenter(playerPosition);
 
 	// Camera
-	Camera::Get()->follow(mGameData->playerManager->rect());
+	Camera::Get()->follow(&mGameData->playerManager->rectRef());
 }
 
 void GameState::initEnemies()
 {
 	EnemyManager* enemies = mGameData->enemies;
-	enemies->setTarget(mGameData->playerManager->rect());
+	enemies->setTarget(&mGameData->playerManager->rectRef());
 	enemies->spawnLevel();
 
 	// init AI pathing

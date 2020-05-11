@@ -16,7 +16,7 @@ EnemyPatrol::EnemyPatrol(Enemy* enemy) : EnemyState(enemy) { }
 
 void EnemyPatrol::init()
 {
-	mEnemy->getAnimator()->selectAnimation("Run");
+	mEnemy->animator().selectAnimation("Run");
 	setPatrolPoint();
 }
 
@@ -46,7 +46,7 @@ void EnemyPatrol::render()
 
 void EnemyPatrol::resume()
 {
-	mEnemy->getAnimator()->selectAnimation("Run");
+	mEnemy->animator().selectAnimation("Run");
 	setPatrolPoint();
 }
 
@@ -83,7 +83,7 @@ bool EnemyPatrol::canSeeAttackTarget() const
 	VectorF position = mEnemy->position();
 	VectorF attackTargetPosition = mEnemy->attackTargetRect()->Center();
 
-	bool isNearby = distanceSquared(attackTargetPosition, position) < mEnemy->propertyBag().value("SightRange");
+	bool isNearby = distanceSquared(attackTargetPosition, position) < mEnemy->getPropertyValue("SightRange");
 	bool hasLineOfSight = false;
 
 	if (!isNearby)

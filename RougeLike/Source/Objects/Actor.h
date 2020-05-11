@@ -6,6 +6,7 @@
 
 struct GameData;
 class PropertyBag;
+class Property;
 
 class Actor
 {
@@ -17,16 +18,23 @@ public:
 	void fastUpdate(float dt);
 	void render();
 
+	// PropertyBag
 	void setPropertyBag(PropertyBag* bag) { mPropertyBag = bag; }
 	PropertyBag* propertyBag() const { return mPropertyBag; }
+	Property* getProperty(const std::string& property) const;
 	float getPropertyValue(const std::string& property) const;
 
-	Animator&	animator() { return mAnimator; }
-	Collider&	collider() { return mCollider; }
-	Physics&	physics() { return mPhysics; }
+	// Collider
+	void setCollider(Collider* collider) { mCollider = collider; }
+	Collider*	collider() { return mCollider; }
 
+	Animator&	animator() { return mAnimator; }
+	Physics*	physics()	 { return &mPhysics; }
+	const Physics* physics() const { return &mPhysics; }
+
+	VectorF		position() const { return mPhysics.rect().Center(); }
 	RectF&		rectRef() { return mPhysics.rectRef(); }
-	RectF		rect() const { return mPhysics.rect(); }
+	RectF		rect() const { return mPhysics.rect(); } 
 
 	virtual RectF		renderRect() const = 0;
 
@@ -39,7 +47,8 @@ protected:
 
 	PropertyBag* mPropertyBag;
 
+	Collider* mCollider;
+
 	Animator mAnimator;
-	Collider mCollider;
 	Physics mPhysics;
 };

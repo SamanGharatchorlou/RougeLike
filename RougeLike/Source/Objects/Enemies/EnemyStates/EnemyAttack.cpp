@@ -28,13 +28,13 @@ void EnemyAttack::fastUpdate(float dt)
 	if (mHasAttacked)
 	{
 		VectorF direction = startingPosition - mEnemy->position();
-		VectorF velocity = direction.normalise() * mEnemy->propertyBag().value("TackleSpeed") / 1.5f;
+		VectorF velocity = direction.normalise() * mEnemy->getPropertyValue("TackleSpeed") / 1.5f;
 		mEnemy->move(velocity, dt);
 	}
 	else
 	{
 		VectorF direction = attackTargetPosition - mEnemy->position();
-		VectorF velocity = direction.normalise() * mEnemy->propertyBag().value("TackleSpeed");
+		VectorF velocity = direction.normalise() * mEnemy->getPropertyValue("TackleSpeed");
 		mEnemy->move(velocity, dt);
 	}
 	
@@ -76,7 +76,7 @@ void EnemyAttack::updateHasAttackedStatus()
 		// Maximum attack distance
 		float distanceTravelled = distanceSquared(startingPosition, mEnemy->position());
 
-		if (distanceTravelled >= mEnemy->propertyBag().value("TackleDistance"));
+		if (distanceTravelled >= mEnemy->getPropertyValue("TackleDistance"));
 			mHasAttacked = true;
 
 		if (hitCounter >= 5)

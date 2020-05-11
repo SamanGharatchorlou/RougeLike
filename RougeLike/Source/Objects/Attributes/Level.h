@@ -10,7 +10,7 @@ public:
 	void gainExp(int exp);
 
 	int getCurrentExp() const { return currentExp; }
-	float value() const override { return (float)level; }
+	const float value() const override { return (float)level; }
 
 	int nextLevelExp();
 

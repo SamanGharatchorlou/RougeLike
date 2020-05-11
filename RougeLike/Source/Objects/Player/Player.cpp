@@ -21,11 +21,7 @@ Player::Player(GameData* gameData) :
 	Actor(gameData),
 	mStateMachine(new NullState),
 	mWeapon(nullptr)
-{
-#if _DEBUG
-	mCollider.setName("player");
-#endif
-}
+{ }
 
 
 Player::~Player()
@@ -44,25 +40,27 @@ void Player::init(const std::string& characterConfig)
 {
 	Actor::init(characterConfig);
 
+	// Property bag
 	PlayerPropertyBag* propertyBag = new PlayerPropertyBag;
 	propertyBag->readProperties(characterConfig);
 	setPropertyBag(propertyBag);
 
-	// Setup stats
-	//propertyBag()->readAttributes(characterConfig);
-
-	// init physics
+	// Physics
 	Physics::Data physicsData;
 	physicsData.force = getPropertyValue("Force");
 	physicsData.maxVelocity = getPropertyValue("MaxVelocity");
 	mPhysics.init(physicsData);
-
-	// rect tweak
 	VectorF size = mAnimator.getSpriteTile()->getRect().Size() * 1.2f;
 	mPhysics.setRect(RectF(VectorF(), size));
 
+	// Collider
+	Collider* collider = new Collider;
 	VectorF colliderScale = VectorF(1.0f, 0.25f); // only with walls
-	mCollider.init(&mPhysics.rectRef(), colliderScale);
+	collider->init(&mPhysics.rectRef(), colliderScale);
+	setCollider(collider);
+#if _DEBUG
+	mCollider->setName("player");
+#endif
 }
 
 
@@ -87,14 +85,7 @@ void Player::fastUpdate(float dt)
 {
 	Actor::fastUpdate(dt);
 
-	//mPhysics.fastUpdate(dt);
-	//mAnimator.fastUpdate(dt);
 	mWeapon->fastUpdate(dt);
-	
-	//if (mPhysics.isMoving())
-	//	mAnimator.setSpeedFactor(mPhysics.relativeSpeed());
-	//else
-	//	mAnimator.setSpeedFactor(1.0f);
 
 	// Weapon
 	mWeapon->updateAnchor(rect().TopLeft());
@@ -106,8 +97,7 @@ void Player::slowUpdate(float dt)
 {
 	Actor::slowUpdate(dt);
 
-	mWeapon->slowUpdate(dt);/*
-	mAnimator.slowUpdate(dt);*/
+	mWeapon->slowUpdate(dt);
 
 	if (mWeapon->didHit())
 	{

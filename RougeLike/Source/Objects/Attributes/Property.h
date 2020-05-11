@@ -6,7 +6,7 @@ public:
 	Property() { }
 	virtual ~Property() { };
 	
-	virtual float value() const = 0;
+	virtual const float value() const = 0;
 };
 
 
@@ -17,7 +17,7 @@ public:
 	PropertyValue(float value) : mValue(value) { }
 
 	void setValue(float value) { mValue = value; }
-	float value() const { return mValue; }
+	const float value() const { return mValue; }
 
 private:
 	float mValue;

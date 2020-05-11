@@ -51,7 +51,7 @@ void MeleeWeapon::equipt(const WeaponData* data)
 
 	for (unsigned int i = 0; i < mBlockColliders.size(); i++)
 	{
-		mBlockColliders[i]->set(mData->damage, mData->knockbackDistance);
+		mBlockColliders[i]->initDamage(mData->damage, mData->knockbackDistance);
 	}
 
 	mSwingSpeed = mData->swingSpeed;
