@@ -16,7 +16,7 @@ public:
 	void init() override;
 	void slowUpdate(float dt) override;
 	void fastUpdate(float dt) override { };
-	void handleInput() override;
+	void handleInput() override { };
 	void render() override;
 	void exit() override { };
 
@@ -24,11 +24,10 @@ public:
 
 private:
 	void initCollisions();
-	void selectCharacter();
 
 private:
 	GameController* mGameController;
 	GameData* mGameData;
 
-	CharacterSelectionScreen* selectionScreen;
+	CharacterSelectionScreen* mSelectionScreen;
 };

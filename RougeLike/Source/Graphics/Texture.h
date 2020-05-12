@@ -42,10 +42,6 @@ public:
 
 
 private:
-	void free() const;
-
-
-private:
 	SDL_Renderer* renderer;
 	SDL_Texture* texture;
 };

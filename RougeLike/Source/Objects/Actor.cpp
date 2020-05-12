@@ -1,16 +1,36 @@
 #include "pch.h"
 #include "Actor.h"
 
+#include "Game/GameData.h"
+#include "Collisions/Collider.h"
+#include "Graphics/TextureManager.h"
+
 #include "Game/Camera.h"
 #include "System/Files/AnimationReader.h"
 
 #include "Properties/PropertyBag.h"
 
 
+Actor::Actor(GameData* gameData) : mGameData(gameData), mEffects(this)
+{
+	
+}
+
+
+Actor::~Actor()
+{
+	delete mPropertyBag;
+	delete mCollider;
+}
+
+
 void Actor::init(const std::string& characterConfig)
 {
 	// Setup animations
 	initAnimations(characterConfig);
+
+	ASSERT(Warning, mPropertyBag != nullptr, "The property bag has not been set yet\n");
+	mPhysics.init(getPropertyValue("Force"), getPropertyValue("MaxVelocity"));
 }
 
 
@@ -18,18 +38,14 @@ void Actor::fastUpdate(float dt)
 {
 	// enemy needs reset here
 	mPhysics.fastUpdate(dt);
-	mAnimator.fastUpdate(dt);
-
-	if (mPhysics.isMoving())
-		mAnimator.setSpeedFactor(mPhysics.relativeSpeed());
-	else
-		mAnimator.setSpeedFactor(1.0f);
+	mEffects.fastUpdate(dt);
 }
 
 
 void Actor::slowUpdate(float dt)
 {
 	mAnimator.slowUpdate(dt);
+	mEffects.slowUpdate(dt);
 }
 
 
@@ -39,6 +55,14 @@ void Actor::render()
 	rect = Camera::Get()->toCameraCoords(rect);
 
 	mAnimator.getSpriteTile()->render(rect, mPhysics.flip());
+}
+
+void Actor::reset()
+{
+	mPhysics.reset();
+	mAnimator.clear();
+	mEffects.clear();
+	mPropertyBag->resetProperties();
 }
 
 

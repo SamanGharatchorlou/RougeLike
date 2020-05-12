@@ -66,5 +66,3 @@ float getRotation(VectorF direction);
 VectorF rotateVector(VectorF vec, float dTheta);
 
 VectorF closestRectSide(VectorF point, RectF rect);
-
-double perlinNoise(float dt);

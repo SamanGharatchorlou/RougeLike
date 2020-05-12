@@ -3,7 +3,7 @@
 #include "Collisions/Collider.h"
 
 class Texture;
-class PlayerManager;
+class Player;
 
 class Collectable
 {
@@ -14,7 +14,7 @@ public:
 	void init(const std::string& value, Texture* texture, RectF rect);
 	void render(RectF rect) const;
 	
-	virtual void activate(PlayerManager* playerManager) = 0;
+	virtual void activate(Player* Player) = 0;
 
 	RectF rect() const { return mRect; }
 
@@ -43,12 +43,12 @@ class WeaponCollectable : public Collectable
 {
 public:
 	WeaponCollectable(const std::string& value, Texture* texture);
-	void activate(PlayerManager* playerManager) override;
+	void activate(Player* Player) override;
 
 };
 
 class HealthCollectable : public Collectable
 {
 public:
-	void activate(PlayerManager* playerManager) override;
+	void activate(Player* Player) override;
 };

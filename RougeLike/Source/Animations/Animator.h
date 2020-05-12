@@ -33,14 +33,17 @@ public:
 	void slowUpdate(float dt);
 	void fastUpdate(float dt) { }
 
+	void clear();
+
 	void start() { timer.start(); }
-	void reset();
 	void pause() { timer.pause(); }
 	void stop() { timer.stop(); }
 
 	void selectAnimation(const std::string& name);
 
-	void setSpeedFactor(float speed) { speedFactor = speed; }
+	void setSpeedFactor(float speed) {
+		printf("speed factor being set to %f\n", speed);
+		speedFactor = speed; }
 
 	Tile* getSpriteTile();
 
@@ -50,9 +53,7 @@ private:
 	Tileset mSpriteSheet;
 	Animations mAnimations;
 
-	//Animation mActiveAnimation;
 	std::string mActiveAnimation;
-
 
 	float speedFactor;
 

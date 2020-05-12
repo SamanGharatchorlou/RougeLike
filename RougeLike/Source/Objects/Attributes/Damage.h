@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Property.h"
+#include "Objects/Properties/Property.h"
 
 class Damage : public Property
 {
@@ -8,7 +8,7 @@ public:
 	Damage() : attackDamage(0) { }
 	Damage(float dmg) : attackDamage(dmg) { }
 
-	void set(float damage) { attackDamage = damage; }
+	void setValue(float damage) { attackDamage = damage; }
 	const float value() const { return attackDamage; }
 
 	inline Damage operator + (Damage damage) const

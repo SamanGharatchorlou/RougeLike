@@ -152,14 +152,14 @@ void Map::renderBottomLayer(const TextureManager* tm, float yPoint)
 	tileRenderCounter = 0;
 #endif
 
-	Texture* floor = tm->getTexture("floor");
-	Texture* wall = tm->getTexture("wall");
+	Texture* floor = tm->getTexture("floor", FileManager::Image_Maps);
+	Texture* wall = tm->getTexture("wall", FileManager::Image_Maps);
 
-	Texture* leftEdge = tm->getTexture("wall_left_edge");
-	Texture* rightEdge = tm->getTexture("wall_right_edge");
-	Texture* botEdge = tm->getTexture("wall_bot_edge");
+	Texture* leftEdge = tm->getTexture("wall_left_edge", FileManager::Image_Maps);
+	Texture* rightEdge = tm->getTexture("wall_right_edge", FileManager::Image_Maps);
+	Texture* botEdge = tm->getTexture("wall_bot_edge", FileManager::Image_Maps);
 
-	Texture* column = tm->getTexture("columnsmall");
+	Texture* column = tm->getTexture("columnsmall", FileManager::Image_Maps);
 
 	Camera* camera = Camera::Get();
 
@@ -213,14 +213,14 @@ void Map::renderBottomLayer(const TextureManager* tm, float yPoint)
 
 void Map::renderTopLayer(const TextureManager* tm, float yPoint)
 {
-	Texture* floor = tm->getTexture("floor");
-	Texture* wall = tm->getTexture("wall");
+	Texture* floor = tm->getTexture("floor", FileManager::Image_Maps);
+	Texture* wall = tm->getTexture("wall", FileManager::Image_Maps);
 
-	Texture* leftEdge = tm->getTexture("wall_left_edge");
-	Texture* rightEdge = tm->getTexture("wall_right_edge");
-	Texture* botEdge = tm->getTexture("wall_bot_edge");
+	Texture* leftEdge = tm->getTexture("wall_left_edge", FileManager::Image_Maps);
+	Texture* rightEdge = tm->getTexture("wall_right_edge", FileManager::Image_Maps);
+	Texture* botEdge = tm->getTexture("wall_bot_edge", FileManager::Image_Maps);
 
-	Texture* column = tm->getTexture("columnsmall");
+	Texture* column = tm->getTexture("columnsmall", FileManager::Image_Maps);
 
 	Camera* camera = Camera::Get();
 
@@ -301,7 +301,7 @@ const MapTile* Map::offsetTile(const MapTile* target, int xOffset, int yOffset) 
 }
 
 
-Index Map::findYFloorTileRange(int xTileIndex)
+Index Map::findYFloorTileRange(int xTileIndex) const
 {
 	unsigned int yTileIndex = 0;
 	Vector2D<unsigned int> yTileRange;

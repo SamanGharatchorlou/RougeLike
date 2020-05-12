@@ -60,7 +60,12 @@ void EnemySpawner::spawnShape(Map* map, int xPoint, Shape shape, EnemyType type)
 
 		// Just in case no spawn point can be found, prevent infinite loop
 		if (sanityCounter > 50)
+		{
 			DebugPrint(Log, "No valid spawn shape (point count: %d) could be spawned at xPoint %d, No enemies were spawned\n", points.size(), xPoint);
+			spawnShape(map, xPoint + 1, shape, type);
+			return;
+		}
+			
 	}
 
 	for (int i = 0; i < points.size(); i++)

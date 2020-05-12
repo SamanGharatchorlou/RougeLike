@@ -9,17 +9,14 @@ void EnemyIdle::init()
 	timer.restart();
 	mEnemy->animator().selectAnimation("Idle");
 
-	mEnemy->setFlip(static_cast<SDL_RendererFlip>(randomNumberBetween(0, 2)));
-}
-
-void EnemyIdle::fastUpdate(float dt)
-{
-	mEnemy->resolvePlayerWeaponCollisions();
+	mEnemy->physics()->setFlip(static_cast<SDL_RendererFlip>(randomNumberBetween(0, 2)));
 }
 
 
 void EnemyIdle::slowUpdate(float dt)
 {
+	mEnemy->resolvePlayerWeaponCollisions();
+
 	if (canSeeAttackTarget())
 		mEnemy->replaceState(EnemyState::Alert);
 }

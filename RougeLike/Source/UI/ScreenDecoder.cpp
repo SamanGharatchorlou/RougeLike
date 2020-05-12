@@ -248,7 +248,15 @@ void ScreenDecoder::fillBoxData(UIBox::Data& data, Attributes& attributes) const
 	if (attributes.contains("texture"))
 	{
 		std::string textureLabel = attributes.getString("texture");
-		data.texture = tm->getTexture(textureLabel);
+		Texture* texture = tm->getTexture(textureLabel, FileManager::Image_UI);
+
+		// TODO: hacked in there, find a way to allow multiple folders to be searched
+		if (!texture)
+		{
+			texture = tm->getTexture(textureLabel, FileManager::Image_Weapons);
+		}
+
+		data.texture = texture;
 	}
 	else
 		data.texture = nullptr;
@@ -290,7 +298,7 @@ void ScreenDecoder::fillButtonData(UIButton::Data& data, Attributes& attributes)
 	if (attributes.contains("textureSelected"))
 	{
 		std::string textureLabel = attributes.getString("textureSelected");
-		data.highlightedTexture = tm->getTexture(textureLabel);
+		data.highlightedTexture = tm->getTexture(textureLabel, FileManager::Image_UI);
 	}
 	else
 	{

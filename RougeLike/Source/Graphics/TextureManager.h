@@ -2,6 +2,9 @@
 
 class Texture;
 
+using TextureMap = std::unordered_map<std::string, Texture*>;
+using FolderMap = std::pair<FileManager::Folder, TextureMap>;
+
 class TextureManager
 {
 
@@ -11,11 +14,17 @@ public:
 
 	void init();
 
-	int loadAllTextures(FileManager::Folder folder);
-	bool loadTexture(const std::string& label , const std::string& fileName);
-
-	Texture* getTexture(const std::string& label) const;
+	Texture* getTexture(const std::string& label, const FileManager::Folder) const;
+	const std::string& getTextureName(const Texture* texture) const;
 
 private:
-	std::unordered_map<std::string, Texture*> textures;
+	bool loadTexture(FolderMap& folderMap, const std::string& fileName);
+	int loadAllTexturesIn(FileManager::Folder folder);
+
+	const TextureMap& findTextureMap(const FileManager::Folder folder) const;
+
+
+private:
+
+	std::vector<FolderMap> mTextures;
 };

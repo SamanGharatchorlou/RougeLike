@@ -13,8 +13,8 @@ public:
 
 	void init() override;
 	void handleInput() override { }
+	void fastUpdate(float dt) override { };
 	void slowUpdate(float) override;
-	void fastUpdate(float dt) override;
 	void render() override;
 	void exit() override { }
 

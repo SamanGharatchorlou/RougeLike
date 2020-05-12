@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Objects/Attributes/Property.h"
+#include "Objects/Properties/Property.h"
+
 
 class Level : public Property
 {
@@ -11,6 +12,7 @@ public:
 
 	int getCurrentExp() const { return currentExp; }
 	const float value() const override { return (float)level; }
+	void setValue(float value) override { level = value; }
 
 	int nextLevelExp();
 

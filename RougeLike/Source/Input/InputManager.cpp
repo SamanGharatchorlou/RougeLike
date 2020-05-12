@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "InputManager.h"
 
-#include "Game/Cursor.h"
-
 void InputManager::init()
 {
 	bindDefaultButtons();

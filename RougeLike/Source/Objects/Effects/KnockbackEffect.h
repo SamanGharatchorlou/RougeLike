@@ -1,26 +1,26 @@
 #pragma once
 
 #include "Effect.h"
-#include "Objects/Attributes/Physics.h"
 
+class DamageCollider;
 
 class KnockbackEffect : public Effect 
 {
 public:
-	KnockbackEffect(Physics* physics, VectorF source, float force);
+	KnockbackEffect(const DamageCollider* sourceCollider);
+	KnockbackEffect(VectorF source, float force);
 	~KnockbackEffect() { }
 
 	void init() override;
 	void fastUpdate(float dt) override;
 	void slowUpdate(float dt) override;
-	void render() override;
-	void exit() override;
+	void render() override { };
+	void exit() override { };
 
 private:
-	bool canMove(VectorF velocity, float dt);
+	bool canMove(VectorF velocity, float dt) const;
 
 private:
-	Physics* mPhysics;
 	VectorF mSource;
 	float mForce;
 

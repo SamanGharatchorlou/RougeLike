@@ -3,7 +3,6 @@
 #include "Enemy.h"
 
 struct GameData;
-class AIPathMap;
 
 class Imp : public Enemy
 {

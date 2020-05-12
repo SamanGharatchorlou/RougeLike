@@ -1,8 +1,6 @@
 #pragma once
 
 
-class XMLParser;
-
 using ValueMap = std::unordered_map<std::string, float>;
 
 // --- Reads the character stats from a config file ---

@@ -41,7 +41,7 @@ void WeaponStash::load(TextureManager* tm)
 
 			// Texture
 			std::string fileName = FileManager::Get()->fileName(filePath);
-			weaponData->texture = tm->getTexture(fileName);
+			weaponData->texture = tm->getTexture(fileName, FileManager::Image_Weapons);
 
 			fillBasicWeaponData(parser, weaponData);
 			fillMeleeWeaponData(parser, weaponData);
@@ -56,7 +56,7 @@ void WeaponStash::load(TextureManager* tm)
 
 			// Texture
 			std::string fileName = FileManager::Get()->fileName(filePath);
-			weaponData->texture = tm->getTexture(fileName);
+			weaponData->texture = tm->getTexture(fileName, FileManager::Image_Weapons);
 
 			fillBasicWeaponData(parser, weaponData);
 			fillRangedWeaponData(parser, weaponData, tm);
@@ -110,7 +110,7 @@ void WeaponStash::fillRangedWeaponData(XMLParser& parser, RangedWeaponData* data
 
 	// Projectile texture
 	std::string projectileTexture = parser.firstRootNodeValue("ProjectileTexture");
-	data->projectileTexture = tm->getTexture(projectileTexture);
+	data->projectileTexture = tm->getTexture(projectileTexture, FileManager::Image_Weapons);
 
 	// Projectile size
 	float width = std::stof(parser.firstRootNodeValue("ProjectileWidth"));

@@ -3,7 +3,6 @@
 
 #include "Graphics/Texture.h"
 
-#include "Objects/Player/PlayerManager.h"
 #include "Objects/Player/Player.h"
 
 
@@ -35,16 +34,16 @@ WeaponCollectable::WeaponCollectable(const std::string& weaponName, Texture* tex
 }
 
 
-void WeaponCollectable::activate(PlayerManager* playerManager)
+void WeaponCollectable::activate(Player* Player)
 {
-	playerManager->selectWeapon(mValue);
+	Player->selectWeapon(mValue);
 }
 
 
 
 // --- Health Pickup --- //
-void HealthCollectable::activate(PlayerManager* playerManager)
+void HealthCollectable::activate(Player* Player)
 {
 	int health = std::stoi(mValue);
-//	playerManager->get()->propertyBag()->pHealth.get().increase(health);
+//	Player->get()->propertyBag()->pHealth.get().increase(health);
 }

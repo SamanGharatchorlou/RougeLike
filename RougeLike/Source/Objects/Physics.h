@@ -24,9 +24,9 @@ public:
 	};
 
 public:
-	Physics() : mForce(0), mMaxVelocity(0), mDragFactor(0) { };
+	Physics() : mForce(0), mMaxVelocity(0), mDragFactor(0), mMass(1.0f) { };
 
-	void init(Data data);	
+	void init(float force, float maxVelocity);
 	void handleInput(InputManager* input);
 	void fastUpdate(float dt);
 	

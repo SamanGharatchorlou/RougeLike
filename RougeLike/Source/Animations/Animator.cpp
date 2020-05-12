@@ -23,12 +23,19 @@ void Animator::slowUpdate(float dt)
 	}
 }
 
+void Animator::clear()
+{
+	mActiveAnimation = "";
+	animationIndex = 0;
+	speedFactor = 1.0f;
+	timer.stop();
+}
+
 
 void Animator::selectAnimation(const std::string& name)
 {
 	if (mActiveAnimation != name)
 	{
-		printf("chaning\n");
 		timer.restart();
 		mActiveAnimation = name;
 		animationIndex = mAnimations[mActiveAnimation].startingIndex;
@@ -47,10 +54,4 @@ Texture* Animator::getSpriteTexture()
 	return mSpriteSheet.getTile(animationIndex).getTexture();
 }
 
-
-void Animator::reset()
-{
-	animationIndex = 0;
-	timer.restart();
-}
 

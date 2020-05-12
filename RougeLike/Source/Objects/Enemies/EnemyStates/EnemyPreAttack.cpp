@@ -2,6 +2,7 @@
 #include "EnemyPreAttack.h"
 
 #include "Objects/Enemies/Enemy.h"
+#include "Collisions/Collider.h"
 
 EnemyPreAttack::EnemyPreAttack(Enemy* enemy) : EnemyState(enemy)
 {
@@ -15,19 +16,16 @@ void EnemyPreAttack::init()
 	timer.restart();
 }
 
-void EnemyPreAttack::fastUpdate(float dt)
-{
-	mEnemy->resolvePlayerWeaponCollisions();
-}
-
 
 void EnemyPreAttack::slowUpdate(float dt)
 {
+	mEnemy->resolvePlayerWeaponCollisions();
+
 	if (!inAttackRange())
 		mEnemy->popState();
 
 	// begin attack
-	if (timer.getSeconds() > mEnemy->getPropertyValue("TackleChargeTime"))
+	if (timer.getSeconds() > (1.0f / mEnemy->getPropertyValue("AttackSpeed")))
 		mEnemy->replaceState(EnemyState::Attack);
 }
 

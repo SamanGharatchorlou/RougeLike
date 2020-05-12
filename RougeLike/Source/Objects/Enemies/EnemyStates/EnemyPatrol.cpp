@@ -1,13 +1,9 @@
 #include "pch.h"
 #include "EnemyPatrol.h"
 
-#include "Game/GameData.h"
-
 #include "EnemyIdle.h"
-
 #include "Objects/Enemies/Enemy.h"
 
-#include "Map/Environment.h"
 #include "Map/Map.h"
 
 
@@ -23,13 +19,14 @@ void EnemyPatrol::init()
 
 void EnemyPatrol::fastUpdate(float dt)
 {
-	mEnemy->resolvePlayerWeaponCollisions();
 	mEnemy->accellerateTowards(mEnemy->positionTargetRect()->Center());
 }
 
 
 void EnemyPatrol::slowUpdate(float dt)
 {
+	mEnemy->resolvePlayerWeaponCollisions();
+
 	if (hasReachedPositionTarget())
 		mEnemy->addState(EnemyState::Wait);
 
@@ -55,8 +52,7 @@ void EnemyPatrol::resume()
 
 void EnemyPatrol::setPatrolPoint()
 {
-	// TODO: make this enemy get map
-	Map* map = mEnemy->getData()->environment->primaryMap();
+	const Map* map = mEnemy->getEnvironmentMap();
 
 	VectorF position = mEnemy->position();
 	Index tilePositionIndex = map->index(position);
@@ -78,8 +74,6 @@ void EnemyPatrol::setPatrolPoint()
 
 bool EnemyPatrol::canSeeAttackTarget() const
 {
-	Map* map = mEnemy->getData()->environment->primaryMap();
-
 	VectorF position = mEnemy->position();
 	VectorF attackTargetPosition = mEnemy->attackTargetRect()->Center();
 
@@ -98,6 +92,8 @@ bool EnemyPatrol::canSeeAttackTarget() const
 
 		if (isFacingTarget)
 		{
+			const Map* map = mEnemy->getEnvironmentMap();
+
 			int enemyXTile = map->index(position).x;
 			int playerXTile = map->index(attackTargetPosition).x;
 			hasLineOfSight = (enemyXTile == playerXTile) || (enemyXTile == playerXTile + 1) || (enemyXTile == playerXTile - 1);

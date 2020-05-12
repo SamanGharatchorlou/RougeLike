@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Objects/Attributes/Property.h"
+#include "Objects/Properties/Property.h"
 
 using Value = std::pair<float, bool>;
 using ValueMap = std::unordered_map<std::string, Value>;
@@ -10,6 +10,8 @@ using PropertyMap = std::unordered_map<std::string, Property*>;
 class PropertyBag
 {
 public:
+	virtual ~PropertyBag() { }
+
 	virtual void readProperties(const std::string& config) = 0;	
 	
 	void resetProperties();

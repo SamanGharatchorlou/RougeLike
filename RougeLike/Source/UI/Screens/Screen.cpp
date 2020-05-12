@@ -4,6 +4,7 @@
 #include "Game/GameData.h"
 #include "Input/InputManager.h"
 
+#include "UILayer.h"
 
 
 Screen::Screen(GameData* gameData) : mGameData(gameData) { }

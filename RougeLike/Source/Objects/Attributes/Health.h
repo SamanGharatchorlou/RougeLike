@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Damage.h"
-//#include "Objects/Attributes/Property.h"
-#include "Property.h"
+#include "Objects/Properties/Property.h"
 #include "Utilities/Helpers.h"
+
 
 class Health : public Property
 {
@@ -11,7 +11,7 @@ public:
 	Health() : hp(0), maxHp(0) { }
 	Health(int maxHealth) : maxHp(maxHealth), hp(maxHealth) { }
 
-	void set(int health) { hp = health; }
+	void setValue(float health) { hp = health; }
 	const float value() const override { return (float)hp; }
 	float getPercentage() const { return (float)hp / (float)maxHp; }
 

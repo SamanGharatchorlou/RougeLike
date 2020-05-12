@@ -1,8 +1,7 @@
 #pragma once
 
-#include "UILayer.h"
-
 struct GameData;
+class UILayer;
 
 typedef std::vector<Attributes> LayerAttributes;
 typedef std::vector<LayerAttributes> ScreenAttributes;

@@ -1,5 +1,8 @@
 #pragma once
+
 #include "Observer.h"
+
+class Observer;
 
 class Dispatcher
 {

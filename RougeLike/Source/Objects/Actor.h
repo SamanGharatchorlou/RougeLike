@@ -1,22 +1,32 @@
 #pragma once
 
-#include "Objects/Attributes/Physics.h"
+#include "Physics.h"
 #include "Animations/Animator.h"
-#include "Collisions/Collider.h"
+#include "Objects/Effects/EffectHandler.h"
+
+#include "Objects/Abilities/AbilityManager.h"
+
 
 struct GameData;
+class Collider;
 class PropertyBag;
 class Property;
+
 
 class Actor
 {
 public:
-	Actor(GameData* gameData) : mGameData(gameData) { }
+	Actor(GameData* gameData);
+	virtual ~Actor();
 
 	void init(const std::string& characterConfig);
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
 	void render();
+
+	const GameData* getGameData() const { return mGameData; }
+
+	void reset();
 
 	// PropertyBag
 	void setPropertyBag(PropertyBag* bag) { mPropertyBag = bag; }
@@ -38,6 +48,7 @@ public:
 
 	virtual RectF		renderRect() const = 0;
 
+
 protected:
 	void initAnimations(const std::string& config);
 
@@ -51,4 +62,10 @@ protected:
 
 	Animator mAnimator;
 	Physics mPhysics;
+
+	EffectHandler mEffects;
+
+
+	AbilityManager mAbilities;
+
 };

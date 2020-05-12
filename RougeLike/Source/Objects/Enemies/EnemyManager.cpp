@@ -5,7 +5,7 @@
 #include "Collisions/CollisionManager.h"
 #include "Map/Environment.h"
 #include "Game/Camera.h"
-#include "Objects/Player/PlayerManager.h"
+#include "Objects/Player/Player.h"
 
 #include "Objects/Enemies/Imp.h"
 
@@ -128,7 +128,7 @@ void EnemyManager::addEnemiesToPool(EnemyType type, unsigned int count)
 		case EnemyType::Imp:
 		{
 			Imp* imp = new Imp(mGameData);
-			imp->init("Imp.xml"); // TODO: better way to feed this in?
+			imp->init("Imp"); // TODO: better way to feed this in?
 
 			enemyObject.first = imp;
 			enemyObject.second = ObjectStatus::Available;
@@ -148,6 +148,9 @@ void EnemyManager::addEnemiesToPool(EnemyType type, unsigned int count)
 
 void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF position)
 {
+	if (spawnCount > 0)
+		return;
+
 	// Find available enemy to spawn
 	for (unsigned int i = 0; i < mEnemyPool.size(); i++)
 	{
@@ -169,6 +172,7 @@ void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF positio
 			mGameData->collisionManager->addDefenders(CollisionManager::PlayerWeapon_Hit_Enemy, defendingCollider);
 
 			mActiveEnemies.push_back(enemy);
+			spawnCount++;
 			return;
 		}
 	}
@@ -247,6 +251,7 @@ void EnemyManager::clearAllEnemies()
 	{
 		enemy->clear();
 		mGameData->collisionManager->removeDefender(CollisionManager::PlayerWeapon_Hit_Enemy, enemy->collider());
+		mGameData->collisionManager->removeAllAttackers(CollisionManager::Enemy_Hit_Player);
 	}
 
 	for (EnemyObject& enemy : mEnemyPool)

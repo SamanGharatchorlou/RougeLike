@@ -3,6 +3,8 @@
 // abstract class to be inherited by all game state objects
 struct State
 {
+	virtual ~State() { }
+
 	// pure virtual functions - require override
 	virtual void init() = 0;
 	virtual void handleInput() = 0;

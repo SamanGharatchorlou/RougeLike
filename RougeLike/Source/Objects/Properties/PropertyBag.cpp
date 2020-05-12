@@ -37,7 +37,7 @@ void PropertyBag::resetProperties()
 /// --- Private Functions --- ///
 ValueMap PropertyBag::readConfigValues(FileManager::Folder folder, const std::string& config)
 {
-	std::string configFilePath = FileManager::Get()->filePath(folder, config);
+	std::string configFilePath = FileManager::Get()->XMLFilePath(folder, config);
 
 	XMLParser parser;
 	parser.parseXML(configFilePath);

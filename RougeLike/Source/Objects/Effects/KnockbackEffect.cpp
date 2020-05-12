@@ -1,9 +1,21 @@
 #include "pch.h"
 #include "KnockbackEffect.h"
 
+#include "Objects/Actor.h"
+#include "Game/GameData.h"
+#include "Collisions/DamageCollider.h"
+#include "Map/Environment.h"
+#include "Map/Map.h"
 
-KnockbackEffect::KnockbackEffect(Physics* physics, VectorF source, float force) :
-	mPhysics(physics), mSource(source), mForce(force) { }
+
+KnockbackEffect::KnockbackEffect(const DamageCollider* sourceCollider)
+{
+	mSource = sourceCollider->rect().Center();
+	mForce = sourceCollider->knockbackforce();
+}
+
+
+KnockbackEffect::KnockbackEffect(VectorF source, float force) : mSource(source), mForce(force) { }
 
 
 void KnockbackEffect::init()
@@ -11,39 +23,51 @@ void KnockbackEffect::init()
 	timer.restart();
 }
 
+
 void KnockbackEffect::fastUpdate(float dt)
 {
-	VectorF direction = mPhysics->position() - mSource;
+	VectorF direction = mActor->physics()->position() - mSource;
 	VectorF velocity = direction.normalise() * mForce;
 
-	//if (canMove(velocity, dt))
-		mPhysics->move(velocity, dt);
+	if (canMove(velocity, dt))
+		mActor->physics()->move(velocity, dt);
 }
+
 
 void KnockbackEffect::slowUpdate(float dt)
 {
+	printf("time: %f\n", timer.getSeconds());
 	if (timer.getSeconds() > 0.1f)
+	{
+		printf("end effect\n");
 		endEffect();
+	}
 
 }
 
-void KnockbackEffect::render()
+
+/// --- Private Functions --- ///
+bool KnockbackEffect::canMove(VectorF velocity, float dt) const
 {
+	Index index;
+	const Map* map = mActor->getGameData()->environment->primaryMap();
+	RectF rect = mActor->rect().Translate(velocity * dt);
 
+	index = map->index(rect.TopLeft());
+	if (!map->isValidIndex(index) || !map->floorCollisionTile(index))
+		return false;
+
+	index = map->index(rect.TopRight());
+	if (!map->isValidIndex(index) || !map->floorCollisionTile(index))
+		return false;
+
+	index = map->index(rect.BotRight());
+	if (!map->isValidIndex(index) || !map->floorCollisionTile(index))
+		return false;
+
+	index = map->index(rect.BotLeft());
+	if (!map->isValidIndex(index) || !map->floorCollisionTile(index))
+		return false;
+
+	return true;
 }
-
-void KnockbackEffect::exit()
-{
-
-}
-
-// --- Private Functions --- //
-//bool KnockbackEffect::canMove(VectorF velocity, float dt)
-//{
-//	Map* map = mEnemy->getData()->environment->primaryMap();
-//
-//	VectorF position = mEnemy->position() + (velocity * dt);
-//	Index index = map->index(position);
-//
-//	return map->isValidIndex(index) && map->floorCollisionTile(index);
-//}

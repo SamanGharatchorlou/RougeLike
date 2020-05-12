@@ -1,12 +1,15 @@
 #pragma once
 
+#include "Objects/Actor.h"
 
 class Effect
 {
 
 public:
-	Effect() { }
+	Effect() : mShouldExit(false) { }
 	virtual ~Effect() { }
+
+	void set(Actor* actor) { mActor = actor; }
 
 	virtual void init() = 0;
 	virtual void fastUpdate(float dt) = 0;
@@ -17,6 +20,8 @@ public:
 	void endEffect() { mShouldExit = true; }
 	bool shouldExit() const { return mShouldExit; }
 
-private:
-	bool mShouldExit = false;
+
+protected:
+	Actor* mActor;
+	bool mShouldExit;
 };

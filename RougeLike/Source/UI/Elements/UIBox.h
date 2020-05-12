@@ -21,6 +21,7 @@ public:
 	~UIBox() { }
 
 	void setTexture(Texture* texture) { mTexture = texture; }
+	const Texture* texture() const { return mTexture; }
 
 	bool isPointInBounds(VectorF point);
 

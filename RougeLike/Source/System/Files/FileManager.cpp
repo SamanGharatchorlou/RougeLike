@@ -20,6 +20,10 @@ FileManager::FileManager()
 
 	// Images
 	folderPaths[Image]						= std::string("Images\\");
+	folderPaths[Image_UI]					= std::string(folderPaths[Image] + "UI\\");
+	folderPaths[Image_Maps]					= std::string(folderPaths[Image] + "Maps\\");
+	folderPaths[Image_Weapons]				= std::string(folderPaths[Image] + "Weapons\\");
+	folderPaths[Image_Characters]			= std::string(folderPaths[Image] + "Characters\\");
 
 	// Audio
 	folderPaths[Audio_Music]				= std::string("Audio\\Music\\");
@@ -31,13 +35,15 @@ FileManager::FileManager()
 
 	// Configs
 	folderPaths[Configs]					= std::string("Configs\\");
-	folderPaths[Config_UI]					= std::string("Configs\\UIMenus\\");
-	folderPaths[Config_Map]					= std::string("Configs\\Map\\");
-	folderPaths[Config_Animations]			= std::string("Configs\\Animations\\");
-	folderPaths[Config_Enemies]				= std::string("Configs\\Objects\\Enemies\\");
-	folderPaths[Config_Player]				= std::string("Configs\\Objects\\Player\\");
-	folderPaths[Config_Weapons]				= std::string("Configs\\Objects\\Weapons\\");
-	folderPaths[Config_MeleeWeapons]		= std::string("Configs\\Objects\\Weapons\\Melee\\");
+	folderPaths[Configs_Objects]			= std::string(folderPaths[Configs] + "Objects\\");
+
+	folderPaths[Config_UI]					= std::string(folderPaths[Configs] + "UIMenus\\");
+	folderPaths[Config_Map]					= std::string(folderPaths[Configs] + "Map\\");
+	folderPaths[Config_Animations]			= std::string(folderPaths[Configs] + "Animations\\");
+	folderPaths[Config_Enemies]				= std::string(folderPaths[Configs_Objects] + "Enemies\\");
+	folderPaths[Config_Player]				= std::string(folderPaths[Configs_Objects] + "Player\\");
+	folderPaths[Config_Weapons]				= std::string(folderPaths[Configs_Objects] + "Weapons\\");
+	folderPaths[Config_MeleeWeapons]		= std::string(folderPaths[Configs_Objects] + "Weapons\\Melee\\");
 }
 
 
@@ -111,7 +117,7 @@ std::string FileManager::XMLFilePath(const Folder folder, const std::string& fil
 #if _DEBUG
 	if (buffer.find(".xml") != std::string::npos)
 	{
-		DebugPrint(Log, "The string %s already has the .xml extension, extention was not added\n", buffer);
+		DebugPrint(Log, "The string %s already has the .xml extension, extention was not added\n", buffer.c_str());
 		return buffer;
 	}
 #endif

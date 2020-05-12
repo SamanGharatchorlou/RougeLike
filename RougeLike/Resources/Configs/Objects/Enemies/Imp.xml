@@ -1,35 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Stats>
 	<!-- Physics -->
-	<Force type = "float">500</Force>
-	<MaxVelocity type = "float">70</MaxVelocity>
+	<Force>500</Force>
+	<MaxVelocity>70</MaxVelocity>
 
 	<!-- General Attributes -->
-	<Health type = "int">250</Health>
+	<Health>250</Health>
 
 	<!-- Data values -->
-	<Score type ="int">50></Score>
-	<Experience type = "int">2000</Experience>
+	<Score>50></Score>
+	<Experience>2000</Experience>
 
 	<!-- Attack -->
-	<Damage type = "int">10</Damage>
-	<AttackSpeed type ="double">1</AttackSpeed>
-	<TackleChargeTime type = "float">1</TackleChargeTime>
-	<TackleDistance type = "float">2000</TackleDistance>
-	<TackleSpeed type = "float">200</TackleSpeed> <!-- attack vs tackle speed?? -->
-	<KnockbackDistance type = "float">200</KnockbackDistance>
+	<Damage>10</Damage>
+	<AttackSpeed>1</AttackSpeed>
+	<TackleDistance>2000</TackleDistance>
+	<TackleMovementSpeed>200</TackleMovementSpeed>
+	<KnockbackDistance >200</KnockbackDistance>
 
 	<!-- Patrol -->
-	<SightRange type = "float">50000</SightRange>
-	<ChaseRange type = "float">100000</ChaseRange>
-
-	<!-- Idle -->
-	<IdleTime type = "float">2</IdleTime>
+	<SightRange>50000</SightRange>
+	<ChaseRange>100000</ChaseRange>
 
 	<!-- Hit -->
-	<HurtTime type = "float">0.25</HurtTime>
+	<HurtTime>0.25</HurtTime>
 	
 	<!-- Alert -->
-	<AttentionTime type ="float">0.5</AttentionTime>
+	<AttentionTime>0.5</AttentionTime>
 
 </Stats>

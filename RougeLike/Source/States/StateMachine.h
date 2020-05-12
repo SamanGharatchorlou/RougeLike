@@ -2,8 +2,6 @@
 
 #include <stack>
 
-struct State;
-
 template<class T>
 class StateMachine
 {
@@ -16,7 +14,6 @@ public:
 	void addState(T* state);
 	void popState();
 	void replaceState(T* state);
-	void forcePopState();
 
 	void processStateChanges();
 
@@ -77,16 +74,6 @@ void StateMachine<T>::popState()
 	isRemoving = true;
 	isReplacing = false;
 	isAdding = false;
-}
-
-
-template<class T>
-void StateMachine<T>::forcePopState()
-{
-	states.top()->exit();
-
-	delete states.top();
-	states.pop();
 }
 
 

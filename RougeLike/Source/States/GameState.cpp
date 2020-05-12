@@ -16,12 +16,8 @@
 #include "Game/Cursor.h"
 #include "Game/Camera.h"
 
-#include "Objects/Player/PlayerManager.h"
-#include "Objects/Enemies/EnemyManager.h"
-
-// TEMp
-#include "Items/Spawner.h"
 #include "Objects/Player/Player.h"
+#include "Objects/Enemies/EnemyManager.h"
 
 
 GameState::GameState(GameData* gameData, GameController* gameController) : 
@@ -57,7 +53,7 @@ void GameState::init()
 	//mGameData->audioManager->playMusic("Ludumdum");
 
 	// Set cursor
-	mGameData->uiManager->setCursorTexture(mGameData->textureManager->getTexture("GameCursor"));
+	mGameData->uiManager->setCursorTexture(mGameData->textureManager->getTexture("GameCursor", FileManager::Image_UI));
 
 	// Rendering
 	initRendering();
@@ -80,13 +76,13 @@ void GameState::handleInput()
 		mGameController->getStateMachine()->addState(new PauseState(mGameData, mGameController));
 	}
 
-	mGameData->playerManager->handleInput();
+	mGameData->player->handleInput();
 }
 
 
 void GameState::fastUpdate(float dt)
 {
-	mGameData->playerManager->fastUpdate(dt);
+	mGameData->player->fastUpdate(dt);
 	mGameData->enemies->fastUpdate(dt);
 
 	Camera::Get()->fastUpdate(dt);
@@ -97,7 +93,7 @@ void GameState::fastUpdate(float dt)
 
 void GameState::slowUpdate(float dt)
 {
-	mGameData->playerManager->slowUpdate(dt);
+	mGameData->player->slowUpdate(dt);
 	mGameData->enemies->slowUpdate(dt);
 
 	mGameData->scoreManager->slowUpdate();
@@ -107,13 +103,13 @@ void GameState::slowUpdate(float dt)
 	Camera::Get()->slowUpdate(dt);
 
 	// End current level, close old level exit, open new level entrance
-	if (mGameData->environment->generateNextLevel(mGameData->playerManager->rect().TopLeft()))
+	if (mGameData->environment->generateNextLevel(mGameData->player->rect().TopLeft()))
 	{
 		nextLevel();
 	}
 
 	// Close off new level entrance, open exit
-	if (mGameData->environment->closeEntrance(mGameData->playerManager->rect().TopLeft()))
+	if (mGameData->environment->closeEntrance(mGameData->player->rect().TopLeft()))
 	{
 		mGameData->environment->closeLevelEntrace();
 		Camera::Get()->setMapBoundaries(mGameData->environment->boundaries());
@@ -141,14 +137,14 @@ void GameState::render()
 
 void GameState::resume()
 {
-	mGameData->uiManager->setCursorTexture(mGameData->textureManager->getTexture("GameCursor"));
+	mGameData->uiManager->setCursorTexture(mGameData->textureManager->getTexture("GameCursor", FileManager::Image_UI));
 }
 
 
 void GameState::exit()
 {
 	mGameData->enemies->clear();
-	mGameData->playerManager->reset();
+	mGameData->player->reset();
 	mGameData->environment->restart();
 	mGameData->scoreManager->reset();
 	mGameData->collisionManager->clearColliders();
@@ -159,7 +155,7 @@ void GameState::exit()
 
 void GameState::initUI()
 {
-	mGameData->uiManager->setCursorTexture(mGameData->textureManager->getTexture("GameCursor"));
+	mGameData->uiManager->setCursorTexture(mGameData->textureManager->getTexture("GameCursor", FileManager::Image_UI));
 	mGameData->uiManager->selectScreen(Screen::Game);
 }
 
@@ -178,19 +174,19 @@ void GameState::initMap()
 
 void GameState::initPlayer()
 {
-	mGameData->playerManager->initCollisions();
+	mGameData->player->initCollisions();
 
 	VectorF playerPosition = VectorF(Camera::Get()->getCenter().x, mGameData->environment->size().y / 2.0f);
-	mGameData->playerManager->rectRef().SetLeftCenter(playerPosition);
+	mGameData->player->rectRef().SetLeftCenter(playerPosition);
 
 	// Camera
-	Camera::Get()->follow(&mGameData->playerManager->rectRef());
+	Camera::Get()->follow(&mGameData->player->rectRef());
 }
 
 void GameState::initEnemies()
 {
 	EnemyManager* enemies = mGameData->enemies;
-	enemies->setTarget(&mGameData->playerManager->rectRef());
+	enemies->setTarget(&mGameData->player->rectRef());
 	enemies->spawnLevel();
 
 	// init AI pathing
@@ -200,7 +196,7 @@ void GameState::initEnemies()
 void GameState::initRendering()
 {
 	mGameData->renderManager->Set(mGameData->environment);
-	mGameData->renderManager->Set(mGameData->playerManager);
+	mGameData->renderManager->Set(mGameData->player);
 	mGameData->renderManager->Set(mGameData->enemies);
 	mGameData->renderManager->Set(mGameData->uiManager);
 	mGameData->renderManager->Set(&mCollectables);

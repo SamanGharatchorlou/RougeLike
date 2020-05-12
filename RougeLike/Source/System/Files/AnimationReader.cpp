@@ -8,7 +8,7 @@
 // move that logic into here
 AnimationReader::AnimationReader(const std::string& file)
 {
-	std::string configFilePath = FileManager::Get()->filePath(FileManager::Config_Animations, file);
+	std::string configFilePath = FileManager::Get()->XMLFilePath(FileManager::Config_Animations, file);
 	parser.parseXML(configFilePath);
 }
 
@@ -84,5 +84,5 @@ Vector2D<int> AnimationReader::readTileSize() const
 
 Texture* AnimationReader::readTexture(const TextureManager* tm) const
 {
-	return tm->getTexture(parser.firstRootNodeValue("TextureName"));
+	return tm->getTexture(parser.firstRootNodeValue("TextureName"), FileManager::Image_Characters);
 }

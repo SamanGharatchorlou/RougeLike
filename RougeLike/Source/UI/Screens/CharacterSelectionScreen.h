@@ -13,7 +13,8 @@ public:
 	void exit() override { };
 	void update() override;
 
-	const std::string& selectCharacter() const { return mSelectedCharacter; }
+	const std::string& selectedCharacter() const { return mSelectedCharacter; }
+	const std::string& selectedWeapon() const { return mSelectedWeapon; }
 
 	bool enterGame() const { return mEnterGame; }
 
@@ -21,6 +22,7 @@ public:
 
 private:
 	std::string mSelectedCharacter;
+	std::string mSelectedWeapon;
 
 	bool mEnterGame;
 };

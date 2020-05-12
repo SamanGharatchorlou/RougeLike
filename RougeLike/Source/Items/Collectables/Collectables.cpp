@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Collectables.h"
 
+#include "Collectable.h"
+
 #include "Game/Camera.h"
 #include "Game/GameData.h"
 #include "Collisions/CollisionManager.h"
@@ -41,7 +43,7 @@ void Collectables::slowUpdate(float dt)
 
 		if (collectable->pickedUp())
 		{
-			collectable->activate(mGameData->playerManager);
+			collectable->activate(mGameData->player);
 
 			// Destroy the collectable from game
 			iter = mCollectables.erase(iter);
@@ -87,7 +89,7 @@ void Collectables::spawnRandomItem(ItemType itemType)
 	std::vector<std::string> itemNameList = itemNames(itemType);
 	const std::string weaponName = itemNameList[randomNumberBetween(0, itemNameList.size())];
 
-	WeaponCollectable* weaponPickup = new WeaponCollectable(weaponName, mGameData->textureManager->getTexture(weaponName));
+	WeaponCollectable* weaponPickup = new WeaponCollectable(weaponName, mGameData->textureManager->getTexture(weaponName, FileManager::Image_Weapons));
 	spawn(weaponPickup, position);
 }
 

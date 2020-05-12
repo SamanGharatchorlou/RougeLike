@@ -13,7 +13,7 @@
 #include "Graphics/RenderManager.h"
 #include "UI/UIManager.h"
 #include "Managers/ScoreManager.h"
-#include "Objects/Player/PlayerManager.h"
+#include "Objects/Player/Player.h"
 #include "Objects/Enemies/EnemyManager.h"
 
 #include "Map/Map.h"

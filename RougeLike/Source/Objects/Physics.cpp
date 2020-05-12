@@ -3,12 +3,12 @@
 
 #include "Input/InputManager.h"
 
-void Physics::init(Data data)
+
+void Physics::init(float force, float maxVelocity)
 {
-	mForce = data.force;
-	mMaxVelocity = data.maxVelocity;
+	mForce = force;
+	mMaxVelocity = maxVelocity;
 	mDragFactor = 0.85f;
-	mMass = 1.0f;
 }
 
 

@@ -45,7 +45,7 @@ public:
 
 	const MapTile::EdgeInfo getEdgeInfo(Index index) const;
 
-	Vector2D<int> findYFloorTileRange(int xTileIndex);
+	Vector2D<int> findYFloorTileRange(int xTileIndex) const;
 
 	bool isValidTile(RectF rect) const;
 	bool isValidPosition(VectorF position) const;

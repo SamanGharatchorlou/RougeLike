@@ -1,9 +1,7 @@
 #pragma once
 
-#include "Collectable.h"
-#include "Collisions/CollisionTracker.h"
-
 struct GameData;
+class Collectable;
 
 class Collectables
 {

@@ -2,7 +2,7 @@
 
 struct GameData;
 class Environment;
-class PlayerManager;
+class Player;
 class EnemyManager;
 class UIManager;
 class Collectables;
@@ -16,7 +16,7 @@ public:
 	RenderManager(GameData* gameData);
 
 	void Set(Environment* environment) { mEnvironment = environment; }
-	void Set(PlayerManager* player) { mPlayer = player; }
+	void Set(Player* player) { mPlayer = player; }
 	void Set(EnemyManager* enemies) { mEnemies = enemies; }
 	void Set(UIManager* UI) { mUIManager = UI; }
 	void Set(Collectables* collectables) { mCollectables = collectables; }
@@ -29,7 +29,7 @@ private:
 	GameData* mGameData;
 
 	Environment* mEnvironment;
-	PlayerManager* mPlayer;;
+	Player* mPlayer;;
 	EnemyManager* mEnemies;
 	UIManager* mUIManager;
 	Collectables* mCollectables;

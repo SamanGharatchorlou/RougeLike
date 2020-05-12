@@ -2,7 +2,6 @@
 
 struct WeaponData;
 class Collider;
-class PlayerPropertyBag;
 
 
 class Weapon

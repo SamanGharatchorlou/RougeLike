@@ -1,18 +1,20 @@
 #include "pch.h"
 #include "Enemy.h"
-#include "EnemyStates/EnemyStateHeaders.h"
 
 #include "Game/GameData.h"
-#include "Game/Camera.h"
+#include "EnemyStates/EnemyStateHeaders.h"
 
 #include "Graphics/Texture.h"
 #include "System/Files/AnimationReader.h"
 
-#include "Objects/Player/Player.h"
-
-
-
+#include "EnemyPropertyBag.h"
+#include "Map/Environment.h"
 #include "Collisions/DamageCollider.h"
+
+#include "Objects/Player/Player.h"
+#include "Objects/Effects/KnockbackEffect.h"
+#include "Objects/Effects/SlowEffect.h"
+
 
 
 Enemy::Enemy(GameData* gameData) :
@@ -22,29 +24,23 @@ Enemy::Enemy(GameData* gameData) :
 	mAttackTarget(nullptr),
 	mPositionTarget(nullptr)
 {
-	setFlip(static_cast<SDL_RendererFlip>(randomNumberBetween(0, 2)));
+	physics()->setFlip(static_cast<SDL_RendererFlip>(randomNumberBetween(0, 2)));
 }
 
 
 void Enemy::init(const std::string& characterConfig)
 {
-	Actor::init(characterConfig);
-
 	// Property bag
 	EnemyPropertyBag* propertyBag = new EnemyPropertyBag;
 	propertyBag->readProperties(characterConfig);
 	setPropertyBag(propertyBag);
 
+	Actor::init(characterConfig);
+
 	// Physics
-	Physics::Data physicsData;
-	physicsData.force = getPropertyValue("Force");
-	physicsData.maxVelocity = getPropertyValue("MaxVelocity");
-	mPhysics.init(physicsData);
-
 	VectorF size = mAnimator.getSpriteTile()->getRect().Size() * 1.5f;
-	colliderRatio = VectorF(0.75f, 1.0f);
-	mPhysics.setRect(RectF(VectorF(), size * colliderRatio));
-
+	mColliderRatio = VectorF(0.75f, 1.0f);
+	mPhysics.setRect(RectF(VectorF(), size * mColliderRatio));
 
 	// Collider
 	DamageCollider* collider = new DamageCollider;
@@ -59,18 +55,13 @@ void Enemy::init(const std::string& characterConfig)
 }
 
 
-DamageCollider* Enemy::damageCollider() const
-{
-	return static_cast<DamageCollider*>(mCollider);
-}
-
-
 void Enemy::fastUpdate(float dt)
 {
 	mPhysics.resetHasForce();
-	Actor::fastUpdate(dt);
 
 	mStateMachine.getActiveState().fastUpdate(dt);
+
+	Actor::fastUpdate(dt);
 }
 
 
@@ -82,10 +73,6 @@ void Enemy::slowUpdate(float dt)
 
 	mStateMachine.processStateChanges();
 	mStateMachine.getActiveState().slowUpdate(dt);
-
-	// TODO: do i need this?
-	// reset collider data for next frame
-	//mCollider.reset();
 }
 
 
@@ -104,33 +91,44 @@ void Enemy::renderCharacter()
 #endif
 }
 
+const Map* Enemy::getEnvironmentMap() const
+{
+	return mGameData->environment->primaryMap();
+}
 
 
 // Reset everything that needs to be recalculated when spawned
 void Enemy::clear()
 {
 	// Clear statemachine states (except null state at i = 0)
-	while (mStateMachine.size() > 1)
-	{
-		mStateMachine.forcePopState();
-	}
+	mStateMachine.clearStates();
 
-	while (events.size() > 0)
-		events.pop();
+	while (mEvents.size() > 0)
+		mEvents.pop();
 
-	
 	mMap = nullptr;
-	mPhysics.reset();
-
 	mAttackTarget = nullptr;
 	mPositionTarget = nullptr;
+
+	Actor::reset();
 }
 
 
 void Enemy::resolvePlayerWeaponCollisions()
 {
 	if (mCollider->gotHit())
+	{
+		// Apply knockback
+		const DamageCollider* collider = static_cast<const DamageCollider*>(mCollider->getOtherCollider());
+		//KnockbackEffect* effect = new KnockbackEffect(mGameData->player->position(), collider->knockbackforce());
+		
+		SlowEffect* effect = new SlowEffect(0.25f);
+		
+		mEffectHandler.addEffect(effect);
+
 		replaceState(EnemyState::Hit);
+		printf("hit\n");
+	}
 }
 
 
@@ -143,8 +141,7 @@ void Enemy::spawn(EnemyState::Type state, VectorF position)
 
 void Enemy::accellerateTowards(VectorF position)
 {
-	VectorF direction = position - mPhysics.position();
-	mPhysics.accellerate(direction); 
+	mPhysics.accellerate(position - mPhysics.position());
 }
 
 
@@ -247,30 +244,9 @@ EnemyState::Type Enemy::state() const
 }
 
 
-void Enemy::initAnimations(const std::string& file)
-{
-	// Config reader
-	AnimationReader reader(file);
-
-	// Setup sprite sheet
-	TilesetData spriteSheetData = reader.readTilesetData(mGameData->textureManager);
-	Tileset spriteSheet(spriteSheetData);
-
-	// Setup animations
-	Animations animationData = reader.readAnimationData();
-	mAnimator.init(spriteSheet, animationData);
-}
-
-
-void Enemy::pushEvent(const EventPacket event)
-{
-	events.push(event);
-}
-
-
 const EventPacket Enemy::popEvent()
 {
-	const EventPacket event = events.front();
-	events.pop();
+	const EventPacket event = mEvents.front();
+	mEvents.pop();
 	return event;
 }

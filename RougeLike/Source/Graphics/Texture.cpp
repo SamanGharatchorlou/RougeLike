@@ -6,15 +6,20 @@ Texture::Texture() : texture(nullptr), renderer(nullptr) { }
 
 Texture::~Texture()
 {
-	free();
-	DebugPrint(Log, "Texture destoryed\n");
+	if (texture)
+	{
+		SDL_DestroyTexture(texture);
+	}
 }
 
 
 bool Texture::loadFromFile(const std::string& filePath)
 {
 	// remove any existing texture
-	free();
+	if (texture)
+	{
+		SDL_DestroyTexture(texture);
+	}
 
 	// final texture
 	SDL_Texture* tempTexture = nullptr;
@@ -57,15 +62,6 @@ bool Texture::loadFromFile(const std::string& filePath)
 	// return sucess
 	texture = tempTexture;
 	return texture != nullptr;
-}
-
-// free texture if it exists
-void Texture::free() const
-{
-	if (texture)
-	{
-		SDL_DestroyTexture(texture);
-	}
 }
 
 

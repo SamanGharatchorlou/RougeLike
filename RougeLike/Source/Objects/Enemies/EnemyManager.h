@@ -82,4 +82,8 @@ private:
 	RectF* mTarget;
 
 	EnemySpawner mSpawner;
+
+
+	// TEMP 
+	int spawnCount = 0;
 };

@@ -19,7 +19,6 @@ void EnemyDead::init()
 	const float score = mEnemy->getPropertyValue("Score");
 	const float exp = mEnemy->getPropertyValue("Experience");
 	EnemyDeadEvent* dataPtr = new EnemyDeadEvent(score, exp);
-
 	mEnemy->pushEvent(EventPacket(Event::EnemyDead, dataPtr));
 }
 
@@ -43,7 +42,7 @@ void EnemyDead::render()
 #if DRAW_ENEMY_RECT
 	debugDrawRect(mEnemy->rect(), RenderColour(RenderColour::Red));
 #else
-	mEnemy->animator().getSpriteTile()->render(rect, mEnemy->flip(), mAlpha);
+	mEnemy->animator().getSpriteTile()->render(rect, mEnemy->physics()->flip(), mAlpha);
 #endif
 
 }

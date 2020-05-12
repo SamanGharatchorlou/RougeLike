@@ -12,14 +12,10 @@ void EnemyAlert::init()
 }
 
 
-void EnemyAlert::fastUpdate(float dt)
-{
-	mEnemy->resolvePlayerWeaponCollisions();
-}
-
-
 void EnemyAlert::slowUpdate(float dt)
 {
+	mEnemy->resolvePlayerWeaponCollisions();
+
 	if (timer.getSeconds() > mEnemy->getPropertyValue("AttentionTime"))
 	{
 		mEnemy->replaceState(EnemyState::Run);

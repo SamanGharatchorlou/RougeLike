@@ -1,6 +1,5 @@
 #pragma once
 
-#include "UIElement.h"
 #include "UIBox.h"
 #include "Text/Text.h"
 

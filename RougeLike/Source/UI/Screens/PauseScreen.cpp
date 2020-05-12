@@ -5,6 +5,8 @@
 #include "UI/UIManager.h"
 #include  "Graphics/TextureManager.h"
 
+#include "UI/Elements/UIButton.h"
+
 
 PauseScreen::PauseScreen(GameData* gameData) :
 	Screen(gameData), 
@@ -75,11 +77,11 @@ void PauseScreen::updateBoxTexture(std::string buttonId, std::string boxId)
 
 			if (button->isHeld())
 			{
-				texture = mGameData->textureManager->getTexture("Big button Pressed");
+				texture = mGameData->textureManager->getTexture("Big button Pressed", FileManager::Image_UI);
 			}
 			else
 			{
-				texture = mGameData->textureManager->getTexture("Big button Released");
+				texture = mGameData->textureManager->getTexture("Big button Released", FileManager::Image_UI);
 			}
 
 			boxComponent->setTexture(texture);

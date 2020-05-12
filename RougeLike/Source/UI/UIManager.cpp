@@ -5,6 +5,8 @@
 #include "ScreenDecoder.h"
 #include "Screens/ScreenHeaders.h"
 
+#include "UI/Screens/UILayer.h"
+
 // TEMP
 #include "Input/InputManager.h"
 #include "Collisions/Collider.h"

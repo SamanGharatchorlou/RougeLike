@@ -9,6 +9,7 @@ enum class Event
 
 	SetHealth,
 	EnemyDead,
+	EnemyHit,
 
 	IncrementMapLevel,
 
@@ -42,7 +43,7 @@ struct EventPacket
 };
 
 
-// TODO: make the EventData base class private?
+
 struct EnemyDeadEvent : public EventData
 {
 	EnemyDeadEvent(const float score, const float exp) : mScore(score), mExp(exp) { }

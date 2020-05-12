@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "Collider.h"
 
-#include "DamageCollider.h"
-
 
 Collider::Collider() :
 	mRect(nullptr),

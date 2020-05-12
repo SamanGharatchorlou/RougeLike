@@ -2,13 +2,12 @@
 #include "EnemyRun.h"
 
 #include "Objects/Enemies/Enemy.h"
-#include "Map/Environment.h"
 #include "Map/Map.h"
 
 
 EnemyRun::EnemyRun(Enemy* enemy) : 
 	EnemyState(enemy), 
-	mAIPathing(enemy->getMap()) { }
+	mAIPathing(enemy->getPathMap()) { }
 
 
 void EnemyRun::init()
@@ -20,8 +19,6 @@ void EnemyRun::init()
 
 void EnemyRun::fastUpdate(float dt)
 {
-	mEnemy->resolvePlayerWeaponCollisions();
-
 	if(mPath.size() > 0)
 		mEnemy->accellerateTowards(mAIPathing.position(mPath.top()));
 }
@@ -29,6 +26,8 @@ void EnemyRun::fastUpdate(float dt)
 
 void EnemyRun::slowUpdate(float dt)
 {
+	mEnemy->resolvePlayerWeaponCollisions();
+
 	if (!inAttackRange())
 	{
 		if (mPath.size() > 0)
@@ -52,7 +51,7 @@ void EnemyRun::slowUpdate(float dt)
 	}
 
 	// Face player
-	mEnemy->facePoint(mEnemy->attackTargetRect()->Center());
+	mEnemy->physics()->facePoint(mEnemy->attackTargetRect()->Center());
 }
 
 

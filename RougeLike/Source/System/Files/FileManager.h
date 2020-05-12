@@ -11,16 +11,15 @@ public:
 
 		Image,
 		Image_UI,
-		Image_Enemies,
-		Image_Player,
 		Image_Maps,
 		Image_Weapons,
+		Image_Characters,
+		Image_END,
 
 		Font,
 
-		map,
-
 		Configs,
+		Configs_Objects,
 		Config_UI,
 		Config_Map,
 		Config_Animations,

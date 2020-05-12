@@ -14,11 +14,7 @@
 #include "Graphics/TextureManager.h"
 #include "UI/Screens/CharacterselectionScreen.h"
 
-#include "Objects/Player/PlayerManager.h"
-
-
-// TEMP
-#include "Events/Events.h"
+#include "Objects/Player/Player.h"
 
 
 PreGameState::PreGameState(GameData* gameData, GameController* gameController) :
@@ -34,32 +30,29 @@ void PreGameState::init()
 	initCollisions();
 
 	mGameData->uiManager->selectScreen(Screen::CharacterSelection);
-	selectionScreen = static_cast<CharacterSelectionScreen*>(mGameData->uiManager->getActiveScreen());
+	mSelectionScreen = static_cast<CharacterSelectionScreen*>(mGameData->uiManager->getActiveScreen());
 	
-	mGameData->uiManager->setCursorTexture(mGameData->textureManager->getTexture("UICursor"));
+	mGameData->uiManager->setCursorTexture(mGameData->textureManager->getTexture("UICursor", FileManager::Image_UI));
 
-	// Player
-	mGameData->playerManager->loadWeaponStash();
-}
-
-
-void PreGameState::handleInput()
-{
-
+	mGameData->player->loadWeaponStash();
 }
 
 
 void PreGameState::slowUpdate(float dt)
 {
-	if (selectionScreen->enterGame())
+	if (mGameData->inputManager->isPressed(Button::Esc))
 	{
-		selectCharacter();
+		mGameController->quitGame();
+	}
+
+	if (mSelectionScreen->enterGame())
+	{
+		mGameData->player->selectCharacter(mSelectionScreen->selectedCharacter());
+		mGameData->player->selectWeapon(mSelectionScreen->selectedWeapon());
+
 		mGameController->getStateMachine()->replaceState(new GameState(mGameData, mGameController));
 	}
 }
-
-
-
 
 
 void PreGameState::render()
@@ -78,11 +71,6 @@ void PreGameState::render()
 
 
 // --- Private Functions --- //
-void PreGameState::selectCharacter()
-{
-	mGameData->playerManager->selectCharacter(selectionScreen->selectCharacter());
-}
-
 
 void PreGameState::initCollisions()
 {

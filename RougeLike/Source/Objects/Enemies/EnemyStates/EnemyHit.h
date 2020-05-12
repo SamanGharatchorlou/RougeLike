@@ -9,15 +9,12 @@ public:
 
 	void init() override;
 	void handleInput() override { }
+	void fastUpdate(float dt) override { };
 	void slowUpdate(float dt) override;
-	void fastUpdate(float dt) override;
 	void render() override;
 	void exit() override;
 
 	const Type type() const { return Type::Hit; }
-
-private:
-	bool canMove(VectorF velocity, float dt);
 
 private:
 	// TODO: add 1/x^2 decay
@@ -25,6 +22,4 @@ private:
 	VectorF decayVelocity;
 
 	VectorF attackTargetPosition;
-
-	float mKnockbackForce;
 };

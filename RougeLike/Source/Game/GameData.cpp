@@ -10,7 +10,7 @@
 #include "UI/UIManager.h"
 #include "Managers/ScoreManager.h"
 #include "Collisions/CollisionManager.h"
-#include "Objects/Player/PlayerManager.h"
+#include "Objects/Player/Player.h"
 #include "Objects/Enemies/EnemyManager.h"
 
 #include "Map/Environment.h"
@@ -55,7 +55,7 @@ void GameData::init()
 	collisionManager = new CollisionManager;
 
 	// Player
-	playerManager = new PlayerManager(this);
+	player = new Player(this);
 
 	// Enemies
 	enemies = new EnemyManager(this);
@@ -75,22 +75,22 @@ void GameData::setupObservers()
 	scoreManager->addObserver(uiManager);
 
 	// Update the UI with the players hp and the stats attack, defence etc.
-	playerManager->addObserver(uiManager);
+	player->addObserver(uiManager);
 	// Update enemy paths
-	playerManager->addObserver(enemies);
-	playerManager->addObserver(Camera::Get()->getShake());
+	player->addObserver(enemies);
+	player->addObserver(Camera::Get()->getShake());
 
 	// Update the score
 	enemies->addObserver(scoreManager);
 	// Player gains exp
-	enemies->addObserver(playerManager);
+	enemies->addObserver(player);
 }
 
 
 void GameData::free()
 {
 	delete enemies;
-	delete playerManager;
+	delete player;
 
 	delete collisionManager;
 	delete environment;

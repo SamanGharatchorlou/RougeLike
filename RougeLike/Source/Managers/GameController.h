@@ -1,6 +1,8 @@
 #pragma once
-#include "States/StateMachine.h"
+
 #include "Game/GameData.h"
+#include "States/State.h"
+#include "States/StateMachine.h"
 
 
 class GameController

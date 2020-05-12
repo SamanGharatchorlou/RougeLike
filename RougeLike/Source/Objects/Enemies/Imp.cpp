@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include "Imp.h"
-#include "Game/GameData.h"
 
 
 Imp::Imp(GameData* gameData) : Enemy(gameData) { }
@@ -10,7 +9,7 @@ Imp::Imp(GameData* gameData) : Enemy(gameData) { }
 RectF Imp::renderRect() const
 {
 	RectF rect = mPhysics.rect();
-	VectorF size = rect.Size() / colliderRatio;
+	VectorF size = rect.Size() / mColliderRatio;
 	
 	rect.SetSize(size * 1.4f);
 	VectorF sizeDiff = rect.Size() - size;

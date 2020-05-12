@@ -4,8 +4,10 @@
 #include "Events/Observer.h"
 
 struct GameData;
+class Texture;
 class Cursor;
-
+class UIElement;
+class UIButton;
 
 class UIManager : public Observer
 {

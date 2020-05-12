@@ -7,7 +7,7 @@
 #include "Map/Environment.h"
 #include "UI/UIManager.h"
 
-#include "Objects/Player/PlayerManager.h"
+#include "Objects/Player/Player.h"
 #include "Objects/Enemies/EnemyManager.h"
 #include "Items/Collectables/Collectables.h"
 
@@ -22,7 +22,7 @@ RenderManager::RenderManager(GameData* gameData) :
 
 void RenderManager::render()
 {
-	float renderDepth = mGameData->playerManager->rect().Center().y;
+	float renderDepth = mGameData->player->rect().Center().y;
 
 	mEnvironment->renderBottomLayer(mGameData->textureManager, renderDepth);
 
