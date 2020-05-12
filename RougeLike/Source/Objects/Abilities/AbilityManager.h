@@ -1,13 +1,20 @@
 #pragma once
 
-#include "Ability.h"
+class Ability;
+class Actor;
 
 class AbilityManager
 {
 public:
-	void add(Ability* ability);
+	AbilityManager() : mActiveAbility(nullptr) { }
+
+	void add(std::string name, Ability* ability);
+	void select(const std::string& ability);
+
+	void activate(Actor* target);
 
 private:
-	std::vector<Ability*> mAbilities;
 
+	std::unordered_map<std::string, Ability*> mAbilities;
+	Ability* mActiveAbility;
 };

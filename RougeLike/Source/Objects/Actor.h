@@ -38,15 +38,19 @@ public:
 	void setCollider(Collider* collider) { mCollider = collider; }
 	Collider*	collider() { return mCollider; }
 
+	// Systems
 	Animator&	animator() { return mAnimator; }
 	Physics*	physics()	 { return &mPhysics; }
 	const Physics* physics() const { return &mPhysics; }
 
+	// Position
 	VectorF		position() const { return mPhysics.rect().Center(); }
 	RectF&		rectRef() { return mPhysics.rectRef(); }
 	RectF		rect() const { return mPhysics.rect(); } 
-
 	virtual RectF		renderRect() const = 0;
+
+	// Effects
+	void addEffect(Effect* effect);
 
 
 protected:
@@ -65,7 +69,5 @@ protected:
 
 	EffectHandler mEffects;
 
-
 	AbilityManager mAbilities;
-
 };

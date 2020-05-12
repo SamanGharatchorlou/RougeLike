@@ -23,9 +23,12 @@
     <ClCompile Include="Source\AI\AIPathMap.cpp" />
     <ClCompile Include="Source\Animations\Animator.cpp" />
     <ClCompile Include="Source\Audio\SoundController.cpp" />
+    <ClCompile Include="Source\Collisions\WallCollisionTracker.cpp" />
     <ClCompile Include="Source\Input\Button.cpp" />
     <ClCompile Include="Source\Objects\Abilities\Ability.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityManager.cpp" />
     <ClCompile Include="Source\Objects\Attributes\Level.cpp" />
+    <ClCompile Include="Source\Objects\Effects\HealEffect.cpp" />
     <ClCompile Include="Source\Objects\Physics.cpp" />
     <ClCompile Include="Source\Objects\Attributes\StatManager.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectHandler.cpp" />
@@ -127,10 +130,13 @@
     <ClInclude Include="Source\AI\AIPathMap.h" />
     <ClInclude Include="Source\Animations\Animator.h" />
     <ClInclude Include="Source\Audio\SoundController.h" />
+    <ClInclude Include="Source\Collisions\WallCollisionTracker.h" />
     <ClInclude Include="Source\Objects\Abilities\Ability.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityManager.h" />
     <ClInclude Include="Source\Objects\Actor.h" />
     <ClInclude Include="Source\Objects\Attributes\Damage.h" />
     <ClInclude Include="Source\Objects\Attributes\Level.h" />
+    <ClInclude Include="Source\Objects\Effects\HealEffect.h" />
     <ClInclude Include="Source\Objects\Physics.h" />
     <ClInclude Include="Source\Objects\Properties\Property.h" />
     <ClInclude Include="Source\Objects\Attributes\StatManager.h" />

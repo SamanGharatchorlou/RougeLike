@@ -2,15 +2,15 @@
 
 #include "Objects/Effects/Effect.h"
 
+class Actor;
+
 class Ability
 {
 public:
-	Ability(Effect* effect) : mEffect(effect) { }
+	Ability() { }
+	virtual ~Ability() { }
 
-	virtual std::string abilityName() const = 0;
-
-private:
-	Effect* mEffect;
+	virtual void activate(Actor* target) = 0;
 };
 
 
@@ -18,7 +18,22 @@ private:
 class SlowAbility : public Ability
 {
 public:
-	SlowAbility(Effect* effect) : Ability(effect) { }
+	SlowAbility(float slowFactor) : mSlowFactor(slowFactor) { }
 
-	std::string abilityName() const { return "Slow"; }
+	void activate(Actor* target) override;
+
+private:
+	float mSlowFactor;
+};
+
+
+class HealAbility : public Ability
+{
+public:
+	HealAbility(float heal) : mHeal(heal) { }
+
+	void activate(Actor* target) override;
+
+private:
+	float mHeal;
 };

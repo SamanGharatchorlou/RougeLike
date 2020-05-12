@@ -10,6 +10,8 @@
 #include "Weapons/WeaponStash.h"
 #include "Objects/Attributes/StatManager.h"
 
+#include "Collisions/WallCollisionTracker.h"
+
 
 struct GameData;
 class Map;
@@ -35,27 +37,30 @@ public:
 	void initCollisions();
 
 	void loadWeaponStash();
-	Weapon*		weapon() { return mWeapon; }
+	Weapon*	weapon() { return mWeapon; }
 
 	void selectCharacter(const std::string& character);
 	void selectWeapon(const std::string& weaponName);
 
 
-
 private:
+	void initCollider();
+	void initPropertBag(const std::string& config);
+
 	void processHit();
 
-	void resolveWallCollisions	(const Map* map, float dt);
-	bool doesCollideLeft		(const Map* map, const VectorF point, float dt) const;
-	bool doesCollideRight		(const Map* map, const VectorF point, float dt) const;
-	bool doesCollideTop			(const Map* map, const VectorF point, float dt) const;
-	bool doesCollideBot			(const Map* map, const VectorF point, float dt) const;
+	void attack();
+	void updateAttackingWeapon();
+
+	void updateCurrentTile();
 
 	RectF renderRect() const override;
+
 
 private:
 
 	StateMachine<State> mStateMachine;
+	WallCollisionTracker mWallCollisions;
 
 	StatManager statManager;
 	WeaponStash weaponStash;

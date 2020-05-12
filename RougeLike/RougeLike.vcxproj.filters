@@ -98,6 +98,9 @@
     <ClCompile Include="Source\Objects\Properties\PropertyBag.cpp" />
     <ClCompile Include="Source\Objects\Player\Player.cpp" />
     <ClCompile Include="Source\Objects\Physics.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityManager.cpp" />
+    <ClCompile Include="Source\Collisions\WallCollisionTracker.cpp" />
+    <ClCompile Include="Source\Objects\Effects\HealEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -218,6 +221,9 @@
     <ClInclude Include="Source\Objects\Player\Player.h" />
     <ClInclude Include="Source\Objects\Properties\Property.h" />
     <ClInclude Include="Source\Objects\Physics.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityManager.h" />
+    <ClInclude Include="Source\Collisions\WallCollisionTracker.h" />
+    <ClInclude Include="Source\Objects\Effects\HealEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

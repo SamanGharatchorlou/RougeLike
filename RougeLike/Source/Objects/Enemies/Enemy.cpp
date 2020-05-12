@@ -124,7 +124,7 @@ void Enemy::resolvePlayerWeaponCollisions()
 		
 		SlowEffect* effect = new SlowEffect(0.25f);
 		
-		mEffectHandler.addEffect(effect);
+		mEffects.addEffect(effect);
 
 		replaceState(EnemyState::Hit);
 		printf("hit\n");

@@ -6,8 +6,6 @@
 
 AIPathing::AIPathing(AIPathMap* map) : mMap(map) { }
 
-
-// TODO: the enemy updates after a new tile has been reached, can I only use this path finding for the next tile? no need for a whole path
 std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition)
 {
 	Index startingIndex = mMap->index(startPosition);

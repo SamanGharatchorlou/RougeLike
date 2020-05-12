@@ -77,6 +77,11 @@ Property* Actor::getProperty(const std::string& property) const
 	return mPropertyBag->get(property);
 }
 
+void Actor::addEffect(Effect* effect)
+{
+	mEffects.addEffect(effect);
+}
+
 /// --- Private Functions --- ///
 
 void Actor::initAnimations(const std::string& config)
