@@ -4,8 +4,6 @@
 #include "Animations/Animator.h"
 #include "Objects/Effects/EffectHandler.h"
 
-#include "Objects/Abilities/AbilityManager.h"
-
 
 struct GameData;
 class Collider;
@@ -68,6 +66,4 @@ protected:
 	Physics mPhysics;
 
 	EffectHandler mEffects;
-
-	AbilityManager mAbilities;
 };

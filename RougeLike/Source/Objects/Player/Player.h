@@ -12,6 +12,8 @@
 
 #include "Collisions/WallCollisionTracker.h"
 
+#include "Objects/Abilities/AbilityManager.h"
+
 
 struct GameData;
 class Map;
@@ -61,6 +63,8 @@ private:
 
 	StateMachine<State> mStateMachine;
 	WallCollisionTracker mWallCollisions;
+
+	AbilityManager mAbilities;
 
 	StatManager statManager;
 	WeaponStash weaponStash;
