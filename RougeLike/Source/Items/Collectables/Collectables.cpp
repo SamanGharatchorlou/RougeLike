@@ -11,6 +11,8 @@
 #include "Map/Environment.h"
 #include "Graphics/TextureManager.h"
 
+#include"Objects/Actors/ActorManager.h"
+#include "Objects/Actors/Player/Player.h"
 
 Collectables::Collectables(GameData* gameData) : mGameData(gameData) 
 { 
@@ -43,7 +45,7 @@ void Collectables::slowUpdate(float dt)
 
 		if (collectable->pickedUp())
 		{
-			collectable->activate(mGameData->player);
+			collectable->activate(mGameData->actors->player());
 
 			// Destroy the collectable from game
 			iter = mCollectables.erase(iter);

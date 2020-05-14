@@ -3,7 +3,7 @@
 
 #include "Graphics/Texture.h"
 
-#include "Objects/Player/Player.h"
+#include "Objects/Actors/Player/Player.h"
 
 
 void Collectable::init(const std::string& value, Texture* texture, RectF rect)

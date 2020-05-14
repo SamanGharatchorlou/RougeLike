@@ -10,11 +10,13 @@
 #include "UI/UIManager.h"
 #include "Managers/ScoreManager.h"
 #include "Collisions/CollisionManager.h"
-#include "Objects/Player/Player.h"
-#include "Objects/Enemies/EnemyManager.h"
+#include "Objects/Actors/ActorManager.h"
 
 #include "Map/Environment.h"
 #include "Game/Camera.h"
+
+#include "Objects/Actors/Player/Player.h"
+#include "Objects/Actors/Enemies/EnemyManager.h"
 
 // GameInfo
 #include "Map/Map.h"
@@ -54,12 +56,8 @@ void GameData::init()
 	// Collision Trackers
 	collisionManager = new CollisionManager;
 
-	// Player
-	player = new Player(this);
-
-	// Enemies
-	enemies = new EnemyManager(this);
-	enemies->init();
+	// Actors
+	actors = new ActorManager(this);
 
 	// Must be done AFTER everything has been new'd
 	setupObservers();
@@ -75,22 +73,17 @@ void GameData::setupObservers()
 	scoreManager->addObserver(uiManager);
 
 	// Update the UI with the players hp and the stats attack, defence etc.
-	player->addObserver(uiManager);
-	// Update enemy paths
-	player->addObserver(enemies);
-	player->addObserver(Camera::Get()->getShake());
+	actors->player()->addObserver(uiManager);
+	actors->player()->addObserver(Camera::Get()->getShake());
 
 	// Update the score
-	enemies->addObserver(scoreManager);
-	// Player gains exp
-	enemies->addObserver(player);
+	actors->enemies()->addObserver(scoreManager);
 }
 
 
 void GameData::free()
 {
-	delete enemies;
-	delete player;
+	delete actors;
 
 	delete collisionManager;
 	delete environment;

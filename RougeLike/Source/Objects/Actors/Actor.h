@@ -34,7 +34,7 @@ public:
 
 	// Collider
 	void setCollider(Collider* collider) { mCollider = collider; }
-	Collider*	collider() { return mCollider; }
+	Collider* collider() const { return mCollider; }
 
 	// Systems
 	Animator&	animator() { return mAnimator; }

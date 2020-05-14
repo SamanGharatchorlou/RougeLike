@@ -6,7 +6,7 @@
 #include "Collisions/CollisionTracker.h"
 #include "EnemyEnums.h"
 
-#include "Objects/Enemies/EnemyStates/EnemyState.h"
+#include "EnemyStates/EnemyState.h"
 #include "Spawning/EnemySpawner.h"
 
 #include "AI/AIPathMap.h"
@@ -16,7 +16,7 @@ struct GameData;
 class Enemy;
 
 
-class EnemyManager : public Dispatcher, public Observer
+class EnemyManager : public Dispatcher
 {
 public:
 	enum ObjectStatus
@@ -36,7 +36,7 @@ public:
 
 	void clear();
 
-	void init();
+	void init() { };
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
 	void render() const;
@@ -56,6 +56,7 @@ public:
 	void setTarget(RectF* rect) { mTarget = rect; }
 
 	Enemy* getEnemy(unsigned int index) const;
+	std::vector<Enemy*> getActiveEnemies() const { return mActiveEnemies; }
 
 	unsigned int size() const { return mActiveEnemies.size(); }
 

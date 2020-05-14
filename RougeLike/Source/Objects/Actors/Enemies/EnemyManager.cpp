@@ -1,17 +1,17 @@
 #include "pch.h"
-#include "Objects/Enemies/EnemyManager.h"
+#include "Objects/Actors/Enemies/EnemyManager.h"
 
 #include "Game/GameData.h"
 #include "Collisions/CollisionManager.h"
 #include "Map/Environment.h"
 #include "Game/Camera.h"
-#include "Objects/Player/Player.h"
+#include "Objects/Actors/Player/Player.h"
 
-#include "Objects/Enemies/Imp.h"
+#include "Objects/Actors/Enemies/Imp.h"
 
 // State specific updates
-#include "Objects/Enemies/EnemyStates/EnemyRun.h"
-#include "Objects/Enemies/EnemyStates/EnemyAttack.h"
+#include "Objects/Actors/Enemies/EnemyStates/EnemyRun.h"
+#include "Objects/Actors/Enemies/EnemyStates/EnemyAttack.h"
 
 #include "Utilities/Shapes/Square.h"
 
@@ -37,12 +37,6 @@ void EnemyManager::clear()
 	clearAllEnemies();
 	mTarget = nullptr;
 	mPathMap.clear();
-}
-
-
-void EnemyManager::init()
-{
-	addEnemiesToPool(EnemyType::Imp, 50);
 }
 
 
@@ -189,15 +183,6 @@ void EnemyManager::spawnLevel()
 }
 
 
-void EnemyManager::handleEvent(const Event event, EventData& data)
-{
-	if (event == Event::UpdateAIPathMap)
-	{
-		updateEnemyPaths();
-	}
-}
-
-
 // If player moves tile or an enemy moves a tile update this bad boi
 void EnemyManager::updateEnemyPaths()
 {
@@ -324,13 +309,6 @@ void EnemyManager::handleEnemyEvent(Enemy* enemy)
 	EventPacket ep = enemy->popEvent();
 
 	notify(ep.event, *ep.data);
-
-	switch (ep.event)
-	{
-	case Event::EnemyDead:
-		mGameData->collisionManager->removeDefender(CollisionManager::PlayerWeapon_Hit_Enemy, enemy->collider());
-		break;
-	}
 
 	ep.free();
 }

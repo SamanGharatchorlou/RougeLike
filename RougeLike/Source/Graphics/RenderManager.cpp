@@ -7,28 +7,25 @@
 #include "Map/Environment.h"
 #include "UI/UIManager.h"
 
-#include "Objects/Player/Player.h"
-#include "Objects/Enemies/EnemyManager.h"
+#include "Objects/Actors/ActorManager.h"
+#include "Objects/Actors/Player/Player.h"
 #include "Items/Collectables/Collectables.h"
 
 
 RenderManager::RenderManager(GameData* gameData) :
 	mGameData(gameData),
 	mEnvironment(nullptr),
-	mPlayer(nullptr),
-	mEnemies(nullptr),
+	mActors(nullptr),
 	mUIManager(nullptr) { }
 
 
 void RenderManager::render()
 {
-	float renderDepth = mGameData->player->rect().Center().y;
+	float renderDepth = mGameData->actors->player()->rect().Center().y;
 
 	mEnvironment->renderBottomLayer(mGameData->textureManager, renderDepth);
 
-	mEnemies->render();
-
-	mPlayer->render();
+	mActors->render();
 
 	mEnvironment->renderTopLayer(mGameData->textureManager, renderDepth);
 

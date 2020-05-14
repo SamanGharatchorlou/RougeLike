@@ -4,8 +4,8 @@
 #include "Utilities/Shapes/Square.h"
 #include "Utilities/Shapes/Circle.h"
 
-#include "Objects/Enemies/EnemyManager.h"
-#include "Objects/Enemies/Enemy.h"
+#include "Objects/Actors/Enemies/EnemyManager.h"
+#include "Objects/Actors/Enemies/Enemy.h"
 
 #include "Map/Map.h"
 

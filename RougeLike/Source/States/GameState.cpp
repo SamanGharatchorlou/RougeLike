@@ -16,8 +16,9 @@
 #include "Game/Cursor.h"
 #include "Game/Camera.h"
 
-#include "Objects/Player/Player.h"
-#include "Objects/Enemies/EnemyManager.h"
+#include "Objects/Actors/ActorManager.h"
+#include "Objects/Actors/Player/Player.h"
+#include "Objects/Actors/Enemies/EnemyManager.h"
 
 
 GameState::GameState(GameData* gameData, GameController* gameController) : 
@@ -43,11 +44,8 @@ void GameState::init()
 	// UI
 	initUI();
 
-	// Player
-	initPlayer();
-
-	// Enemies
-	initEnemies();
+	// Actors
+	mGameData->actors->init();
 
 	// Start Audio
 	//mGameData->audioManager->playMusic("Ludumdum");
@@ -76,25 +74,25 @@ void GameState::handleInput()
 		mGameController->getStateMachine()->addState(new PauseState(mGameData, mGameController));
 	}
 
-	mGameData->player->handleInput();
+	mGameData->actors->handleInput();
 }
 
 
 void GameState::fastUpdate(float dt)
 {
-	mGameData->player->fastUpdate(dt);
-	mGameData->enemies->fastUpdate(dt);
+	mGameData->actors->fastUpdate(dt);
 
 	Camera::Get()->fastUpdate(dt);
 
-	mGameData->collisionManager->processCollisions();
+	mGameData->collisionManager->fastUpdate();
 }
 
 
 void GameState::slowUpdate(float dt)
 {
-	mGameData->player->slowUpdate(dt);
-	mGameData->enemies->slowUpdate(dt);
+	mGameData->collisionManager->slowUpdate();
+
+	mGameData->actors->slowUpdate(dt);
 
 	mGameData->scoreManager->slowUpdate();
 
@@ -103,13 +101,13 @@ void GameState::slowUpdate(float dt)
 	Camera::Get()->slowUpdate(dt);
 
 	// End current level, close old level exit, open new level entrance
-	if (mGameData->environment->generateNextLevel(mGameData->player->rect().TopLeft()))
+	if (mGameData->environment->generateNextLevel(mGameData->actors->player()->rect().TopLeft()))
 	{
 		nextLevel();
 	}
 
 	// Close off new level entrance, open exit
-	if (mGameData->environment->closeEntrance(mGameData->player->rect().TopLeft()))
+	if (mGameData->environment->closeEntrance(mGameData->actors->player()->rect().TopLeft()))
 	{
 		mGameData->environment->closeLevelEntrace();
 		Camera::Get()->setMapBoundaries(mGameData->environment->boundaries());
@@ -143,8 +141,8 @@ void GameState::resume()
 
 void GameState::exit()
 {
-	mGameData->enemies->clear();
-	mGameData->player->reset();
+	mGameData->actors->enemies()->clear();
+	mGameData->actors->player()->reset();
 	mGameData->environment->restart();
 	mGameData->scoreManager->reset();
 	mGameData->collisionManager->clearColliders();
@@ -172,32 +170,10 @@ void GameState::initMap()
 	mGameData->environment->init();
 }
 
-void GameState::initPlayer()
-{
-	mGameData->player->initCollisions();
-
-	VectorF playerPosition = VectorF(Camera::Get()->getCenter().x, mGameData->environment->size().y / 2.0f);
-	mGameData->player->rectRef().SetLeftCenter(playerPosition);
-
-	// Camera
-	Camera::Get()->follow(&mGameData->player->rectRef());
-}
-
-void GameState::initEnemies()
-{
-	EnemyManager* enemies = mGameData->enemies;
-	enemies->setTarget(&mGameData->player->rectRef());
-	enemies->spawnLevel();
-
-	// init AI pathing
-	enemies->generatePathMap();
-}
-
 void GameState::initRendering()
 {
 	mGameData->renderManager->Set(mGameData->environment);
-	mGameData->renderManager->Set(mGameData->player);
-	mGameData->renderManager->Set(mGameData->enemies);
+	mGameData->renderManager->Set(mGameData->actors);
 	mGameData->renderManager->Set(mGameData->uiManager);
 	mGameData->renderManager->Set(&mCollectables);
 }
@@ -209,8 +185,8 @@ void GameState::nextLevel()
 	Camera::Get()->setMapBoundaries(mGameData->environment->boundaries());
 
 	// end level
-	mGameData->enemies->clearAllEnemies();
-	mGameData->enemies->spawnLevel();
+	mGameData->actors->enemies()->clearAllEnemies();
+	mGameData->actors->enemies()->spawnLevel();
 
 	mCollectables.spawnRandomItem(Collectables::MeleeWeapon);
 }

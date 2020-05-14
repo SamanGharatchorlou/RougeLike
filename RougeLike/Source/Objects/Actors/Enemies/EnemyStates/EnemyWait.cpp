@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "EnemyWait.h"
-#include "Objects/Enemies/Enemy.h"
+#include "../Enemy.h"
 
 
 void EnemyWait::init()

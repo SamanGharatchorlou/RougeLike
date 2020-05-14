@@ -116,7 +116,6 @@ void UIManager::handleInput()
 	debugEditUI();
 #endif
 
-	// Reset all button states
 	for (UILayer* layer : activeScreen->layers())
 	{
 		for (UIElement* element : layer->elements())
@@ -130,6 +129,9 @@ void UIManager::handleInput()
 					button->setPressed(input->isCursorPressed(Cursor::Left));
 					button->setHeld(input->isCursorHeld(Cursor::Left));
 					button->setReleased(input->isCursorReleased(Cursor::Left));
+					
+					if (input->isCursorReleased(Cursor::Left))
+						printf("released\n");
 				}
 				else
 				{
@@ -243,7 +245,7 @@ UIButton* UIManager::findButton(const std::string& id)
 		}
 	}
 
-	DebugPrint(Warning, "No element with the id %s was found on the current active screen\n", id.c_str());
+	// DebugPrint(Warning, "No element with the id %s was found on the current active screen\n", id.c_str());
 	return nullptr;
 }
 

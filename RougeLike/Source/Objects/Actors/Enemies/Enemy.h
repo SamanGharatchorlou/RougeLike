@@ -4,7 +4,7 @@
 #include "EnemyStates/EnemyState.h"
 #include "EnemyEnums.h"
 
-#include "Objects/Actor.h"
+#include "../Actor.h"
 
 #include "Events/Dispatcher.h"
 

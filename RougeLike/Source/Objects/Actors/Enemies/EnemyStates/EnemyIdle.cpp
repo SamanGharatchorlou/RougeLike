@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "EnemyIdle.h"
 
-#include "Objects/Enemies/Enemy.h"
+#include "Objects/Actors/Enemies/Enemy.h"
 
 
 void EnemyIdle::init()

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "EffectHandler.h"
 
-#include "Objects/Actor.h"
+#include "Objects/Actors/Actor.h"
 #include "Effect.h"
 
 

@@ -8,7 +8,7 @@
 #include "Game/Camera.h"
 #include "System/Files/AnimationReader.h"
 
-#include "Properties/PropertyBag.h"
+#include "Objects/Properties/PropertyBag.h"
 
 
 Actor::Actor(GameData* gameData) : mGameData(gameData), mEffects(this)

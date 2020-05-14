@@ -9,14 +9,22 @@ class CollisionManager
 public:
 	enum Tracker
 	{
+		// Slow Updates
+		Cursor_Actors,
+
+		fast_updates,
+
+		// Fast Updates
 		PlayerWeapon_Hit_Enemy,
 		Enemy_Hit_Player,
-		Player_Hit_Collectable
+		Player_Hit_Collectable,
 	};
 
 
 public:
-	void processCollisions();
+	void fastUpdate();
+	void slowUpdate();
+
 	void resetColliders();
 	void clearColliders();
 
@@ -30,6 +38,10 @@ public:
 	void removeAllDefenders(Tracker id);
 	void removeAllAttackers(Tracker id);
 
+
+
 private:
 	std::vector<std::pair<Tracker, CollisionTracker>> mCollisionTrackers;
+
+
 };

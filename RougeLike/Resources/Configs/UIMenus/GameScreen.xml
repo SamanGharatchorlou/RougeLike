@@ -29,8 +29,8 @@
 	</layer>
 
 	<layer>
-		<Button id = "HealButton" x = "34.000" y = "690.000" width = "50.000" height = "50.000" texture = "Main panel"></Button>
-		<Box id = "HealIcon" parent = "HealButton"  x = "0" y = "0" width = "50.000" height = "50.000" texture = "HealIcon"></Box>
+		<Button id = "Heal" x = "34.000" y = "690.000" width = "50.000" height = "50.000" texture = "Main panel"></Button>
+		<Box id = "HealIcon" parent = "Heal"  x = "0" y = "0" width = "50.000" height = "50.000" texture = "HealIcon"></Box>
 	</layer>
 
 

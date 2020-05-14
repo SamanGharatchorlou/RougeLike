@@ -14,7 +14,8 @@
 #include "Graphics/TextureManager.h"
 #include "UI/Screens/CharacterselectionScreen.h"
 
-#include "Objects/Player/Player.h"
+#include "Objects/Actors/ActorManager.h"
+#include "Objects/Actors/Player/Player.h"
 
 
 PreGameState::PreGameState(GameData* gameData, GameController* gameController) :
@@ -34,7 +35,7 @@ void PreGameState::init()
 	
 	mGameData->uiManager->setCursorTexture(mGameData->textureManager->getTexture("UICursor", FileManager::Image_UI));
 
-	mGameData->player->loadWeaponStash();
+	mGameData->actors->player()->loadWeaponStash();
 }
 
 
@@ -47,8 +48,8 @@ void PreGameState::slowUpdate(float dt)
 
 	if (mSelectionScreen->enterGame())
 	{
-		mGameData->player->selectCharacter(mSelectionScreen->selectedCharacter());
-		mGameData->player->selectWeapon(mSelectionScreen->selectedWeapon());
+		mGameData->actors->player()->selectCharacter(mSelectionScreen->selectedCharacter());
+		mGameData->actors->player()->selectWeapon(mSelectionScreen->selectedWeapon());
 
 		mGameController->getStateMachine()->replaceState(new GameState(mGameData, mGameController));
 	}
@@ -75,6 +76,7 @@ void PreGameState::render()
 void PreGameState::initCollisions()
 {
 	CollisionManager* collisions = mGameData->collisionManager;
+	collisions->addNewCollisionTracker(CollisionManager::Cursor_Actors);
 	collisions->addNewCollisionTracker(CollisionManager::PlayerWeapon_Hit_Enemy);
 	collisions->addNewCollisionTracker(CollisionManager::Enemy_Hit_Player);
 	collisions->addNewCollisionTracker(CollisionManager::Player_Hit_Collectable);

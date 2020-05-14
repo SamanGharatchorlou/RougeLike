@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "KnockbackEffect.h"
 
-#include "Objects/Actor.h"
+#include "Objects/Actors/Actor.h"
 #include "Game/GameData.h"
 #include "Collisions/DamageCollider.h"
 #include "Map/Environment.h"

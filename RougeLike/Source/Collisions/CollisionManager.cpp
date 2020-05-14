@@ -2,13 +2,24 @@
 #include "CollisionManager.h"
 
 
-void CollisionManager::processCollisions()
+void CollisionManager::fastUpdate()
 {
 	for (int i = 0; i < mCollisionTrackers.size(); i++)
 	{
-		mCollisionTrackers[i].second.checkCollisions();
+		if(mCollisionTrackers[i].first > Tracker::fast_updates)
+			mCollisionTrackers[i].second.checkCollisions();
 	}
 }
+
+void CollisionManager::slowUpdate()
+{
+	for (int i = 0; i < mCollisionTrackers.size(); i++)
+	{
+		if (mCollisionTrackers[i].first < Tracker::fast_updates)
+			mCollisionTrackers[i].second.checkCollisions();
+	}
+}
+
 
 void CollisionManager::resetColliders()
 {

@@ -35,9 +35,14 @@ public:
 	virtual bool hasText() const { return false; }
 	virtual Type type() const { return Type::Button; }
 
+	bool isActive() const { return mIsActive; }
+	void setActive(bool state) { mIsActive = state; }
+
 private:
 	Texture* mDefault;
 	Texture* mHighlighted;
 
 	Button mButton;
+
+	bool mIsActive;
 };

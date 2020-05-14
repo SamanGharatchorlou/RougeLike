@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Objects/Actor.h"
+class Actor;
 
 class Effect
 {

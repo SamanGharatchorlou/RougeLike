@@ -2,7 +2,7 @@
 #include "EnemyPatrol.h"
 
 #include "EnemyIdle.h"
-#include "Objects/Enemies/Enemy.h"
+#include "../Enemy.h"
 
 #include "Map/Map.h"
 

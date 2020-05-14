@@ -3,7 +3,7 @@
 #include "Events/Dispatcher.h"
 #include "Events/Observer.h"
 
-#include "Objects/Actor.h"
+#include "Objects/Actors/Actor.h"
 #include "States/State.h"
 #include "States/StateMachine.h"
 
@@ -20,7 +20,7 @@ class Map;
 class Weapon;
 
 
-class Player : public Dispatcher, public Observer, public Actor
+class Player : public Dispatcher, public Actor
 {
 public:
 	Player(GameData* gameData);
@@ -34,8 +34,6 @@ public:
 
 	void reset();
 
-	void handleEvent(const Event event, EventData& data) override;
-
 	void initCollisions();
 
 	void loadWeaponStash();
@@ -43,6 +41,8 @@ public:
 
 	void selectCharacter(const std::string& character);
 	void selectWeapon(const std::string& weaponName);
+
+	StatManager& statManager() { return mStatManager; }
 
 
 private:
@@ -66,7 +66,7 @@ private:
 
 	AbilityManager mAbilities;
 
-	StatManager statManager;
+	StatManager mStatManager;
 	WeaponStash weaponStash;
 
 	Vector2D<int> tileIndex;

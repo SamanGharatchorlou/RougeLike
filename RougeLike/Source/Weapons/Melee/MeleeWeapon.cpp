@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "MeleeWeapon.h"
 
-#include "Objects/Player/PlayerPropertyBag.h"
+#include "Objects/Actors/Player/PlayerPropertyBag.h"
 #include "Weapons/WeaponData.h"
 
 #include "Game/Cursor.h"

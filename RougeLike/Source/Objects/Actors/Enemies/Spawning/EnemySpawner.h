@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Items/Spawner.h"
-#include "Objects/Enemies/EnemyEnums.h"
+#include "Objects/Actors/Enemies/EnemyEnums.h"
 
 class EnemyManager;
 class Shape;

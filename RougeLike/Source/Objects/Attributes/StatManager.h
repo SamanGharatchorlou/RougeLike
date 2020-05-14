@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Objects/Player/PlayerPropertyBag.h"
+#include "Objects/Actors/Player/PlayerPropertyBag.h"
 
 class StatManager
 {

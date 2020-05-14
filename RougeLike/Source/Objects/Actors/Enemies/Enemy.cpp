@@ -11,7 +11,7 @@
 #include "Map/Environment.h"
 #include "Collisions/DamageCollider.h"
 
-#include "Objects/Player/Player.h"
+#include "Objects/Actors/Player/Player.h"
 #include "Objects/Effects/KnockbackEffect.h"
 #include "Objects/Effects/SlowEffect.h"
 

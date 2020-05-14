@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "SlowEffect.h"
 
-#include "Objects/Actor.h"
+#include "Objects/Actors/Actor.h"
 #include "Objects/Properties/Property.h"
 
 

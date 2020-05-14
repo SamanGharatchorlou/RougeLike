@@ -13,8 +13,8 @@
 #include "Graphics/RenderManager.h"
 #include "UI/UIManager.h"
 #include "Managers/ScoreManager.h"
-#include "Objects/Player/Player.h"
-#include "Objects/Enemies/EnemyManager.h"
+#include "Objects/Actors/Player/Player.h"
+#include "Objects/Actors/Enemies/EnemyManager.h"
 
 #include "Map/Map.h"
 #include "Game/Camera.h"
@@ -143,9 +143,9 @@ void GameController::run()
 		{
 			mGameData.inputManager->processInputEvent(event);
 		}
-		
-		mGameStateMachine.getActiveState().handleInput();
+
 		mGameData.uiManager->handleInput();
+		mGameStateMachine.getActiveState().handleInput();
 
 #if _DEBUG // show mouse position in screen title
 		VectorF pos = mGameData.inputManager->cursorPosition();

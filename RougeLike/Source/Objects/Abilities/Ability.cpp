@@ -2,7 +2,7 @@
 
 #include "Ability.h"
 
-#include "Objects/Actor.h"
+#include "Objects/Actors/Actor.h"
 
 #include "Objects/Effects/SlowEffect.h"
 #include "Objects/Effects/HealEffect.h"

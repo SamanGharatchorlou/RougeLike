@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "EnemyDead.h"
 
-#include "Objects/Enemies/Enemy.h"
+#include "Objects/Actors/Enemies/Enemy.h"
 
 #include "Game/Camera.h"
 #include "Graphics/Texture.h"
@@ -15,10 +15,11 @@ void EnemyDead::init()
 {
 	mEnemy->animator().selectAnimation("Dead");
 
-	// Let everyone know he has died
+	// Let everyone know its died
 	const float score = mEnemy->getPropertyValue("Score");
 	const float exp = mEnemy->getPropertyValue("Experience");
-	EnemyDeadEvent* dataPtr = new EnemyDeadEvent(score, exp);
+
+	EnemyDeadEvent* dataPtr = new EnemyDeadEvent(mEnemy, score, exp);
 	mEnemy->pushEvent(EventPacket(Event::EnemyDead, dataPtr));
 }
 

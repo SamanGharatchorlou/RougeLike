@@ -24,8 +24,11 @@
 
 
 Player::Player(GameData* gameData) :
-	Actor(gameData), mStateMachine(new NullState),
-	mWeapon(nullptr), mWallCollisions(this) { }
+	Actor(gameData), 
+	mStateMachine(new NullState),
+	mAbilities(mGameData),
+	mWeapon(nullptr), 
+	mWallCollisions(this) { }
 
 
 void Player::init(const std::string& characterConfig)
@@ -42,6 +45,7 @@ void Player::init(const std::string& characterConfig)
 	SlowAbility* slowAbility = new SlowAbility(0.25F);
 	HealAbility* healAbility = new HealAbility(50.0f);
 
+	// TODO: Get these strings from a set so they match up with the UI?
 	mAbilities.add("Slow", slowAbility);
 	mAbilities.add("Heal", healAbility);
 
@@ -52,6 +56,10 @@ void Player::init(const std::string& characterConfig)
 void Player::handleInput()
 {
 	mPhysics.handleInput(mGameData->inputManager);
+	mAbilities.handleInput();
+
+	if (mGameData->inputManager->isCursorPressed(Cursor::Left))
+		attack();
 }
 
 
@@ -80,9 +88,6 @@ void Player::slowUpdate(float dt)
 	mAnimator.selectAnimation(animation);
 
 	mGameData->collisionManager->removeAllAttackers(CollisionManager::PlayerWeapon_Hit_Enemy);
-
-	if (mGameData->inputManager->isCursorPressed(Cursor::Left))
-		attack();
 
 	if (weapon()->isAttacking())
 		updateAttackingWeapon();
@@ -140,16 +145,6 @@ void Player::selectWeapon(const std::string& weaponName)
 }
 
 
-void Player::handleEvent(const Event event, EventData& data)
-{
-	if (event == Event::EnemyDead)
-	{
-		EnemyDeadEvent eventData = static_cast<EnemyDeadEvent&>(data);
-		statManager.gainExp(eventData.mExp);
-	}
-}
-
-
 void Player::render()
 {
 	// Flip sprite
@@ -184,7 +179,7 @@ void Player::initPropertBag(const std::string& config)
 	propertyBag->readProperties(config);
 	setPropertyBag(propertyBag);
 
-	statManager.init(propertyBag);
+	mStatManager.init(propertyBag);
 }
 
 void Player::initCollider()

@@ -48,5 +48,8 @@ void UIButton::setHeld(bool isHeld)
 void UIButton::setReleased(bool isReleased) 
 { 
 	mButton.setReleased(isReleased);
+
+	if (isReleased)
+		mIsActive = true;
 }
 

@@ -10,7 +10,7 @@
 
 #include "Collisions/DamageCollider.h"
 
-#include "Objects/Player/PlayerPropertyBag.h"
+#include "Objects/Actors/Player/PlayerPropertyBag.h"
 
 #include "Map/Map.h"
 

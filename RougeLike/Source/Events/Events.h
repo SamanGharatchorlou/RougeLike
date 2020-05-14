@@ -2,6 +2,7 @@
 
 #include "Objects/Attributes/Health.h"
 
+class Enemy;
 
 enum class Event
 {
@@ -46,8 +47,9 @@ struct EventPacket
 
 struct EnemyDeadEvent : public EventData
 {
-	EnemyDeadEvent(const float score, const float exp) : mScore(score), mExp(exp) { }
+	EnemyDeadEvent(const Enemy* enemy, const float score, const float exp) : mEnemy(enemy), mScore(score), mExp(exp) { }
 	~EnemyDeadEvent() { }
+	const Enemy* mEnemy;
 	const float mScore;
 	const float mExp;
 };

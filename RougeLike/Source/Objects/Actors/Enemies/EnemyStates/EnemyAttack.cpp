@@ -2,7 +2,7 @@
 #include "EnemyAttack.h"
 
 #include "Collisions/Collider.h"
-#include "Objects/Enemies/Enemy.h"
+#include "Objects/Actors/Enemies/Enemy.h"
 
 
 EnemyAttack::EnemyAttack(Enemy* enemy) :
