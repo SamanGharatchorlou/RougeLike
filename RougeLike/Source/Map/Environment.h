@@ -31,6 +31,8 @@ public:
 
 	int mapLevel() const { return mMapLevel; }
 
+	VectorF toWorldCoords(VectorF cameraCoords);
+
 private:
 	void buildEntrance(float offset);
 	void buildLevel();

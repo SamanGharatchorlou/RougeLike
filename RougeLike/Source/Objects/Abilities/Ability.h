@@ -15,12 +15,18 @@ public:
 
 
 public:
-	Ability() { }
+	Ability() : mActivated(false) { }
 	virtual ~Ability() { }
 
 	virtual void activate(Actor* target) = 0;
 
 	virtual const TargetType targetType() const = 0;
+
+	void setActive(bool isActive) { mActivated = isActive; }
+	bool hasBeenActivated() const { return mActivated; }
+
+protected:
+	bool mActivated;
 };
 
 

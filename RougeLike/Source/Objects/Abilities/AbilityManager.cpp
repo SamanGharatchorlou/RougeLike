@@ -13,34 +13,37 @@
 #include "Objects/Actors/ActorManager.h"
 
 #include "Collisions/Collider.h"
-
+#include "Map/Environment.h"
 
 
 void AbilityManager::handleInput()
 {
-	mActiveAbility = nullptr;
-
 	for (std::unordered_map<std::string, Ability*>::iterator iter = mAbilities.begin(); iter != mAbilities.end(); iter++)
 	{
 		UIButton* button = mGameData->uiManager->findButton(iter->first);
 
-		if (button != nullptr)
+		if (button && button->isActive() && !inSelectionMode())
 		{
-			//printf("button\n");
-		}
-
-		if (button)
-		{
-			if (button->isActive())
-			{
-				mActiveAbility = iter->second;
-			}
+			mActiveAbility = iter->second;
+			printf("ability %s selected\n", iter->first.c_str());
 		}
 	}
+}
 
+
+void AbilityManager::slowUpdate()
+{
 	if (inSelectionMode())
 	{
 		activateActiveAbility();
+	}
+
+	// in selection mode
+	if (mActiveAbility && mActiveAbility->hasBeenActivated())
+	{
+		// get events from current active ability
+		// do other things
+		endSelectionMode();
 	}
 }
 
@@ -55,9 +58,8 @@ void AbilityManager::activateActiveAbility()
 		if (mGameData->inputManager->isCursorPressed(Cursor::Left))
 		{
 			VectorF cursorPosition = mGameData->inputManager->cursorPosition();
-
+			cursorPosition = mGameData->environment->toWorldCoords(cursorPosition);
 			std::vector<Actor*> enemies = mGameData->actors->getAllEnemies();
-
 
 			for (int i = 0; i < enemies.size(); i++)
 			{
@@ -65,6 +67,7 @@ void AbilityManager::activateActiveAbility()
 				if (enemies[i]->collider()->contains(cursorPosition))
 				{
 					activate(enemies[i]);
+					break;
 				}
 			}
 		}
@@ -75,32 +78,38 @@ void AbilityManager::activateActiveAbility()
 	{
 		activate(mGameData->actors->playerActor());
 	}
-
-
 	default:
 		break;
 	}
-
-
 }
 
 
-
-void AbilityManager::slowUpdate()
+void AbilityManager::endSelectionMode()
 {
-	// in selection mode
-	if (mActiveAbility)
+	// Deactivate button
+	for (std::unordered_map<std::string, Ability*>::iterator iter = mAbilities.begin(); iter != mAbilities.end(); iter++)
 	{
+		if (iter->second == mActiveAbility)
+		{
+			UIButton* button = mGameData->uiManager->findButton(iter->first);
 
+			if (button && button->isActive())
+			{
+				button->setActive(false);
+			}
+		}
 	}
-}
 
+	mActiveAbility->setActive(false);
+	mActiveAbility = nullptr;
+}
 
 
 void AbilityManager::add(std::string name, Ability* ability)
 {
 	mAbilities[name] = ability;
 }
+
 
 void AbilityManager::select(const std::string& ability)
 {
@@ -116,6 +125,7 @@ void AbilityManager::select(const std::string& ability)
 		mActiveAbility = nullptr;
 	}
 }
+
 
 void AbilityManager::activate(Actor* target)
 {

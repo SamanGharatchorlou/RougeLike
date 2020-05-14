@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Events/Dispatcher.h"
+
 class GameData;
 class Ability;
 class Actor;
@@ -7,7 +9,7 @@ class InputManager;
 class UIManager;
 
 
-class AbilityManager
+class AbilityManager : public Dispatcher
 {
 public:
 	AbilityManager(GameData* gameData) : mGameData(gameData), mActiveAbility(nullptr) { }
@@ -20,6 +22,7 @@ public:
 
 	void activate(Actor* target);
 
+	void endSelectionMode();
 	bool inSelectionMode() const { return mActiveAbility != nullptr; }
 
 

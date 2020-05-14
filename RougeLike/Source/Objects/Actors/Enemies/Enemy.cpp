@@ -11,6 +11,7 @@
 #include "Map/Environment.h"
 #include "Collisions/DamageCollider.h"
 
+#include "Objects/Actors/ActorManager.h"
 #include "Objects/Actors/Player/Player.h"
 #include "Objects/Effects/KnockbackEffect.h"
 #include "Objects/Effects/SlowEffect.h"
@@ -120,14 +121,10 @@ void Enemy::resolvePlayerWeaponCollisions()
 	{
 		// Apply knockback
 		const DamageCollider* collider = static_cast<const DamageCollider*>(mCollider->getOtherCollider());
-		//KnockbackEffect* effect = new KnockbackEffect(mGameData->player->position(), collider->knockbackforce());
-		
-		SlowEffect* effect = new SlowEffect(0.25f);
-		
+		KnockbackEffect* effect = new KnockbackEffect(mGameData->actors->player()->position(), collider->knockbackforce());
 		mEffects.addEffect(effect);
 
 		replaceState(EnemyState::Hit);
-		printf("hit\n");
 	}
 }
 

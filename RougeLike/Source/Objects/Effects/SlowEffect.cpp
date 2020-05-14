@@ -21,10 +21,12 @@ void SlowEffect::init()
 	mActor->animator().setSpeedFactor(mSlowFactor);
 }
 
+
 void SlowEffect::slowUpdate(float dt)
 {
 
 }
+
 
 void SlowEffect::exit()
 {

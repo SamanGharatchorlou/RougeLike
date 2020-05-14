@@ -13,6 +13,7 @@ void SlowAbility::activate(Actor* actor)
 {
 	SlowEffect* slowEffect = new SlowEffect(mSlowFactor);
 	actor->addEffect(slowEffect);
+	mActivated = true;
 }
 
 
@@ -20,4 +21,5 @@ void HealAbility::activate(Actor* actor)
 {
 	HealEffect* healEffect = new HealEffect(mHeal);
 	actor->addEffect(healEffect);
+	mActivated = true;
 }

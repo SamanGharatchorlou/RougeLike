@@ -197,6 +197,7 @@ void InputManager::bindDefaultButtons()
 	mButtons[index++].bindToKey(Button::Quit);
 	mButtons[index++].bindToKey(Button::Enter);
 	mButtons[index++].bindToKey(Button::Ctrl);
+	mButtons[index++].bindToKey(Button::Space);
 
 	// Keys
 	mButtons[index++].bindToKey(Button::E);

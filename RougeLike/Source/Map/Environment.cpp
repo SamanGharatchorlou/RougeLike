@@ -180,8 +180,7 @@ void Environment::buildLevel()
 
 	int mapWidth = randomNumberBetween(mapMinX, mapMaxX);
 
-	Index index(mEntrace->xCount() - 1, 0.0f);
-	float offset = mEntrace->tileRect(index).RightPoint();
+	float offset = mEntrace->getLastRect().RightPoint();;
 
 	buildRandomLevel(mapWidth, mMapSize.y, offset);
 }
@@ -249,3 +248,14 @@ void Environment::closeLevel()
 	mPrimaryMap->setTileType(Index(0, (mPrimaryMap->yCount() / 2) + 1), MapTile::Floor);
 }
 
+
+VectorF Environment::toWorldCoords(VectorF cameraCoords)
+{
+	float xOffset = mEntrace->getLastRect().RightPoint();
+
+	VectorF cameraPosition = Camera::Get()->getTopLeftF();
+
+	float xDiff = cameraPosition.x - xOffset;
+
+	return cameraCoords + cameraPosition;// VectorF(xOffset - xDiff, 0.0f);
+}

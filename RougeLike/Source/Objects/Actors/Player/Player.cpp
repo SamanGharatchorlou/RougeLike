@@ -48,8 +48,6 @@ void Player::init(const std::string& characterConfig)
 	// TODO: Get these strings from a set so they match up with the UI?
 	mAbilities.add("Slow", slowAbility);
 	mAbilities.add("Heal", healAbility);
-
-	mAbilities.select("Heal");
 }
 
 
@@ -58,7 +56,10 @@ void Player::handleInput()
 	mPhysics.handleInput(mGameData->inputManager);
 	mAbilities.handleInput();
 
-	if (mGameData->inputManager->isCursorPressed(Cursor::Left))
+	if (mGameData->inputManager->isPressed(Button::Space))
+		mAbilities.endSelectionMode();
+
+	if (mGameData->inputManager->isCursorPressed(Cursor::Left) && !mAbilities.inSelectionMode())
 		attack();
 }
 
@@ -83,6 +84,7 @@ void Player::slowUpdate(float dt)
 {
 	Actor::slowUpdate(dt);
 	mWeapon->slowUpdate(dt);
+	mAbilities.slowUpdate();
 
 	std::string animation = mPhysics.isMoving() ? "Run" : "Idle";
 	mAnimator.selectAnimation(animation);
@@ -97,15 +99,15 @@ void Player::slowUpdate(float dt)
 
 	updateCurrentTile();
 
-	if (mGameData->inputManager->isPressed(Button::E))
-	{
-		printf("pressed E\n");
-		mAbilities.activate(this);
+	//if (mGameData->inputManager->isPressed(Button::E))
+	//{
+	//	printf("pressed E\n");
+	//	mAbilities.activate(this);
 
-		Health* hp = static_cast<Health*>(propertyBag()->get("Health"));
-		SetHealthBarEvent event(*hp);
-		notify(Event::SetHealth, event);
-	}
+	//	Health* hp = static_cast<Health*>(propertyBag()->get("Health"));
+	//	SetHealthBarEvent event(*hp);
+	//	notify(Event::SetHealth, event);
+	//}
 }
 
 

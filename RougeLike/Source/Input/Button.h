@@ -31,6 +31,7 @@ public:
 		Quit = SDL_QUIT,
 		Enter = SDLK_RETURN,
 		Ctrl = SDLK_LCTRL,
+		Space = SDLK_SPACE,
 
 		// Keys
 		E = SDLK_e,
