@@ -40,7 +40,6 @@ public:
 	std::vector<UIElement*> children() const { return mChildren; }
 
 	virtual Type type() const { return Type::Element; }
-	virtual bool isButton() const { return false; }
 	virtual bool hasText() const { return false; }
 
 	virtual void render() { };

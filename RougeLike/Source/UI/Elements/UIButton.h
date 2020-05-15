@@ -11,17 +11,26 @@ class UIButton : public UIBox
 public:
 	struct Data : public UIBox::Data
 	{
-		Texture* highlightedTexture;
+		Texture* selectedTexture;
+		Texture* hoveringTexture;
+	};
+
+	enum State
+	{
+		None,
+		Hovering,
+		Pressed,
+		Active
 	};
 
 
 public:
-	UIButton();
 	UIButton(Data& data);
 	~UIButton() { }
 
 	void reset();
 
+	void setState(State state);
 	void setHeld(bool isHeld);
 	void setPressed(bool isPressed);
 	void setReleased(bool isReleased);
@@ -31,18 +40,18 @@ public:
 	inline bool isHeld() const { return mButton.isHeld(); }
 	inline int holdCount() const { return mButton.getHeldFrames(); }
 
-	virtual bool isButton() const { return true; }
 	virtual bool hasText() const { return false; }
 	virtual Type type() const { return Type::Button; }
 
-	bool isActive() const { return mIsActive; }
-	void setActive(bool state) { mIsActive = state; }
+	bool isActive() const { return mState == State::Active; }
+	void deactivate();
 
 private:
 	Texture* mDefault;
-	Texture* mHighlighted;
+	Texture* mSelected;
+	Texture* mHovered;
 
 	Button mButton;
 
-	bool mIsActive;
+	State mState;
 };

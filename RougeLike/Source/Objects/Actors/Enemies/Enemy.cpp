@@ -241,9 +241,9 @@ EnemyState::Type Enemy::state() const
 }
 
 
-const EventPacket Enemy::popEvent()
+EventPacket Enemy::popEvent()
 {
-	const EventPacket event = mEvents.front();
+	EventPacket event = mEvents.front();
 	mEvents.pop();
 	return event;
 }

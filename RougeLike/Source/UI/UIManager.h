@@ -32,6 +32,8 @@ public:
 	Screen* getActiveScreen() { return activeScreen; }
 	std::string typeToString(Screen::Type screenType);
 
+	bool isUsingUI() const;
+
 	void setCursorTexture(Texture* texture);
 
 private:

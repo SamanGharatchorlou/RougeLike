@@ -7,7 +7,7 @@ class Ability;
 class Actor;
 class InputManager;
 class UIManager;
-
+ 
 
 class AbilityManager : public Dispatcher
 {
@@ -25,9 +25,10 @@ public:
 	void endSelectionMode();
 	bool inSelectionMode() const { return mActiveAbility != nullptr; }
 
+	bool hasEvent() const { return mEvents.size() > 0; }
+	EventPacket popEvent();
 
 private:
-
 	void activateActiveAbility();
 
 
@@ -36,4 +37,6 @@ private:
 
 	std::unordered_map<std::string, Ability*> mAbilities;
 	Ability* mActiveAbility;
+
+	std::queue<EventPacket> mEvents;
 };

@@ -2,6 +2,8 @@
 
 #include "Objects/Effects/Effect.h"
 
+#include "Events/Events.h"
+
 class Actor;
 
 class Ability
@@ -25,8 +27,13 @@ public:
 	void setActive(bool isActive) { mActivated = isActive; }
 	bool hasBeenActivated() const { return mActivated; }
 
+	bool hasEvent() const { return mEvents.size() > 0; }
+	EventPacket popEvent();
+
 protected:
 	bool mActivated;
+
+	std::queue<EventPacket> mEvents;
 };
 
 

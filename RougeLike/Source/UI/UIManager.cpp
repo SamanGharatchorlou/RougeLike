@@ -120,23 +120,21 @@ void UIManager::handleInput()
 	{
 		for (UIElement* element : layer->elements())
 		{
-			if (element->isButton())
+			if (element->type() == UIElement::Type::Button)
 			{
 				UIButton* button = static_cast<UIButton*>(element);
 
 				if (button->isPointInBounds(input->cursorPosition()))
 				{
+					button->setState(UIButton::State::Hovering);
+
 					button->setPressed(input->isCursorPressed(Cursor::Left));
 					button->setHeld(input->isCursorHeld(Cursor::Left));
 					button->setReleased(input->isCursorReleased(Cursor::Left));
-					
-					if (input->isCursorReleased(Cursor::Left))
-						printf("released\n");
 				}
 				else
 				{
 					button->reset();
-					button->setHeld(false);
 				}
 			}
 		}
@@ -237,7 +235,7 @@ UIButton* UIManager::findButton(const std::string& id)
 		{
 			if (element->id() == id)
 			{
-				if (element->isButton())
+				if (element->type() == UIElement::Type::Button)
 					return static_cast<UIButton*>(element);
 				else
 					DebugPrint(Log, "Attemping to use UIManager::findButton on a none button element, ID: '%s'\n", id.c_str());
@@ -245,8 +243,27 @@ UIButton* UIManager::findButton(const std::string& id)
 		}
 	}
 
-	// DebugPrint(Warning, "No element with the id %s was found on the current active screen\n", id.c_str());
 	return nullptr;
+}
+
+
+bool UIManager::isUsingUI() const
+{
+	for (UILayer* layer : activeScreen->layers())
+	{
+		for (UIElement* element : layer->elements())
+		{
+			if (element->type() == UIElement::Type::Button)
+			{
+				UIButton* button = static_cast<UIButton*>(element);
+
+				if (button->isPressed())
+					return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 

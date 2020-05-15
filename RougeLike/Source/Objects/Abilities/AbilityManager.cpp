@@ -25,7 +25,6 @@ void AbilityManager::handleInput()
 		if (button && button->isActive() && !inSelectionMode())
 		{
 			mActiveAbility = iter->second;
-			printf("ability %s selected\n", iter->first.c_str());
 		}
 	}
 }
@@ -37,6 +36,15 @@ void AbilityManager::slowUpdate()
 	{
 		activateActiveAbility();
 	}
+
+	for (std::unordered_map<std::string, Ability*>::iterator iter = mAbilities.begin(); iter != mAbilities.end(); iter++)
+	{
+		while (iter->second->hasEvent())
+		{
+			mEvents.push(iter->second->popEvent());
+		}
+	}
+
 
 	// in selection mode
 	if (mActiveAbility && mActiveAbility->hasBeenActivated())
@@ -59,8 +67,8 @@ void AbilityManager::activateActiveAbility()
 		{
 			VectorF cursorPosition = mGameData->inputManager->cursorPosition();
 			cursorPosition = mGameData->environment->toWorldCoords(cursorPosition);
-			std::vector<Actor*> enemies = mGameData->actors->getAllEnemies();
 
+			std::vector<Actor*> enemies = mGameData->actors->getAllEnemies();
 			for (int i = 0; i < enemies.size(); i++)
 			{
 				// activate ability on first enemy selected
@@ -95,7 +103,7 @@ void AbilityManager::endSelectionMode()
 
 			if (button && button->isActive())
 			{
-				button->setActive(false);
+				button->deactivate();
 			}
 		}
 	}
@@ -130,4 +138,13 @@ void AbilityManager::select(const std::string& ability)
 void AbilityManager::activate(Actor* target)
 {
 	mActiveAbility->activate(target);
+}
+
+
+EventPacket AbilityManager::popEvent()
+{
+	ASSERT(Error, mEvents.size() > 0, "Ability has no event when attempting to pop one.\n");
+	EventPacket event = mEvents.front();
+	mEvents.pop();
+	return event;
 }

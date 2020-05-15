@@ -294,16 +294,27 @@ void ScreenDecoder::fillButtonData(UIButton::Data& data, Attributes& attributes)
 	// Box component
 	fillBoxData(data, attributes);
 
-	// Button may have 2 textures on/off
+	// Button may have up to 3 textures defaul, hovering, active
 	if (attributes.contains("textureSelected"))
 	{
 		std::string textureLabel = attributes.getString("textureSelected");
-		data.highlightedTexture = tm->getTexture(textureLabel, FileManager::Image_UI);
+		data.selectedTexture = tm->getTexture(textureLabel, FileManager::Image_UI);
 	}
 	else
 	{
-		data.highlightedTexture = data.texture;
+		data.selectedTexture = data.texture;
 	}
+
+	if (attributes.contains("textureHovering"))
+	{
+		std::string textureLabel = attributes.getString("textureHovering");
+		data.hoveringTexture = tm->getTexture(textureLabel, FileManager::Image_UI);
+	}
+	else
+	{
+		data.hoveringTexture = data.texture;
+	}
+
 
 	// Id
 	data.id = attributes.getString("id");

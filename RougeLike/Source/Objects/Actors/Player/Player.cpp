@@ -6,6 +6,7 @@
 #include "Game/Cursor.h"
 #include "Input/InputManager.h"
 #include "Audio/AudioManager.h"
+#include "UI/UIManager.h"
 
 #include "Collisions/CollisionManager.h"
 #include "Collisions/DamageCollider.h"
@@ -59,7 +60,8 @@ void Player::handleInput()
 	if (mGameData->inputManager->isPressed(Button::Space))
 		mAbilities.endSelectionMode();
 
-	if (mGameData->inputManager->isCursorPressed(Cursor::Left) && !mAbilities.inSelectionMode())
+	if (mGameData->inputManager->isCursorPressed(Cursor::Left) && 
+		!mGameData->uiManager->isUsingUI() && !mAbilities.inSelectionMode())
 		attack();
 }
 
@@ -86,6 +88,14 @@ void Player::slowUpdate(float dt)
 	mWeapon->slowUpdate(dt);
 	mAbilities.slowUpdate();
 
+	// Handle ability events
+	if (mAbilities.hasEvent())
+	{
+		EventPacket ep = mAbilities.popEvent();
+		notify(ep.event, *ep.data);
+		ep.free();
+	}
+
 	std::string animation = mPhysics.isMoving() ? "Run" : "Idle";
 	mAnimator.selectAnimation(animation);
 
@@ -98,16 +108,6 @@ void Player::slowUpdate(float dt)
 		processHit();
 
 	updateCurrentTile();
-
-	//if (mGameData->inputManager->isPressed(Button::E))
-	//{
-	//	printf("pressed E\n");
-	//	mAbilities.activate(this);
-
-	//	Health* hp = static_cast<Health*>(propertyBag()->get("Health"));
-	//	SetHealthBarEvent event(*hp);
-	//	notify(Event::SetHealth, event);
-	//}
 }
 
 

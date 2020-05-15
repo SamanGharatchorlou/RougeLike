@@ -43,7 +43,7 @@ public:
 	EnemyState::Type state() const;
 
 	// Events
-	const EventPacket popEvent();
+	EventPacket popEvent();
 	void pushEvent(const EventPacket event) { mEvents.push(event); }
 	bool hasEvent() const { return mEvents.size() > 0; }
 	 
