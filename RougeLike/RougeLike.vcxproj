@@ -44,6 +44,7 @@
     <ClCompile Include="Source\Collisions\CollisionManager.cpp" />
     <ClCompile Include="Source\Objects\Actors\Actor.cpp" />
     <ClCompile Include="Source\Objects\Properties\PropertyBag.cpp" />
+    <ClCompile Include="Source\UI\Elements\UISlider.cpp" />
     <ClCompile Include="Source\UI\Screens\SettingsScreen.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Circle.cpp.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Shape.cpp" />
@@ -131,6 +132,8 @@
     <ClInclude Include="Source\Animations\Animator.h" />
     <ClInclude Include="Source\Audio\SoundController.h" />
     <ClInclude Include="Source\Collisions\WallCollisionTracker.h" />
+    <ClInclude Include="Source\Events\LocalDispatcher.h" />
+    <ClInclude Include="Source\Events\LocalObserver.h" />
     <ClInclude Include="Source\Objects\Abilities\Ability.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityManager.h" />
     <ClInclude Include="Source\Objects\Actors\Actor.h" />
@@ -155,6 +158,7 @@
     <ClInclude Include="Source\Collisions\CollisionManager.h" />
     <ClInclude Include="Source\Objects\Properties\PropertyBag.h" />
     <ClInclude Include="Source\Objects\Properties\PropertyBase.h" />
+    <ClInclude Include="Source\UI\Elements\UISlider.h" />
     <ClInclude Include="Source\UI\Screens\ScreenHeaders.h" />
     <ClInclude Include="Source\UI\Screens\SettingsScreen.h" />
     <ClInclude Include="Source\Utilities\Shapes\Circle.h" />

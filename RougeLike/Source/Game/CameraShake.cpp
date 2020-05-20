@@ -29,9 +29,9 @@ void CameraShake::update(float dt)
 }
 
 
-void CameraShake::handleEvent(const Event event, EventData& data)
+void CameraShake::handleEvent(EventData& data)
 {
-	if (event == Event::Trauma)
+	if (data.eventType == Event::Trauma)
 	{
 		TraumaEvent eventData = static_cast<TraumaEvent&>(data);
 

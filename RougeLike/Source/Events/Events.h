@@ -14,11 +14,13 @@ enum class Event
 
 	IncrementMapLevel,
 
+	SetGameVolume,
+	SetMusicVolume,
+
 	UpdateTextBox,
-#if UI_EDITOR
 	MoveUIElement,
 	ChangeUIElementSize,
-#endif
+	SetUIRect,
 
 	Trauma,
 
@@ -29,17 +31,19 @@ enum class Event
 struct EventData
 {
 	virtual ~EventData() = 0;
+
+	void setEventType(Event event) { eventType = event; }
+	Event eventType = Event::None;
 };
 
 
 struct EventPacket
 {
-	EventPacket(const Event theEvent, EventData* dataPtr) : event(theEvent), data(dataPtr) { }
+	EventPacket(EventData* dataPtr) : data(dataPtr) { }
 	~EventPacket() { }
 
 	void free();
 
-	const Event event;
 	EventData* data;
 };
 
@@ -47,7 +51,7 @@ struct EventPacket
 
 struct EnemyDeadEvent : public EventData
 {
-	EnemyDeadEvent(const Enemy* enemy, const float score, const float exp) : mEnemy(enemy), mScore(score), mExp(exp) { }
+	EnemyDeadEvent(const Enemy* enemy, const float score, const float exp) : mEnemy(enemy), mScore(score), mExp(exp) { eventType = Event::EnemyDead; }
 	~EnemyDeadEvent() { }
 	const Enemy* mEnemy;
 	const float mScore;
@@ -57,7 +61,7 @@ struct EnemyDeadEvent : public EventData
 
 struct SetHealthBarEvent : public EventData
 {
-	SetHealthBarEvent(Health hp) : health(hp) { }
+	SetHealthBarEvent(Health hp) : health(hp) { eventType = Event::SetHealth; }
 	~SetHealthBarEvent() { }
 	const Health health;
 };
@@ -65,14 +69,14 @@ struct SetHealthBarEvent : public EventData
 
 struct IncrementLevelEvent : public EventData
 {
-	IncrementLevelEvent() { };
+	IncrementLevelEvent() { eventType = Event::IncrementMapLevel; };
 	~IncrementLevelEvent() { }
 };
 
 
 struct UpdateTextBoxEvent : public EventData
 {
-	UpdateTextBoxEvent(const std::string& id, int value) : mId(id), mValue(value) { }
+	UpdateTextBoxEvent(const std::string& id, int value) : mId(id), mValue(value) { eventType = Event::UpdateTextBox; }
 	~UpdateTextBoxEvent() { }
 
 	const std::string mId;
@@ -82,7 +86,8 @@ struct UpdateTextBoxEvent : public EventData
 
 struct TraumaEvent : public EventData
 {
-	TraumaEvent(int trauma) : mTrauma(trauma) { }
+	TraumaEvent(int trauma) : mTrauma(trauma) { eventType = Event::Trauma; }
+	~TraumaEvent() { }
 
 	const int mTrauma;
 };
@@ -90,18 +95,32 @@ struct TraumaEvent : public EventData
 
 struct UpdateAIPathMapEvent : public EventData
 {
-	UpdateAIPathMapEvent() { };
+	UpdateAIPathMapEvent() { eventType = Event::UpdateAIPathMap; };
 	~UpdateAIPathMapEvent() { }
 };
 
 
-#if UI_EDITOR
 struct EditUIRectEvent : public EventData
 {
 	EditUIRectEvent(const std::string& id, VectorF change) : mId(id), mChange(change) { };
 	~EditUIRectEvent() { };
 
 	const std::string mId;
-	VectorF mChange;
+	const VectorF mChange;
 };
-#endif
+
+struct SetUIRectEvent : public EventData
+{
+	SetUIRectEvent(const std::string& id, RectF rect) : mId(id), mRect(rect) { eventType = Event::SetUIRect; }
+	~SetUIRectEvent() { }
+
+	const std::string mId;
+	const RectF mRect;
+};
+
+struct SetVolumeEvent : public EventData
+{
+	SetVolumeEvent(float volume) : mVolume(volume) { } 
+
+	const float mVolume;
+};

@@ -101,9 +101,9 @@ std::vector<Actor*> ActorManager::getAllEnemies()
 }
 
 
-void ActorManager::handleEvent(const Event event, EventData& data)
+void ActorManager::handleEvent(EventData& data)
 {
-	if (event == Event::EnemyDead)
+	if (data.eventType == Event::EnemyDead)
 	{
 		EnemyDeadEvent eventData = static_cast<EnemyDeadEvent&>(data);
 
@@ -113,7 +113,7 @@ void ActorManager::handleEvent(const Event event, EventData& data)
 
 	}
 
-	if (event == Event::UpdateAIPathMap)
+	if (data.eventType == Event::UpdateAIPathMap)
 	{
 		mEnemies->updateEnemyPaths();
 	}

@@ -38,7 +38,7 @@ void Environment::init()
 	buildLevel();
 
 	IncrementLevelEvent event;
-	notify(Event::IncrementMapLevel, event);
+	notify(event);
 }
 
 
@@ -51,7 +51,7 @@ void Environment::nextLevel()
 
 	mMapLevel++;
 	IncrementLevelEvent event;
-	notify(Event::IncrementMapLevel, event);
+	notify(event);
 }
 
 

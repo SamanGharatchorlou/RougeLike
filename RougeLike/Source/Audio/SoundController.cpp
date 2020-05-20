@@ -4,8 +4,11 @@
 #include "Audio.h"
 
 
-SoundController::SoundController()
+SoundController::SoundController() : gameVolume(-1.0f), musicVolume(-1.0f)
 {
+	// Defualt to 8 channels
+	Mix_AllocateChannels(MIX_CHANNELS);
+
 	for (int i = 0; i < MIX_CHANNELS; i++)
 	{
 		channels[i] = Free;
@@ -181,4 +184,50 @@ bool SoundController::isPlaying(Audio* audio, void* sourceId)
 	}
 
 	return false;
+}
+
+
+void SoundController::setSoundVolume(float volume)
+{
+	volume = clamp(volume, 0.0f, 1.0f);
+	int mixVolume = (int)(MIX_MAX_VOLUME * volume);
+	Mix_Volume(-1, mixVolume);
+}
+
+
+float SoundController::getSoundVolume() const
+{
+	return (float)Mix_Volume(-1, -1) / (float)MIX_MAX_VOLUME;
+}
+
+
+void SoundController::setMusicVolume(float volume)
+{
+	volume = clamp(volume, 0.0f, 1.0f);
+	int mixVolume = (int)(MIX_MAX_VOLUME * volume);
+	Mix_VolumeMusic(mixVolume);
+}
+
+
+float SoundController::getMusicVolume() const
+{
+	return (float)Mix_VolumeMusic(-1) / (float)MIX_MAX_VOLUME;
+}
+
+
+// also need to work this for music??
+void SoundController::toggleMute()
+{
+	// Audio on
+	if (Mix_VolumeMusic(-1) == 0 && Mix_Volume(-1, -1) == 0)
+	{
+		Mix_Volume(-1, gameVolume);
+		//MixVol
+	}
+	// Audio off
+	else
+	{ 
+		gameVolume = Mix_Volume(-1, -1);
+		Mix_Volume(-1, 0);
+	}
 }

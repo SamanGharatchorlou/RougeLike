@@ -2,6 +2,7 @@
 
 #include "UI/Screens/Screen.h"
 #include "Events/Observer.h"
+#include "Events/Dispatcher.h"
 
 struct GameData;
 class Texture;
@@ -9,7 +10,7 @@ class Cursor;
 class UIElement;
 class UIButton;
 
-class UIManager : public Observer
+class UIManager : public Observer, public Dispatcher
 {
 public:
 	UIManager(GameData* gameData);
@@ -21,10 +22,10 @@ public:
 
 	void init();
 	void handleInput();
-	void update();
+	void update(float dt);
 	void render();
 
-	void handleEvent(const Event event, EventData& data) override;
+	void handleEvent(EventData& data) override;
 	
 	UIElement* findElement(const std::string& id);
 	UIButton* findButton(const std::string& id);
@@ -35,6 +36,18 @@ public:
 	bool isUsingUI() const;
 
 	void setCursorTexture(Texture* texture);
+
+
+private:
+	// Event handling functions
+	void updateTextBox(UpdateTextBoxEvent& eventData);
+	void setHealth(SetHealthBarEvent& eventData);
+	void moveElement(EditUIRectEvent& eventData);
+	void setElementSize(EditUIRectEvent& eventData);
+	void setRect(SetUIRectEvent& eventData);
+	//void setMusicVolume(SetVolumeEvent& eventData);
+	//void setGameVolume(SetVolumeEvent& eventData);
+
 
 private:
 	GameData* mGameData;

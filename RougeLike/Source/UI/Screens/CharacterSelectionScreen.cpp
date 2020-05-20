@@ -16,7 +16,7 @@ CharacterSelectionScreen::CharacterSelectionScreen(GameData* gameData) :
 }
 
 
-void CharacterSelectionScreen::update()
+void CharacterSelectionScreen::update(float dt)
 {
 	UIButton* button = mGameData->uiManager->findButton("PlayButton");
 

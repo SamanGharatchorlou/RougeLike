@@ -101,6 +101,7 @@
     <ClCompile Include="Source\Objects\Actors\Actor.cpp" />
     <ClCompile Include="Source\Objects\Actors\Physics.cpp" />
     <ClCompile Include="Source\Objects\Actors\ActorManager.cpp" />
+    <ClCompile Include="Source\UI\Elements\UISlider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -224,6 +225,9 @@
     <ClInclude Include="Source\Objects\Actors\Actor.h" />
     <ClInclude Include="Source\Objects\Actors\Physics.h" />
     <ClInclude Include="Source\Objects\Actors\ActorManager.h" />
+    <ClInclude Include="Source\UI\Elements\UISlider.h" />
+    <ClInclude Include="Source\Events\LocalObserver.h" />
+    <ClInclude Include="Source\Events\LocalDispatcher.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

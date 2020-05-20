@@ -103,7 +103,7 @@ void AbilityManager::endSelectionMode()
 
 			if (button && button->isActive())
 			{
-				button->deactivate();
+				button->setActive(false);
 			}
 		}
 	}
@@ -138,13 +138,4 @@ void AbilityManager::select(const std::string& ability)
 void AbilityManager::activate(Actor* target)
 {
 	mActiveAbility->activate(target);
-}
-
-
-EventPacket AbilityManager::popEvent()
-{
-	ASSERT(Error, mEvents.size() > 0, "Ability has no event when attempting to pop one.\n");
-	EventPacket event = mEvents.front();
-	mEvents.pop();
-	return event;
 }

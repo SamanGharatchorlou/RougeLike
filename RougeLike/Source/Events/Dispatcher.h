@@ -10,7 +10,7 @@ public:
 	void addObserver(Observer* observer);
 	void removeObserver(Observer* observer);
 
-	void notify(const Event type, EventData& event);
+	void notify(EventData& event);
 
 
 private:

@@ -12,7 +12,7 @@ public:
 
 	void slowUpdate();
 
-	void handleEvent(const Event event, EventData& data) override;
+	void handleEvent(EventData& data) override;
 
 	int score() { return mScore; }
 

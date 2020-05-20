@@ -20,10 +20,10 @@ void Dispatcher::removeObserver(Observer* observer)
 }
 
 
-void Dispatcher::notify(const Event event, EventData& data)
+void Dispatcher::notify(EventData& data)
 {
 	for (unsigned int i = 0; i < observers.size(); i++)
 	{
-		observers[i]->handleEvent(event, data);
+		observers[i]->handleEvent(data);
 	}
 }

@@ -65,7 +65,7 @@ void EnemyManager::slowUpdate(float dt)
 
 		// Handle enemy messages
 		while (enemy->hasEvent())
-			handleEnemyEvent(enemy);
+			handleEnemyEvent(enemy->popEvent());
 
 		// Clear out dead enemies
 		if (enemy->state() == EnemyState::None)
@@ -304,11 +304,8 @@ void EnemyManager::clearOccupiedTileInfo()
 }
 
 
-void EnemyManager::handleEnemyEvent(Enemy* enemy)
+void EnemyManager::handleEnemyEvent(EventPacket eventPacket)
 {
-	EventPacket ep = enemy->popEvent();
-
-	notify(ep.event, *ep.data);
-
-	ep.free();
+	notify(*eventPacket.data);
+	eventPacket.free();
 }

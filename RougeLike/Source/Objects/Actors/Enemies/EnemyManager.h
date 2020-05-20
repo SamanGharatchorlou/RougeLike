@@ -41,7 +41,7 @@ public:
 	void fastUpdate(float dt);
 	void render() const;
 
-	void handleEvent(const Event event, EventData& data);
+	void handleEvent(EventData& data);
 
 	void generatePathMap();
 	void updateEnemyPaths();
@@ -68,7 +68,7 @@ private:
 	void clearOccupiedTileInfo();
 	void updateOccupiedTiles();
 
-	void handleEnemyEvent(Enemy* enemy);
+	void handleEnemyEvent(EventPacket eventPacket);
 
 	Collider* getAttackingCollider(Enemy* enemy) const;
 
@@ -84,7 +84,6 @@ private:
 
 	EnemySpawner mSpawner;
 
-
-	// TEMP 
+// TMEP
 	int spawnCount = 0;
 };

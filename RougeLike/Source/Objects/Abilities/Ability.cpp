@@ -36,6 +36,6 @@ void HealAbility::activate(Actor* actor)
 
 	Health* hp = static_cast<Health*>(actor->getProperty("Health"));
 	SetHealthBarEvent* dataPtr = new SetHealthBarEvent(*hp);
-	mEvents.push(EventPacket(Event::SetHealth, dataPtr));
+	mEvents.push(EventPacket(dataPtr));
 }
 

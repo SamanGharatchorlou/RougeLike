@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Events/Dispatcher.h"
+#include "Events/LocalDispatcher.h"
 
 class GameData;
 class Ability;
@@ -9,7 +9,7 @@ class InputManager;
 class UIManager;
  
 
-class AbilityManager : public Dispatcher
+class AbilityManager
 {
 public:
 	AbilityManager(GameData* gameData) : mGameData(gameData), mActiveAbility(nullptr) { }
@@ -25,9 +25,9 @@ public:
 	void endSelectionMode();
 	bool inSelectionMode() const { return mActiveAbility != nullptr; }
 
-	bool hasEvent() const { return mEvents.size() > 0; }
-	EventPacket popEvent();
-
+	bool hasEvent() const { return mEvents.hasEvent(); }
+	EventPacket popEvent() { return mEvents.pop(); }
+	
 private:
 	void activateActiveAbility();
 
@@ -38,5 +38,5 @@ private:
 	std::unordered_map<std::string, Ability*> mAbilities;
 	Ability* mActiveAbility;
 
-	std::queue<EventPacket> mEvents;
+	LocalDispatcher mEvents;
 };

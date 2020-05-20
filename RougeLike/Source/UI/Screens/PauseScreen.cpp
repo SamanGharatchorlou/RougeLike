@@ -9,13 +9,22 @@
 
 
 PauseScreen::PauseScreen(GameData* gameData) :
-	Screen(gameData), 
-	mResumeGame(false), mQuitGame(false), mRestartGame(false) { }
+	Screen(gameData) 
+{
+	enter();
+}
 
 
+void PauseScreen::enter()
+{
+	mRestartGame = false;
+	mQuitGame = false;
+	mRestartGame = false;
+	mOpenSettings = false;
+}
 
 
-void PauseScreen::update()
+void PauseScreen::update(float dt)
 {
 	updateBoxTexture("ResumeButton", "ResumePanel");
 	updateBoxTexture("SettingsButton", "SettingsPanel");
@@ -95,4 +104,7 @@ void PauseScreen::exit()
 	mResumeGame = false;
 	mQuitGame = false;
 	mRestartGame = false;
+	mOpenSettings = false;
 }
+
+

@@ -48,7 +48,9 @@ void GameState::init()
 	mGameData->actors->init();
 
 	// Start Audio
-	//mGameData->audioManager->playMusic("Ludumdum");
+	mGameData->audioManager->playMusic("Ludumdum");
+	mGameData->audioManager->setMusicVolume(0.08f);
+	mGameData->audioManager->setSoundVolume(0.4f);
 
 	// Set cursor
 	mGameData->uiManager->setCursorTexture(mGameData->textureManager->getTexture("GameCursor", FileManager::Image_UI));

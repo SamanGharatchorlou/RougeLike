@@ -6,7 +6,7 @@
 
 #include "../Actor.h"
 
-#include "Events/Dispatcher.h"
+#include "Events/LocalDispatcher.h"
 
 
 struct GameData;
@@ -43,9 +43,9 @@ public:
 	EnemyState::Type state() const;
 
 	// Events
-	EventPacket popEvent();
+	EventPacket popEvent() { return mEvents.pop(); }
 	void pushEvent(const EventPacket event) { mEvents.push(event); }
-	bool hasEvent() const { return mEvents.size() > 0; }
+	bool hasEvent() const { return mEvents.hasEvent(); }
 	 
 	// Map
 	void setMap(AIPathMap* map) { mMap = map; }
@@ -72,13 +72,13 @@ protected:
 
 protected:
 	AIPathMap* mMap;
-	
+
+	LocalDispatcher mEvents;
 	StateMachine<EnemyState> mStateMachine;
 
 	const RectF* mAttackTarget;
 	const RectF* mPositionTarget;
 
-	std::queue<EventPacket> mEvents;
 
 	VectorF mColliderRatio;
 };

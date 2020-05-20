@@ -26,7 +26,7 @@ public:
 	void set(std::vector<UILayer*> layers);
 	std::vector<UILayer*> layers() const { return mLayers; }
 
-	virtual void update() = 0;
+	virtual void update(float dt) = 0;
 	virtual void enter() = 0;
 	virtual void exit() = 0;
 	virtual void render();

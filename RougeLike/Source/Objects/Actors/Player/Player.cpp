@@ -92,7 +92,7 @@ void Player::slowUpdate(float dt)
 	if (mAbilities.hasEvent())
 	{
 		EventPacket ep = mAbilities.popEvent();
-		notify(ep.event, *ep.data);
+		notify(*ep.data);
 		ep.free();
 	}
 
@@ -219,7 +219,7 @@ void Player::processHit()
 	hp->takeDamage(damageCollider->damage());
 
 	SetHealthBarEvent event(*hp);
-	notify(Event::SetHealth, event);
+	notify(event);
 
 	// Apply knockback
 	mEffects.addEffect(new KnockbackEffect(damageCollider));
@@ -261,6 +261,6 @@ void Player::updateCurrentTile()
 		tileIndex = currentTile;
 
 		UpdateAIPathMapEvent updateAIPathMapEvent;
-		notify(Event::UpdateAIPathMap, updateAIPathMapEvent);
+		notify(updateAIPathMapEvent);
 	}
 }

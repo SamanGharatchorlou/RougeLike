@@ -103,9 +103,7 @@ void Enemy::clear()
 {
 	// Clear statemachine states (except null state at i = 0)
 	mStateMachine.clearStates();
-
-	while (mEvents.size() > 0)
-		mEvents.pop();
+	mEvents.clear();
 
 	mMap = nullptr;
 	mAttackTarget = nullptr;
@@ -238,12 +236,4 @@ EnemyState::Type Enemy::state() const
 		DebugPrint(Warning, "Enemy state machine has no state, size = 0\n");
 		return EnemyState::None;
 	}
-}
-
-
-EventPacket Enemy::popEvent()
-{
-	EventPacket event = mEvents.front();
-	mEvents.pop();
-	return event;
 }

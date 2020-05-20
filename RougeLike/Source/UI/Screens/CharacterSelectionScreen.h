@@ -11,7 +11,7 @@ public:
 
 	void enter() override { }
 	void exit() override { };
-	void update() override;
+	void update(float dt) override;
 
 	const std::string& selectedCharacter() const { return mSelectedCharacter; }
 	const std::string& selectedWeapon() const { return mSelectedWeapon; }

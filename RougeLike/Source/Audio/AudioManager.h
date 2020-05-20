@@ -3,9 +3,6 @@
 #include "SoundController.h"
 
 
-
-
-
 class AudioManager
 {
 public:
@@ -17,6 +14,7 @@ public:
 
 	Audio* getAudio(const std::string& label) const;
 
+	// Playback
 	void playMusic(const std::string& label);
 	void playSound(const std::string& label, void* sourceId);
 
@@ -24,14 +22,16 @@ public:
 	void resume(const std::string& label, void* sourceId);
 	void stop(const std::string& label, void* sourceId);
 
-
 	bool isPlaying(const std::string& label, void* sourced);
 
-	// audio control
-	void setVolume(int theVolume);
+	// volume
+	void setSoundVolume(float volume);
+	float soundVolume() const;
 
-	void pauseMusic() const;
-	void toggleMute() const;
+	void setMusicVolume(float volume);
+	float musicVolume() const;
+
+	void toggleMute();
 
 
 private:
@@ -45,6 +45,4 @@ private:
 	SoundController mSoundController;
 
 	std::unordered_map<std::string, Audio*> mAudioBank;
-
-	int volume;
 };

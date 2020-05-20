@@ -27,7 +27,7 @@ public:
 	std::vector<Actor*> getAllEnemies();
 	std::vector<Actor*> getAllActors();
 
-	void handleEvent(const Event event, EventData& data) override;
+	void handleEvent(EventData& data) override;
 
 
 private:

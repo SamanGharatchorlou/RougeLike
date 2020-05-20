@@ -63,6 +63,8 @@ void UIManager::selectScreen(Screen::Type screenType)
 		}
 	}
 
+	// Input is only registed for the active screen so refresh this.
+	handleInput();
 	ASSERT(Error, activeScreen != nullptr, "No screen was selected, invalid screenType %d\n", screenType);
 }
 
@@ -142,10 +144,10 @@ void UIManager::handleInput()
 }
 
 
-void UIManager::update() 
+void UIManager::update(float dt) 
 { 
-	if(activeScreen)
-		activeScreen->update(); 
+	if (activeScreen)
+		activeScreen->update(dt);
 }
 
 
@@ -266,84 +268,50 @@ bool UIManager::isUsingUI() const
 	return false;
 }
 
-
-void UIManager::handleEvent(Event event, EventData& data)
+void UIManager::updateTextBox(UpdateTextBoxEvent& eventData)
 {
-	switch (event)
+	UIElement* element = findElement(eventData.mId);
+
+	if (element != nullptr && element->type() == UIElement::Type::TextBox)
+	{
+		UITextBox* text = static_cast<UITextBox*>(element);
+		std::string score = std::to_string(eventData.mValue);
+
+		text->setText(score);
+	}
+}
+
+
+void UIManager::handleEvent(EventData& data)
+{
+	switch (data.eventType)
 	{
 	case Event::UpdateTextBox:
 	{
-		UpdateTextBoxEvent eventData = static_cast<UpdateTextBoxEvent&>(data);
-
-		UIElement* element = findElement(eventData.mId);
-
-		if (element != nullptr && element->type() == UIElement::Type::TextBox)
-		{
-			UITextBox* text = static_cast<UITextBox*>(element);
-			std::string score = std::to_string(eventData.mValue);
-
-			text->setText(score);
-		}
-
+		updateTextBox(static_cast<UpdateTextBoxEvent&>(data));
 		break;
 	}
 	case Event::SetHealth:
 	{
-		SetHealthBarEvent eventData = static_cast<SetHealthBarEvent&>(data);
-
-		UIElement* redHealth = findElement("RedHealth");
-		UIElement* blackHealth = findElement("BlackHealth");
-
-		if (redHealth != nullptr && redHealth->type() == UIElement::Type::Box &&
-			blackHealth != nullptr && blackHealth->type() == UIElement::Type::Box)
-		{
-			UIBox* redHealthBar = static_cast<UIBox*>(redHealth);
-			UIBox* blackHealthBar = static_cast<UIBox*>(blackHealth);
-
-			RectF hpRect = redHealthBar->rect();
-			RectF maxHpRect = blackHealthBar->rect();
-
-			hpRect.SetWidth(maxHpRect.Width() * eventData.health.getPercentage());
-
-			redHealthBar->setRect(hpRect);
-		}
-
+		setHealth(static_cast<SetHealthBarEvent&>(data));
 		break;
 	}
-# if UI_EDITOR
 	case Event::MoveUIElement:
 	{
-		EditUIRectEvent eventData = static_cast<EditUIRectEvent&>(data);
-		UIElement* element = findElement(eventData.mId);
-
-		if (element != nullptr)
-		{
-			VectorF movement = eventData.mChange;
-			RectF rect = element->rect();
-			rect = rect.Translate(movement);
-			element->setRect(rect);
-		}
-
+		moveElement(static_cast<EditUIRectEvent&>(data));
 		break;
 	}
 
 	case Event::ChangeUIElementSize:
 	{
-		EditUIRectEvent eventData = static_cast<EditUIRectEvent&>(data);
-		UIElement* element = findElement(eventData.mId);
-
-		if (element != nullptr)
-		{
-			VectorF sizeChange = eventData.mChange;
-			RectF rect = element->rect();
-			rect.SetSize(rect.Size() + sizeChange);
-
-			element->setRect(rect);
-		}
-
+		setElementSize(static_cast<EditUIRectEvent&>(data));
 		break;
 	}
-#endif
+	case Event::SetUIRect:
+	{
+		setRect(static_cast<SetUIRectEvent&>(data));
+		break;
+	}
 	default:
 		break;
 	}
@@ -358,6 +326,65 @@ void UIManager::setCursorTexture(Texture* texture)
 
 
 // --- Private Functions --- //
+
+
+// Event handling functions
+void UIManager::setHealth(SetHealthBarEvent& eventData)
+{
+	UIElement* redHealth = findElement("RedHealth");
+	UIElement* blackHealth = findElement("BlackHealth");
+
+	if (redHealth != nullptr && redHealth->type() == UIElement::Type::Box &&
+		blackHealth != nullptr && blackHealth->type() == UIElement::Type::Box)
+	{
+		UIBox* redHealthBar = static_cast<UIBox*>(redHealth);
+		UIBox* blackHealthBar = static_cast<UIBox*>(blackHealth);
+
+		RectF hpRect = redHealthBar->rect();
+		RectF maxHpRect = blackHealthBar->rect();
+
+		hpRect.SetWidth(maxHpRect.Width() * eventData.health.getPercentage());
+
+		redHealthBar->setRect(hpRect);
+	}
+}
+void UIManager::moveElement(EditUIRectEvent& eventData)
+{
+	UIElement* element = findElement(eventData.mId);
+
+	if (element != nullptr)
+	{
+		VectorF movement = eventData.mChange;
+		RectF rect = element->rect();
+		rect = rect.Translate(movement);
+		element->setRect(rect);
+	}
+}
+void UIManager::setElementSize(EditUIRectEvent& eventData)
+{
+	UIElement* element = findElement(eventData.mId);
+
+	if (element != nullptr)
+	{
+		VectorF sizeChange = eventData.mChange;
+		RectF rect = element->rect();
+		rect.SetSize(rect.Size() + sizeChange);
+
+		element->setRect(rect);
+	}
+
+}
+void UIManager::setRect(SetUIRectEvent& eventData)
+{
+	UIElement* element = findElement(eventData.mId);
+
+	if (element != nullptr)
+	{
+		element->setRect(eventData.mRect);
+	}
+}
+
+
 
 #if UI_EDITOR
 void UIManager::debugEditUI()
@@ -443,9 +470,11 @@ void UIManager::debugEditUI()
 		EditUIRectEvent event(elementId, change);
 
 		if (input->isHeld(Button::Ctrl))
-			handleEvent(Event::ChangeUIElementSize, event);
+			event.setEventType(Event::ChangeUIElementSize);
 		else
-			handleEvent(Event::MoveUIElement, event);
+			event.setEventType(Event::MoveUIElement);
+
+		handleEvent(event);
 	}
 
 	if (input->isPressed(Button::Enter) && !elementId.empty())

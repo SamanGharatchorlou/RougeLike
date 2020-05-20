@@ -13,7 +13,7 @@ public:
 
 	void setRect(RectF rect) { cameraRect = rect; }
 
-	void handleEvent(const Event event, EventData& data) override;
+	void handleEvent(EventData& data) override;
 
 	float angle();
 	VectorF offset();

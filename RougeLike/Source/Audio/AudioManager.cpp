@@ -62,40 +62,30 @@ Audio* AudioManager::getAudio(const std::string& label) const
 
 
 // -- Audio Control -- //
-void AudioManager::toggleMute() const
+void AudioManager::toggleMute()
 {
-	if (Mix_VolumeMusic(-1) == 0 && Mix_Volume(-1, -1) == 0)
-	{
-		Mix_VolumeMusic(volume);
-		Mix_Volume(-1, volume);
-		DebugPrint(Log, "Audio ON\n");
-	}
-	else
-	{
-		Mix_VolumeMusic(0);
-		Mix_Volume(-1, 0);
-		DebugPrint(Log, "Audio OFF\n");
-	}
-}
-
-void AudioManager::pauseMusic() const
-{
-	//for (auto iter = mAudioBank.begin(); iter != mAudioBank.end(); iter++)
-	//{
-	//	if (iter->second->isMusic)
-	//	{
-	//		iter->second->pause();
-	//		break;
-	//	}
-	//}
+	mSoundController.toggleMute();
 }
 
 
-void AudioManager::setVolume(int theVolume)
+void AudioManager::setSoundVolume(float volume)
 {
-	volume = clamp(theVolume, 0, MIX_MAX_VOLUME);
-	Mix_VolumeMusic(volume);
-	Mix_Volume(-1, volume);
+	mSoundController.setSoundVolume(volume);
+}
+
+float AudioManager::soundVolume() const
+{
+	return mSoundController.getSoundVolume();
+}
+
+void AudioManager::setMusicVolume(float volume)
+{
+	mSoundController.setMusicVolume(volume);
+}
+
+float AudioManager::musicVolume() const
+{
+	return mSoundController.getMusicVolume();
 }
 
 
@@ -209,4 +199,3 @@ bool AudioManager::loadAudio(Audio* audio, const std::string& name, const std::s
 		return false;
 	}
 }
-

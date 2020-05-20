@@ -17,7 +17,8 @@ void UILayer::render()
 {
 	for (unsigned int i = 0; i < mElements.size(); i++)
 	{
-		mElements[i]->render();
+		if(mElements[i]->isVisible())
+			mElements[i]->render();
 	}
 }
 

@@ -21,19 +21,19 @@ void ScoreManager::slowUpdate()
 	if (updateUI)
 	{
 		UpdateTextBoxEvent scoreEvent("Score val", mScore);
-		notify(Event::UpdateTextBox, scoreEvent);
+		notify(scoreEvent);
 
 		UpdateTextBoxEvent mapLevelEvent("MapLevel val", mMapLevel);
-		notify(Event::UpdateTextBox, mapLevelEvent);
+		notify(mapLevelEvent);
 	}
 
 	updateUI = false;
 }
 
 
-void ScoreManager::handleEvent(const Event event, EventData& data)
+void ScoreManager::handleEvent(EventData& data)
 {
-	switch (event)
+	switch (data.eventType)
 	{
 	case Event::EnemyDead:
 	{

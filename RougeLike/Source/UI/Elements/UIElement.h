@@ -20,6 +20,7 @@ public:
 		std::string id;
 		RectF rect;
 		const UIElement* parent = nullptr;
+		bool show = true;
 	};
 
 public:
@@ -44,6 +45,9 @@ public:
 
 	virtual void render() { };
 
+	void setVisibility(bool visible) { mShow = visible; }
+	bool isVisible() const { return mShow; }
+
 protected:
 	std::string mId;
 
@@ -52,4 +56,6 @@ protected:
 	const UIElement* mParent;
 
 	std::vector<UIElement*> mChildren;
+
+	bool mShow;
 };

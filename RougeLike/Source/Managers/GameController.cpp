@@ -88,7 +88,6 @@ GameController::~GameController()
 	// delete globals
 	Renderer::Get()->free();
 
-
 	// quit SDL subsystems
 	Mix_Quit();
 	IMG_Quit();
@@ -168,7 +167,7 @@ void GameController::run()
 		}
 
 		mGameData.audioManager->slowUpdate();
-		mGameData.uiManager->update();
+		mGameData.uiManager->update(dt);
 
 		mGameStateMachine.getActiveState().render();
 

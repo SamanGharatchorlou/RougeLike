@@ -27,8 +27,6 @@ private:
 	void initCamera();
 	void initUI();
 	void initMap();
-	void initPlayer();
-	void initEnemies();
 	void initRendering();
 
 	void nextLevel();

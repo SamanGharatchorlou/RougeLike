@@ -18,6 +18,15 @@ public:
 
 	bool isPlaying(Audio* audio, void* sourceId);
 
+	void setSoundVolume(float volume);
+	float getSoundVolume() const;
+
+	void setMusicVolume(float volume);
+	float getMusicVolume() const;
+
+	void toggleMute();
+
+
 private:
 	enum Channelstate
 	{
@@ -34,6 +43,9 @@ private:
 
 	// Audio file
 	Audio* playingAudio[MIX_CHANNELS];
+
+	int gameVolume;
+	int musicVolume;
 
 #if _DEBUG
 	Timer<float> pauseTimers[MIX_CHANNELS];

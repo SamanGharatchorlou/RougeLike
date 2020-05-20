@@ -48,10 +48,17 @@ void UIButton::setState(State state)
 }
 
 
-void UIButton::deactivate()
+void UIButton::setActive(bool state)
 {
-	mState = State::None;
-	mTexture = mDefault;
+	if (state)
+	{
+		setState(State::Active);
+	}
+	else
+	{
+		mState = State::None;
+		mTexture = mDefault;
+	}
 }
 
 

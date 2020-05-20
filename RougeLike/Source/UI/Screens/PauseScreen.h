@@ -9,9 +9,9 @@ class PauseScreen : public Screen
 public:
 	PauseScreen(GameData* gameData);
 
-	void update() override;
+	void update(float dt) override;
 	
-	void enter() override { }
+	void enter() override;
 	void exit() override;
 
 	bool quitGame() const { return mQuitGame; }
