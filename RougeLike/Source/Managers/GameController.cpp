@@ -118,17 +118,18 @@ void GameController::run()
 
 	SDL_Event event;
 
-#if PRINT_FRAMERATE
+#if PRINT_FRAMERATE_EVERY
 	float fpsSum = 0.0f;
 	int fpsCounter = 0;
-	float totalFrameTime = 0;
+	float totalFrameTime = 0.0f;
 	int totalFrames = 0;
+	fpsTimer.start();
 #endif
 
 	// main game loop
 	while (quit == false)
 	{
-#if FRAMERATE_CAP
+#if FRAMERATE_CAP || PRINT_FRAMERATE_EVERY
 		capTimer.start();
 #endif
 
@@ -172,20 +173,21 @@ void GameController::run()
 		mGameStateMachine.getActiveState().render();
 
 
-#if PRINT_FRAMERATE
+#if PRINT_FRAMERATE_EVERY
 		fpsSum += frameTimer.getMilliseconds();
 		fpsCounter++;
 		
 		totalFrameTime += frameTimer.getMilliseconds();
 		totalFrames++;
 
-		if (fpsCounter == 100)
+		if (fpsTimer.getMilliseconds() > PRINT_FRAMERATE_EVERY)
 		{
 			fpsSum /= fpsCounter;
 
-			printf("framerate %f | Running fps average %f\n", 1000 / fpsSum, 1000 / (totalFrameTime / totalFrames));
+			DebugPrint(Log, "framerate %f | Running fps average %f\n", 1000 / fpsSum, 1000 / (totalFrameTime / totalFrames));
 			fpsSum == 0.0;
 			fpsCounter = 0;
+			fpsTimer.restart();
 		}
 #endif
 

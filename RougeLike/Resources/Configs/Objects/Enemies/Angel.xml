@@ -2,21 +2,21 @@
 <Stats>
 	<!-- Physics -->
 	<Force>500</Force>
-	<MaxVelocity>70</MaxVelocity>
+	<MaxVelocity>110</MaxVelocity>
 
 	<!-- General Attributes -->
-	<Health>250</Health>
+	<Health>150</Health>
 
 	<!-- Data values -->
-	<Score>50></Score>
+	<Score>75></Score>
 	<Experience>2000</Experience>
 
 	<!-- Attack -->
 	<Damage>10</Damage>
 	<AttackSpeed>1</AttackSpeed>
 	<TackleDistance>2000</TackleDistance>
-	<TackleMovementSpeed>200</TackleMovementSpeed>
-	<KnockbackDistance >200</KnockbackDistance>
+	<TackleMovementSpeed>300</TackleMovementSpeed>
+	<KnockbackDistance >100</KnockbackDistance>
 
 	<!-- Patrol -->
 	<SightRange>50000</SightRange>

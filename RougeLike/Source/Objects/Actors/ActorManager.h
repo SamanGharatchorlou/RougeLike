@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Events/Observer.h"
+#include "Events/Dispatcher.h"
 
 class GameData;
 class Player;
 class EnemyManager;
 class Actor;
 
-class ActorManager : public Observer
+class ActorManager : public Observer, public Dispatcher
 {
 public:
 	ActorManager(GameData* gameData);
@@ -28,6 +29,7 @@ public:
 	std::vector<Actor*> getAllActors();
 
 	void handleEvent(EventData& data) override;
+	void sendEvent(EventPacket event);
 
 
 private:

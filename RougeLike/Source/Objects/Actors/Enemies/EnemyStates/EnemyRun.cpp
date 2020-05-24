@@ -32,17 +32,26 @@ void EnemyRun::slowUpdate(float dt)
 	{
 		if (mPath.size() > 0)
 		{
-			VectorF targetPosition = mAIPathing.position(mPath.top());
-
-			if (distanceSquared(mEnemy->position(), targetPosition) < 5.0f)
-				mPath.pop();
-
-			if (!inChaseRange())
+			if (!inChaseRange()) // Out of chase range
+			{
 				mEnemy->replaceState(EnemyState::Patrol);
+			}
+			else // Keep chasing!
+			{
+				VectorF targetPosition = mAIPathing.position(mPath.top());
+				if (distanceSquared(mEnemy->position(), targetPosition) < 5.0f)
+				{
+					mPath.pop();
+
+					// Random chance to update own path
+					if (randomNumberBetween(0, 100) >= 75)
+						updatePath();
+				}
+			}
 		}
 		else // Not in attack range and no path left
 		{
-			mEnemy->addState(EnemyState::Wait);
+			updatePath();
 		}
 	}
 	else // Target has been reached, attack!
@@ -73,7 +82,7 @@ void EnemyRun::resume()
 }
 
 
-// Generate a path to 
+// Generate a new path
 void EnemyRun::updatePath()
 {
 	mPath = mAIPathing.findPath(mEnemy->position(), mEnemy->attackTargetRect()->Center());

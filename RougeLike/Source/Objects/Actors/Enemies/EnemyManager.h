@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Events/Observer.h"
-#include "Events/Dispatcher.h"
+#include "Events/LocalDispatcher.h"
 
 #include "Collisions/CollisionTracker.h"
 #include "EnemyEnums.h"
@@ -16,7 +15,7 @@ struct GameData;
 class Enemy;
 
 
-class EnemyManager : public Dispatcher
+class EnemyManager
 {
 public:
 	enum ObjectStatus
@@ -34,27 +33,33 @@ public:
 	EnemyManager(GameData* gameData);
 	~EnemyManager();
 
-	void clear();
-
+	// Core
 	void init() { };
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
-	void render() const;
+	void render();
 
-	void handleEvent(EventData& data);
-
-	void generatePathMap();
-	void updateEnemyPaths();
-
+	void clear();
 	void clearAllEnemies();
 
-	void addEnemiesToPool(EnemyType type, unsigned int count);
+	// AI pathing
+	void generatePathMap();
+	void updateAIPathCostMap();
+	void requestEnemyPathUpdates() { pathUpdateRequests++; }
 
+	// Event handling
+	EventPacket popEvent() { return mEvents.pop(); }
+	void pushEvent(EventPacket event) { mEvents.push(event); }
+	bool hasEvent() const { return mEvents.hasEvent(); }
+
+	// Spawning
+	void addEnemiesToPool(EnemyType type, unsigned int count);
 	void spawnLevel();
 	void spawn(EnemyType type, EnemyState::Type state, VectorF position);
 
 	void setTarget(RectF* rect) { mTarget = rect; }
 
+	// General
 	Enemy* getEnemy(unsigned int index) const;
 	std::vector<Enemy*> getActiveEnemies() const { return mActiveEnemies; }
 
@@ -62,28 +67,31 @@ public:
 
 
 private:
-
 	void clearAndRemove(std::vector<Enemy*>::iterator& iter);
 
-	void clearOccupiedTileInfo();
-	void updateOccupiedTiles();
-
-	void handleEnemyEvent(EventPacket eventPacket);
+	void updateEnemyPaths();
 
 	Collider* getAttackingCollider(Enemy* enemy) const;
 
 private:
 	GameData* mGameData;
 
-	AIPathMap mPathMap;
-
 	std::vector<EnemyObject> mEnemyPool;
 	std::vector<Enemy*> mActiveEnemies;
 
 	RectF* mTarget;
+	AIPathMap mPathMap;
 
 	EnemySpawner mSpawner;
 
-// TMEP
+	LocalDispatcher mEvents;
+
+	Timer<float> updateTimer;
+
+	int pathUpdateRequests;
+	int pathUpdateStaggerCounter;
+
+#if LIMIT_ENEMY_SPAWNS
 	int spawnCount = 0;
+#endif
 };

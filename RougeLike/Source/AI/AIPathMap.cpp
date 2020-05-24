@@ -6,8 +6,6 @@
 
 void AIPathMap::clear()
 {
-	clearOccupiedTiles();
-	clearToBeOccupiedTiles();
 	mData.clear();
 }
 
@@ -19,8 +17,9 @@ void AIPathMap::build(Map* map, int xSplit, int ySplit)
 	// New larger path tile map
 	mData.clear();
 	Index index(tileMap.xCount() * xSplit, tileMap.yCount() * ySplit);
-	mData.clearAndSet(index, PathTile());
+	mData.set(index, PathTile());
 
+	mCostMap.set(index, 1);
 	occupiedTiles.clear();
 	toBeOccupiedTiles.clear();
 
@@ -106,60 +105,3 @@ const PathTile* AIPathMap::offsetTile(const PathTile* target, int xOffset, int y
 	Index tileIndex = index(target) + Index(xOffset, yOffset);
 	return isValidIndex(tileIndex) ? tile(tileIndex) : nullptr;
 }
-
-
-void AIPathMap::clearOccupiedTiles() 
-{ 
-	for (unsigned int i = 0; i < occupiedTiles.size(); i++)
-	{
-		Index index = occupiedTiles[i];
-		mData[index].setOccupied(false);
-	}
-
-	occupiedTiles.clear(); 
-}
-
-
-void AIPathMap::addOccupiedTile(VectorF position)
-{
-	if (isValidPosition(position))
-	{
-		// Track occupied tiles to make it more efficient when resetting them every frame
-		Index tileIndex = index(position);
-		occupiedTiles.push_back(tileIndex);
-
-		mData[tileIndex].setOccupied(true);
-	}
-	else
-	{
-		DebugPrint(Warning, "Invalid occupied position: %f, %f, not adding to occupied tile list\n", position.x, position.y);
-	}
-}
-
-
-void AIPathMap::clearToBeOccupiedTiles()
-{
-	for (unsigned int i = 0; i < toBeOccupiedTiles.size(); i++)
-	{
-		Index index = toBeOccupiedTiles[i];
-		mData[index].setToBeOccupied(false);
-	}
-
-	toBeOccupiedTiles.clear();
-}
-
-
-void AIPathMap::addToBeOccupiedTile(Index index)
-{
-	if (isValidIndex(index))
-	{
-		// Track to be occupied tiles to make it more efficient when resetting them every frame
-		toBeOccupiedTiles.push_back(index);
-		mData[index].setToBeOccupied(true);
-	}
-	else
-	{
-		DebugPrint(Warning, "Invalid to be occupied tile index: %d, %d, not adding to the to be occupied tile list\n", index.x, index.y);
-	}
-}
-

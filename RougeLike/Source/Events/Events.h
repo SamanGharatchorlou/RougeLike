@@ -24,7 +24,8 @@ enum class Event
 
 	Trauma,
 
-	UpdateAIPathMap
+	UpdateAIPathMap,
+	UpdateAICostMap,
 };
 
 
@@ -97,6 +98,13 @@ struct UpdateAIPathMapEvent : public EventData
 {
 	UpdateAIPathMapEvent() { eventType = Event::UpdateAIPathMap; };
 	~UpdateAIPathMapEvent() { }
+};
+
+
+struct UpdateAICostMapEvent : public EventData
+{
+	UpdateAICostMapEvent() { eventType = Event::UpdateAICostMap; };
+	~UpdateAICostMapEvent() { }
 };
 
 

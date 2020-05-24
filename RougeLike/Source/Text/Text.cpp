@@ -12,7 +12,7 @@ Text::Text(const std::string& text, const std::string& font, int ptSize, SDL_Col
 }
 
 
-void Text::init(const std::string& fontLabel, int ptSize, SDL_Color colour, const std::string& text)
+void Text::init(const std::string& text, const std::string& fontLabel, int ptSize, SDL_Color colour)
 {
 	FileManager* fm = FileManager::Get();
 	mFont.loadFromFile(fm->filePath(FileManager::Font, fontLabel), ptSize);

@@ -3,17 +3,19 @@
 
 
 // UI Text Box
-UITextBox::UITextBox(Data& data) :
-	mText(data.text, data.font, data.ptSize, data.colour),
-	mAlignment(Alignment::None),
-	UIBox(data)
+UITextBox::UITextBox(Data& data) : UIBox(data)
 {
 	if (data.aligment == "Center")
 		mAlignment = Alignment::Center;
-	if (data.aligment == "Left")
+	else if (data.aligment == "Left")
 		mAlignment = Alignment::Left;
 	else if (data.aligment == "Right")
 		mAlignment = Alignment::Right;
+	else
+		mAlignment = Alignment::None;
+
+	const std::string& font = data.font == "" ? "default.ttf" : data.font;
+	mText.init(data.text, font, data.ptSize, data.colour);
 }
 
 void UITextBox::render()
@@ -26,7 +28,6 @@ void UITextBox::render()
 void UITextBox::autoSizeFont()
 {
 	VectorF newSize = mText.autoSize(mRect.Size());
-	//mRect.SetSize(newSize);
 }
 
 void UITextBox::align()

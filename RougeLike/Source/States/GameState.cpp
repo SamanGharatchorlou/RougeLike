@@ -51,6 +51,7 @@ void GameState::init()
 	mGameData->audioManager->playMusic("Ludumdum");
 	mGameData->audioManager->setMusicVolume(0.08f);
 	mGameData->audioManager->setSoundVolume(0.4f);
+	mGameData->audioManager->toggleMute();
 
 	// Set cursor
 	mGameData->uiManager->setCursorTexture(mGameData->textureManager->getTexture("GameCursor", FileManager::Image_UI));
@@ -117,6 +118,8 @@ void GameState::slowUpdate(float dt)
 
 	// End of slow frame
 	mGameData->collisionManager->resetColliders();
+	// TODO: the player weapon colliders are taken in and out of here when attacking and not
+	// when they are out they  do not get reset like the rest so stay as did hit, never becoming false in some cases
 }
 
 

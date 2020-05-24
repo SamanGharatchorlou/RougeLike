@@ -264,8 +264,6 @@ void ScreenDecoder::fillBoxData(UIBox::Data& data, Attributes& attributes) const
 #if _DEBUG
 	if (attributes.contains("debugDraw"))
 		data.drawRect = true;
-	else
-		data.drawRect = false;
 #endif
 }
 
@@ -276,7 +274,7 @@ void ScreenDecoder::fillTextBoxData(UITextBox::Data& data, Attributes& attribute
 
 	// Text
 	data.text = attributes.getString("text");
-	data.font = attributes.contains("font") ? attributes.getString("font") : "default.ttf";
+	data.font = attributes.contains("font") ? attributes.getString("font") : "";
 
 	data.colour = {
 		(Uint8)attributes.getInt("r"),

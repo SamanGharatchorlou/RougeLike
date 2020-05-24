@@ -20,20 +20,14 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 		!mMap->floorCollisionTile(endIndex))
 		return Path();
 
-	// End tile cannot be inaccessible or path finding will fail
-	PathTile& endTile = (*mMap)[endIndex];
-	if (endTile.isOccupied() || endTile.isToBeOccupied())
-	{
-		endTile.setOccupied(false);
-		endTile.setToBeOccupied(false);
-	}
-
 	// Lowest to highest path cost queue
 	std::priority_queue<TileCost, std::vector<TileCost>, GreaterThanByCost> frontier;
 	frontier.push(TileCost(mMap->tile(startingIndex), 0));
 
 	Grid<Index> cameFrom(mMap->yCount(), mMap->xCount(), Index(-1,-1));
 	Grid<int> cost(mMap->yCount(), mMap->xCount(), 0);
+	Grid<int>& globalCostMap = mMap->costMap();
+
 
 #if _DEBUG
 	int loopCounter = 0;
@@ -56,27 +50,23 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 			// valid tile
 			if (nextTile && nextTile->hasCollisionType(BasicTile::Floor))
 			{
-				// Is a floor tile, not currently occupied and not about to be occupied
-				if (nextTile->hasCollisionType(BasicTile::Floor) && !nextTile->isOccupied() && !nextTile->isToBeOccupied())
+				Index nextIndex = mMap->index(nextTile);
+				Index currentIndex = mMap->index(currentTile);
+
+				int newCost = cost[currentIndex] + globalCostMap[nextIndex]; // replace 1 with the floor type
+
+				if (mMap->inBounds(nextIndex) &&
+					(cameFrom.get(nextIndex).isNegative() || newCost < cost[nextIndex]))
 				{
-					Index index = mMap->index(nextTile);
+					int priority = newCost + heuristic(endIndex, nextIndex);
+					frontier.push(TileCost(nextTile, priority));
 
-					int newCost = cost[mMap->index(currentTile)] + 1; // replace 1 with the floor type
+					cameFrom[nextIndex] = currentIndex;
+					cost[nextIndex] = newCost;
 
-					if (mMap->inBounds(index) &&
-						(cameFrom.get(index).isNegative() || newCost < cost[index]))
+					if (nextIndex == endIndex)
 					{
-						int priority = newCost + heuristic(endIndex, index);
-						frontier.push(TileCost(nextTile, priority));
-
-						cameFrom[index] = mMap->index(currentTile);
-						cost[index] = newCost;
-
-						if (index == endIndex)
-						{
-							
-							return getPath(startingIndex, endIndex, cameFrom);
-						}
+						return getPath(startingIndex, endIndex, cameFrom);
 					}
 				}
 			}

@@ -16,5 +16,6 @@
 enum class EnemyType
 {
 	None,
-	Imp
+	Imp,
+	Angel
 };

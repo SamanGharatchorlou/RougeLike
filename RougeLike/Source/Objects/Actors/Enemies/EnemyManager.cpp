@@ -7,7 +7,8 @@
 #include "Game/Camera.h"
 #include "Objects/Actors/Player/Player.h"
 
-#include "Objects/Actors/Enemies/Imp.h"
+#include "Types/Imp.h"
+#include "Types/Angel.h"
 
 // State specific updates
 #include "Objects/Actors/Enemies/EnemyStates/EnemyRun.h"
@@ -15,8 +16,15 @@
 
 #include "Utilities/Shapes/Square.h"
 
+#if DRAW_AI_PATH_COSTMAP
+#include "UI/Elements/UITextBox.h"
+#endif
 
-EnemyManager::EnemyManager(GameData* gameData) : mGameData(gameData), mSpawner(this) { }
+
+EnemyManager::EnemyManager(GameData* gameData) : mGameData(gameData), mSpawner(this), pathUpdateRequests(0), pathUpdateStaggerCounter(0)
+{
+	updateTimer.start();
+}
 
 EnemyManager::~EnemyManager()
 {
@@ -65,7 +73,7 @@ void EnemyManager::slowUpdate(float dt)
 
 		// Handle enemy messages
 		while (enemy->hasEvent())
-			handleEnemyEvent(enemy->popEvent());
+			mEvents.push(enemy->popEvent());
 
 		// Clear out dead enemies
 		if (enemy->state() == EnemyState::None)
@@ -80,6 +88,17 @@ void EnemyManager::slowUpdate(float dt)
 		if (collider)
 			attackingColliders.push_back(collider);
 	}
+
+	if (pathUpdateStaggerCounter != 0 || pathUpdateRequests)
+	{
+		updateEnemyPaths();
+	}
+
+	if (updateTimer.getMilliseconds() > 250)
+	{
+		updateAIPathCostMap();
+	}
+
 
 	mGameData->collisionManager->removeAllAttackers(CollisionManager::Enemy_Hit_Player);
 	mGameData->collisionManager->addAttackers(CollisionManager::Enemy_Hit_Player, attackingColliders);
@@ -122,9 +141,18 @@ void EnemyManager::addEnemiesToPool(EnemyType type, unsigned int count)
 		case EnemyType::Imp:
 		{
 			Imp* imp = new Imp(mGameData);
-			imp->init("Imp"); // TODO: better way to feed this in?
+			imp->init(); // TODO: better way to feed this in?
 
 			enemyObject.first = imp;
+			enemyObject.second = ObjectStatus::Available;
+			break;
+		}
+		case EnemyType::Angel:
+		{
+			Angel* angel = new Angel(mGameData);
+			angel->init(); // TODO: better way to feed this in?
+
+			enemyObject.first = angel;
 			enemyObject.second = ObjectStatus::Available;
 			break;
 		}
@@ -142,8 +170,10 @@ void EnemyManager::addEnemiesToPool(EnemyType type, unsigned int count)
 
 void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF position)
 {
-	if (spawnCount > 0)
+#if LIMIT_ENEMY_SPAWNS
+	if (spawnCount >= LIMIT_ENEMY_SPAWNS)
 		return;
+#endif
 
 	// Find available enemy to spawn
 	for (unsigned int i = 0; i < mEnemyPool.size(); i++)
@@ -166,7 +196,9 @@ void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF positio
 			mGameData->collisionManager->addDefenders(CollisionManager::PlayerWeapon_Hit_Enemy, defendingCollider);
 
 			mActiveEnemies.push_back(enemy);
+#if LIMIT_ENEMY_SPAWNS
 			spawnCount++;
+#endif
 			return;
 		}
 	}
@@ -186,26 +218,70 @@ void EnemyManager::spawnLevel()
 // If player moves tile or an enemy moves a tile update this bad boi
 void EnemyManager::updateEnemyPaths()
 {
-	clearOccupiedTileInfo();
-	updateOccupiedTiles();
+	mPathMap.costMap().setAllValues(1);
+	updateAIPathCostMap();
 
-	for (int i = 0; i < mActiveEnemies.size(); i++)
+	int loopCount = 0;
+
+	for (; pathUpdateStaggerCounter < mActiveEnemies.size(); pathUpdateStaggerCounter++)
 	{
-		if (mActiveEnemies[i]->state() == EnemyState::Run)
+		// Only allow a number of these (expensive) updates per frame, reduce stuttering
+		if (loopCount++ >= 3)
+			return;
+
+		if (mActiveEnemies[pathUpdateStaggerCounter]->state() == EnemyState::Run)
 		{
-			EnemyRun& runState = static_cast<EnemyRun&>(mActiveEnemies[i]->getStateMachine()->getActiveState());
+			EnemyRun& runState = static_cast<EnemyRun&>(mActiveEnemies[pathUpdateStaggerCounter]->getStateMachine()->getActiveState());
 
 			// No need to update anything if in attack range
 			if (!runState.inAttackRange())
 			{
 				runState.updatePath();
-
- 				Index nextTileIndex = runState.nextTileIndex();
-
-				// Stop enemies walking over the same path on top of each other
-				if (!nextTileIndex.isNegative())
-					mPathMap.addToBeOccupiedTile(nextTileIndex);
 			}
+		}
+	}
+
+	if (pathUpdateStaggerCounter == mActiveEnemies.size())
+	{
+		pathUpdateStaggerCounter = 0;
+		pathUpdateRequests--;
+
+		ASSERT(Warning, pathUpdateRequests >= 0, "Cannot have negative path update requests, count: %d\n", pathUpdateRequests);
+
+		// No reason to have more than 1 request queued up after completing a request
+		pathUpdateRequests = clamp(pathUpdateStaggerCounter, 0, 1);
+	}
+}
+
+
+void EnemyManager::updateAIPathCostMap()
+{
+	Grid<int>& AICostMap = mPathMap.costMap();
+	AICostMap.setAllValues(1);
+
+	for (int i = 0; i < mActiveEnemies.size(); i++)
+	{
+		// Current tile
+		Index index = mPathMap.index(mActiveEnemies[i]->position());
+		AICostMap[index] += 10;
+
+		// Immediate surrounding tiles
+		Index surroundingIndexsLayer1[8]{
+			Index(index + Index(-1,-1)),
+			Index(index + Index(+0, -1)),
+			Index(index + Index(+1,-1)),
+
+			Index(index + Index(-1,0)),
+			Index(index + Index(+1,0)),
+
+			Index(index + Index(-1,+1)),
+			Index(index + Index(+0, +1)),
+			Index(index + Index(+1,+1))
+		};
+
+		for (int i = 0; i < 8; i++)
+		{
+			AICostMap[surroundingIndexsLayer1[i]] += 2;
 		}
 	}
 }
@@ -218,8 +294,46 @@ Enemy* EnemyManager::getEnemy(unsigned int index) const
 }
 
 
-void EnemyManager::render() const
+void EnemyManager::render()
 {
+#if DRAW_AI_PATH_COSTMAP
+	UITextBox::Data textData;
+	textData.aligment = "";
+	textData.font = "";
+	textData.ptSize = 16;
+	textData.colour = SDL_Color{ 255, 0, 0 };
+	textData.texture = nullptr;
+	// to be set
+	textData.rect = RectF(); 
+	textData.text = "";
+
+	UITextBox text(textData);
+
+	char cost[3];
+
+	for (int y = 0; y < mPathMap.yCount(); y++)
+	{
+		for (int x = 0; x < mPathMap.xCount(); x++)
+		{
+			Index index(x, y);
+			RectF rect = mPathMap[index].rect();
+
+			if (Camera::Get()->inView(rect))
+			{
+				rect = Camera::Get()->toCameraCoords(rect);
+
+				_itoa_s(mPathMap.costMap()[index], cost, 10);
+
+				text.setText(cost);
+				text.setRect(rect);
+
+				text.render();
+			}
+		}
+	}
+#endif
+
+
 	for (Enemy* enemy : mActiveEnemies)
 	{
 		if (Camera::Get()->inView(enemy->rect()))
@@ -227,6 +341,9 @@ void EnemyManager::render() const
 			enemy->render();
 		}
 	}
+
+
+
 }
 
 
@@ -282,30 +399,4 @@ void EnemyManager::clearAndRemove(std::vector<Enemy*>::iterator& iter)
 	}
 
 	iter = mActiveEnemies.erase(iter);
-}
-
-
-
-// Prevent enemies being on top of each other
-void EnemyManager::updateOccupiedTiles()
-{
-	for (int i = 0; i < mActiveEnemies.size(); i++)
-	{
-		VectorF position = mActiveEnemies[i]->rect().Center();
-		mPathMap.addOccupiedTile(position);
-	}
-}
-
-
-void EnemyManager::clearOccupiedTileInfo()
-{
-	mPathMap.clearOccupiedTiles();
-	mPathMap.clearToBeOccupiedTiles();
-}
-
-
-void EnemyManager::handleEnemyEvent(EventPacket eventPacket)
-{
-	notify(*eventPacket.data);
-	eventPacket.free();
 }

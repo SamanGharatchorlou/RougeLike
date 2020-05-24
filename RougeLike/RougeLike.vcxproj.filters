@@ -97,11 +97,12 @@
     <ClCompile Include="Source\Objects\Actors\Enemies\Enemy.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\EnemyManager.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\EnemyPropertyBag.cpp" />
-    <ClCompile Include="Source\Objects\Actors\Enemies\Imp.cpp" />
     <ClCompile Include="Source\Objects\Actors\Actor.cpp" />
     <ClCompile Include="Source\Objects\Actors\Physics.cpp" />
     <ClCompile Include="Source\Objects\Actors\ActorManager.cpp" />
     <ClCompile Include="Source\UI\Elements\UISlider.cpp" />
+    <ClCompile Include="Source\Objects\Actors\Enemies\Types\Imp.cpp" />
+    <ClCompile Include="Source\Objects\Actors\Enemies\Types\Angel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -221,13 +222,14 @@
     <ClInclude Include="Source\Objects\Actors\Enemies\EnemyEnums.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\EnemyManager.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\EnemyPropertyBag.h" />
-    <ClInclude Include="Source\Objects\Actors\Enemies\Imp.h" />
     <ClInclude Include="Source\Objects\Actors\Actor.h" />
     <ClInclude Include="Source\Objects\Actors\Physics.h" />
     <ClInclude Include="Source\Objects\Actors\ActorManager.h" />
     <ClInclude Include="Source\UI\Elements\UISlider.h" />
     <ClInclude Include="Source\Events\LocalObserver.h" />
     <ClInclude Include="Source\Events\LocalDispatcher.h" />
+    <ClInclude Include="Source\Objects\Actors\Enemies\Types\Imp.h" />
+    <ClInclude Include="Source\Objects\Actors\Enemies\Types\Angel.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

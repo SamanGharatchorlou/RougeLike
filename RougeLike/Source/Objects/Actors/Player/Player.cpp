@@ -90,11 +90,7 @@ void Player::slowUpdate(float dt)
 
 	// Handle ability events
 	if (mAbilities.hasEvent())
-	{
-		EventPacket ep = mAbilities.popEvent();
-		notify(*ep.data);
-		ep.free();
-	}
+		pushEvent(mAbilities.popEvent());
 
 	std::string animation = mPhysics.isMoving() ? "Run" : "Idle";
 	mAnimator.selectAnimation(animation);
@@ -218,8 +214,8 @@ void Player::processHit()
 	Health* hp = static_cast<Health*>(propertyBag()->get("Health"));
 	hp->takeDamage(damageCollider->damage());
 
-	SetHealthBarEvent event(*hp);
-	notify(event);
+	SetHealthBarEvent* eventPtr = new SetHealthBarEvent(*hp);
+	pushEvent(EventPacket(eventPtr));
 
 	// Apply knockback
 	mEffects.addEffect(new KnockbackEffect(damageCollider));
@@ -230,6 +226,7 @@ void Player::attack()
 {
 	if (!mWeapon->isAttacking())
 	{
+		printf("playing miss\n");
 		mGameData->audioManager->playSound(mWeapon->missSoundLabel(), this);
 	}
 
@@ -246,6 +243,7 @@ void Player::updateAttackingWeapon()
 		// Play hit sound
 		if (mGameData->audioManager->isPlaying(mWeapon->missSoundLabel(), this) && mWeapon->canPlayHitSound())
 		{
+			printf("playing hit\n");
 			mGameData->audioManager->playSound(mWeapon->hitSoundLabel(), this);
 		}
 	}
@@ -260,7 +258,7 @@ void Player::updateCurrentTile()
 	{
 		tileIndex = currentTile;
 
-		UpdateAIPathMapEvent updateAIPathMapEvent;
-		notify(updateAIPathMapEvent);
+		UpdateAIPathMapEvent* eventPtr = new UpdateAIPathMapEvent;
+		pushEvent(EventPacket(eventPtr));
 	}
 }

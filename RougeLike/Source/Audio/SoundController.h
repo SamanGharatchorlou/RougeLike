@@ -46,6 +46,7 @@ private:
 
 	int gameVolume;
 	int musicVolume;
+	bool muted;
 
 #if _DEBUG
 	Timer<float> pauseTimers[MIX_CHANNELS];

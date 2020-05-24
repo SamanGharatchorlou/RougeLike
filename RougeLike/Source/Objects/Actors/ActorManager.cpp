@@ -50,7 +50,12 @@ void ActorManager::fastUpdate(float dt)
 void ActorManager::slowUpdate(float dt)
 {
 	mPlayer->slowUpdate(dt);
+	while (mPlayer->hasEvent())
+		sendEvent(mPlayer->popEvent());
+
 	mEnemies->slowUpdate(dt);
+	while (mEnemies->hasEvent())
+		sendEvent(mEnemies->popEvent());
 }
 
 
@@ -103,20 +108,29 @@ std::vector<Actor*> ActorManager::getAllEnemies()
 
 void ActorManager::handleEvent(EventData& data)
 {
-	if (data.eventType == Event::EnemyDead)
+	switch (data.eventType)
+	{
+	case Event::EnemyDead:
 	{
 		EnemyDeadEvent eventData = static_cast<EnemyDeadEvent&>(data);
-
 		mPlayer->statManager().gainExp(eventData.mExp);
-
 		mGameData->collisionManager->removeDefender(CollisionManager::PlayerWeapon_Hit_Enemy, eventData.mEnemy->collider());
-
+		break;
 	}
-
-	if (data.eventType == Event::UpdateAIPathMap)
+	case Event::UpdateAIPathMap:
 	{
-		mEnemies->updateEnemyPaths();
+		mEnemies->requestEnemyPathUpdates();
+		break;
 	}
+	case Event::UpdateAICostMap:
+	{
+		mEnemies->updateAIPathCostMap();
+		break;
+	}
+	default:
+		break;
+	}
+
 }
 
 
@@ -137,10 +151,18 @@ void ActorManager::initPlayer()
 void ActorManager::initEnemies()
 {
 	mEnemies->addEnemiesToPool(EnemyType::Imp, 50);
+	mEnemies->addEnemiesToPool(EnemyType::Angel, 50);
 
 	mEnemies->setTarget(&mGameData->actors->player()->rectRef());
 	mEnemies->spawnLevel();
 
 	// init AI pathing
 	mEnemies->generatePathMap();
+}
+
+
+void ActorManager::sendEvent(EventPacket eventPacket)
+{
+	notify(*eventPacket.data);
+	eventPacket.free();
 }

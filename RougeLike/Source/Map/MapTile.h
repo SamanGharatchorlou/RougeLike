@@ -39,10 +39,10 @@ protected:
 class PathTile : public BasicTile
 {
 public:
-	PathTile() : mCollisionType(Wall), occupied(false), toBeOccupied(false) { }
-	PathTile(Type type) : mCollisionType(type), occupied(false), toBeOccupied(false) { }
-	PathTile(RectF rect) : BasicTile(rect), mCollisionType(Wall), occupied(false), toBeOccupied(false) { }
-	PathTile(Type type, RectF rect) : mCollisionType(type), BasicTile(rect), occupied(false), toBeOccupied(false) { }
+	PathTile() : mCollisionType(Wall) { }
+	PathTile(Type type) : mCollisionType(type) { }
+	PathTile(RectF rect) : BasicTile(rect), mCollisionType(Wall) { }
+	PathTile(Type type, RectF rect) : mCollisionType(type), BasicTile(rect) { }
 
 	// Collision type
 	const Type collisionType() const { return mCollisionType; }
@@ -52,17 +52,8 @@ public:
 	void addCollisionType(Type type);
 	void removeCollisionType(Type type);
 
-	bool isOccupied() const { return occupied; }
-	void setOccupied(bool status) { occupied = status; }
-
-	bool isToBeOccupied() const { return toBeOccupied; }
-	void setToBeOccupied(bool status) { toBeOccupied = status; }
-
 protected:
 	Type mCollisionType;
-	
-	bool occupied;
-	bool toBeOccupied;
 };
 
 

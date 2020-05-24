@@ -7,7 +7,7 @@ class Text
 public:
 	Text() { }
 	Text(const std::string& text, const std::string& font, int ptSize, SDL_Color colour);
-	void init(const std::string& font, int ptSize, SDL_Color colour, const std::string& text);
+	void init(const std::string& text, const std::string& font, int ptSize, SDL_Color colour);
 
 	void setText(const std::string& text);
 	void setColour(SDL_Color colour) { mFont.setColour(colour); }

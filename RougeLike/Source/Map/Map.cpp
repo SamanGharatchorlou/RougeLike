@@ -122,9 +122,9 @@ void Map::populateCollisionRenderInfo()
 }
 
 
-void Map::init(Index index)
+void Map::init(Vector2D<int> size)
 {
-	mData.clearAndSet(index, MapTile());
+	mData.set(size, MapTile());
 }
 
 

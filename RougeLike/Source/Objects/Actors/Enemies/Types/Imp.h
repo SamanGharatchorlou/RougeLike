@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Enemy.h"
+#include "../Enemy.h"
 
 struct GameData;
 
@@ -9,7 +9,7 @@ class Imp : public Enemy
 public:
 	Imp(GameData* gameData);
 
-	//void init() override;
+	void init();
 
 	const EnemyType type() const override { return EnemyType::Imp; }
 

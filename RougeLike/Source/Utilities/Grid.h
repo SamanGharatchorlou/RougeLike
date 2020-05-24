@@ -15,7 +15,8 @@ public:
 	T& operator [] (Vector2D<int> index);
 
 	void clear();
-	void clearAndSet(Index index, T value);
+	void set(Index index, T value);
+	void setAllValues(T value);
 
 	const std::vector<std::vector<T>>& get() const { return data; }
 
@@ -115,17 +116,25 @@ const std::vector<T> Grid<T>::getColumn(int x) const
 
 
 template<class T>
-void Grid<T>::clearAndSet(Index index, T value)
+void Grid<T>::set(Vector2D<int> size, T value)
 {
-	clear();
+	ASSERT(Warning, size.y > 0 && size.x > 0,
+		"Grid must have at least 1 column and 1 row, set with %d columns, %d rows\n", size.y, size.x);
 
-	ASSERT(Warning, index.y > 0 && index.x > 0,
-		"Grid must have at least 1 column and 1 row, set with %d columns, %d rows\n", index.y, index.x);
-
-	std::vector<T> row(index.x, value);
-	for(int i = 0; i < index.y; i++ )
-		data.push_back(row);
+	std::vector<T> row(size.x, value);
+	data = std::vector<std::vector<T>>(size.y, row);
 }
+
+
+template<class T>
+void Grid<T>::setAllValues(T value)
+{
+	for (int i = 0; i < data.size(); i++)
+	{
+		std::fill(data[i].begin(), data[i].end(), value);
+	}
+}
+
 
 
 template<class T>
@@ -133,6 +142,8 @@ void Grid<T>::clear()
 {
 	data.clear();
 }
+
+
 
 
 

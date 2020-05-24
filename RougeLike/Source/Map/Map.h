@@ -10,7 +10,7 @@ class Texture;
 class Map : public MapBase<MapTile>
 {
 public:
-	void init(Index index);
+	void init(Vector2D<int> size);
 	void populateData(VectorF offset = VectorF());
 
 	Vector2D<float> size() const;

@@ -12,27 +12,39 @@
 
 void EnemySpawner::spawnLevel(Map* map, int level)
 {
-	int minIncrement = clamp(10 - level, 5, 10);
-	int maxIncrement = 15;
+	switch (level)
+	{
+	case 1:
+	{
+		level1(map);
+		break;
+	}
+	case 2:
+	{
+		level2(map);
+		break;
+	}
+	case 3:
+	{
+		level3(map);
+		break;
+	}
+	case 4:
+	{
 
-	int xIncrement = randomNumberBetween(minIncrement, maxIncrement);
-	spawnPatrollers(map, xIncrement);
-
-	Shape randomShape = pickRandomShape();
-	spawnShape(map, 30, randomShape, EnemyType::Imp);
-
-	randomShape = pickRandomShape();
-	spawnShape(map, 60, randomShape, EnemyType::Imp);
+	}
+	default:
+		break;
+	}
 }
 
 
-
-void EnemySpawner::spawnPatrollers(Map* map, int xIncrement)
+void EnemySpawner::spawnPatrollers(Map* map, int xIncrement, EnemyType type)
 {
 	for (unsigned int xPoint = xIncrement; xPoint < 100 - xIncrement; xPoint += xIncrement)
 	{
 		VectorF position = findSpawnPoint(map, xPoint);
-		mEnemies->spawn(EnemyType::Imp, EnemyState::Patrol, position);
+		mEnemies->spawn(type, EnemyState::Patrol, position);
 	}
 }
 
@@ -97,4 +109,36 @@ Shape EnemySpawner::pickRandomShape()
 		DebugPrint(Log, "picking this random shape number %d not connected to a shape. Returning empty shape.\n");
 		return Shape();
 	}
+}
+
+
+
+// Level spawning functions
+void EnemySpawner::level1(Map* map)
+{
+	spawnPatrollers(map, 10, EnemyType::Imp);
+
+	spawnShape(map, 30, pickRandomShape(), EnemyType::Imp);
+	spawnShape(map, 60, pickRandomShape(), EnemyType::Angel);
+}
+
+
+void EnemySpawner::level2(Map* map)
+{
+	spawnPatrollers(map, 7, EnemyType::Imp);
+
+	spawnShape(map, 20, pickRandomShape(), EnemyType::Imp);
+	spawnShape(map, 50, pickRandomShape(), EnemyType::Angel);
+	spawnShape(map, 75, pickRandomShape(), EnemyType::Imp);
+}
+
+
+void EnemySpawner::level3(Map* map)
+{
+	spawnPatrollers(map, 10, EnemyType::Angel);
+
+	spawnShape(map, 20, pickRandomShape(), EnemyType::Imp);
+	spawnShape(map, 50, pickRandomShape(), EnemyType::Angel);
+	spawnShape(map, 60, pickRandomShape(), EnemyType::Imp);
+	spawnShape(map, 80, pickRandomShape(), EnemyType::Angel);
 }

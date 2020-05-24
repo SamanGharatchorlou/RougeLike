@@ -47,7 +47,8 @@ StateMachine<T>::~StateMachine()
 template<class T>
 void StateMachine<T>::clearStates()
 {
-	while (states.size() > 0)
+	// Keep the NULL state at index 0
+	while (states.size() > 1)
 	{
 		states.top()->exit();
 

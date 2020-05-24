@@ -1,8 +1,5 @@
 #pragma once
 
-#include "Events/Dispatcher.h"
-#include "Events/Observer.h"
-
 #include "Objects/Actors/Actor.h"
 #include "States/State.h"
 #include "States/StateMachine.h"
@@ -20,7 +17,7 @@ class Map;
 class Weapon;
 
 
-class Player : public Dispatcher, public Actor
+class Player : public Actor
 {
 public:
 	Player(GameData* gameData);

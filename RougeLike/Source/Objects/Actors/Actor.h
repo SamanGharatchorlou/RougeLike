@@ -3,6 +3,8 @@
 #include "Physics.h"
 #include "Animations/Animator.h"
 #include "Objects/Effects/EffectHandler.h"
+#include "Events/LocalDispatcher.h"
+
 
 
 struct GameData;
@@ -25,6 +27,11 @@ public:
 	const GameData* getGameData() const { return mGameData; }
 
 	void reset();
+
+	// Event handling
+	EventPacket popEvent() { return mEvents.pop(); }
+	void pushEvent(EventPacket event) { mEvents.push(event); }
+	bool hasEvent() const { return mEvents.hasEvent(); }
 
 	// PropertyBag
 	void setPropertyBag(PropertyBag* bag) { mPropertyBag = bag; }
@@ -66,4 +73,6 @@ protected:
 	Physics mPhysics;
 
 	EffectHandler mEffects;
+
+	LocalDispatcher mEvents;
 };

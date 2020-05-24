@@ -20,14 +20,12 @@ public:
 
 	const PathTile* offsetTile(const PathTile* target, int xOffset, int yOffset) const;
 
-	void clearOccupiedTiles();
-	void addOccupiedTile(VectorF position);
-
-	void clearToBeOccupiedTiles();
-	void addToBeOccupiedTile(Index index);
+	Grid<int>& costMap() { return mCostMap; }
 
 private:
 	bool isValidPosition(VectorF position) const;
+
+	Grid<int> mCostMap;
 
 	std::vector<Index> occupiedTiles;
 	std::vector<Index> toBeOccupiedTiles;

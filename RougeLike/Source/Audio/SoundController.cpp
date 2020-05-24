@@ -4,7 +4,7 @@
 #include "Audio.h"
 
 
-SoundController::SoundController() : gameVolume(-1.0f), musicVolume(-1.0f)
+SoundController::SoundController() : gameVolume(-1.0f), musicVolume(-1.0f), muted(false)
 {
 	// Defualt to 8 channels
 	Mix_AllocateChannels(MIX_CHANNELS);
@@ -116,7 +116,6 @@ void SoundController::pauseSound(Audio* audio, void* sourceId)
 		{
 			Mix_Pause(i);
 			channels[i] = Paused;
-			printf("pausing sound\n");
 #if _DEBUG
 			pauseTimers[i].start();
 #endif
@@ -219,15 +218,22 @@ float SoundController::getMusicVolume() const
 void SoundController::toggleMute()
 {
 	// Audio on
-	if (Mix_VolumeMusic(-1) == 0 && Mix_Volume(-1, -1) == 0)
+	if (muted)
 	{
 		Mix_Volume(-1, gameVolume);
-		//MixVol
+		Mix_VolumeMusic(musicVolume);
+
+		muted = false;
 	}
 	// Audio off
 	else
 	{ 
 		gameVolume = Mix_Volume(-1, -1);
+		musicVolume = Mix_VolumeMusic(-1);
+
 		Mix_Volume(-1, 0);
+		Mix_VolumeMusic(0);
+
+		muted = true;
 	}
 }

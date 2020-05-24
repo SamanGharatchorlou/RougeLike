@@ -11,7 +11,7 @@ public:
 	{
 		Texture* texture;
 #if _DEBUG
-		bool drawRect;
+		bool drawRect = false;
 #endif
 	};
 

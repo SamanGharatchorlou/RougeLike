@@ -36,13 +36,10 @@ void KnockbackEffect::fastUpdate(float dt)
 
 void KnockbackEffect::slowUpdate(float dt)
 {
-	printf("time: %f\n", timer.getSeconds());
 	if (timer.getSeconds() > 0.1f)
 	{
-		printf("end effect\n");
 		endEffect();
 	}
-
 }
 
 

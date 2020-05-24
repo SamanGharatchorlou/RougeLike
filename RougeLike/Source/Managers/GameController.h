@@ -27,7 +27,7 @@ private:
 	bool quit;
 	bool restart;
 
-#if FRAMERATE_CAP
+#if FRAMERATE_CAP || PRINT_FRAMERATE_EVERY
 	Timer<float> fpsTimer;
 	Timer<float> capTimer;
 #endif

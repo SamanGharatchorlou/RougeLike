@@ -73,11 +73,10 @@ void GameData::setupObservers()
 	scoreManager->addObserver(uiManager);
 
 	// Update the UI with the players hp and the stats attack, defence etc.
-	actors->player()->addObserver(uiManager);
-	actors->player()->addObserver(Camera::Get()->getShake());
-
-	// Update the score
-	actors->enemies()->addObserver(scoreManager);
+	actors->addObserver(actors);
+	actors->addObserver(uiManager);
+	actors->addObserver(Camera::Get()->getShake());
+	actors->addObserver(scoreManager);
 }
 
 

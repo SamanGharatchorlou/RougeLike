@@ -22,7 +22,6 @@ public:
 	~Enemy() { }
 
 	// Core
-	virtual void init(const std::string& characterConfig);
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
 	void render();
@@ -41,11 +40,6 @@ public:
 	void popState();
 	void replaceState(EnemyState::Type state);
 	EnemyState::Type state() const;
-
-	// Events
-	EventPacket popEvent() { return mEvents.pop(); }
-	void pushEvent(const EventPacket event) { mEvents.push(event); }
-	bool hasEvent() const { return mEvents.hasEvent(); }
 	 
 	// Map
 	void setMap(AIPathMap* map) { mMap = map; }
@@ -67,18 +61,19 @@ public:
 
 
 protected:
-	void initAnimations(const std::string& name);
+	void init(const std::string& config);
+	void initAnimations(const std::string& config);
 
 
 protected:
 	AIPathMap* mMap;
 
-	LocalDispatcher mEvents;
 	StateMachine<EnemyState> mStateMachine;
 
 	const RectF* mAttackTarget;
 	const RectF* mPositionTarget;
 
-
 	VectorF mColliderRatio;
+
+	Index mCurrentIndex;
 };

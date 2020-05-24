@@ -16,6 +16,7 @@
 #include "Objects/Effects/KnockbackEffect.h"
 #include "Objects/Effects/SlowEffect.h"
 
+#include "AI/AIPathMap.h"
 
 
 Enemy::Enemy(GameData* gameData) :
@@ -23,20 +24,21 @@ Enemy::Enemy(GameData* gameData) :
 	mStateMachine(new EnemyNullState),
 	mMap(nullptr),
 	mAttackTarget(nullptr),
-	mPositionTarget(nullptr)
+	mPositionTarget(nullptr),
+	mCurrentIndex(Vector2D<int>(-1,-1))
 {
 	physics()->setFlip(static_cast<SDL_RendererFlip>(randomNumberBetween(0, 2)));
 }
 
 
-void Enemy::init(const std::string& characterConfig)
+void Enemy::init(const std::string& config)
 {
 	// Property bag
 	EnemyPropertyBag* propertyBag = new EnemyPropertyBag;
-	propertyBag->readProperties(characterConfig);
+	propertyBag->readProperties(config);
 	setPropertyBag(propertyBag);
 
-	Actor::init(characterConfig);
+	Actor::init(config);
 
 	// Physics
 	VectorF size = mAnimator.getSpriteTile()->getRect().Size() * 1.5f;
@@ -51,7 +53,7 @@ void Enemy::init(const std::string& characterConfig)
 	collider->initDamage(*damage, getPropertyValue("KnockbackDistance"));
 	setCollider(collider);
 #if _DEBUG
-	mCollider->setName("enemy");
+	mCollider->setName(config);
 #endif
 }
 
@@ -74,6 +76,13 @@ void Enemy::slowUpdate(float dt)
 
 	mStateMachine.processStateChanges();
 	mStateMachine.getActiveState().slowUpdate(dt);
+
+	Index index = mMap->index(position());
+	if (mCurrentIndex != index)
+	{
+		UpdateAICostMapEvent* event = new UpdateAICostMapEvent;
+		pushEvent(EventPacket(event));
+	}
 }
 
 
@@ -129,8 +138,10 @@ void Enemy::resolvePlayerWeaponCollisions()
 
 void Enemy::spawn(EnemyState::Type state, VectorF position)
 {
-	addState(state);
 	mPhysics.setPosition(position);
+
+	addState(state);
+	mStateMachine.processStateChanges();
 }
 
 
