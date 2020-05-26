@@ -7,6 +7,7 @@
 #include "Input/InputManager.h"
 #include "Audio/AudioManager.h"
 #include "UI/UIManager.h"
+#include "Graphics/Texture.h"
 
 #include "Collisions/CollisionManager.h"
 #include "Collisions/DamageCollider.h"
@@ -31,7 +32,9 @@ Player::Player(GameData* gameData) :
 	mStateMachine(new NullState),
 	mAbilities(mGameData),
 	mWeapon(nullptr), 
-	mWallCollisions(this) { }
+	mWallCollisions(this),
+	mControlOverride(false)
+{ }
 
 
 void Player::init(const std::string& characterConfig)
@@ -49,13 +52,17 @@ void Player::init(const std::string& characterConfig)
 	mAbilities.add("Slow", new SlowAbility(0.25F));
 	mAbilities.add("Heal", new HealAbility(50.0f));
 	mAbilities.add("Spikes", new SpikeAbility(Damage(100.0f), 300.0f));
-	mAbilities.add("Blink", new BlinkAbility(mGameData->environment->primaryMap(), 500.0f));
+	mAbilities.add("Blink", new BlinkAbility(500.0f));
+
+	//mAbilities.add("Shield", new sheildAbiliy());
 }
 
 
 void Player::handleInput()
 {
-	mPhysics.handleInput(mGameData->inputManager);
+	if (!mControlOverride)
+		mPhysics.handleInput(mGameData->inputManager);
+
 	mAbilities.handleInput();
 
 	if (mGameData->inputManager->isPressed(Button::Space))
@@ -71,7 +78,8 @@ void Player::handleInput()
 void Player::fastUpdate(float dt)
 {
 	// Restricts movemoent from input, movement should happen after this
-	mWallCollisions.resolveWallCollisions(mGameData->environment->map(rect().Center()), dt);
+	if(!mControlOverride)
+		mWallCollisions.resolveWallCollisions(mGameData->environment->map(rect().Center()), dt);
 
 	// Movement, animations, weapon updates
 	Actor::fastUpdate(dt);
@@ -167,12 +175,23 @@ void Player::render()
 	debugDrawRects(mWeapon->getRects(), RenderColour(RenderColour::Yellow));
 #else
 
-	Actor::render();
-
-	// Weapon
-	mWeapon->render();
 	mAbilities.render();
+
+	if (mVisibility)
+	{
+		Actor::render();
+		mWeapon->render();
+	}
 #endif
+}
+
+
+void Player::userHasControl(bool control)
+{
+	mControlOverride = !control;
+	
+	if (mWeapon)
+		mWeapon->overrideCursorControl(!control);
 }
 
 
@@ -187,9 +206,9 @@ void Player::initPropertBag(const std::string& config)
 	mStatManager.init(propertyBag);
 }
 
+
 void Player::initCollider()
 {
-	// Collider
 	Collider* collider = new Collider;
 	VectorF colliderScale = VectorF(1.0f, 0.25f); // only with walls
 	collider->init(&mPhysics.rectRef(), colliderScale);
@@ -198,6 +217,7 @@ void Player::initCollider()
 	mCollider->setName("player");
 #endif
 }
+
 
 RectF Player::renderRect() const
 {

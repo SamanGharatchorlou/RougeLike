@@ -151,7 +151,7 @@ inline void Rect<T>::SetRect(const Vector2D<T> position, const Vector2D<T> dimen
 
 // Returns 1 if the rectangles overlap
 template <class T>
-inline bool    Rect<T>::Intersect(const Rect<T> &rect) const
+inline bool Rect<T>::Intersect(const Rect<T> &rect) const
 {
 	if ((y2 >= rect.y1) && (rect.y2 >= y1))
 		if ((rect.x2 >= x1) && (x2 >= rect.x1))
@@ -161,7 +161,7 @@ inline bool    Rect<T>::Intersect(const Rect<T> &rect) const
 
 
 template <class T>
-inline void    Rect<T> ::SetTopLeft(Vector2D<T> point)
+inline void Rect<T> ::SetTopLeft(Vector2D<T> point)
 { 
 	T width = Width();
 	T height = Height();
@@ -174,7 +174,7 @@ inline void    Rect<T> ::SetTopLeft(Vector2D<T> point)
 
 
 template <class T>
-inline void    Rect<T> ::SetBotRight(Vector2D<T> point)
+inline void Rect<T> ::SetBotRight(Vector2D<T> point)
 {
 	T width = Width();
 	T height = Height();
@@ -187,7 +187,7 @@ inline void    Rect<T> ::SetBotRight(Vector2D<T> point)
 
 
 template <class T>
-inline void    Rect<T> ::SetLeftCenter(Vector2D<T> point)
+inline void Rect<T> ::SetLeftCenter(Vector2D<T> point)
 {
 	T halfWidth = Width() / 2;
 	T halfHeight = Height() / 2;
@@ -200,7 +200,7 @@ inline void    Rect<T> ::SetLeftCenter(Vector2D<T> point)
 
 
 template <class T>
-inline void    Rect<T> ::SetBotCenter(Vector2D<T> point)
+inline void Rect<T> ::SetBotCenter(Vector2D<T> point)
 {
 	T halfWidth = Width() / 2;
 	T halfHeight = Height() / 2;
@@ -213,7 +213,7 @@ inline void    Rect<T> ::SetBotCenter(Vector2D<T> point)
 
 
 template <class T>
-inline void    Rect<T> ::SetCenter(Vector2D<T> point)
+inline void Rect<T> ::SetCenter(Vector2D<T> point)
 {
 	T halfWidth = Width() / 2;
 	T halfHeight = Height() / 2;
@@ -225,7 +225,7 @@ inline void    Rect<T> ::SetCenter(Vector2D<T> point)
 }
 
 template <class T>
-inline void    Rect<T> ::SetCenter(T x, T y)
+inline void Rect<T> ::SetCenter(T x, T y)
 {
 	T halfWidth = Width() / 2;
 	T halfHeight = Height() / 2;
@@ -238,7 +238,7 @@ inline void    Rect<T> ::SetCenter(T x, T y)
 
 
 template <class T>
-inline Rect<T>    Rect<T> ::Translate(Vector2D<T> vector) const
+inline Rect<T> Rect<T> ::Translate(Vector2D<T> vector) const
 {
 	return Rect<T>(x1 + vector.x, y1 + vector.y, x2 + vector.x, y2 + vector.y);
 }

@@ -15,8 +15,5 @@ public:
 
 
 private:
-	bool atDestination();
-
-private:
 	VectorF mTarget;
 };

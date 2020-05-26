@@ -6,37 +6,45 @@
 
 #include "Objects/Actors/Player/Player.h"
 
+
 void BlinkEffect::init()
 {
-	mActor->animator().getSpriteTexture()->setAlpha(alphaMin);
+	//mActor->animator().getSpriteTexture()->setAlpha(alphaMin);
+	mActor->setVisibility(false);
 
 	// NOTE: This bit only works for a player specific, if you ever need to do this to another object
 	// then change this bit, move it into BlinkAbility perhaps?
 	Player* player = static_cast<Player*>(mActor);
-	player->checkWallCollisions(false);
+	player->userHasControl(false);
 }
 
 
 void BlinkEffect::slowUpdate(float dt)
 {
-	VectorF direction = mTarget - mActor->position();
-	float speed = 5.0f;
+	VectorF direction = (mTarget - mActor->position()).normalise();
+	float speed = 2500.0f;
 
-	mActor->physics()->move(direction * speed, dt);
+	float movementStep = distanceSquared(VectorF(), direction * speed * dt);
+	float distanceToTarget = distanceSquared(mActor->position(), mTarget);
 
-	if (distanceSquared(mActor->position(), mTarget) < 100.0f)
+	if (distanceToTarget < movementStep)
 	{
+		VectorF finalStep = mTarget - mActor->position();
+		mActor->physics()->move(finalStep / dt, dt);
 		endEffect();
 	}
+	else
+		mActor->physics()->move(direction * speed, dt);
 }
 
 
 void BlinkEffect::exit()
 {
-	mActor->animator().getSpriteTexture()->setAlpha(alphaMax);
+	//mActor->animator().getSpriteTexture()->setAlpha(alphaMax);
+	mActor->setVisibility(true);
 
 	// NOTE: This bit only works for a player specific, if you ever need to do this to another object
 	// then change this bit, move it into BlinkAbility perhaps?
 	Player* player = static_cast<Player*>(mActor);
-	player->checkWallCollisions(true);
+	player->userHasControl(true);
 }

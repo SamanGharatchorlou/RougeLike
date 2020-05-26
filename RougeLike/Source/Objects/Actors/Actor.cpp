@@ -3,6 +3,7 @@
 
 #include "Game/GameData.h"
 #include "Collisions/Collider.h"
+#include "Graphics/Texture.h"
 #include "Graphics/TextureManager.h"
 
 #include "Game/Camera.h"
@@ -11,10 +12,7 @@
 #include "Objects/Properties/PropertyBag.h"
 
 
-Actor::Actor(GameData* gameData) : mGameData(gameData), mEffects(this)
-{
-	
-}
+Actor::Actor(GameData* gameData) : mGameData(gameData), mEffects(this), mVisibility(true) { }
 
 
 Actor::~Actor()
@@ -66,8 +64,6 @@ void Actor::reset()
 	mEffects.clear();
 	mPropertyBag->resetProperties();
 }
-
-
 
 float Actor::getPropertyValue(const std::string& property) const 
 { 

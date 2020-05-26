@@ -242,6 +242,7 @@
     <ClInclude Include="Source\Objects\Abilities\SpikeAbility.h" />
     <ClInclude Include="Source\Objects\Effects\DamageEffect.h" />
     <ClInclude Include="Source\Objects\Effects\BlinkEffect.h" />
+    <ClInclude Include="Source\Objects\Attributes\Armor.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

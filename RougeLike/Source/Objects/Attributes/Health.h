@@ -9,30 +9,26 @@ class Health : public Property
 {
 public:
 	Health() : hp(0), maxHp(0) { }
-	Health(int maxHealth) : maxHp(maxHealth), hp(maxHealth) { }
+	Health(float maxHealth) : maxHp(maxHealth), hp(maxHealth) { }
+	Health(float health, float maxHealth) : maxHp(maxHealth), hp(health) { }
+
+	void increase(float health) { hp = clamp(hp + health, 0.0f, maxHp); }
+	void reduce(Damage damage) { hp = clamp(hp - damage.value(), 0.0f, maxHp); }
 
 	void setValue(float health) { hp = health; }
-	const float value() const override { return (float)hp; }
-	float getPercentage() const { return (float)hp / (float)maxHp; }
+	const float value() const override { return hp; }
 
-	void increase(int health) { hp = clamp(hp + health, 0, maxHp); }
+	float getPercentage() const { return hp / maxHp; }
 
 	int getMax() const { return maxHp; }
-	void increaseMax(Health health) { hp += health.value(); maxHp += health.value(); }
+	void increaseMax(float health) { hp += health; maxHp += health; }
 
 	bool isDead() const { return hp <= 0; }
-	void takeDamage(int damage) { hp -= damage; }
-	void takeDamage(Damage damage) { hp -= damage.value(); }
-
-	inline Health operator - (Damage damage) const
-	{
-		return Health(hp - damage.value());
-	}
 
 	void setFullHp() { hp = maxHp; }
 
 private:
-	int hp;
-	int maxHp;
+	float hp;
+	float maxHp;
 };
 

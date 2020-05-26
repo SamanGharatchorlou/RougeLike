@@ -18,7 +18,7 @@ Collider AreaAbility::collider()
 }
 
 
-bool AreaAbility::isValidTarget(VectorF target)
+bool AreaAbility::isValidTarget(VectorF target, Map* map)
 {
 	RectF rect = mRect.MoveCopy(target);
 	VectorF points[4]{ rect.TopLeft(), rect.TopRight(), rect.BotRight(), rect.BotLeft() };
@@ -27,7 +27,7 @@ bool AreaAbility::isValidTarget(VectorF target)
 
 	for (int i = 0; i < 4; i++)
 	{
-		if (!mMap->floorCollisionTile(points[i]))
+		if (!map->floorCollisionTile(points[i]))
 		{
 			validBlinkPoint = false;
 		}

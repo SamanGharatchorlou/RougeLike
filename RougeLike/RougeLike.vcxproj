@@ -150,6 +150,7 @@
     <ClInclude Include="Source\Objects\Actors\Actor.h" />
     <ClInclude Include="Source\Objects\Actors\ActorManager.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\Types\Angel.h" />
+    <ClInclude Include="Source\Objects\Attributes\Armor.h" />
     <ClInclude Include="Source\Objects\Attributes\Damage.h" />
     <ClInclude Include="Source\Objects\Attributes\Level.h" />
     <ClInclude Include="Source\Objects\Effects\BlinkEffect.h" />

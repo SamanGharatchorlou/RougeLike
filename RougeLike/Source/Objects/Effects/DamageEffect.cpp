@@ -10,7 +10,7 @@
 void DamageEffect::init()
 {
 	Health* hp = static_cast<Health*>(mActor->getProperty("Health"));
-	hp->takeDamage(mDamage);
+	hp->reduce(mDamage);
 
 	mActor->collider()->setGotHit(true);
 	endEffect();

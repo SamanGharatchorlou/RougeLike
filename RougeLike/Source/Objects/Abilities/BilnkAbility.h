@@ -2,12 +2,10 @@
 
 #include "Ability.h"
 
-class Map;
-
 class BlinkAbility: public AreaAbility
 {
 public:
-	BlinkAbility(Map* map, float range) : mRange(range) { mMap = map; }
+	BlinkAbility(float range) : mRange(range) { }
 
 	void init(Animator animator) override;
 	void activate(VectorF position) override;
@@ -21,4 +19,5 @@ public:
 private:
 	float mRange;
 	VectorF mTarget;
+	Timer<float> mTimer;
 };

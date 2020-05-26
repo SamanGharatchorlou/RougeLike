@@ -41,7 +41,7 @@ public:
 
 	StatManager& statManager() { return mStatManager; }
 
-	void checkWallCollisions(bool status) { mWallCollisions.checkCollisions(status); }
+	void userHasControl(bool removeControl);
 
 
 private:
@@ -72,5 +72,5 @@ private:
 
 	Weapon* mWeapon;
 
-	bool mMoving;
+	bool mControlOverride;
 };

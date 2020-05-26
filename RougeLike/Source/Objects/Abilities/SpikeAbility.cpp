@@ -18,7 +18,7 @@ void SpikeAbility::init(Animator animator)
 
 	// Size
 	VectorF baseDimentions = mAnimator.getSpriteTile()->getRect().Size();
-	VectorF size = baseDimentions * 1.2f;
+	VectorF size = baseDimentions * 1.5f;
 
 	RectF rect(VectorF(-1.0f, -1.0f), size);
 	mRect = rect;

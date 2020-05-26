@@ -166,9 +166,11 @@ void AbilityManager::attemptActivation(Ability* ability)
 			VectorF cursorPosition = mGameData->inputManager->cursorPosition();
 			cursorPosition = mGameData->environment->toWorldCoords(cursorPosition);
 
+			Map* map = mGameData->environment->map(cursorPosition);
+
 			// Activate ability
 			AreaAbility* areaAbility = static_cast<AreaAbility*>(ability);
-			if(areaAbility->isValidTarget(cursorPosition))
+			if(areaAbility->isValidTarget(cursorPosition, map))
 			{
 				areaAbility->activate(cursorPosition);
 				ability->setState(Ability::Activating);
@@ -196,16 +198,18 @@ void AbilityManager::attemptActivation(Ability* ability)
 			VectorF cursorPosition = mGameData->inputManager->cursorPosition();
 			cursorPosition = mGameData->environment->toWorldCoords(cursorPosition);
 
+			Map* map = mGameData->environment->map(cursorPosition);
+
 			// Activate ability
 			AreaAbility* areaAbility = static_cast<AreaAbility*>(ability);
-			if (areaAbility->isValidTarget(cursorPosition))
+			if (areaAbility->isValidTarget(cursorPosition, map))
 			{
 				// Apply effect
+				areaAbility->activate(cursorPosition);
 				ability->activate(mGameData->actors->playerActor());
 				ability->setState(Ability::Activating);
 			}
 		}
-
 		break;
 	}
 	default:

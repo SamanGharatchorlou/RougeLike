@@ -89,7 +89,8 @@ void Enemy::slowUpdate(float dt)
 
 void Enemy::render()
 {
-	mStateMachine.getActiveState().render();
+	if(mVisibility)
+		mStateMachine.getActiveState().render();
 }
 
 

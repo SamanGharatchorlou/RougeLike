@@ -63,12 +63,12 @@ class AreaAbility : public Ability
 public:
 	virtual void activate(VectorF position) = 0;
 
-	bool isValidTarget(VectorF target);
+	bool isValidTarget(VectorF target, Map* map);
 
 	RectF effectArea() const { return mRect; }
 	Collider collider();
 
 protected:
-	RectF mRect;
 	Map* mMap;
+	RectF mRect;
 };

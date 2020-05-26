@@ -26,6 +26,7 @@ public:
 
 	const GameData* getGameData() const { return mGameData; }
 
+	virtual void setVisibility(bool visibility) { mVisibility = visibility; }
 	void reset();
 
 	// Event handling
@@ -71,4 +72,6 @@ protected:
 	EffectHandler mEffects;
 
 	LocalDispatcher mEvents;
+
+	bool mVisibility;
 };

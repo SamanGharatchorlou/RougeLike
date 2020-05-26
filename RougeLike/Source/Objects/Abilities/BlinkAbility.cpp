@@ -26,27 +26,25 @@ void BlinkAbility::init(Animator animator)
 
 void BlinkAbility::activate(VectorF target)
 {
-	if (isValidTarget(target))
-	{
-		mRect.SetCenter(target);
-		mTarget = target;
-		mAnimator.selectAnimation("activate");
-	}
-	else
-	{
-		setState(Finished);
-	}
+	mRect.SetCenter(target);
+	mTarget = target;
+	mAnimator.selectAnimation("activate");
 }
 
 void BlinkAbility::activate(Actor* actor)
 {
 	BlinkEffect* blink = new BlinkEffect(mTarget);
 	actor->addEffect(blink);
+
+	mTimer.start();
 }
 
 
 void BlinkAbility::slowUpdate(float dt)
 {
+	if (mTimer.getSeconds() > 2.0f)
+		setState(Finished);
+
 	mAnimator.slowUpdate(dt);
 }
 
