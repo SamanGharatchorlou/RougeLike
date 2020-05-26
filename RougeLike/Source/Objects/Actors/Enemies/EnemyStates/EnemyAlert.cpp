@@ -14,7 +14,7 @@ void EnemyAlert::init()
 
 void EnemyAlert::slowUpdate(float dt)
 {
-	mEnemy->resolvePlayerWeaponCollisions();
+	mEnemy->resolveCollisions();
 
 	if (timer.getSeconds() > mEnemy->getPropertyValue("AttentionTime"))
 	{

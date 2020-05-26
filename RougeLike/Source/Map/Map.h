@@ -38,6 +38,7 @@ public:
 
 	bool wallCollisionTile(Index index) const { return mData.get(index).collisionType() >= MapTile::Wall; }
 	bool floorCollisionTile(Index index) const { return mData.get(index).collisionType() == MapTile::Floor; }
+	bool floorCollisionTile(VectorF position) const { return mData.get(index(position)).collisionType() == MapTile::Floor; }
 
 	void addTileType(Index index, MapTile::Type type);
 	void setTileType(Index index, MapTile::Type type);

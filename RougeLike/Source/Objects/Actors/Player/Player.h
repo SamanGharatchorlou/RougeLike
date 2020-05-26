@@ -41,6 +41,8 @@ public:
 
 	StatManager& statManager() { return mStatManager; }
 
+	void checkWallCollisions(bool status) { mWallCollisions.checkCollisions(status); }
+
 
 private:
 	void initCollider();

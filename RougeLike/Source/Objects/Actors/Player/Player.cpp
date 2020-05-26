@@ -17,11 +17,13 @@
 
 #include "PlayerPropertyBag.h"
 
-#include "Objects/Effects/KnockbackEffect.h"
-#include "Objects/Abilities/Ability.h"
-#include "Objects/Effects/SlowEffect.h"
-#include "Objects/Effects/HealEffect.h"
+#include "Objects/Abilities/SlowAbility.h"
+#include "Objects/Abilities/HealAbility.h"
+#include "Objects/Abilities/SpikeAbility.h"
+#include "Objects/Abilities/BilnkAbility.h"
 
+#include "Objects/Effects/KnockbackEffect.h"
+#include "Objects/Effects/DamageEffect.h"
 
 
 Player::Player(GameData* gameData) :
@@ -43,12 +45,11 @@ void Player::init(const std::string& characterConfig)
 
 	initCollider();
 
-	SlowAbility* slowAbility = new SlowAbility(0.25F);
-	HealAbility* healAbility = new HealAbility(50.0f);
-
 	// TODO: Get these strings from a set so they match up with the UI?
-	mAbilities.add("Slow", slowAbility);
-	mAbilities.add("Heal", healAbility);
+	mAbilities.add("Slow", new SlowAbility(0.25F));
+	mAbilities.add("Heal", new HealAbility(50.0f));
+	mAbilities.add("Spikes", new SpikeAbility(Damage(100.0f), 300.0f));
+	mAbilities.add("Blink", new BlinkAbility(mGameData->environment->primaryMap(), 500.0f));
 }
 
 
@@ -58,7 +59,7 @@ void Player::handleInput()
 	mAbilities.handleInput();
 
 	if (mGameData->inputManager->isPressed(Button::Space))
-		mAbilities.endSelectionMode();
+		mAbilities.exitSelection();
 
 	if (mGameData->inputManager->isCursorPressed(Cursor::Left) && 
 		!mGameData->uiManager->isUsingUI() && !mAbilities.inSelectionMode())
@@ -86,7 +87,7 @@ void Player::slowUpdate(float dt)
 {
 	Actor::slowUpdate(dt);
 	mWeapon->slowUpdate(dt);
-	mAbilities.slowUpdate();
+	mAbilities.slowUpdate(dt);
 
 	// Handle ability events
 	if (mAbilities.hasEvent())
@@ -104,6 +105,11 @@ void Player::slowUpdate(float dt)
 		processHit();
 
 	updateCurrentTile();
+
+	if (physics()->rect().x1 < 0.0f )
+	{
+		printf("pause\n");
+	}
 }
 
 
@@ -165,6 +171,7 @@ void Player::render()
 
 	// Weapon
 	mWeapon->render();
+	mAbilities.render();
 #endif
 }
 
@@ -211,9 +218,11 @@ void Player::processHit()
 {
 	// Take damage
 	const DamageCollider* damageCollider = static_cast<const DamageCollider*>(collider()->getOtherCollider());
-	Health* hp = static_cast<Health*>(propertyBag()->get("Health"));
-	hp->takeDamage(damageCollider->damage());
 
+	mEffects.addEffect(new DamageEffect(damageCollider->damage()));
+
+	// Update UI
+	Health* hp = static_cast<Health*>(propertyBag()->get("Health"));
 	SetHealthBarEvent* eventPtr = new SetHealthBarEvent(*hp);
 	pushEvent(EventPacket(eventPtr));
 
@@ -253,12 +262,17 @@ void Player::updateAttackingWeapon()
 void Player::updateCurrentTile()
 {
 	// Update enemy paths when player changes tile
-	Vector2D<int> currentTile = mGameData->environment->map(rect().Center())->index(rect().Center());
-	if (tileIndex != currentTile)
-	{
-		tileIndex = currentTile;
+	Map* currentMap = mGameData->environment->map(rect().Center());
 
-		UpdateAIPathMapEvent* eventPtr = new UpdateAIPathMapEvent;
-		pushEvent(EventPacket(eventPtr));
+	if (currentMap->isValidPosition(rect().Center()))
+	{
+		Vector2D<int> currentTile = currentMap->index(rect().Center());
+		if (tileIndex != currentTile)
+		{
+			tileIndex = currentTile;
+
+			UpdateAIPathMapEvent* eventPtr = new UpdateAIPathMapEvent;
+			pushEvent(EventPacket(eventPtr));
+		}
 	}
 }

@@ -41,6 +41,4 @@ private:
 	GameData* mGameData;
 	Player* mPlayer;
 	EnemyManager* mEnemies;
-
-
 };

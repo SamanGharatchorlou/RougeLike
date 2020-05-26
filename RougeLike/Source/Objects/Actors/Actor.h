@@ -59,10 +59,6 @@ public:
 
 
 protected:
-	void initAnimations(const std::string& config);
-
-
-protected:
 	GameData* mGameData;
 
 	PropertyBag* mPropertyBag;

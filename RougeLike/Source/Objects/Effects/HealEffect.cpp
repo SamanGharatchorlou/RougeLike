@@ -8,9 +8,7 @@
 
 void HealEffect::init()
 {
-	Property* property = mActor->getProperty("Health");
-	Health* health = static_cast<Health*>(property);
-
+	Health* health = static_cast<Health*>(mActor->getProperty("Health"));
 	health->increase(mHeal);
 	endEffect();
 }

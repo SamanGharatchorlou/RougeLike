@@ -28,7 +28,7 @@ bool Font::loadFromFile(const std::string& font, int ptSize)
 
 
 	// save a copy of the font name
-	mFontName = FileManager::Get()->fileName(std::string(font)) + ".ttf";
+	mFontName = FileManager::Get()->getFileName(std::string(font)) + ".ttf";
 
 	mPtSize = ptSize;
 

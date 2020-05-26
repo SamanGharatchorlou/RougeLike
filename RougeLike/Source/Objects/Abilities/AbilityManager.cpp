@@ -14,6 +14,9 @@
 
 #include "Collisions/Collider.h"
 #include "Map/Environment.h"
+#include "Map/Map.h"
+
+#include "Animations/AnimationReader.h"
 
 
 void AbilityManager::handleInput()
@@ -22,45 +25,110 @@ void AbilityManager::handleInput()
 	{
 		UIButton* button = mGameData->uiManager->findButton(iter->first);
 
-		if (button && button->isActive() && !inSelectionMode())
+		// Enter selection mode
+		if (button && button->isReleased())
 		{
-			mActiveAbility = iter->second;
+			exitSelection();
+			iter->second->setState(Ability::Selected);
 		}
 	}
 }
 
 
-void AbilityManager::slowUpdate()
+void AbilityManager::completeSelection(std::unordered_map<std::string, Ability*>::iterator iter)
 {
-	if (inSelectionMode())
-	{
-		activateActiveAbility();
-	}
+	UIButton* button = mGameData->uiManager->findButton(iter->first);
 
+	if (button && button->isActive())
+	{
+		button->setActive(false);
+		iter->second->setState(Ability::Running);
+	}
+}
+
+
+void AbilityManager::exitSelection()
+{
 	for (std::unordered_map<std::string, Ability*>::iterator iter = mAbilities.begin(); iter != mAbilities.end(); iter++)
 	{
+		if (iter->second->state() == Ability::Selected)
+		{
+			UIButton* button = mGameData->uiManager->findButton(iter->first);
+
+			if (button && button->isActive())
+			{
+				button->setActive(false);
+				iter->second->setState(Ability::Idle);
+			}
+		}
+	}
+}
+
+
+void AbilityManager::slowUpdate(float dt)
+{
+	for (std::unordered_map<std::string, Ability*>::iterator iter = mAbilities.begin(); iter != mAbilities.end(); iter++)
+	{
+		Ability* ability = iter->second;
+
+		switch (ability->state())
+		{
+		case Ability::Selected:
+		{
+			attemptActivation(ability);
+			break;
+		}
+		case Ability::Activating:
+		{
+			completeSelection(iter);
+			break;
+		}
+		case Ability::Running:
+		{
+			ability->slowUpdate(dt);
+			break;
+		}
+		case Ability::Finished:
+		{
+			// reset... cool down etc.
+			ability->setState(Ability::Idle);
+			break;
+		}
+		default:
+			break;
+		}
+
+		//if(iter->first == "Slow")
+		//	printf("ability state: %d\n", ability->state());
+
+		// Pass events to parent object to be handled 
 		while (iter->second->hasEvent())
 		{
 			mEvents.push(iter->second->popEvent());
 		}
 	}
+}
 
 
-	// in selection mode
-	if (mActiveAbility && mActiveAbility->hasBeenActivated())
+
+void AbilityManager::render()
+{
+	for (std::unordered_map<std::string, Ability*>::iterator iter = mAbilities.begin(); iter != mAbilities.end(); iter++)
 	{
-		// get events from current active ability
-		// do other things
-		endSelectionMode();
+		if (iter->second->state() == Ability::Running)
+		{
+			iter->second->render();
+		}
 	}
 }
 
 
-void AbilityManager::activateActiveAbility()
+
+void AbilityManager::attemptActivation(Ability* ability)
 {
-	switch (mActiveAbility->targetType())
+	switch (ability->targetType())
 	{
-		// activate on first enemy selected
+	// Activate on first enemy selected
 	case Ability::TargetType::Single_Enemy:
 	{
 		if (mGameData->inputManager->isCursorPressed(Cursor::Left))
@@ -74,7 +142,8 @@ void AbilityManager::activateActiveAbility()
 				// activate ability on first enemy selected
 				if (enemies[i]->collider()->contains(cursorPosition))
 				{
-					activate(enemies[i]);
+					ability->setState(Ability::Activating);
+					ability->activate(enemies[i]);
 					break;
 				}
 			}
@@ -82,9 +151,62 @@ void AbilityManager::activateActiveAbility()
 
 		break;
 	}
+	// Player casts on self only
 	case Ability::TargetType::Self:
 	{
-		activate(mGameData->actors->playerActor());
+		ability->setState(Ability::Activating);
+		ability->activate(mGameData->actors->playerActor());
+		break;
+	}
+	// Select any floor tile
+	case Ability::TargetType::Area_Attack:
+	{
+		if (mGameData->inputManager->isCursorPressed(Cursor::Left))
+		{
+			VectorF cursorPosition = mGameData->inputManager->cursorPosition();
+			cursorPosition = mGameData->environment->toWorldCoords(cursorPosition);
+
+			// Activate ability
+			AreaAbility* areaAbility = static_cast<AreaAbility*>(ability);
+			if(areaAbility->isValidTarget(cursorPosition))
+			{
+				areaAbility->activate(cursorPosition);
+				ability->setState(Ability::Activating);
+
+				Collider abilityCollider = areaAbility->collider();
+
+				// Apply effect to all enemies caught in area
+				std::vector<Actor*> enemies = mGameData->actors->getAllEnemies();
+				for (int i = 0; i < enemies.size(); i++)
+				{
+					Collider* enemyCollider = enemies[i]->collider();
+					if (enemyCollider->doesIntersect(&abilityCollider))
+					{
+						ability->activate(enemies[i]);
+					}
+				}
+			}
+		}
+		break;
+	}
+	case Ability::TargetType::Area_Point:
+	{
+		if (mGameData->inputManager->isCursorPressed(Cursor::Left))
+		{
+			VectorF cursorPosition = mGameData->inputManager->cursorPosition();
+			cursorPosition = mGameData->environment->toWorldCoords(cursorPosition);
+
+			// Activate ability
+			AreaAbility* areaAbility = static_cast<AreaAbility*>(ability);
+			if (areaAbility->isValidTarget(cursorPosition))
+			{
+				// Apply effect
+				ability->activate(mGameData->actors->playerActor());
+				ability->setState(Ability::Activating);
+			}
+		}
+
+		break;
 	}
 	default:
 		break;
@@ -92,50 +214,29 @@ void AbilityManager::activateActiveAbility()
 }
 
 
-void AbilityManager::endSelectionMode()
+bool AbilityManager::inSelectionMode() const
 {
-	// Deactivate button
-	for (std::unordered_map<std::string, Ability*>::iterator iter = mAbilities.begin(); iter != mAbilities.end(); iter++)
-	{
-		if (iter->second == mActiveAbility)
-		{
-			UIButton* button = mGameData->uiManager->findButton(iter->first);
+	bool selectionMode = false;
 
-			if (button && button->isActive())
-			{
-				button->setActive(false);
-			}
-		}
+	for (std::unordered_map<std::string, Ability*>::const_iterator iter = mAbilities.begin(); iter != mAbilities.end(); iter++)
+	{
+		if (iter->second->state() == Ability::Selected)
+			selectionMode = true;
 	}
 
-	mActiveAbility->setActive(false);
-	mActiveAbility = nullptr;
+	return selectionMode;
 }
-
 
 void AbilityManager::add(std::string name, Ability* ability)
 {
-	mAbilities[name] = ability;
-}
+	AnimationReader reader(mGameData->textureManager);
+	Animator animator;
 
-
-void AbilityManager::select(const std::string& ability)
-{
-	auto search = mAbilities.find(ability);
-
-	if (search != mAbilities.end())
-	{
-		mActiveAbility = search->second;
-	}
+	if (reader.initAnimator(animator, name))
+		ability->init(animator);
 	else
-	{
-		DebugPrint(Warning, "Player does not have the '%s' ability\n", ability.c_str());
-		mActiveAbility = nullptr;
-	}
-}
+		DebugPrint(Warning, "Animator setup failed for '%s' ability\n", name.c_str());
 
-
-void AbilityManager::activate(Actor* target)
-{
-	mActiveAbility->activate(target);
+	ability->setState(Ability::Idle);
+	mAbilities[name] = ability;
 }

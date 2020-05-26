@@ -27,9 +27,15 @@
     <ClCompile Include="Source\Input\Button.cpp" />
     <ClCompile Include="Source\Objects\Abilities\Ability.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityManager.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\BlinkAbility.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\HealAbility.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\SlowAbility.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\SpikeAbility.cpp" />
     <ClCompile Include="Source\Objects\Actors\ActorManager.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\Types\Angel.cpp" />
     <ClCompile Include="Source\Objects\Attributes\Level.cpp" />
+    <ClCompile Include="Source\Objects\Effects\BlinkEffect.cpp" />
+    <ClCompile Include="Source\Objects\Effects\DamageEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\HealEffect.cpp" />
     <ClCompile Include="Source\Objects\Actors\Physics.cpp" />
     <ClCompile Include="Source\Objects\Attributes\StatManager.cpp" />
@@ -110,7 +116,7 @@
     </ClCompile>
     <ClCompile Include="Source\States\GameState.cpp" />
     <ClCompile Include="Source\States\PauseState.cpp" />
-    <ClCompile Include="Source\System\Files\AnimationReader.cpp" />
+    <ClCompile Include="Source\Animations\AnimationReader.cpp" />
     <ClCompile Include="Source\System\Window.cpp" />
     <ClCompile Include="Source\UI\Elements\UIBox.cpp" />
     <ClCompile Include="Source\UI\Screens\GameScreen.cpp" />
@@ -137,11 +143,17 @@
     <ClInclude Include="Source\Events\LocalObserver.h" />
     <ClInclude Include="Source\Objects\Abilities\Ability.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityManager.h" />
+    <ClInclude Include="Source\Objects\Abilities\BilnkAbility.h" />
+    <ClInclude Include="Source\Objects\Abilities\HealAbility.h" />
+    <ClInclude Include="Source\Objects\Abilities\SlowAbility.h" />
+    <ClInclude Include="Source\Objects\Abilities\SpikeAbility.h" />
     <ClInclude Include="Source\Objects\Actors\Actor.h" />
     <ClInclude Include="Source\Objects\Actors\ActorManager.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\Types\Angel.h" />
     <ClInclude Include="Source\Objects\Attributes\Damage.h" />
     <ClInclude Include="Source\Objects\Attributes\Level.h" />
+    <ClInclude Include="Source\Objects\Effects\BlinkEffect.h" />
+    <ClInclude Include="Source\Objects\Effects\DamageEffect.h" />
     <ClInclude Include="Source\Objects\Effects\HealEffect.h" />
     <ClInclude Include="Source\Objects\Actors\Physics.h" />
     <ClInclude Include="Source\Objects\Properties\Property.h" />
@@ -232,7 +244,7 @@
     <ClInclude Include="Source\States\PauseState.h" />
     <ClInclude Include="Source\States\State.h" />
     <ClInclude Include="Source\States\StateMachine.h" />
-    <ClInclude Include="Source\System\Files\AnimationReader.h" />
+    <ClInclude Include="Source\Animations\AnimationReader.h" />
     <ClInclude Include="Source\System\Files\XMLValueMap.h" />
     <ClInclude Include="Source\System\Window.h" />
     <ClInclude Include="Source\UI\Elements\UIElement.h" />

@@ -25,7 +25,7 @@ void EnemyPatrol::fastUpdate(float dt)
 
 void EnemyPatrol::slowUpdate(float dt)
 {
-	mEnemy->resolvePlayerWeaponCollisions();
+	mEnemy->resolveCollisions();
 
 	if (hasReachedPositionTarget())
 		mEnemy->addState(EnemyState::Wait);
@@ -95,7 +95,11 @@ bool EnemyPatrol::canSeeAttackTarget() const
 			const Map* map = mEnemy->getEnvironmentMap();
 
 			int enemyXTile = map->index(position).x;
-			int playerXTile = map->index(attackTargetPosition).x;
+			int playerXTile = -99;
+			if (map->isValidPosition(attackTargetPosition))
+			{
+				playerXTile = map->index(attackTargetPosition).x;
+			}
 			hasLineOfSight = (enemyXTile == playerXTile) || (enemyXTile == playerXTile + 1) || (enemyXTile == playerXTile - 1);
 		}
 

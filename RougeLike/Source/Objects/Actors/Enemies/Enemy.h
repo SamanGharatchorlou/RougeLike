@@ -47,7 +47,7 @@ public:
 	const Map*					getEnvironmentMap() const;
 
 	// Collisions
-	void resolvePlayerWeaponCollisions();
+	void resolveCollisions();
 
 	// Target
 	void			setAttackTarget(const RectF* rect) { mAttackTarget = rect; }

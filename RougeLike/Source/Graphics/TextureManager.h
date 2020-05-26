@@ -14,7 +14,8 @@ public:
 
 	void init();
 
-	Texture* getTexture(const std::string& label, const FileManager::Folder) const;
+	Texture* getTexture(const std::string& label, const FileManager::Folder folders) const;
+	Texture* getTexture(const std::string& label, std::vector<FileManager::Folder> folders) const;
 	const std::string& getTextureName(const Texture* texture) const;
 
 private:

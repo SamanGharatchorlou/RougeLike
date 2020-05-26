@@ -114,6 +114,7 @@ void GameState::slowUpdate(float dt)
 	{
 		mGameData->environment->closeLevelEntrace();
 		Camera::Get()->setMapBoundaries(mGameData->environment->boundaries());
+		// primary + exit
 	}
 
 	// End of slow frame
@@ -167,6 +168,7 @@ void GameState::initCamera()
 	VectorF cameraPosition = VectorF(0.0f, mGameData->environment->size().y / 2.0f);
 	Camera::Get()->setPosition(cameraPosition);
 	Camera::Get()->setMapBoundaries(mGameData->environment->boundaries());
+	// entrace + primary
 }
 
 void GameState::initMap()
@@ -188,6 +190,7 @@ void GameState::nextLevel()
 {
 	mGameData->environment->nextLevel();
 	Camera::Get()->setMapBoundaries(mGameData->environment->boundaries());
+	// entrace + primary
 
 	// end level
 	mGameData->actors->enemies()->clearAllEnemies();

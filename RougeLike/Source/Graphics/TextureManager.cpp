@@ -36,8 +36,6 @@ void TextureManager::init()
 	DebugPrint(Log, "\n--- Loading Textures ---\n");
 	int fails = 0;
 
-	//fails += loadAllTextures(FileManager::Image);
-
 	for (int i = FileManager::Image + 1; i < FileManager::Folder::Image_END; i++)
 	{
 		FileManager::Folder folder = static_cast<FileManager::Folder>(i);
@@ -72,7 +70,7 @@ bool TextureManager::loadTexture(FolderMap& folderMap, const std::string& filePa
 
 	if (texture->loadFromFile(filePath))
 	{
-		std::string label = FileManager::Get()->fileName(filePath);
+		std::string label = FileManager::Get()->getFileName(filePath);
 		std::string folderPath = FileManager::Get()->folderPath(folderMap.first);
 		std::string relativePath = filePath.substr(folderPath.size());
 
@@ -82,7 +80,7 @@ bool TextureManager::loadTexture(FolderMap& folderMap, const std::string& filePa
 	}
 	else
 	{
-		std::string label = FileManager::Get()->fileName(filePath);
+		std::string label = FileManager::Get()->getFileName(filePath);
 		DebugPrint(Log, "Failure: texture NOT loaded '%s' at '%s'\n", label.c_str(), filePath.c_str());
 		return false;
 	}
@@ -123,11 +121,40 @@ Texture* TextureManager::getTexture(const std::string& label, const FileManager:
 	}
 	else
 	{
-		DebugPrint(Warning, "No item in folder map '%d' with label: %s\n", folder, label.c_str());
+		DebugPrint(Warning, "No item in folder map '%d' with label: '%s'\n", folder, label.c_str());
 		return nullptr;
 	}
 }
 
+
+Texture* TextureManager::getTexture(const std::string& label, std::vector<FileManager::Folder> folders) const
+{
+	Texture* texture = nullptr;
+
+	for (int i = 0; i < folders.size(); i++)
+	{
+		TextureMap textureMap = findTextureMap(folders[i]);
+
+		auto search = textureMap.find(label);
+
+		if (search != textureMap.end())
+		{
+			if(!texture)
+				texture = search->second;
+			else
+			{
+				DebugPrint(Warning, 
+					"Multiple files named '%s' were found, required texture is ambiguous. \
+					Either change the file names or make a searched folder more specific, \
+					folders searched = %5\n", label, folders.size());
+				texture = nullptr;
+				break;
+			}
+		}
+	}
+
+	return texture;
+}
 
 
 /// --- Priavte Functions --- ///

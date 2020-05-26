@@ -1,10 +1,13 @@
 #pragma once
 
+#include "Events/Events.h"
 #include "Objects/Effects/Effect.h"
 
-#include "Events/Events.h"
+#include "Animations/Animator.h"
+#include "Collisions/Collider.h"
 
 class Actor;
+class Map;
 
 class Ability
 {
@@ -12,55 +15,60 @@ public:
 	enum TargetType
 	{
 		Self,
-		Single_Enemy
+		Single_Enemy,
+		Area_Attack,
+		Area_Point
+	};
+
+	enum State
+	{
+		None,
+		Idle,
+		Selected,
+		Activating,
+		Running,
+		Finished
 	};
 
 
 public:
-	Ability() : mActivated(false) { }
+	Ability() : mState(None) { }
 	virtual ~Ability() { }
 
+	virtual void init(Animator animator) { mAnimator = animator; }
+	
 	virtual void activate(Actor* target) = 0;
+	virtual void slowUpdate(float dt) = 0;
+	virtual void render() = 0 ;
 
 	virtual const TargetType targetType() const = 0;
 
-	void setActive(bool isActive) { mActivated = isActive; }
-	bool hasBeenActivated() const { return mActivated; }
+	void setState(State state) { mState = state; }
+	State state() const { return mState; }
 
 	bool hasEvent() const { return mEvents.size() > 0; }
 	EventPacket popEvent();
 
-protected:
-	bool mActivated;
 
+protected:
+	State mState;
+	Animator mAnimator;
 	std::queue<EventPacket> mEvents;
 };
 
 
 
-class SlowAbility : public Ability
+class AreaAbility : public Ability
 {
 public:
-	SlowAbility(float slowFactor) : mSlowFactor(slowFactor) { }
+	virtual void activate(VectorF position) = 0;
 
-	void activate(Actor* target) override;
+	bool isValidTarget(VectorF target);
 
-	const TargetType targetType() const override { return TargetType::Single_Enemy; }
+	RectF effectArea() const { return mRect; }
+	Collider collider();
 
-private:
-	float mSlowFactor;
-};
-
-
-class HealAbility : public Ability
-{
-public:
-	HealAbility(float heal) : mHeal(heal) { }
-
-	void activate(Actor* target) override;
-
-	const TargetType targetType() const override { return TargetType::Self; }
-
-private:
-	float mHeal;
+protected:
+	RectF mRect;
+	Map* mMap;
 };

@@ -4,12 +4,32 @@
 #include "Graphics/TextureManager.h"
 #include "Graphics/Texture.h"
 
-// TODO: both the enemy and player use the same init function kind of thing where they setup an animator
-// move that logic into here
-AnimationReader::AnimationReader(const std::string& file)
+bool AnimationReader::initAnimator(Animator& animator, const std::string& config)
 {
-	std::string configFilePath = FileManager::Get()->XMLFilePath(FileManager::Config_Animations, file);
-	parser.parseXML(configFilePath);
+	std::string configFilePath = FileManager::Get()->findFileInFolder(FileManager::Config_Animations, config);
+
+	if (!configFilePath.empty())
+	{
+		parser.parseXML(configFilePath);
+
+		// Setup sprite sheet
+		TilesetData data = buildTilesetData();
+		Tileset spriteSheet(data);
+#if _DEBUG
+		spriteSheet.validate();
+#endif
+
+		// Setup animations
+		Animations animationData = readAnimationData();
+
+		if (animationData.size() >= 1)
+		{
+			animator.init(spriteSheet, animationData);
+			return true;
+		}
+	}
+
+	return false;
 }
 
 
@@ -39,14 +59,12 @@ Animations AnimationReader::readAnimationData() const
 }
 
 
-TilesetData AnimationReader::readTilesetData(const TextureManager* tm) const
+TilesetData AnimationReader::buildTilesetData() const
 {
 	TilesetData data;
-
 	data.texture = readTexture(tm);
 	data.tileSize = readTileSize();
 	data.tileCount = readTileCount();
-
 	return data;
 }
 
@@ -84,5 +102,6 @@ Vector2D<int> AnimationReader::readTileSize() const
 
 Texture* AnimationReader::readTexture(const TextureManager* tm) const
 {
-	return tm->getTexture(parser.firstRootNodeValue("TextureName"), FileManager::Image_Characters);
+	std::vector<FileManager::Folder> folders{ FileManager::Image_Characters, FileManager::Image_Effects };
+	return tm->getTexture(parser.firstRootNodeValue("TextureName"), folders);
 }

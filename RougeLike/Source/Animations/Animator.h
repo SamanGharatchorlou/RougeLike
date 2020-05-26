@@ -27,11 +27,11 @@ using Animations = std::unordered_map<std::string, Animation>;
 class Animator
 {
 public:
-	Animator() : animationIndex(0), speedFactor(1.0f) { }
+	Animator() : mAnimationIndex(0), speedFactor(1.0f) { }
 
 	void init(Tileset spriteSheet, Animations animations);
 	void slowUpdate(float dt);
-	void fastUpdate(float dt) { }
+	void render(RectF rect);
 
 	void clear();
 
@@ -41,12 +41,14 @@ public:
 
 	void selectAnimation(const std::string& name);
 
+	int animationIndex() const { return mAnimationIndex; }
+	int animationCount() { return mAnimations[mActiveAnimation].count; }
+
 	void setSpeedFactor(float speed) {
 		printf("speed factor being set to %f\n", speed);
 		speedFactor = speed; }
 
 	Tile* getSpriteTile();
-
 	Texture* getSpriteTexture();
 
 private:
@@ -57,7 +59,7 @@ private:
 
 	float speedFactor;
 
-	int animationIndex;
+	int mAnimationIndex;
 
 	Timer<float> timer;
 };

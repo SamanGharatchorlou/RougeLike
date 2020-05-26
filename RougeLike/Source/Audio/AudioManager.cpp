@@ -148,7 +148,7 @@ int AudioManager::loadAllMusic(FileManager::Folder folder)
 	for (const std::string& path : imagePaths)
 	{
 		Audio *audio = new Music;
-		fails += !loadAudio(audio, FileManager::Get()->fileName(path), path);
+		fails += !loadAudio(audio, FileManager::Get()->getFileName(path), path);
 	}
 
 	return fails;
@@ -163,7 +163,7 @@ int AudioManager::loadAllSound(FileManager::Folder folder)
 	for (const std::string& path : imagePaths)
 	{
 		Audio *audio = new Sound;
-		fails += !loadAudio(audio, FileManager::Get()->fileName(path), path);
+		fails += !loadAudio(audio, FileManager::Get()->getFileName(path), path);
 	}
 
 	return fails;
@@ -178,7 +178,7 @@ int AudioManager::loadAllSoundGroups(FileManager::Folder folder)
 	for (const std::string& path : folderPaths)
 	{
 		Audio* soundGroup =  new AudioGroup;
-		fails += !loadAudio(soundGroup, FileManager::Get()->fileName(path), path);
+		fails += !loadAudio(soundGroup, FileManager::Get()->getFileName(path), path);
 	}
 
 	return fails;

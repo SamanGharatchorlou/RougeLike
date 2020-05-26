@@ -20,11 +20,11 @@
 #define DRAW_AI_PATH_COSTMAP 0
 #define DRAW_ENEMY_RECT 0
 #define DRAW_ENEMY_TARGET_PATH 0
-#define LIMIT_ENEMY_SPAWNS 0 // Set to the max number of enemies you want to spawn
+#define LIMIT_ENEMY_SPAWNS 1 // Set to the max number of enemies you want to spawn
 
 // UI
 #define DRAW_UI_RECTS 0
-#define UI_EDITOR 1
+#define UI_EDITOR 0
 #define DEBUG_CURSOR 1
 
 #else

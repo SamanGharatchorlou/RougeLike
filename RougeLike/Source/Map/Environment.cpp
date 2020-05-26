@@ -20,10 +20,12 @@ void Environment::restart()
 {
 	delete mPrimaryMap;
 
-	if(mEntrace)
+	if (mEntrace)
 		delete mEntrace;
-	if(mExit)
+	else if (mExit)
 		delete mExit;
+	else
+		ASSERT(Warning, true, "Something has gone very wrong...\n");
 
 	mPrimaryMap = new Map();
 	mEntrace = new Map();
@@ -90,14 +92,27 @@ VectorF Environment::size() const
 
 Map* Environment::map(VectorF position) const
 {
-	if (mEntrace && position.x < mEntrace->getLastRect().RightPoint())
-		return mEntrace;
-
-	else if (mPrimaryMap && position.x < mPrimaryMap->getLastRect().LeftPoint())
-		return mPrimaryMap;
-
-	else
+	if (mExit && position.x > mPrimaryMap->getLastRect().LeftPoint())
+	{
 		return mExit;
+	}
+	else if (mEntrace && position.x < mPrimaryMap->getFirstRect().LeftPoint())
+	{
+		return mEntrace;
+	}
+	else // if(mPrimaryMap && position.x < mPrimaryMap->getLastRect().LeftPoint()
+	{
+		return mPrimaryMap;
+	}
+
+	//if (mEntrace && position.x < mEntrace->getLastRect().RightPoint())
+	//	return mEntrace;
+
+	//else if (mPrimaryMap && position.x < mPrimaryMap->getLastRect().LeftPoint())
+	//	return mPrimaryMap;
+
+	//else
+	//	return mExit;
 }
 
 
@@ -138,15 +153,15 @@ RectF Environment::boundaries() const
 	float xLeft = 0.0f;
 	float xRight = 0.0f;
 
-	if (mEntrace)
-	{
-		xLeft = mEntrace->getFirstRect().LeftPoint();
-		xRight = mPrimaryMap->getLastRect().RightPoint();
-	}
-	else
+	if(mExit)
 	{
 		xLeft = mPrimaryMap->getFirstRect().LeftPoint();
 		xRight = mExit->getLastRect().RightPoint();
+	}
+	else // mEntrace
+	{
+		xLeft = mEntrace->getFirstRect().LeftPoint();
+		xRight = mPrimaryMap->getLastRect().RightPoint();
 	}
 
 	return RectF(xLeft, 0.0f, xRight, mPrimaryMap->size().y);
@@ -227,7 +242,7 @@ void Environment::swapToEntrance()
 void Environment::swapToExit()
 {
 	mExit = mEntrace;
-	mEntrace = nullptr;
+	// mEntrace = nullptr;
 }
 
 

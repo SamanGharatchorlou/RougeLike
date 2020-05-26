@@ -8,9 +8,6 @@
 #include "TunnelGenerator.h"
 
 
-
-
-
 void Map::populateTileRects(VectorF offset)
 {
 	for (int y = 0; y < mData.yCount(); y++)
@@ -356,6 +353,11 @@ const Index Map::index(VectorF position) const
 {
 	VectorF mapTopLeft = mData.get(Index(0, 0)).rect().TopLeft();
 	VectorF shiftedPosition = position - mapTopLeft;
+
+	if (!isValidPosition(position))
+	{
+		printf("error\n");
+	}
 
 	return isValidPosition(position) ? Index(shiftedPosition / tileSize()) : Index(-1, -1);
 }

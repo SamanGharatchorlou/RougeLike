@@ -14,9 +14,9 @@ void Animator::slowUpdate(float dt)
 
 	if (timer.getSeconds() >= animation.speed / speedFactor)
 	{
-		if (++animationIndex >= animation.startingIndex + animation.count)
+		if (++mAnimationIndex >= animation.startingIndex + animation.count)
 		{
-			animationIndex = animation.startingIndex;
+			mAnimationIndex = animation.startingIndex;
 		}
 
 		timer.restart();
@@ -26,7 +26,7 @@ void Animator::slowUpdate(float dt)
 void Animator::clear()
 {
 	mActiveAnimation = "";
-	animationIndex = 0;
+	mAnimationIndex = 0;
 	speedFactor = 1.0f;
 	timer.stop();
 }
@@ -38,20 +38,24 @@ void Animator::selectAnimation(const std::string& name)
 	{
 		timer.restart();
 		mActiveAnimation = name;
-		animationIndex = mAnimations[mActiveAnimation].startingIndex;
+		mAnimationIndex = mAnimations[mActiveAnimation].startingIndex;
 	}
 }
 
 
 Tile* Animator::getSpriteTile()
 {
-	return &mSpriteSheet.getTile(animationIndex);
+	return &mSpriteSheet.getTile(mAnimationIndex);
 }
 
 
 Texture* Animator::getSpriteTexture()
 {
-	return mSpriteSheet.getTile(animationIndex).getTexture();
+	return mSpriteSheet.getTile(mAnimationIndex).getTexture();
 }
 
 
+void Animator::render(RectF rect)
+{
+	mSpriteSheet.getTile(mAnimationIndex).render(rect);
+}

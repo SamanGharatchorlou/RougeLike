@@ -88,7 +88,7 @@ void Music::stop(int channel)
 // --- Audio Group --- //
 bool AudioGroup::load(const std::string& directoryPath)
 {
-	std::string groupName = FileManager::Get()->fileName(directoryPath);
+	std::string groupName = FileManager::Get()->getFileName(directoryPath);
 	std::vector<std::string> audioFilePaths = FileManager::Get()->fullPathsInFolder(directoryPath);
 
 	for (int i = 0; i < audioFilePaths.size(); i++)
@@ -102,7 +102,7 @@ bool AudioGroup::load(const std::string& directoryPath)
 		else
 		{
 			DebugPrint(Warning, "Failure: sound '%s' NOT loaded into group '%s' in directory '%s'\n. SDL_mixer Error: %s\n",
-				FileManager::Get()->fileName(audioFilePaths[i]), groupName.c_str(), directoryPath.c_str(), Mix_GetError());
+				FileManager::Get()->getFileName(audioFilePaths[i]), groupName.c_str(), directoryPath.c_str(), Mix_GetError());
 		}
 	}
 

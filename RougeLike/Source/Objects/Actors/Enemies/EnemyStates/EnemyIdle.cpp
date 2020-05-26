@@ -15,7 +15,7 @@ void EnemyIdle::init()
 
 void EnemyIdle::slowUpdate(float dt)
 {
-	mEnemy->resolvePlayerWeaponCollisions();
+	mEnemy->resolveCollisions();
 
 	if (canSeeAttackTarget())
 		mEnemy->replaceState(EnemyState::Alert);

@@ -5,7 +5,6 @@
 #include "EnemyStates/EnemyStateHeaders.h"
 
 #include "Graphics/Texture.h"
-#include "System/Files/AnimationReader.h"
 
 #include "EnemyPropertyBag.h"
 #include "Map/Environment.h"
@@ -14,7 +13,7 @@
 #include "Objects/Actors/ActorManager.h"
 #include "Objects/Actors/Player/Player.h"
 #include "Objects/Effects/KnockbackEffect.h"
-#include "Objects/Effects/SlowEffect.h"
+#include "Objects/Effects/DamageEffect.h"
 
 #include "AI/AIPathMap.h"
 
@@ -70,7 +69,9 @@ void Enemy::fastUpdate(float dt)
 
 void Enemy::slowUpdate(float dt)
 {
+	// Must run first, some effects e.g. damage apply a gotHit state to the collider
 	Actor::slowUpdate(dt);
+
 	// Reset alpha for enemies sharing the same texture
 	mAnimator.getSpriteTexture()->setAlpha(alphaMax);
 
@@ -122,14 +123,24 @@ void Enemy::clear()
 }
 
 
-void Enemy::resolvePlayerWeaponCollisions()
+void Enemy::resolveCollisions()
 {
 	if (mCollider->gotHit())
 	{
-		// Apply knockback
-		const DamageCollider* collider = static_cast<const DamageCollider*>(mCollider->getOtherCollider());
-		KnockbackEffect* effect = new KnockbackEffect(mGameData->actors->player()->position(), collider->knockbackforce());
-		mEffects.addEffect(effect);
+		// Player weapon hit enemy
+		if (mCollider->getOtherCollider())
+		{
+
+			const DamageCollider* collider = static_cast<const DamageCollider*>(mCollider->getOtherCollider());
+
+			// Apply knockback
+			KnockbackEffect* knockback = new KnockbackEffect(mGameData->actors->player()->position(), collider->knockbackforce());
+			mEffects.addEffect(knockback);
+
+			// Apply damage
+			DamageEffect* damage = new DamageEffect(collider->damage());
+			mEffects.addEffect(damage);
+		}
 
 		replaceState(EnemyState::Hit);
 	}

@@ -6,7 +6,7 @@
 #include "Graphics/TextureManager.h"
 
 #include "Game/Camera.h"
-#include "System/Files/AnimationReader.h"
+#include "Animations/AnimationReader.h"
 
 #include "Objects/Properties/PropertyBag.h"
 
@@ -27,7 +27,9 @@ Actor::~Actor()
 void Actor::init(const std::string& characterConfig)
 {
 	// Setup animations
-	initAnimations(characterConfig);
+	AnimationReader reader(mGameData->textureManager);
+	if(!reader.initAnimator(mAnimator, characterConfig))
+		DebugPrint(Warning, "Animator setup failed for actor config '%s' \n", characterConfig.c_str());
 
 	ASSERT(Warning, mPropertyBag != nullptr, "The property bag has not been set yet\n");
 	mPhysics.init(getPropertyValue("Force"), getPropertyValue("MaxVelocity"));
@@ -80,20 +82,4 @@ Property* Actor::getProperty(const std::string& property) const
 void Actor::addEffect(Effect* effect)
 {
 	mEffects.addEffect(effect);
-}
-
-/// --- Private Functions --- ///
-
-void Actor::initAnimations(const std::string& config)
-{
-	// config reader
-	AnimationReader reader(config);
-
-	// Setup sprite sheet
-	TilesetData spriteSheetData = reader.readTilesetData(mGameData->textureManager);
-	Tileset spriteSheet(spriteSheetData);
-
-	// Setup animations
-	Animations animationData = reader.readAnimationData();
-	mAnimator.init(spriteSheet, animationData);
 }

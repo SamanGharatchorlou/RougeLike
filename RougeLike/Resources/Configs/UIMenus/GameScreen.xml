@@ -34,6 +34,12 @@
 
 		<Button id = "Slow" x = "181.000" y = "643.000" width = "135.000" height = "86.000" texture = "Blue" textureSelected = "Blue_Selected" textureHovering = "Blue_Highlighted"></Button>
 		<Box id = "SlowIcon" parent = "Slow"  x = "42.500" y = "19.000" width = "50.000" height = "50.000" texture = "SlowIcon"></Box>
+
+		<Button id = "Spikes" x = "345.000" y = "643.000" width = "135.000" height = "86.000" texture = "Orange" textureSelected = "Orange_Selected" textureHovering = "Orange_Highlighted"></Button>
+		<Box id = "SpikesIcon" parent = "Spikes"  x = "42.500" y = "22.000" width = "45.000" height = "45.000" texture = "SpikesIcon"></Box>
+
+		<Button id = "Blink" x = "500.000" y = "643.000" width = "135.000" height = "86.000" texture = "Purple" textureSelected = "Purple_Selected" textureHovering = "Purple_Highlighted"></Button>
+		<Box id = "BlinkIcon" parent = "Blink"  x = "42.500" y = "22.000" width = "45.000" height = "45.000" texture = "BlinkIcon"></Box>
 	</layer>
 
 

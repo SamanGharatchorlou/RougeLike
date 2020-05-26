@@ -7,36 +7,34 @@ class Ability;
 class Actor;
 class InputManager;
 class UIManager;
- 
+
 
 class AbilityManager
 {
 public:
-	AbilityManager(GameData* gameData) : mGameData(gameData), mActiveAbility(nullptr) { }
+	AbilityManager(GameData* gameData) : mGameData(gameData) { }
 
 	void handleInput();
-	void slowUpdate();
+	void slowUpdate(float dt);
+	void render();
 
 	void add(std::string name, Ability* ability);
-	void select(const std::string& ability);
 
-	void activate(Actor* target);
-
-	void endSelectionMode();
-	bool inSelectionMode() const { return mActiveAbility != nullptr; }
+	void exitSelection();
+	bool inSelectionMode() const;
 
 	bool hasEvent() const { return mEvents.hasEvent(); }
 	EventPacket popEvent() { return mEvents.pop(); }
 	
+
 private:
-	void activateActiveAbility();
+	void completeSelection(std::unordered_map<std::string, Ability*>::iterator iter);
+	void attemptActivation(Ability* ability);
 
 
 private:
 	GameData* mGameData;
+	LocalDispatcher mEvents;
 
 	std::unordered_map<std::string, Ability*> mAbilities;
-	Ability* mActiveAbility;
-
-	LocalDispatcher mEvents;
 };

@@ -54,7 +54,5 @@ private:
 
 	Vector2D<int> mMapSize;
 
-	// actor map?
-
 	int mMapLevel;
 };

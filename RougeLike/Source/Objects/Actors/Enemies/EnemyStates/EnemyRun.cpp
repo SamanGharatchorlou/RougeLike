@@ -26,7 +26,7 @@ void EnemyRun::fastUpdate(float dt)
 
 void EnemyRun::slowUpdate(float dt)
 {
-	mEnemy->resolvePlayerWeaponCollisions();
+	mEnemy->resolveCollisions();
 
 	if (!inAttackRange())
 	{

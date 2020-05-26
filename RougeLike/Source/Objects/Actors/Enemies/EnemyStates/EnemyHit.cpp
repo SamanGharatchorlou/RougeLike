@@ -11,19 +11,12 @@
 #include "Map/Map.h"
 
 
-EnemyHit::EnemyHit(Enemy* enemy) : EnemyState(enemy) 
-{
-	// Attackers weapon collider info
-	const DamageCollider* damageCollider = static_cast<const DamageCollider*>(mEnemy->collider()->getOtherCollider());
-
-	// Set/reduce hp
-	Health* health = static_cast<Health*>(mEnemy->getProperty("Health"));
-	*health = *health - damageCollider->damage();
-}
+EnemyHit::EnemyHit(Enemy* enemy) : EnemyState(enemy)  { }
 
 
 void EnemyHit::init()
 {
+	printf("hit\n");
 	decayTimer.restart();
 
 	mEnemy->animator().selectAnimation("Hit");

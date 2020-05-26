@@ -25,7 +25,6 @@
     <ClCompile Include="Source\Managers\GameController.cpp" />
     <ClCompile Include="Source\Map\MapTile.cpp" />
     <ClCompile Include="Source\AI\AIPathing.cpp" />
-    <ClCompile Include="Source\System\Files\AnimationReader.cpp" />
     <ClCompile Include="Source\System\Files\StatReader.cpp" />
     <ClCompile Include="Source\Managers\ScoreManager.cpp" />
     <ClCompile Include="Source\Events\Dispatcher.cpp" />
@@ -103,6 +102,13 @@
     <ClCompile Include="Source\UI\Elements\UISlider.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\Types\Imp.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\Types\Angel.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\SlowAbility.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\HealAbility.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\BlinkAbility.cpp" />
+    <ClCompile Include="Source\Animations\AnimationReader.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\SpikeAbility.cpp" />
+    <ClCompile Include="Source\Objects\Effects\DamageEffect.cpp" />
+    <ClCompile Include="Source\Objects\Effects\BlinkEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -133,7 +139,6 @@
     <ClInclude Include="Source\Game\GameData.h" />
     <ClInclude Include="Source\Map\MapTile.h" />
     <ClInclude Include="Source\AI\AIPathing.h" />
-    <ClInclude Include="Source\System\Files\AnimationReader.h" />
     <ClInclude Include="Source\System\Files\XMLValueMap.h" />
     <ClInclude Include="Source\System\Files\StatReader.h" />
     <ClInclude Include="Source\Managers\ScoreManager.h" />
@@ -230,6 +235,13 @@
     <ClInclude Include="Source\Events\LocalDispatcher.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\Types\Imp.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\Types\Angel.h" />
+    <ClInclude Include="Source\Objects\Abilities\SlowAbility.h" />
+    <ClInclude Include="Source\Objects\Abilities\HealAbility.h" />
+    <ClInclude Include="Source\Objects\Abilities\BilnkAbility.h" />
+    <ClInclude Include="Source\Animations\AnimationReader.h" />
+    <ClInclude Include="Source\Objects\Abilities\SpikeAbility.h" />
+    <ClInclude Include="Source\Objects\Effects\DamageEffect.h" />
+    <ClInclude Include="Source\Objects\Effects\BlinkEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

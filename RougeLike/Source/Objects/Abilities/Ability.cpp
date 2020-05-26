@@ -1,14 +1,7 @@
 #include "pch.h"
 #include "Ability.h"
 
-#include "Objects/Actors/Actor.h"
-
-#include "Objects/Effects/SlowEffect.h"
-#include "Objects/Effects/HealEffect.h"
-
-#include "Objects/Properties/PropertyBag.h"
-#include "Objects/Attributes/Health.h"
-
+#include "Map/Map.h"
 
 EventPacket Ability::popEvent()
 {
@@ -19,23 +12,26 @@ EventPacket Ability::popEvent()
 }
 
 
-void SlowAbility::activate(Actor* actor)
+Collider AreaAbility::collider()
 {
-	SlowEffect* slowEffect = new SlowEffect(mSlowFactor);
-	actor->addEffect(slowEffect);
-	mActivated = true;
+	return Collider(&mRect);
 }
 
 
-void HealAbility::activate(Actor* actor)
+bool AreaAbility::isValidTarget(VectorF target)
 {
-	HealEffect* healEffect = new HealEffect(mHeal);
-	actor->addEffect(healEffect);
+	RectF rect = mRect.MoveCopy(target);
+	VectorF points[4]{ rect.TopLeft(), rect.TopRight(), rect.BotRight(), rect.BotLeft() };
 
-	mActivated = true;
+	bool validBlinkPoint = true;
 
-	Health* hp = static_cast<Health*>(actor->getProperty("Health"));
-	SetHealthBarEvent* dataPtr = new SetHealthBarEvent(*hp);
-	mEvents.push(EventPacket(dataPtr));
+	for (int i = 0; i < 4; i++)
+	{
+		if (!mMap->floorCollisionTile(points[i]))
+		{
+			validBlinkPoint = false;
+		}
+	}
+
+	return validBlinkPoint;
 }
-

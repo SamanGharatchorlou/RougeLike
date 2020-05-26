@@ -84,7 +84,7 @@ public:
 	// Movement
 	inline Rect<T> Translate(Vector2D<T> vector) const;
 	inline Rect<T> Translate(T lateral, T vertical) const { return Rect<T>(x1 + lateral, y1 + vertical, x2 + lateral, y2 + vertical); }
-
+	inline Rect<T> MoveCopy(Vector2D<T> vector) const { return Rect<T>(vector, Size()); }
 
 	// Get Size
 	inline Vector2D<T> Size() const { return Vector2D<T>(Width(), Height()); }
