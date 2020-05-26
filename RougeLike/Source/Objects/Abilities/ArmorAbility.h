@@ -2,10 +2,10 @@
 
 #include "Ability.h"
 
-class HealAbility : public Ability
+class ArmorAbility : public Ability
 {
 public:
-	HealAbility(float heal) : mHeal(heal) { };
+	ArmorAbility(float armor) : mArmor(armor) { };
 
 	void init(Animator animator) override;
 	void activate(Actor* target) override;
@@ -17,6 +17,7 @@ public:
 
 private:
 	Actor* mSelf;
-	float mHeal;
+	float mArmor;
+
 	Timer<float> mTimer;
 };

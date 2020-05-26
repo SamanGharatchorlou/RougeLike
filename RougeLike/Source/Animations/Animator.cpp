@@ -36,9 +36,14 @@ void Animator::selectAnimation(const std::string& name)
 {
 	if (mActiveAnimation != name)
 	{
-		timer.restart();
-		mActiveAnimation = name;
-		mAnimationIndex = mAnimations[mActiveAnimation].startingIndex;
+		if (mAnimations.count(name) > 0)
+		{
+			timer.restart();
+			mActiveAnimation = name;
+			mAnimationIndex = mAnimations[mActiveAnimation].startingIndex;
+		}
+		else
+			DebugPrint(Warning, "No animation named '%s' available in animation map\n", name.c_str());
 	}
 }
 

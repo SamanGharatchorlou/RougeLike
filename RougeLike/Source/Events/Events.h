@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Objects/Attributes/Health.h"
+#include "Objects/Attributes/Armor.h"
 
 class Enemy;
 
@@ -9,6 +10,7 @@ enum class Event
 	None,
 
 	SetHealth,
+	SetArmor,
 	EnemyDead,
 	EnemyHit,
 
@@ -65,6 +67,14 @@ struct SetHealthBarEvent : public EventData
 	SetHealthBarEvent(Health hp) : health(hp) { eventType = Event::SetHealth; }
 	~SetHealthBarEvent() { }
 	const Health health;
+};
+
+
+struct SetArmorBarEvent : public EventData
+{
+	SetArmorBarEvent(Armor armor) : mArmor(armor) { eventType = Event::SetArmor; }
+	~SetArmorBarEvent() { }
+	const Armor mArmor;
 };
 
 

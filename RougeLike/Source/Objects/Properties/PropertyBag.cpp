@@ -33,6 +33,12 @@ void PropertyBag::resetProperties()
 }
 
 
+bool PropertyBag::contains(const std::string& name) const
+{
+	return mProperties.count(name) > 0 ? true : false;
+}
+
+
 
 /// --- Private Functions --- ///
 ValueMap PropertyBag::readConfigValues(FileManager::Folder folder, const std::string& config)

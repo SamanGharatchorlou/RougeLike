@@ -41,7 +41,8 @@ public:
 private:
 	// Event handling functions
 	void updateTextBox(UpdateTextBoxEvent& eventData);
-	void setHealth(SetHealthBarEvent& eventData);
+	void setHealth(SetHealthBarEvent& eventData);	
+	void setArmor(SetArmorBarEvent& eventData);
 	void moveElement(EditUIRectEvent& eventData);
 	void setElementSize(EditUIRectEvent& eventData);
 	void setRect(SetUIRectEvent& eventData);

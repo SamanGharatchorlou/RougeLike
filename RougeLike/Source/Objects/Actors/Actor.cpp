@@ -75,6 +75,11 @@ Property* Actor::getProperty(const std::string& property) const
 	return mPropertyBag->get(property);
 }
 
+bool Actor::hasProperty(const std::string& property) const
+{
+	return mPropertyBag->contains(property);
+}
+
 void Actor::addEffect(Effect* effect)
 {
 	mEffects.addEffect(effect);

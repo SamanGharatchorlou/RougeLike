@@ -16,9 +16,9 @@ public:
 	void reduce(Damage damage) { mArmor = clamp(mArmor - damage.value(), 0.0f, mMaxArmor); }
 
 	void setValue(float armor) { mArmor = armor; }
-	const float value() const override { return (float)mArmor; }
+	const float value() const override { return mArmor; }
 
-	float getPercentage() const { return (float)mArmor / (float)mMaxArmor; }
+	float getPercentage() const { return mArmor / mMaxArmor; }
 
 	int getMax() const { return mMaxArmor; }
 	void increaseMax(float armor) { mArmor += armor; mMaxArmor += armor; }

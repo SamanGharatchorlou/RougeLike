@@ -22,6 +22,7 @@
 #include "Objects/Abilities/HealAbility.h"
 #include "Objects/Abilities/SpikeAbility.h"
 #include "Objects/Abilities/BilnkAbility.h"
+#include "Objects/Abilities/ArmorAbility.h"
 
 #include "Objects/Effects/KnockbackEffect.h"
 #include "Objects/Effects/DamageEffect.h"
@@ -53,8 +54,7 @@ void Player::init(const std::string& characterConfig)
 	mAbilities.add("Heal", new HealAbility(50.0f));
 	mAbilities.add("Spikes", new SpikeAbility(Damage(100.0f), 300.0f));
 	mAbilities.add("Blink", new BlinkAbility(500.0f));
-
-	//mAbilities.add("Shield", new sheildAbiliy());
+	mAbilities.add("Armor", new ArmorAbility(50.0f));
 }
 
 
@@ -113,11 +113,6 @@ void Player::slowUpdate(float dt)
 		processHit();
 
 	updateCurrentTile();
-
-	if (physics()->rect().x1 < 0.0f )
-	{
-		printf("pause\n");
-	}
 }
 
 
@@ -242,9 +237,13 @@ void Player::processHit()
 	mEffects.addEffect(new DamageEffect(damageCollider->damage()));
 
 	// Update UI
-	Health* hp = static_cast<Health*>(propertyBag()->get("Health"));
-	SetHealthBarEvent* eventPtr = new SetHealthBarEvent(*hp);
-	pushEvent(EventPacket(eventPtr));
+	Health* hp = static_cast<Health*>(getProperty("Health"));
+	SetHealthBarEvent* hpPtr = new SetHealthBarEvent(*hp);
+	pushEvent(EventPacket(hpPtr));
+
+	Armor* armor = static_cast<Armor*>(getProperty("Armor"));
+	SetArmorBarEvent* armorPtr = new SetArmorBarEvent(*armor);
+	pushEvent(EventPacket(armorPtr));
 
 	// Apply knockback
 	mEffects.addEffect(new KnockbackEffect(damageCollider));

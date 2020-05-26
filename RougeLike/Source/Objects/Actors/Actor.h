@@ -39,6 +39,7 @@ public:
 	PropertyBag* propertyBag() const { return mPropertyBag; }
 	Property* getProperty(const std::string& property) const;
 	float getPropertyValue(const std::string& property) const;
+	bool hasProperty(const std::string& property) const;
 
 	// Collider
 	void setCollider(Collider* collider) { mCollider = collider; }
