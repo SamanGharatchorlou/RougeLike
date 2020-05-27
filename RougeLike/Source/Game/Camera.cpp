@@ -3,15 +3,16 @@
 #include "Map/Map.h"
 
 
-Camera::Camera() : mFollowingRect(nullptr)
-{
-	mActiveRect = &mRect;
-}
-
 Camera* Camera::Get()
 {
 	static Camera sInstance;
 	return &sInstance;
+}
+
+
+Camera::Camera() : mFollowingRect(nullptr)
+{
+	mActiveRect = &mRect;
 }
 
 

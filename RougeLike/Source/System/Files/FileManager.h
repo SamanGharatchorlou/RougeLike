@@ -8,6 +8,8 @@ public:
 	{
 		Root,
 
+		PreLoadFiles,
+
 		Image,
 		Image_UI,
 		Image_Maps,
@@ -28,6 +30,7 @@ public:
 		Config_Weapons,
 		Config_MeleeWeapons,
 
+		Audio,
 		Audio_Music,
 		Audio_Sound,
 		Audio_SoundGroups,

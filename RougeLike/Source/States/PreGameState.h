@@ -22,6 +22,8 @@ public:
 
 	void resume() { };
 
+	void beginGame();
+
 private:
 	void initCollisions();
 

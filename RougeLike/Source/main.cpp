@@ -4,7 +4,7 @@
 int main(int argc, char* args[])
 {
 	GameController GameApp("RougeLike Game");
-	GameApp.init();
+	GameApp.load();
 	GameApp.run();
 	return 0;
 }
