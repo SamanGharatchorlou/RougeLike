@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "TextureManager.h"
+#include "Game/LoadingManager.h"
 
 #include "Texture.h"
 
@@ -33,14 +34,23 @@ TextureManager::~TextureManager()
 // load all textures here
 void TextureManager::init() 
 {
+	// Folders to be loaded
+	std::vector<FileManager::Folder> folders;
+	for (int i = FileManager::Image + 1; i < FileManager::Folder::Image_END; i++)
+	{
+		folders.push_back(static_cast<FileManager::Folder>(i));
+	}
+
+	// Init loading (just pass int FileManager::Image folder?)
+	LoadingManager::Get()->directoriesToLoad(folders);
+
 	DebugPrint(Log, "\n--- Loading Textures ---\n");
 	int fails = 0;
 
-	for (int i = FileManager::Image + 1; i < FileManager::Folder::Image_END; i++)
+	for (int i = 0; i < folders.size(); i++)
 	{
-		FileManager::Folder folder = static_cast<FileManager::Folder>(i);
-		DebugPrint(Log, "\n Loading all textures within the folder '%s'\n", FileManager::Get()->folderPath(folder).c_str());
-		fails += loadAllTexturesIn(folder);
+		DebugPrint(Log, "\n Loading all textures within the folder '%s'\n", FileManager::Get()->folderPath(folders[i]).c_str());
+		fails += loadAllTexturesIn(folders[i]);
 	}
 
 	DebugPrint(Log, "\n--- Texture Loading Complete: %d Failures ---\n\n", fails);
@@ -75,6 +85,10 @@ bool TextureManager::loadTexture(FolderMap& folderMap, const std::string& filePa
 		std::string relativePath = filePath.substr(folderPath.size());
 
 		folderMap.second[label] = texture;
+
+		// Add to has loaded files
+		LoadingManager::Get()->successfullyLoaded(filePath);
+
 		DebugPrint(Log, "Success: loaded texture '%s' at '%s'\n", label.c_str(), relativePath.c_str());
 		return true;
 	}

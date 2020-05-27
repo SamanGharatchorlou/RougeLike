@@ -17,6 +17,8 @@ FileManager::FileManager()
 {
 	folderPaths[Root] = std::string(fs::current_path().string() + "\\Resources\\");
 
+	folderPaths[PreLoadFiles] = std::string("PreLoadFiles\\");
+
 	// Images
 	folderPaths[Image] = std::string("Images\\");
 	folderPaths[Image_UI] = std::string(folderPaths[Image] + "UI\\");
@@ -28,9 +30,10 @@ FileManager::FileManager()
 	folderPaths[Image_END] = std::string(folderPaths[Image] + "Dummy");
 
 	// Audio
-	folderPaths[Audio_Music] = std::string("Audio\\Music\\");
-	folderPaths[Audio_Sound] = std::string("Audio\\Sound\\");
-	folderPaths[Audio_SoundGroups] = std::string("Audio\\SoundGroups\\");
+	folderPaths[Audio] = std::string("Audio\\");
+	folderPaths[Audio_Music] = std::string(folderPaths[Audio] + "Music\\");
+	folderPaths[Audio_Sound] = std::string(folderPaths[Audio] + "Sound\\");
+	folderPaths[Audio_SoundGroups] = std::string(folderPaths[Audio] + "SoundGroups\\");
 
 	// Font
 	folderPaths[Font] = std::string("Font\\");

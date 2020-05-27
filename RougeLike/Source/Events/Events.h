@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "Objects/Attributes/Health.h"
 #include "Objects/Attributes/Armor.h"
 
@@ -19,10 +21,13 @@ enum class Event
 	SetGameVolume,
 	SetMusicVolume,
 
+	UpdateLoadingBar,
+
 	UpdateTextBox,
 	MoveUIElement,
 	ChangeUIElementSize,
 	SetUIRect,
+	SetUIBar,
 
 	Trauma,
 
@@ -51,6 +56,12 @@ struct EventPacket
 };
 
 
+struct UpdateLoadingBarEvent : public EventData
+{
+	UpdateLoadingBarEvent() { eventType = Event::UpdateLoadingBar; }
+	~UpdateLoadingBarEvent() { }
+};
+
 
 struct EnemyDeadEvent : public EventData
 {
@@ -59,6 +70,17 @@ struct EnemyDeadEvent : public EventData
 	const Enemy* mEnemy;
 	const float mScore;
 	const float mExp;
+};
+
+
+struct SetUIBarEvent : public EventData
+{
+	SetUIBarEvent(const std::string bar, const std::string barContainer, const float percentage) : mBar(bar), mBarContainer(barContainer), mPercentage(percentage) { }
+	~SetUIBarEvent() { };
+
+	const std::string mBar;
+	const std::string mBarContainer;
+	const float mPercentage;
 };
 
 

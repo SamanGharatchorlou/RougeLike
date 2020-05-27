@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "GameController.h"
 
+#include "Game/LoadingManager.h"
+
 #include "States/GameState.h"
 // TEMP
 #include "States/PreGameState.h"
@@ -98,9 +100,23 @@ GameController::~GameController()
 }
 
 
-void GameController::init()
+void GameController::load()
 {
+	LoadingManager* lm = LoadingManager::Get();
+	lm->init();
+
+	while (true)
+	{
+		lm->render();
+	}
+
+
 	mGameData.init();
+
+	Timer<float> timer;
+	timer.start();
+
+
 }
 
 

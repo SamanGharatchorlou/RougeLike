@@ -2,6 +2,8 @@
 #include "AudioManager.h"
 #include "Audio.h"
 
+#include "Game/LoadingManager.h"
+
 AudioManager::AudioManager()
 {
 	DebugPrint(Log, "Audio manager created\n");
@@ -22,6 +24,10 @@ AudioManager::~AudioManager()
 // -- Audio Loading -- //
 void AudioManager::init()
 {
+	std::vector<FileManager::Folder> folders{ FileManager::Audio };
+
+	LoadingManager::Get()->directoriesToLoad(folders);
+
 	DebugPrint(Log, "\n--- Loading Audio ---\n");
 	int fails = 0;
 
@@ -189,6 +195,9 @@ bool AudioManager::loadAudio(Audio* audio, const std::string& name, const std::s
 {
 	if (audio->load(filePath))
 	{
+		// Add to has loaded files
+		LoadingManager::Get()->successfullyLoaded(filePath);
+
 		mAudioBank[name] = audio;
 		DebugPrint(Log, "Successfully loaded audio '%s' at %s\n", name.c_str(), filePath.c_str());
 		return true;

@@ -291,6 +291,11 @@ void UIManager::handleEvent(EventData& data)
 		updateTextBox(static_cast<UpdateTextBoxEvent&>(data));
 		break;
 	}
+	case Event::SetUIBar:
+	{
+		setUIbar(static_cast<SetUIBarEvent&>(data));
+		break;
+	}
 	case Event::SetHealth:
 	{
 		setHealth(static_cast<SetHealthBarEvent&>(data));
@@ -334,6 +339,27 @@ void UIManager::setCursorTexture(Texture* texture)
 
 
 // Event handling functions
+void UIManager::setUIbar(SetUIBarEvent& eventData)
+{
+	UIElement* bar = findElement(eventData.mBar);
+	UIElement* container = findElement(eventData.mBarContainer);
+
+	if (bar != nullptr && bar->type() == UIElement::Type::Box &&
+		container != nullptr && container->type() == UIElement::Type::Box)
+	{
+		UIBox* barBox = static_cast<UIBox*>(bar);
+		UIBox* containerBox = static_cast<UIBox*>(container);
+
+		RectF barRect = barBox->rect();
+		RectF containerRect = containerBox->rect();
+
+		barRect.SetWidth(containerRect.Width() * eventData.mPercentage);
+
+		barBox->setRect(barRect);
+	}
+}
+
+
 void UIManager::setHealth(SetHealthBarEvent& eventData)
 {
 	UIElement* redHealth = findElement("HealthBar");

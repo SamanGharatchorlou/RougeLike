@@ -111,6 +111,8 @@
     <ClCompile Include="Source\Objects\Effects\BlinkEffect.cpp" />
     <ClCompile Include="Source\Objects\Abilities\ArmorAbility.cpp" />
     <ClCompile Include="Source\Objects\Effects\ArmorEffect.cpp" />
+    <ClCompile Include="Source\Game\LoadingManager.cpp" />
+    <ClCompile Include="Source\Game\LoadingBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -247,6 +249,8 @@
     <ClInclude Include="Source\Objects\Attributes\Armor.h" />
     <ClInclude Include="Source\Objects\Abilities\ArmorAbility.h" />
     <ClInclude Include="Source\Objects\Effects\ArmorEffect.h" />
+    <ClInclude Include="Source\Game\LoadingManager.h" />
+    <ClInclude Include="Source\Game\LoadingBar.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

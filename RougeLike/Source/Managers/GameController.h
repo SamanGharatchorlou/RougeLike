@@ -11,7 +11,8 @@ public:
 	GameController(const char* gameTitle);
 	~GameController();
 
-	void init();
+	void init() { };
+	void load();
 	void run();
 	void quitGame() { quit = true; }
 
