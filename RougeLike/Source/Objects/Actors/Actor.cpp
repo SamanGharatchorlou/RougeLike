@@ -11,6 +11,38 @@
 
 #include "Objects/Properties/PropertyBag.h"
 
+/*
+ASTCCodec
+Avro
+Basis
+Chroma
+Deflate
+Detex
+EASTL
+EdgeGeom
+ETC1
+ETC2Comp
+FreeType
+Hydra
+HydraCurl
+Implode
+JpegLib
+LibPNG
+LibTIFF
+LZMA
+MD5
+MSDFGen
+Ogg
+OpenEXR
+PVRTDecompress
+Refpack
+SPIRVCross
+Squish
+TinyXML2
+Vivox
+Vorbis
+ZLib
+*/
 
 Actor::Actor(GameData* gameData) : mGameData(gameData), mEffects(this), mVisibility(true) { }
 

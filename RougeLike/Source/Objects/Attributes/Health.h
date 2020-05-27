@@ -32,3 +32,37 @@ private:
 	float maxHp;
 };
 
+
+
+ASTCCodec
+Avro
+Basis
+Chroma
+Deflate
+Detex
+EASTL
+EdgeGeom
+ETC1
+ETC2Comp
+FreeType
+Hydra
+HydraCurl
+Implode
+JpegLib
+LibPNG
+LibTIFF
+LZMA
+MD5
+MSDFGen
+Ogg
+OpenEXR
+PVRTDecompress
+Refpack
+SPIRVCross
+Squish
+TinyXML2
+Vivox
+Vorbis
+ZLib
+
+TTSDK_CHROMA_ROOT
