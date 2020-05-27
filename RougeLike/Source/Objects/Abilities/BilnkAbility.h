@@ -17,6 +17,10 @@ public:
 
 
 private:
+	void resetSize();
+
+
+private:
 	float mRange;
 	VectorF mTarget;
 	Timer<float> mTimer;

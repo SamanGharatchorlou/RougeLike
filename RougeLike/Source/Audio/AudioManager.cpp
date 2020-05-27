@@ -193,6 +193,7 @@ int AudioManager::loadAllSoundGroups(FileManager::Folder folder)
 
 bool AudioManager::loadAudio(Audio* audio, const std::string& name, const std::string& filePath)
 {
+	bool success = true;
 	if (audio->load(filePath))
 	{
 		// Add to has loaded files
@@ -200,11 +201,12 @@ bool AudioManager::loadAudio(Audio* audio, const std::string& name, const std::s
 
 		mAudioBank[name] = audio;
 		DebugPrint(Log, "Successfully loaded audio '%s' at %s\n", name.c_str(), filePath.c_str());
-		return true;
 	}
 	else
 	{
 		DebugPrint(Warning, "Failure: audio NOT loaded '%s' at %s\n. SDL_mixer Error: %s\n", name.c_str(), filePath.c_str(), Mix_GetError());
-		return false;
+		success = false;
 	}
+
+	return success;
 }

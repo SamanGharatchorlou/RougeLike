@@ -1,9 +1,11 @@
 #pragma once
 
+class Renderer;
+
 class Font
 {
 public:
-	Font() : mRenderer(nullptr), mTexture(nullptr), mFont(nullptr) { }
+	Font() : mTexture(nullptr), mFont(nullptr) { }
 	~Font();
 
 	bool loadFromFile(const std::string& font, int ptSize);
@@ -25,7 +27,7 @@ public:
 	const std::string name() const { return mFontName; }
 
 private:
-	SDL_Renderer* mRenderer;
+	Renderer* mRenderer;
 	SDL_Texture* mTexture;
 
 	std::string mFontName;

@@ -2,7 +2,8 @@
 
 
 #include "LoadingBar.h"
-#include "Events\Observer.h"
+
+class UITextBox;
 
 // TODO: need to add dispatchers to let the loading manager when to render i.e. update the bar
 // can I somehow run this in an update function while the game data is loading??
@@ -11,7 +12,7 @@
 
 // Implement this means the loading tile will probably increase by around 10%-15%
 // This was from very quick testing, may vary.
-class LoadingManager : public Observer
+class LoadingManager
 {
 public:
 	static LoadingManager* Get();
@@ -24,7 +25,7 @@ public:
 	void successfullyLoaded(const std::string& filePath);
 	float loadedPercentage();
 
-	void handleEvent(EventData& data) override;
+	bool end() const { return (mTotalFileSizes > 0) && (mLoadedFileSizes == mTotalFileSizes); }
 
 	void render();
 
@@ -35,6 +36,7 @@ private:
 	uintmax_t mTotalFileSizes;
 	uintmax_t mLoadedFileSizes;
 
+	UITextBox* mLoadingText;
 	LoadingBar mLoadingBar;
 	Texture* mBackground;
 };

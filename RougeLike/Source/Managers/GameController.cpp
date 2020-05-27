@@ -23,6 +23,10 @@
 #include "Game/Cursor.h"
 
 
+// Multi threading temp
+#include <SDL_thread.h>
+
+
 
 // init all SDL subsystems
 GameController::GameController(const char* gameTitle) : quit(false), mGameStateMachine(new NullState)
@@ -99,24 +103,47 @@ GameController::~GameController()
 	DebugPrint(Log, "GameController destroyed\n");
 }
 
+static int TestThread(void *ptr)
+{
+	printf(" -------------------------- starting loader thread -------------------------- \n");
+	LoadingManager* loading = LoadingManager::Get();
+
+	while (!loading->end())
+	{
+		loading->render();
+	}
+
+	printf(" -------------------------- exiting loader thread -------------------------- \n");
+	return 0;
+}
 
 void GameController::load()
 {
 	LoadingManager* lm = LoadingManager::Get();
 	lm->init();
 
-	while (true)
-	{
-		lm->render();
-	}
-
+	void* ptr = nullptr;
+	SDL_Thread* threadID = SDL_CreateThread(TestThread, "Loading", ptr);
 
 	mGameData.init();
 
-	Timer<float> timer;
-	timer.start();
+	int threadReturnValue = -1;
+	SDL_WaitThread(threadID, &threadReturnValue);
+}
 
 
+
+
+int GameController::threadFunction(void* data)
+{
+	LoadingManager* loading = LoadingManager::Get();
+
+	while (!loading->end())
+	{
+		loading->render();
+	}
+
+	return 0;
 }
 
 

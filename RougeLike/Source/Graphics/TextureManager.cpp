@@ -76,8 +76,10 @@ int TextureManager::loadAllTexturesIn(FileManager::Folder folder)
 
 bool TextureManager::loadTexture(FolderMap& folderMap, const std::string& filePath)
 {
+	bool success = true;
 	Texture *texture = new Texture;
 
+	Renderer::Get()->Open();
 	if (texture->loadFromFile(filePath))
 	{
 		std::string label = FileManager::Get()->getFileName(filePath);
@@ -90,15 +92,16 @@ bool TextureManager::loadTexture(FolderMap& folderMap, const std::string& filePa
 		LoadingManager::Get()->successfullyLoaded(filePath);
 
 		DebugPrint(Log, "Success: loaded texture '%s' at '%s'\n", label.c_str(), relativePath.c_str());
-		return true;
 	}
 	else
 	{
 		std::string label = FileManager::Get()->getFileName(filePath);
 		DebugPrint(Log, "Failure: texture NOT loaded '%s' at '%s'\n", label.c_str(), filePath.c_str());
-		return false;
+		success = false;
 	}
 
+	Renderer::Get()->Close();
+	return success;
 }
 
 

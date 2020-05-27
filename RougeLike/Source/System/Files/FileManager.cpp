@@ -245,6 +245,21 @@ std::vector<std::string> FileManager::allFilesInFolder(const Folder folder) cons
 	return fileNameList;
 }
 
+std::vector<std::string> FileManager::allFilesInFolder(const fs::path& directoryPath) const
+{
+	std::vector<std::string> fileNameList;
+
+	for (const auto& path : fs::directory_iterator(directoryPath))
+	{
+		if (fs::is_directory(path))
+			addFilesToList(fileNameList, path.path());
+		else
+			fileNameList.push_back(path.path().string());
+	}
+
+	return fileNameList;
+}
+
 
 std::vector<std::string> FileManager::foldersInFolder(const Folder folder) const
 {

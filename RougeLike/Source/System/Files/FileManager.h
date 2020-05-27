@@ -60,6 +60,7 @@ public:
 	std::string getFileName(const std::string& filePath) const;
 
 	std::vector<std::string> allFilesInFolder(const Folder folder) const;
+	std::vector<std::string> allFilesInFolder(const fs::path& directoryPath) const;
 	std::vector<std::string> foldersInFolder(const Folder folder) const;
 
 

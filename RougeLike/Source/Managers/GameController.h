@@ -20,6 +20,8 @@ public:
 	
 	void restartGame();
 
+	int threadFunction(void* data);
+
 private:
 	GameData mGameData;
 

@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Font.h"
 
+#include "Graphics/Renderer.h"
+
 Font::~Font()
 {
 	if (mTexture)
@@ -16,7 +18,7 @@ bool Font::loadFromFile(const std::string& font, int ptSize)
 	//Loading success flag
 	bool success = true;
 
-	mRenderer = Renderer::Get()->sdlRenderer();
+	mRenderer = Renderer::Get();
 
 	//Open the font
 	mFont = TTF_OpenFont(font.c_str(), ptSize);
@@ -63,7 +65,9 @@ void Font::setText(const std::string& text)
 				SDL_DestroyTexture(mTexture);
 
 			//Create texture from surface pixels
-			mTexture = SDL_CreateTextureFromSurface(mRenderer, textSurface);
+			mRenderer->Open();
+			mTexture = SDL_CreateTextureFromSurface(mRenderer->sdlRenderer(), textSurface);
+			mRenderer->Close();
 
 			if (mTexture == nullptr)
 				DebugPrint(Warning, "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
@@ -90,5 +94,5 @@ void Font::render(const VectorF position) const
 							static_cast<int>(size.x),
 							static_cast<int>(size.y) };
 
-	SDL_RenderCopyEx(mRenderer, mTexture, nullptr, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(mRenderer->sdlRenderer(), mTexture, nullptr, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
 }

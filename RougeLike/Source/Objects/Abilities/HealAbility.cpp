@@ -21,7 +21,7 @@ void HealAbility::slowUpdate(float dt)
 	mAnimator.slowUpdate(dt);
 
 	// Completed one animation loop
-	if (mAnimator.animationIndex() + 1 == mAnimator.animationCount())
+	if (mTimer.getSeconds() > 2.0f)
 		setState(Ability::Finished);
 }
 
@@ -38,6 +38,7 @@ void HealAbility::activate(Actor* actor)
 	mEvents.push(EventPacket(dataPtr));
 
 	mAnimator.selectAnimation("activate");
+	mTimer.restart();
 }
 
 
@@ -45,7 +46,7 @@ void HealAbility::render()
 {
 	// Size
 	VectorF baseDimentions = mAnimator.getSpriteTile()->getRect().Size();
-	VectorF size = baseDimentions * 1.4f;
+	VectorF size = baseDimentions * 0.7f;
 	RectF rect(VectorF(), size);
 
 	// Center position

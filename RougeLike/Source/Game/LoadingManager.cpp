@@ -2,6 +2,7 @@
 #include "LoadingManager.h"
 
 #include "Graphics/Texture.h"
+#include "UI/Elements/UITextBox.h"
 
 LoadingManager* LoadingManager::Get()
 {
@@ -11,6 +12,26 @@ LoadingManager* LoadingManager::Get()
 
 void LoadingManager::init()
 {
+	VectorF screen = VectorF(1024.0f, 768.0f);
+
+	// Set text
+	UITextBox::Data textData;
+	textData.aligment = "";
+	textData.font = "";
+	textData.ptSize = 0;
+	textData.colour = SDL_Color{ 0, 0, 255 };
+	textData.texture = nullptr;
+	textData.text = "Loading...";
+
+	VectorF textPosition = VectorF(screen.x / 2.0f, screen.y / 1.35f);
+	VectorF textSize = VectorF(250, 100);
+	RectF textRect(VectorF(), textSize);
+	textRect.SetCenter(textPosition);
+	textData.rect = textRect;
+
+	mLoadingText = new UITextBox(textData);
+	mLoadingText->autoSizeFont();
+
 	// Set textures
 	std::string loadingBar = FileManager::Get()->filePath(FileManager::PreLoadFiles, "BlueBar.png");
 	Texture* loadingBarTexture = new Texture;
@@ -23,11 +44,11 @@ void LoadingManager::init()
 	mLoadingBar.setTextures(loadingBarTexture, loadingBarContainerTexture);
 
 	// Set rect
-	VectorF position = VectorF(1024.0f / 2.0f, 768.0f / 1.5f);
-	VectorF size = VectorF(800.0f, 100.0f);
+	VectorF barPosition = VectorF(screen.x / 2.0f, screen.y / 1.2f);
+	VectorF barSize = VectorF(800.0f, 75.0f);
 	
-	RectF rect(VectorF(), size);
-	rect.SetCenter(position);
+	RectF rect(VectorF(), barSize);
+	rect.SetCenter(barPosition);
 
 	mLoadingBar.setRect(rect);
 	mLoadingBar.setPercentage(0.0f);
@@ -41,17 +62,20 @@ void LoadingManager::init()
 
 void LoadingManager::render()
 {
-	SDL_Renderer* renderer = Renderer::Get()->sdlRenderer();
+	Renderer* renderer = Renderer::Get();
+	renderer->Open();
 
-	// clear screen
-	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-	SDL_RenderClear(renderer);
+	// Clear screen
+	SDL_SetRenderDrawColor(renderer->sdlRenderer(), 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_RenderClear(renderer->sdlRenderer());
 
 	mBackground->render(RectF(VectorF(), VectorF(1024.0f, 768.0f)));
+	mLoadingText->render();
 	mLoadingBar.render();
 
-	// update window surface
-	SDL_RenderPresent(renderer);
+	// Update window surface
+	SDL_RenderPresent(renderer->sdlRenderer());
+	renderer->Close();
 }
 
 
@@ -87,7 +111,16 @@ void LoadingManager::successfullyLoaded(const std::string& filePath)
 	fs::path fileSystemPath(filePath);
 	if (fs::exists(fileSystemPath))
 	{
-		mLoadedFileSizes += fs::file_size(fileSystemPath);
+		if (fs::is_directory(fileSystemPath))
+		{
+			std::vector<std::string> files = FileManager::Get()->allFilesInFolder(fileSystemPath);
+
+			for(const std::string& file : files)
+				mLoadedFileSizes += fs::file_size(fs::path(file));
+		}
+		else
+			mLoadedFileSizes += fs::file_size(fileSystemPath);
+
 		mLoadingBar.setPercentage(loadedPercentage());
 	}
 	else
@@ -99,17 +132,4 @@ void LoadingManager::successfullyLoaded(const std::string& filePath)
 float LoadingManager::loadedPercentage()
 {
 	return (float)mLoadedFileSizes / (float)mTotalFileSizes;
-}
-
-//void LoadingManager::updateUI()
-//{
-//	mLoadingBar->
-//}
-
-void LoadingManager::handleEvent(EventData& data)
-{
-	if (data.eventType == Event::UpdateLoadingBar)
-	{
-		render();
-	}
 }
