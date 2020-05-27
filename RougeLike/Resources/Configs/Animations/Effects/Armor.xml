@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AnimationInfo>
+	<TextureName>Armor</TextureName> 
+	<TilesetInfo>
+		<TileSize x = "72" y ="48"></TileSize>
+		<TileCount x = "8" y = "1"></TileCount>
+	</TilesetInfo>
+	<Animations>
+		<Animation action = "activate" start = "0" count = "8" rate = "0.15"></Animation>
+	</Animations>
+</AnimationInfo>

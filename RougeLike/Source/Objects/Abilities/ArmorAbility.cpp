@@ -1,47 +1,47 @@
 #include "pch.h"
-#include "HealAbility.h"
+#include "ArmorAbility.h"
 
 #include "Objects/Actors/Actor.h"
 #include "Objects/Properties/PropertyBag.h"
-#include "Objects/Effects/HealEffect.h"
-#include "Objects/Attributes/Health.h"
+#include "Objects/Effects/ArmorEffect.h"
 
 #include "Animations/Animator.h"
 #include "Game/Camera.h"
 
 
-void HealAbility::init(Animator animator)
+void ArmorAbility::init(Animator animator)
 {
 	mAnimator = animator;
-	mTimer.start();
 }
 
-void HealAbility::slowUpdate(float dt)
+void ArmorAbility::slowUpdate(float dt)
 {
 	mAnimator.slowUpdate(dt);
 
-	// Completed one animation loop
-	if (mAnimator.animationIndex() + 1 == mAnimator.animationCount())
+	printf("updating\n");
+
+	if (mTimer.getSeconds() > 2.0f)
 		setState(Ability::Finished);
 }
 
 
-void HealAbility::activate(Actor* actor)
+void ArmorAbility::activate(Actor* actor)
 {
 	mSelf = actor;
 
-	HealEffect* healEffect = new HealEffect(mHeal);
-	mSelf->addEffect(healEffect);
+	ArmorEffect* armorEffect = new ArmorEffect(mArmor);
+	mSelf->addEffect(armorEffect);
 
-	Health* hp = static_cast<Health*>(mSelf->getProperty("Health"));
-	SetHealthBarEvent* dataPtr = new SetHealthBarEvent(*hp);
+	Armor* armor = static_cast<Armor*>(mSelf->getProperty("Armor"));
+	SetArmorBarEvent* dataPtr = new SetArmorBarEvent(*armor);
 	mEvents.push(EventPacket(dataPtr));
 
+	mTimer.restart();
 	mAnimator.selectAnimation("activate");
 }
 
 
-void HealAbility::render()
+void ArmorAbility::render()
 {
 	// Size
 	VectorF baseDimentions = mAnimator.getSpriteTile()->getRect().Size();

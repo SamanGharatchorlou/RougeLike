@@ -19,6 +19,8 @@ public:
 	Property* get(const std::string& name) const;
 	float value(const std::string& name) const;
 
+	bool contains(const std::string& name) const;
+
 protected:
 	ValueMap readConfigValues(FileManager::Folder folder, const std::string& config);
 	void fillProperties(ValueMap& valueMap);

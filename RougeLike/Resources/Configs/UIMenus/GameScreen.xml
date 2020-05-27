@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <screen>
 
-	<!-- Player health bar -->
 	<layer>
-		<Box id = "HealthIcon" x = "271.000" y = "15.945" width = "50.000" height = "50.000" texture = "HealthIcon"></Box>
-		<Box id = "BlackHealth" x = "322.065" y = "33.945" width = "380.000" height = "24.000" texture = "BlackHealthBar"></Box>
-		<Box id = "RedHealth"   parent = "BlackHealth" x = "0" y = "0" width = "380.000" height = "24.000" texture = "RedHealthBar"></Box>
+		<!-- Player shield bar -->
+		<Box id = "ArmorIcon" x = "271.000" y = "16.000" width = "50.000" height = "50.000" texture = "ShieldIcon"></Box>
+		<Box id = "BlackArmorBar" x = "322.065" y = "34.000" width = "380.000" height = "24.000" texture = "BlackBar"></Box>
+		<Box id = "ArmorBar"   parent = "BlackArmorBar" x = "0" y = "0" width = "380.000" height = "24.000" texture = "BlueBar"></Box>
+
+		<!-- Player health bar -->
+		<Box id = "HealthIcon" x = "271.000" y = "66.000" width = "50.000" height = "50.000" texture = "HealthIcon"></Box>
+		<Box id = "BlackHealthBar" x = "322.065" y = "84.00" width = "380.000" height = "24.000" texture = "BlackBar"></Box>
+		<Box id = "HealthBar"   parent = "BlackHealthBar" x = "0" y = "0" width = "380.000" height = "24.000" texture = "RedBar"></Box>
 	</layer>
 
 	<!-- Map level -->
@@ -41,8 +46,8 @@
 		<Button id = "Blink" x = "500.000" y = "643.000" width = "135.000" height = "86.000" texture = "Purple" textureSelected = "Purple_Selected" textureHovering = "Purple_Highlighted"></Button>
 		<Box id = "BlinkIcon" parent = "Blink"  x = "42.500" y = "22.000" width = "45.000" height = "45.000" texture = "BlinkIcon"></Box>
 
-		<Button id = "Shield" x = "650.000" y = "643.000" width = "135.000" height = "86.000" texture = "Blue" textureSelected = "Blue_Selected" textureHovering = "Blue_Highlighted"></Button>
-		<Box id = "ShieldIcon" parent = "Shield"  x = "42.500" y = "19.000" width = "50.000" height = "50.000" texture = "ShieldIcon"></Box>
+		<Button id = "Armor" x = "650.000" y = "643.000" width = "135.000" height = "86.000" texture = "Blue" textureSelected = "Blue_Selected" textureHovering = "Blue_Highlighted"></Button>
+		<Box id = "ArmorIcon" parent = "Armor"  x = "42.500" y = "19.000" width = "50.000" height = "50.000" texture = "ShieldIcon"></Box>
 	</layer>
 
 </screen>

@@ -9,8 +9,25 @@
 
 void DamageEffect::init()
 {
-	Health* hp = static_cast<Health*>(mActor->getProperty("Health"));
-	hp->reduce(mDamage);
+	if (mActor->hasProperty("Armor"))
+	{
+		Armor* armor = static_cast<Armor*>(mActor->getProperty("Armor"));
+		if (armor->hasArmor())
+		{
+			armor->reduce(mDamage);
+		}
+		else
+		{
+			Health* hp = static_cast<Health*>(mActor->getProperty("Health"));
+			hp->reduce(mDamage);
+		}
+	}
+	else
+	{
+		Health* hp = static_cast<Health*>(mActor->getProperty("Health"));
+		hp->reduce(mDamage);
+	}
+
 
 	mActor->collider()->setGotHit(true);
 	endEffect();

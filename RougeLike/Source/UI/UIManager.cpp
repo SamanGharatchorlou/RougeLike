@@ -295,6 +295,11 @@ void UIManager::handleEvent(EventData& data)
 	{
 		setHealth(static_cast<SetHealthBarEvent&>(data));
 		break;
+	}	
+	case Event::SetArmor:
+	{
+		setArmor(static_cast<SetArmorBarEvent&>(data));
+		break;
 	}
 	case Event::MoveUIElement:
 	{
@@ -331,8 +336,8 @@ void UIManager::setCursorTexture(Texture* texture)
 // Event handling functions
 void UIManager::setHealth(SetHealthBarEvent& eventData)
 {
-	UIElement* redHealth = findElement("RedHealth");
-	UIElement* blackHealth = findElement("BlackHealth");
+	UIElement* redHealth = findElement("HealthBar");
+	UIElement* blackHealth = findElement("BlackHealthBar");
 
 	if (redHealth != nullptr && redHealth->type() == UIElement::Type::Box &&
 		blackHealth != nullptr && blackHealth->type() == UIElement::Type::Box)
@@ -346,6 +351,25 @@ void UIManager::setHealth(SetHealthBarEvent& eventData)
 		hpRect.SetWidth(maxHpRect.Width() * eventData.health.getPercentage());
 
 		redHealthBar->setRect(hpRect);
+	}
+}
+void UIManager::setArmor(SetArmorBarEvent& eventData)
+{
+	UIElement* armorBar = findElement("ArmorBar");
+	UIElement* blackbar = findElement("BlackArmorBar");
+
+	if (armorBar != nullptr && armorBar->type() == UIElement::Type::Box &&
+		blackbar != nullptr && blackbar->type() == UIElement::Type::Box)
+	{
+		UIBox* armorBarBox = static_cast<UIBox*>(armorBar);
+		UIBox* blackBarBox = static_cast<UIBox*>(blackbar);
+
+		RectF armorRect = armorBarBox->rect();
+		RectF maxArmorRect = blackBarBox->rect();
+
+		armorRect.SetWidth(maxArmorRect.Width() * eventData.mArmor.getPercentage());
+
+		armorBarBox->setRect(armorRect);
 	}
 }
 void UIManager::moveElement(EditUIRectEvent& eventData)
