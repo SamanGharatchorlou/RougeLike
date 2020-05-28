@@ -32,8 +32,10 @@ public:
 
 	//void displaySubText(int startIndex, int endIndex) { mText.displaySubText(startIndex, endIndex); }
 
+
 	int fontSize() const { return mText.fontSize(); }
 	void autoSizeFont();
+	VectorF textSize() const { return mText.size(); }
 
 	void align();
 

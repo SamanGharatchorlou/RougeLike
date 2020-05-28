@@ -18,8 +18,6 @@ void ArmorAbility::slowUpdate(float dt)
 {
 	mAnimator.slowUpdate(dt);
 
-	printf("updating\n");
-
 	if (mTimer.getSeconds() > 2.0f)
 		setState(Ability::Finished);
 }

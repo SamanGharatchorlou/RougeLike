@@ -3,6 +3,7 @@
 #include "DebugDraw.h"
 #include "Game/Camera.h"
 
+#include "UI/Elements/UITextBox.h"
 
 void debugDrawLine(VectorF pointA, VectorF pointB, RenderColour colour)
 {
@@ -59,3 +60,17 @@ void debugDrawRects(std::vector<RectF> rects, RenderColour colour)
 	}
 }
 
+void debugRenderText(const std::string text, int ptSize, VectorF position)
+{
+	UITextBox::Data textData;
+	textData.aligment = "Center";
+	textData.font = "";
+	textData.ptSize = ptSize;
+	textData.colour = SDL_Color{ 255, 0, 0 };
+	textData.texture = nullptr;
+	textData.rect = RectF(Camera::Get()->toCameraCoords(position), VectorF(0.0f,0.0f));
+	textData.text = text;
+
+	UITextBox textBox(textData);
+	textBox.render();
+}

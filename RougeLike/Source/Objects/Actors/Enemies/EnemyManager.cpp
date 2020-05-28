@@ -171,7 +171,7 @@ void EnemyManager::addEnemiesToPool(EnemyType type, unsigned int count)
 void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF position)
 {
 #if LIMIT_ENEMY_SPAWNS
-	if (spawnCount >= LIMIT_ENEMY_SPAWNS)
+	if (spawnCount >= LIMIT_ENEMY_SPAWNS - 1)
 		return;
 #endif
 

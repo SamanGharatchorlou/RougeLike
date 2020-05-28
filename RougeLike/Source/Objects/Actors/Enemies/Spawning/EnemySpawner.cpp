@@ -16,7 +16,7 @@ void EnemySpawner::spawnLevel(Map* map, int level)
 	{
 	case 1:
 	{
-		level1(map);
+		//level1(map);
 		break;
 	}
 	case 2:

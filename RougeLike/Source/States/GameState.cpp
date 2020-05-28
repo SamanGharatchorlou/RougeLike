@@ -61,7 +61,7 @@ void GameState::init()
 
 	FileManager::Get()->allFilesInFolder(FileManager::Audio_Sound);
 
-	mCollectables.spawnRandomItem(Collectables::MeleeWeapon);
+	//mCollectables.spawnRandomItem(Collectables::MeleeWeapon);
 }
 
 

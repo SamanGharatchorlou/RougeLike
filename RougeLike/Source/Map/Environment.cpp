@@ -75,6 +75,15 @@ void Environment::renderBottomLayer(const TextureManager* tm, float depth)
 }
 
 
+void Environment::render(const TextureManager* tm) 
+{ 
+	Map* connectingTunnel = mExit ? mExit : mEntrace;
+	connectingTunnel->render(tm);
+
+	mPrimaryMap->render(tm); 
+}
+
+
 void Environment::renderTopLayer(const TextureManager* tm, float depth)
 {
 	Map* connectingTunnel = mExit ? mExit : mEntrace;
@@ -173,8 +182,8 @@ RectF Environment::boundaries() const
 void Environment::buildEntrance(float offset)
 {
 	// Add a small buffer so the eixt tunnel takes up whole screen
-	VectorF size(VectorF(16.0f, 16.0f) * 3.0f); // TODO: hard coded
-	int width = (int)((Camera::Get()->size().x / size.x) * 1.5f);
+	VectorF size(128.0f, 128.0f);  // TODO: hard coded
+	int width = (int)((Camera::Get()->size().x / size.x) * 0.75f);
 
 	mEntrace->init(Index(width, mMapSize.y));
 
@@ -248,15 +257,15 @@ void Environment::swapToExit()
 
 void Environment::closeEntrance()
 {
-	mPrimaryMap->addTileType(Index(0, mPrimaryMap->yCount() / 2), MapTile::ColumnTop);
-	mPrimaryMap->addTileType(Index(0, (mPrimaryMap->yCount() / 2) + 1), MapTile::ColumnBot);
+	//mPrimaryMap->addTileType(Index(0, mPrimaryMap->yCount() / 2), MapTile::ColumnTop);
+	//mPrimaryMap->addTileType(Index(0, (mPrimaryMap->yCount() / 2) + 1), MapTile::ColumnBot);
 }
 
 
 void Environment::closeLevel()
 {
-	mEntrace->addTileType(Index(0, mEntrace->yCount() / 2), MapTile::ColumnTop);
-	mEntrace->addTileType(Index(0, (mEntrace->yCount() / 2) + 1), MapTile::ColumnBot);
+	//mEntrace->addTileType(Index(0, mEntrace->yCount() / 2), MapTile::ColumnTop);
+	//mEntrace->addTileType(Index(0, (mEntrace->yCount() / 2) + 1), MapTile::ColumnBot);
 
 	// Open entrance
 	mPrimaryMap->setTileType(Index(0, mPrimaryMap->yCount() / 2), MapTile::Floor);

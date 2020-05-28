@@ -98,9 +98,6 @@ void AbilityManager::slowUpdate(float dt)
 			break;
 		}
 
-		//if(iter->first == "Slow")
-		//	printf("ability state: %d\n", ability->state());
-
 		// Pass events to parent object to be handled 
 		while (iter->second->hasEvent())
 		{

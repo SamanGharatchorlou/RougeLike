@@ -39,15 +39,18 @@ void ScoreManager::handleEvent(EventData& data)
 	{
 		EnemyDeadEvent deathData = static_cast<EnemyDeadEvent&>(data);
 		mScore += deathData.mScore;
+
+		updateUI = true;
 		break;
 	}
 	case Event::IncrementMapLevel:
 	{
 		mMapLevel++;
+
+		updateUI = true;
 	}
 	default:
 		break;
 	}
 
-	updateUI = true;
 }

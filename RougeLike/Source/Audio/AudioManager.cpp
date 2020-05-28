@@ -24,10 +24,6 @@ AudioManager::~AudioManager()
 // -- Audio Loading -- //
 void AudioManager::init()
 {
-	std::vector<FileManager::Folder> folders{ FileManager::Audio };
-
-	LoadingManager::Get()->directoriesToLoad(folders);
-
 	DebugPrint(Log, "\n--- Loading Audio ---\n");
 	int fails = 0;
 

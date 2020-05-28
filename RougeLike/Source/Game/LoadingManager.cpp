@@ -4,6 +4,8 @@
 #include "Graphics/Texture.h"
 #include "UI/Elements/UITextBox.h"
 
+#include "UI/ScreenDecoder.h"
+
 LoadingManager* LoadingManager::Get()
 {
 	static LoadingManager sInstance;
@@ -24,7 +26,7 @@ void LoadingManager::init()
 	textData.text = "Loading...";
 
 	VectorF textPosition = VectorF(screen.x / 2.0f, screen.y / 1.35f);
-	VectorF textSize = VectorF(250, 100);
+	VectorF textSize = VectorF(240, 100);
 	RectF textRect(VectorF(), textSize);
 	textRect.SetCenter(textPosition);
 	textData.rect = textRect;
@@ -57,6 +59,19 @@ void LoadingManager::init()
 	std::string splashScreen = FileManager::Get()->filePath(FileManager::PreLoadFiles, "SplashScreen.png");
 	mBackground = new Texture;
 	mBackground->loadFromFile(splashScreen);
+}
+
+void LoadingManager::CountToBeLoadedFiles()
+{
+	std::vector<FileManager::Folder> folders;
+
+	// Textures
+	folders.push_back(FileManager::Image);
+
+	// Audio
+	folders.push_back(FileManager::Audio);
+
+	LoadingManager::Get()->directoriesToLoad(folders);
 }
 
 
@@ -133,3 +148,4 @@ float LoadingManager::loadedPercentage()
 {
 	return (float)mLoadedFileSizes / (float)mTotalFileSizes;
 }
+

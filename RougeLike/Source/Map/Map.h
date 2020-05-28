@@ -13,8 +13,17 @@ public:
 	void init(Vector2D<int> size);
 	void populateData(VectorF offset = VectorF());
 
-	Vector2D<float> size() const;
-	const VectorF tileSize() const;
+
+	// TEMP
+	void populateTileRenderInfo();
+	void render(const TextureManager* tm);
+#if MARK_SURFACE_TYPES
+	void renderSurfaceTypes();
+#endif
+
+
+	Vector2D<float> size() const { return VectorF(xCount(), yCount()) * tileSize(); };
+	const VectorF tileSize() const { return tile(Index(0, 0))->rect().Size(); }
 
 	const RectF getFirstRect(int yIndex = 0) const;
 	const RectF getLastRect(int yIndex = 0) const;

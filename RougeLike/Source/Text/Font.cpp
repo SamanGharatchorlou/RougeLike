@@ -55,6 +55,8 @@ void Font::setText(const std::string& text)
 		//Render text surface
 		SDL_Surface* textSurface = TTF_RenderText_Solid(mFont, text.c_str(), colour);
 
+		// For size of the text: int textSize = textSurface->h * textSurface->pitch;
+
 		if (!textSurface)
 		{
 			DebugPrint(Warning, "Unable to render text surface for text: %s! SDL_ttf Error: %s\n", text.c_str(), TTF_GetError());

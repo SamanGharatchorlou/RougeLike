@@ -14,7 +14,7 @@ class ActorManager;
 
 struct GameData
 {
-	void init();
+	void load();
 	void setupObservers();
 	void free();
 

@@ -11,9 +11,6 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 	Index startingIndex = mMap->index(startPosition);
 	Index endIndex = mMap->index(endPosition);
 
-	// TEMP
-	if (!mMap->isValidIndex(startingIndex))
-		printf("pause\n");
 
 	if (!mMap->isValidIndex(endIndex) || 
 		startingIndex == endIndex || 

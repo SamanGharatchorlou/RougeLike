@@ -16,6 +16,7 @@ public:
 	void nextLevel();
 	void closeLevelEntrace();
 
+	void render(const TextureManager* tm);
 	void renderBottomLayer(const TextureManager* tm, float depth);
 	void renderTopLayer(const TextureManager* tm, float depth);
 

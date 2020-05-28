@@ -46,6 +46,7 @@ public:
 
 	void setSpeedFactor(float speed) {
 		printf("speed factor being set to %f\n", speed);
+
 		speedFactor = speed; }
 
 	Tile* getSpriteTile();

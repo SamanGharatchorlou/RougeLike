@@ -37,7 +37,6 @@ private:
 
 	int mPtSize;
 
-	// remove this?
 	VectorF size;
 
 	// Forbid copy to prevent shared ownership of of gFont and

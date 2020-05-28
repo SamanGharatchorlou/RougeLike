@@ -16,7 +16,6 @@ EnemyHit::EnemyHit(Enemy* enemy) : EnemyState(enemy)  { }
 
 void EnemyHit::init()
 {
-	printf("hit\n");
 	decayTimer.restart();
 
 	mEnemy->animator().selectAnimation("Hit");

@@ -22,7 +22,7 @@
 #include "Map/Map.h"
 
 
-void GameData::init()
+void GameData::load()
 {
 	// Texture Manager
 	textureManager = new TextureManager;
@@ -62,6 +62,7 @@ void GameData::init()
 	// Must be done AFTER everything has been new'd
 	setupObservers();
 }
+
 
 // TODO: centralise some of these systems?
 void GameData::setupObservers()

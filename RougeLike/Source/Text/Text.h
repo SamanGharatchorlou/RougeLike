@@ -17,11 +17,9 @@ public:
 	int fontSize() const { return mFont.ptSize(); }
 	void setFontSize(int fontSize) { mFont.resize(fontSize); }
 
+	VectorF size() const { return VectorF(mFont.width(), mFont.height()); }
 	VectorF autoSize(VectorF size);
 	void setWidth(float width);
-
-	float width() const { return mFont.width(); }
-	float height() const { return mFont.height(); }
 
 	float stringWidth();
 

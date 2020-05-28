@@ -103,9 +103,9 @@ GameController::~GameController()
 	DebugPrint(Log, "GameController destroyed\n");
 }
 
-static int TestThread(void *ptr)
+static int renderLoadingBar(void *ptr)
 {
-	printf(" -------------------------- starting loader thread -------------------------- \n");
+	DebugPrint(Log, " -------------------------- starting loader thread -------------------------- \n");
 	LoadingManager* loading = LoadingManager::Get();
 
 	while (!loading->end())
@@ -113,22 +113,21 @@ static int TestThread(void *ptr)
 		loading->render();
 	}
 
-	printf(" -------------------------- exiting loader thread -------------------------- \n");
+	DebugPrint(Log, " -------------------------- exiting loader thread -------------------------- \n");
 	return 0;
 }
 
 void GameController::load()
 {
-	LoadingManager* lm = LoadingManager::Get();
-	lm->init();
+	LoadingManager::Get()->init();
 
-	void* ptr = nullptr;
-	SDL_Thread* threadID = SDL_CreateThread(TestThread, "Loading", ptr);
+	SDL_Thread* threadID = SDL_CreateThread(renderLoadingBar, "LoadingBar", nullptr);
 
-	mGameData.init();
+	LoadingManager::Get()->CountToBeLoadedFiles();
 
-	int threadReturnValue = -1;
-	SDL_WaitThread(threadID, &threadReturnValue);
+	mGameData.load();
+
+	SDL_WaitThread(threadID, nullptr);
 }
 
 

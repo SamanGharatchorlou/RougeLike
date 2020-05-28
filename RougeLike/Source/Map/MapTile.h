@@ -13,11 +13,17 @@ public:
 		Left = Wall << 1,
 		Right = Wall << 2,
 
-		Top = Wall << 3,
-		Bot = Wall << 4,
+		Bottom_Lower = Wall << 3,
+		Bottom_Upper = Wall << 4,
 
-		ColumnTop = Wall << 5,
-		ColumnBot = Wall << 6
+
+		Top_Lower = Wall << 5,
+		Top_Upper = Wall << 6,
+
+		Top_Right = Wall << 7,
+		Top_Left = Wall << 8,
+		Bot_Right = Wall << 9,
+		Bot_Left = Wall << 10
 	};
 
 public:

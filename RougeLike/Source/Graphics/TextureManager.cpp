@@ -41,9 +41,6 @@ void TextureManager::init()
 		folders.push_back(static_cast<FileManager::Folder>(i));
 	}
 
-	// Init loading (just pass int FileManager::Image folder?)
-	LoadingManager::Get()->directoriesToLoad(folders);
-
 	DebugPrint(Log, "\n--- Loading Textures ---\n");
 	int fails = 0;
 

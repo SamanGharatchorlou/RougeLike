@@ -16,6 +16,8 @@ UITextBox::UITextBox(Data& data) : UIBox(data)
 
 	const std::string& font = data.font == "" ? "default.ttf" : data.font;
 	mText.init(data.text, font, data.ptSize, data.colour);
+
+	align();
 }
 
 void UITextBox::render()
@@ -34,7 +36,7 @@ void UITextBox::align()
 {
 	if (mAlignment == Alignment::Center)
 	{
-		float textWidth = mText.width();
+		float textWidth = mText.size().x;
 		float rectWidth = mRect.Width();
 
 		float xOffset = (rectWidth - textWidth) / 2;

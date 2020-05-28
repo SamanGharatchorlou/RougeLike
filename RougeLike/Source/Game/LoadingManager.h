@@ -1,13 +1,8 @@
 #pragma once
 
-
 #include "LoadingBar.h"
 
 class UITextBox;
-
-// TODO: need to add dispatchers to let the loading manager when to render i.e. update the bar
-// can I somehow run this in an update function while the game data is loading??
-// different threads?
 
 
 // Implement this means the loading tile will probably increase by around 10%-15%
@@ -18,6 +13,7 @@ public:
 	static LoadingManager* Get();
 
 	void init();
+	void CountToBeLoadedFiles();
 
 	void directoriesToLoad(std::vector<FileManager::Folder> folders);
 

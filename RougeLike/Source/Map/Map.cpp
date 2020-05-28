@@ -8,21 +8,403 @@
 #include "TunnelGenerator.h"
 
 
+void Map::init(Vector2D<int> size)
+{
+	mData.set(size, MapTile(MapTile::Wall));
+}
+
+
+void Map::populateData(VectorF offset)
+{
+	populateTileRects(offset);
+	populateTileRenderInfo();
+	
+	//populateCollisionRenderInfo();
+}
+
+void Map::render(const TextureManager* tm)
+{
+	Texture* floor = tm->getTexture("floor", FileManager::Image_Maps);
+	Texture* wall_BL = tm->getTexture("wall_bottom_lower", FileManager::Image_Maps);
+	Texture* wall_BU = tm->getTexture("wall_bottom_upper", FileManager::Image_Maps);
+	Texture* wall_TL = tm->getTexture("wall_top_lower", FileManager::Image_Maps);
+	Texture* wall_TU = tm->getTexture("wall_top_upper", FileManager::Image_Maps);
+	Texture* wall_Right = tm->getTexture("wall_right", FileManager::Image_Maps);
+	Texture* wall_Left = tm->getTexture("wall_left", FileManager::Image_Maps);
+
+	Texture* wall_TR = tm->getTexture("wall_top_right", FileManager::Image_Maps);
+
+
+	Camera* camera = Camera::Get();
+
+	for (unsigned int y = 0; y < yCount(); y++)
+	{
+		for (unsigned int x = 0; x < xCount(); x++)
+		{
+			MapTile tile = mData[y][x];
+			Rect<int> tileRect = tile.rect();
+
+			if (camera->inView(tileRect))
+			{
+				tileRect = camera->toCameraCoords(tileRect);
+
+				// Split each floor tile into 4
+				if (tile.hasRenderType(MapTile::Floor))
+				{
+					floor->render(tileRect);
+
+					// Split tile into 4 pieces
+					//VectorF size = tileRect.Size() / 2.0f;
+					//tileRect.SetSize(size);
+
+					//// Top left
+					//floor->render(tileRect);
+
+					//// Top right
+					//floor->render(tileRect.Translate(VectorF(tileRect.Size().x, 0.0f)));
+
+					//// Bot right
+					//floor->render(tileRect.Translate(VectorF(tileRect.Size().x, tileRect.Size().x)));
+
+					//// Bot left
+					//floor->render(tileRect.Translate(VectorF(0.0f, tileRect.Size().x)));
+
+				}
+
+				if (tile.hasRenderType(MapTile::Top_Right))
+					wall_TR->render(tileRect);
+
+				if (tile.hasRenderType(MapTile::Bottom_Lower))
+					wall_BL->render(tileRect);
+
+				if (tile.hasRenderType(MapTile::Bottom_Upper))
+					wall_BU->render(tileRect);
+
+				if (tile.hasRenderType(MapTile::Top_Lower))
+					wall_TL->render(tileRect);
+
+				if (tile.hasRenderType(MapTile::Top_Upper))
+					wall_TU->render(tileRect);
+
+				if (tile.hasRenderType(MapTile::Right))
+					wall_Right->render(tileRect);
+
+
+
+				//if (tile.hasRenderType(MapTile::Left))
+				//	wall_Left->render(tileRect);
+			}
+		}
+	}
+#if MARK_SURFACE_TYPES
+	renderSurfaceTypes();
+#endif
+}
+
+#if MARK_SURFACE_TYPES
+void Map::renderSurfaceTypes()
+{
+	Camera* camera = Camera::Get();
+
+	for (unsigned int y = 0; y < yCount(); y++)
+	{
+		for (unsigned int x = 0; x < xCount(); x++)
+		{
+			MapTile tile = mData[y][x];
+			RectF tileRect = tile.rect();
+
+			if (camera->inView(tileRect))
+			{
+				float randomYOffset = randomNumberBetween(-150.0f, 150.0f);
+				tileRect = tileRect.Translate(VectorF(0.0f, randomYOffset));
+
+				if (tile.hasRenderType(MapTile::Floor))
+				{
+					debugRenderText("Floor", 16, tileRect.TopCenter());
+				}
+
+				if (tile.hasRenderType(MapTile::Bottom_Lower))
+				{
+					debugRenderText("Bottom lower", 16, tileRect.Center());
+				}
+
+				if (tile.hasRenderType(MapTile::Bottom_Upper))
+				{
+					debugRenderText("Bottom upper", 16, tileRect.Center());
+				}
+
+				if (tile.hasRenderType(MapTile::Top_Lower))
+				{
+					debugRenderText("Top lower", 16, tileRect.Center());
+				}
+
+				if (tile.hasRenderType(MapTile::Top_Upper))
+				{
+					debugRenderText("Top upper", 16, tileRect.Center());
+				}
+
+				if (tile.hasRenderType(MapTile::Right))
+				{
+					debugRenderText("Right", 16, tileRect.Center());
+				}
+
+				if (tile.hasRenderType(MapTile::Left))
+				{
+					debugRenderText("Left", 16, tileRect.Center());
+				}
+			}
+		}
+	}
+}
+#endif
+
+
+void Map::renderBottomLayer(const TextureManager* tm, float yPoint)
+{
+//#if _DEBUG
+//	tileRenderCounter = 0;
+//#endif
+//
+//	Texture* floor = tm->getTexture("floor", FileManager::Image_Maps);
+//	Texture* wall = tm->getTexture("wall", FileManager::Image_Maps);
+//
+//	Texture* leftEdge = tm->getTexture("wall_left_edge", FileManager::Image_Maps);
+//	Texture* rightEdge = tm->getTexture("wall_right_edge", FileManager::Image_Maps);
+//	Texture* botEdge = tm->getTexture("wall_bot_edge", FileManager::Image_Maps);
+//
+//	Texture* column = tm->getTexture("columnsmall", FileManager::Image_Maps);
+//
+//	Camera* camera = Camera::Get();
+//
+//	for (unsigned int y = 0; y < yCount(); y++)
+//	{
+//		for (unsigned int x = 0; x < xCount(); x++)
+//		{
+//			MapTile tile = mData[y][x];
+//			Rect<int> tileRect = tile.rect();
+//
+//			if (camera->inView(tileRect))
+//			{
+//				// Render walls 'below/under' the player after the player 
+//				if (tileRect.Center().y >= yPoint && !tile.isRenderType(MapTile::Floor))
+//					continue;
+//
+//				tileRect = camera->toCameraCoords(tileRect);
+//
+//				if(tile.hasRenderType(MapTile::Floor))
+//					floor->render(tileRect);
+//
+//				if (tile.hasRenderType(MapTile::ColumnBot))
+//					renderColumn(tileRect, column);
+//
+//				if (tile.hasRenderType(MapTile::Wall))
+//					wall->render(tileRect);
+//
+//				if (tile.hasRenderType(MapTile::Left))
+//					leftEdge->render(tileRect);
+//
+//				if (tile.hasRenderType(MapTile::Right))
+//					rightEdge->render(tileRect);
+//
+//				if (tile.hasRenderType(MapTile::Bot))
+//					botEdge->render(tileRect, SDL_FLIP_VERTICAL);
+//
+//				if (tile.hasRenderType(MapTile::Top))
+//					botEdge->render(tileRect, SDL_FLIP_VERTICAL);
+//
+//				if (tile.hasRenderType(MapTile::ColumnTop))
+//					renderColumn(tileRect, column);
+//
+//#if _DEBUG
+//				tileRenderCounter++;
+//#endif
+//			}
+//		}
+//	}
+}
+
+
+void Map::renderTopLayer(const TextureManager* tm, float yPoint)
+{
+//	Texture* floor = tm->getTexture("floor", FileManager::Image_Maps);
+//	Texture* wall = tm->getTexture("wall", FileManager::Image_Maps);
+//
+//	Texture* leftEdge = tm->getTexture("wall_left_edge", FileManager::Image_Maps);
+//	Texture* rightEdge = tm->getTexture("wall_right_edge", FileManager::Image_Maps);
+//	Texture* botEdge = tm->getTexture("wall_bot_edge", FileManager::Image_Maps);
+//
+//	Texture* column = tm->getTexture("columnsmall", FileManager::Image_Maps);
+//
+//	Camera* camera = Camera::Get();
+//
+//	for (unsigned int y = 0; y < yCount(); y++)
+//	{
+//		for (unsigned int x = 0; x < xCount(); x++)
+//		{
+//			MapTile tile = mData[y][x];
+//			Rect<int> tileRect = tile.rect();
+//
+//			if (camera->inView(tileRect))
+//			{
+//				MapTile tile = mData[y][x];
+//
+//				// skip anything that would have been rendered in layer A
+//				if (tile.rect().Center().y < yPoint || tile.isRenderType(MapTile::Floor))
+//					continue;
+//
+//				tileRect = camera->toCameraCoords(tileRect);
+//
+//				if (tile.hasRenderType(MapTile::Floor))
+//					floor->render(tileRect);
+//
+//				if (tile.hasRenderType(MapTile::ColumnBot))
+//					renderColumn(tileRect, column);
+//
+//				if (tile.hasRenderType(MapTile::Wall))
+//					wall->render(tileRect);
+//
+//				if (tile.hasRenderType(MapTile::Left))
+//					leftEdge->render(tileRect);
+//
+//				if (tile.hasRenderType(MapTile::Right))
+//					rightEdge->render(tileRect);
+//
+//				if (tile.hasRenderType(MapTile::Bot))
+//					botEdge->render(tileRect, SDL_FLIP_VERTICAL);
+//
+//				if (tile.hasRenderType(MapTile::Top))
+//					botEdge->render(tileRect, SDL_FLIP_VERTICAL);
+//
+//				if (tile.hasRenderType(MapTile::ColumnTop))
+//					renderColumn(tileRect, column);
+//
+//#if _DEBUG
+//				tileRenderCounter++;
+//#endif
+//			}
+//		}
+//	}
+//
+//#if _DEBUG
+//	float tilesInCamera = (Camera::Get()->size() / tileSize()).area();
+//
+//	if (tileRenderCounter > tilesInCamera + (yCount() * 2) + (xCount() * 2))
+//		DebugPrint(Log, "There are approx %f tiles within the viewport and we are rendering %f, too many?\n",
+//			tilesInCamera + (yCount() * 2) + (xCount() * 2), tileRenderCounter);
+//#endif
+}
+
+
+void Map::renderColumn(const RectF& rect, Texture* column)
+{
+	//VectorF size = column->originalDimentions * 3.0f;
+	//VectorF position = rect.BotRight();
+
+	//RectF columnRect = RectF(position, size);
+	//columnRect.SetBotRight(position);
+
+	//column->render(columnRect);
+}
+
+
+
 void Map::populateTileRects(VectorF offset)
 {
 	for (int y = 0; y < mData.yCount(); y++)
 	{
 		for (int x = 0; x < mData.xCount(); x++)
 		{
-			VectorF size(VectorF(16.0f, 16.0f) * 3.0f); // TODO: hard coded
+			VectorF size(128.0f, 128.0f); // TODO: hard coded
 			VectorF position = VectorF(x * size.x, y * size.y);
 			RectF rect(position + offset, size);
 
 			mData[y][x].setRect(rect);
 
 #if _DEBUG
-			mData[y][x].index = Index(x,y);
+			mData[y][x].index = Index(x, y);
 #endif
+		}
+	}
+}
+
+
+void Map::populateTileRenderInfo()
+{
+	for (int y = 0; y < mData.yCount(); y++)
+	{
+		for (int x = 0; x < mData.xCount(); x++)
+		{
+			Index index(x, y);
+			MapTile& tile = mData[index];
+
+			if (tile.hasRenderType(MapTile::Wall))
+			{
+				// Botton walls
+				Index up = index + Index(0, 1);
+				Index down = index + Index(0, -1);
+				Index left = index + Index(-1, 0);
+				Index right = index + Index(+1, 0);
+
+
+				if (isValidIndex(up) && mData[up].hasRenderType(MapTile::Floor))
+				{
+					// Tile above
+					if (isValidIndex(down))
+						mData[down].addRenderType(MapTile::Bottom_Upper);
+
+					// Current tile
+					mData[index].addRenderType(MapTile::Bottom_Lower);
+					// bottom lower tiles cant have any other types
+					continue;
+				}
+
+				// Top walls
+				if (isValidIndex(down) && mData[down].hasRenderType(MapTile::Floor))
+				{
+					// Tile below
+					if (isValidIndex(up))
+						mData[up].addRenderType(MapTile::Top_Lower);
+
+					// Current tile
+					mData[index].addRenderType(MapTile::Top_Upper);
+					//// bottom lower tiles cant have any other types
+					//continue;
+				}
+
+				// Right walls
+				if (isValidIndex(right) && mData[right].hasRenderType(MapTile::Floor))
+				{
+					// Current tile
+					mData[index].addRenderType(MapTile::Right);
+				}
+
+				//// Left walls
+				//if (isValidIndex(left) && mData[left].hasRenderType(MapTile::Floor))
+				//{
+				//	// Current tile
+				//	mData[index].addRenderType(MapTile::Left);
+
+				//	// These can just become left side wall
+				//	mData[index].removeRenderType(MapTile::Top_Lower);
+				//}
+			}
+		}
+	}
+
+	for (int y = 0; y < mData.yCount(); y++)
+	{
+		for (int x = 0; x < mData.xCount(); x++)
+		{
+			Index index(x, y);
+			MapTile& tile = mData[index];
+
+			// TODO: using type & type doesnt work
+			if (mData[index].hasRenderType(MapTile::Top_Upper) && mData[index].hasRenderType(MapTile::Right))
+			{
+				mData[index].removeRenderType(MapTile::Top_Upper);
+				mData[index].removeRenderType(MapTile::Right);
+				mData[index].addRenderType(MapTile::Top_Right);
+			}
 		}
 	}
 }
@@ -30,264 +412,92 @@ void Map::populateTileRects(VectorF offset)
 
 void Map::populateCollisionRenderInfo()
 {
-	for (unsigned int x = 0; x < xCount(); x++)
-	{
-		bool floorAboveReached = false;
-
-		for (unsigned int y = 0; y < yCount(); y++)
-		{
-			// query surronding tiles
-			Index index(x, y);
-			const MapTile::EdgeInfo& info = getEdgeInfo(index);
-			MapTile& tile = mData[index];
-
-			if (info.hasEdge)
-			{
-				// floor left
-				if (info.data[1][0] == MapTile::Floor)
-				{
-					tile.addRenderType(MapTile::Left);
-					tile.addCollisionType(MapTile::Left);
-				}
-
-				// floor right
-				if (info.data[1][2] == MapTile::Floor)
-				{
-					tile.addRenderType(MapTile::Right);
-					tile.addCollisionType(MapTile::Right);
-				}
-
-
-				// Only left and right needs to be considered once true
-				if (floorAboveReached)
-				{
-					tile.removeCollisionType(MapTile::Floor);
-					tile.addCollisionType(MapTile::Wall);
-					continue;
-				}
-
-				// floor above
-				if (info.data[0][1] == MapTile::Floor)
-				{
-					// Editing the tile below messes with the looping
-					// only edit the sides after this has been hit
-					floorAboveReached = true;
-
-					tile.addRenderType(MapTile::Top);
-
-					Index rightIndex(x, y + 1);
-					if (inBounds(rightIndex) && wallRenderTile(rightIndex))
-					{
-						MapTile::Type tileType = tile.collisionType();
-
-						mData[rightIndex].setCollisionType(tileType ^ MapTile::Top);
-
-						int a = 0;
-					}
-
-					tile.setCollisionType(MapTile::Floor);
-				}
-
-				// floor below
-				if (info.data[2][1] == MapTile::Floor)
-				{
-					tile.addRenderType(MapTile::Bot);
-					tile.addCollisionType(MapTile::Bot);
-
-					tile.removeRenderType(MapTile::Left ^ MapTile::Right);
-
-					// Add isometic wall edges if the left/right tile is a wall but is not a MapTile::Bot
-					Index leftIndex(x - 1, y);
-					if (inBounds(leftIndex) && wallRenderTile(leftIndex) && !(mData[leftIndex].hasRenderType(MapTile::Bot)))
-					{
-						mData[leftIndex].addRenderType(MapTile::Right);
-					}
-
-					Index rightIndex(x + 1, y);
-					if (inBounds(rightIndex) && wallRenderTile(rightIndex) && !(mData[rightIndex].hasRenderType(MapTile::Bot)))
-					{
-						mData[rightIndex].addRenderType(MapTile::Left);
-					}
-				}
-			}
-		}
-	}
-
-#if DRAW_BINARY_MAP
-	printBinaryMap();
-#endif
-}
-
-
-void Map::init(Vector2D<int> size)
-{
-	mData.set(size, MapTile());
-}
-
-
-void Map::populateData(VectorF offset)
-{
-	populateTileRects(offset);
-	populateCollisionRenderInfo();
-}
-
-
-VectorF Map::size() const
-{
-	return VectorF(xCount(), yCount()) * tileSize();
-}
-
-const VectorF Map::tileSize() const
-{ 
-	return tile(Index(0, 0))->rect().Size();
-}
-
-
-void Map::renderBottomLayer(const TextureManager* tm, float yPoint)
-{
-#if _DEBUG
-	tileRenderCounter = 0;
-#endif
-
-	Texture* floor = tm->getTexture("floor", FileManager::Image_Maps);
-	Texture* wall = tm->getTexture("wall", FileManager::Image_Maps);
-
-	Texture* leftEdge = tm->getTexture("wall_left_edge", FileManager::Image_Maps);
-	Texture* rightEdge = tm->getTexture("wall_right_edge", FileManager::Image_Maps);
-	Texture* botEdge = tm->getTexture("wall_bot_edge", FileManager::Image_Maps);
-
-	Texture* column = tm->getTexture("columnsmall", FileManager::Image_Maps);
-
-	Camera* camera = Camera::Get();
-
-	for (unsigned int y = 0; y < yCount(); y++)
-	{
-		for (unsigned int x = 0; x < xCount(); x++)
-		{
-			MapTile tile = mData[y][x];
-			Rect<int> tileRect = tile.rect();
-
-			if (camera->inView(tileRect))
-			{
-				// Render walls 'below/under' the player after the player 
-				if (tileRect.Center().y >= yPoint && !tile.isRenderType(MapTile::Floor))
-					continue;
-
-				tileRect = camera->toCameraCoords(tileRect);
-
-				if(tile.hasRenderType(MapTile::Floor))
-					floor->render(tileRect);
-
-				if (tile.hasRenderType(MapTile::ColumnBot))
-					renderColumn(tileRect, column);
-
-				if (tile.hasRenderType(MapTile::Wall))
-					wall->render(tileRect);
-
-				if (tile.hasRenderType(MapTile::Left))
-					leftEdge->render(tileRect);
-
-				if (tile.hasRenderType(MapTile::Right))
-					rightEdge->render(tileRect);
-
-				if (tile.hasRenderType(MapTile::Bot))
-					botEdge->render(tileRect, SDL_FLIP_VERTICAL);
-
-				if (tile.hasRenderType(MapTile::Top))
-					botEdge->render(tileRect, SDL_FLIP_VERTICAL);
-
-				if (tile.hasRenderType(MapTile::ColumnTop))
-					renderColumn(tileRect, column);
-
-#if _DEBUG
-				tileRenderCounter++;
-#endif
-			}
-		}
-	}
-}
-
-
-void Map::renderTopLayer(const TextureManager* tm, float yPoint)
-{
-	Texture* floor = tm->getTexture("floor", FileManager::Image_Maps);
-	Texture* wall = tm->getTexture("wall", FileManager::Image_Maps);
-
-	Texture* leftEdge = tm->getTexture("wall_left_edge", FileManager::Image_Maps);
-	Texture* rightEdge = tm->getTexture("wall_right_edge", FileManager::Image_Maps);
-	Texture* botEdge = tm->getTexture("wall_bot_edge", FileManager::Image_Maps);
-
-	Texture* column = tm->getTexture("columnsmall", FileManager::Image_Maps);
-
-	Camera* camera = Camera::Get();
-
-	for (unsigned int y = 0; y < yCount(); y++)
-	{
-		for (unsigned int x = 0; x < xCount(); x++)
-		{
-			MapTile tile = mData[y][x];
-			Rect<int> tileRect = tile.rect();
-
-			if (camera->inView(tileRect))
-			{
-				MapTile tile = mData[y][x];
-
-				// skip anything that would have been rendered in layer A
-				if (tile.rect().Center().y < yPoint || tile.isRenderType(MapTile::Floor))
-					continue;
-
-				tileRect = camera->toCameraCoords(tileRect);
-
-				if (tile.hasRenderType(MapTile::Floor))
-					floor->render(tileRect);
-
-				if (tile.hasRenderType(MapTile::ColumnBot))
-					renderColumn(tileRect, column);
-
-				if (tile.hasRenderType(MapTile::Wall))
-					wall->render(tileRect);
-
-				if (tile.hasRenderType(MapTile::Left))
-					leftEdge->render(tileRect);
-
-				if (tile.hasRenderType(MapTile::Right))
-					rightEdge->render(tileRect);
-
-				if (tile.hasRenderType(MapTile::Bot))
-					botEdge->render(tileRect, SDL_FLIP_VERTICAL);
-
-				if (tile.hasRenderType(MapTile::Top))
-					botEdge->render(tileRect, SDL_FLIP_VERTICAL);
-
-				if (tile.hasRenderType(MapTile::ColumnTop))
-					renderColumn(tileRect, column);
-
-#if _DEBUG
-				tileRenderCounter++;
-#endif
-			}
-		}
-	}
-
-#if _DEBUG
-	float tilesInCamera = (Camera::Get()->size() / tileSize()).area();
-
-	if (tileRenderCounter > tilesInCamera + (yCount() * 2) + (xCount() * 2))
-		DebugPrint(Log, "There are approx %f tiles within the viewport and we are rendering %f, too many?\n",
-			tilesInCamera + (yCount() * 2) + (xCount() * 2), tileRenderCounter);
-#endif
-}
-
-
-void Map::renderColumn(const RectF& rect, Texture* column)
-{
-	VectorF size = column->originalDimentions * 3.0f;
-	VectorF position = rect.BotRight();
-
-	RectF columnRect = RectF(position, size);
-	columnRect.SetBotRight(position);
-
-	column->render(columnRect);
+//	for (unsigned int x = 0; x < xCount(); x++)
+//	{
+//		bool floorAboveReached = false;
+//
+//		for (unsigned int y = 0; y < yCount(); y++)
+//		{
+//			// query surronding tiles
+//			Index index(x, y);
+//			const MapTile::EdgeInfo& info = getEdgeInfo(index);
+//			MapTile& tile = mData[index];
+//
+//			if (info.hasEdge)
+//			{
+//				// floor left
+//				if (info.data[1][0] == MapTile::Floor)
+//				{
+//					tile.addRenderType(MapTile::Left);
+//					tile.addCollisionType(MapTile::Left);
+//				}
+//
+//				// floor right
+//				if (info.data[1][2] == MapTile::Floor)
+//				{
+//					tile.addRenderType(MapTile::Right);
+//					tile.addCollisionType(MapTile::Right);
+//				}
+//
+//
+//				// Only left and right needs to be considered once true
+//				if (floorAboveReached)
+//				{
+//					tile.removeCollisionType(MapTile::Floor);
+//					tile.addCollisionType(MapTile::Wall);
+//					continue;
+//				}
+//
+//				// floor above
+//				if (info.data[0][1] == MapTile::Floor)
+//				{
+//					// Editing the tile below messes with the looping
+//					// only edit the sides after this has been hit
+//					floorAboveReached = true;
+//
+//					tile.addRenderType(MapTile::Top);
+//
+//					Index rightIndex(x, y + 1);
+//					if (inBounds(rightIndex) && wallRenderTile(rightIndex))
+//					{
+//						MapTile::Type tileType = tile.collisionType();
+//
+//						mData[rightIndex].setCollisionType(tileType ^ MapTile::Top);
+//
+//						int a = 0;
+//					}
+//
+//					tile.setCollisionType(MapTile::Floor);
+//				}
+//
+//				// floor below
+//				if (info.data[2][1] == MapTile::Floor)
+//				{
+//					tile.addRenderType(MapTile::Bot);
+//					tile.addCollisionType(MapTile::Bot);
+//
+//					tile.removeRenderType(MapTile::Left ^ MapTile::Right);
+//
+//					// Add isometic wall edges if the left/right tile is a wall but is not a MapTile::Bot
+//					Index leftIndex(x - 1, y);
+//					if (inBounds(leftIndex) && wallRenderTile(leftIndex) && !(mData[leftIndex].hasRenderType(MapTile::Bot)))
+//					{
+//						mData[leftIndex].addRenderType(MapTile::Right);
+//					}
+//
+//					Index rightIndex(x + 1, y);
+//					if (inBounds(rightIndex) && wallRenderTile(rightIndex) && !(mData[rightIndex].hasRenderType(MapTile::Bot)))
+//					{
+//						mData[rightIndex].addRenderType(MapTile::Left);
+//					}
+//				}
+//			}
+//		}
+//	}
+//
+//#if DRAW_BINARY_MAP
+//	printBinaryMap();
+//#endif
 }
 
 
@@ -353,12 +563,6 @@ const Index Map::index(VectorF position) const
 {
 	VectorF mapTopLeft = mData.get(Index(0, 0)).rect().TopLeft();
 	VectorF shiftedPosition = position - mapTopLeft;
-
-	if (!isValidPosition(position))
-	{
-		printf("error\n");
-	}
-
 	return isValidPosition(position) ? Index(shiftedPosition / tileSize()) : Index(-1, -1);
 }
 
