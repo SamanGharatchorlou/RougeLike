@@ -24,15 +24,25 @@ void Map::populateData(VectorF offset)
 
 void Map::render(const TextureManager* tm)
 {
-	Texture* floor = tm->getTexture("floor", FileManager::Image_Maps);
+	Texture* floor = tm->getTexture("floor", FileManager::Image_Maps); 
+	Texture* wall = tm->getTexture("wall", FileManager::Image_Maps);
+
 	Texture* wall_BL = tm->getTexture("wall_bottom_lower", FileManager::Image_Maps);
 	Texture* wall_BU = tm->getTexture("wall_bottom_upper", FileManager::Image_Maps);
 	Texture* wall_TL = tm->getTexture("wall_top_lower", FileManager::Image_Maps);
 	Texture* wall_TU = tm->getTexture("wall_top_upper", FileManager::Image_Maps);
+
 	Texture* wall_Right = tm->getTexture("wall_right", FileManager::Image_Maps);
 	Texture* wall_Left = tm->getTexture("wall_left", FileManager::Image_Maps);
+	Texture* wall_bottom = tm->getTexture("wall_bottom", FileManager::Image_Maps);
 
-	Texture* wall_TR = tm->getTexture("wall_top_right", FileManager::Image_Maps);
+	Texture* wall_TopRight = tm->getTexture("wall_top_right", FileManager::Image_Maps);
+	Texture* wall_TopLeft = tm->getTexture("wall_top_left", FileManager::Image_Maps);
+	Texture* wall_BotRight = tm->getTexture("wall_bottom_right", FileManager::Image_Maps);
+	Texture* wall_BotLeft = tm->getTexture("wall_bottom_left", FileManager::Image_Maps);
+
+	Texture* point_bottom_right = tm->getTexture("point_bottom_right", FileManager::Image_Maps);
+	Texture* point_bottom_left = tm->getTexture("point_bottom_left", FileManager::Image_Maps);
 
 
 	Camera* camera = Camera::Get();
@@ -71,8 +81,20 @@ void Map::render(const TextureManager* tm)
 
 				}
 
+				if (tile.isRenderType(MapTile::Wall))
+					wall->render(tileRect);
+
 				if (tile.hasRenderType(MapTile::Top_Right))
-					wall_TR->render(tileRect);
+					wall_TopRight->render(tileRect);
+
+				if (tile.hasRenderType(MapTile::Top_Left))
+					wall_TopLeft->render(tileRect);
+
+				if (tile.hasRenderType(MapTile::Bottom_Right))
+					wall_BotRight->render(tileRect);
+
+				if (tile.hasRenderType(MapTile::Bottom_Left))
+					wall_BotLeft->render(tileRect);
 
 				if (tile.hasRenderType(MapTile::Bottom_Lower))
 					wall_BL->render(tileRect);
@@ -89,10 +111,17 @@ void Map::render(const TextureManager* tm)
 				if (tile.hasRenderType(MapTile::Right))
 					wall_Right->render(tileRect);
 
+				if (tile.hasRenderType(MapTile::Left))
+					wall_Left->render(tileRect);
 
+				if (tile.hasRenderType(MapTile::Bottom))
+					wall_bottom->render(tileRect);
 
-				//if (tile.hasRenderType(MapTile::Left))
-				//	wall_Left->render(tileRect);
+				if (tile.hasRenderType(MapTile::Point_Bottom_Left))
+					point_bottom_left->render(tileRect);
+
+				if (tile.hasRenderType(MapTile::Point_Bottom_Right))
+					point_bottom_right->render(tileRect);
 			}
 		}
 	}
@@ -106,6 +135,8 @@ void Map::renderSurfaceTypes()
 {
 	Camera* camera = Camera::Get();
 
+	int intView = 0;
+
 	for (unsigned int y = 0; y < yCount(); y++)
 	{
 		for (unsigned int x = 0; x < xCount(); x++)
@@ -115,42 +146,106 @@ void Map::renderSurfaceTypes()
 
 			if (camera->inView(tileRect))
 			{
-				float randomYOffset = randomNumberBetween(-150.0f, 150.0f);
-				tileRect = tileRect.Translate(VectorF(0.0f, randomYOffset));
+				intView++;
 
+				float yOffset = 0.0f;
+
+				debugDrawRectOutline(Camera::Get()->toCameraCoords(tileRect), RenderColour::Red);
+
+				if (tile.isRenderType(MapTile::Wall))
+				{
+					debugRenderText("Wall", 16, tileRect.TopCenter());
+					tileRect = tileRect.Translate(VectorF(0.0f, 20.0f));
+				}
+
+				// Floor
 				if (tile.hasRenderType(MapTile::Floor))
 				{
 					debugRenderText("Floor", 16, tileRect.TopCenter());
+					tileRect = tileRect.Translate(VectorF(0.0f, 20.0f));
 				}
 
+				// Bottom walls
 				if (tile.hasRenderType(MapTile::Bottom_Lower))
 				{
 					debugRenderText("Bottom lower", 16, tileRect.Center());
+					tileRect = tileRect.Translate(VectorF(0.0f, 20.0f));
 				}
 
 				if (tile.hasRenderType(MapTile::Bottom_Upper))
 				{
 					debugRenderText("Bottom upper", 16, tileRect.Center());
+					tileRect = tileRect.Translate(VectorF(0.0f, 20.0f));
 				}
 
+				// Top walls
 				if (tile.hasRenderType(MapTile::Top_Lower))
 				{
 					debugRenderText("Top lower", 16, tileRect.Center());
+					tileRect = tileRect.Translate(VectorF(0.0f, 20.0f));
 				}
 
 				if (tile.hasRenderType(MapTile::Top_Upper))
 				{
 					debugRenderText("Top upper", 16, tileRect.Center());
+					tileRect = tileRect.Translate(VectorF(0.0f, 20.0f));
 				}
 
+				// Side walls
 				if (tile.hasRenderType(MapTile::Right))
 				{
 					debugRenderText("Right", 16, tileRect.Center());
+					tileRect = tileRect.Translate(VectorF(0.0f, 20.0f));
 				}
 
 				if (tile.hasRenderType(MapTile::Left))
 				{
 					debugRenderText("Left", 16, tileRect.Center());
+					tileRect = tileRect.Translate(VectorF(0.0f, 20.0f));
+				}
+
+				if (tile.hasRenderType(MapTile::Bottom))
+				{
+					debugRenderText("Bottom", 16, tileRect.Center());
+					tileRect = tileRect.Translate(VectorF(0.0f, 20.0f));
+				}
+
+				// Corners
+				if (tile.hasRenderType(MapTile::Bottom_Right))
+				{
+					debugRenderText("Bottom right", 16, tileRect.Center());
+					tileRect = tileRect.Translate(VectorF(0.0f, 20.0f));
+				}
+
+				if (tile.hasRenderType(MapTile::Bottom_Left))
+				{
+					debugRenderText("Bottom left", 16, tileRect.Center());
+					tileRect = tileRect.Translate(VectorF(0.0f, 20.0f));
+				}
+
+				if (tile.hasRenderType(MapTile::Top_Right))
+				{
+					debugRenderText("Bottom right", 16, tileRect.Center());
+					tileRect = tileRect.Translate(VectorF(0.0f, 20.0f));
+				}
+
+				if (tile.hasRenderType(MapTile::Top_Left))
+				{
+					debugRenderText("Bottom left", 16, tileRect.Center());
+					tileRect = tileRect.Translate(VectorF(0.0f, 20.0f));
+				}
+
+				// Points
+				if (tile.hasRenderType(MapTile::Point_Bottom_Right))
+				{
+					debugRenderText("bot right point", 16, tileRect.Center());
+					tileRect = tileRect.Translate(VectorF(0.0f, 20.0f));
+				}
+
+				if (tile.hasRenderType(MapTile::Point_Bottom_Left))
+				{
+					debugRenderText("bot left point", 16, tileRect.Center());
+					tileRect = tileRect.Translate(VectorF(0.0f, 20.0f));
 				}
 			}
 		}
@@ -330,6 +425,7 @@ void Map::populateTileRects(VectorF offset)
 
 void Map::populateTileRenderInfo()
 {
+	// First pass - Label all bottom and top side walls
 	for (int y = 0; y < mData.yCount(); y++)
 	{
 		for (int x = 0; x < mData.xCount(); x++)
@@ -340,57 +436,40 @@ void Map::populateTileRenderInfo()
 			if (tile.hasRenderType(MapTile::Wall))
 			{
 				// Botton walls
-				Index up = index + Index(0, 1);
-				Index down = index + Index(0, -1);
+				Index up = index + Index(0, -1);
+				Index down = index + Index(0, +1);
 				Index left = index + Index(-1, 0);
 				Index right = index + Index(+1, 0);
 
-
-				if (isValidIndex(up) && mData[up].hasRenderType(MapTile::Floor))
+				// Bottom type walls
+				if (isValidIndex(down) && mData[down].hasRenderType(MapTile::Floor))
 				{
 					// Tile above
-					if (isValidIndex(down))
-						mData[down].addRenderType(MapTile::Bottom_Upper);
+					if (isValidIndex(up))
+						mData[up].addRenderType(MapTile::Bottom_Upper);
 
 					// Current tile
 					mData[index].addRenderType(MapTile::Bottom_Lower);
+
 					// bottom lower tiles cant have any other types
-					continue;
-				}
-
-				// Top walls
-				if (isValidIndex(down) && mData[down].hasRenderType(MapTile::Floor))
-				{
-					// Tile below
-					if (isValidIndex(up))
-						mData[up].addRenderType(MapTile::Top_Lower);
-
-					// Current tile
-					mData[index].addRenderType(MapTile::Top_Upper);
-					//// bottom lower tiles cant have any other types
 					//continue;
 				}
 
-				// Right walls
-				if (isValidIndex(right) && mData[right].hasRenderType(MapTile::Floor))
-				{
-					// Current tile
-					mData[index].addRenderType(MapTile::Right);
-				}
-
-				//// Left walls
-				//if (isValidIndex(left) && mData[left].hasRenderType(MapTile::Floor))
+				//// Top type walls
+				//if (isValidIndex(down) && mData[down].hasRenderType(MapTile::Floor))
 				//{
-				//	// Current tile
-				//	mData[index].addRenderType(MapTile::Left);
+				//	// Tile below
+				//	if (isValidIndex(up))
+				//		mData[up].addRenderType(MapTile::Top_Lower);
 
-				//	// These can just become left side wall
-				//	mData[index].removeRenderType(MapTile::Top_Lower);
+				//	// Current tile
+				//	mData[index].addRenderType(MapTile::Top_Upper);
 				//}
 			}
 		}
 	}
 
+	// Add right and left labels
 	for (int y = 0; y < mData.yCount(); y++)
 	{
 		for (int x = 0; x < mData.xCount(); x++)
@@ -398,12 +477,116 @@ void Map::populateTileRenderInfo()
 			Index index(x, y);
 			MapTile& tile = mData[index];
 
-			// TODO: using type & type doesnt work
-			if (mData[index].hasRenderType(MapTile::Top_Upper) && mData[index].hasRenderType(MapTile::Right))
+			if (tile.isRenderType(MapTile::Wall))
 			{
-				mData[index].removeRenderType(MapTile::Top_Upper);
-				mData[index].removeRenderType(MapTile::Right);
-				mData[index].addRenderType(MapTile::Top_Right);
+				// Botton walls
+				Index up = index + Index(0, 1);
+				Index down = index + Index(0, -1);
+				Index left = index + Index(-1, 0);
+				Index right = index + Index(+1, 0);
+
+				// Right walls
+				if (isValidIndex(right) && !mData[right].isRenderType(MapTile::Wall))
+				{
+					// Current tile
+					mData[index].addRenderType(MapTile::Right);
+				}
+
+				// Left walls
+				// Unlike the right side as we are moving right we also skip left walls (as we add them)
+				if (isValidIndex(left) && !mData[left].isRenderType(MapTile::Wall) && !mData[left].hasRenderType(MapTile::Left))
+				{
+					// Current tile
+					mData[index].addRenderType(MapTile::Left);
+				}
+			}
+		}
+	}
+
+
+	// Add corner & other labels
+	for (int y = 0; y < mData.yCount(); y++)
+	{
+		for (int x = 0; x < mData.xCount(); x++)
+		{
+			Index index(x, y);
+			MapTile& tile = mData[index];
+
+			Index below = index + Index(0, +1);
+			if (isValidIndex(below))
+			{
+				// Corners
+				if (mData[index].hasRenderType(MapTile::Left))
+				{
+					if (mData[below].hasRenderType(MapTile::Bottom_Upper))
+					{
+						// bottom U
+						mData[index].setRenderType(MapTile::Wall);
+						mData[index].addRenderType(MapTile::Bottom_Left);
+					}
+				}
+				else if (mData[index].hasRenderType(MapTile::Right))
+				{
+					if (mData[below].hasRenderType(MapTile::Bottom_Upper))
+					{
+						// bottom U
+						mData[index].setRenderType(MapTile::Wall);
+						mData[index].addRenderType(MapTile::Bottom_Right);
+					}
+				}
+				// Tops
+				else if (mData[index].isRenderType(MapTile::Wall))
+				{
+					if (mData[below].hasRenderType(MapTile::Bottom_Upper))
+					{
+						// bottom U
+						mData[index].setRenderType(MapTile::Wall);
+						mData[index].addRenderType(MapTile::Bottom);
+					}
+				}
+			}
+		}
+	}
+
+	// points
+	for (int y = 0; y < mData.yCount(); y++)
+	{
+		for (int x = 0; x < mData.xCount(); x++)
+		{
+			Index index(x, y);
+			MapTile& tile = mData[index];
+
+			Index up = index + Index(0, -1);
+			Index down = index + Index(0, +1);
+			Index left = index + Index(-1, 0);
+			Index right = index + Index(+1, 0);
+
+			if (isValidIndex(left) && isValidIndex(down))
+			{
+				if (mData[index].isRenderType(MapTile::Wall))
+				{
+					if (mData[left].hasRenderType(MapTile::Bottom) && 
+						(mData[down].hasRenderType(MapTile::Left) || mData[down].hasRenderType(MapTile::Bottom_Left)))
+					{
+						// bottom U
+						mData[index].setRenderType(MapTile::Wall);
+						mData[index].addRenderType(MapTile::Point_Bottom_Left);
+					}
+				}
+			}
+
+			if (isValidIndex(right) && isValidIndex(down))
+			{
+				if (mData[index].isRenderType(MapTile::Wall))
+				{
+					if (mData[right].hasRenderType(MapTile::Bottom) && 
+						(mData[down].hasRenderType(MapTile::Right) || mData[down].hasRenderType(MapTile::Bottom_Right)))
+					{
+						// bottom U
+						mData[index].setRenderType(MapTile::Wall);
+						mData[index].addRenderType(MapTile::Point_Bottom_Right);
+					}
+				}
 			}
 		}
 	}

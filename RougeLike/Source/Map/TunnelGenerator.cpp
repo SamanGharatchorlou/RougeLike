@@ -7,6 +7,9 @@ TunnelGenerator::TunnelGenerator()
 	srand((int)time(NULL));
 }
 
+
+// TODO: make this more dynamic
+// i.e. change the frequency of change as the previousChangeIndex moves further away
 void TunnelGenerator::buildRandom(Grid<MapTile>& mapData)
 {
 	int pathWidth = 5;
@@ -15,43 +18,53 @@ void TunnelGenerator::buildRandom(Grid<MapTile>& mapData)
 	// Entrace
 	mapData[y][0].setType(MapTile::Floor);
 
+	int previousChangeIndex = 0;
+
 	// build tunnel
 	for (unsigned int x = 1; x < mapData.xCount(); x++)
 	{
-		int randomNumber = rand() % 100;
-		int roughness = 20;
-
-		int maxPathY = 4;
-		int minPathY = 1;
-
-		// Change tunnel width
-		if (randomNumber > roughness)
+		if (previousChangeIndex != x - 1)
 		{
-			pathWidth += (rand() % maxPathY) / 2;
+			bool change = false;
+			int randomNumber = rand() % 100;
+			int roughness = 10;
 
-			if (pathWidth < minPathY)
-				pathWidth = minPathY;
+			int maxPathY = 4;
+			int minPathY = 1;
 
-			if (pathWidth > maxPathY)
-				pathWidth = maxPathY;
-		}
+			// Change tunnel width
+			if (randomNumber > roughness)
+			{
+				pathWidth += (rand() % maxPathY) / 2;
 
-		randomNumber = rand() % 100;
-		int curveyness = 50;
+				if (pathWidth < minPathY)
+					pathWidth = minPathY;
 
-		int maxPathChange = 4;
+				if (pathWidth > maxPathY)
+					pathWidth = maxPathY;
 
-		// Change tunnel direction
-		if (randomNumber > 20)
-		{
-			int yChange = (rand() % (maxPathChange * 2)) - maxPathChange;
-			y += yChange;
+				previousChangeIndex = x;
+			}
 
-			if (y <= maxPathY)
-				y = maxPathY + minPathY;
+			randomNumber = rand() % 100;
+			int curveyness = 50;
 
-			if (y >= mapData.yCount() - maxPathY)
-				y = mapData.yCount() - maxPathY - 1 - minPathY;
+			int maxPathChange = 6;
+
+			// Change tunnel direction
+			if (randomNumber > 10)
+			{
+				int yChange = (rand() % (maxPathChange * 2)) - maxPathChange;
+				y += yChange;
+
+				if (y <= maxPathY)
+					y = maxPathY + minPathY;
+
+				if (y >= mapData.yCount() - maxPathY)
+					y = mapData.yCount() - maxPathY - 1 - minPathY;
+
+				previousChangeIndex = x;
+			}
 		}
 		
 		for (int i = -pathWidth; i <= pathWidth; i++)

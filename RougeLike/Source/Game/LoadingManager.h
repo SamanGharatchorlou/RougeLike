@@ -5,7 +5,7 @@
 class UITextBox;
 
 
-// Implement this means the loading tile will probably increase by around 10%-15%
+// Implementing this means the loading time will probably increase by around 10%-15%
 // This was from very quick testing, may vary.
 class LoadingManager
 {

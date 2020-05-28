@@ -16,14 +16,24 @@ public:
 		Bottom_Lower = Wall << 3,
 		Bottom_Upper = Wall << 4,
 
-
 		Top_Lower = Wall << 5,
 		Top_Upper = Wall << 6,
 
+		// Corners
 		Top_Right = Wall << 7,
 		Top_Left = Wall << 8,
-		Bot_Right = Wall << 9,
-		Bot_Left = Wall << 10
+		Bottom_Right = Wall << 9,
+		Bottom_Left = Wall << 10,
+
+		// MOVE ME
+		Bottom = Wall << 11,
+		Top = Wall << 12,
+
+		// Points
+		Point_Bottom_Right = Wall << 13,
+		Point_Bottom_Left = Wall << 14
+
+		// Running out of bits?
 	};
 
 public:
