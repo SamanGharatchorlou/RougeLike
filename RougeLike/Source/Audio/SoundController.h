@@ -24,8 +24,8 @@ public:
 	void setMusicVolume(float volume);
 	float getMusicVolume() const;
 
-	void toggleMute();
-
+	void mute(bool shouldMute);
+	void toggleMute() { mute(!muted); }
 
 private:
 	enum Channelstate

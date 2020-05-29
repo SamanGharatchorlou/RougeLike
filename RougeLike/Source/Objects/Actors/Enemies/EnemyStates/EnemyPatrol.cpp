@@ -57,10 +57,10 @@ void EnemyPatrol::setPatrolPoint()
 	VectorF position = mEnemy->position();
 	Index tilePositionIndex = map->index(position);
 
-	Index yTileRange = map->findYFloorTileRange(tilePositionIndex.x);
+	Index yTileRange = findYFloorTileRange(tilePositionIndex.x);
 
-	VectorF highestPoint = map->tileRect(Index(tilePositionIndex.x, yTileRange.x)).Center();
-	VectorF lowestPoint = map->tileRect(Index(tilePositionIndex.x, yTileRange.y)).Center();
+	VectorF highestPoint = map->tile(Index(tilePositionIndex.x, yTileRange.x))->rect().Center();
+	VectorF lowestPoint = map->tile(Index(tilePositionIndex.x, yTileRange.y))->rect().Center();
 
 	// set the furthest point
 	VectorF patrolTarget = (position.y - highestPoint.y < lowestPoint.y - position.y) ? lowestPoint : highestPoint;
@@ -68,6 +68,28 @@ void EnemyPatrol::setPatrolPoint()
 
 	const MapTile* tile = map->tile(patrolTarget);
 	mEnemy->setPositionTarget(tile->rectPtr());
+}
+
+
+Vector2D<int> EnemyPatrol::findYFloorTileRange(int xIndex) const
+{
+	int yTileIndex = 0;
+	Vector2D<int> yTileRange;
+	const Map* map = mEnemy->getEnvironmentMap();
+
+	while (map->wallCollisionTile(Index(xIndex, ++yTileIndex))) {}
+
+	// Top
+	yTileRange.x = yTileIndex;
+
+	while (map->floorCollisionTile(Index(xIndex, ++yTileIndex)))
+	{
+		if (yTileIndex >= map->yCount() - 1)
+			break;
+	}
+
+	yTileRange.y = clamp(yTileIndex - 2, yTileRange.x, (int)map->yCount() - 2);
+	return yTileRange;
 }
 
 

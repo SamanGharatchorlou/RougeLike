@@ -33,11 +33,6 @@ public:
 
 	bool inBounds(Vector2D<int> index) const 
 	{
-		bool a = index.x >= 0;
-		bool b = index.x < xCount();
-		bool c = index.y >= 0;
-		bool d = index.y < yCount();
-
 		return index.x >= 0 && index.x < xCount() &&
 			index.y >= 0 && index.y < yCount();
 	}

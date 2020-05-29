@@ -14,10 +14,10 @@
 
 // Map
 #define DRAW_BINARY_MAP 0
-#define MARK_SURFACE_TYPES 1
+#define MARK_SURFACE_TYPES 0
 
 // Enemy / AI
-#define DRAW_AI_PATH 1
+#define DRAW_AI_PATH 0
 #define DRAW_AI_PATH_COSTMAP 0
 #define DRAW_ENEMY_RECT 0
 #define DRAW_ENEMY_TARGET_PATH 0

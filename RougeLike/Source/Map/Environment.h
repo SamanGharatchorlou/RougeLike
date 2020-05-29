@@ -53,6 +53,8 @@ private:
 	Map* mPrimaryMap;
 	Map* mExit;
 
+	std::vector<Map*> maps;
+
 	Vector2D<int> mMapSize;
 
 	int mMapLevel;

@@ -214,11 +214,10 @@ float SoundController::getMusicVolume() const
 }
 
 
-// also need to work this for music??
-void SoundController::toggleMute()
+void SoundController::mute(bool shouldMute)
 {
 	// Audio on
-	if (muted)
+	if (!shouldMute)
 	{
 		Mix_Volume(-1, gameVolume);
 		Mix_VolumeMusic(musicVolume);
@@ -227,7 +226,7 @@ void SoundController::toggleMute()
 	}
 	// Audio off
 	else
-	{ 
+	{
 		gameVolume = Mix_Volume(-1, -1);
 		musicVolume = Mix_VolumeMusic(-1);
 

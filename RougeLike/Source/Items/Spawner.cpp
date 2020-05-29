@@ -11,7 +11,7 @@ VectorF Spawner::findSpawnPoint(Map* map, int xPositionPercentage)
 
 	int xTileIndex = (int)((map->xCount() * xPositionPercentage) / 100);
 
-	Vector2D<int> yTileRange = map->findYFloorTileRange(xTileIndex);
+	Vector2D<int> yTileRange = findYFloorTileRange(map, xTileIndex);
 
 	ASSERT(Warning, yTileRange.x > 0 && yTileRange.y < (int)map->yCount(),
 		"No valid tile was found to spawn enemy at x = %d\n", xTileIndex);
@@ -22,5 +22,27 @@ VectorF Spawner::findSpawnPoint(Map* map, int xPositionPercentage)
 	ASSERT(Warning, map->floorRenderTile(Index(xTileIndex, randomYTile)), "Cannot spawn enemy on a wall tile\n");
 
 	Index index(xTileIndex, randomYTile);
-	return map->tileRect(index).Center();
+	return map->tile(index)->rect().Center();
+}
+
+
+
+Vector2D<int> Spawner::findYFloorTileRange(Map* map, int xIndex) const
+{
+	int yTileIndex = 0;
+	Vector2D<int> yTileRange;
+
+	while(map->wallCollisionTile(Index(xIndex, ++yTileIndex))) { }
+
+	// Top
+	yTileRange.x = yTileIndex;
+
+	while (map->floorCollisionTile(Index(xIndex, ++yTileIndex)))
+	{
+		if (yTileIndex >= map->yCount() - 1)
+			break;
+	}
+
+	yTileRange.y = clamp(yTileIndex - 2, yTileRange.x, (int)map->yCount() - 2);
+	return yTileRange;
 }

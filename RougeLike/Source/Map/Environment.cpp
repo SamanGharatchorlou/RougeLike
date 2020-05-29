@@ -12,7 +12,7 @@ Environment::Environment() : mMapLevel(1)
 	mEntrace = new Map();
 	mExit = nullptr;
 
-	mMapSize = Vector2D<int>(30, 20);
+	mMapSize = Vector2D<int>(30, 15);
 };
 
 
@@ -36,11 +36,11 @@ void Environment::restart()
 void Environment::init()
 {
 	// create first entrace and level
-	buildEntrance(0.0f);
+	//buildEntrance(0.0f);
 	buildLevel();
 
-	IncrementLevelEvent event;
-	notify(event);
+	//IncrementLevelEvent event;
+	//notify(event);
 }
 
 
@@ -109,19 +109,10 @@ Map* Environment::map(VectorF position) const
 	{
 		return mEntrace;
 	}
-	else // if(mPrimaryMap && position.x < mPrimaryMap->getLastRect().LeftPoint()
+	else
 	{
 		return mPrimaryMap;
 	}
-
-	//if (mEntrace && position.x < mEntrace->getLastRect().RightPoint())
-	//	return mEntrace;
-
-	//else if (mPrimaryMap && position.x < mPrimaryMap->getLastRect().LeftPoint())
-	//	return mPrimaryMap;
-
-	//else
-	//	return mExit;
 }
 
 
@@ -129,10 +120,11 @@ bool Environment::generateNextLevel(VectorF position) const
 {
 	if (position.x > mPrimaryMap->getLastRect().RightPoint())
 	{
-		RectF lastRect = mPrimaryMap->getLastRect(mPrimaryMap->yCount() / 2);
+		RectF lastRect = mPrimaryMap->getLastRect();
+		lastRect = lastRect.Translate(VectorF(0.0f, mPrimaryMap->yCount() / 2));
 
 		// Make sure its completely out of view
-		lastRect = lastRect.Translate(mPrimaryMap->tileSize());
+		//lastRect = lastRect.Translate(mPrimaryMap->tileSize());
 
 		return !Camera::Get()->inView(lastRect);
 	}
@@ -145,10 +137,11 @@ bool Environment::closeEntrance(VectorF position) const
 {
 	if (mEntrace && position.x > mEntrace->getLastRect().RightPoint())
 	{
-		RectF lastRect = mEntrace->getLastRect(mPrimaryMap->yCount() / 2);
+		RectF lastRect = mEntrace->getLastRect();
+		lastRect = lastRect.Translate(VectorF(0.0f, mPrimaryMap->yCount() / 2));
 
 		// Make sure its completely out of view
-		lastRect = lastRect.Translate(mPrimaryMap->tileSize());
+		//lastRect = lastRect.Translate(mPrimaryMap->tileSize());
 
 		return !Camera::Get()->inView(lastRect);
 	}
@@ -159,19 +152,19 @@ bool Environment::closeEntrance(VectorF position) const
 
 RectF Environment::boundaries() const
 {
-	float xLeft = 0.0f;
-	float xRight = 0.0f;
+	float xLeft = -100.0f;
+	float xRight = +10000.0f;
 
-	if(mExit)
-	{
-		xLeft = mPrimaryMap->getFirstRect().LeftPoint();
-		xRight = mExit->getLastRect().RightPoint();
-	}
-	else // mEntrace
-	{
-		xLeft = mEntrace->getFirstRect().LeftPoint();
-		xRight = mPrimaryMap->getLastRect().RightPoint();
-	}
+	//if(mExit)
+	//{
+	//	xLeft = mPrimaryMap->getFirstRect().LeftPoint();
+	//	xRight = mExit->getLastRect().RightPoint();
+	//}
+	//else // mEntrace
+	//{
+	//	xLeft = mEntrace->getFirstRect().LeftPoint();
+	//	xRight = mPrimaryMap->getLastRect().RightPoint();
+	//}
 
 	return RectF(xLeft, 0.0f, xRight, mPrimaryMap->size().y);
 }
@@ -196,17 +189,17 @@ void Environment::buildEntrance(float offset)
 
 void Environment::buildLevel()
 {
-	ASSERT(Warning, mEntrace != nullptr, "Entrance cannot be null, did you forget to call swapToEntrace()?\n");
+	//ASSERT(Warning, mEntrace != nullptr, "Entrance cannot be null, did you forget to call swapToEntrace()?\n");
 
-	// Random map width between 90% and 120% of previous level
-	int mapMinX = (int)((float)mMapSize.x * 0.9f);
-	int mapMaxX = (int)((float)mMapSize.x * 1.2f);
+	//// Random map width between 90% and 120% of previous level
+	//int mapMinX = (int)((float)mMapSize.x * 0.9f);
+	//int mapMaxX = (int)((float)mMapSize.x * 1.2f);
 
-	int mapWidth = randomNumberBetween(mapMinX, mapMaxX);
+	//int mapWidth = randomNumberBetween(mapMinX, mapMaxX);
 
-	float offset = mEntrace->getLastRect().RightPoint();;
+	//float offset = mEntrace->getLastRect().RightPoint();
 
-	buildRandomLevel(mapWidth, mMapSize.y, offset);
+	buildRandomLevel(mMapSize.x, mMapSize.y, 0);
 }
 
 
@@ -217,7 +210,7 @@ void Environment::buildRandomLevel(int width, int height, float offset)
 	mPrimaryMap->init(Index(width, height));
 
 	TunnelGenerator generator;
-	generator.buildRandom(mPrimaryMap->getData());
+	generator.buildRandomA(mPrimaryMap->getData());
 
 	mPrimaryMap->populateData(VectorF(offset, 0.0f));
 }
@@ -268,8 +261,8 @@ void Environment::closeLevel()
 	//mEntrace->addTileType(Index(0, (mEntrace->yCount() / 2) + 1), MapTile::ColumnBot);
 
 	// Open entrance
-	mPrimaryMap->setTileType(Index(0, mPrimaryMap->yCount() / 2), MapTile::Floor);
-	mPrimaryMap->setTileType(Index(0, (mPrimaryMap->yCount() / 2) + 1), MapTile::Floor);
+	//mPrimaryMap->setTileType(Index(0, mPrimaryMap->yCount() / 2), MapTile::Floor);
+	//mPrimaryMap->setTileType(Index(0, (mPrimaryMap->yCount() / 2) + 1), MapTile::Floor);
 }
 
 

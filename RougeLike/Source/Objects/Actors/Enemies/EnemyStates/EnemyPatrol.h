@@ -18,6 +18,10 @@ public:
 
 	const Type type() const { return Type::Patrol; }
 
+
+private:
+	Vector2D<int> findYFloorTileRange(int xIndex) const;
+
 private:
 	void setPatrolPoint();
 	bool hasReachedPositionTarget() const;

@@ -4,7 +4,7 @@
 class BasicTile
 {
 public:
-	enum Type
+	enum Type : int32_t
 	{
 		None,
 		Floor,
@@ -31,9 +31,9 @@ public:
 
 		// Points
 		Point_Bottom_Right = Wall << 13,
-		Point_Bottom_Left = Wall << 14
-
-		// Running out of bits?
+		Point_Bottom_Left = Wall << 14,
+		Point_Top_Right = Wall << 15,
+		Point_Top_Left = Wall << 16,
 	};
 
 public:

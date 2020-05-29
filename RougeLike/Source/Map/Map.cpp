@@ -43,7 +43,8 @@ void Map::render(const TextureManager* tm)
 
 	Texture* point_bottom_right = tm->getTexture("point_bottom_right", FileManager::Image_Maps);
 	Texture* point_bottom_left = tm->getTexture("point_bottom_left", FileManager::Image_Maps);
-
+	Texture* point_top_right = tm->getTexture("point_top_right", FileManager::Image_Maps);
+	Texture* point_top_left =  tm->getTexture("point_top_left", FileManager::Image_Maps);
 
 	Camera* camera = Camera::Get();
 
@@ -61,24 +62,14 @@ void Map::render(const TextureManager* tm)
 				// Split each floor tile into 4
 				if (tile.hasRenderType(MapTile::Floor))
 				{
-					floor->render(tileRect);
-
 					// Split tile into 4 pieces
-					//VectorF size = tileRect.Size() / 2.0f;
-					//tileRect.SetSize(size);
+					VectorF size = tileRect.Size() / 2.0f;
+					tileRect.SetSize(size);
 
-					//// Top left
-					//floor->render(tileRect);
-
-					//// Top right
-					//floor->render(tileRect.Translate(VectorF(tileRect.Size().x, 0.0f)));
-
-					//// Bot right
-					//floor->render(tileRect.Translate(VectorF(tileRect.Size().x, tileRect.Size().x)));
-
-					//// Bot left
-					//floor->render(tileRect.Translate(VectorF(0.0f, tileRect.Size().x)));
-
+					floor->render(tileRect);
+					floor->render(tileRect.Translate(VectorF(tileRect.Size().x, 0.0f)));
+					floor->render(tileRect.Translate(VectorF(tileRect.Size().x, tileRect.Size().x)));
+					floor->render(tileRect.Translate(VectorF(0.0f, tileRect.Size().x)));
 				}
 
 				if (tile.isRenderType(MapTile::Wall))
@@ -102,7 +93,8 @@ void Map::render(const TextureManager* tm)
 				if (tile.hasRenderType(MapTile::Bottom_Upper))
 					wall_BU->render(tileRect);
 
-				if (tile.hasRenderType(MapTile::Top_Lower))
+				// if it has left/right render that tile instead
+				if (tile.isRenderType(MapTile::Wall | MapTile::Top_Lower))
 					wall_TL->render(tileRect);
 
 				if (tile.hasRenderType(MapTile::Top_Upper))
@@ -122,6 +114,12 @@ void Map::render(const TextureManager* tm)
 
 				if (tile.hasRenderType(MapTile::Point_Bottom_Right))
 					point_bottom_right->render(tileRect);
+
+				if (tile.hasRenderType(MapTile::Point_Top_Right))
+					point_top_right->render(tileRect);
+
+				if (tile.hasRenderType(MapTile::Point_Top_Left))
+					point_top_left->render(tileRect);
 			}
 		}
 	}
@@ -152,7 +150,7 @@ void Map::renderSurfaceTypes()
 
 				debugDrawRectOutline(Camera::Get()->toCameraCoords(tileRect), RenderColour::Red);
 
-				if (tile.isRenderType(MapTile::Wall))
+				if (tile.hasRenderType(MapTile::Wall))
 				{
 					debugRenderText("Wall", 16, tileRect.TopCenter());
 					tileRect = tileRect.Translate(VectorF(0.0f, 20.0f));
@@ -225,13 +223,13 @@ void Map::renderSurfaceTypes()
 
 				if (tile.hasRenderType(MapTile::Top_Right))
 				{
-					debugRenderText("Bottom right", 16, tileRect.Center());
+					debugRenderText("Top right", 16, tileRect.Center());
 					tileRect = tileRect.Translate(VectorF(0.0f, 20.0f));
 				}
 
 				if (tile.hasRenderType(MapTile::Top_Left))
 				{
-					debugRenderText("Bottom left", 16, tileRect.Center());
+					debugRenderText("Top left", 16, tileRect.Center());
 					tileRect = tileRect.Translate(VectorF(0.0f, 20.0f));
 				}
 
@@ -245,6 +243,18 @@ void Map::renderSurfaceTypes()
 				if (tile.hasRenderType(MapTile::Point_Bottom_Left))
 				{
 					debugRenderText("bot left point", 16, tileRect.Center());
+					tileRect = tileRect.Translate(VectorF(0.0f, 20.0f));
+				}
+
+				if (tile.hasRenderType(MapTile::Point_Top_Right))
+				{
+					debugRenderText("top right point", 16, tileRect.Center());
+					tileRect = tileRect.Translate(VectorF(0.0f, 20.0f));
+				}
+
+				if (tile.hasRenderType(MapTile::Point_Top_Left))
+				{
+					debugRenderText("top left point", 16, tileRect.Center());
 					tileRect = tileRect.Translate(VectorF(0.0f, 20.0f));
 				}
 			}
@@ -422,10 +432,8 @@ void Map::populateTileRects(VectorF offset)
 	}
 }
 
-
-void Map::populateTileRenderInfo()
+void Map::topBottom()
 {
-	// First pass - Label all bottom and top side walls
 	for (int y = 0; y < mData.yCount(); y++)
 	{
 		for (int x = 0; x < mData.xCount(); x++)
@@ -438,8 +446,6 @@ void Map::populateTileRenderInfo()
 				// Botton walls
 				Index up = index + Index(0, -1);
 				Index down = index + Index(0, +1);
-				Index left = index + Index(-1, 0);
-				Index right = index + Index(+1, 0);
 
 				// Bottom type walls
 				if (isValidIndex(down) && mData[down].hasRenderType(MapTile::Floor))
@@ -448,28 +454,26 @@ void Map::populateTileRenderInfo()
 					if (isValidIndex(up))
 						mData[up].addRenderType(MapTile::Bottom_Upper);
 
-					// Current tile
 					mData[index].addRenderType(MapTile::Bottom_Lower);
-
-					// bottom lower tiles cant have any other types
-					//continue;
+					continue;
 				}
 
-				//// Top type walls
-				//if (isValidIndex(down) && mData[down].hasRenderType(MapTile::Floor))
-				//{
-				//	// Tile below
-				//	if (isValidIndex(up))
-				//		mData[up].addRenderType(MapTile::Top_Lower);
+				// Top type walls
+				if (isValidIndex(up) && mData[up].hasRenderType(MapTile::Floor))
+				{
+					// Tile above
+					if (isValidIndex(down))
+						mData[down].addRenderType(MapTile::Top_Lower);
 
-				//	// Current tile
-				//	mData[index].addRenderType(MapTile::Top_Upper);
-				//}
+					mData[index].addRenderType(MapTile::Top_Upper);
+					continue;
+				}
 			}
 		}
 	}
-
-	// Add right and left labels
+}
+void Map::leftRight()
+{
 	for (int y = 0; y < mData.yCount(); y++)
 	{
 		for (int x = 0; x < mData.xCount(); x++)
@@ -477,34 +481,47 @@ void Map::populateTileRenderInfo()
 			Index index(x, y);
 			MapTile& tile = mData[index];
 
+			Index left = index + Index(-1, 0);
+			Index right = index + Index(+1, 0);
+
+			// Map Top half
 			if (tile.isRenderType(MapTile::Wall))
 			{
-				// Botton walls
-				Index up = index + Index(0, 1);
-				Index down = index + Index(0, -1);
-				Index left = index + Index(-1, 0);
-				Index right = index + Index(+1, 0);
-
-				// Right walls
-				if (isValidIndex(right) && !mData[right].isRenderType(MapTile::Wall))
+				// Map top half
+				if (isValidIndex(right) && mData[right].hasRenderType(MapTile::Floor | MapTile::Bottom_Lower | MapTile::Bottom_Upper))
 				{
-					// Current tile
 					mData[index].addRenderType(MapTile::Right);
+					continue;
 				}
 
-				// Left walls
 				// Unlike the right side as we are moving right we also skip left walls (as we add them)
-				if (isValidIndex(left) && !mData[left].isRenderType(MapTile::Wall) && !mData[left].hasRenderType(MapTile::Left))
+				if (isValidIndex(left) && mData[left].hasRenderType(MapTile::Floor | MapTile::Bottom_Lower | MapTile::Bottom_Upper) && !mData[left].hasRenderType(MapTile::Left))
 				{
-					// Current tile
 					mData[index].addRenderType(MapTile::Left);
+					continue;
+				}
+			}
+
+			// Map bot half
+			if (tile.hasRenderType(MapTile::Wall) && tile.hasRenderType(MapTile::Top_Lower | MapTile::Top_Upper))
+			{
+				if (isValidIndex(right) && mData[right].hasRenderType(MapTile::Floor))
+				{
+					mData[index].addRenderType(MapTile::Right);
+					continue;
+				}
+
+				if (isValidIndex(left) && mData[left].hasRenderType(MapTile::Floor))
+				{
+					mData[index].addRenderType(MapTile::Left);
+					continue;
 				}
 			}
 		}
 	}
-
-
-	// Add corner & other labels
+}
+void Map::corners()
+{
 	for (int y = 0; y < mData.yCount(); y++)
 	{
 		for (int x = 0; x < mData.xCount(); x++)
@@ -513,40 +530,66 @@ void Map::populateTileRenderInfo()
 			MapTile& tile = mData[index];
 
 			Index below = index + Index(0, +1);
-			if (isValidIndex(below))
+			Index above = index + Index(0, -1);
+
+			// Map top half
+			if (isValidIndex(below) && mData[below].hasRenderType(MapTile::Bottom_Upper))
 			{
 				// Corners
 				if (mData[index].hasRenderType(MapTile::Left))
 				{
-					if (mData[below].hasRenderType(MapTile::Bottom_Upper))
+					mData[index].setRenderType(MapTile::Wall | MapTile::Bottom_Left);
+					continue;
+				}
+				if (mData[index].hasRenderType(MapTile::Right))
+				{
+					mData[index].setRenderType(MapTile::Wall | MapTile::Bottom_Right);
+					continue;
+				}
+				// Bottom wall Tops
+				if (mData[index].isRenderType(MapTile::Wall))
+				{
+					mData[index].setRenderType(MapTile::Wall | MapTile::Bottom);
+					continue;
+				}
+			}
+
+			// Map bot half
+			if (isValidIndex(above))
+			{
+				// Corners
+				if (mData[index].hasRenderType(MapTile::Left))
+				{
+					if (mData[index].hasRenderType(MapTile::Top_Upper))
 					{
-						// bottom U
-						mData[index].setRenderType(MapTile::Wall);
-						mData[index].addRenderType(MapTile::Bottom_Left);
+						mData[index].setRenderType(MapTile::Wall | MapTile::Top_Left);
+						continue;
 					}
 				}
 				else if (mData[index].hasRenderType(MapTile::Right))
 				{
-					if (mData[below].hasRenderType(MapTile::Bottom_Upper))
+					if (mData[index].hasRenderType(MapTile::Top_Upper))
 					{
-						// bottom U
-						mData[index].setRenderType(MapTile::Wall);
-						mData[index].addRenderType(MapTile::Bottom_Right);
-					}
-				}
-				// Tops
-				else if (mData[index].isRenderType(MapTile::Wall))
-				{
-					if (mData[below].hasRenderType(MapTile::Bottom_Upper))
-					{
-						// bottom U
-						mData[index].setRenderType(MapTile::Wall);
-						mData[index].addRenderType(MapTile::Bottom);
+						mData[index].setRenderType(MapTile::Wall | MapTile::Top_Right);
+						continue;
 					}
 				}
 			}
+
 		}
 	}
+}
+
+void Map::populateTileRenderInfo()
+{
+	// Label all bottom and top side walls
+	topBottom();
+
+	// Add right and left labels
+	leftRight();
+
+	// Add corners & Top and bottom segments
+	corners();
 
 	// points
 	for (int y = 0; y < mData.yCount(); y++)
@@ -556,35 +599,45 @@ void Map::populateTileRenderInfo()
 			Index index(x, y);
 			MapTile& tile = mData[index];
 
-			Index up = index + Index(0, -1);
 			Index down = index + Index(0, +1);
 			Index left = index + Index(-1, 0);
 			Index right = index + Index(+1, 0);
 
-			if (isValidIndex(left) && isValidIndex(down))
+
+			// Map top half
+			if (mData[index].isRenderType(MapTile::Wall) && isValidIndex(down))
 			{
-				if (mData[index].isRenderType(MapTile::Wall))
+				if  (isValidIndex(left) &&
+					(mData[left].hasRenderType(MapTile::Bottom | MapTile::Bottom_Left)) &&
+					(mData[down].hasRenderType(MapTile::Left | MapTile::Bottom_Left)))
 				{
-					if (mData[left].hasRenderType(MapTile::Bottom) && 
-						(mData[down].hasRenderType(MapTile::Left) || mData[down].hasRenderType(MapTile::Bottom_Left)))
-					{
-						// bottom U
-						mData[index].setRenderType(MapTile::Wall);
-						mData[index].addRenderType(MapTile::Point_Bottom_Left);
-					}
+					mData[index].addRenderType(MapTile::Point_Bottom_Left);
+				}
+
+				if (isValidIndex(right) &&
+					(mData[right].hasRenderType(MapTile::Bottom | MapTile::Bottom_Right)) &&
+					(mData[down].hasRenderType(MapTile::Right | MapTile::Bottom_Right)))
+				{
+					mData[index].addRenderType(MapTile::Point_Bottom_Right);
 				}
 			}
-
-			if (isValidIndex(right) && isValidIndex(down))
+			 
+			// Map bot half
+			if (mData[index].hasRenderType(MapTile::Top_Upper))
 			{
-				if (mData[index].isRenderType(MapTile::Wall))
+				if (isValidIndex(left))
 				{
-					if (mData[right].hasRenderType(MapTile::Bottom) && 
-						(mData[down].hasRenderType(MapTile::Right) || mData[down].hasRenderType(MapTile::Bottom_Right)))
+					if (mData[left].isRenderType(MapTile::Wall) || mData[left].hasRenderType(MapTile::Top_Lower))
 					{
-						// bottom U
-						mData[index].setRenderType(MapTile::Wall);
-						mData[index].addRenderType(MapTile::Point_Bottom_Right);
+						mData[left].addRenderType(MapTile::Point_Top_Right);
+					}
+				}
+
+				if (isValidIndex(right))
+				{
+					if (mData[right].isRenderType(MapTile::Wall) || mData[right].hasRenderType(MapTile::Top_Lower))
+					{
+						mData[right].addRenderType(MapTile::Point_Top_Left);
 					}
 				}
 			}
@@ -684,64 +737,7 @@ void Map::populateCollisionRenderInfo()
 }
 
 
-const MapTile* Map::offsetTile(const MapTile* target, int xOffset, int yOffset) const
-{
-	Index tileIndex = index(target) + Index(xOffset, yOffset);
-	return isValidIndex(tileIndex) ? tile(tileIndex) : nullptr;
-}
-
-
-Index Map::findYFloorTileRange(int xTileIndex) const
-{
-	unsigned int yTileIndex = 0;
-	Vector2D<unsigned int> yTileRange;
-
-	while (wallCollisionTile(Index(xTileIndex, ++yTileIndex))) {}
-
-	// highest point
-	yTileRange.x = yTileIndex;
-
-	while (floorCollisionTile(Index(xTileIndex, ++yTileIndex)))
-	{
-		if (yTileIndex >= yCount() - 1)
-			break;
-	}
-
-	// remove last increment to keep within floor and minus one extra to prevent enemy moving behind the wall
-	yTileRange.y = clamp(yTileIndex - 2, yTileRange.x, yCount() - 2);
-
-	return yTileRange;
-}
-
-
 // --- Getters --- //
-const MapTile::EdgeInfo Map::getEdgeInfo(Index index) const
-{
-	MapTile::EdgeInfo info;
-
-	// Is a wall tile
-	if (wallRenderTile(index))
-	{
-		for (int j = index.y - 1; j <= index.y + 1; j++)
-		{
-			for (int i = index.x - 1; i <= index.x + 1; i++)
-			{
-				// If touching a floor tile
-				Index tileIndex(i, j);
-				if (inBounds(tileIndex) && floorRenderTile(tileIndex))
-				{
-					Index infoIndex = tileIndex - index + 1;
-					info.data[infoIndex.y][infoIndex.x] = MapTile::Floor;
-					info.hasEdge = true;
-				}
-			}
-		}
-	}
-
-	return info;
-}
-
-
 const Index Map::index(VectorF position) const
 {
 	VectorF mapTopLeft = mData.get(Index(0, 0)).rect().TopLeft();
@@ -771,48 +767,14 @@ const MapTile* Map::tile(VectorF position) const
 }
 
 
-const RectF Map::tileRect(Index index) const
+const RectF Map::getFirstRect() const
 {
-	return isValidIndex(index) ? mData.get(index).rect() : RectF(-1);
+	return mData.get(Index(0, 0)).rect();
 }
 
-
-const RectF Map::getFirstRect(int yIndex) const
+const RectF Map::getLastRect() const
 {
-	return tileRect(Index(0, yIndex));
-}
-
-const RectF Map::getLastRect(int yIndex) const
-{
-	return tileRect(Index(xCount() - 1, yIndex));
-}
-
-
-void Map::addTileType(Index index, MapTile::Type type)
-{
-	mData[index].addRenderType(type);
-
-	if (type >= MapTile::Wall)
-		mData[index].setCollisionType(MapTile::Wall);
-	else
-		mData[index].setCollisionType(MapTile::Floor);
-}
-
-
-void Map::setTileType(Index index, MapTile::Type type)
-{
-	mData[index].setType(type);
-}
-
-
-void Map::removeTileType(Index index, MapTile::Type type)
-{
-	mData[index].addRenderType(type);
-
-	if (type >= MapTile::Wall)
-		mData[index].setCollisionType(MapTile::Wall);
-	else
-		mData[index].setCollisionType(MapTile::Floor);
+	return  mData.get(Index(xCount() - 1, 0)).rect();
 }
 
 
@@ -838,22 +800,3 @@ bool Map::isValidPosition(VectorF position) const
 			(position.y >= start.y && position.y < end.y);
 }
 
-
-// --- Debugging --- //
-#if DRAW_BINARY_MAP
-void Map::printBinaryMap()
-{
-	int cols = mData.xCount();
-	int rows = mData.yCount();
-
-	for (int y = 0; y < mData.yCount(); y++)
-	{
-		for (int x = 0; x < mData.xCount(); x++)
-		{
-			DebugPrint(Log, "%d ", mData[y][x].renderType());
-		}
-
-		DebugPrint(Log, "\n");
-	}
-}
-#endif

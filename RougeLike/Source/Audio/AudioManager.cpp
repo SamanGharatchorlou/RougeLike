@@ -69,6 +69,11 @@ void AudioManager::toggleMute()
 	mSoundController.toggleMute();
 }
 
+void AudioManager::mute(bool shouldMute)
+{
+	mSoundController.mute(shouldMute);
+}
+
 
 void AudioManager::setSoundVolume(float volume)
 {

@@ -59,8 +59,6 @@ void GameState::init()
 	// Rendering
 	initRendering();
 
-	FileManager::Get()->allFilesInFolder(FileManager::Audio_Sound);
-
 	//mCollectables.spawnRandomItem(Collectables::MeleeWeapon);
 }
 
@@ -103,19 +101,19 @@ void GameState::slowUpdate(float dt)
 
 	Camera::Get()->slowUpdate(dt);
 
-	// End current level, close old level exit, open new level entrance
-	if (mGameData->environment->generateNextLevel(mGameData->actors->player()->rect().TopLeft()))
-	{
-		nextLevel();
-	}
+	//// End current level, close old level exit, open new level entrance
+	//if (mGameData->environment->generateNextLevel(mGameData->actors->player()->rect().TopLeft()))
+	//{
+	//	nextLevel();
+	//}
 
-	// Close off new level entrance, open exit
-	if (mGameData->environment->closeEntrance(mGameData->actors->player()->rect().TopLeft()))
-	{
-		mGameData->environment->closeLevelEntrace();
-		Camera::Get()->setMapBoundaries(mGameData->environment->boundaries());
-		// primary + exit
-	}
+	//// Close off new level entrance, open exit
+	//if (mGameData->environment->closeEntrance(mGameData->actors->player()->rect().TopLeft()))
+	//{
+	//	mGameData->environment->closeLevelEntrace();
+	//	Camera::Get()->setMapBoundaries(mGameData->environment->boundaries());
+	//	// primary + exit
+	//}
 
 	// End of slow frame
 	mGameData->collisionManager->resetColliders();
@@ -173,7 +171,6 @@ void GameState::initCamera()
 
 void GameState::initMap()
 {
-	float entraceOffset = Camera::Get()->size().x * 1.5f;
 	mGameData->environment->init();
 }
 

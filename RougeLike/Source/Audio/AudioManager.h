@@ -32,6 +32,7 @@ public:
 	float musicVolume() const;
 
 	void toggleMute();
+	void mute(bool shouldMute);
 
 
 private:
