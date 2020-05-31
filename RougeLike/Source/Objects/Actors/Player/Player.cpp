@@ -79,7 +79,7 @@ void Player::fastUpdate(float dt)
 {
 	// Restricts movemoent from input, movement should happen after this
 	if(!mControlOverride)
-		mWallCollisions.resolveWallCollisions(mGameData->environment->map(rect().Center()), dt);
+		mWallCollisions.resolveWallCollisions(mGameData->environment->map(position()), dt);
 
 	// Movement, animations, weapon updates
 	Actor::fastUpdate(dt);

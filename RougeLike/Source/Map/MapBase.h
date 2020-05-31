@@ -8,6 +8,9 @@ template<class K>
 class MapBase
 {
 public:
+	MapBase() { }
+	MapBase(Vector2D<int> size, K value) : mData(size, value) { }
+
 	K& operator [] (Index index) { 
 		return mData[index.y][index.x]; 
 	}

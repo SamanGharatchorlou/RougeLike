@@ -9,134 +9,71 @@
 // Wall Collisions
 void WallCollisionTracker::resolveWallCollisions(const Map* map, float dt)
 {
-	//mActor->physics()->resetAllowedMovement();
+	mActor->physics()->resetAllowedMovement();
 
-	//RectF collisionRect = mActor->collider()->scaledRect();
-
-	//bool restrictLeft = doesCollideLeft(map, collisionRect.TopLeft(), dt) ||
-	//	doesCollideLeft(map, collisionRect.BotLeft(), dt);
-
-	//bool restrictRight = doesCollideRight(map, collisionRect.TopRight(), dt) ||
-	//	doesCollideRight(map, collisionRect.BotRight(), dt);
-
-	//bool restrictUp = doesCollideTop(map, collisionRect.TopLeft(), dt) ||
-	//	doesCollideTop(map, collisionRect.TopRight(), dt);
-
-	//bool restrictDown = doesCollideBot(map, collisionRect.BotLeft(), dt) ||
-	//	doesCollideBot(map, collisionRect.BotRight(), dt);
-
-	//mActor->physics()->restrictMovement(Physics::Up, restrictUp);
-	//mActor->physics()->restrictMovement(Physics::Down, restrictDown);
-	//mActor->physics()->restrictMovement(Physics::Right, restrictRight);
-	//mActor->physics()->restrictMovement(Physics::Left, restrictLeft);
+	testLeftCollisions(map, dt);
+	testTopCollisions(map, dt);
+	testRightCollisions(map, dt);
+	testBottomCollisions(map, dt);
 }
 
-/*
-bool WallCollisionTracker::doesCollideLeft(const Map* map, const VectorF point, float dt) const
+
+void WallCollisionTracker::testLeftCollisions(const Map* map, float dt)
 {
-	if (!map->isValidPosition(point))
-		return false;
+	float movement = mActor->physics()->maxMovementDistance(dt);
+	RectF rect = mActor->rect().Translate(VectorF(-movement, 0.0f));
 
-	bool willCollide = false;
-	const MapTile* currentTile = map->tile(point);
+	const MapTile* topLeft = map->tile(rect.TopLeft());
+	const MapTile* bottomLeft = map->tile(rect.BotLeft());
 
-	if (currentTile)
+	if (!topLeft || !bottomLeft ||
+		topLeft->hasCollisionType(MapTile::Wall) || bottomLeft->hasCollisionType(MapTile::Wall))
 	{
-		ASSERT(Warning, currentTile->collisionType() == MapTile::Floor,
-			"Player is not on a floor tile, tile at index %d,%d has a %d tile type",
-			currentTile->index.x, currentTile->index.y, currentTile->collisionType());
-
-		const MapTile* leftTile = map->offsetTile(currentTile, -1, 0);
-
-		if (leftTile && leftTile->hasCollisionType(MapTile::Right ^ MapTile::Wall))
-		{
-			float xFuturePosition = point.x - mActor->physics()->maxMovementDistance(dt);
-			willCollide = xFuturePosition < leftTile->rect().RightPoint();
-		}
+		mActor->physics()->restrictMovement(Physics::Left, true);
 	}
-
-	return willCollide;
 }
 
-
-bool WallCollisionTracker::doesCollideRight(const Map* map, const VectorF point, float dt) const
+void WallCollisionTracker::testTopCollisions(const Map* map, float dt)
 {
-	if (!map->isValidPosition(point))
-		return false;
+	float movement = mActor->physics()->maxMovementDistance(dt);
+	RectF rect = mActor->rect().Translate(VectorF(0.0f, -movement));
 
-	bool willCollide = false;
-	const MapTile* currentTile = map->tile(point);
+	const MapTile* topLeft = map->tile(rect.TopLeft());
+	const MapTile* topRight = map->tile(rect.TopRight());
 
-	if (currentTile)
+	if (!topLeft || !topRight ||
+		topLeft->hasCollisionType(MapTile::Wall) || topRight->hasCollisionType(MapTile::Wall))
 	{
-		ASSERT(Warning, currentTile->collisionType() == MapTile::Floor,
-			"Player is not on a floor tile, tile at index %d,%d has a %d tile type",
-			currentTile->index.x, currentTile->index.y, currentTile->collisionType());
-
-		const MapTile* rightTile = map->offsetTile(currentTile, +1, 0);
-
-		if (rightTile && rightTile->hasCollisionType(MapTile::Left ^ MapTile::Wall))
-		{
-			float xFuturePosition = point.x + mActor->physics()->maxMovementDistance(dt);
-			willCollide = xFuturePosition > rightTile->rect().LeftPoint();
-		}
+		mActor->physics()->restrictMovement(Physics::Up, true);
 	}
-
-	return willCollide;
 }
 
-
-bool WallCollisionTracker::doesCollideTop(const Map* map, const VectorF point, float dt) const
+void WallCollisionTracker::testRightCollisions(const Map* map, float dt)
 {
-	if (!map->isValidPosition(point))
-		return false;
+	float movement = mActor->physics()->maxMovementDistance(dt);
+	RectF rect = mActor->rect().Translate(VectorF(movement, 0.0f));
 
-	bool willCollide = false;
-	const MapTile* currentTile = map->tile(point);
+	const MapTile* topRight = map->tile(rect.TopRight());
+	const MapTile* bottomRight = map->tile(rect.BotRight());
 
-	if (currentTile)
+	if (!topRight || !bottomRight ||
+		topRight->hasCollisionType(MapTile::Wall) || bottomRight->hasCollisionType(MapTile::Wall))
 	{
-		ASSERT(Warning, currentTile->collisionType() == MapTile::Floor,
-			"Player is not on a floor tile, tile at index %d,%d has a %d tile type",
-			currentTile->index.x, currentTile->index.y, currentTile->collisionType());
-
-		const MapTile* upTile = map->offsetTile(currentTile, 0, -1);
-
-		if (upTile && upTile->hasCollisionType(MapTile::Bot))
-		{
-			float yFuturePosition = point.y - mActor->physics()->maxMovementDistance(dt);
-			willCollide = yFuturePosition < upTile->rect().BotPoint();
-		}
+		mActor->physics()->restrictMovement(Physics::Right, true);
 	}
-
-	return willCollide;
 }
 
-
-bool WallCollisionTracker::doesCollideBot(const Map* map, const VectorF point, float dt) const
+void WallCollisionTracker::testBottomCollisions(const Map* map, float dt)
 {
-	if (!map->isValidPosition(point))
-		return false;
+	float movement = mActor->physics()->maxMovementDistance(dt);
+	RectF rect = mActor->rect().Translate(VectorF(0.0f, movement));
 
-	bool willCollide = false;
-	const MapTile* currentTile = map->tile(point);
+	const MapTile* bottomRight = map->tile(rect.BotRight());
+	const MapTile* bottomLeft = map->tile(rect.BotLeft());
 
-	if (currentTile)
+	if (!bottomRight || !bottomLeft ||
+		bottomRight->hasCollisionType(MapTile::Wall) || bottomLeft->hasCollisionType(MapTile::Wall))
 	{
-		ASSERT(Warning, currentTile->collisionType() == MapTile::Floor,
-			"Player is not on a floor tile, tile at index %d,%d has a %d tile type",
-			currentTile->index.x, currentTile->index.y, currentTile->collisionType());
-
-		const MapTile* downTile = map->offsetTile(currentTile, 0, +1);
-
-		if (downTile && downTile->hasCollisionType(MapTile::Top))
-		{
-			float yFuturePosition = point.y + mActor->physics()->maxMovementDistance(dt);
-			willCollide = yFuturePosition > downTile->rect().TopPoint();
-		}
+		mActor->physics()->restrictMovement(Physics::Down, true);
 	}
-
-	return willCollide;
 }
-
-*/

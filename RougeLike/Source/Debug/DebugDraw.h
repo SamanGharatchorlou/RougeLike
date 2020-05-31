@@ -3,7 +3,7 @@
 #if _DEBUG
 
 // Framerate
-#define FRAMERATE_CAP 60 // Use the FPS cap you want
+#define FRAMERATE_CAP 0 // Use the FPS cap you want
 #define PRINT_FRAMERATE_EVERY 0 // Print at the rate you specify in milliseconds i.e. 500 = print every 0.5 seconds
 
 // Player
@@ -14,7 +14,7 @@
 
 // Map
 #define DRAW_BINARY_MAP 0
-#define MARK_SURFACE_TYPES 1
+#define MARK_SURFACE_TYPES 0
 
 // Enemy / AI
 #define DRAW_AI_PATH 0
@@ -30,7 +30,7 @@
 
 #else
 #define FRAMERATE_CAP 0
-#define PRINT_FRAMERATE_EVERY 0
+#define PRINT_FRAMERATE_EVERY 500
 #define DRAW_ENEMY_RECT 0
 #define DRAW_PLAYER_RECTS 0
 #define DRAW_BINARY_MAP 0

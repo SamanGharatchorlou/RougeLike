@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "MapTile.h"
-
+#include "Graphics/Texture.h"
 
 // --- PathTile --- //
 void PathTile::addCollisionType(Type type)
@@ -40,3 +40,6 @@ void MapTile::removeRenderType(Type type)
 	mRenderType &= ~type;
 }
 
+
+
+void MapTile::render(RectF rect) { mTexture->render(rect); }

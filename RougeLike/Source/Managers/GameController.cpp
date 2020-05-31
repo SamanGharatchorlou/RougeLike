@@ -27,7 +27,6 @@
 #include <SDL_thread.h>
 
 
-
 // init all SDL subsystems
 GameController::GameController(const char* gameTitle) : quit(false), mGameStateMachine(new NullState)
 {
@@ -131,8 +130,6 @@ void GameController::load()
 }
 
 
-
-
 int GameController::threadFunction(void* data)
 {
 	LoadingManager* loading = LoadingManager::Get();
@@ -226,7 +223,7 @@ void GameController::run()
 		{
 			fpsSum /= fpsCounter;
 
-			DebugPrint(Log, "framerate %f | Running fps average %f\n", 1000 / fpsSum, 1000 / (totalFrameTime / totalFrames));
+			printf("framerate %f | Running fps average %f\n", 1000 / fpsSum, 1000 / (totalFrameTime / totalFrames));
 			fpsSum == 0.0;
 			fpsCounter = 0;
 			fpsTimer.restart();

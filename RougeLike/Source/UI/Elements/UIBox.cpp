@@ -3,6 +3,10 @@
 
 #include "Graphics/Texture.h"
 
+#if _DEBUG
+#include "Debug/DebugDraw.h"
+#endif
+
 
 UIBox::UIBox(Data& data) : UIElement(data), mTexture(data.texture)
 {

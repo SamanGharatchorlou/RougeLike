@@ -83,10 +83,10 @@ void Texture::render(const Rect<int> rect, SDL_RendererFlip flip) const
 
 void Texture::render(const RectF rect, SDL_RendererFlip flip) const
 {
-	SDL_Rect renderQuad = { static_cast<int>(rect.x1),
-							static_cast<int>(rect.y1),
-							static_cast<int>(rect.Width()),
-							static_cast<int>(rect.Height()) };
+	SDL_Rect renderQuad = { static_cast<int>(rect.x1 + 0.5f),
+							static_cast<int>(rect.y1 + 0.5f),
+							static_cast<int>(rect.Width() + 0.5f),
+							static_cast<int>(rect.Height() + 0.5f) };
 
 	SDL_RenderCopyEx(renderer, texture, nullptr, &renderQuad, 0.0, NULL, flip);
 }
@@ -94,10 +94,10 @@ void Texture::render(const RectF rect, SDL_RendererFlip flip) const
 
 void Texture::render(const RectF rect) const
 {
-	SDL_Rect renderQuad = { static_cast<int>(rect.x1),
-							static_cast<int>(rect.y1),
-							static_cast<int>(rect.Width()),
-							static_cast<int>(rect.Height()) };
+	SDL_Rect renderQuad = { static_cast<int>(rect.x1		+ 0.5f),
+							static_cast<int>(rect.y1		+ 0.5f),
+							static_cast<int>(rect.Width()	+ 0.5f),
+							static_cast<int>(rect.Height()	+ 0.5f) };
 
 	SDL_RenderCopyEx(renderer, texture, nullptr, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
 }
@@ -106,11 +106,10 @@ void Texture::render(const RectF rect) const
 // Renders texture with the roation specified
 void Texture::render(const RectF rect, double rotation, VectorF aboutPoint) const
 {
-	// texture being displayed on the screen
-	SDL_Rect renderQuad = { static_cast<int>(rect.x1),
-						static_cast<int>(rect.y1),
-						static_cast<int>(rect.Width()),
-						static_cast<int>(rect.Height()) };
+	SDL_Rect renderQuad = { static_cast<int>(rect.x1 + 0.5f),
+							static_cast<int>(rect.y1 + 0.5f),
+							static_cast<int>(rect.Width() + 0.5f),
+							static_cast<int>(rect.Height() + 0.5f) };
 
 	// rotate about this point
 	SDL_Point point = { (int)aboutPoint.x, (int)aboutPoint.y };
@@ -135,11 +134,10 @@ void Texture::renderSubTexture(const Rect<int> rect, const Rect<int> subRect) co
 // Renders part of the texture, e.g. a tile in a set
 void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect) const
 {
-	// texture being displayed on the screen
-	SDL_Rect renderQuad = { static_cast<int>(rect.x1),
-						static_cast<int>(rect.y1),
-						static_cast<int>(rect.Width()),
-						static_cast<int>(rect.Height()) };
+	SDL_Rect renderQuad = { static_cast<int>(rect.x1 + 0.5f),
+							static_cast<int>(rect.y1 + 0.5f),
+							static_cast<int>(rect.Width() + 0.5f),
+							static_cast<int>(rect.Height() + 0.5f) };
 
 	// the region of the texture being displayed on the screen
 	SDL_Rect subQuad = { subRect.x1, subRect.y1, subRect.Width(), subRect.Height() };
@@ -151,11 +149,10 @@ void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect) const
 // Renders part of the texture, e.g. a tile in a set with the roation specified
 void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, double rotation, VectorF aboutPoint) const
 {
-	// texture being displayed on the screen
-	SDL_Rect renderQuad = { static_cast<int>(rect.x1),
-						static_cast<int>(rect.y1),
-						static_cast<int>(rect.Width()),
-						static_cast<int>(rect.Height()) };
+	SDL_Rect renderQuad = { static_cast<int>(rect.x1 + 0.5f),
+							static_cast<int>(rect.y1 + 0.5f),
+							static_cast<int>(rect.Width() + 0.5f),
+							static_cast<int>(rect.Height() + 0.5f) };
 
 	// the region of the texture being displayed on the screen
 	SDL_Rect subQuad = { subRect.x1, subRect.y1, subRect.Width(), subRect.Height() };
@@ -170,11 +167,10 @@ void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, double
 // Renders part of the texture, e.g. a tile in a set with the flip specified
 void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, SDL_RendererFlip flip) const
 {
-	// texture being displayed on the screen
-	SDL_Rect renderQuad = { static_cast<int>(rect.x1),
-						static_cast<int>(rect.y1),
-						static_cast<int>(rect.Width()),
-						static_cast<int>(rect.Height()) };
+	SDL_Rect renderQuad = { static_cast<int>(rect.x1 + 0.5f),
+							static_cast<int>(rect.y1 + 0.5f),
+							static_cast<int>(rect.Width() + 0.5f),
+							static_cast<int>(rect.Height() + 0.5f) };
 
 	// the region of the texture being displayed on the screen
 	SDL_Rect subQuad = { subRect.x1, subRect.y1, subRect.Width(), subRect.Height() };
@@ -186,11 +182,10 @@ void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, SDL_Re
 // Renders part of the texture, e.g. a tile in a set with the flip and alpha specified
 void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, SDL_RendererFlip flip, const Uint8 tempAlpha)
 {
-	// texture being displayed on the screen
-	SDL_Rect renderQuad = { static_cast<int>(rect.x1),
-						static_cast<int>(rect.y1),
-						static_cast<int>(rect.Width()),
-						static_cast<int>(rect.Height()) };
+	SDL_Rect renderQuad = { static_cast<int>(rect.x1 + 0.5f),
+							static_cast<int>(rect.y1 + 0.5f),
+							static_cast<int>(rect.Width() + 0.5f),
+							static_cast<int>(rect.Height() + 0.5f) };
 
 	// the region of the texture being displayed on the screen
 	SDL_Rect subQuad = { subRect.x1, subRect.y1, subRect.Width(), subRect.Height() };
@@ -209,11 +204,10 @@ void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, SDL_Re
 // Renders part of the texture, e.g. a tile in a set with the roation specified
 void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, double rotation, VectorF aboutPoint, SDL_RendererFlip flip) const
 {
-	// texture being displayed on the screen
-	SDL_Rect renderQuad = { static_cast<int>(rect.x1),
-						static_cast<int>(rect.y1),
-						static_cast<int>(rect.Width()),
-						static_cast<int>(rect.Height()) };
+	SDL_Rect renderQuad = { static_cast<int>(rect.x1 + 0.5f),
+							static_cast<int>(rect.y1 + 0.5f),
+							static_cast<int>(rect.Width() + 0.5f),
+							static_cast<int>(rect.Height() + 0.5f) };
 
 	// the region of the texture being displayed on the screen
 	SDL_Rect subQuad = { subRect.x1, subRect.y1, subRect.Width(), subRect.Height() };

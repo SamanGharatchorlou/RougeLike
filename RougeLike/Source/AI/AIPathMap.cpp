@@ -10,16 +10,17 @@ void AIPathMap::clear()
 }
 
 
+// TODO: many things get use get by reference rather than by value here
 void AIPathMap::build(Map* map, int xSplit, int ySplit)
 {
 	Grid<MapTile> tileMap = map->getData();
 
 	// New larger path tile map
 	mData.clear();
-	Index index(tileMap.xCount() * xSplit, tileMap.yCount() * ySplit);
-	mData.set(index, PathTile());
+	Vector2D<int> size(tileMap.xCount() * xSplit, tileMap.yCount() * ySplit);
+	mData.set(size, PathTile());
 
-	mCostMap.set(index, 1);
+	mCostMap.set(size, 1);
 	occupiedTiles.clear();
 	toBeOccupiedTiles.clear();
 

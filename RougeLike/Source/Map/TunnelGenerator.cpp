@@ -8,82 +8,6 @@ TunnelGenerator::TunnelGenerator()
 }
 
 
-// TODO: make this more dynamic
-// i.e. change the frequency of change as the previousChangeIndex moves further away
-void TunnelGenerator::buildRandom(Grid<MapTile>& mapData)
-{
-	int pathWidth = 2;
-	int y = mapData.yCount() / 2;
-
-	// Entrace
-	mapData[y][0].setType(MapTile::Floor);
-
-	int previousChangeIndex = 0;
-
-	// build tunnel
-	for (unsigned int x = 1; x < mapData.xCount(); x++)
-	{
-		if (previousChangeIndex != x - 1)
-		{
-			bool change = false;
-			int randomNumber = rand() % 100;
-			int roughness = 10;
-
-			int maxPathY = 3;
-			int minPathY = 1;
-
-			// Change tunnel width
-			if (randomNumber > roughness)
-			{
-				pathWidth += (rand() % maxPathY) / 2;
-
-				if (pathWidth < minPathY)
-					pathWidth = minPathY;
-
-				if (pathWidth > maxPathY)
-					pathWidth = maxPathY;
-
-				previousChangeIndex = x;
-			}
-
-			randomNumber = rand() % 100;
-			int curveyness = 50;
-
-			int maxPathChange = 6;
-
-			// Change tunnel direction
-			if (randomNumber > 10)
-			{
-				int yChange = (rand() % (maxPathChange * 2)) - maxPathChange;
-				y += yChange;
-
-				if (y <= maxPathY)
-					y = maxPathY + minPathY;
-
-				if (y >= mapData.yCount() - maxPathY)
-					y = mapData.yCount() - maxPathY - 1 - minPathY;
-
-				previousChangeIndex = x;
-			}
-		}
-		
-		for (int i = -pathWidth; i <= pathWidth; i++)
-		{
-			// Skip over edges of map, make sure its wall
-			if (x == 0 || x == mapData.xCount() - 1)
-				continue;
-			else if (y + i == 0 || y + i == mapData.yCount() - 1)
-				continue;
-
-			mapData[y + i][x].setType(MapTile::Floor);
-		}
-	}
-
-	// Exit
-	mapData[mapData.yCount() / 2][mapData.xCount() - 1].setType(MapTile::Floor);
-}
-
-
 void TunnelGenerator::buildRandomA(Grid<MapTile>& map)
 {
 	int widthMax = 9;
@@ -96,20 +20,18 @@ void TunnelGenerator::buildRandomA(Grid<MapTile>& map)
 	int previousChange = 0;
 	
 	int x = 0;
-	for (; x < map.xCount() - 3; x++)
+	int mainEnd = map.xCount() - 3;
+	for (; x < mainEnd; x++)
 	{
 		// Carve out path
 		for (int yPath = y - width / 2; yPath <= y + width / 2; yPath++)
 		{
-			if (yPath < 0)
-				printf("pause");
-
 			Index index(x, yPath);
-			map[index].setType(MapTile::Floor);
+			map[index].setRenderType(MapTile::Floor);
 		}
 
 		// Increment x atleast once before changing the path
-		if (x >= previousChange + 1)
+		if (x >= previousChange + 1 && x < mainEnd - 3 )
 		{
 			bool validPath = false;
 
@@ -153,21 +75,8 @@ void TunnelGenerator::buildRandomA(Grid<MapTile>& map)
 		for (int yPath = y - width / 2; yPath <= y + width / 2; yPath++)
 		{
 			Index index(x, yPath);
-			map[index].setType(MapTile::Floor);
+			map[index].setRenderType(MapTile::Floor);
 		}
-	}
-}
-
-
-
-void TunnelGenerator::addExitPath(Grid<MapTile>& mapData, int startingX)
-{
-	int yPosition = mapData.yCount() / 2;
-
-	// build tunnel
-	for (unsigned int x = startingX; x < mapData[0].size(); x++)
-	{
-		mapData[yPosition][x].setType(MapTile::Floor);
 	}
 }
 
@@ -179,6 +88,6 @@ void TunnelGenerator::buildSimpleLine(Grid<MapTile>& mapData)
 	// build tunnel
 	for (unsigned int x = 0; x < mapData[0].size(); x++)
 	{
-		mapData[yPosition][x].setType(MapTile::Floor);
+		mapData[yPosition][x].setRenderType(MapTile::Floor);
 	}
 }

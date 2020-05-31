@@ -10,26 +10,28 @@ public:
 		Floor,
 		Wall,
 
+		// Sides
 		Left = Wall << 1,
 		Right = Wall << 2,
 
+		// Top / Bottom
 		Bottom_Lower = Wall << 3,
 		Bottom_Upper = Wall << 4,
 
 		Top_Lower = Wall << 5,
 		Top_Upper = Wall << 6,
 
+		// Top/Bottom ends
+		Bottom = Wall << 7,
+		Top = Wall << 8,
+
 		// Corners
-		Top_Right = Wall << 7,
-		Top_Left = Wall << 8,
-		Bottom_Right = Wall << 9,
-		Bottom_Left = Wall << 10,
+		Top_Right = Wall << 9,
+		Top_Left = Wall << 10,
+		Bottom_Right = Wall << 11,
+		Bottom_Left = Wall << 12,
 
-		// MOVE ME
-		Bottom = Wall << 11,
-		Top = Wall << 12,
-
-		// Points
+		// Point corners
 		Point_Bottom_Right = Wall << 13,
 		Point_Bottom_Left = Wall << 14,
 		Point_Top_Right = Wall << 15,
@@ -68,30 +70,23 @@ public:
 	void addCollisionType(Type type);
 	void removeCollisionType(Type type);
 
+
 protected:
 	Type mCollisionType;
 };
 
 
+class Texture;
 
-// Add rendering and edge info
+// Add rendering info and texture
 class MapTile : public PathTile
 {
 public:
-	struct EdgeInfo
-	{
-		Type data[3][3] = { { Wall,Wall,Wall }, { Wall,Wall,Wall }, { Wall,Wall,Wall } };
-		bool hasEdge = false;
-		bool draw = true;
-	};
+	MapTile() : mRenderType(Wall), mTexture(nullptr) { }
+	MapTile(Type type) : mRenderType(type), PathTile(type), mTexture(nullptr) { }
+	MapTile(RectF rect) : PathTile(rect), mRenderType(Wall), mTexture(nullptr) { }
 
-
-public:
-	MapTile() : mRenderType(Wall) { }
-	MapTile(Type type) : mRenderType(type), PathTile(type) { }
-	MapTile(RectF rect) : PathTile(rect), mRenderType(Wall) { }
-
-	void setType(Type type) { mRenderType = type; mCollisionType = type; }
+	void setTexture(Texture* texture) { mTexture = texture; }
 
 	// Render type
 	const Type renderType() const { return mRenderType; }
@@ -102,9 +97,7 @@ public:
 	void addRenderType(Type type);
 	void removeRenderType(Type type);
 
-
-	const EdgeInfo* info() const { return &mInfo; }
-	void setInfo(EdgeInfo info) { mInfo = info; }
+	void render(RectF rect);
 
 #if _DEBUG
 	Vector2D<int> index;
@@ -112,8 +105,7 @@ public:
 
 private:
 	Type mRenderType;
-
-	EdgeInfo mInfo;
+	Texture* mTexture;
 };
 
 

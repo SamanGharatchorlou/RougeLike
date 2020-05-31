@@ -10,20 +10,14 @@ class Texture;
 class Map : public MapBase<MapTile>
 {
 public:
-	void init(Vector2D<int> size);
-	void populateData(VectorF offset = VectorF());
+	Map(Vector2D<int> ampIndexSize, VectorF tileSize);
 
+	void populateData(TextureManager* tm, VectorF offset);
+	void clearData();
 
-	// TEMP
-	void populateTileRenderInfo();
-	void render(const TextureManager* tm);
-#if MARK_SURFACE_TYPES
-	void renderSurfaceTypes();
-#endif
-
-
+	// Getters
 	Vector2D<float> size() const { return VectorF(xCount(), yCount()) * tileSize(); };
-	const VectorF tileSize() const { return tile(Index(0, 0))->rect().Size(); }
+	const VectorF tileSize() const { return mTileSize; }
 
 	const RectF getFirstRect() const;
 	const RectF getLastRect() const;
@@ -35,9 +29,7 @@ public:
 	const Vector2D<int> index(RectF rect) const;
 	const Vector2D<int> index(const MapTile* tile) const;
 
-	void renderBottomLayer(const TextureManager* tm, float yPoint);
-	void renderTopLayer(const TextureManager* tm, float yPoint);
-
+	// Query tiles
 	bool wallRenderTile(Index index) const { return mData.get(index).renderType() >= MapTile::Wall; }
 	bool floorRenderTile(Index index) const { return mData.get(index).renderType() == MapTile::Floor; }
 
@@ -48,19 +40,30 @@ public:
 	bool isValidTile(RectF rect) const;
 	bool isValidPosition(VectorF position) const;
 
+	// Rendering
+	void renderFloor();
+	void renderTop();
+	void renderBottom();
 
 private:
 	void populateTileRects(VectorF offset);
-	void populateCollisionRenderInfo();
 
-	void populateCollisionRenderInfoA();
+	// Collision Info
+	void populateTileCollisionInfo();
 
-
-	// Populate render tile info
+	// Render info
+	void populateTileRenderInfo(TextureManager* tm);
 	void topBottom();
 	void leftRight();
 	void corners();
 	void pointCorners();
+	void cleanLabels();
+	void setTextures(TextureManager* tm);
 
-	void renderColumn(const RectF& rect, Texture* column);
+#if _DEBUG
+	void renderSurfaceTypes();
+#endif
+
+private:
+	VectorF mTileSize;
 };

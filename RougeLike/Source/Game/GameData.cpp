@@ -37,7 +37,7 @@ void GameData::load()
 	inputManager->setCursorSize(VectorF(25.0f, 25.0f));
 
 	// Map Level
-	environment = new Environment;
+	environment = new Environment(textureManager);
 
 	// Audio
 	audioManager = new AudioManager;

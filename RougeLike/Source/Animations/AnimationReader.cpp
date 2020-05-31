@@ -74,14 +74,14 @@ Vector2D<int> AnimationReader::readTileCount() const
 {
 	xmlNode rootNode = parser.rootNode();
 	xmlNode tileSetInfoNode = rootNode->first_node("TilesetInfo");
-	xmlNode tileSizeNode = tileSetInfoNode->first_node("TileCount");
+	xmlNode tileCountNode = tileSetInfoNode->first_node("TileCount");
 
-	Attributes attributes = parser.attributes(tileSizeNode);
+	Attributes attributes = parser.attributes(tileCountNode);
 
-	int tileCountX = attributes.getInt("x");
-	int tileCountY = attributes.getInt("y");
+	int x = attributes.getInt("x");
+	int y = attributes.getInt("y");
 
-	return Vector2D<int>(tileCountX, tileCountY);
+	return Vector2D<int>(x, y);
 }
 
 
@@ -93,10 +93,10 @@ Vector2D<int> AnimationReader::readTileSize() const
 
 	Attributes attributes = parser.attributes(tileSizeNode);
 
-	int tileCountX = attributes.getInt("x");
-	int tileCountY = attributes.getInt("y");
+	int x = attributes.getInt("x");
+	int y = attributes.getInt("y");
 
-	return Vector2D<int>(tileCountX, tileCountY);
+	return Vector2D<int>(x, y);
 }
 
 

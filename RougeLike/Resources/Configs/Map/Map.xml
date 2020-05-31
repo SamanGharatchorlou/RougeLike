@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Map>
+	<TilesetInfo>
+		<TileSize x = "256" y ="256"></TileSize>
+		<TileCount x = "30" y = "15"></TileCount>
+	</TilesetInfo>
+	<Scale>0.5</Scale>
+</Map>

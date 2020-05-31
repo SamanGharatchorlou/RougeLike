@@ -8,14 +8,15 @@ class Grid
 {
 public:
 	Grid() { }
-	Grid(unsigned int y, unsigned int x, T value = 0);
+	Grid(unsigned int y, unsigned int x, T value);
+	Grid(Vector2D<int> size, T value);
 
 	// TODO: cannot make const?
 	std::vector<T>& operator [] (int y);
 	T& operator [] (Vector2D<int> index);
 
 	void clear();
-	void set(Index index, T value);
+	void set(Vector2D<int> size, T value);
 	void setAllValues(T value);
 
 	const std::vector<std::vector<T>>& get() const { return data; }
@@ -57,6 +58,17 @@ Grid<T>::Grid(unsigned int y, unsigned int x, T value)
 	std::vector<T> row(x, value);
 	data = std::vector<std::vector<T>>(y, row);
 }
+
+template<class T>
+Grid<T>::Grid(Vector2D<int> size, T value)
+{
+	ASSERT(Error, size.y > 0 && size.x > 0,
+		"Grid must have at least 1 column and 1 row, set with %d columns, %d rows\n", size.y, size.x);
+
+	std::vector<T> row(size.x, value);
+	data = std::vector<std::vector<T>>(size.y, row);
+}
+
 
 
 template<class T>

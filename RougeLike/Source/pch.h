@@ -48,9 +48,6 @@ namespace fs = std::experimental::filesystem;
 #include "Utilities/Grid.h"
 #include "Utilities/Timer.h"
 
-// Debug
-#include "Debug/DebugDraw.h"
-
 // File accessors
 #include "System/Files/XMLParser.h"
 #include "System/Files/FileManager.h"
