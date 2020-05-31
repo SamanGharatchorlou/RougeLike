@@ -139,7 +139,6 @@ void TunnelGenerator::buildRandomA(Grid<MapTile>& map)
 
 
 	// Exit
-
 	int widthA = (map.yCount() / 2) - (y - width / 2);
 	int widthB = (map.yCount() / 2) - (y + width / 2);
 	width = clamp(std::max(widthA, widthB), 2, map.yCount() - 3);

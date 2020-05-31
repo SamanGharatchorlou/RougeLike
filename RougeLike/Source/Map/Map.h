@@ -53,10 +53,14 @@ private:
 	void populateTileRects(VectorF offset);
 	void populateCollisionRenderInfo();
 
+	void populateCollisionRenderInfoA();
+
+
 	// Populate render tile info
 	void topBottom();
 	void leftRight();
 	void corners();
+	void pointCorners();
 
 	void renderColumn(const RectF& rect, Texture* column);
 };

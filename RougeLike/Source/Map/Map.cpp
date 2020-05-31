@@ -75,50 +75,50 @@ void Map::render(const TextureManager* tm)
 				if (tile.isRenderType(MapTile::Wall))
 					wall->render(tileRect);
 
-				if (tile.hasRenderType(MapTile::Top_Right))
+				else if (tile.hasRenderType(MapTile::Top_Right))
 					wall_TopRight->render(tileRect);
 
-				if (tile.hasRenderType(MapTile::Top_Left))
+				else if (tile.hasRenderType(MapTile::Top_Left))
 					wall_TopLeft->render(tileRect);
 
-				if (tile.hasRenderType(MapTile::Bottom_Right))
+				else if (tile.hasRenderType(MapTile::Bottom_Right))
 					wall_BotRight->render(tileRect);
 
-				if (tile.hasRenderType(MapTile::Bottom_Left))
+				else if (tile.hasRenderType(MapTile::Bottom_Left))
 					wall_BotLeft->render(tileRect);
 
-				if (tile.hasRenderType(MapTile::Bottom_Lower))
+				else if (tile.hasRenderType(MapTile::Bottom_Lower))
 					wall_BL->render(tileRect);
 
-				if (tile.hasRenderType(MapTile::Bottom_Upper))
+				else if (tile.hasRenderType(MapTile::Bottom_Upper))
 					wall_BU->render(tileRect);
 
 				// if it has left/right render that tile instead
-				if (tile.isRenderType(MapTile::Wall | MapTile::Top_Lower))
+				else if (tile.isRenderType(MapTile::Wall | MapTile::Top_Lower))
 					wall_TL->render(tileRect);
 
-				if (tile.hasRenderType(MapTile::Top_Upper))
+				else if (tile.hasRenderType(MapTile::Top_Upper))
 					wall_TU->render(tileRect);
 
-				if (tile.hasRenderType(MapTile::Right))
+				else if (tile.hasRenderType(MapTile::Right))
 					wall_Right->render(tileRect);
 
-				if (tile.hasRenderType(MapTile::Left))
+				else if (tile.hasRenderType(MapTile::Left))
 					wall_Left->render(tileRect);
 
-				if (tile.hasRenderType(MapTile::Bottom))
+				else if (tile.hasRenderType(MapTile::Bottom))
 					wall_bottom->render(tileRect);
 
-				if (tile.hasRenderType(MapTile::Point_Bottom_Left))
+				else if (tile.hasRenderType(MapTile::Point_Bottom_Left))
 					point_bottom_left->render(tileRect);
 
-				if (tile.hasRenderType(MapTile::Point_Bottom_Right))
+				else if (tile.hasRenderType(MapTile::Point_Bottom_Right))
 					point_bottom_right->render(tileRect);
 
-				if (tile.hasRenderType(MapTile::Point_Top_Right))
+				else if (tile.hasRenderType(MapTile::Point_Top_Right))
 					point_top_right->render(tileRect);
 
-				if (tile.hasRenderType(MapTile::Point_Top_Left))
+				else if (tile.hasRenderType(MapTile::Point_Top_Left))
 					point_top_left->render(tileRect);
 			}
 		}
@@ -432,6 +432,194 @@ void Map::populateTileRects(VectorF offset)
 	}
 }
 
+
+void Map::populateTileRenderInfo()
+{
+	// Label all bottom and top side walls
+	topBottom();
+
+	// Add right and left labels
+	leftRight();
+
+	// Add corners & Top and bottom segments
+	corners();
+
+	// Add corner points
+	pointCorners();
+}
+
+
+void Map::populateCollisionRenderInfo()
+{
+//	for (unsigned int x = 0; x < xCount(); x++)
+//	{
+//		bool floorAboveReached = false;
+//
+//		for (unsigned int y = 0; y < yCount(); y++)
+//		{
+//			// query surronding tiles
+//			Index index(x, y);
+//			const MapTile::EdgeInfo& info = getEdgeInfo(index);
+//			MapTile& tile = mData[index];
+//
+//			if (info.hasEdge)
+//			{
+//				// floor left
+//				if (info.data[1][0] == MapTile::Floor)
+//				{
+//					tile.addRenderType(MapTile::Left);
+//					tile.addCollisionType(MapTile::Left);
+//				}
+//
+//				// floor right
+//				if (info.data[1][2] == MapTile::Floor)
+//				{
+//					tile.addRenderType(MapTile::Right);
+//					tile.addCollisionType(MapTile::Right);
+//				}
+//
+//
+//				// Only left and right needs to be considered once true
+//				if (floorAboveReached)
+//				{
+//					tile.removeCollisionType(MapTile::Floor);
+//					tile.addCollisionType(MapTile::Wall);
+//					continue;
+//				}
+//
+//				// floor above
+//				if (info.data[0][1] == MapTile::Floor)
+//				{
+//					// Editing the tile below messes with the looping
+//					// only edit the sides after this has been hit
+//					floorAboveReached = true;
+//
+//					tile.addRenderType(MapTile::Top);
+//
+//					Index rightIndex(x, y + 1);
+//					if (inBounds(rightIndex) && wallRenderTile(rightIndex))
+//					{
+//						MapTile::Type tileType = tile.collisionType();
+//
+//						mData[rightIndex].setCollisionType(tileType ^ MapTile::Top);
+//
+//						int a = 0;
+//					}
+//
+//					tile.setCollisionType(MapTile::Floor);
+//				}
+//
+//				// floor below
+//				if (info.data[2][1] == MapTile::Floor)
+//				{
+//					tile.addRenderType(MapTile::Bot);
+//					tile.addCollisionType(MapTile::Bot);
+//
+//					tile.removeRenderType(MapTile::Left ^ MapTile::Right);
+//
+//					// Add isometic wall edges if the left/right tile is a wall but is not a MapTile::Bot
+//					Index leftIndex(x - 1, y);
+//					if (inBounds(leftIndex) && wallRenderTile(leftIndex) && !(mData[leftIndex].hasRenderType(MapTile::Bot)))
+//					{
+//						mData[leftIndex].addRenderType(MapTile::Right);
+//					}
+//
+//					Index rightIndex(x + 1, y);
+//					if (inBounds(rightIndex) && wallRenderTile(rightIndex) && !(mData[rightIndex].hasRenderType(MapTile::Bot)))
+//					{
+//						mData[rightIndex].addRenderType(MapTile::Left);
+//					}
+//				}
+//			}
+//		}
+//	}
+//
+//#if DRAW_BINARY_MAP
+//	printBinaryMap();
+//#endif
+}
+
+void Map::populateCollisionRenderInfoA()
+{
+	for (unsigned int x = 0; x < xCount(); x++)
+	{
+		bool floorAboveReached = false;
+
+		for (unsigned int y = 0; y < yCount(); y++)
+		{
+			//Index 
+			//if()
+		}
+	}
+}
+
+
+// --- Getters --- //
+const Index Map::index(VectorF position) const
+{
+	VectorF mapTopLeft = mData.get(Index(0, 0)).rect().TopLeft();
+	VectorF shiftedPosition = position - mapTopLeft;
+	return isValidPosition(position) ? Index(shiftedPosition / tileSize()) : Index(-1, -1);
+}
+
+
+const Index Map::index(const MapTile* tile) const
+{
+	VectorF position(tile->rect().TopLeft());
+	return index(position);
+}
+
+
+const Index Map::index(RectF rect) const
+{               
+	VectorF position(rect.TopLeft());
+	return index(position);
+}
+
+
+const MapTile* Map::tile(VectorF position) const 
+{
+	Index tileIndex = index(position);
+	return isValidIndex(tileIndex) ? &mData.get(tileIndex) : nullptr;
+}
+
+
+const RectF Map::getFirstRect() const
+{
+	return mData.get(Index(0, 0)).rect();
+}
+
+const RectF Map::getLastRect() const
+{
+	return  mData.get(Index(xCount() - 1, 0)).rect();
+}
+
+
+
+// -- Validity functions -- //
+bool Map::isValidTile(RectF rect) const
+{
+	VectorF start = mData.get(Index(0, 0)).rect().TopLeft();
+	VectorF end = mData.get(Index(xCount(), yCount()) - 1).rect().BotRight();
+
+	return (rect.x1 >= start.x && rect.y1 >= start.y) &&
+			(rect.x2 < end.x && rect.y2 < end.y) &&
+			 rect.Size() == tileSize();
+}
+
+
+bool Map::isValidPosition(VectorF position) const
+{
+	VectorF start = mData.get(Index(0, 0)).rect().TopLeft();
+	VectorF end = mData.get(Index(xCount(), yCount()) - 1).rect().BotRight();
+
+	return (position.x >= start.x && position.x < end.x) &&
+			(position.y >= start.y && position.y < end.y);
+}
+
+
+/// --- Population Functions --- ///
+
 void Map::topBottom()
 {
 	for (int y = 0; y < mData.yCount(); y++)
@@ -579,18 +767,8 @@ void Map::corners()
 		}
 	}
 }
-
-void Map::populateTileRenderInfo()
+void Map::pointCorners()
 {
-	// Label all bottom and top side walls
-	topBottom();
-
-	// Add right and left labels
-	leftRight();
-
-	// Add corners & Top and bottom segments
-	corners();
-
 	// points
 	for (int y = 0; y < mData.yCount(); y++)
 	{
@@ -607,7 +785,7 @@ void Map::populateTileRenderInfo()
 			// Map top half
 			if (mData[index].isRenderType(MapTile::Wall) && isValidIndex(down))
 			{
-				if  (isValidIndex(left) &&
+				if (isValidIndex(left) &&
 					(mData[left].hasRenderType(MapTile::Bottom | MapTile::Bottom_Left)) &&
 					(mData[down].hasRenderType(MapTile::Left | MapTile::Bottom_Left)))
 				{
@@ -621,9 +799,9 @@ void Map::populateTileRenderInfo()
 					mData[index].addRenderType(MapTile::Point_Bottom_Right);
 				}
 			}
-			 
+
 			// Map bot half
-			if (mData[index].hasRenderType(MapTile::Top_Upper))
+			if (mData[index].hasRenderType(MapTile::Top_Upper | MapTile::Top_Left))
 			{
 				if (isValidIndex(left))
 				{
@@ -643,160 +821,5 @@ void Map::populateTileRenderInfo()
 			}
 		}
 	}
-}
-
-
-void Map::populateCollisionRenderInfo()
-{
-//	for (unsigned int x = 0; x < xCount(); x++)
-//	{
-//		bool floorAboveReached = false;
-//
-//		for (unsigned int y = 0; y < yCount(); y++)
-//		{
-//			// query surronding tiles
-//			Index index(x, y);
-//			const MapTile::EdgeInfo& info = getEdgeInfo(index);
-//			MapTile& tile = mData[index];
-//
-//			if (info.hasEdge)
-//			{
-//				// floor left
-//				if (info.data[1][0] == MapTile::Floor)
-//				{
-//					tile.addRenderType(MapTile::Left);
-//					tile.addCollisionType(MapTile::Left);
-//				}
-//
-//				// floor right
-//				if (info.data[1][2] == MapTile::Floor)
-//				{
-//					tile.addRenderType(MapTile::Right);
-//					tile.addCollisionType(MapTile::Right);
-//				}
-//
-//
-//				// Only left and right needs to be considered once true
-//				if (floorAboveReached)
-//				{
-//					tile.removeCollisionType(MapTile::Floor);
-//					tile.addCollisionType(MapTile::Wall);
-//					continue;
-//				}
-//
-//				// floor above
-//				if (info.data[0][1] == MapTile::Floor)
-//				{
-//					// Editing the tile below messes with the looping
-//					// only edit the sides after this has been hit
-//					floorAboveReached = true;
-//
-//					tile.addRenderType(MapTile::Top);
-//
-//					Index rightIndex(x, y + 1);
-//					if (inBounds(rightIndex) && wallRenderTile(rightIndex))
-//					{
-//						MapTile::Type tileType = tile.collisionType();
-//
-//						mData[rightIndex].setCollisionType(tileType ^ MapTile::Top);
-//
-//						int a = 0;
-//					}
-//
-//					tile.setCollisionType(MapTile::Floor);
-//				}
-//
-//				// floor below
-//				if (info.data[2][1] == MapTile::Floor)
-//				{
-//					tile.addRenderType(MapTile::Bot);
-//					tile.addCollisionType(MapTile::Bot);
-//
-//					tile.removeRenderType(MapTile::Left ^ MapTile::Right);
-//
-//					// Add isometic wall edges if the left/right tile is a wall but is not a MapTile::Bot
-//					Index leftIndex(x - 1, y);
-//					if (inBounds(leftIndex) && wallRenderTile(leftIndex) && !(mData[leftIndex].hasRenderType(MapTile::Bot)))
-//					{
-//						mData[leftIndex].addRenderType(MapTile::Right);
-//					}
-//
-//					Index rightIndex(x + 1, y);
-//					if (inBounds(rightIndex) && wallRenderTile(rightIndex) && !(mData[rightIndex].hasRenderType(MapTile::Bot)))
-//					{
-//						mData[rightIndex].addRenderType(MapTile::Left);
-//					}
-//				}
-//			}
-//		}
-//	}
-//
-//#if DRAW_BINARY_MAP
-//	printBinaryMap();
-//#endif
-}
-
-
-// --- Getters --- //
-const Index Map::index(VectorF position) const
-{
-	VectorF mapTopLeft = mData.get(Index(0, 0)).rect().TopLeft();
-	VectorF shiftedPosition = position - mapTopLeft;
-	return isValidPosition(position) ? Index(shiftedPosition / tileSize()) : Index(-1, -1);
-}
-
-
-const Index Map::index(const MapTile* tile) const
-{
-	VectorF position(tile->rect().TopLeft());
-	return index(position);
-}
-
-
-const Index Map::index(RectF rect) const
-{               
-	VectorF position(rect.TopLeft());
-	return index(position);
-}
-
-
-const MapTile* Map::tile(VectorF position) const 
-{
-	Index tileIndex = index(position);
-	return isValidIndex(tileIndex) ? &mData.get(tileIndex) : nullptr;
-}
-
-
-const RectF Map::getFirstRect() const
-{
-	return mData.get(Index(0, 0)).rect();
-}
-
-const RectF Map::getLastRect() const
-{
-	return  mData.get(Index(xCount() - 1, 0)).rect();
-}
-
-
-
-// -- Validity functions -- //
-bool Map::isValidTile(RectF rect) const
-{
-	VectorF start = mData.get(Index(0, 0)).rect().TopLeft();
-	VectorF end = mData.get(Index(xCount(), yCount()) - 1).rect().BotRight();
-
-	return (rect.x1 >= start.x && rect.y1 >= start.y) &&
-			(rect.x2 < end.x && rect.y2 < end.y) &&
-			 rect.Size() == tileSize();
-}
-
-
-bool Map::isValidPosition(VectorF position) const
-{
-	VectorF start = mData.get(Index(0, 0)).rect().TopLeft();
-	VectorF end = mData.get(Index(xCount(), yCount()) - 1).rect().BotRight();
-
-	return (position.x >= start.x && position.x < end.x) &&
-			(position.y >= start.y && position.y < end.y);
 }
 
