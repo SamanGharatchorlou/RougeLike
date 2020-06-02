@@ -15,8 +15,10 @@ public:
 	void init();
 	void restart();
 
+
 	void nextLevel();
-	bool generateNextLevel(VectorF position) const;
+
+	bool canClosePreviousLevel(VectorF playerPosition) const;
 
 	void renderBottomLayer();
 	void renderTopLayer();
@@ -24,16 +26,15 @@ public:
 	Map* map(VectorF position) const;
 	Map* primaryMap() const { return mPrimaryMap; }
 
-
-
 	VectorF size() const;
 	int mapLevel() const { return mMapLevel; }
 
-	RectF boundaries() const;
+	void setCameraBoundaries();
 	VectorF toWorldCoords(VectorF cameraCoords);
 
+
 private:
-	void createMaps();
+	void createNewMaps();
 	void readConfigData(Vector2D<int>& mapIndexSize, VectorF& tileSize, float& scale);
 
 	void buildLevel(float offset);

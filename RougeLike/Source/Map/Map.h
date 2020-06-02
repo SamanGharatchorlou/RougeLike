@@ -15,6 +15,8 @@ public:
 	void populateData(TextureManager* tm, VectorF offset);
 	void clearData();
 
+	void close(TextureManager* tm);
+
 	// Getters
 	Vector2D<float> size() const { return VectorF(xCount(), yCount()) * tileSize(); };
 	const VectorF tileSize() const { return mTileSize; }
@@ -41,24 +43,14 @@ public:
 	bool isValidPosition(VectorF position) const;
 
 	// Rendering
-	void renderFloor();
-	void renderTop();
-	void renderBottom();
+	void renderLowerLayer();
+	void renderUpperLayer();
 
 private:
+	void renderFloor();
+
 	void populateTileRects(VectorF offset);
 
-	// Collision Info
-	void populateTileCollisionInfo();
-
-	// Render info
-	void populateTileRenderInfo(TextureManager* tm);
-	void topBottom();
-	void leftRight();
-	void corners();
-	void pointCorners();
-	void cleanLabels();
-	void setTextures(TextureManager* tm);
 
 #if _DEBUG
 	void renderSurfaceTypes();

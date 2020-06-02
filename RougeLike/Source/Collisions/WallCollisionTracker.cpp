@@ -18,6 +18,7 @@ void WallCollisionTracker::resolveWallCollisions(const Map* map, float dt)
 }
 
 
+// Allow <-> movement if tiles == nullptr
 void WallCollisionTracker::testLeftCollisions(const Map* map, float dt)
 {
 	float movement = mActor->physics()->maxMovementDistance(dt);
@@ -26,28 +27,15 @@ void WallCollisionTracker::testLeftCollisions(const Map* map, float dt)
 	const MapTile* topLeft = map->tile(rect.TopLeft());
 	const MapTile* bottomLeft = map->tile(rect.BotLeft());
 
-	if (!topLeft || !bottomLeft ||
-		topLeft->hasCollisionType(MapTile::Wall) || bottomLeft->hasCollisionType(MapTile::Wall))
+	if ((topLeft && bottomLeft) &&
+		(topLeft->hasCollisionType(MapTile::Wall) || bottomLeft->hasCollisionType(MapTile::Wall)))
 	{
 		mActor->physics()->restrictMovement(Physics::Left, true);
 	}
 }
 
-void WallCollisionTracker::testTopCollisions(const Map* map, float dt)
-{
-	float movement = mActor->physics()->maxMovementDistance(dt);
-	RectF rect = mActor->rect().Translate(VectorF(0.0f, -movement));
 
-	const MapTile* topLeft = map->tile(rect.TopLeft());
-	const MapTile* topRight = map->tile(rect.TopRight());
-
-	if (!topLeft || !topRight ||
-		topLeft->hasCollisionType(MapTile::Wall) || topRight->hasCollisionType(MapTile::Wall))
-	{
-		mActor->physics()->restrictMovement(Physics::Up, true);
-	}
-}
-
+// Allow <-> movement if tiles == nullptr
 void WallCollisionTracker::testRightCollisions(const Map* map, float dt)
 {
 	float movement = mActor->physics()->maxMovementDistance(dt);
@@ -56,13 +44,15 @@ void WallCollisionTracker::testRightCollisions(const Map* map, float dt)
 	const MapTile* topRight = map->tile(rect.TopRight());
 	const MapTile* bottomRight = map->tile(rect.BotRight());
 
-	if (!topRight || !bottomRight ||
-		topRight->hasCollisionType(MapTile::Wall) || bottomRight->hasCollisionType(MapTile::Wall))
+	if ((topRight && bottomRight) &&
+		(topRight->hasCollisionType(MapTile::Wall) || bottomRight->hasCollisionType(MapTile::Wall)))
 	{
 		mActor->physics()->restrictMovement(Physics::Right, true);
 	}
 }
 
+
+// Prevent <-> movement if tiles == nullptr
 void WallCollisionTracker::testBottomCollisions(const Map* map, float dt)
 {
 	float movement = mActor->physics()->maxMovementDistance(dt);
@@ -75,5 +65,22 @@ void WallCollisionTracker::testBottomCollisions(const Map* map, float dt)
 		bottomRight->hasCollisionType(MapTile::Wall) || bottomLeft->hasCollisionType(MapTile::Wall))
 	{
 		mActor->physics()->restrictMovement(Physics::Down, true);
+	}
+}
+
+
+// Prevent <-> movement if tiles == nullptr
+void WallCollisionTracker::testTopCollisions(const Map* map, float dt)
+{
+	float movement = mActor->physics()->maxMovementDistance(dt);
+	RectF rect = mActor->rect().Translate(VectorF(0.0f, -movement));
+
+	const MapTile* topLeft = map->tile(rect.TopLeft());
+	const MapTile* topRight = map->tile(rect.TopRight());
+
+	if (!topLeft || !topRight ||
+		topLeft->hasCollisionType(MapTile::Wall) || topRight->hasCollisionType(MapTile::Wall))
+	{
+		mActor->physics()->restrictMovement(Physics::Up, true);
 	}
 }

@@ -101,19 +101,11 @@ void GameState::slowUpdate(float dt)
 
 	Camera::Get()->slowUpdate(dt);
 
-	//// End current level, close old level exit, open new level entrance
-	//if (mGameData->environment->generateNextLevel(mGameData->actors->player()->rect().TopLeft()))
-	//{
-	//	nextLevel();
-	//}
-
-	//// Close off new level entrance, open exit
-	//if (mGameData->environment->closeEntrance(mGameData->actors->player()->rect().TopLeft()))
-	//{
-	//	mGameData->environment->closeLevelEntrace();
-	//	Camera::Get()->setMapBoundaries(mGameData->environment->boundaries());
-	//	// primary + exit
-	//}
+	// End current level, close old level exit, open new level entrance
+	if (mGameData->environment->canClosePreviousLevel(mGameData->actors->player()->position()))
+	{
+		nextLevel();
+	}
 
 	// End of slow frame
 	mGameData->collisionManager->resetColliders();
@@ -165,8 +157,6 @@ void GameState::initCamera()
 {
 	VectorF cameraPosition = VectorF(0.0f, mGameData->environment->size().y / 2.0f);
 	Camera::Get()->setPosition(cameraPosition);
-	Camera::Get()->setMapBoundaries(mGameData->environment->boundaries());
-	// entrace + primary
 }
 
 void GameState::initMap()
@@ -186,12 +176,10 @@ void GameState::initRendering()
 void GameState::nextLevel()
 {
 	mGameData->environment->nextLevel();
-	Camera::Get()->setMapBoundaries(mGameData->environment->boundaries());
-	// entrace + primary
 
 	// end level
-	mGameData->actors->enemies()->clearAllEnemies();
-	mGameData->actors->enemies()->spawnLevel();
+	//mGameData->actors->enemies()->clearAllEnemies();
+	//mGameData->actors->enemies()->spawnLevel();
 
-	mCollectables.spawnRandomItem(Collectables::MeleeWeapon);
+	//mCollectables.spawnRandomItem(Collectables::MeleeWeapon);
 }

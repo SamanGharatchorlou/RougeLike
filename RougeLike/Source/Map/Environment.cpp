@@ -10,7 +10,7 @@ Environment::Environment(TextureManager* textureManager) : mTextureManager(textu
 {
 	ASSERT(Error, mTextureManager != nullptr, "You need to new the texture manager before this class\n");
 
-	createMaps();
+	createNewMaps();
 };
 
 
@@ -21,10 +21,121 @@ void Environment::restart()
 	delete mPrimaryMap;
 	delete mExit;
 
-	createMaps();
+	createNewMaps();
 }
 
 
+void Environment::init()
+{
+	float offset = 0.0f;
+
+	// create first entrace and level
+	buildPassage(mEntrace, offset);
+
+	// Build level
+	offset = mEntrace->getLastRect().RightPoint();
+	buildLevel(offset);
+
+	// Build exit
+	offset = mPrimaryMap->getLastRect().RightPoint();
+	buildPassage(mExit, offset);
+
+	setCameraBoundaries();
+
+	IncrementLevelEvent event;
+	notify(event);
+}
+
+
+void Environment::nextLevel()
+{
+	float offset = 0.0f;
+
+	// Set the new entrace as the old exit
+	Map* oldEntrace = mEntrace;
+	mEntrace = mExit;
+	mEntrace->close(mTextureManager);
+
+	mExit = oldEntrace;
+	mExit->clearData();
+
+	// Build new level
+	offset = mEntrace->getLastRect().RightPoint();
+	buildLevel(offset);
+
+	// Build exit
+	offset = mPrimaryMap->getLastRect().RightPoint();
+	buildPassage(mExit, offset);
+
+	setCameraBoundaries();
+
+	mMapLevel++;
+	IncrementLevelEvent event;
+	notify(event);
+}
+
+
+
+void Environment::renderBottomLayer()
+{
+	mEntrace->renderLowerLayer();
+	mPrimaryMap->renderLowerLayer();
+	mExit->renderLowerLayer();
+}
+
+
+void Environment::renderTopLayer()
+{
+	mEntrace->renderUpperLayer();
+	mPrimaryMap->renderUpperLayer();
+	mExit->renderUpperLayer();
+}
+
+
+VectorF Environment::size() const
+{
+	return mPrimaryMap->size();
+}
+
+
+Map* Environment::map(VectorF position) const
+{
+	if (position.x < mPrimaryMap->getFirstRect().LeftPoint())
+		return mEntrace;
+	else if (position.x < mPrimaryMap->getLastRect().RightPoint())
+		return mPrimaryMap;
+	else
+		return mExit;
+}
+
+
+
+
+void Environment::setCameraBoundaries()
+{
+	float xLeft = mEntrace->getFirstRect().LeftPoint();
+	float xRight = mExit->getLastRect().RightPoint();
+	RectF boundaries(xLeft, 0.0f, xRight, mPrimaryMap->size().y);
+
+	Camera::Get()->setMapBoundaries(boundaries);
+}
+
+
+bool Environment::canClosePreviousLevel(VectorF playerPosition) const
+{
+	float buffer = 100.0f;
+	float x = mPrimaryMap->getLastRect().RightPoint() + buffer;
+	float y = playerPosition.y;
+
+	if (playerPosition.x > x)
+		return !Camera::Get()->inView(VectorF(x, y));
+	else
+		return false;
+}
+
+
+
+// --- Private Functions --- //
 void Environment::readConfigData(Vector2D<int>& mapIndexSize, VectorF& tileSize, float& scale)
 {
 	XMLParser parser;
@@ -57,115 +168,6 @@ void Environment::readConfigData(Vector2D<int>& mapIndexSize, VectorF& tileSize,
 }
 
 
-void Environment::init()
-{
-	float offset = 0.0f;
-
-	// create first entrace and level
-	buildPassage(mEntrace, offset);
-
-	offset = mEntrace->getLastRect().RightPoint();
-	buildLevel(offset);
-
-	offset = mPrimaryMap->getLastRect().RightPoint();
-	buildPassage(mExit, offset);
-
-	IncrementLevelEvent event;
-	notify(event);
-}
-
-
-void Environment::nextLevel()
-{
-	float offset = 0.0f;
-
-	// Set the new entrace as the old exit
-	Map* oldEntrace = mEntrace;
-	mEntrace = mExit;
-	mExit = oldEntrace;
-	mExit->clearData();
-
-	// Build new level
-	offset = mEntrace->getLastRect().RightPoint();
-	buildLevel( offset);
-
-	offset = mPrimaryMap->getLastRect().RightPoint();
-	buildPassage(mExit, offset);
-
-	mMapLevel++;
-	IncrementLevelEvent event;
-	notify(event);
-}
-
-
-
-void Environment::renderBottomLayer()
-{
-	mEntrace->renderFloor();
-	mEntrace->renderTop();
-
-	mPrimaryMap->renderFloor();
-	mPrimaryMap->renderTop();
-
-	mExit->renderFloor();
-	mExit->renderTop();
-}
-
-
-void Environment::renderTopLayer()
-{
-	mEntrace->renderBottom();
-	mPrimaryMap->renderBottom();
-	mEntrace->renderBottom();
-}
-
-
-VectorF Environment::size() const
-{
-	return mPrimaryMap->size();
-}
-
-
-Map* Environment::map(VectorF position) const
-{
-	if (position.x > mPrimaryMap->getLastRect().LeftPoint())
-	{
-		return mExit;
-	}
-	else if (position.x < mPrimaryMap->getFirstRect().LeftPoint())
-	{
-		return mEntrace;
-	}
-	else
-	{
-		return mPrimaryMap;
-	}
-}
-
-
-
-
-RectF Environment::boundaries() const
-{
-	float xLeft = -100.0f;
-	float xRight = +10000.0f;
-
-	//if(mExit)
-	//{
-	//	xLeft = mPrimaryMap->getFirstRect().LeftPoint();
-	//	xRight = mExit->getLastRect().RightPoint();
-	//}
-	//else // mEntrace
-	//{
-	//	xLeft = mEntrace->getFirstRect().LeftPoint();
-	//	xRight = mPrimaryMap->getLastRect().RightPoint();
-	//}
-
-	return RectF(xLeft, 0.0f, xRight, mPrimaryMap->size().y);
-}
-
-
-// --- Private Functions --- //
 void Environment::buildLevel(float offset)
 {
 	mPrimaryMap->clearData();
@@ -188,7 +190,6 @@ void Environment::buildPassage(Map* map, float offset)
 }
 
 
-
 VectorF Environment::toWorldCoords(VectorF cameraCoords)
 {
 	float xOffset = mEntrace->getLastRect().RightPoint();
@@ -201,7 +202,7 @@ VectorF Environment::toWorldCoords(VectorF cameraCoords)
 }
 
 
-void Environment::createMaps()
+void Environment::createNewMaps()
 {
 	Vector2D<int> mapSize;
 	VectorF tileSize;

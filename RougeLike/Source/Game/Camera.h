@@ -23,6 +23,9 @@ public:
 	template <typename T>
 	bool inView(Rect<T> object);
 
+	template <typename T>
+	bool inView(Vector2D<T> point);
+
 	VectorF getCenter() { return mRect.Center(); }
 	Vector2D<int> getCenterI() { return Vector2D<int>(mRect.Center()); }
 	
@@ -62,6 +65,22 @@ bool Camera::inView(Rect<T> object)
 		object.LeftPoint()	> (T)mRect.RightPoint() ||
 		object.BotPoint()	< (T)mRect.TopPoint()	||
 		object.TopPoint()	> (T)mRect.BotPoint())
+	{
+		return false;
+	}
+	else
+		return true;
+}
+
+
+template <typename T>
+bool Camera::inView(Vector2D<T> object)
+{
+	if (object.x < (T)mRect.LeftPoint() ||
+		object.x > (T)mRect.RightPoint() ||
+		object.y < (T)mRect.TopPoint() ||
+		object.y > (T)mRect.BotPoint()
+		)
 	{
 		return false;
 	}

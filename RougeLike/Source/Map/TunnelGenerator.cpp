@@ -61,15 +61,16 @@ void TunnelGenerator::buildRandomA(Grid<MapTile>& map)
 
 
 	// Exit
-	int widthA = (map.yCount() / 2) - (y - width / 2);
-	int widthB = (map.yCount() / 2) - (y + width / 2);
-	width = clamp(std::max(widthA, widthB), 2, map.yCount() - 3);
+	float halfWidth = std::abs(y - (map.yCount() / 2)) + 1;
+	width = halfWidth * 2;
 
 	y = map.yCount() / 2;
 
 	for (; x < map.xCount(); x++)
 	{
 		if (x == map.xCount() - 2)
+			width = clamp(width, 0, 2);
+		else if (x == map.xCount() - 1)
 			width = 1;
 
 		for (int yPath = y - width / 2; yPath <= y + width / 2; yPath++)
