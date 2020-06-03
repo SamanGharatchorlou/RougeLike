@@ -41,7 +41,7 @@ bool PropertyBag::contains(const std::string& name) const
 
 
 /// --- Private Functions --- ///
-ValueMap PropertyBag::readConfigValues(FileManager::Folder folder, const std::string& config)
+PropertyBag::ValueMap PropertyBag::readConfigValues(FileManager::Folder folder, const std::string& config)
 {
 	std::string configFilePath = FileManager::Get()->XMLFilePath(folder, config);
 

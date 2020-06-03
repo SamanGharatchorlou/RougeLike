@@ -18,7 +18,7 @@ public:
 	void slowUpdate(float dt);
 	void render();
 
-	void add(std::string name, Ability* ability);
+	void add(const std::string& name, Ability* ability);
 
 	void exitSelection();
 	bool inSelectionMode() const;

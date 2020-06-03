@@ -8,7 +8,8 @@ class Collectables
 public:
 	enum ItemType
 	{
-		MeleeWeapon
+		MeleeWeapon,
+		Ability
 	};
 
 
@@ -21,10 +22,12 @@ public:
 	void spawnRandomItem(ItemType itemType);
 
 
+	void spawn(Collectable* collectable, float xPosition);
+
 private:
-	void spawn(Collectable* collectable, VectorF position);
 	std::vector<std::string> itemNames(ItemType type);
 
+	void spawn(Collectable* collectable, VectorF position);
 
 private:
 	GameData* mGameData;

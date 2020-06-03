@@ -155,9 +155,6 @@ void ActorManager::initEnemies()
 
 	mEnemies->setTarget(&mGameData->actors->player()->rectRef());
 	mEnemies->spawnLevel();
-
-	// init AI pathing
-	mEnemies->generatePathMap();
 }
 
 

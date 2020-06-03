@@ -29,6 +29,7 @@ public:
 		Config_Player,
 		Config_Weapons,
 		Config_MeleeWeapons,
+		Config_Abilities,
 
 		Audio,
 		Audio_Music,

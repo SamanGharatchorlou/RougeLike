@@ -228,7 +228,7 @@ bool AbilityManager::inSelectionMode() const
 	return selectionMode;
 }
 
-void AbilityManager::add(std::string name, Ability* ability)
+void AbilityManager::add(const std::string& name, Ability* ability)
 {
 	AnimationReader reader(mGameData->textureManager);
 	Animator animator;
@@ -239,5 +239,5 @@ void AbilityManager::add(std::string name, Ability* ability)
 		DebugPrint(Warning, "Animator setup failed for '%s' ability\n", name.c_str());
 
 	ability->setState(Ability::Idle);
-	mAbilities[name] = ability;
+	mAbilities[std::string(name)] = ability;
 }

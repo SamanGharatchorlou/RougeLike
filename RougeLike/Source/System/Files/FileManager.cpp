@@ -47,8 +47,10 @@ FileManager::FileManager()
 	folderPaths[Config_Animations] = std::string(folderPaths[Configs] + "Animations\\");
 	folderPaths[Config_Enemies] = std::string(folderPaths[Configs_Objects] + "Enemies\\");
 	folderPaths[Config_Player] = std::string(folderPaths[Configs_Objects] + "Player\\");
+	folderPaths[Config_Abilities] = std::string(folderPaths[Configs_Objects] + "Abilities\\");
 	folderPaths[Config_Weapons] = std::string(folderPaths[Configs_Objects] + "Weapons\\");
 	folderPaths[Config_MeleeWeapons] = std::string(folderPaths[Configs_Objects] + "Weapons\\Melee\\");
+
 
 	for (int i = 0; i < Folder::Count; i++)
 	{

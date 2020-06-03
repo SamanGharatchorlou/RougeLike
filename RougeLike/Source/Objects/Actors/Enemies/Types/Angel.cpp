@@ -13,7 +13,9 @@ RectF Angel::renderRect() const
 	RectF rect = mPhysics.rect();
 	VectorF size = rect.Size() / mColliderRatio;
 
-	rect.SetSize(size * 1.2f);
+	float scale = 1.4f;
+
+	rect.SetSize(size * scale);
 	VectorF sizeDiff = rect.Size() - size;
 
 	// Tweak position

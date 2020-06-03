@@ -2,14 +2,14 @@
 #include "StatReader.h"
 
 
-ValueMap StatReader::getStats(FileManager::Folder folder, const std::string& config)
+StatMap StatReader::getStats(FileManager::Folder folder, const std::string& config)
 {
 	std::string configFilePath = FileManager::Get()->filePath(folder, config);
 
 	XMLParser parser;
 	parser.parseXML(configFilePath);
 
-	ValueMap valueMap;
+	StatMap valueMap;
 	std::string name = "";
 	float value = 0.0f;
 

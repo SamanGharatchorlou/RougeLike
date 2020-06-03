@@ -16,6 +16,9 @@
 
 #include "Utilities/Shapes/Square.h"
 
+#if _DEBUG
+#include "Debug/DebugDraw.h"
+#endif
 #if DRAW_AI_PATH_COSTMAP
 #include "UI/Elements/UITextBox.h"
 #endif
@@ -120,7 +123,7 @@ void EnemyManager::slowUpdate(float dt)
 
 void EnemyManager::generatePathMap()
 {
-	mPathMap.build(mGameData->environment->primaryMap(), 2, 2);
+	mPathMap.build(mGameData->environment->primaryMap(), 4, 4);
 }
 
 
@@ -318,7 +321,7 @@ void EnemyManager::render()
 			Index index(x, y);
 			RectF rect = mPathMap[index].rect();
 
-			if (Camera::Get()->inView(rect))
+			if (Camera::Get()->inView(rect) && mPathMap[index].hasCollisionType(MapTile::Floor))
 			{
 				rect = Camera::Get()->toCameraCoords(rect);
 

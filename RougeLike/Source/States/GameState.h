@@ -29,6 +29,7 @@ private:
 	void initMap();
 	void initRendering();
 
+	void beginGame();
 	void nextLevel();
 
 private:

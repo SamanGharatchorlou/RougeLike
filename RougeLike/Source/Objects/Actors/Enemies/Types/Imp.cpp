@@ -13,7 +13,9 @@ RectF Imp::renderRect() const
 	RectF rect = mPhysics.rect();
 	VectorF size = rect.Size() / mColliderRatio;
 	
-	rect.SetSize(size * 1.4f);
+	float scale = 1.7f;
+
+	rect.SetSize(size * scale);
 	VectorF sizeDiff = rect.Size() - size;
 
 	// Tweak position

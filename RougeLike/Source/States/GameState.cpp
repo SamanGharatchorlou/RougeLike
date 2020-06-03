@@ -20,6 +20,9 @@
 #include "Objects/Actors/Player/Player.h"
 #include "Objects/Actors/Enemies/EnemyManager.h"
 
+// temp
+#include "Items/Collectables/Collectable.h"
+
 
 GameState::GameState(GameData* gameData, GameController* gameController) : 
 	mGameData(gameData)
@@ -33,19 +36,11 @@ GameState::GameState(GameData* gameData, GameController* gameController) :
 
 void GameState::init()
 {
-	mGameData->uiManager->selectScreen(Screen::CharacterSelection);
-
-	// Entrance width
 	initMap();
-
-	// Camera
 	initCamera();
-
-	// UI
 	initUI();
-
-	// Actors
 	mGameData->actors->init();
+	initRendering();
 
 	// Start Audio
 	mGameData->audioManager->playMusic("Ludumdum");
@@ -53,13 +48,9 @@ void GameState::init()
 	mGameData->audioManager->setSoundVolume(0.4f);
 	mGameData->audioManager->toggleMute();
 
-	// Set cursor
-	mGameData->uiManager->setCursorTexture(mGameData->textureManager->getTexture("GameCursor", FileManager::Image_UI));
+	mCollectables.spawnRandomItem(Collectables::MeleeWeapon);
 
-	// Rendering
-	initRendering();
-
-	//mCollectables.spawnRandomItem(Collectables::MeleeWeapon);
+	Collectable* collect = new AbilityCollectable("Armor", mGameData->textureManager->getTexture("ShieldIcon", FileManager::Image_UI));
 }
 
 
@@ -178,8 +169,8 @@ void GameState::nextLevel()
 	mGameData->environment->nextLevel();
 
 	// end level
-	//mGameData->actors->enemies()->clearAllEnemies();
-	//mGameData->actors->enemies()->spawnLevel();
+	mGameData->actors->enemies()->clearAllEnemies();
+	mGameData->actors->enemies()->spawnLevel();
 
 	//mCollectables.spawnRandomItem(Collectables::MeleeWeapon);
 }

@@ -17,6 +17,24 @@ Attributes XMLParser::attributes(xmlNode node) const
 }
 
 
+ValueMap XMLParser::values(xmlNode node) const
+{
+	ASSERT(Warning, node != nullptr, "Attempting to get values for non-existant node\n");
+	ValueMap valueMap;
+
+	xmlNode childNode = node->first_node();
+
+	while (childNode != nullptr)
+	{
+		valueMap[childNode->name()] = childNode->value();
+		childNode = childNode->next_sibling();
+	}
+
+	ASSERT(Warning, valueMap.size() != 0, "Node %s has no value\n", node->name());
+	return valueMap;
+}
+
+
 std::string XMLParser::firstRootNodeValue(const std::string& label) const
 {
 	xmlNode node = rootNode()->first_node(label.c_str());

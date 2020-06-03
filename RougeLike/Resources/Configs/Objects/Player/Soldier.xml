@@ -8,7 +8,7 @@
 
 	<!-- Physics -->
 	<Force>8000</Force>
-	<MaxVelocity>800</MaxVelocity>
+	<MaxVelocity>300</MaxVelocity>
 
 	<!--<Weapon type = "string">weapon_big_hammer</Weapon>-->
 </Stats>

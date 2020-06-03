@@ -24,15 +24,14 @@ void AIPathMap::build(Map* map, int xSplit, int ySplit)
 	occupiedTiles.clear();
 	toBeOccupiedTiles.clear();
 
-	// Split each tile into 4
+	// Split each tile by xsplit and ysplit
 	for (unsigned int y = 0; y < map->yCount(); y++)
 	{
 		int yPathMap = y * ySplit;
 
-		// Split every y into 2
 		for (int yShift = 0; yShift < ySplit; yShift++)
 		{
-			yPathMap += yShift;
+			int yIndex = yPathMap + yShift;
 
 			for (unsigned int x = 0; x < map->xCount(); x++)
 			{
@@ -43,7 +42,7 @@ void AIPathMap::build(Map* map, int xSplit, int ySplit)
 				// splt every x into 2
 				for (int xShift = 0; xShift < xSplit; xShift++)
 				{
-					xPathMap += xShift;
+					int xIndex = xPathMap + xShift;
 
 					BasicTile::Type type = mapTile.collisionType();
 					RectF rect = mapTile.rect();
@@ -60,7 +59,7 @@ void AIPathMap::build(Map* map, int xSplit, int ySplit)
 
 					PathTile pathTile(type, rect);
 
-					mData[yPathMap][xPathMap] = pathTile;
+					mData[Index(xIndex, yIndex)] = pathTile;
 				}
 			}
 		}

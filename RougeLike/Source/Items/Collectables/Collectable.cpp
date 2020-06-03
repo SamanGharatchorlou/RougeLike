@@ -5,45 +5,89 @@
 
 #include "Objects/Actors/Player/Player.h"
 
+#include "Objects/Abilities/AbilityFinder.h"
 
-void Collectable::init(const std::string& value, Texture* texture, RectF rect)
+
+Collectable::Collectable(Texture* icon) : mIcon(icon)
 {
-	mValue = value;
-	mTexture = texture;
-	mRect = rect;
-
-	mCollider.init(&mRect, VectorF(2.5f, 1.5f));
+	setIcon(icon);
+	mCollider.init(&mRect, VectorF(1.25f, 1.25f));
 
 #if _DEBUG
-	mCollider.setName(value + "_collectable");
+	mCollider.setName("Collectable");
 #endif
 }
 
-
-void Collectable::render(RectF rect) const
+void Collectable::setIcon(Texture* icon)
 {
-	mTexture->render(rect);
+	VectorF position;
+
+	VectorF maxDimentions(50.0f, 50.0f);
+	VectorF iconSize = icon->originalDimentions;
+
+	float ratio = 1.0f;
+
+	if (iconSize.y > iconSize.x)
+	{
+		ratio = iconSize.y / maxDimentions.y;
+	}
+	else
+	{
+		ratio = iconSize.x / maxDimentions.x;
+	}
+
+	mRect = RectF(position, iconSize / ratio);
+}
+
+
+void Collectable::render(RectF cameraRect) const
+{
+	mIcon->render(cameraRect);
 }
 
 
 // --- Weapon pickup --- //
-WeaponCollectable::WeaponCollectable(const std::string& weaponName, Texture* texture)
+WeaponCollectable::WeaponCollectable(const std::string& name, Texture* icon) : Collectable(icon), mName(name)
 {
-	RectF rect(VectorF(), texture->originalDimentions);
-	init(weaponName, texture, rect);
+
+}
+
+
+AbilityCollectable::AbilityCollectable(const std::string& name, Texture* icon) : Collectable(icon)
+{
+	AbilityFinder finder;
+	Ability* ability = finder.get(name);
+
+	ASSERT(Warning, ability != nullptr, "the ability '%s' was not found by the finder\n", name);
+
+	mAbility = ability;
+}
+
+
+void AbilityCollectable::activate(Player* Player)
+{
+	Player->addAbility("Armor", mAbility);
 }
 
 
 void WeaponCollectable::activate(Player* Player)
 {
-	Player->selectWeapon(mValue);
+	Player->selectWeapon(mName);
 }
 
 
-
-// --- Health Pickup --- //
-void HealthCollectable::activate(Player* Player)
-{
-	int health = std::stoi(mValue);
-//	Player->get()->propertyBag()->pHealth.get().increase(health);
-}
+//
+//AbilityCollectable::AbilityCollectable(const std::string& ability, Texture* texture)
+//{
+//
+//}
+//
+//
+//
+//
+//// --- Health Pickup --- //
+//void HealthCollectable::activate(Player* Player)
+//{
+//	int health = std::stoi(mValue);
+////	Player->get()->propertyBag()->pHealth.get().increase(health);
+//}

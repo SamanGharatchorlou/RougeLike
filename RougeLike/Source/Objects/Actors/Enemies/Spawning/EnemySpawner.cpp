@@ -16,7 +16,7 @@ void EnemySpawner::spawnLevel(Map* map, int level)
 	{
 	case 1:
 	{
-		//level1(map);
+		level1(map);
 		break;
 	}
 	case 2:
@@ -116,7 +116,7 @@ Shape EnemySpawner::pickRandomShape()
 // Level spawning functions
 void EnemySpawner::level1(Map* map)
 {
-	spawnPatrollers(map, 10, EnemyType::Imp);
+	spawnPatrollers(map, 5, EnemyType::Imp);
 
 	spawnShape(map, 30, pickRandomShape(), EnemyType::Imp);
 	spawnShape(map, 60, pickRandomShape(), EnemyType::Angel);

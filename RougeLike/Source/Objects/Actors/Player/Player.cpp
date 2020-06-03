@@ -50,13 +50,18 @@ void Player::init(const std::string& characterConfig)
 	initCollider();
 
 	// TODO: Get these strings from a set so they match up with the UI?
-	mAbilities.add("Slow", new SlowAbility(0.25F));
-	mAbilities.add("Heal", new HealAbility(50.0f));
-	mAbilities.add("Spikes", new SpikeAbility(Damage(100.0f), 300.0f));
-	mAbilities.add("Blink", new BlinkAbility(500.0f));
-	mAbilities.add("Armor", new ArmorAbility(50.0f));
+	addAbility("Slow", new SlowAbility(0.25F));
+	addAbility("Heal", new HealAbility(50.0f));
+	addAbility("Spikes", new SpikeAbility(Damage(100.0f), 300.0f));
+	addAbility("Blink", new BlinkAbility(500.0f));
+	//addAbility("Armor", new ArmorAbility(50.0f));
 }
 
+
+void Player::addAbility(const std::string& name, Ability* ability)
+{
+	mAbilities.add(name, ability);
+}
 
 void Player::handleInput()
 {

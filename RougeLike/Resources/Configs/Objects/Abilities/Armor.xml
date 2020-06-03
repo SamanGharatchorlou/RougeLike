@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Ability>
+	<Name>Armor</Name>
+	<Power>50</Power>
+	<Texture>Shield</Texture>
+</Ability>

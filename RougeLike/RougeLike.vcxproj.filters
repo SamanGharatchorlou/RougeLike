@@ -114,6 +114,7 @@
     <ClCompile Include="Source\Game\LoadingManager.cpp" />
     <ClCompile Include="Source\Game\LoadingBar.cpp" />
     <ClCompile Include="Source\Map\MapTileDecoder.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityFinder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -253,6 +254,7 @@
     <ClInclude Include="Source\Game\LoadingManager.h" />
     <ClInclude Include="Source\Game\LoadingBar.h" />
     <ClInclude Include="Source\Map\MapTileDecoder.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityFinder.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

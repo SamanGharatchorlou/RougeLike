@@ -31,6 +31,7 @@ void Environment::init()
 
 	// create first entrace and level
 	buildPassage(mEntrace, offset);
+	mEntrace->close(mTextureManager);
 
 	// Build level
 	offset = mEntrace->getLastRect().RightPoint();

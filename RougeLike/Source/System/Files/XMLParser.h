@@ -4,6 +4,7 @@
 
 typedef rapidxml::xml_node<>* xmlNode;
 typedef rapidxml::xml_attribute<>* xmlAttributes;
+using ValueMap = std::unordered_map<std::string, std::string>;
 
 class XMLParser
 {
@@ -35,6 +36,8 @@ public:
 
 	xmlNode rootNode() const;
 	Attributes attributes(xmlNode root) const;
+
+	ValueMap values(xmlNode node) const;
 
 	std::string firstRootNodeValue(const std::string& label) const;
 
