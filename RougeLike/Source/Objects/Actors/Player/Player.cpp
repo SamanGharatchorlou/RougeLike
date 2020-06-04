@@ -49,12 +49,12 @@ void Player::init(const std::string& characterConfig)
 
 	initCollider();
 
-	// TODO: Get these strings from a set so they match up with the UI?
-	addAbility("Slow", new SlowAbility(0.25F));
-	addAbility("Heal", new HealAbility(50.0f));
-	addAbility("Spikes", new SpikeAbility(Damage(100.0f), 300.0f));
-	addAbility("Blink", new BlinkAbility(500.0f));
-	//addAbility("Armor", new ArmorAbility(50.0f));
+	//// TODO: Get these strings from a set so they match up with the UI?
+	//addAbility("Slow", new SlowAbility(0.25F));
+	//addAbility("Heal", new HealAbility(50.0f));
+	//addAbility("Spikes", new SpikeAbility(Damage(100.0f), 300.0f));
+	//addAbility("Blink", new BlinkAbility(500.0f));
+	////addAbility("Armor", new ArmorAbility(50.0f));
 }
 
 
@@ -145,9 +145,6 @@ void Player::initCollisions()
 void Player::selectCharacter(const std::string& character)
 {
 	init(character);
-
-	// Starting weapon
-	selectWeapon("weapon_katana");
 }
 
 
@@ -252,6 +249,9 @@ void Player::processHit()
 
 	// Apply knockback
 	mEffects.addEffect(new KnockbackEffect(damageCollider));
+
+	TraumaEvent* trauma = new TraumaEvent(40);
+	pushEvent(EventPacket(trauma));
 }
 
 

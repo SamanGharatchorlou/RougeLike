@@ -5,19 +5,19 @@
 class ArmorAbility : public Ability
 {
 public:
-	ArmorAbility(float armor) : mArmor(armor) { };
+	ArmorAbility() { };
 
-	void init(Animator animator) override;
+	void fillValues(ValueMap& values) override;
+
 	void activate(Actor* target) override;
 	void slowUpdate(float dt) override;
-	void render() override;
 
 	const TargetType targetType() const override { return TargetType::Self; }
 
 
 private:
-	Actor* mSelf;
 	float mArmor;
 
+	Actor* mSelf;
 	Timer<float> mTimer;
 };

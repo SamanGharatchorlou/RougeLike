@@ -10,15 +10,22 @@
 #include "Game/Camera.h"
 
 
+void HealAbility::fillValues(ValueMap& values)
+{
+	mHeal = std::stof(values["Heal"]);
+}
+
 void HealAbility::init(Animator animator)
 {
-	mAnimator = animator;
+	Ability::init(animator);
+
 	mTimer.start();
 }
 
 void HealAbility::slowUpdate(float dt)
 {
 	mAnimator.slowUpdate(dt);
+	mRect.SetCenter(mSelf->position());
 
 	// Completed one animation loop
 	if (mTimer.getSeconds() > 2.0f)
@@ -39,19 +46,4 @@ void HealAbility::activate(Actor* actor)
 
 	mAnimator.selectAnimation("activate");
 	mTimer.restart();
-}
-
-
-void HealAbility::render()
-{
-	// Size
-	VectorF baseDimentions = mAnimator.getSpriteTile()->getRect().Size();
-	VectorF size = baseDimentions * 0.7f;
-	RectF rect(VectorF(), size);
-
-	// Center position
-	VectorF selfPosition = Camera::Get()->toCameraCoords(mSelf->position());
-	rect.SetCenter(selfPosition);
-
-	mAnimator.getSpriteTile()->render(rect);
 }

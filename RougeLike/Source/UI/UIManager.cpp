@@ -76,7 +76,7 @@ void UIManager::init()
 	ScreenAttributes attributes;
 	std::vector<UILayer*> screenLayers;
 
-	std::string screenPath = FileManager::Get()->folderPath(FileManager::Config_UI);
+	std::string screenPath = FileManager::Get()->generatePath(FileManager::Config_UI);
 	std::vector<std::string> screenNames = FileManager::Get()->fileNamesInFolder(FileManager::Config_UI);
 
 	for (const std::string& screenName : screenNames)
@@ -179,7 +179,7 @@ void UIManager::refresh(Screen::Type screenType)
 		{
 			ScreenDecoder screenDecoder(mGameData->textureManager);
 
-			std::string screenPath = FileManager::Get()->folderPath(FileManager::Config_UI);
+			std::string screenPath = FileManager::Get()->generatePath(FileManager::Config_UI);
 			std::string screenName = typeToString(screenType);
 
 			ScreenAttributes attributes = screenDecoder.getScreenAttributes(screenPath + screenName + ".xml");

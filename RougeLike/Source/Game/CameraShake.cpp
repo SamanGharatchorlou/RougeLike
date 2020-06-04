@@ -52,9 +52,8 @@ float CameraShake::angle()
 VectorF CameraShake::offset()
 {
 	// TODO: check these two random number generations give actual random numbers
-	float xRandom = (float)randomNumberBetween(-100, 100) / 100;
-	float yRandom = (float)randomNumberBetween(-100, 100) / 100;
+	float xRandom = (float)randomNumberBetween(-100, 101) / 100;
+	float yRandom = (float)randomNumberBetween(-100, 101) / 100;
 
-	printf("trauma %f\n", mTrauma);
 	return (VectorF(xRandom, yRandom) / 2000) * (mTrauma * mTrauma);
 }

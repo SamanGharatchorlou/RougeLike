@@ -16,9 +16,7 @@
 
 #include "Utilities/Shapes/Square.h"
 
-#if _DEBUG
-#include "Debug/DebugDraw.h"
-#endif
+
 #if DRAW_AI_PATH_COSTMAP
 #include "UI/Elements/UITextBox.h"
 #endif

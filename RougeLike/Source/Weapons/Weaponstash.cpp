@@ -40,7 +40,7 @@ void WeaponStash::load(TextureManager* tm)
 			MeleeWeaponData* weaponData = new MeleeWeaponData;
 
 			// Texture
-			std::string fileName = FileManager::Get()->getFileName(filePath);
+			std::string fileName = FileManager::Get()->getItemName(filePath);
 			weaponData->texture = tm->getTexture(fileName, FileManager::Image_Weapons);
 
 			fillBasicWeaponData(parser, weaponData);
@@ -55,7 +55,7 @@ void WeaponStash::load(TextureManager* tm)
 			RangedWeaponData* weaponData = new RangedWeaponData;
 
 			// Texture
-			std::string fileName = FileManager::Get()->getFileName(filePath);
+			std::string fileName = FileManager::Get()->getItemName(filePath);
 			weaponData->texture = tm->getTexture(fileName, FileManager::Image_Weapons);
 
 			fillBasicWeaponData(parser, weaponData);

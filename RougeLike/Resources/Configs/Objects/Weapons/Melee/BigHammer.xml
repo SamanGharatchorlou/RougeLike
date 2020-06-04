@@ -6,7 +6,8 @@
 	<KnockbackDistance>100</KnockbackDistance>
 	<PommelOffset x = "2" y = "-30"></PommelOffset>
 
-	<!-- TEMP -->
 	<AudioHit>HammerHit</AudioHit>
 	<AudioMiss>HammerSwoosh</AudioMiss>
+
+	<Icon>BigHammer</Icon>
 </Melee>

@@ -10,5 +10,4 @@
 	<Force>8000</Force>
 	<MaxVelocity>300</MaxVelocity>
 
-	<!--<Weapon type = "string">weapon_big_hammer</Weapon>-->
 </Stats>

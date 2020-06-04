@@ -30,7 +30,7 @@ bool Font::loadFromFile(const std::string& font, int ptSize)
 
 
 	// save a copy of the font name
-	mFontName = FileManager::Get()->getFileName(std::string(font)) + ".ttf";
+	mFontName = FileManager::Get()->getItemName(std::string(font));
 
 	mPtSize = ptSize;
 
@@ -43,7 +43,7 @@ void Font::resize(int ptSize)
 	// Font must be closed and reloaded
 	TTF_CloseFont(mFont);
 
-	mFont = TTF_OpenFont(FileManager::Get()->filePath(FileManager::Font, mFontName).c_str(), ptSize);
+	mFont = TTF_OpenFont(FileManager::Get()->findFile(FileManager::Font, mFontName).c_str(), ptSize);
 	mPtSize = ptSize;
 }
 

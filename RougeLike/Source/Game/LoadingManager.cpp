@@ -35,11 +35,11 @@ void LoadingManager::init()
 	mLoadingText->autoSizeFont();
 
 	// Set textures
-	std::string loadingBar = FileManager::Get()->filePath(FileManager::PreLoadFiles, "BlueBar.png");
+	std::string loadingBar = FileManager::Get()->findFile(FileManager::PreLoadFiles, "BlueBar");
 	Texture* loadingBarTexture = new Texture;
 	loadingBarTexture->loadFromFile(loadingBar);
 
-	std::string loadingBarContainer = FileManager::Get()->filePath(FileManager::PreLoadFiles, "BlackBar.png");
+	std::string loadingBarContainer = FileManager::Get()->findFile(FileManager::PreLoadFiles, "BlackBar");
 	Texture* loadingBarContainerTexture = new Texture;
 	loadingBarContainerTexture->loadFromFile(loadingBarContainer);
 
@@ -56,7 +56,7 @@ void LoadingManager::init()
 	mLoadingBar.setPercentage(0.0f);
 
 	// Background
-	std::string splashScreen = FileManager::Get()->filePath(FileManager::PreLoadFiles, "SplashScreen.png");
+	std::string splashScreen = FileManager::Get()->findFile(FileManager::PreLoadFiles, "SplashScreen");
 	mBackground = new Texture;
 	mBackground->loadFromFile(splashScreen);
 }

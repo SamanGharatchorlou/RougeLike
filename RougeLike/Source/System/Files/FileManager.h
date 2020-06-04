@@ -43,12 +43,11 @@ public:
 public:
 	static FileManager* Get();
 
-	std::string folderPath(const Folder folder) const;
-	std::string filePath(const Folder folder, const std::string& fileName) const;
-	std::string filePath(const std::string& directoryPath, const std::string& itemName) const;
-	std::string XMLFilePath(const Folder folder, const std::string& fileName) const;
+	std::string generatePath(const Folder folder) const;
 
-	std::string findFileInFolder(const Folder folder, const std::string& fileName) const;
+	std::string findFolder(const Folder folder, const std::string& name);
+	std::string findFile(const Folder folder, const std::string& name);
+
 
 	std::vector<std::string> fullPathsInFolder(const Folder folder) const;
 	std::vector<std::string> fullPathsInFolder(const std::string& directoryPath) const;
@@ -56,9 +55,7 @@ public:
 
 	int fileCount(const std::string& directoryPath) const;
 
-	bool readFile(const Folder folder, const std::string& fileName, std::string& outBuffer);
-
-	std::string getFileName(const std::string& filePath) const;
+	std::string getItemName(const std::string& filePath) const;
 
 	std::vector<std::string> allFilesInFolder(const Folder folder) const;
 	std::vector<std::string> allFilesInFolder(const fs::path& directoryPath) const;
@@ -67,6 +64,9 @@ public:
 
 private:
 	void addFilesToList(std::vector<std::string>& fileList, const fs::path& directoryPath) const;
+
+	void outFolderPath(std::string& outValue, const std::string& directoryPath, const std::string& name);
+	void outFilePath(std::string& outValue, const std::string& directoryPath, const std::string& name);
 
 private:
 	FileManager();

@@ -23,7 +23,6 @@
 // temp
 #include "Items/Collectables/Collectable.h"
 
-
 GameState::GameState(GameData* gameData, GameController* gameController) : 
 	mGameData(gameData)
 	, mGameController(gameController)
@@ -36,6 +35,9 @@ GameState::GameState(GameData* gameData, GameController* gameController) :
 
 void GameState::init()
 {
+
+
+
 	initMap();
 	initCamera();
 	initUI();
@@ -48,9 +50,22 @@ void GameState::init()
 	mGameData->audioManager->setSoundVolume(0.4f);
 	mGameData->audioManager->toggleMute();
 
-	mCollectables.spawnRandomItem(Collectables::MeleeWeapon);
+	//mCollectables.spawnRandomItem(Collectables::MeleeWeapon);
 
-	Collectable* collect = new AbilityCollectable("Armor", mGameData->textureManager->getTexture("ShieldIcon", FileManager::Image_UI));
+	Collectable* Armor = new AbilityCollectable("Armor");
+	mCollectables.spawn(Armor, 15);
+
+	Collectable* Blink = new AbilityCollectable("Blink");
+	mCollectables.spawn(Blink, 20);
+
+	Collectable* Spikes = new AbilityCollectable("Spikes");
+	mCollectables.spawn(Spikes, 10);
+
+	Collectable* Heal = new AbilityCollectable("Heal");
+	mCollectables.spawn(Heal, 12);
+
+	Collectable* wepon = new WeaponCollectable("BigHammer");
+	mCollectables.spawn(wepon, 10);
 }
 
 
@@ -148,6 +163,9 @@ void GameState::initCamera()
 {
 	VectorF cameraPosition = VectorF(0.0f, mGameData->environment->size().y / 2.0f);
 	Camera::Get()->setPosition(cameraPosition);
+
+	// TODO: fix these values
+	Camera::Get()->initShakeyCam(150.0f, 100.0f, 50.0f);
 }
 
 void GameState::initMap()

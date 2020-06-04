@@ -12,16 +12,11 @@
 #include "Objects/Effects/DamageEffect.h"
 
 
-void SpikeAbility::init(Animator animator)
+void SpikeAbility::fillValues(ValueMap& values)
 {
-	mAnimator = animator;
-
-	// Size
-	VectorF baseDimentions = mAnimator.getSpriteTile()->getRect().Size();
-	VectorF size = baseDimentions * 1.5f;
-
-	RectF rect(VectorF(-1.0f, -1.0f), size);
-	mRect = rect;
+	mDamage = Damage(std::stof(values["Damage"]));
+	mForce = std::stof(values["Force"]);
+	mMaxDimention = std::stof(values["MaxSize"]);
 }
 
 
@@ -49,11 +44,4 @@ void SpikeAbility::slowUpdate(float dt)
 	// Completed one animation loop
 	if (mAnimator.animationIndex() + 1 == mAnimator.animationCount())
 		setState(Ability::Finished);
-}
-
-
-void SpikeAbility::render()
-{
-	RectF rect = Camera::Get()->toCameraCoords(mRect);
-	mAnimator.getSpriteTile()->render(rect);
 }

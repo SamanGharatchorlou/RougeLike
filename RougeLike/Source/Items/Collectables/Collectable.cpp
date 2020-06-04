@@ -5,38 +5,33 @@
 
 #include "Objects/Actors/Player/Player.h"
 
-#include "Objects/Abilities/AbilityFinder.h"
+#include "Objects/Abilities/Ability.h"
 
 
-Collectable::Collectable(Texture* icon) : mIcon(icon)
+Collectable::Collectable() : mIcon(nullptr) 
 {
-	setIcon(icon);
-	mCollider.init(&mRect, VectorF(1.25f, 1.25f));
+	mCollider.init(&mRect);
 
 #if _DEBUG
 	mCollider.setName("Collectable");
 #endif
-}
+};
+
 
 void Collectable::setIcon(Texture* icon)
 {
 	VectorF position;
-
 	VectorF maxDimentions(50.0f, 50.0f);
 	VectorF iconSize = icon->originalDimentions;
-
 	float ratio = 1.0f;
 
 	if (iconSize.y > iconSize.x)
-	{
 		ratio = iconSize.y / maxDimentions.y;
-	}
 	else
-	{
 		ratio = iconSize.x / maxDimentions.x;
-	}
 
 	mRect = RectF(position, iconSize / ratio);
+	mIcon = icon;
 }
 
 
@@ -47,26 +42,25 @@ void Collectable::render(RectF cameraRect) const
 
 
 // --- Weapon pickup --- //
-WeaponCollectable::WeaponCollectable(const std::string& name, Texture* icon) : Collectable(icon), mName(name)
+WeaponCollectable::WeaponCollectable(const std::string& name)
 {
-
+	mName = name;
 }
 
 
-AbilityCollectable::AbilityCollectable(const std::string& name, Texture* icon) : Collectable(icon)
+AbilityCollectable::AbilityCollectable(const std::string& name)
 {
-	AbilityFinder finder;
-	Ability* ability = finder.get(name);
-
+	Ability* ability = createNewAbility(name);
 	ASSERT(Warning, ability != nullptr, "the ability '%s' was not found by the finder\n", name);
 
 	mAbility = ability;
+	mName = name;
 }
 
 
 void AbilityCollectable::activate(Player* Player)
 {
-	Player->addAbility("Armor", mAbility);
+	Player->addAbility(mName, mAbility);
 }
 
 

@@ -20,7 +20,7 @@ private:
 
 	Vector2D<int> readTileCount() const;
 	Vector2D<int> readTileSize() const;
-	Texture* readTexture(const TextureManager* tm) const;
+	std::vector<Texture*> readTextures(const TextureManager* tm) const;
 
 
 private:

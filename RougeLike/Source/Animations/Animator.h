@@ -34,6 +34,7 @@ public:
 	void render(RectF rect);
 
 	void clear();
+	bool hasAnimations() const { return (bool)mAnimations.size(); }
 
 	void start() { timer.start(); }
 	void pause() { timer.pause(); }

@@ -1,33 +1,26 @@
 #pragma once
 
 struct GameData;
+class Texture;
 class Collectable;
 
 class Collectables
 {
-public:
-	enum ItemType
-	{
-		MeleeWeapon,
-		Ability
-	};
-
-
 public:
 	Collectables(GameData* gameData);
 
 	void slowUpdate(float dt);
 	void render();
 
-	void spawnRandomItem(ItemType itemType);
-
-
 	void spawn(Collectable* collectable, float xPosition);
 
-private:
-	std::vector<std::string> itemNames(ItemType type);
 
-	void spawn(Collectable* collectable, VectorF position);
+private:
+	//std::vector<std::string> itemNames(ItemType type);
+
+	ValueMap getConfigInfo(Collectable* collectable) const;
+	Texture* findIcon(Collectable* collectable) const;
+
 
 private:
 	GameData* mGameData;

@@ -11,15 +11,17 @@
 
 #include "Map/Map.h"
 
-void BlinkAbility::init(Animator animator)
+
+void BlinkAbility::fillValues(ValueMap& values)
 {
-	mAnimator = animator;
+	mRange = std::stof(values["Range"]);
+	mMaxDimention = std::stof(values["MaxSize"]);
 }
 
 
 void BlinkAbility::activate(VectorF target)
 {
-	resetSize();
+	realiseSize();
 	mRect.SetCenter(target);
 	mTarget = target;
 	mAnimator.selectAnimation("activate");
@@ -42,28 +44,6 @@ void BlinkAbility::slowUpdate(float dt)
 	if(mRect.Size().x < 10.0f)
 		setState(Finished);
 
-
 	mAnimator.slowUpdate(dt);
+	mRect.SetCenter(mTarget);
 }
-
-
-
-void BlinkAbility::render()
-{
-	// Center position
-	VectorF targetPosition = Camera::Get()->toCameraCoords(mTarget);
-	mRect.SetCenter(targetPosition);
-
-
-	mAnimator.getSpriteTile()->render(mRect);
-}
-
-
-void BlinkAbility::resetSize()
-{
-	VectorF baseDimentions = mAnimator.getSpriteTile()->getRect().Size();
-	VectorF size = baseDimentions * 1.2f;
-
-	mRect.SetSize(size);
-}
-

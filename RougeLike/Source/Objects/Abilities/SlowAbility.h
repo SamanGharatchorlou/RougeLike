@@ -5,11 +5,12 @@
 class SlowAbility : public Ability
 {
 public:
-	SlowAbility(float slowFactor) : mSlowFactor(slowFactor) { }
+	SlowAbility() { }
+
+	void fillValues(ValueMap& values) override;
 
 	void activate(Actor* target) override;
 	void slowUpdate(float dt) override { }
-	void render() override { }
 
 	const TargetType targetType() const override { return TargetType::Single_Enemy; }
 

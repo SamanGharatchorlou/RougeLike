@@ -140,7 +140,8 @@ bool Environment::canClosePreviousLevel(VectorF playerPosition) const
 void Environment::readConfigData(Vector2D<int>& mapIndexSize, VectorF& tileSize, float& scale)
 {
 	XMLParser parser;
-	parser.parseXML(FileManager::Get()->XMLFilePath(FileManager::Config_Map, "Map"));
+	std::string path = FileManager::Get()->findFile(FileManager::Config_Map, "Map");
+	parser.parseXML(path);
 
 	xmlNode rootNode = parser.rootNode();
 	xmlNode tileSetInfoNode = rootNode->first_node("TilesetInfo");

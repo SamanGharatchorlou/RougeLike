@@ -9,14 +9,17 @@
 #include "Game/Camera.h"
 
 
-void ArmorAbility::init(Animator animator)
+void ArmorAbility::fillValues(ValueMap& values)
 {
-	mAnimator = animator;
+	mArmor = std::stof(values["Armor"]);
+	mMaxDimention = std::stof(values["MaxSize"]);
 }
+
 
 void ArmorAbility::slowUpdate(float dt)
 {
 	mAnimator.slowUpdate(dt);
+	mRect.SetCenter(mSelf->position());
 
 	if (mTimer.getSeconds() > 2.0f)
 		setState(Ability::Finished);
@@ -36,19 +39,4 @@ void ArmorAbility::activate(Actor* actor)
 
 	mTimer.restart();
 	mAnimator.selectAnimation("activate");
-}
-
-
-void ArmorAbility::render()
-{
-	// Size
-	VectorF baseDimentions = mAnimator.getSpriteTile()->getRect().Size();
-	VectorF size = baseDimentions * 1.4f;
-	RectF rect(VectorF(), size);
-
-	// Center position
-	VectorF selfPosition = Camera::Get()->toCameraCoords(mSelf->position());
-	rect.SetCenter(selfPosition);
-
-	mAnimator.getSpriteTile()->render(rect);
 }

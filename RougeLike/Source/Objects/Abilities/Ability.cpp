@@ -1,7 +1,15 @@
 #include "pch.h"
 #include "Ability.h"
 
+#include "Game/Camera.h"
 #include "Map/Map.h"
+
+#include "Objects/Abilities/SlowAbility.h"
+#include "Objects/Abilities/HealAbility.h"
+#include "Objects/Abilities/SpikeAbility.h"
+#include "Objects/Abilities/BilnkAbility.h"
+#include "Objects/Abilities/ArmorAbility.h"
+
 
 EventPacket Ability::popEvent()
 {
@@ -9,6 +17,31 @@ EventPacket Ability::popEvent()
 	EventPacket event = mEvents.front();
 	mEvents.pop();
 	return event;
+}
+
+void Ability::init(Animator animator)
+{
+	mAnimator = animator;
+	realiseSize();
+}
+
+
+void Ability::realiseSize()
+{
+	ASSERT(Warning, mAnimator.hasAnimations(), "Must call Ability::init before realiseSize function\n");
+
+	VectorF baseSize = mAnimator.getSpriteTile()->getRect().Size();
+	VectorF ratio = baseSize / mMaxDimention;
+	float maxRatio = std::max(ratio.x, ratio.y);
+
+	mRect.SetSize(baseSize / maxRatio);
+}
+
+
+void Ability::render()
+{
+	RectF rect = Camera::Get()->toCameraCoords(mRect);
+	mAnimator.getSpriteTile()->render(rect);
 }
 
 
@@ -34,4 +67,42 @@ bool AreaAbility::isValidTarget(VectorF target, Map* map)
 	}
 
 	return validBlinkPoint;
+}
+
+
+Ability* createNewAbility(const std::string& name)
+{
+	XMLParser parser;
+	parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, name));
+	ValueMap values = parser.values(parser.rootNode());
+
+	Ability* ability = nullptr;
+
+	if (name == "Slow")
+	{
+		ability = new SlowAbility;
+	}
+	else if (name == "Heal")
+	{
+		ability = new HealAbility;
+	}
+	else if (name == "Spikes")
+	{
+		ability = new SpikeAbility;
+	}
+	else if (name == "Blink")
+	{
+		ability = new BlinkAbility;
+	}
+	else if (name == "Armor")
+	{
+		ability = new ArmorAbility;
+	}
+
+	if (ability)
+		ability->fillValues(values);
+	else
+		DebugPrint(Warning, "No new ability could be created wth the name '%s'\n", name.c_str());
+
+	return ability;
 }

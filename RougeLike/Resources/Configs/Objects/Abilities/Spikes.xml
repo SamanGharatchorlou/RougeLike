@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Ability>
+	<Damage>50</Damage>
+	<Force>500</Force>
+	<MaxSize>125</MaxSize>
+	<Icon>SpikesIcon</Icon>
+</Ability>

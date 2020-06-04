@@ -4,18 +4,18 @@
 
 Text::Text(const std::string& text, const std::string& font, int ptSize, SDL_Color colour)
 {
-	FileManager* fm = FileManager::Get();
-	mFont.loadFromFile(fm->filePath(FileManager::Font, font), ptSize);
+	std::string path = FileManager::Get()->findFile(FileManager::Font, font);
+	mFont.loadFromFile(path, ptSize);
 
 	mFont.setColour(colour);
 	setText(text);
 }
 
 
-void Text::init(const std::string& text, const std::string& fontLabel, int ptSize, SDL_Color colour)
+void Text::init(const std::string& text, const std::string& font, int ptSize, SDL_Color colour)
 {
-	FileManager* fm = FileManager::Get();
-	mFont.loadFromFile(fm->filePath(FileManager::Font, fontLabel), ptSize);
+	std::string path = FileManager::Get()->findFile(FileManager::Font, font);
+	mFont.loadFromFile(path, ptSize);
 
 	mFont.setColour(colour);
 	setText(text);

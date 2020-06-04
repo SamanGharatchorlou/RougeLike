@@ -10,6 +10,10 @@
 
 #include "AI/AIPathMap.h"
 
+#if _DEBUG
+#include "Debug/DebugDraw.h"
+#endif
+
 
 struct GameData;
 class Enemy;

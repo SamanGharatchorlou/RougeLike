@@ -46,7 +46,7 @@ void TextureManager::init()
 
 	for (int i = 0; i < folders.size(); i++)
 	{
-		DebugPrint(Log, "\n Loading all textures within the folder '%s'\n", FileManager::Get()->folderPath(folders[i]).c_str());
+		DebugPrint(Log, "\n Loading all textures within the folder '%s'\n", FileManager::Get()->generatePath(folders[i]).c_str());
 		fails += loadAllTexturesIn(folders[i]);
 	}
 
@@ -79,8 +79,8 @@ bool TextureManager::loadTexture(FolderMap& folderMap, const std::string& filePa
 	Renderer::Get()->Open();
 	if (texture->loadFromFile(filePath))
 	{
-		std::string label = FileManager::Get()->getFileName(filePath);
-		std::string folderPath = FileManager::Get()->folderPath(folderMap.first);
+		std::string label = FileManager::Get()->getItemName(filePath);
+		std::string folderPath = FileManager::Get()->generatePath(folderMap.first);
 		std::string relativePath = filePath.substr(folderPath.size());
 
 		folderMap.second[label] = texture;
@@ -92,7 +92,7 @@ bool TextureManager::loadTexture(FolderMap& folderMap, const std::string& filePa
 	}
 	else
 	{
-		std::string label = FileManager::Get()->getFileName(filePath);
+		std::string label = FileManager::Get()->getItemName(filePath);
 		DebugPrint(Log, "Failure: texture NOT loaded '%s' at '%s'\n", label.c_str(), filePath.c_str());
 		success = false;
 	}
@@ -183,5 +183,5 @@ const TextureMap& TextureManager::findTextureMap(const FileManager::Folder folde
 		}
 	}
 
-	DebugPrint(Warning, "There is no texture Map in the folder '%s'\n", FileManager::Get()->folderPath(folder).c_str());
+	DebugPrint(Warning, "There is no texture Map in the folder '%s'\n", FileManager::Get()->generatePath(folder).c_str());
 }

@@ -29,7 +29,6 @@
     <ClCompile Include="Source\Input\Button.cpp" />
     <ClCompile Include="Source\Map\MapTileDecoder.cpp" />
     <ClCompile Include="Source\Objects\Abilities\Ability.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\AbilityFinder.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityManager.cpp" />
     <ClCompile Include="Source\Objects\Abilities\ArmorAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\BlinkAbility.cpp" />
@@ -63,7 +62,6 @@
     <ClCompile Include="Source\Utilities\Shapes\Shape.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Square.cpp" />
     <ClCompile Include="Source\Game\CameraShake.cpp" />
-    <ClCompile Include="Source\Game\Trauma.cpp" />
     <ClCompile Include="Source\Map\Environment.cpp" />
     <ClCompile Include="Source\States\PreGameState.cpp" />
     <ClCompile Include="Source\UI\Screens\CharacterSelectionScreen.cpp" />
@@ -151,7 +149,6 @@
     <ClInclude Include="Source\Game\LoadingManager.h" />
     <ClInclude Include="Source\Map\MapTileDecoder.h" />
     <ClInclude Include="Source\Objects\Abilities\Ability.h" />
-    <ClInclude Include="Source\Objects\Abilities\AbilityFinder.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityManager.h" />
     <ClInclude Include="Source\Objects\Abilities\ArmorAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\BilnkAbility.h" />
@@ -193,7 +190,6 @@
     <ClInclude Include="Source\Utilities\Shapes\Square.h" />
     <ClInclude Include="Source\Events\Events.h" />
     <ClInclude Include="Source\Game\CameraShake.h" />
-    <ClInclude Include="Source\Game\Trauma.h" />
     <ClInclude Include="Source\Map\MapBase.h" />
     <ClInclude Include="Source\Map\Environment.h" />
     <ClInclude Include="Source\States\PreGameState.h" />

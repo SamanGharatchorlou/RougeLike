@@ -53,7 +53,6 @@
     <ClCompile Include="Source\Weapons\Melee\MeleeWeapon.cpp" />
     <ClCompile Include="Source\Weapons\Ranged\RangedWeapon.cpp" />
     <ClCompile Include="Source\Weapons\Ranged\Projectile.cpp" />
-    <ClCompile Include="Source\Game\Trauma.cpp" />
     <ClCompile Include="Source\Game\CameraShake.cpp" />
     <ClCompile Include="Source\Weapons\Ranged\Quiver.cpp" />
     <ClCompile Include="Source\Utilities\Buffer.cpp" />
@@ -114,7 +113,6 @@
     <ClCompile Include="Source\Game\LoadingManager.cpp" />
     <ClCompile Include="Source\Game\LoadingBar.cpp" />
     <ClCompile Include="Source\Map\MapTileDecoder.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\AbilityFinder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -178,7 +176,6 @@
     <ClInclude Include="Source\Weapons\Melee\MeleeWeapon.h" />
     <ClInclude Include="Source\Weapons\Ranged\RangedWeapon.h" />
     <ClInclude Include="Source\Weapons\Ranged\Projectile.h" />
-    <ClInclude Include="Source\Game\Trauma.h" />
     <ClInclude Include="Source\Game\CameraShake.h" />
     <ClInclude Include="Source\Events\Events.h" />
     <ClInclude Include="Source\Weapons\Ranged\Quiver.h" />
@@ -254,7 +251,6 @@
     <ClInclude Include="Source\Game\LoadingManager.h" />
     <ClInclude Include="Source\Game\LoadingBar.h" />
     <ClInclude Include="Source\Map\MapTileDecoder.h" />
-    <ClInclude Include="Source\Objects\Abilities\AbilityFinder.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

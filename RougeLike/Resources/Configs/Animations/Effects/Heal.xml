@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <AnimationInfo>
-	<TextureName>Heal</TextureName> 
-	<TilesetInfo>
-		<TileSize x = "128" y ="128"></TileSize>
-		<TileCount x = "4" y = "1"></TileCount>
-	</TilesetInfo>
+	<Type>Frames</Type>
+	<Folder>Heal</Folder>
 	<Animations>
-		<Animation action = "activate" start = "0" count = "4" rate = "0.1"></Animation>
+		<Animation action = "activate" rate = "0.1"></Animation>
 	</Animations>
 </AnimationInfo>

@@ -35,11 +35,12 @@ public:
 	Ability() : mState(None) { }
 	virtual ~Ability() { }
 
-	virtual void init(Animator animator) { mAnimator = animator; }
+	virtual void fillValues(ValueMap& values) = 0;
+	virtual void init(Animator animator);
 	
 	virtual void activate(Actor* target) = 0;
 	virtual void slowUpdate(float dt) = 0;
-	virtual void render() = 0 ;
+	virtual void render();
 
 	virtual const TargetType targetType() const = 0;
 
@@ -49,11 +50,16 @@ public:
 	bool hasEvent() const { return mEvents.size() > 0; }
 	EventPacket popEvent();
 
+	void realiseSize();
+
 
 protected:
 	State mState;
 	Animator mAnimator;
 	std::queue<EventPacket> mEvents;
+
+	float mMaxDimention;
+	RectF mRect;
 };
 
 
@@ -70,5 +76,7 @@ public:
 
 protected:
 	Map* mMap;
-	RectF mRect;
 };
+
+
+Ability* createNewAbility(const std::string& ability);

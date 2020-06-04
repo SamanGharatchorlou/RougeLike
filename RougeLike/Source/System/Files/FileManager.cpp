@@ -59,7 +59,7 @@ FileManager::FileManager()
 }
 
 
-std::string FileManager::folderPath(const Folder folder) const
+std::string FileManager::generatePath(const Folder folder) const
 {
 	std::string buffer;
 
@@ -77,94 +77,103 @@ std::string FileManager::folderPath(const Folder folder) const
 }
 
 
-// Get filepath with folder specified 
-std::string FileManager::filePath(const Folder folder, const std::string& fileName) const
+void FileManager::outFilePath(std::string& outValue, const std::string& directoryPath, const std::string& name)
 {
-	std::string buffer;
-
-	if (folder < Folder::Count)
+	for (const auto& path : fs::directory_iterator(directoryPath))
 	{
-		buffer = std::string(folderPaths[Root] + folderPaths[folder] + fileName);
-	}
-	else
-	{
-		DebugPrint(Warning, "No folder found with folder enum %d\n", folder);
-		buffer.clear();
-	}
+		if (!fs::is_directory(path) && getItemName(path.path().string()) == name)
+		{
+			outValue = path.path().string();
+		}
+		else if (fs::is_directory(path))
+		{
+			outFilePath(outValue, path.path().string(), name);
+		}
 
-	return buffer;
+		// End recursion
+		if (!outValue.empty())
+			return;
+	}
 }
 
-
-std::string FileManager::filePath(const std::string& directoryPath, const std::string& itemName) const
+void FileManager::outFolderPath(std::string& outValue, const std::string& directoryPath, const std::string& name)
 {
-	fs::path dirPath = fs::path(directoryPath);
-	if (!fs::is_directory(dirPath))
-		DebugPrint(Warning, "Item at path '%s' is not a directoy. Cannot search for file '%s'.\n", directoryPath.c_str(), itemName.c_str());
-	else
+	for (const auto& path : fs::directory_iterator(directoryPath))
 	{
-		for (const auto& filePath : fs::directory_iterator(dirPath))
+		if (fs::is_directory(path))
 		{
-			std::string path = filePath.path().string();
-			if (getFileName(path) == itemName)
+			if (getItemName(path.path().string()) == name)
 			{
-				return path;
+				outValue = path.path().string();
+			}
+			else if (fs::is_directory(path))
+			{
+				outFolderPath(outValue, path.path().string(), name);
 			}
 		}
 
-		DebugPrint(Warning, "No file with name '%s' contained within directory '%s'\n", itemName.c_str(), directoryPath.c_str());
+		// End recursion
+		if (!outValue.empty())
+			return;
 	}
-
-	return std::string("");
 }
 
 
-std::string FileManager::findFileInFolder(const Folder folder, const std::string& fileName) const
+std::string FileManager::findFolder(const Folder folder, const std::string& name)
 {
-	std::vector<std::string> fileList = allFilesInFolder(folder);
+	std::string outPath = "";
 
-	for (int i = 0; i < fileList.size(); i++)
+	for (const auto& path : fs::directory_iterator(generatePath(folder)))
 	{
-		if (getFileName(fileList[i]) == fileName)
+		if (fs::is_directory(path))
 		{
-			return fileList[i];
+			if (getItemName(path.path().string()) == name)
+			{
+				return path.path().string();
+			}
+			else
+			{
+				outFolderPath(outPath, path.path().string(), name);
+
+				if (!outPath.empty())
+					return outPath;
+			}
 		}
 	}
 
-	DebugPrint(Warning, "The file '%s' could not be found within the directory '%s'\n", fileName.c_str(), folderPath(folder).c_str());
-	return "";
+	DebugPrint(Warning, "No folder named '%s' was found in the folder '%s'\n", name.c_str(), generatePath(folder).c_str());
 }
 
 
-// Get filepath with folder specified and xml extension added
-std::string FileManager::XMLFilePath(const Folder folder, const std::string& fileName) const
+
+
+
+
+std::string FileManager::findFile(const Folder folder, const std::string& name)
 {
-	std::string buffer;
+	std::string outPath = "";
 
-	if (folder < Folder::Count)
+	for (const auto& path : fs::directory_iterator(generatePath(folder)))
 	{
-		buffer = std::string(folderPaths[Root] + folderPaths[folder] + fileName);
-	}
-	else
-	{
-		DebugPrint(Warning, "No folder found with folder enum %d\n", folder);
-		buffer.clear();
+		std::string item = getItemName(path.path().string());
+		if (!fs::is_directory(path) && getItemName(path.path().string()) == name)
+		{
+			outPath = path.path().string();
+		}
+		else if (fs::is_directory(path))
+		{
+			outFilePath(outPath, path.path().string(), name);
+		}
+
+		if (!outPath.empty())
+			return outPath;
 	}
 
-
-#if _DEBUG
-	if (buffer.find(".xml") != std::string::npos)
-	{
-		DebugPrint(Log, "The string %s already has the .xml extension, extention was not added\n", buffer.c_str());
-		return buffer;
-	}
-#endif
-
-	return buffer.append(".xml");
+	DebugPrint(Warning, "No file named '%s' was found in the folder '%s'\n", name.c_str(), generatePath(folder).c_str());
 }
 
 
-std::string FileManager::getFileName(const std::string& filePath) const
+std::string FileManager::getItemName(const std::string& filePath) const
 {
 	char fileName[50];
 
@@ -198,7 +207,7 @@ std::vector<std::string> FileManager::fullPathsInFolder(const Folder folder) con
 {
 	std::vector<std::string> fileNameList;
 
-	for (const auto& fullFilePath : fs::directory_iterator(this->folderPath(folder)))
+	for (const auto& fullFilePath : fs::directory_iterator(generatePath(folder)))
 	{
 		fileNameList.push_back(fullFilePath.path().string());
 	}
@@ -219,13 +228,14 @@ std::vector<std::string> FileManager::fullPathsInFolder(const std::string& direc
 }
 
 
+// TODO: will also get folder names?
 std::vector<std::string> FileManager::fileNamesInFolder(const Folder folder) const
 {
 	std::vector<std::string> fileNameList;
 
-	for (const auto& fullFilePath : fs::directory_iterator(this->folderPath(folder)))
+	for (const auto& fullFilePath : fs::directory_iterator(generatePath(folder)))
 	{
-		fileNameList.push_back(getFileName(fullFilePath.path().string()));
+		fileNameList.push_back(getItemName(fullFilePath.path().string()));
 	}
 
 	return fileNameList;
@@ -236,7 +246,7 @@ std::vector<std::string> FileManager::allFilesInFolder(const Folder folder) cons
 {
 	std::vector<std::string> fileNameList;
 
-	for (const auto& path : fs::directory_iterator(this->folderPath(folder)))
+	for (const auto& path : fs::directory_iterator(generatePath(folder)))
 	{
 		if (fs::is_directory(path))
 			addFilesToList(fileNameList, path.path());
@@ -267,7 +277,7 @@ std::vector<std::string> FileManager::foldersInFolder(const Folder folder) const
 {
 	std::vector<std::string> folderPathsList;
 
-	for (const auto& path : fs::directory_iterator(this->folderPath(folder)))
+	for (const auto& path : fs::directory_iterator(generatePath(folder)))
 	{
 		if (fs::is_directory(path))
 		{
@@ -291,26 +301,26 @@ void FileManager::addFilesToList(std::vector<std::string>& fileList, const fs::p
 	}
 }
 
-
-bool FileManager::readFile(const Folder folder, const std::string& fileName, std::string& outBuffer)
-{
-	std::string filePathString = filePath(folder, fileName);
-	fs::path filePath = fs::path(filePathString);
-	
-	if (fs::exists(filePath))
-	{
-		outBuffer.clear();
-		std::ifstream ifs(filePath.string().c_str(), std::ios::in | std::ios::binary | std::ios::ate);
-
-		ifs.seekg(0, std::ios::end);
-		outBuffer.reserve((size_t)ifs.tellg());
-		ifs.seekg(0, std::ios::beg);
-
-		outBuffer.assign((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
-
-		return true;
-	}
-	else
-		return false;
-
-}
+//
+//bool FileManager::readFile(const Folder folder, const std::string& fileName, std::string& outBuffer)
+//{
+//	std::string filePathString = filePath(folder, fileName);
+//	fs::path filePath = fs::path(filePathString);
+//	
+//	if (fs::exists(filePath))
+//	{
+//		outBuffer.clear();
+//		std::ifstream ifs(filePath.string().c_str(), std::ios::in | std::ios::binary | std::ios::ate);
+//
+//		ifs.seekg(0, std::ios::end);
+//		outBuffer.reserve((size_t)ifs.tellg());
+//		ifs.seekg(0, std::ios::beg);
+//
+//		outBuffer.assign((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+//
+//		return true;
+//	}
+//	else
+//		return false;
+//
+//}

@@ -150,12 +150,12 @@ bool AudioManager::isPlaying(const std::string& label, void* sourceId)
 int AudioManager::loadAllMusic(FileManager::Folder folder)
 {
 	int fails = 0;
-	std::vector<std::string> imagePaths = FileManager::Get()->fullPathsInFolder(folder);
+	std::vector<std::string> paths = FileManager::Get()->allFilesInFolder(folder);
 
-	for (const std::string& path : imagePaths)
+	for (const std::string& path : paths)
 	{
 		Audio *audio = new Music;
-		fails += !loadAudio(audio, FileManager::Get()->getFileName(path), path);
+		fails += !loadAudio(audio, FileManager::Get()->getItemName(path), path);
 	}
 
 	return fails;
@@ -165,12 +165,12 @@ int AudioManager::loadAllMusic(FileManager::Folder folder)
 int AudioManager::loadAllSound(FileManager::Folder folder)
 {
 	int fails = 0;
-	std::vector<std::string> imagePaths = FileManager::Get()->allFilesInFolder(folder);
+	std::vector<std::string> paths = FileManager::Get()->allFilesInFolder(folder);
 
-	for (const std::string& path : imagePaths)
+	for (const std::string& path : paths)
 	{
 		Audio *audio = new Sound;
-		fails += !loadAudio(audio, FileManager::Get()->getFileName(path), path);
+		fails += !loadAudio(audio, FileManager::Get()->getItemName(path), path);
 	}
 
 	return fails;
@@ -182,10 +182,10 @@ int AudioManager::loadAllSoundGroups(FileManager::Folder folder)
 	int fails = 0;
 	std::vector<std::string> folderPaths = FileManager::Get()->foldersInFolder(folder);
 
-	for (const std::string& path : folderPaths)
+	for (const std::string& folderPath : folderPaths)
 	{
 		Audio* soundGroup =  new AudioGroup;
-		fails += !loadAudio(soundGroup, FileManager::Get()->getFileName(path), path);
+		fails += !loadAudio(soundGroup, FileManager::Get()->getItemName(folderPath), folderPath);
 	}
 
 	return fails;

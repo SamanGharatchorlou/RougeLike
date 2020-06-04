@@ -17,6 +17,9 @@
 #include "Objects/Actors/ActorManager.h"
 #include "Objects/Actors/Player/Player.h"
 
+// TEMP
+
+#include "Animations/AnimationReader.h"
 
 PreGameState::PreGameState(GameData* gameData, GameController* gameController) :
 	mGameData(gameData), mGameController(gameController)
@@ -27,6 +30,11 @@ PreGameState::PreGameState(GameData* gameData, GameController* gameController) :
 
 void PreGameState::init()
 {	
+	AnimationReader reader(mGameData->textureManager);
+	Animator anim;
+
+	//reader.initAnimator(anim, "Heal");
+
 	// Setup collision tracking (before setting up any Objects)
 	initCollisions();
 
