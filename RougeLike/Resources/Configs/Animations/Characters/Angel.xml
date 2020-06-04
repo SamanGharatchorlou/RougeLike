@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <AnimationInfo>
-	<TextureName>Angel</TextureName> 
+	<Texture>Angel</Texture> 
 	<TilesetInfo>
 		<TileSize x = "16" y ="14"></TileSize>
 		<TileCount x = "8" y = "1"></TileCount>

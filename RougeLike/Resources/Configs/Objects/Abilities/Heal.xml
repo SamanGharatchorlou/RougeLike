@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Ability>
+	<MaxSize>125</MaxSize>
 	<Heal>50</Heal>
 	<Icon>HealIcon</Icon>
 </Ability>

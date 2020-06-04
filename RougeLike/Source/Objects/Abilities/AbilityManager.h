@@ -19,6 +19,7 @@ public:
 	void render();
 
 	void add(const std::string& name, Ability* ability);
+	void activate(const std::string& ability);
 
 	void exitSelection();
 	bool inSelectionMode() const;

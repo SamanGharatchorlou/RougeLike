@@ -7,10 +7,8 @@ class Texture;
 class XMLParser;
 
 
-
 struct Animation
 {
-	// TODO: get better names
 	Animation() : startingIndex(0), count(0), speed(0.0f) { }
 	Animation(int start, int length, float theSpeed) :
 		startingIndex(start), count(length), speed(theSpeed) { }

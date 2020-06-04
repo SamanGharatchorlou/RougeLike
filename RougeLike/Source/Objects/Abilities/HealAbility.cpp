@@ -7,28 +7,29 @@
 #include "Objects/Attributes/Health.h"
 
 #include "Animations/Animator.h"
-#include "Game/Camera.h"
 
 
 void HealAbility::fillValues(ValueMap& values)
 {
 	mHeal = std::stof(values["Heal"]);
+	mMaxDimention = std::stof(values["MaxSize"]);
 }
 
 void HealAbility::init(Animator animator)
 {
 	Ability::init(animator);
-
 	mTimer.start();
 }
 
 void HealAbility::slowUpdate(float dt)
 {
 	mAnimator.slowUpdate(dt);
-	mRect.SetCenter(mSelf->position());
+
+	// HACK: added Offset
+	mRect.SetBotCenter(mSelf->rect().BotCenter() + VectorF(0.0f, 10.0f));
 
 	// Completed one animation loop
-	if (mTimer.getSeconds() > 2.0f)
+	if (mAnimator.animationIndex() + 1 == mAnimator.animationCount())
 		setState(Ability::Finished);
 }
 

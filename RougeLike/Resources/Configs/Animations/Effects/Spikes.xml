@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <AnimationInfo>
-	<TextureName>Spikes</TextureName> 
+	<Texture>Spikes</Texture> 
 	<TilesetInfo>
 		<TileSize x = "72" y ="26"></TileSize>
 		<TileCount x = "8" y = "1"></TileCount>

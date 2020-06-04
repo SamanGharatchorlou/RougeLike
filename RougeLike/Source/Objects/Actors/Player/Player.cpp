@@ -23,6 +23,7 @@
 #include "Objects/Abilities/SpikeAbility.h"
 #include "Objects/Abilities/BilnkAbility.h"
 #include "Objects/Abilities/ArmorAbility.h"
+#include "Objects/Abilities/SmashAbility.h"
 
 #include "Objects/Effects/KnockbackEffect.h"
 #include "Objects/Effects/DamageEffect.h"
@@ -55,6 +56,8 @@ void Player::init(const std::string& characterConfig)
 	//addAbility("Spikes", new SpikeAbility(Damage(100.0f), 300.0f));
 	//addAbility("Blink", new BlinkAbility(500.0f));
 	////addAbility("Armor", new ArmorAbility(50.0f));
+
+	addAbility("FloorBurst", createNewAbility("Smash"));
 }
 
 
@@ -73,9 +76,11 @@ void Player::handleInput()
 	if (mGameData->inputManager->isPressed(Button::Space))
 		mAbilities.exitSelection();
 
-	if (mGameData->inputManager->isCursorPressed(Cursor::Left) && 
+	if (mGameData->inputManager->isCursorPressed(Cursor::Left) &&
 		!mGameData->uiManager->isUsingUI() && !mAbilities.inSelectionMode())
+	{
 		attack();
+	}
 }
 
 
@@ -261,6 +266,9 @@ void Player::attack()
 	{
 		printf("playing miss\n");
 		mGameData->audioManager->playSound(mWeapon->missSoundLabel(), this);
+
+		mAbilities.activate("FloorBurst");
+		//mAbilities.
 	}
 
 	mWeapon->attack();

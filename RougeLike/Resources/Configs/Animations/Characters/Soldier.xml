@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <AnimationInfo>
-	<TextureName>Soldier</TextureName> 
+	<Texture>Soldier</Texture> 
 	<TilesetInfo>
 		<TileSize x = "16" y ="28"></TileSize>
 		<TileCount x = "9" y = "1"></TileCount>

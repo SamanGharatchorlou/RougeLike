@@ -66,7 +66,7 @@ void LoadingManager::CountToBeLoadedFiles()
 	std::vector<FileManager::Folder> folders;
 
 	// Textures
-	folders.push_back(FileManager::Image);
+	folders.push_back(FileManager::Images);
 
 	// Audio
 	folders.push_back(FileManager::Audio);

@@ -38,10 +38,21 @@ public:
 
 
 public:
-	VectorF originalDimentions; // can I remove this??? -> change it to dimentions
+	VectorF originalDimentions;
 
 
 private:
 	SDL_Renderer* renderer;
 	SDL_Texture* texture;
+};
+
+
+class TextureGroup
+{
+public:
+	void add(Texture* texture) { mTextures.push_back(texture); }
+
+private:
+	std::vector<Texture*> mTextures;
+
 };

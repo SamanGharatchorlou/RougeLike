@@ -30,8 +30,7 @@ private:
 
 struct TilesetData
 {
-	std::vector<Texture*> textures;
-
+	Texture* texture;
 	Vector2D<int> tileSize;
 	Vector2D<int> tileCount;
 };
@@ -55,9 +54,6 @@ public:
 private:
 	// One sheet, multiple frames - TileSheet
 	void divideSheetIntoFrames();
-
-	// One sheet per frame - TileFrames
-	void linkTilesToSheets();
 
 protected:
 	Texture* mTexture;

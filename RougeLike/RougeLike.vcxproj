@@ -34,6 +34,7 @@
     <ClCompile Include="Source\Objects\Abilities\BlinkAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\HealAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\SlowAbility.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\SmashAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\SpikeAbility.cpp" />
     <ClCompile Include="Source\Objects\Actors\ActorManager.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\Types\Angel.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="Source\Objects\Abilities\BilnkAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\HealAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\SlowAbility.h" />
+    <ClInclude Include="Source\Objects\Abilities\SmashAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\SpikeAbility.h" />
     <ClInclude Include="Source\Objects\Actors\Actor.h" />
     <ClInclude Include="Source\Objects\Actors\ActorManager.h" />

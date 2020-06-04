@@ -34,11 +34,15 @@ TextureManager::~TextureManager()
 // load all textures here
 void TextureManager::init() 
 {
+	FileManager* fm = FileManager::Get();
+
 	// Folders to be loaded
 	std::vector<FileManager::Folder> folders;
-	for (int i = FileManager::Image + 1; i < FileManager::Folder::Image_END; i++)
+	std::vector<std::string> folderPaths = fm->foldersInFolder(FileManager::Images);
+	for (int i = 0; i < folderPaths.size(); i++)
 	{
-		folders.push_back(static_cast<FileManager::Folder>(i));
+		FileManager::Folder folder = fm->getFolderIndex(folderPaths[i]);
+		folders.push_back(folder);
 	}
 
 	DebugPrint(Log, "\n--- Loading Textures ---\n");
@@ -46,9 +50,10 @@ void TextureManager::init()
 
 	for (int i = 0; i < folders.size(); i++)
 	{
-		DebugPrint(Log, "\n Loading all textures within the folder '%s'\n", FileManager::Get()->generatePath(folders[i]).c_str());
+		DebugPrint(Log, "\n Loading all textures within the folder '%s'\n", fm->generatePath(folders[i]).c_str());
 		fails += loadAllTexturesIn(folders[i]);
 	}
+
 
 	DebugPrint(Log, "\n--- Texture Loading Complete: %d Failures ---\n\n", fails);
 }
@@ -58,7 +63,7 @@ int TextureManager::loadAllTexturesIn(FileManager::Folder folder)
 {
 	int fails = 0;	
 	TextureMap textureMap;
-	FolderMap folderMap(folder, textureMap);
+	FolderTextureMap folderMap(folder, textureMap);
 
 	std::vector<std::string> imagePaths = FileManager::Get()->allFilesInFolder(folder);
 	for (const std::string& path : imagePaths)
@@ -71,7 +76,7 @@ int TextureManager::loadAllTexturesIn(FileManager::Folder folder)
 }
 
 
-bool TextureManager::loadTexture(FolderMap& folderMap, const std::string& filePath)
+bool TextureManager::loadTexture(FolderTextureMap& folderMap, const std::string& filePath)
 {
 	bool success = true;
 	Texture *texture = new Texture;
@@ -138,36 +143,6 @@ Texture* TextureManager::getTexture(const std::string& label, const FileManager:
 		DebugPrint(Warning, "No item in folder map '%d' with label: '%s'\n", folder, label.c_str());
 		return nullptr;
 	}
-}
-
-
-Texture* TextureManager::getTexture(const std::string& label, std::vector<FileManager::Folder> folders) const
-{
-	Texture* texture = nullptr;
-
-	for (int i = 0; i < folders.size(); i++)
-	{
-		TextureMap textureMap = findTextureMap(folders[i]);
-
-		auto search = textureMap.find(label);
-
-		if (search != textureMap.end())
-		{
-			if(!texture)
-				texture = search->second;
-			else
-			{
-				DebugPrint(Warning, 
-					"Multiple files named '%s' were found, required texture is ambiguous. \
-					Either change the file names or make a searched folder more specific, \
-					folders searched = %5\n", label, folders.size());
-				texture = nullptr;
-				break;
-			}
-		}
-	}
-
-	return texture;
 }
 
 

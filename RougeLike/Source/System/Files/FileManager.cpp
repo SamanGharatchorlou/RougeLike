@@ -15,31 +15,30 @@ FileManager* FileManager::Get()
 
 FileManager::FileManager()
 {
+	folderPaths[None] = std::string(".");
 	folderPaths[Root] = std::string(fs::current_path().string() + "\\Resources\\");
 
-	folderPaths[PreLoadFiles] = std::string("PreLoadFiles\\");
+	folderPaths[PreLoadFiles] = std::string(folderPaths[Root] + "PreLoadFiles\\");
 
 	// Images
-	folderPaths[Image] = std::string("Images\\");
-	folderPaths[Image_UI] = std::string(folderPaths[Image] + "UI\\");
-	folderPaths[Image_Maps] = std::string(folderPaths[Image] + "Maps\\");
-	folderPaths[Image_Weapons] = std::string(folderPaths[Image] + "Weapons\\");
-	folderPaths[Image_Characters] = std::string(folderPaths[Image] + "Characters\\");
-	folderPaths[Image_Effects] = std::string(folderPaths[Image] + "Effects\\");
+	folderPaths[Images] = std::string(folderPaths[Root] + "Images\\");
+	folderPaths[Image_UI] = std::string(folderPaths[Images] + "UI\\");
+	folderPaths[Image_Maps] = std::string(folderPaths[Images] + "Maps\\");
+	folderPaths[Image_Weapons] = std::string(folderPaths[Images] + "Weapons\\");
+	folderPaths[Image_Animations] = std::string(folderPaths[Images] + "Animations\\");
 
-	folderPaths[Image_END] = std::string(folderPaths[Image] + "Dummy");
 
 	// Audio
-	folderPaths[Audio] = std::string("Audio\\");
+	folderPaths[Audio] = std::string(folderPaths[Root] + "Audio\\");
 	folderPaths[Audio_Music] = std::string(folderPaths[Audio] + "Music\\");
 	folderPaths[Audio_Sound] = std::string(folderPaths[Audio] + "Sound\\");
 	folderPaths[Audio_SoundGroups] = std::string(folderPaths[Audio] + "SoundGroups\\");
 
 	// Font
-	folderPaths[Font] = std::string("Font\\");
+	folderPaths[Font] = std::string(folderPaths[Root] + "Font\\");
 
 	// Configs
-	folderPaths[Configs] = std::string("Configs\\");
+	folderPaths[Configs] = std::string(folderPaths[Root] + "Configs\\");
 	folderPaths[Configs_Objects] = std::string(folderPaths[Configs] + "Objects\\");
 
 	folderPaths[Config_UI] = std::string(folderPaths[Configs] + "UIMenus\\");
@@ -59,13 +58,26 @@ FileManager::FileManager()
 }
 
 
+FileManager::Folder FileManager::getFolderIndex(const std::string& directory)
+{
+	for (int i = 0; i < Folder::Count; i++)
+	{
+		if (directory + "\\" == folderPaths[i])
+			return static_cast<Folder>(i);
+	}
+
+	DebugPrint(Warning, "Folder path '%s' is not in the folder array\n", directory.c_str());
+	return Folder::None;
+}
+
+
 std::string FileManager::generatePath(const Folder folder) const
 {
 	std::string buffer;
 
 	if (folder < Folder::Count)
 	{
-		buffer = std::string(folderPaths[Root] + folderPaths[folder]);
+		buffer = folderPaths[folder];
 	}
 	else
 	{

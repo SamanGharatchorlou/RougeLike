@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AnimationInfo>
+	<Texture>Smash</Texture> 
+	<TilesetInfo>
+		<TileSize x = "1052" y ="415"></TileSize>
+		<TileCount x = "3" y = "2"></TileCount>
+	</TilesetInfo>
+	<Animations>
+		<Animation action = "activate" start = "0" count = "6" rate = "0.1"></Animation>
+	</Animations>
+</AnimationInfo>

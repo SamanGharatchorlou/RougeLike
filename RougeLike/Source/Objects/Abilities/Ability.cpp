@@ -9,6 +9,7 @@
 #include "Objects/Abilities/SpikeAbility.h"
 #include "Objects/Abilities/BilnkAbility.h"
 #include "Objects/Abilities/ArmorAbility.h"
+#include "Objects/Abilities/SmashAbility.h"
 
 
 EventPacket Ability::popEvent()
@@ -29,6 +30,7 @@ void Ability::init(Animator animator)
 void Ability::realiseSize()
 {
 	ASSERT(Warning, mAnimator.hasAnimations(), "Must call Ability::init before realiseSize function\n");
+	ASSERT(Warning, mMaxDimention != 0.0f, "Max dimentions have not been set\n");
 
 	VectorF baseSize = mAnimator.getSpriteTile()->getRect().Size();
 	VectorF ratio = baseSize / mMaxDimention;
@@ -97,6 +99,10 @@ Ability* createNewAbility(const std::string& name)
 	else if (name == "Armor")
 	{
 		ability = new ArmorAbility;
+	}
+	else if (name == "Smash")
+	{
+		ability = new SmashAbility;
 	}
 
 	if (ability)

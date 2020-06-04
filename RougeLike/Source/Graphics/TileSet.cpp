@@ -25,43 +25,12 @@ void Tile::render(Rect<float> targetRect, SDL_RendererFlip flip, Uint8 alpha)
 
 // --- Tileset --- //
 Tileset::Tileset(TilesetData& data) :
-	mTexture(data.textures[0]),
+	mTexture(data.texture),
 	tileDimentions(data.tileSize),
 	tileCount(data.tileCount)
 {
 	divideSheetIntoFrames();
 }
-
-
-void Tileset::linkTilesToSheets()
-{
-#if _DEBUG // Tileset Info needs to be setup before linking up the tiles
-	validate();
-#endif
-
-	mTiles.reserve(tileCount.x);
-
-	for (int y = 0; y < tileCount.x; y++)
-	{
-		std::vector<Tile> tileRow;
-		tileRow.reserve(tileCount.x);
-
-		for (int x = 0; x < tileCount.x; x++)
-		{
-			Tile tile;
-
-			tile.setTexture(mTexture);
-
-			Vector2D<int> position = tileDimentions * Vector2D<int>(x, y);
-			tile.setTileRect(Rect<int>(position, tileDimentions));
-
-			tileRow.push_back(tile);
-		}
-
-		mTiles.push_back(tileRow);
-	}
-}
-
 
 void Tileset::divideSheetIntoFrames()
 {

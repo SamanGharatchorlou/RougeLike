@@ -215,6 +215,20 @@ void AbilityManager::attemptActivation(Ability* ability)
 }
 
 
+void AbilityManager::activate(const std::string& ability)
+{
+	if (mAbilities.count(ability) > 0)
+	{
+		mAbilities[ability]->activate(mGameData->actors->playerActor());
+		mAbilities[ability]->setState(Ability::Running);
+	}
+	else
+	{
+		DebugPrint(Log, "Play does not have the '%s' ability\n", ability.c_str());
+	}
+}
+
+
 bool AbilityManager::inSelectionMode() const
 {
 	bool selectionMode = false;

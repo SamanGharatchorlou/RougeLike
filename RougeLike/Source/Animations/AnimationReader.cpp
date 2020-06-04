@@ -36,7 +36,7 @@ bool AnimationReader::initAnimator(Animator& animator, const std::string& config
 TilesetData AnimationReader::buildTilesetData() const
 {
 	TilesetData data;
-	data.textures = readTextures(tm);
+	data.texture = readTexture(tm);
 	data.tileSize = readTileSize();
 	data.tileCount = readTileCount();
 	return data;
@@ -101,19 +101,7 @@ Vector2D<int> AnimationReader::readTileSize() const
 }
 
 
-std::vector<Texture*> AnimationReader::readTextures(const TextureManager* tm) const
+Texture* AnimationReader::readTexture(const TextureManager* tm) const
 {
-	std::vector<FileManager::Folder> folders{ FileManager::Image_Characters, FileManager::Image_Effects };
-
-	//std::string type = parser.firstRootNodeValue("Type");
-
-	//if (type == "Frames")
-	//{
-	//	std::string folderPath = FileManager::Get()->findFolder(FileManager::Image, "HealAnimation");
-	//	std::vector<std::string> filePaths = FileManager::Get()->allFilesInFolder(folderPath);
-	//}
-
-	Texture* text = tm->getTexture(parser.firstRootNodeValue("TextureName"), folders);
-
-	return std::vector<Texture*> { text };
+	return tm->getTexture(parser.firstRootNodeValue("Texture"), FileManager::Image_Animations);
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AnimationInfo>
+	<Texture>FloorBurst</Texture> 
+	<TilesetInfo>
+		<TileSize x = "894" y ="426"></TileSize>
+		<TileCount x = "2" y = "3"></TileCount>
+	</TilesetInfo>
+	<Animations>
+		<Animation action = "activate" start = "0" count = "6" rate = "0.1"></Animation>
+	</Animations>
+</AnimationInfo>

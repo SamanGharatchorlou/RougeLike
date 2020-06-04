@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Ability>
 	<Slow>0.5</Slow>
+	<MaxSize>100</MaxSize>
 	<Icon>SlowIcon</Icon>
 </Ability>
