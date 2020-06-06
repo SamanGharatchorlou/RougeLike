@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "Ability.h"
 
+#include "Graphics/Texture.h"
 #include "Game/Camera.h"
 #include "Map/Map.h"
+#include "Objects/Actors/Player/Player.h"
 
 #include "Objects/Abilities/SlowAbility.h"
 #include "Objects/Abilities/HealAbility.h"
@@ -10,6 +12,8 @@
 #include "Objects/Abilities/BilnkAbility.h"
 #include "Objects/Abilities/ArmorAbility.h"
 #include "Objects/Abilities/SmashAbility.h"
+
+#include "Debug/DebugDraw.h"
 
 
 EventPacket Ability::popEvent()
@@ -20,8 +24,9 @@ EventPacket Ability::popEvent()
 	return event;
 }
 
-void Ability::init(Animator animator)
+void Ability::init(Animator animator, Player* player)
 {
+	mPlayer = player;
 	mAnimator = animator;
 	realiseSize();
 }
@@ -42,9 +47,31 @@ void Ability::realiseSize()
 
 void Ability::render()
 {
-	RectF rect = Camera::Get()->toCameraCoords(mRect);
-	mAnimator.getSpriteTile()->render(rect);
+	if (mState == Running)
+	{
+		RectF rect = Camera::Get()->toCameraCoords(mRect);
+		mAnimator.getSpriteTile()->render(rect);
+	}
 }
+
+
+void AreaAbility::render()
+{
+	// Range circle
+	if (mState == Selected)
+	{
+		VectorF position = Camera::Get()->toCameraCoords(mPlayer->position());
+		VectorF size = VectorF(mRange, mRange) * 2.0f;
+
+		RectF rect = RectF(VectorF(), size);
+		rect.SetCenter(position);
+
+		mRangeCircle->render(rect);
+	}
+
+	Ability::render();
+}
+
 
 
 Collider AreaAbility::collider()
@@ -55,20 +82,25 @@ Collider AreaAbility::collider()
 
 bool AreaAbility::isValidTarget(VectorF target, Map* map)
 {
+	// Is it in range
+	if (distanceSquared(mPlayer->position(), target) > mRange * mRange)
+		return false;
+
+	// Is the target position a floor tile
 	RectF rect = mRect.MoveCopy(target);
 	VectorF points[4]{ rect.TopLeft(), rect.TopRight(), rect.BotRight(), rect.BotLeft() };
 
-	bool validBlinkPoint = true;
+	bool validPoint = true;
 
 	for (int i = 0; i < 4; i++)
 	{
 		if (!map->floorCollisionTile(points[i]))
 		{
-			validBlinkPoint = false;
+			validPoint = false;
 		}
 	}
 
-	return validBlinkPoint;
+	return validPoint;
 }
 
 

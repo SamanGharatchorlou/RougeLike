@@ -52,7 +52,8 @@ struct RenderColour
 		Red,
 		Blue,
 		Green,
-		Yellow
+		Yellow,
+		LightGrey
 	};
 
 	RenderColour() { }
@@ -77,9 +78,19 @@ struct RenderColour
 			break;
 		case RenderColour::Yellow:
 			r = 255; g = 255; b = 0;
+			break;
+		case RenderColour::LightGrey:
+			r = 201; g = 201; b = 201;
+			break;
 		default:
 			break;
 		}
+	}
+
+	void setOpacity(float opacity)
+	{
+		opacity = clamp(opacity, 0.0f, 1.0f);
+		a = 255 * opacity;
 	}
 
 	Uint8 r = 0;

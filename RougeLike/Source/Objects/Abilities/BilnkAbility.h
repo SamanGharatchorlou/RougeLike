@@ -17,8 +17,6 @@ public:
 
 
 private:
-	float mRange;
-
-	VectorF mTarget;
+	VectorF mTargetPosition;
 	Timer<float> mTimer;
 };

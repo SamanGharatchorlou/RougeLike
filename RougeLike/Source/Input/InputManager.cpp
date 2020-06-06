@@ -202,6 +202,10 @@ void InputManager::bindDefaultButtons()
 	// Keys
 	mButtons[index++].bindToKey(Button::E);
 
+	// Numbers
+	mButtons[index++].bindToKey(Button::One);
+
+
 	ASSERT(Warning, index < maxButtons, "Attempting to bind too many buttons, you need to increase the size of 'maxButtons'\n");
 }
 

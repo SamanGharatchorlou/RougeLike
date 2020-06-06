@@ -8,6 +8,7 @@
 
 class Actor;
 class Map;
+class Player;
 
 class Ability
 {
@@ -16,6 +17,8 @@ public:
 	{
 		Self,
 		Single_Enemy,
+
+		Area,
 		Area_Attack,
 		Area_Point
 	};
@@ -36,7 +39,7 @@ public:
 	virtual ~Ability() { }
 
 	virtual void fillValues(ValueMap& values) = 0;
-	virtual void init(Animator animator);
+	virtual void init(Animator animator, Player* player);
 	
 	virtual void activate(Actor* target) = 0;
 	virtual void slowUpdate(float dt) = 0;
@@ -58,6 +61,7 @@ protected:
 	Animator mAnimator;
 	std::queue<EventPacket> mEvents;
 
+	Player* mPlayer;
 	float mMaxDimention;
 	RectF mRect;
 };
@@ -67,15 +71,23 @@ protected:
 class AreaAbility : public Ability
 {
 public:
+	
+	void setRangeCircle(Texture* rangeCircle) { mRangeCircle = rangeCircle; }
+
 	virtual void activate(VectorF position) = 0;
+	virtual void render() override;
 
 	bool isValidTarget(VectorF target, Map* map);
 
 	RectF effectArea() const { return mRect; }
 	Collider collider();
 
+
 protected:
 	Map* mMap;
+
+	float mRange;
+	Texture* mRangeCircle;
 };
 
 

@@ -89,49 +89,9 @@ std::string FileManager::generatePath(const Folder folder) const
 }
 
 
-void FileManager::outFilePath(std::string& outValue, const std::string& directoryPath, const std::string& name)
-{
-	for (const auto& path : fs::directory_iterator(directoryPath))
-	{
-		if (!fs::is_directory(path) && getItemName(path.path().string()) == name)
-		{
-			outValue = path.path().string();
-		}
-		else if (fs::is_directory(path))
-		{
-			outFilePath(outValue, path.path().string(), name);
-		}
-
-		// End recursion
-		if (!outValue.empty())
-			return;
-	}
-}
-
-void FileManager::outFolderPath(std::string& outValue, const std::string& directoryPath, const std::string& name)
-{
-	for (const auto& path : fs::directory_iterator(directoryPath))
-	{
-		if (fs::is_directory(path))
-		{
-			if (getItemName(path.path().string()) == name)
-			{
-				outValue = path.path().string();
-			}
-			else if (fs::is_directory(path))
-			{
-				outFolderPath(outValue, path.path().string(), name);
-			}
-		}
-
-		// End recursion
-		if (!outValue.empty())
-			return;
-	}
-}
 
 
-std::string FileManager::findFolder(const Folder folder, const std::string& name)
+std::string FileManager::findFolder(const Folder folder, const std::string& name) const
 {
 	std::string outPath = "";
 
@@ -161,7 +121,7 @@ std::string FileManager::findFolder(const Folder folder, const std::string& name
 
 
 
-std::string FileManager::findFile(const Folder folder, const std::string& name)
+std::string FileManager::findFile(const Folder folder, const std::string& name) const
 {
 	std::string outPath = "";
 
@@ -301,7 +261,7 @@ std::vector<std::string> FileManager::foldersInFolder(const Folder folder) const
 }
 
 
-// Recursivly finds all the file names
+// --- Private Functions --- //
 void FileManager::addFilesToList(std::vector<std::string>& fileList, const fs::path& directoryPath) const
 {
 	for (const auto& path : fs::directory_iterator(directoryPath))
@@ -313,26 +273,45 @@ void FileManager::addFilesToList(std::vector<std::string>& fileList, const fs::p
 	}
 }
 
-//
-//bool FileManager::readFile(const Folder folder, const std::string& fileName, std::string& outBuffer)
-//{
-//	std::string filePathString = filePath(folder, fileName);
-//	fs::path filePath = fs::path(filePathString);
-//	
-//	if (fs::exists(filePath))
-//	{
-//		outBuffer.clear();
-//		std::ifstream ifs(filePath.string().c_str(), std::ios::in | std::ios::binary | std::ios::ate);
-//
-//		ifs.seekg(0, std::ios::end);
-//		outBuffer.reserve((size_t)ifs.tellg());
-//		ifs.seekg(0, std::ios::beg);
-//
-//		outBuffer.assign((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
-//
-//		return true;
-//	}
-//	else
-//		return false;
-//
-//}
+
+
+void FileManager::outFilePath(std::string& outValue, const std::string& directoryPath, const std::string& name) const
+{
+	for (const auto& path : fs::directory_iterator(directoryPath))
+	{
+		if (!fs::is_directory(path) && getItemName(path.path().string()) == name)
+		{
+			outValue = path.path().string();
+		}
+		else if (fs::is_directory(path))
+		{
+			outFilePath(outValue, path.path().string(), name);
+		}
+
+		// End recursion
+		if (!outValue.empty())
+			return;
+	}
+}
+
+void FileManager::outFolderPath(std::string& outValue, const std::string& directoryPath, const std::string& name) const
+{
+	for (const auto& path : fs::directory_iterator(directoryPath))
+	{
+		if (fs::is_directory(path))
+		{
+			if (getItemName(path.path().string()) == name)
+			{
+				outValue = path.path().string();
+			}
+			else if (fs::is_directory(path))
+			{
+				outFolderPath(outValue, path.path().string(), name);
+			}
+		}
+
+		// End recursion
+		if (!outValue.empty())
+			return;
+	}
+}

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "HealAbility.h"
 
-#include "Objects/Actors/Actor.h"
+#include "Objects/Actors/Player/Player.h"
 #include "Objects/Properties/PropertyBag.h"
 #include "Objects/Effects/HealEffect.h"
 #include "Objects/Attributes/Health.h"
@@ -15,9 +15,9 @@ void HealAbility::fillValues(ValueMap& values)
 	mMaxDimention = std::stof(values["MaxSize"]);
 }
 
-void HealAbility::init(Animator animator)
+void HealAbility::init(Animator animator, Player* player)
 {
-	Ability::init(animator);
+	Ability::init(animator, player);
 	mTimer.start();
 }
 
@@ -26,7 +26,7 @@ void HealAbility::slowUpdate(float dt)
 	mAnimator.slowUpdate(dt);
 
 	// HACK: added Offset
-	mRect.SetBotCenter(mSelf->rect().BotCenter() + VectorF(0.0f, 10.0f));
+	mRect.SetBotCenter(mPlayer->rect().BotCenter() + VectorF(0.0f, 10.0f));
 
 	// Completed one animation loop
 	if (mAnimator.animationIndex() + 1 == mAnimator.animationCount())
@@ -36,12 +36,10 @@ void HealAbility::slowUpdate(float dt)
 
 void HealAbility::activate(Actor* actor)
 {
-	mSelf = actor;
-
 	HealEffect* healEffect = new HealEffect(mHeal);
-	mSelf->addEffect(healEffect);
+	mPlayer->addEffect(healEffect);
 
-	Health* hp = static_cast<Health*>(mSelf->getProperty("Health"));
+	Health* hp = static_cast<Health*>(mPlayer->getProperty("Health"));
 	SetHealthBarEvent* dataPtr = new SetHealthBarEvent(*hp);
 	mEvents.push(EventPacket(dataPtr));
 

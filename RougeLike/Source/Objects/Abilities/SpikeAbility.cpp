@@ -17,6 +17,7 @@ void SpikeAbility::fillValues(ValueMap& values)
 	mDamage = Damage(std::stof(values["Damage"]));
 	mForce = std::stof(values["Force"]);
 	mMaxDimention = std::stof(values["MaxSize"]);
+	mRange = std::stof(values["Range"]);
 }
 
 

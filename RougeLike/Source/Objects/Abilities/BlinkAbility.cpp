@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "BilnkAbility.h"
 
+#include "Objects/Actors/Player/Player.h"
 #include "Objects/Actors/Actor.h"
 
 #include "Graphics/Texture.h"
@@ -19,18 +20,18 @@ void BlinkAbility::fillValues(ValueMap& values)
 }
 
 
-void BlinkAbility::activate(VectorF target)
+void BlinkAbility::activate(VectorF position)
 {
 	realiseSize();
-	mRect.SetCenter(target);
-	mTarget = target;
+	mRect.SetCenter(position);
+	mTargetPosition = position;
 	mAnimator.selectAnimation("activate");
 }
 
 void BlinkAbility::activate(Actor* actor)
 {
-	BlinkEffect* blink = new BlinkEffect(mTarget);
-	actor->addEffect(blink);
+	BlinkEffect* blink = new BlinkEffect(mTargetPosition);
+	mPlayer->addEffect(blink);
 
 	mTimer.start();
 }
@@ -45,5 +46,5 @@ void BlinkAbility::slowUpdate(float dt)
 		setState(Finished);
 
 	mAnimator.slowUpdate(dt);
-	mRect.SetCenter(mTarget);
+	mRect.SetCenter(mTargetPosition);
 }

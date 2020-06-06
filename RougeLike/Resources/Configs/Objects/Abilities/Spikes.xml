@@ -2,6 +2,7 @@
 <Ability>
 	<Damage>50</Damage>
 	<Force>500</Force>
+	<Range>250</Range>
 	<MaxSize>125</MaxSize>
 	<Icon>SpikesIcon</Icon>
 </Ability>

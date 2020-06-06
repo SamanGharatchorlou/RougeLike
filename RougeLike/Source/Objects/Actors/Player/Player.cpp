@@ -55,7 +55,7 @@ void Player::init(const std::string& characterConfig)
 	//addAbility("Heal", new HealAbility(50.0f));
 	//addAbility("Spikes", new SpikeAbility(Damage(100.0f), 300.0f));
 	//addAbility("Blink", new BlinkAbility(500.0f));
-	////addAbility("Armor", new ArmorAbility(50.0f));
+	//addAbility("Armor", new ArmorAbility(50.0f));
 
 	addAbility("FloorBurst", createNewAbility("Smash"));
 }
@@ -72,6 +72,19 @@ void Player::handleInput()
 		mPhysics.handleInput(mGameData->inputManager);
 
 	mAbilities.handleInput();
+
+	// hot keys
+	if (mGameData->inputManager->isPressed(Button::One))
+	{
+		mAbilities.setState("FloorBurst", Ability::Selected);
+	}
+
+	if (mGameData->inputManager->isReleased(Button::One))
+	{
+		mAbilities.exitSelection();
+	}
+
+
 
 	if (mGameData->inputManager->isPressed(Button::Space))
 		mAbilities.exitSelection();

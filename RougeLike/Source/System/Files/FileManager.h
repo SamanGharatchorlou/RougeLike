@@ -44,8 +44,8 @@ public:
 
 	std::string generatePath(const Folder folder) const;
 
-	std::string findFolder(const Folder folder, const std::string& name);
-	std::string findFile(const Folder folder, const std::string& name);
+	std::string findFolder(const Folder folder, const std::string& name) const;
+	std::string findFile(const Folder folder, const std::string& name) const;
 
 	std::vector<std::string> fullPathsInFolder(const Folder folder) const;
 	std::vector<std::string> fullPathsInFolder(const std::string& directory) const;
@@ -65,8 +65,8 @@ public:
 private:
 	void addFilesToList(std::vector<std::string>& fileList, const fs::path& directoryPath) const;
 
-	void outFolderPath(std::string& outValue, const std::string& directoryPath, const std::string& name);
-	void outFilePath(std::string& outValue, const std::string& directoryPath, const std::string& name);
+	void outFolderPath(std::string& outValue, const std::string& directoryPath, const std::string& name) const;
+	void outFilePath(std::string& outValue, const std::string& directoryPath, const std::string& name) const;
 
 private:
 	FileManager();

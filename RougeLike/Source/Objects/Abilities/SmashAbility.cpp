@@ -1,22 +1,21 @@
 #include "pch.h"
 #include "SmashAbility.h"
 
-#include "Objects/Actors/Actor.h"
+#include "Objects/Actors/Player/Player.h"
 #include "Animations/Animator.h"
 
 
 void SmashAbility::fillValues(ValueMap& values)
 {
-	//mHeal = std::stof(values["Heal"]);
+	mDamage = Damage(std::stof(values["Damage"]));
 	mMaxDimention = std::stof(values["MaxSize"]);
+	mRange = std::stof(values["Range"]);
 }
+
 
 void SmashAbility::slowUpdate(float dt)
 {
 	mAnimator.slowUpdate(dt);
-
-	// HACK: added Offset
-	mRect.SetBotCenter(mSelf->rect().BotCenter() + VectorF(100.0f, 0.0f));
 
 	// Completed one animation loop
 	if (mAnimator.animationIndex() + 1 == mAnimator.animationCount())
@@ -24,9 +23,11 @@ void SmashAbility::slowUpdate(float dt)
 }
 
 
-void SmashAbility::activate(Actor* actor)
+
+void SmashAbility::activate(VectorF position)
 {
-	mSelf = actor;
+	mRect.SetCenter(position);
 
 	mAnimator.selectAnimation("activate");
 }
+

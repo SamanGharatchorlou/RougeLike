@@ -7,10 +7,10 @@ class Texture;
 class XMLParser;
 
 
-struct Animation
+struct AnimationInfo
 {
-	Animation() : startingIndex(0), count(0), speed(0.0f) { }
-	Animation(int start, int length, float theSpeed) :
+	AnimationInfo() : startingIndex(0), count(0), speed(0.0f) { }
+	AnimationInfo(int start, int length, float theSpeed) :
 		startingIndex(start), count(length), speed(theSpeed) { }
 
 	int startingIndex;
@@ -18,8 +18,86 @@ struct Animation
 	float speed;
 };
 
+enum AnimationState
+{
+	None,
+	Idle,
+	Run,
+	Count
+};
 
-using Animations = std::unordered_map<std::string, Animation>;
+
+struct AnimationData
+{
+	Texture* texture;
+	VectorF tileDimentions;
+	AnimationState state;
+};
+
+
+class Animator2
+{
+public:
+	class Animation
+	{
+	public:
+		Animation(AnimationData& data);
+
+		void render(RectF rect);
+
+		AnimationState state() const { return mState; }
+
+		void nextFrame();
+
+	private:
+		Texture* mTexture;
+		AnimationState mState;
+
+		VectorF mTileDimentions;
+		
+		Index mIndex;
+		int mCount;
+	};
+
+
+public:
+	Animator2();
+
+	void addAnimation(AnimationData& data);
+	void slowUpdate(float dt);
+	void render(RectF rect);
+
+	void clear();
+	bool hasAnimations() const { return (bool)mAnimations.size(); }
+
+	void start() { timer.start(); }
+	void pause() { timer.pause(); }
+	void stop() { timer.stop(); }
+
+	void selectAnimation(AnimationState state);
+
+	int animationCount() { return mAnimations[mActiveAnimation].count; }
+
+	void setSpeedFactor(float speed) { speedFactor = speed; }
+
+
+private:
+
+	std::vector<Animation> mAnimations;
+
+	int mActiveIndex;
+
+	float speedFactor;
+
+	Timer<float> timer;
+};
+
+
+
+
+// --- Animation 1 --- //
+
+using Animations = std::unordered_map<std::string, AnimationInfo>;
 
 
 class Animator
@@ -46,7 +124,8 @@ public:
 	void setSpeedFactor(float speed) {
 		printf("speed factor being set to %f\n", speed);
 
-		speedFactor = speed; }
+		speedFactor = speed;
+	}
 
 	Tile* getSpriteTile();
 	Texture* getSpriteTexture();

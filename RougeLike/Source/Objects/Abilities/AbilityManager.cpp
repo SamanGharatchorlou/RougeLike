@@ -5,10 +5,12 @@
 
 #include "Game/GameData.h"
 #include "Input/InputManager.h"
+#include "Graphics/TextureManager.h"
 
 #include "UI/UIManager.h"
 #include "UI/Elements/UIButton.h"
 
+#include "Objects/Actors/Player/Player.h"
 #include "Objects/Actors/Actor.h"
 #include "Objects/Actors/ActorManager.h"
 
@@ -37,13 +39,12 @@ void AbilityManager::handleInput()
 
 void AbilityManager::completeSelection(std::unordered_map<std::string, Ability*>::iterator iter)
 {
-	UIButton* button = mGameData->uiManager->findButton(iter->first);
+	iter->second->setState(Ability::Running);
 
-	if (button && button->isActive())
-	{
+	UIButton* button = mGameData->uiManager->findButton(iter->first);
+	if (button)
 		button->setActive(false);
-		iter->second->setState(Ability::Running);
-	}
+
 }
 
 
@@ -51,16 +52,11 @@ void AbilityManager::exitSelection()
 {
 	for (std::unordered_map<std::string, Ability*>::iterator iter = mAbilities.begin(); iter != mAbilities.end(); iter++)
 	{
-		if (iter->second->state() == Ability::Selected)
-		{
-			UIButton* button = mGameData->uiManager->findButton(iter->first);
+		iter->second->setState(Ability::Idle);
 
-			if (button && button->isActive())
-			{
-				button->setActive(false);
-				iter->second->setState(Ability::Idle);
-			}
-		}
+		UIButton* button = mGameData->uiManager->findButton(iter->first);
+		if (button)
+			button->setActive(false);
 	}
 }
 
@@ -112,10 +108,7 @@ void AbilityManager::render()
 {
 	for (std::unordered_map<std::string, Ability*>::iterator iter = mAbilities.begin(); iter != mAbilities.end(); iter++)
 	{
-		if (iter->second->state() == Ability::Running)
-		{
-			iter->second->render();
-		}
+		iter->second->render();
 	}
 }
 
@@ -124,7 +117,14 @@ void AbilityManager::render()
 void AbilityManager::attemptActivation(Ability* ability)
 {
 	switch (ability->targetType())
+	{	
+	// Player casts on self only
+	case Ability::TargetType::Self:
 	{
+		ability->setState(Ability::Activating);
+		ability->activate(nullptr);
+		break;
+	}
 	// Activate on first enemy selected
 	case Ability::TargetType::Single_Enemy:
 	{
@@ -148,13 +148,6 @@ void AbilityManager::attemptActivation(Ability* ability)
 
 		break;
 	}
-	// Player casts on self only
-	case Ability::TargetType::Self:
-	{
-		ability->setState(Ability::Activating);
-		ability->activate(mGameData->actors->playerActor());
-		break;
-	}
 	// Select any floor tile
 	case Ability::TargetType::Area_Attack:
 	{
@@ -167,6 +160,8 @@ void AbilityManager::attemptActivation(Ability* ability)
 
 			// Activate ability
 			AreaAbility* areaAbility = static_cast<AreaAbility*>(ability);
+
+			// BUG: if you select just outside of the current map this breaks?
 			if(areaAbility->isValidTarget(cursorPosition, map))
 			{
 				areaAbility->activate(cursorPosition);
@@ -203,7 +198,7 @@ void AbilityManager::attemptActivation(Ability* ability)
 			{
 				// Apply effect
 				areaAbility->activate(cursorPosition);
-				ability->activate(mGameData->actors->playerActor());
+				ability->activate(nullptr);
 				ability->setState(Ability::Activating);
 			}
 		}
@@ -248,10 +243,30 @@ void AbilityManager::add(const std::string& name, Ability* ability)
 	Animator animator;
 
 	if (reader.initAnimator(animator, name))
-		ability->init(animator);
+	{
+		ability->init(animator, mGameData->actors->player());
+		
+		if (ability->targetType() >= Ability::Area)
+		{
+			AreaAbility* areaAbility = static_cast<AreaAbility*>(ability);
+
+			Texture* rangeCircle = mGameData->textureManager->getTexture("RangeCircle", FileManager::Image_UI);
+			areaAbility->setRangeCircle(rangeCircle);
+		}
+
+	}
 	else
 		DebugPrint(Warning, "Animator setup failed for '%s' ability\n", name.c_str());
 
 	ability->setState(Ability::Idle);
 	mAbilities[std::string(name)] = ability;
+}
+
+
+void AbilityManager::setState(const std::string& ability, Ability::State state)
+{
+	if(AbilityManager::hasAbility(ability))
+	{
+		mAbilities[ability]->setState(state);
+	}
 }

@@ -36,6 +36,9 @@ public:
 		// Keys
 		E = SDLK_e,
 
+		// Numbers
+		One = SDLK_1,
+
 		KeyCount
 	};
 
