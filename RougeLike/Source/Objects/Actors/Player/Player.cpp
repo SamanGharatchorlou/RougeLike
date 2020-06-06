@@ -28,6 +28,10 @@
 #include "Objects/Effects/KnockbackEffect.h"
 #include "Objects/Effects/DamageEffect.h"
 
+#if _DEBUG
+#include "Debug/DebugDraw.h"
+#endif
+
 
 Player::Player(GameData* gameData) :
 	Actor(gameData), 
@@ -41,14 +45,16 @@ Player::Player(GameData* gameData) :
 
 void Player::init(const std::string& characterConfig)
 {
-	initPropertBag(characterConfig);
-	Actor::init(characterConfig);
+	XMLParser parser;
+	parser.parseXML(FileManager::Get()->findFile(FileManager::Configs_Objects, characterConfig));
 
-	// Physics
-	VectorF size = mAnimator.getSpriteTile()->getRect().Size() * 1.2f;
-	mPhysics.setRect(RectF(VectorF(), size));
+	initPropertBag(parser);
+	Actor::init(parser);
 
-	initCollider();
+	Attributes attributes = parser.attributes(parser.rootNode()->first_node("ColliderScale"));
+	float x = attributes.getFloat("x");
+	float y = attributes.getFloat("y");
+	initCollider(VectorF(x,y));
 
 	//// TODO: Get these strings from a set so they match up with the UI?
 	//addAbility("Slow", new SlowAbility(0.25F));
@@ -108,8 +114,20 @@ void Player::fastUpdate(float dt)
 	Actor::fastUpdate(dt);
 
 	// Weapon
+	VectorF offset(11.0f, 22.0f);
+	if (mPhysics.flip() == SDL_FLIP_NONE && mPhysics.direction().x < 0)
+	{
+		mPhysics.setFlip(SDL_FLIP_HORIZONTAL);
+		mWeapon->setOffset(VectorF(-offset.x, offset.y));
+	}
+	else if (mPhysics.flip() == SDL_FLIP_HORIZONTAL && mPhysics.direction().x > 0)
+	{
+		mPhysics.setFlip(SDL_FLIP_NONE);
+		mWeapon->setOffset(offset);
+	}
+
+	mWeapon->setPosition(rect().Center());
 	mWeapon->fastUpdate(dt);
-	mWeapon->updateAnchor(rect().TopLeft());
 	mWeapon->updateAimDirection(mGameData->inputManager->cursorPosition());
 }
 
@@ -124,8 +142,8 @@ void Player::slowUpdate(float dt)
 	if (mAbilities.hasEvent())
 		pushEvent(mAbilities.popEvent());
 
-	std::string animation = mPhysics.isMoving() ? "Run" : "Idle";
-	mAnimator.selectAnimation(animation);
+	Action action = mPhysics.isMoving() ? Action::Run : Action::Idle;
+	mAnimator2.selectAnimation(action);
 
 	mGameData->collisionManager->removeAllAttackers(CollisionManager::PlayerWeapon_Hit_Enemy);
 
@@ -168,36 +186,42 @@ void Player::selectCharacter(const std::string& character)
 
 void Player::selectWeapon(const std::string& weaponName)
 {
-	mWeapon = weaponStash.getWeapon(weaponName);
+	Weapon* wep = weaponStash.getWeapon(weaponName);
+	mWeapon =  static_cast<MeleeWeapon*>(wep);
+
+	VectorF offset(11.0f, 22.0f);
+	if (mPhysics.flip() == SDL_FLIP_HORIZONTAL)
+	{
+		mWeapon->setOffset(VectorF(-offset.x, offset.y));
+	}
+	else if (mPhysics.flip() == SDL_FLIP_NONE)
+	{
+		mWeapon->setOffset(offset);
+	}
+}
+
+
+Weapon* Player::weapon()
+{
+	return mWeapon;
 }
 
 
 void Player::render()
 {
-	// Flip sprite
-	if (mPhysics.flip() == SDL_FLIP_NONE && mPhysics.direction().x < 0)
-	{
-		mPhysics.setFlip(SDL_FLIP_HORIZONTAL);
-	}
-	else if (mPhysics.flip() == SDL_FLIP_HORIZONTAL && mPhysics.direction().x > 0)
-	{
-		mPhysics.setFlip(SDL_FLIP_NONE);
-	}
-
 #if DRAW_PLAYER_RECTS
 	debugDrawRect(rect(), RenderColour(RenderColour::Green));
-	debugDrawRect(mCollider.scaledRect(), RenderColour(RenderColour::Blue));
+	debugDrawRect(mCollider->scaledRect(), RenderColour(RenderColour::Blue));
 	debugDrawRects(mWeapon->getRects(), RenderColour(RenderColour::Yellow));
-#else
+#endif
 
 	mAbilities.render();
 
 	if (mVisibility)
 	{
-		Actor::render();
 		mWeapon->render();
+		Actor::render();
 	}
-#endif
 }
 
 
@@ -212,40 +236,24 @@ void Player::userHasControl(bool control)
 
 /// --- Private Functions --- ///
 
-void Player::initPropertBag(const std::string& config)
+void Player::initPropertBag(XMLParser& parser)
 {
 	PlayerPropertyBag* propertyBag = new PlayerPropertyBag;
-	propertyBag->readProperties(config);
+	propertyBag->readProperties(parser);
 	setPropertyBag(propertyBag);
 
 	mStatManager.init(propertyBag);
 }
 
 
-void Player::initCollider()
+void Player::initCollider(VectorF scale)
 {
 	Collider* collider = new Collider;
-	VectorF colliderScale = VectorF(1.0f, 0.25f); // only with walls
-	collider->init(&mPhysics.rectRef(), colliderScale);
+	collider->init(&mPhysics.rectRef(), scale);
 	setCollider(collider);
 #if _DEBUG
 	mCollider->setName("player");
 #endif
-}
-
-
-RectF Player::renderRect() const
-{
-	RectF renderRect = rect();
-	VectorF size = renderRect.Size();
-
-	// scale render rect by 1.75
-	renderRect.SetSize(size * 1.75f);
-	VectorF sizeDiff = renderRect.Size() - size;
-
-	renderRect = renderRect.Translate(sizeDiff.x / 2.0f * -1, sizeDiff.y * -1);
-
-	return renderRect;
 }
 
 

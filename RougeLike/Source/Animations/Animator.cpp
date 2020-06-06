@@ -4,16 +4,37 @@
 // temp
 #include "Graphics/Texture.h"
 
-
-
-
-Animator2::Animation::Animation(AnimationData& data) : mTexture(data.texture), mTileDimentions(data.tileDimentions), mState(data.state), mCount(0)
+Action stringToAction(const std::string& action)
 {
+	if (action == "Idle")
+		return Action::Idle;
+	else if (action == "Run")
+		return Action::Run;
+	else
+	{
+		DebugPrint(Warning, "No action matched the string '%s'\n", action.c_str());
+		return Action::None;
+	}
+}
 
+
+Animator2::Animation::Animation(AnimationData& data) : 
+	mTexture(data.texture), mTileDimentions(data.tileDimentions), 
+	mState(data.action), mFrameCount(data.frameCount)
+{
+	//if (data.frameCount < 0)
+	//{
+	//	Vector2D<int> indexCount = mTexture->originalDimentions / mTileDimentions;
+	//	mFrameCount = indexCount.x * indexCount.y;
+	//}
+	//else
+	//{
+	//	mFrameCount = data.frameCount;
+	//}
 
 }
 
-void Animator2::Animation::render(RectF rect)
+void Animator2::Animation::render(RectF rect, SDL_RendererFlip flip) const
 {
 #if _DEBUG
 	Vector2D<int> requestSize = (mIndex + 1)*mTileDimentions;
@@ -27,7 +48,7 @@ void Animator2::Animation::render(RectF rect)
 	VectorF position = mTileDimentions * mIndex;
 	RectF tileRect(position, size);
 
-	mTexture->renderSubTexture(rect, tileRect);
+	mTexture->renderSubTexture(rect, tileRect, flip);
 }
 
 
@@ -58,7 +79,7 @@ void Animator2::Animation::nextFrame()
 
 
 
-Animator2::Animator2() : mActiveIndex(0), speedFactor(0.0f)
+Animator2::Animator2() : mActiveIndex(0), speedFactor(1.0f), mFrameSpeed(0.0f)
 {
 
 }
@@ -69,10 +90,13 @@ void Animator2::addAnimation(AnimationData& data)
 	mAnimations.push_back(animation);
 }
 
+void Animator2::render(RectF rect, SDL_RendererFlip flip) const
+{
+	mAnimations[mActiveIndex].render(rect, flip);
+}
 
 
-
-void Animator2::selectAnimation(AnimationState state)
+void Animator2::selectAnimation(Action state)
 {
 	for (int i = 0; i < mAnimations.size(); i++)
 	{
@@ -87,7 +111,24 @@ void Animator2::selectAnimation(AnimationState state)
 }
 
 
+void Animator2::slowUpdate(float dt)
+{
+	if (timer.getSeconds() >= mFrameSpeed / speedFactor)
+	{
+		mAnimations[mActiveIndex].nextFrame();
+		timer.restart();
+	}
+}
 
+void Animator2::clear()
+{
+	mAnimations.clear();
+	mActiveIndex = 0;
+	speedFactor = 1.0f;
+	mFrameSpeed = -1.0f;
+	timer.stop();
+	mRect = nullptr;
+}
 
 
 // --- Animator --- //

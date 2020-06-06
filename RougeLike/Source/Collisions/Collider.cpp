@@ -35,18 +35,23 @@ void Collider::reset()
 }
 
 
-// convert the player rect to just return the base of the player i.e. their effective feet area
+// Build collider out of a fraction of the container rect
 RectF Collider::scaledRect() const
 {
 	RectF colliderRect = *mRect;
+	colliderRect.SetSize(mRect->Size() * mColliderScale);
+	colliderRect.SetCenter(mRect->Center());
 
-	float colliderWidth = mRect->Width() * mColliderScale.x;
-	float colliderHeight = mRect->Height() * mColliderScale.y;
+	return colliderRect;
+}
 
-	float xPosition = mRect->LeftPoint() + ((mRect->Width() - colliderWidth) / 2.0f);
-	float yPosition = mRect->BotPoint() - colliderHeight;
+RectF Collider::scaledRect(VectorF scale) const
+{
+	RectF colliderRect = *mRect;
+	colliderRect.SetSize(mRect->Size() * scale);
+	colliderRect.SetCenter(mRect->Center());
 
-	return RectF(xPosition, yPosition, xPosition + colliderWidth, yPosition + colliderHeight);
+	return colliderRect;
 }
 
 

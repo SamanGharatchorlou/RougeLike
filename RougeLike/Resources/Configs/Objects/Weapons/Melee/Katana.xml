@@ -2,9 +2,11 @@
 <Melee>
 	<Damage>25</Damage>
 	<SwingSpeed>1500</SwingSpeed>
-	<SwingAngle>190</SwingSpeed>
+	<SwingAngle>140</SwingSpeed>
 	<KnockbackDistance>40</KnockbackDistance>
-	<PommelOffset x = "2" y = "-20"></PommelOffset>
+
+	<MaxSize>65</MaxSize>
+
 	<AudioHit>ShortSwordHit</AudioHit>
 	<AudioMiss>ShortSwordSwoosh</AudioMiss>
 </Melee>

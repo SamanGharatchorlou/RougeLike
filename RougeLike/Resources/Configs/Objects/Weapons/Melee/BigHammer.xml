@@ -4,7 +4,8 @@
 	<SwingSpeed>700</SwingSpeed>
 	<SwingAngle>250</SwingSpeed>
 	<KnockbackDistance>100</KnockbackDistance>
-	<PommelOffset x = "2" y = "-30"></PommelOffset>
+
+	<MaxSize>70</MaxSize>
 
 	<AudioHit>HammerHit</AudioHit>
 	<AudioMiss>HammerSwoosh</AudioMiss>

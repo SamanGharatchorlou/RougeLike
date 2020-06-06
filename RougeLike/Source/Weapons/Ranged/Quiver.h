@@ -3,6 +3,7 @@
 #include "Utilities/RingBuffer.h"
 #include "Utilities/Buffer.h"
 
+/*
 struct RangedWeaponData;
 class Projectile;
 
@@ -27,3 +28,4 @@ private:
 
 	int mSize;
 };
+*/

@@ -2,7 +2,7 @@
 <AnimationInfo>
 	<ID>Soldier</ID>
 	<Folder>Player</Folder>
-	<FrameSpeed>0.05</FrameSpeed>
+	<FrameSpeed>0.1</FrameSpeed>
 	<Animations>
 
 		<Idle>

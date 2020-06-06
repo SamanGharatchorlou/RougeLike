@@ -66,3 +66,5 @@ float getRotation(VectorF direction);
 VectorF rotateVector(VectorF vec, float dTheta);
 
 VectorF closestRectSide(VectorF point, RectF rect);
+
+VectorF realiseSize(VectorF baseSize, float maxDimention);

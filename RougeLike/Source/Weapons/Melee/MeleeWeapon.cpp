@@ -56,8 +56,10 @@ void MeleeWeapon::equipt(const WeaponData* data)
 
 	mSwingSpeed = mData->swingSpeed;
 
-	// TODO: where/what to do with this 1.5 scale factor
-	mRect.SetSize(mData->texture->originalDimentions * 1.5f);
+	// Set size
+	VectorF baseSize = mData->texture->originalDimentions;
+	VectorF size = realiseSize(baseSize, mData->maxDimention);
+	mRect.SetSize(size);
 }
 
 
@@ -100,12 +102,6 @@ bool MeleeWeapon::didHit() const
 
 
 // Follow character
-void MeleeWeapon::updateAnchor(VectorF anchor)
-{
-	mRect.SetTopLeft(anchor + mData->handleOffset);
-}
-
-
 void MeleeWeapon::updateAimDirection(VectorF cursorPosition)
 {
 	// Follow cursor
@@ -114,7 +110,7 @@ void MeleeWeapon::updateAimDirection(VectorF cursorPosition)
 		float offsetAngle = (mData->swingArc / 2.0f) * mSwingDirection;
 
 		// Camera to cursor vector
-		mDirection = (cursorPosition - Camera::Get()->toCameraCoords(mRect.BotCenter()));
+		mDirection = (cursorPosition - Camera::Get()->toCameraCoords(rect().BotCenter()));
 		mDirection = rotateVector(mDirection, offsetAngle);
 	}
 
@@ -124,10 +120,9 @@ void MeleeWeapon::updateAimDirection(VectorF cursorPosition)
 
 void MeleeWeapon::render()
 {
-	VectorF aboutPoint(mRect.Width() / 2.0f, mRect.Height());
-	mData->texture->render(Camera::Get()->toCameraCoords(mRect), getRotation(mDirection), aboutPoint);
+	VectorF aboutPoint(rect().Width() / 2.0f, rect().Height());
+	mData->texture->render(Camera::Get()->toCameraCoords(rect()), getRotation(mDirection), aboutPoint);
 }
-
 
 
 const std::vector<Collider*> MeleeWeapon::getColliders()
@@ -169,13 +164,15 @@ const std::string& MeleeWeapon::missSoundLabel() { return mData->audioMiss; };
 /// --- Private Functions --- ///
 void MeleeWeapon::updateWeaponBlocks()
 {
-	VectorF weaponVector = mDirection.normalise() * mRect.Height();
+	VectorF weaponVector = mDirection.normalise() * rect().Height();
 
+	// Size
 	int blocks = mBlockRects.size();
-	float blockWidth = std::max(std::abs(weaponVector.x) / blocks, mRect.Width());
-	float blockHeight = std::max(std::abs(weaponVector.y) / blocks, mRect.Width());
+	float blockWidth = std::max(std::abs(weaponVector.x) / blocks, rect().Width());
+	float blockHeight = std::max(std::abs(weaponVector.y) / blocks, rect().Width());
 	VectorF blockSize = VectorF(blockWidth, blockHeight);
 
+	// Position
 	for (int i = 0; i < blocks; i++)
 	{
 		// Center block on weapon aboutpoint (pommel) coords
@@ -185,11 +182,12 @@ void MeleeWeapon::updateWeaponBlocks()
 		block = block.Translate(shaftPosition);
 
 		// Translate to world coords
-		block = block.Translate(mRect.BotCenter());
+		block = block.Translate(rect().BotCenter());
 
 		mBlockRects[i].SetRect(block);
 	}
 }
+
 
 void MeleeWeapon::continueAttack(float dt)
 {

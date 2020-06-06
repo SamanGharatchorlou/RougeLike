@@ -76,3 +76,10 @@ VectorF closestRectSide(VectorF point, RectF rect)
 	return rectSides[nearestSide];
 }
 
+
+VectorF realiseSize(VectorF baseSize, float maxDimention)
+{
+	VectorF ratio = baseSize / maxDimention;
+	float maxRatio = std::max(ratio.x, ratio.y);
+	return baseSize / maxRatio;
+}

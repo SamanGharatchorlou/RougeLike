@@ -28,4 +28,7 @@
 	<!-- Alert -->
 	<AttentionTime>0.5</AttentionTime>
 
+	
+	<MaxSize>100</MaxSize>
+
 </Stats>

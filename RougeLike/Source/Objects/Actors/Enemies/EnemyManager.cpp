@@ -127,6 +127,7 @@ void EnemyManager::generatePathMap()
 
 void EnemyManager::addEnemiesToPool(EnemyType type, unsigned int count)
 {
+	return;
 	// TODO: how to do a cheaper copy, no need to open and read files everytime... 
 	for (unsigned int i = 0; i < count; i++)
 	{

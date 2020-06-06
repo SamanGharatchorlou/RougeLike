@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AnimationInfo>
+	<Texture>Soldier</Texture> 
+	<TilesetInfo>
+		<TileSize x = "16" y ="28"></TileSize>
+		<TileCount x = "9" y = "1"></TileCount>
+	</TilesetInfo>
+	<Animations>
+		<Animation action = "Idle" start = "0" count = "4" rate = "0.25"></Animation>
+		<Animation action = "Run" start = "4" count = "4" rate = "0.1"></Animation>
+		<Animation action = "Hit" start = "8" count = "1" rate = "1.0"></Animation>
+	</Animations>
+</AnimationInfo>

@@ -4,11 +4,11 @@
 #include "Objects/Attributes/Damage.h"
 
 
-void EnemyPropertyBag::readProperties(const std::string& config)
+void EnemyPropertyBag::readProperties(XMLParser& parser)
 {
-	mConfigFile = config;
+	//mConfigFile = config;
 
-	ValueMap map = readConfigValues(FileManager::Config_Enemies, config);
+	ValueMap map = readValues(parser);
 
 	fillProperties(map);
 }

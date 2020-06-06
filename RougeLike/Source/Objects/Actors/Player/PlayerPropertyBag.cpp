@@ -4,12 +4,9 @@
 #include "Objects/Attributes/Level.h"
 #include "Objects/Attributes/Armor.h"
 
-void PlayerPropertyBag::readProperties(const std::string& config)
+void PlayerPropertyBag::readProperties(XMLParser& parser)
 {
-	mConfigFile = config;
-
-	ValueMap map = readConfigValues(FileManager::Config_Player, config);
-
+	ValueMap map = readValues(parser);
 	fillProperties(map);
 }
 

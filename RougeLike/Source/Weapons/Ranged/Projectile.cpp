@@ -3,7 +3,7 @@
 
 #include "Graphics/Texture.h"
 
-
+/*
 Projectile::Projectile(const RangedWeaponData* data)
 {
 	mTexture = data->projectileTexture;
@@ -45,3 +45,4 @@ void Projectile::render(RectF rect) const
 {
 	mTexture->render(rect);
 }
+*/

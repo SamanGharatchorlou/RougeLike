@@ -14,6 +14,7 @@
 
 #include "Map/Map.h"
 
+/*
 constexpr int quiverStashCount = 100;
 
 
@@ -148,3 +149,4 @@ const std::vector<Collider*> RangedWeapon::getColliders()
 	return colliders;
 }
 
+*/

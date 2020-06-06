@@ -8,7 +8,7 @@
 struct RangedWeaponData;
 class Projectile;
 
-
+/*
 class RangedWeapon : public Weapon
 {
 public:
@@ -47,3 +47,4 @@ private:
 
 	std::list<Projectile*> travelingProjectiles;
 };
+*/

@@ -18,7 +18,7 @@ struct AnimationInfo
 	float speed;
 };
 
-enum AnimationState
+enum class Action
 {
 	None,
 	Idle,
@@ -26,12 +26,15 @@ enum AnimationState
 	Count
 };
 
+Action stringToAction(const std::string& action);
+
 
 struct AnimationData
 {
 	Texture* texture;
-	VectorF tileDimentions;
-	AnimationState state;
+	Vector2D<int> tileDimentions;
+	int frameCount;
+	Action action;
 };
 
 
@@ -43,42 +46,48 @@ public:
 	public:
 		Animation(AnimationData& data);
 
-		void render(RectF rect);
+		void render(RectF rect, SDL_RendererFlip flip) const;
 
-		AnimationState state() const { return mState; }
+		Action state() const { return mState; }
 
 		void nextFrame();
 
+		VectorF size() const { return mTileDimentions; }
+
 	private:
 		Texture* mTexture;
-		AnimationState mState;
+		Action mState;
 
 		VectorF mTileDimentions;
 		
 		Index mIndex;
-		int mCount;
+		int mFrameCount;
 	};
 
 
 public:
 	Animator2();
 
+	void setFrameSpeed(float frameSpeed) { mFrameSpeed = frameSpeed; }
 	void addAnimation(AnimationData& data);
+
 	void slowUpdate(float dt);
-	void render(RectF rect);
+
+	void render(RectF rect, SDL_RendererFlip flip) const;
 
 	void clear();
+
 	bool hasAnimations() const { return (bool)mAnimations.size(); }
+
+	void selectAnimation(Action state);
+
+	void setSpeedFactor(float speed) { speedFactor = speed; }
 
 	void start() { timer.start(); }
 	void pause() { timer.pause(); }
 	void stop() { timer.stop(); }
 
-	void selectAnimation(AnimationState state);
-
-	int animationCount() { return mAnimations[mActiveAnimation].count; }
-
-	void setSpeedFactor(float speed) { speedFactor = speed; }
+	VectorF frameSize() const { return mAnimations[mActiveIndex].size(); }
 
 
 private:
@@ -89,7 +98,11 @@ private:
 
 	float speedFactor;
 
+	float mFrameSpeed;
+
 	Timer<float> timer;
+
+	const RectF* mRect;
 };
 
 

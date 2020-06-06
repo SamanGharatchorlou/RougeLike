@@ -29,7 +29,8 @@ float PropertyBag::value(const std::string& name) const
 
 void PropertyBag::resetProperties()
 {
-	readProperties(mConfigFile);
+	DebugPrint(Log, "Unimplemented: resetProperties()\n");
+	//readProperties(mConfigFile);
 }
 
 
@@ -41,12 +42,8 @@ bool PropertyBag::contains(const std::string& name) const
 
 
 /// --- Private Functions --- ///
-PropertyBag::ValueMap PropertyBag::readConfigValues(FileManager::Folder folder, const std::string& config)
+PropertyBag::ValueMap PropertyBag::readValues(XMLParser& parser)
 {
-	XMLParser parser;
-	std::string configFilePath = FileManager::Get()->findFile(folder, config);
-	parser.parseXML(configFilePath);
-
 	ValueMap valueMap;
 	float value = 0.0f;
 

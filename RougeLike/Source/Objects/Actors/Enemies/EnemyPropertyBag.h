@@ -5,7 +5,7 @@
 class EnemyPropertyBag : public PropertyBag
 {
 public:
-	void readProperties(const std::string& config);
+	void readProperties(XMLParser& parser);
 
 private:
 	void fillProperties(ValueMap& valueMap);

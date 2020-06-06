@@ -5,6 +5,7 @@
 
 class Texture;
 
+/*
 class Projectile
 {
 public:
@@ -37,3 +38,4 @@ private:
 	float mSpeed;
 	VectorF mDirection;
 };
+*/

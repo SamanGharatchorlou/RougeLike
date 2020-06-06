@@ -5,7 +5,7 @@
 class TextureManager;
 class Weapon;
 class MeleeWeapon;
-class RangedWeapon;
+//class RangedWeapon;
 
 class WeaponStash
 {
@@ -16,7 +16,7 @@ public:
 	void load(TextureManager* tm);
 
 	MeleeWeapon* getMeleeWeapon() const { return meleeWeapon; }
-	RangedWeapon* getRangedWeapon() const { return rangedWeapon; }
+	//RangedWeapon* getRangedWeapon() const { return rangedWeapon; }
 
 	WeaponData* getData(const std::string& weaponName);
 
@@ -25,12 +25,12 @@ public:
 private:
 	void fillBasicWeaponData(XMLParser& parser, WeaponData* data);
 	void fillMeleeWeaponData(XMLParser& parser, MeleeWeaponData* data);
-	void fillRangedWeaponData(XMLParser& parser, RangedWeaponData* data, TextureManager* tm);
+	//void fillRangedWeaponData(XMLParser& parser, RangedWeaponData* data, TextureManager* tm);
 
 
 private:
 	std::unordered_map<std::string, WeaponData*> data;
 
 	MeleeWeapon* meleeWeapon;
-	RangedWeapon* rangedWeapon;
+	//RangedWeapon* rangedWeapon;
 };

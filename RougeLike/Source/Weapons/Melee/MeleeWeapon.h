@@ -18,16 +18,15 @@ public:
 	void slowUpdate(float dt) override { };
 	void render() override;
 
-	bool canPlayHitSound() { return mCanPlayHitSound; }
+	void equipt(const WeaponData* data) override;
+
 	const std::string& hitSoundLabel() override;
 	const std::string& missSoundLabel() override;
 
 	bool didHit() const override;
 
-	void updateAnchor(VectorF anchor) override;
 	void updateAimDirection(VectorF cursorPosition) override;
 
-	void equipt(const WeaponData* data) override;
 
 	// Stats
 	const float getAngle() const { return getRotation(mDirection); }
@@ -39,7 +38,6 @@ public:
 	const std::vector<RectF> getRects() const { return mBlockRects; }
 
 	void flipSide() { mSwingDirection *= -1; }
-
 
 
 private:

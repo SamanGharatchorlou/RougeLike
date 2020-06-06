@@ -10,9 +10,10 @@ class Texture;
 class AnimationReader
 {
 public:
-	AnimationReader(const TextureManager* textureManager) : tm(textureManager) { };
+	AnimationReader(const TextureManager* textureManager, XMLParser& parser) : tm(textureManager), mParser(parser) { };
 	bool initAnimator(Animator& animator, const std::string& config);
 
+	bool initAnimator2(Animator2& animator);
 
 private:
 	Animations readAnimationData() const;
@@ -23,7 +24,10 @@ private:
 	Texture* readTexture(const TextureManager* tm) const;
 
 
+	Vector2D<int> getXYAttributes(xmlNode node);
+
+
 private:
-	XMLParser parser;
+	XMLParser& mParser;
 	const TextureManager* tm;
 };

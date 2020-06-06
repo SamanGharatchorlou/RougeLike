@@ -3,7 +3,7 @@
 
 #include "Projectile.h"
 
-
+/*
 Quiver::Quiver(int stashCount)
 {
 	for (unsigned int i = 0; i < stashCount; i++)
@@ -64,3 +64,5 @@ void Quiver::lostProjectile(Projectile* projectile)
 {
 	projectileBuffer.insert(projectile);
 }
+
+*/

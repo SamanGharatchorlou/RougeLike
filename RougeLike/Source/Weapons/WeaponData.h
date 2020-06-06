@@ -17,7 +17,6 @@ struct WeaponData
 	WeaponType type = WeaponType::None;
 	Texture* texture = nullptr;
 	Damage damage;
-	VectorF handleOffset;
 
 	std::string audioMiss;
 	std::string audioHit;
@@ -29,13 +28,14 @@ struct MeleeWeaponData : public WeaponData
 	float swingArc = 0.0f;
 	float swingSpeed = 0.0f;
 	float knockbackDistance = 0.0f;
+	float maxDimention = 0.0f;
 };
 
 
-struct RangedWeaponData : public WeaponData
-{
-	Texture* projectileTexture = nullptr;
-	float travelSpeed = 0.0f;
-	VectorF projectileSize;
-	int quiverSize = 0;
-};
+//struct RangedWeaponData : public WeaponData
+//{
+//	Texture* projectileTexture = nullptr;
+//	float travelSpeed = 0.0f;
+//	VectorF projectileSize;
+//	int quiverSize = 0;
+//};

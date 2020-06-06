@@ -7,10 +7,10 @@
 #define PRINT_FRAMERATE_EVERY 0 // Print at the rate you specify in milliseconds i.e. 500 = print every 0.5 seconds
 
 // Player
-#define DRAW_PLAYER_RECTS 0
+#define DRAW_PLAYER_RECTS 1
 
 // Collectables
-#define DRAW_COLLECTABLE_RECT 0
+#define DRAW_COLLECTABLE_RECT 1
 
 // Map
 #define DRAW_BINARY_MAP 0

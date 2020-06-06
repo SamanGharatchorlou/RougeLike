@@ -19,7 +19,7 @@ public:
 	Actor(GameData* gameData);
 	virtual ~Actor();
 
-	void init(const std::string& characterConfig);
+	void init(XMLParser& parser);
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
 	void render();
@@ -54,7 +54,7 @@ public:
 	VectorF		position() const { return mPhysics.rect().Center(); }
 	RectF&		rectRef() { return mPhysics.rectRef(); }
 	RectF		rect() const { return mPhysics.rect(); } 
-	virtual RectF		renderRect() const = 0;
+	virtual RectF		renderRect() const { return rect(); } // TODO: remove
 
 	// Effects
 	void addEffect(Effect* effect);
@@ -68,6 +68,9 @@ protected:
 	Collider* mCollider;
 
 	Animator mAnimator;
+
+	Animator2 mAnimator2;
+
 	Physics mPhysics;
 
 	EffectHandler mEffects;

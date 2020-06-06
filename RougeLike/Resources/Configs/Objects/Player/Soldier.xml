@@ -10,4 +10,7 @@
 	<Force>8000</Force>
 	<MaxVelocity>300</MaxVelocity>
 
+	<MaxSize>100</MaxSize>
+	<ColliderScale x = "0.32" y = "0.57"></ColliderScale>
+
 </Stats>

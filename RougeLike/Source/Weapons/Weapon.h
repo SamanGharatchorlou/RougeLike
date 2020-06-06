@@ -14,6 +14,7 @@ public:
 
 	virtual void fastUpdate(float dt) = 0;
 	virtual void slowUpdate(float dt) = 0;
+	virtual void render() = 0;
 
 	virtual bool canPlayHitSound() { return mCanPlayHitSound; }
 	virtual const std::string& hitSoundLabel() = 0;
@@ -22,7 +23,9 @@ public:
 	bool isAttacking() const { return mAttacking; }
 	virtual bool didHit() const = 0;
 
-	virtual void updateAnchor(VectorF anchor) = 0;
+	virtual RectF rect() const { return mRect.Translate(mOffset); }
+	virtual void setPosition(VectorF position) { mRect.SetBotCenter(position); }
+	virtual void setOffset(VectorF offset) { mOffset = offset; }
 	virtual void updateAimDirection(VectorF cursorPosition) = 0;
 
 	virtual void equipt(const WeaponData* data) = 0;
@@ -32,11 +35,13 @@ public:
 
 	void overrideCursorControl(bool overrideControl) { mOverrideCursorControl = overrideControl; }
 
-	virtual void render() = 0;
+
 
 
 protected:
 	RectF mRect;
+	VectorF mOffset;
+
 	VectorF mDirection;
 
 	bool mAttacking;

@@ -15,6 +15,7 @@
 struct GameData;
 class Map;
 class Weapon;
+class MeleeWeapon;
 
 
 class Player : public Actor
@@ -34,7 +35,7 @@ public:
 	void initCollisions();
 
 	void loadWeaponStash();
-	Weapon*	weapon() { return mWeapon; }
+	Weapon*	weapon();
 
 	void selectCharacter(const std::string& character);
 	void selectWeapon(const std::string& weaponName);
@@ -47,8 +48,8 @@ public:
 
 
 private:
-	void initCollider();
-	void initPropertBag(const std::string& config);
+	void initCollider(VectorF scale);
+	void initPropertBag(XMLParser& parser);
 
 	void processHit();
 
@@ -56,9 +57,6 @@ private:
 	void updateAttackingWeapon();
 
 	void updateCurrentTile();
-
-	RectF renderRect() const override;
-
 
 private:
 
@@ -72,7 +70,7 @@ private:
 
 	Vector2D<int> tileIndex;
 
-	Weapon* mWeapon;
+	MeleeWeapon* mWeapon;
 
 	bool mControlOverride;
 };
