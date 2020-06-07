@@ -7,7 +7,7 @@
 void EnemyIdle::init()
 {
 	timer.restart();
-	mEnemy->animator().selectAnimation("Idle");
+	mEnemy->animator().selectAnimation(Action::Idle);
 
 	mEnemy->physics()->setFlip(static_cast<SDL_RendererFlip>(randomNumberBetween(0, 2)));
 }

@@ -18,5 +18,4 @@ public:
 
 private:
 	VectorF mTargetPosition;
-	Timer<float> mTimer;
 };

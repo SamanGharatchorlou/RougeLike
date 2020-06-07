@@ -7,7 +7,7 @@
 
 void EnemyAlert::init()
 {
-	mEnemy->animator().selectAnimation("Hit");
+	mEnemy->animator().selectAnimation(Action::Idle);
 	timer.restart();
 }
 

@@ -2,9 +2,7 @@
 
 #include "Graphics/Tileset.h"
 
-class Tile;
 class Texture;
-class XMLParser;
 
 
 struct AnimationInfo
@@ -23,6 +21,12 @@ enum class Action
 	None,
 	Idle,
 	Run,
+	Attack,
+	Hurt,
+	Dead,
+
+	Active,
+
 	Count
 };
 
@@ -38,21 +42,23 @@ struct AnimationData
 };
 
 
-class Animator2
+class Animator
 {
 public:
 	class Animation
 	{
+		friend Animator;
+
 	public:
 		Animation(AnimationData& data);
 
 		void render(RectF rect, SDL_RendererFlip flip) const;
+		void render(RectF rect, SDL_RendererFlip flip, Uint8 alpha);
 
-		Action state() const { return mState; }
+		Texture* texture() const { return mTexture; }
 
 		void nextFrame();
 
-		VectorF size() const { return mTileDimentions; }
 
 	private:
 		Texture* mTexture;
@@ -62,24 +68,28 @@ public:
 		
 		Index mIndex;
 		int mFrameCount;
+
+		int mLoops;
 	};
 
 
 public:
-	Animator2();
+	Animator();
 
 	void setFrameSpeed(float frameSpeed) { mFrameSpeed = frameSpeed; }
 	void addAnimation(AnimationData& data);
 
 	void slowUpdate(float dt);
-
-	void render(RectF rect, SDL_RendererFlip flip) const;
+	void render(RectF rect, SDL_RendererFlip flip = SDL_FLIP_NONE) const;
+	void render(RectF rect, SDL_RendererFlip flip, Uint8 alpha);
 
 	void clear();
 
-	bool hasAnimations() const { return (bool)mAnimations.size(); }
+	Texture* texture() const { return mAnimations[mActiveIndex].texture(); }
 
+	bool hasAnimations() const { return (bool)mAnimations.size(); }
 	void selectAnimation(Action state);
+	void startAnimation(Action state);
 
 	void setSpeedFactor(float speed) { speedFactor = speed; }
 
@@ -87,19 +97,18 @@ public:
 	void pause() { timer.pause(); }
 	void stop() { timer.stop(); }
 
-	VectorF frameSize() const { return mAnimations[mActiveIndex].size(); }
+	int loops() const { return mAnimations[mActiveIndex].mLoops; }
+	VectorF frameSize() const { return mAnimations[mActiveIndex].mTileDimentions; }
+	int count() const { return mAnimations.size(); }
 
 
 private:
 
+	int mActiveIndex;
 	std::vector<Animation> mAnimations;
 
-	int mActiveIndex;
-
 	float speedFactor;
-
 	float mFrameSpeed;
-
 	Timer<float> timer;
 
 	const RectF* mRect;
@@ -107,7 +116,7 @@ private:
 
 
 
-
+/*
 // --- Animation 1 --- //
 
 using Animations = std::unordered_map<std::string, AnimationInfo>;
@@ -155,3 +164,4 @@ private:
 
 	Timer<float> timer;
 };
+*/

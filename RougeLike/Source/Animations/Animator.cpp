@@ -10,6 +10,14 @@ Action stringToAction(const std::string& action)
 		return Action::Idle;
 	else if (action == "Run")
 		return Action::Run;
+	else if (action == "Attack")
+		return Action::Attack;
+	else if (action == "Hurt")
+		return Action::Hurt;
+	else if (action == "Dead")
+		return Action::Dead;
+	else if (action == "Active")
+		return Action::Active;
 	else
 	{
 		DebugPrint(Warning, "No action matched the string '%s'\n", action.c_str());
@@ -18,23 +26,13 @@ Action stringToAction(const std::string& action)
 }
 
 
-Animator2::Animation::Animation(AnimationData& data) : 
+Animator::Animation::Animation(AnimationData& data) : 
 	mTexture(data.texture), mTileDimentions(data.tileDimentions), 
-	mState(data.action), mFrameCount(data.frameCount)
-{
-	//if (data.frameCount < 0)
-	//{
-	//	Vector2D<int> indexCount = mTexture->originalDimentions / mTileDimentions;
-	//	mFrameCount = indexCount.x * indexCount.y;
-	//}
-	//else
-	//{
-	//	mFrameCount = data.frameCount;
-	//}
+	mState(data.action), mFrameCount(data.frameCount),
+	mLoops(0) { }
 
-}
 
-void Animator2::Animation::render(RectF rect, SDL_RendererFlip flip) const
+void Animator::Animation::render(RectF rect, SDL_RendererFlip flip) const
 {
 #if _DEBUG
 	Vector2D<int> requestSize = (mIndex + 1)*mTileDimentions;
@@ -51,12 +49,27 @@ void Animator2::Animation::render(RectF rect, SDL_RendererFlip flip) const
 	mTexture->renderSubTexture(rect, tileRect, flip);
 }
 
+void Animator::Animation::render(RectF rect, SDL_RendererFlip flip, Uint8 alpha)
+{
+#if _DEBUG
+	Vector2D<int> requestSize = (mIndex + 1)*mTileDimentions;
+	Vector2D<int> objectSize = mTexture->originalDimentions;
 
-void Animator2::Animation::nextFrame()
+	if (requestSize.x > objectSize.x || requestSize.y > objectSize.y)
+		DebugPrint(Error, "Index(%d,%d) out of bounds\n", mIndex.x, mIndex.y);
+#endif
+
+	VectorF size = mTileDimentions; // keep as ints?
+	VectorF position = mTileDimentions * mIndex;
+	RectF tileRect(position, size);
+
+	mTexture->renderSubTexture(rect, tileRect, flip, alpha);
+}
+
+
+void Animator::Animation::nextFrame()
 {
 	Index bounaries = mTexture->originalDimentions / mTileDimentions;
-
-
 	mIndex += Index(1, 0);
 
 	Index yIncrement(0, 0);
@@ -72,35 +85,36 @@ void Animator2::Animation::nextFrame()
 	{
 		mIndex.y = 0;
 		mIndex.x = 0;
+		mLoops++;
 	}
 }
 
 
+Animator::Animator() : mActiveIndex(0), speedFactor(1.0f), mFrameSpeed(0.0f) { }
 
 
-
-Animator2::Animator2() : mActiveIndex(0), speedFactor(1.0f), mFrameSpeed(0.0f)
-{
-
-}
-
-void Animator2::addAnimation(AnimationData& data)
+void Animator::addAnimation(AnimationData& data)
 {
 	Animation animation(data);
 	mAnimations.push_back(animation);
 }
 
-void Animator2::render(RectF rect, SDL_RendererFlip flip) const
+void Animator::render(RectF rect, SDL_RendererFlip flip) const
 {
 	mAnimations[mActiveIndex].render(rect, flip);
 }
 
+void Animator::render(RectF rect, SDL_RendererFlip flip, Uint8 alpha)
+{
+	mAnimations[mActiveIndex].render(rect, flip, alpha);
+}
 
-void Animator2::selectAnimation(Action state)
+
+void Animator::selectAnimation(Action state)
 {
 	for (int i = 0; i < mAnimations.size(); i++)
 	{
-		if (mAnimations[i].state() == state)
+		if (mAnimations[i].mState == state)
 		{
 			mActiveIndex = i;
 			return;
@@ -110,8 +124,24 @@ void Animator2::selectAnimation(Action state)
 	DebugPrint(Warning, "Animation state %d not present in animator\n", (int)state);
 }
 
+void Animator::startAnimation(Action state)
+{
+	for (int i = 0; i < mAnimations.size(); i++)
+	{
+		if (mAnimations[i].mState == state)
+		{
+			mActiveIndex = i;
+			mAnimations[i].mLoops = 0;
+			start();
+			return;
+		}
+	}
 
-void Animator2::slowUpdate(float dt)
+	DebugPrint(Warning, "Animation state %d not present in animator\n", (int)state);
+}
+
+
+void Animator::slowUpdate(float dt)
 {
 	if (timer.getSeconds() >= mFrameSpeed / speedFactor)
 	{
@@ -120,7 +150,8 @@ void Animator2::slowUpdate(float dt)
 	}
 }
 
-void Animator2::clear()
+
+void Animator::clear()
 {
 	mAnimations.clear();
 	mActiveIndex = 0;
@@ -133,6 +164,7 @@ void Animator2::clear()
 
 // --- Animator --- //
 
+/*
 
 void Animator::init(Tileset spriteSheet, Animations animations)
 {
@@ -196,3 +228,4 @@ void Animator::render(RectF rect)
 {
 	mSpriteSheet.getTile(mAnimationIndex).render(rect);
 }
+*/

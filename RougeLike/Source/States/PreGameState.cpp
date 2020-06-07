@@ -30,11 +30,6 @@ PreGameState::PreGameState(GameData* gameData, GameController* gameController) :
 
 void PreGameState::init()
 {	
-	AnimationReader reader(mGameData->textureManager);
-	Animator anim;
-
-	//reader.initAnimator(anim, "Heal");
-
 	// Setup collision tracking (before setting up any Objects)
 	initCollisions();
 

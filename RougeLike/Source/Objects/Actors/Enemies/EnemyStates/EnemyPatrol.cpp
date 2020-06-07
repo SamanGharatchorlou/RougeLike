@@ -12,7 +12,7 @@ EnemyPatrol::EnemyPatrol(Enemy* enemy) : EnemyState(enemy) { }
 
 void EnemyPatrol::init()
 {
-	mEnemy->animator().selectAnimation("Run");
+	mEnemy->animator().selectAnimation(Action::Run);
 	setPatrolPoint();
 }
 
@@ -43,7 +43,7 @@ void EnemyPatrol::render()
 
 void EnemyPatrol::resume()
 {
-	mEnemy->animator().selectAnimation("Run");
+	mEnemy->animator().selectAnimation(Action::Run);
 	setPatrolPoint();
 }
 

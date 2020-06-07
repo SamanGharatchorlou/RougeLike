@@ -17,7 +17,4 @@ public:
 
 private:
 	float mArmor;
-
-	Actor* mSelf;
-	Timer<float> mTimer;
 };

@@ -47,6 +47,9 @@ public:
 
 	virtual const TargetType targetType() const = 0;
 
+	void setName(const std::string& name) { mName = name; }
+	std::string name() const { return mName; }
+
 	void setState(State state) { mState = state; }
 	State state() const { return mState; }
 
@@ -57,6 +60,8 @@ public:
 
 
 protected:
+	std::string mName;
+
 	State mState;
 	Animator mAnimator;
 	std::queue<EventPacket> mEvents;

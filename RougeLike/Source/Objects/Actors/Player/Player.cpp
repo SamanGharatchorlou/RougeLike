@@ -48,13 +48,17 @@ void Player::init(const std::string& characterConfig)
 	XMLParser parser;
 	parser.parseXML(FileManager::Get()->findFile(FileManager::Configs_Objects, characterConfig));
 
+	// Properties
 	initPropertBag(parser);
+
+	// Collider
+	mCollider = new Collider;
+
 	Actor::init(parser);
 
-	Attributes attributes = parser.attributes(parser.rootNode()->first_node("ColliderScale"));
-	float x = attributes.getFloat("x");
-	float y = attributes.getFloat("y");
-	initCollider(VectorF(x,y));
+#if _DEBUG
+	mCollider->setName("player");
+#endif
 
 	//// TODO: Get these strings from a set so they match up with the UI?
 	//addAbility("Slow", new SlowAbility(0.25F));
@@ -63,13 +67,13 @@ void Player::init(const std::string& characterConfig)
 	//addAbility("Blink", new BlinkAbility(500.0f));
 	//addAbility("Armor", new ArmorAbility(50.0f));
 
-	addAbility("FloorBurst", createNewAbility("Smash"));
+	addAbility(createNewAbility("Smash"));
 }
 
 
-void Player::addAbility(const std::string& name, Ability* ability)
+void Player::addAbility(Ability* ability)
 {
-	mAbilities.add(name, ability);
+	mAbilities.add(ability);
 }
 
 void Player::handleInput()
@@ -82,13 +86,13 @@ void Player::handleInput()
 	// hot keys
 	if (mGameData->inputManager->isPressed(Button::One))
 	{
-		mAbilities.setState("FloorBurst", Ability::Selected);
+		mAbilities.setState("Smash", Ability::Selected);
 	}
 
-	if (mGameData->inputManager->isReleased(Button::One))
-	{
-		mAbilities.exitSelection();
-	}
+	//if (mGameData->inputManager->isReleased(Button::One))
+	//{
+	//	mAbilities.exitSelection();
+	//}
 
 
 
@@ -143,7 +147,7 @@ void Player::slowUpdate(float dt)
 		pushEvent(mAbilities.popEvent());
 
 	Action action = mPhysics.isMoving() ? Action::Run : Action::Idle;
-	mAnimator2.selectAnimation(action);
+	mAnimator.selectAnimation(action);
 
 	mGameData->collisionManager->removeAllAttackers(CollisionManager::PlayerWeapon_Hit_Enemy);
 
@@ -246,17 +250,6 @@ void Player::initPropertBag(XMLParser& parser)
 }
 
 
-void Player::initCollider(VectorF scale)
-{
-	Collider* collider = new Collider;
-	collider->init(&mPhysics.rectRef(), scale);
-	setCollider(collider);
-#if _DEBUG
-	mCollider->setName("player");
-#endif
-}
-
-
 void Player::processHit()
 {
 	// Take damage
@@ -288,7 +281,8 @@ void Player::attack()
 		printf("playing miss\n");
 		mGameData->audioManager->playSound(mWeapon->missSoundLabel(), this);
 
-		mAbilities.activate("FloorBurst");
+		if (mAbilities.canActivate("Smash"));
+			mAbilities.activate("Smash");
 		//mAbilities.
 	}
 
@@ -315,11 +309,11 @@ void Player::updateAttackingWeapon()
 void Player::updateCurrentTile()
 {
 	// Update enemy paths when player changes tile
-	Map* currentMap = mGameData->environment->map(rect().Center());
+	Map* currentMap = mGameData->environment->map(position());
 
-	if (currentMap->isValidPosition(rect().Center()))
+	if (currentMap->isValidPosition(position()))
 	{
-		Vector2D<int> currentTile = currentMap->index(rect().Center());
+		Vector2D<int> currentTile = currentMap->index(position());
 		if (tileIndex != currentTile)
 		{
 			tileIndex = currentTile;

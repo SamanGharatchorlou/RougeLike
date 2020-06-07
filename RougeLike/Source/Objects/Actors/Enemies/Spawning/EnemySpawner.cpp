@@ -116,10 +116,10 @@ Shape EnemySpawner::pickRandomShape()
 // Level spawning functions
 void EnemySpawner::level1(Map* map)
 {
-	spawnPatrollers(map, 5, EnemyType::Imp);
+	spawnPatrollers(map, 5, EnemyType::Devil);
 
-	spawnShape(map, 30, pickRandomShape(), EnemyType::Imp);
-	spawnShape(map, 60, pickRandomShape(), EnemyType::Angel);
+	//spawnShape(map, 30, pickRandomShape(), EnemyType::Imp);
+	//spawnShape(map, 60, pickRandomShape(), EnemyType::Angel);
 }
 
 

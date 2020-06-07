@@ -22,7 +22,7 @@ void WallCollisionTracker::resolveWallCollisions(const Map* map, float dt)
 void WallCollisionTracker::testLeftCollisions(const Map* map, float dt)
 {
 	float movement = mActor->physics()->maxMovementDistance(dt);
-	RectF rect = mActor->collider()->scaledRect().Translate(VectorF(-movement, 0.0f));
+	RectF rect = mActor->scaledRect().Translate(VectorF(-movement, 0.0f));
 
 	const MapTile* topLeft = map->tile(rect.TopLeft());
 	const MapTile* bottomLeft = map->tile(rect.BotLeft());
@@ -39,7 +39,7 @@ void WallCollisionTracker::testLeftCollisions(const Map* map, float dt)
 void WallCollisionTracker::testRightCollisions(const Map* map, float dt)
 {
 	float movement = mActor->physics()->maxMovementDistance(dt);
-	RectF rect = mActor->collider()->scaledRect().Translate(VectorF(movement, 0.0f));
+	RectF rect = mActor->scaledRect().Translate(VectorF(movement, 0.0f));
 
 	const MapTile* topRight = map->tile(rect.TopRight());
 	const MapTile* bottomRight = map->tile(rect.BotRight());
@@ -56,7 +56,7 @@ void WallCollisionTracker::testRightCollisions(const Map* map, float dt)
 void WallCollisionTracker::testBottomCollisions(const Map* map, float dt)
 {
 	float movement = mActor->physics()->maxMovementDistance(dt);
-	RectF rect = mActor->collider()->scaledRect().Translate(VectorF(0.0f, movement));
+	RectF rect = mActor->scaledRect().Translate(VectorF(0.0f, movement));
 
 	const MapTile* bottomRight = map->tile(rect.BotRight());
 	const MapTile* bottomLeft = map->tile(rect.BotLeft());
@@ -73,7 +73,7 @@ void WallCollisionTracker::testBottomCollisions(const Map* map, float dt)
 void WallCollisionTracker::testTopCollisions(const Map* map, float dt)
 {
 	float movement = mActor->physics()->maxMovementDistance(dt);
-	RectF rect = mActor->collider()->scaledRect().Translate(VectorF(0.0f, -movement));
+	RectF rect = mActor->scaledRect().Translate(VectorF(0.0f, -movement));
 
 	const MapTile* topLeft = map->tile(rect.TopLeft());
 	const MapTile* topRight = map->tile(rect.TopRight());

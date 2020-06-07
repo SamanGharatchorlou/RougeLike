@@ -72,13 +72,19 @@ void WeaponStash::load(TextureManager* tm)
 
 void WeaponStash::fillBasicWeaponData(XMLParser& parser, WeaponData* data)
 {
+	ValueMap properties = parser.values(parser.rootNode()->first_node("Properties"));
+
 	// Damage
-	int damage = std::stoi(parser.firstRootNodeValue("Damage"));
+	float damage = std::stof(properties["Damage"]);
 	data->damage = Damage(damage);
 
 	// Audio
-	data->audioHit = parser.firstRootNodeValue("AudioHit");
-	data->audioMiss = parser.firstRootNodeValue("AudioMiss");
+	ValueMap audio = parser.values(parser.rootNode()->first_node("Audio"));
+	data->audioHit = audio["Hit"];
+	data->audioMiss = audio["AudioMiss"];
+
+
+	data->maxDimention = std::stof(parser.firstRootNodeValue("MaxSize"));
 }
 
 
@@ -87,11 +93,12 @@ void WeaponStash::fillMeleeWeaponData(XMLParser& parser, MeleeWeaponData* data)
 {
 	data->type = WeaponType::Melee;
 
+	ValueMap properties = parser.values(parser.rootNode()->first_node("Properties"));
+
 	// Swing speed & angle
-	data->swingSpeed = std::stof(parser.firstRootNodeValue("SwingSpeed"));
-	data->swingArc = std::stof(parser.firstRootNodeValue("SwingAngle"));
-	data->knockbackDistance = std::stof(parser.firstRootNodeValue("KnockbackDistance"));
-	data->maxDimention = std::stof(parser.firstRootNodeValue("MaxSize"));
+	data->swingSpeed = std::stof(properties["SwingSpeed"]);
+	data->swingArc = std::stof(properties["SwingAngle"]);
+	data->knockbackDistance = std::stof(properties["KnockbackDistance"]);
 }
 
 //

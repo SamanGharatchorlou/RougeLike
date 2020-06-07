@@ -6,8 +6,6 @@
 
 void EnemyPropertyBag::readProperties(XMLParser& parser)
 {
-	//mConfigFile = config;
-
 	ValueMap map = readValues(parser);
 
 	fillProperties(map);

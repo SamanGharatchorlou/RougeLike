@@ -18,6 +18,8 @@ struct WeaponData
 	Texture* texture = nullptr;
 	Damage damage;
 
+	float maxDimention = 0.0f;
+
 	std::string audioMiss;
 	std::string audioHit;
 };
@@ -28,7 +30,6 @@ struct MeleeWeaponData : public WeaponData
 	float swingArc = 0.0f;
 	float swingSpeed = 0.0f;
 	float knockbackDistance = 0.0f;
-	float maxDimention = 0.0f;
 };
 
 

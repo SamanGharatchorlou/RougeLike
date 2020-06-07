@@ -12,6 +12,4 @@ public:
 	void init();
 
 	const EnemyType type() const override { return EnemyType::Angel; }
-
-	RectF renderRect() const override;
 };

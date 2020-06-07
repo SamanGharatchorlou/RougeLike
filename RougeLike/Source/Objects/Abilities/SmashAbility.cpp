@@ -17,8 +17,8 @@ void SmashAbility::slowUpdate(float dt)
 {
 	mAnimator.slowUpdate(dt);
 
-	// Completed one animation loop
-	if (mAnimator.animationIndex() + 1 == mAnimator.animationCount())
+	// Completed one animation loop 
+	if (mAnimator.loops() > 0)
 		setState(Ability::Finished);
 }
 
@@ -27,7 +27,6 @@ void SmashAbility::slowUpdate(float dt)
 void SmashAbility::activate(VectorF position)
 {
 	mRect.SetCenter(position);
-
-	mAnimator.selectAnimation("activate");
+	mAnimator.startAnimation(Action::Active);
 }
 

@@ -12,7 +12,7 @@ EnemyPreAttack::EnemyPreAttack(Enemy* enemy) : EnemyState(enemy)
 
 void EnemyPreAttack::init()
 {
-	mEnemy->animator().selectAnimation("Attack");
+	mEnemy->animator().selectAnimation(Action::Attack);
 	timer.restart();
 }
 

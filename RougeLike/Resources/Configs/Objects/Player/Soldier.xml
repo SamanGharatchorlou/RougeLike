@@ -1,16 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Stats>
-	<!-- Attributes -->
-	<Level>1</Level>
-	<Health>100</Health>
-	<Armor>200</Armor>
-	<AttackSpeed>10</AttackSpeed>
+<Data>
+	<Properties>
+		<!-- Attributes -->
+		<Level>1</Level>
+		<Health>100</Health>
+		<Armor>200</Armor>
+		<AttackSpeed>10</AttackSpeed>
 
-	<!-- Physics -->
-	<Force>8000</Force>
-	<MaxVelocity>300</MaxVelocity>
+		<!-- Physics -->
+		<Force>8000</Force>
+		<MaxVelocity>300</MaxVelocity>
+	</Properties>
 
 	<MaxSize>100</MaxSize>
 	<ColliderScale x = "0.32" y = "0.57"></ColliderScale>
 
-</Stats>
+	<AnimationInfo>
+		<ID>Soldier</ID>
+		<FrameSpeed>0.04</FrameSpeed>
+		<FrameSize x = "900" y ="900"></FrameSize>
+		<Animations>
+			<Idle>16</Idle>
+			<Run>12</Run>
+		</Animations>
+	</AnimationInfo>
+</Data>

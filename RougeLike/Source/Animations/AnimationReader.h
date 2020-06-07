@@ -11,19 +11,11 @@ class AnimationReader
 {
 public:
 	AnimationReader(const TextureManager* textureManager, XMLParser& parser) : tm(textureManager), mParser(parser) { };
-	bool initAnimator(Animator& animator, const std::string& config);
+	bool initAnimator(Animator& animator);
 
-	bool initAnimator2(Animator2& animator);
 
 private:
-	Animations readAnimationData() const;
-	TilesetData buildTilesetData() const;
-
-	Vector2D<int> readTileCount() const;
-	Vector2D<int> readTileSize() const;
-	Texture* readTexture(const TextureManager* tm) const;
-
-
+	AnimationData readData(xmlNode node);
 	Vector2D<int> getXYAttributes(xmlNode node);
 
 

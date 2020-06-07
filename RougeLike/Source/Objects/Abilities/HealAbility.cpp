@@ -18,7 +18,6 @@ void HealAbility::fillValues(ValueMap& values)
 void HealAbility::init(Animator animator, Player* player)
 {
 	Ability::init(animator, player);
-	mTimer.start();
 }
 
 void HealAbility::slowUpdate(float dt)
@@ -29,7 +28,7 @@ void HealAbility::slowUpdate(float dt)
 	mRect.SetBotCenter(mPlayer->rect().BotCenter() + VectorF(0.0f, 10.0f));
 
 	// Completed one animation loop
-	if (mAnimator.animationIndex() + 1 == mAnimator.animationCount())
+	if (mAnimator.loops() > 0)
 		setState(Ability::Finished);
 }
 
@@ -43,6 +42,5 @@ void HealAbility::activate(Actor* actor)
 	SetHealthBarEvent* dataPtr = new SetHealthBarEvent(*hp);
 	mEvents.push(EventPacket(dataPtr));
 
-	mAnimator.selectAnimation("activate");
-	mTimer.restart();
+	mAnimator.startAnimation(Action::Active);
 }

@@ -25,21 +25,20 @@ void BlinkAbility::activate(VectorF position)
 	realiseSize();
 	mRect.SetCenter(position);
 	mTargetPosition = position;
-	mAnimator.selectAnimation("activate");
+	mAnimator.startAnimation(Action::Active);
 }
+
 
 void BlinkAbility::activate(Actor* actor)
 {
 	BlinkEffect* blink = new BlinkEffect(mTargetPosition);
 	mPlayer->addEffect(blink);
-
-	mTimer.start();
 }
 
 
 void BlinkAbility::slowUpdate(float dt)
 {
-	if (mTimer.getSeconds() > 1.0f)
+	if (mAnimator.loops() > 2)
 		mRect.SetSize(mRect.Size() * 0.99);
 
 	if(mRect.Size().x < 10.0f)

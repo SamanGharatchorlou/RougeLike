@@ -12,6 +12,4 @@ public:
 	void init();
 
 	const EnemyType type() const override { return EnemyType::Imp; }
-
-	RectF renderRect() const override;
 };

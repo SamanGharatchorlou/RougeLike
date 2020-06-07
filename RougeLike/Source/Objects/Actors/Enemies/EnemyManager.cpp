@@ -9,6 +9,7 @@
 
 #include "Types/Imp.h"
 #include "Types/Angel.h"
+#include "Types/Devil.h"
 
 // State specific updates
 #include "Objects/Actors/Enemies/EnemyStates/EnemyRun.h"
@@ -127,7 +128,8 @@ void EnemyManager::generatePathMap()
 
 void EnemyManager::addEnemiesToPool(EnemyType type, unsigned int count)
 {
-	return;
+
+
 	// TODO: how to do a cheaper copy, no need to open and read files everytime... 
 	for (unsigned int i = 0; i < count; i++)
 	{
@@ -155,6 +157,15 @@ void EnemyManager::addEnemiesToPool(EnemyType type, unsigned int count)
 			angel->init(); // TODO: better way to feed this in?
 
 			enemyObject.first = angel;
+			enemyObject.second = ObjectStatus::Available;
+			break;
+		}
+		case EnemyType::Devil:
+		{
+			Devil* devil= new Devil(mGameData);
+			devil->init(); // TODO: better way to feed this in?
+
+			enemyObject.first = devil;
 			enemyObject.second = ObjectStatus::Available;
 			break;
 		}

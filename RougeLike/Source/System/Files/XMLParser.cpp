@@ -2,8 +2,26 @@
 #include "XMLParser.h"
 
 
+void XMLParser::parseXML(const std::string& filePath)
+{
+	// TODO: this assert will not trigger for config/mapS/dungeon.xml i.e. map has extra S so file doesnt exist there
+	// but it will pass the assert, does the exists function work correctly?
+	ASSERT(fs::exists(filePath), "File path %s does not exist, cannot parse xml file\n", filePath.c_str());
+
+	file = new rapidxml::file<>(filePath.c_str());
+	xmlFile.parse<0>(file->data());
+
+#if _DEBUG
+	path = filePath;
+#endif
+}
+
+
 Attributes XMLParser::attributes(xmlNode node) const
 {
+	if (node == nullptr)
+		printf("pause");
+
 	ASSERT(Warning, node != nullptr, "Attempting to get attributes for non-existant node\n");
 	Attributes attributes;
 
@@ -19,6 +37,8 @@ Attributes XMLParser::attributes(xmlNode node) const
 
 ValueMap XMLParser::values(xmlNode node) const
 {
+	if (node == nullptr)
+		printf("pause");
 	ASSERT(Warning, node != nullptr, "Attempting to get values for non-existant node\n");
 	ValueMap valueMap;
 
@@ -43,7 +63,14 @@ std::string XMLParser::firstRootNodeValue(const std::string& label) const
 	return node->value();
 }
 
+
 xmlNode XMLParser::rootNode() const
 {
 	return xmlFile.first_node();
+}
+
+
+std::string XMLParser::nodeValue(xmlNode node, const std::string& label)
+{		
+	return node->first_node(label.c_str())->value();
 }

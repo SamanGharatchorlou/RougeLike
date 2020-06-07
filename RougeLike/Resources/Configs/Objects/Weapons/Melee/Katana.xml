@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Melee>
-	<Damage>25</Damage>
-	<SwingSpeed>1500</SwingSpeed>
-	<SwingAngle>140</SwingSpeed>
-	<KnockbackDistance>40</KnockbackDistance>
+
+	<Properties>
+		<Damage>25</Damage>
+		<SwingSpeed>1500</SwingSpeed>
+		<SwingAngle>140</SwingAngle>
+		<KnockbackDistance>40</KnockbackDistance>
+	</Properties>
 
 	<MaxSize>65</MaxSize>
 
-	<AudioHit>ShortSwordHit</AudioHit>
-	<AudioMiss>ShortSwordSwoosh</AudioMiss>
+	<Audio>
+		<Hit>ShortSwordHit</Hit>
+		<Miss>ShortSwordSwoosh</Miss>
+	</Audio>
 </Melee>

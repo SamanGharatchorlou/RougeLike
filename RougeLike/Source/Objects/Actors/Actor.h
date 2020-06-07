@@ -42,7 +42,6 @@ public:
 	bool hasProperty(const std::string& property) const;
 
 	// Collider
-	void setCollider(Collider* collider) { mCollider = collider; }
 	Collider* collider() const { return mCollider; }
 
 	// Systems
@@ -53,8 +52,8 @@ public:
 	// Position
 	VectorF		position() const { return mPhysics.rect().Center(); }
 	RectF&		rectRef() { return mPhysics.rectRef(); }
-	RectF		rect() const { return mPhysics.rect(); } 
-	virtual RectF		renderRect() const { return rect(); } // TODO: remove
+	RectF		rect() const { return mPhysics.rect(); }
+	RectF		scaledRect() const;
 
 	// Effects
 	void addEffect(Effect* effect);
@@ -68,8 +67,6 @@ protected:
 	Collider* mCollider;
 
 	Animator mAnimator;
-
-	Animator2 mAnimator2;
 
 	Physics mPhysics;
 

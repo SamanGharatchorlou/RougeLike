@@ -23,25 +23,25 @@
 
 void AbilityManager::handleInput()
 {
-	for (std::unordered_map<std::string, Ability*>::iterator iter = mAbilities.begin(); iter != mAbilities.end(); iter++)
+	for (int i = 0; i < mAbilities.size(); i++)
 	{
-		UIButton* button = mGameData->uiManager->findButton(iter->first);
+		UIButton* button = mGameData->uiManager->findButton(mAbilities[i]->name());
 
 		// Enter selection mode
 		if (button && button->isReleased())
 		{
 			exitSelection();
-			iter->second->setState(Ability::Selected);
+			mAbilities[i]->setState(Ability::Selected);
 		}
 	}
 }
 
 
-void AbilityManager::completeSelection(std::unordered_map<std::string, Ability*>::iterator iter)
+void AbilityManager::completeSelection(Ability* ability)
 {
-	iter->second->setState(Ability::Running);
+	ability->setState(Ability::Running);
 
-	UIButton* button = mGameData->uiManager->findButton(iter->first);
+	UIButton* button = mGameData->uiManager->findButton(ability->name());
 	if (button)
 		button->setActive(false);
 
@@ -50,11 +50,11 @@ void AbilityManager::completeSelection(std::unordered_map<std::string, Ability*>
 
 void AbilityManager::exitSelection()
 {
-	for (std::unordered_map<std::string, Ability*>::iterator iter = mAbilities.begin(); iter != mAbilities.end(); iter++)
+	for (int i = 0; i < mAbilities.size(); i++)
 	{
-		iter->second->setState(Ability::Idle);
+		mAbilities[i]->setState(Ability::Idle);
 
-		UIButton* button = mGameData->uiManager->findButton(iter->first);
+		UIButton* button = mGameData->uiManager->findButton(mAbilities[i]->name());
 		if (button)
 			button->setActive(false);
 	}
@@ -63,9 +63,9 @@ void AbilityManager::exitSelection()
 
 void AbilityManager::slowUpdate(float dt)
 {
-	for (std::unordered_map<std::string, Ability*>::iterator iter = mAbilities.begin(); iter != mAbilities.end(); iter++)
+	for (int i = 0; i < mAbilities.size(); i++)
 	{
-		Ability* ability = iter->second;
+		Ability* ability = mAbilities[i];
 
 		switch (ability->state())
 		{
@@ -76,7 +76,8 @@ void AbilityManager::slowUpdate(float dt)
 		}
 		case Ability::Activating:
 		{
-			completeSelection(iter);
+			completeSelection(ability);
+
 			break;
 		}
 		case Ability::Running:
@@ -95,9 +96,9 @@ void AbilityManager::slowUpdate(float dt)
 		}
 
 		// Pass events to parent object to be handled 
-		while (iter->second->hasEvent())
+		while (ability->hasEvent())
 		{
-			mEvents.push(iter->second->popEvent());
+			mEvents.push(ability->popEvent());
 		}
 	}
 }
@@ -106,9 +107,9 @@ void AbilityManager::slowUpdate(float dt)
 
 void AbilityManager::render()
 {
-	for (std::unordered_map<std::string, Ability*>::iterator iter = mAbilities.begin(); iter != mAbilities.end(); iter++)
+	for (int i = 0; i < mAbilities.size(); i++)
 	{
-		iter->second->render();
+		mAbilities[i]->render();
 	}
 }
 
@@ -210,39 +211,49 @@ void AbilityManager::attemptActivation(Ability* ability)
 }
 
 
-void AbilityManager::activate(const std::string& ability)
+void AbilityManager::activate(const std::string& name)
 {
-	if (mAbilities.count(ability) > 0)
+	if (hasAbility(name))
 	{
-		mAbilities[ability]->activate(mGameData->actors->playerActor());
-		mAbilities[ability]->setState(Ability::Running);
+		Ability* ability = get(name);
+		ability->activate(mGameData->actors->playerActor());
+		ability->setState(Ability::Running);
 	}
 	else
 	{
-		DebugPrint(Log, "Play does not have the '%s' ability\n", ability.c_str());
+		DebugPrint(Log, "Play does not have the '%s' ability\n", name.c_str());
 	}
+}
+
+bool AbilityManager::canActivate(const std::string& name)
+{
+	return true;
 }
 
 
 bool AbilityManager::inSelectionMode() const
 {
-	bool selectionMode = false;
-
-	for (std::unordered_map<std::string, Ability*>::const_iterator iter = mAbilities.begin(); iter != mAbilities.end(); iter++)
+	for (int i = 0; i < mAbilities.size(); i++)
 	{
-		if (iter->second->state() == Ability::Selected)
-			selectionMode = true;
+		if (mAbilities[i]->state() == Ability::Selected)
+		{
+			return true;
+		}
 	}
 
-	return selectionMode;
+	return false;
 }
 
-void AbilityManager::add(const std::string& name, Ability* ability)
+
+void AbilityManager::add(Ability* ability)
 {
-	AnimationReader reader(mGameData->textureManager);
+	XMLParser parser;
+	parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, ability->name()));
+
+	AnimationReader reader(mGameData->textureManager, parser);
 	Animator animator;
 
-	if (reader.initAnimator(animator, name))
+	if (reader.initAnimator(animator))
 	{
 		ability->init(animator, mGameData->actors->player());
 		
@@ -256,17 +267,38 @@ void AbilityManager::add(const std::string& name, Ability* ability)
 
 	}
 	else
-		DebugPrint(Warning, "Animator setup failed for '%s' ability\n", name.c_str());
+		DebugPrint(Warning, "Animator setup failed for '%s' ability\n", ability->name().c_str());
 
 	ability->setState(Ability::Idle);
-	mAbilities[std::string(name)] = ability;
+	mAbilities.push_back(ability);
 }
 
 
-void AbilityManager::setState(const std::string& ability, Ability::State state)
+void AbilityManager::setState(const std::string& name, Ability::State state)
 {
-	if(AbilityManager::hasAbility(ability))
+	if(hasAbility(name))
 	{
-		mAbilities[ability]->setState(state);
+		get(name)->setState(state);
 	}
+}
+
+
+Ability* AbilityManager::get(const std::string& name) const
+{
+	for (int i = 0; i < mAbilities.size(); i++)
+	{
+		if (mAbilities[i]->name() == name)
+		{
+			return mAbilities[i];
+		}
+	}
+
+	DebugPrint(Warning, "Ability '%s' not in ability manager\n", name.c_str());
+	return nullptr;
+}
+
+
+bool AbilityManager::hasAbility(const std::string& ability) const
+{
+	return get(ability) != nullptr;
 }

@@ -40,7 +40,7 @@ public:
 	void selectCharacter(const std::string& character);
 	void selectWeapon(const std::string& weaponName);
 
-	void addAbility(const std::string& name, Ability* ability);
+	void addAbility(Ability* ability);
 
 	StatManager& statManager() { return mStatManager; }
 

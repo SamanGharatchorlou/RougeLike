@@ -12,7 +12,7 @@ EnemyRun::EnemyRun(Enemy* enemy) :
 
 void EnemyRun::init()
 {
-	mEnemy->animator().selectAnimation("Run");
+	mEnemy->animator().selectAnimation(Action::Run);
 	updatePath();
 }
 
@@ -75,7 +75,7 @@ void EnemyRun::render()
 
 void EnemyRun::resume()
 {
-	mEnemy->animator().selectAnimation("Run");
+	mEnemy->animator().selectAnimation(Action::Run);
 	
 	if(!inAttackRange())
 		updatePath();

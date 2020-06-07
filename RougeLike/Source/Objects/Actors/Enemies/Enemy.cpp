@@ -17,6 +17,10 @@
 
 #include "AI/AIPathMap.h"
 
+#if _DEBUG
+#include "Debug/DebugDraw.h"
+#endif
+
 
 Enemy::Enemy(GameData* gameData) :
 	Actor(gameData),
@@ -32,25 +36,21 @@ Enemy::Enemy(GameData* gameData) :
 
 void Enemy::init(const std::string& config)
 {
+	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs_Objects, config));
+
 	// Property bag
 	EnemyPropertyBag* propertyBag = new EnemyPropertyBag;
-	propertyBag->readProperties(config);
+	propertyBag->readProperties(parser);
 	setPropertyBag(propertyBag);
 
-	Actor::init(config);
-
-	// Physics
-	VectorF size = mAnimator.getSpriteTile()->getRect().Size() * 1.5f;
-	mColliderRatio = VectorF(0.75f, 1.0f);
-	mPhysics.setRect(RectF(VectorF(), size * mColliderRatio));
-
-	// Collider
-	DamageCollider* collider = new DamageCollider;
-	collider->init(&mPhysics.rectRef());
-	
+	// Collider	
 	Damage* damage = static_cast<Damage*>(getProperty("Damage"));
-	collider->initDamage(*damage, getPropertyValue("KnockbackDistance"));
-	setCollider(collider);
+	float knockback = getPropertyValue("KnockbackDistance");
+	mCollider = new DamageCollider(*damage, knockback);
+
+	Actor::init(parser);
+	
+
 #if _DEBUG
 	mCollider->setName(config);
 #endif
@@ -73,7 +73,7 @@ void Enemy::slowUpdate(float dt)
 	Actor::slowUpdate(dt);
 
 	// Reset alpha for enemies sharing the same texture
-	mAnimator.getSpriteTexture()->setAlpha(alphaMax);
+	mAnimator.texture()->setAlpha(alphaMax);
 
 	mStateMachine.processStateChanges();
 	mStateMachine.getActiveState().slowUpdate(dt);
@@ -96,11 +96,12 @@ void Enemy::render()
 
 void Enemy::renderCharacter()
 {
+#if DRAW_ENEMY_RECTS
+	debugDrawRect(rect(), RenderColour(RenderColour::Red));
+	debugDrawRect(scaledRect(), RenderColour(RenderColour::Blue));
+#endif	
+	
 	Actor::render();
-
-#if DRAW_ENEMY_RECT
-	debugDrawRect(mRect, RenderColour(RenderColour::Red));
-#endif
 }
 
 const Map* Enemy::getEnvironmentMap() const

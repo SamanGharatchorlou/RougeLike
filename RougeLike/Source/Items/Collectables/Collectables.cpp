@@ -122,9 +122,9 @@ void Collectables::spawn(Collectable* collectable, float xPosition)
 
 Texture* Collectables::findIcon(Collectable* collectable) const
 {
-	ValueMap info = getConfigInfo(collectable);
-	Texture* texture = mGameData->textureManager->getTexture(info["Icon"], FileManager::Image_UI);
-
+	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs_Objects, collectable->name()));
+	std::string icon = parser.firstRootNodeValue("Icon");
+	Texture* texture = mGameData->textureManager->getTexture(icon, FileManager::Image_UI);
 	ASSERT(Warning, texture != nullptr, "Collectable '%s' info has no valid icon name\n", collectable->name().c_str());
 
 	return texture;
@@ -135,5 +135,5 @@ ValueMap Collectables::getConfigInfo(Collectable* collectable) const
 	XMLParser parser;
 	std::string filePath = FileManager::Get()->findFile(FileManager::Configs_Objects, collectable->name());
 	parser.parseXML(filePath);
-	return parser.values(parser.rootNode());
+	return parser.values(parser.rootNode()->first_node("Properties"));
 }

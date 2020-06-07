@@ -21,15 +21,11 @@ RenderManager::RenderManager(GameData* gameData) :
 
 void RenderManager::render()
 {
-	float renderDepth = mGameData->actors->player()->rect().Center().y;
-
-	//mEnvironment->renderBottomLayer(mGameData->textureManager, renderDepth);
 	mEnvironment->renderBottomLayer();
 
 	mActors->render();
 
 	mEnvironment->renderTopLayer();
-	//mEnvironment->renderTopLayer(mGameData->textureManager, renderDepth);
 
 	mCollectables->render();
 	

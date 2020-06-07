@@ -19,21 +19,24 @@ public:
 	void slowUpdate(float dt);
 	void render();
 
-	void add(const std::string& name, Ability* ability);
-	void activate(const std::string& ability);
-	void setState(const std::string& ability, Ability::State state);
+	void add(Ability* ability);
+	bool canActivate(const std::string& name);
+	void activate(const std::string& name);
+	void setState(const std::string& name, Ability::State state);
 
 	void exitSelection();
 	bool inSelectionMode() const;
-	
-	bool hasAbility(const std::string& ability) const { return mAbilities.count(ability) > 0; }
+
+	Ability* get(const std::string& name) const;
+	bool hasAbility(const std::string& name) const;
 
 	bool hasEvent() const { return mEvents.hasEvent(); }
 	EventPacket popEvent() { return mEvents.pop(); }
+
 	
 
 private:
-	void completeSelection(std::unordered_map<std::string, Ability*>::iterator iter);
+	void completeSelection(Ability* ability);
 	void attemptActivation(Ability* ability);
 
 
@@ -41,5 +44,5 @@ private:
 	GameData* mGameData;
 	LocalDispatcher mEvents;
 
-	std::unordered_map<std::string, Ability*> mAbilities;
+	std::vector<Ability*> mAbilities;
 };

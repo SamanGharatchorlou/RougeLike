@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Ability>
-	<MaxSize>125</MaxSize>
-	<Heal>50</Heal>
+	<Properties>
+		<MaxSize>125</MaxSize>
+		<Heal>50</Heal>
+	</Properties>
+
 	<Icon>HealIcon</Icon>
+
+	<AnimationInfo>
+		<ID>Heal</ID>
+		<FrameSpeed>0.05</FrameSpeed>
+		<FrameSize x = "536" y ="504"></FrameSize>
+		<Animations>
+			<Active>23</Active>
+		</Animations>
+	</AnimationInfo>
 </Ability>

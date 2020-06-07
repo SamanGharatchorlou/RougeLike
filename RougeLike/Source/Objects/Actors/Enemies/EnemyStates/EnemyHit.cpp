@@ -18,9 +18,9 @@ void EnemyHit::init()
 {
 	decayTimer.restart();
 
-	mEnemy->animator().selectAnimation("Hit");
+	mEnemy->animator().selectAnimation(Action::Hurt);
 
-	Texture* texture = mEnemy->animator().getSpriteTexture();
+	Texture* texture = mEnemy->animator().texture();
 	texture->modifyAlpha(-100);
 
 	attackTargetPosition = mEnemy->attackTargetRect()->Center();
@@ -44,20 +44,19 @@ void EnemyHit::slowUpdate(float dt)
 
 void EnemyHit::render()
 {
-	RectF rect = mEnemy->renderRect();
-	rect = Camera::Get()->toCameraCoords(rect);
+	RectF rect = Camera::Get()->toCameraCoords(mEnemy->rect());
 
 #if DRAW_ENEMY_RECT
 	debugDrawRect(mEnemy->rect(), RenderColour(RenderColour::Red));
 #else
-	mEnemy->animator().getSpriteTile()->render(rect, mEnemy->physics()->flip());
+	mEnemy->animator().render(rect, mEnemy->physics()->flip());
 #endif
 }
 
 
 void EnemyHit::exit()
 {
-	Texture* texture = mEnemy->animator().getSpriteTexture();
+	Texture* texture = mEnemy->animator().texture();
 	texture->setAlpha(alphaMax);
 
 	mEnemy->physics()->facePoint(mEnemy->attackTargetRect()->Center());

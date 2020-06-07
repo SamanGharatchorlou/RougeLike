@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Ability>
-	<Damage>50</Damage>
-	<Force>500</Force>
-	<Range>250</Range>
-	<MaxSize>125</MaxSize>
+	<Properties>
+		<Damage>50</Damage>
+		<Force>500</Force>
+		<Range>250</Range>
+		<MaxSize>125</MaxSize>
+	</Properties>
+
 	<Icon>SpikesIcon</Icon>
+
+	<AnimationInfo>
+		<ID>Spikes</ID>
+		<FrameSpeed>0.1</FrameSpeed>
+		<FrameSize x = "72" y ="26"></FrameSize>
+		<Animations>
+			<Active>8</Active>
+		</Animations>
+	</AnimationInfo>
 </Ability>

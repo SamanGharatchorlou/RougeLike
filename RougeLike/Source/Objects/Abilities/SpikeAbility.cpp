@@ -24,7 +24,7 @@ void SpikeAbility::fillValues(ValueMap& values)
 void SpikeAbility::activate(VectorF position)
 {
 	mRect.SetBotCenter(position);
-	mAnimator.selectAnimation("activate");
+	mAnimator.startAnimation(Action::Active);
 }
 
 
@@ -43,6 +43,6 @@ void SpikeAbility::slowUpdate(float dt)
 	mAnimator.slowUpdate(dt);
 
 	// Completed one animation loop
-	if (mAnimator.animationIndex() + 1 == mAnimator.animationCount())
+	if (mAnimator.loops() > 0)
 		setState(Ability::Finished);
 }

@@ -20,5 +20,4 @@ public:
 
 private:
 	float mHeal;
-	Timer<float> mTimer;
 };

@@ -47,8 +47,8 @@ PropertyBag::ValueMap PropertyBag::readValues(XMLParser& parser)
 	ValueMap valueMap;
 	float value = 0.0f;
 
-	xmlNode rootNode = parser.rootNode();
-	xmlNode node = rootNode->first_node();
+	xmlNode propertyNode = parser.rootNode()->first_node("Properties");
+	xmlNode node = propertyNode->first_node();
 
 	while (node != nullptr)
 	{

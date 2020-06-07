@@ -25,7 +25,6 @@ public:
 
 	const RectF rect() const { return *mRect; }
 	RectF scaledRect() const;
-	RectF scaledRect(VectorF scale) const;
 
 	const Collider* getOtherCollider() const { return mOtherCollider; }
 

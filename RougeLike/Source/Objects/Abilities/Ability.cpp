@@ -37,7 +37,7 @@ void Ability::realiseSize()
 	ASSERT(Warning, mAnimator.hasAnimations(), "Must call Ability::init before realiseSize function\n");
 	ASSERT(Warning, mMaxDimention != 0.0f, "Max dimentions have not been set\n");
 
-	VectorF baseSize = mAnimator.getSpriteTile()->getRect().Size();
+	VectorF baseSize = mAnimator.frameSize();
 	VectorF ratio = baseSize / mMaxDimention;
 	float maxRatio = std::max(ratio.x, ratio.y);
 
@@ -50,7 +50,7 @@ void Ability::render()
 	if (mState == Running)
 	{
 		RectF rect = Camera::Get()->toCameraCoords(mRect);
-		mAnimator.getSpriteTile()->render(rect);
+		mAnimator.render(rect);
 	}
 }
 
@@ -108,7 +108,9 @@ Ability* createNewAbility(const std::string& name)
 {
 	XMLParser parser;
 	parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, name));
-	ValueMap values = parser.values(parser.rootNode());
+
+	xmlNode propertyNode = parser.rootNode()->first_node("Properties");
+	ValueMap values = parser.values(propertyNode);
 
 	Ability* ability = nullptr;
 
@@ -138,7 +140,10 @@ Ability* createNewAbility(const std::string& name)
 	}
 
 	if (ability)
+	{
 		ability->fillValues(values);
+		ability->setName(name);
+	}
 	else
 		DebugPrint(Warning, "No new ability could be created wth the name '%s'\n", name.c_str());
 

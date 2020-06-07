@@ -24,22 +24,25 @@ Actor::~Actor()
 
 void Actor::init(XMLParser& parser)
 {
-	// Setup animations
-	AnimationReader reader(mGameData->textureManager);
-	reader.initAnimator2(mAnimator2, characterConfig);
-	mAnimator2.start();
+	// Animations
+	AnimationReader reader(mGameData->textureManager, parser);
+	reader.initAnimator(mAnimator);
+	mAnimator.start();
 
-	// Set size
-	XMLParser parser;
-	parser.parseXML(FileManager::Get()->findFile(FileManager::Configs_Objects, characterConfig));
-
-	VectorF baseSize = mAnimator2.frameSize();
+	// Physics
+	VectorF baseSize = mAnimator.frameSize();
 	float maxDimention = std::stof(parser.firstRootNodeValue("MaxSize"));
 	VectorF size = realiseSize(baseSize, maxDimention);
-
 	mPhysics.setRect(RectF(VectorF(), size));
 
-	// Set properties
+	// Collider
+	ASSERT(Warning, mCollider != nullptr, "Collider must be created before being set\n");
+	Attributes attributes = parser.attributes(parser.rootNode()->first_node("ColliderScale"));
+	float x = attributes.getFloat("x");
+	float y = attributes.getFloat("y");
+	mCollider->init(&mPhysics.rectRef(), VectorF(x, y));
+
+	// Properties
 	ASSERT(Warning, mPropertyBag != nullptr, "The property bag has not been set yet\n");
 	mPhysics.init(getPropertyValue("Force"), getPropertyValue("MaxVelocity"));
 }
@@ -55,26 +58,21 @@ void Actor::fastUpdate(float dt)
 
 void Actor::slowUpdate(float dt)
 {
-	mAnimator2.slowUpdate(dt);
+	mAnimator.slowUpdate(dt);
 	mEffects.slowUpdate(dt);
 }
 
 
 void Actor::render()
 {
-	RectF rect = renderRect();
-	rect = Camera::Get()->toCameraCoords(rect);
-
-	//mAnimator.getSpriteTile()->render(rect, mPhysics.flip());
-
-	mAnimator2.render(rect, mPhysics.flip());
+	RectF renderRect = Camera::Get()->toCameraCoords(rect());
+	mAnimator.render(renderRect, mPhysics.flip());
 }
 
 void Actor::reset()
 {
 	mPhysics.reset();
 	mAnimator.clear();
-	mAnimator2.clear();
 	mEffects.clear();
 	mPropertyBag->resetProperties();
 }
@@ -97,4 +95,10 @@ bool Actor::hasProperty(const std::string& property) const
 void Actor::addEffect(Effect* effect)
 {
 	mEffects.addEffect(effect);
+}
+
+
+RectF Actor::scaledRect() const 
+{ 
+	return mCollider->scaledRect(); 
 }

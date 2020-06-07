@@ -38,6 +38,7 @@
     <ClCompile Include="Source\Objects\Abilities\SpikeAbility.cpp" />
     <ClCompile Include="Source\Objects\Actors\ActorManager.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\Types\Angel.cpp" />
+    <ClCompile Include="Source\Objects\Actors\Enemies\Types\Devil.cpp" />
     <ClCompile Include="Source\Objects\Attributes\Level.cpp" />
     <ClCompile Include="Source\Objects\Effects\ArmorEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\BlinkEffect.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="Source\Objects\Actors\Actor.h" />
     <ClInclude Include="Source\Objects\Actors\ActorManager.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\Types\Angel.h" />
+    <ClInclude Include="Source\Objects\Actors\Enemies\Types\Devil.h" />
     <ClInclude Include="Source\Objects\Attributes\Armor.h" />
     <ClInclude Include="Source\Objects\Attributes\Damage.h" />
     <ClInclude Include="Source\Objects\Attributes\Level.h" />

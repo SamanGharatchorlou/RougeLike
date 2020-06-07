@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ArmorAbility.h"
 
-#include "Objects/Actors/Actor.h"
+#include "Objects/Actors/Player/Player.h"
 #include "Objects/Properties/PropertyBag.h"
 #include "Objects/Effects/ArmorEffect.h"
 
@@ -19,24 +19,22 @@ void ArmorAbility::fillValues(ValueMap& values)
 void ArmorAbility::slowUpdate(float dt)
 {
 	mAnimator.slowUpdate(dt);
-	mRect.SetCenter(mSelf->position());
+	mRect.SetCenter(mPlayer->position());
 
-	if (mTimer.getSeconds() > 2.0f)
+	// Completed x animation loops
+	if (mAnimator.loops() > 4)
 		setState(Ability::Finished);
 }
 
 
 void ArmorAbility::activate(Actor* actor)
 {
-	mSelf = actor;
-
 	ArmorEffect* armorEffect = new ArmorEffect(mArmor);
-	mSelf->addEffect(armorEffect);
+	mPlayer->addEffect(armorEffect);
 
-	Armor* armor = static_cast<Armor*>(mSelf->getProperty("Armor"));
+	Armor* armor = static_cast<Armor*>(mPlayer->getProperty("Armor"));
 	SetArmorBarEvent* dataPtr = new SetArmorBarEvent(*armor);
 	mEvents.push(EventPacket(dataPtr));
 
-	mTimer.restart();
-	mAnimator.selectAnimation("activate");
+	mAnimator.startAnimation(Action::Active);
 }

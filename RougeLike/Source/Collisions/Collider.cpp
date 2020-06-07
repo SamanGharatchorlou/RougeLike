@@ -45,20 +45,11 @@ RectF Collider::scaledRect() const
 	return colliderRect;
 }
 
-RectF Collider::scaledRect(VectorF scale) const
-{
-	RectF colliderRect = *mRect;
-	colliderRect.SetSize(mRect->Size() * scale);
-	colliderRect.SetCenter(mRect->Center());
-
-	return colliderRect;
-}
-
 
 bool Collider::doesIntersect(Collider* collider) const
 {
 	RectF thisRect = scaledRect();
-	RectF thatRect = collider->rect();
+	RectF thatRect = collider->scaledRect();
 
 	bool xOverlaps = thisRect.LeftPoint() < thatRect.RightPoint() && thisRect.RightPoint() > thatRect.LeftPoint();
 	bool yOverlaps = thisRect.TopPoint() < thatRect.BotPoint() && thisRect.BotPoint() > thatRect.TopPoint();

@@ -54,13 +54,13 @@ AbilityCollectable::AbilityCollectable(const std::string& name)
 	ASSERT(Warning, ability != nullptr, "the ability '%s' was not found by the finder\n", name);
 
 	mAbility = ability;
-	mName = name;
+	mName = name; // TODO: use the ability->name() instead?
 }
 
 
 void AbilityCollectable::activate(Player* Player)
 {
-	Player->addAbility(mName, mAbility);
+	Player->addAbility(mAbility);
 }
 
 

@@ -5,142 +5,58 @@
 #include "Graphics/Texture.h"
 
 
-bool AnimationReader::initAnimator(Animator& animator, const std::string& config)
+
+bool AnimationReader::initAnimator(Animator& animator)
 {
-	// Setup sprite sheet
-	TilesetData data = buildTilesetData();
-	Tileset spriteSheet(data);
-#if _DEBUG
-	spriteSheet.validate();
-#endif
+	xmlNode animationNode = mParser.rootNode()->first_node("AnimationInfo");
 
-	// Setup animations
-	Animations animationData = readAnimationData();
+	float frameSpeed = std::stof(mParser.nodeValue(animationNode, "FrameSpeed"));
+	animator.setFrameSpeed(frameSpeed);
 
-	if (animationData.size() >= 1)
+	std::string id = mParser.nodeValue(animationNode, "ID");
+
+	xmlNode animations = animationNode->first_node("Animations");
+	xmlNode node = animations->first_node();
+
+	while (node != nullptr)
 	{
-		animator.init(spriteSheet, animationData);
-		return true;
+		AnimationData data = readData(node);
+
+		animator.addAnimation(data);
+		node = node->next_sibling();
 	}
 
-	return false;
+	return (bool)animator.count();
 }
-
-
-TilesetData AnimationReader::buildTilesetData() const
-{
-	TilesetData data;
-	data.texture = readTexture(tm);
-	data.tileSize = readTileSize();
-	data.tileCount = readTileCount();
-	return data;
-}
-
-
-Animations AnimationReader::readAnimationData() const
-{
-	Animations animations;
-
-	xmlNode rootNode = mParser.rootNode();
-	xmlNode animationsParentNode = rootNode->first_node("Animations");
-	xmlNode animationNode = animationsParentNode->first_node("Animation");
-
-	while (animationNode != nullptr)
-	{
-		Attributes attributes = mParser.attributes(animationNode);
-
-		std::string action = attributes.getString("action");
-		int startingIndex = attributes.getInt("start");
-		int count = attributes.getInt("count");
-		float rate = attributes.getFloat("rate");
-
-		animations[action] = AnimationInfo(startingIndex, count, rate);;
-
-		animationNode = animationNode->next_sibling("Animation");
-	}
-
-	return animations;
-}
-
 
 
 // -- Private Functions -- //
-Vector2D<int> AnimationReader::readTileCount() const
+AnimationData AnimationReader::readData(xmlNode node)
 {
-	xmlNode rootNode = mParser.rootNode();
-	xmlNode tileSetInfoNode = rootNode->first_node("TilesetInfo");
-	xmlNode tileCountNode = tileSetInfoNode->first_node("TileCount");
+	AnimationData data;
+	xmlNode animationNode = mParser.rootNode()->first_node("AnimationInfo");
 
-	Attributes attributes = mParser.attributes(tileCountNode);
+	// Texture
+	std::string id = mParser.nodeValue(animationNode, "ID");
+	std::string action = node->name();
+	std::string fileName = id + "_" + action;
+	Texture* texture = tm->getTexture(fileName, FileManager::Image_Animations);
+	data.texture = texture;
 
-	int x = attributes.getInt("x");
-	int y = attributes.getInt("y");
+	// Size
+	xmlNode frameSize = animationNode->first_node("FrameSize");
+	Vector2D<int> size = getXYAttributes(frameSize);
+	data.tileDimentions = size;
 
-	return Vector2D<int>(x, y);
+	// Count
+	int count = std::stoi(node->value());
+	data.frameCount = count;
+
+	data.action = stringToAction(action);
+
+	return data;
+
 }
-
-
-Vector2D<int> AnimationReader::readTileSize() const
-{
-	xmlNode rootNode = mParser.rootNode();
-	xmlNode tileSetInfoNode = rootNode->first_node("TilesetInfo");
-	xmlNode tileSizeNode = tileSetInfoNode->first_node("TileSize");
-
-	Attributes attributes = mParser.attributes(tileSizeNode);
-
-	int x = attributes.getInt("x");
-	int y = attributes.getInt("y");
-
-	return Vector2D<int>(x, y);
-}
-
-
-Texture* AnimationReader::readTexture(const TextureManager* tm) const
-{
-	return tm->getTexture(mParser.firstRootNodeValue("Texture"), FileManager::Image_Animations);
-}
-
-
-
-
-
-bool AnimationReader::initAnimator2(Animator2& animator)
-{
-	float frameSpeed = std::stof(mParser.firstRootNodeValue("FrameSpeed"));
-	animator.setFrameSpeed(frameSpeed);
-
-	std::string id = mParser.firstRootNodeValue("ID");
-
-	xmlNode animations = mParser.rootNode()->first_node("Animations");
-	xmlNode actionNode = animations->first_node();
-
-	while (actionNode != nullptr)
-	{
-		AnimationData data;
-
-		std::string action = actionNode->name();
-		std::string fileName = id + "_" + action;
-		Texture* texture = tm->getTexture(fileName, FileManager::Image_Animations);
-		data.texture = texture;
-
-		xmlNode frameSize = actionNode->first_node("FrameSize");
-		Vector2D<int> size = getXYAttributes(frameSize);
-		data.tileDimentions = size;
-
-		xmlNode frameCount = actionNode->first_node("FrameCount");
-		int count = std::stoi(frameCount->value());
-		data.frameCount = count;
-
-		data.action = stringToAction(action);
-
-		animator.addAnimation(data);
-
-		actionNode = actionNode->next_sibling();
-	}
-
-	return false;
-}
-
 
 
 Vector2D<int> AnimationReader::getXYAttributes(xmlNode node)

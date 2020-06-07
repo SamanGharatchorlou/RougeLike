@@ -48,7 +48,7 @@ bool KnockbackEffect::canMove(VectorF velocity, float dt) const
 {
 	Index index;
 	const Map* map = mActor->getGameData()->environment->primaryMap();
-	RectF rect = mActor->rect().Translate(velocity * dt);
+	RectF rect = mActor->scaledRect().Translate(velocity * dt);
 
 	index = map->index(rect.TopLeft());
 	if (!map->isValidIndex(index) || !map->floorCollisionTile(index))

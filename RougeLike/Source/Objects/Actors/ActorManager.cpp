@@ -150,8 +150,9 @@ void ActorManager::initPlayer()
 
 void ActorManager::initEnemies()
 {
-	mEnemies->addEnemiesToPool(EnemyType::Imp, 50);
-	mEnemies->addEnemiesToPool(EnemyType::Angel, 50);
+	//mEnemies->addEnemiesToPool(EnemyType::Imp, 50);
+	//mEnemies->addEnemiesToPool(EnemyType::Angel, 50);
+	mEnemies->addEnemiesToPool(EnemyType::Devil, 50);
 
 	mEnemies->setTarget(&mGameData->actors->player()->rectRef());
 	mEnemies->spawnLevel();

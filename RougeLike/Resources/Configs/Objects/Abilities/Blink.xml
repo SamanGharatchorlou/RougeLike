@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Ability>
-	<Range>250</Range>
-	<MaxSize>125</MaxSize>
+	<Properties>
+		<Range>250</Range>
+		<MaxSize>125</MaxSize>
+	</Properties>
+
 	<Icon>BlinkIcon</Icon>
+
+	<AnimationInfo>
+		<ID>Blink</ID>
+		<FrameSpeed>0.05</FrameSpeed>
+		<FrameSize x = "72" y ="51"></FrameSize>
+		<Animations>
+			<Active>8</Active>
+		</Animations>
+	</AnimationInfo>
+
 </Ability>

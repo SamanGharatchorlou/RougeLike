@@ -1,34 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Stats>
-	<!-- Physics -->
-	<Force>500</Force>
-	<MaxVelocity>70</MaxVelocity>
+	<Properties>
+		<!-- Physics -->
+		<Force>500</Force>
+		<MaxVelocity>70</MaxVelocity>
 
-	<!-- General Attributes -->
-	<Health>250</Health>
+		<!-- General Attributes -->
+		<Health>250</Health>
 
-	<!-- Data values -->
-	<Score>50></Score>
-	<Experience>2000</Experience>
+		<!-- Data values -->
+		<Score>50></Score>
+		<Experience>2000</Experience>
 
-	<!-- Attack -->
-	<Damage>10</Damage>
-	<AttackSpeed>1</AttackSpeed>
-	<TackleDistance>2000</TackleDistance>
-	<TackleMovementSpeed>200</TackleMovementSpeed>
-	<KnockbackDistance >200</KnockbackDistance>
+		<!-- Attack -->
+		<Damage>10</Damage>
+		<AttackSpeed>1</AttackSpeed>
+		<TackleDistance>2000</TackleDistance>
+		<TackleMovementSpeed>200</TackleMovementSpeed>
+		<KnockbackDistance >200</KnockbackDistance>
 
-	<!-- Patrol -->
-	<SightRange>50000</SightRange>
-	<ChaseRange>300000</ChaseRange>
+		<!-- Patrol -->
+		<SightRange>50000</SightRange>
+		<ChaseRange>300000</ChaseRange>
 
-	<!-- Hit -->
-	<HurtTime>0.25</HurtTime>
-	
-	<!-- Alert -->
-	<AttentionTime>0.5</AttentionTime>
+		<!-- Hit -->
+		<HurtTime>0.25</HurtTime>
+		
+		<!-- Alert -->
+		<AttentionTime>0.5</AttentionTime>
+	</Properties>
 
-	
 	<MaxSize>100</MaxSize>
 
 </Stats>

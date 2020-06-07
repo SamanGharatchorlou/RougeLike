@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Ability>
-	<Armor>50</Armor>
-	<MaxSize>100</MaxSize>
+	<Properties>
+		<Armor>50</Armor>
+		<MaxSize>100</MaxSize>
+	</Properties>
+
 	<Icon>ShieldIcon</Icon>
+
+	<AnimationInfo>
+		<ID>Armor</ID>
+		<FrameSpeed>0.15</FrameSpeed>
+		<FrameSize x = "72" y ="48"></FrameSize>
+		<Animations>
+			<Active>8</Active>
+		</Animations>
+	</AnimationInfo>
+
 </Ability>

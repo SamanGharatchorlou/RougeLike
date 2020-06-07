@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Ability>
-	<Slow>0.5</Slow>
-	<MaxSize>100</MaxSize>
+	<Properties>
+		<Slow>0.5</Slow>
+		<MaxSize>100</MaxSize>
+	</Properties>
+
 	<Icon>SlowIcon</Icon>
 </Ability>
