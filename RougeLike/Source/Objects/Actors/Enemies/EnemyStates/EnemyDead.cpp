@@ -26,7 +26,13 @@ void EnemyDead::init()
 
 void EnemyDead::slowUpdate(float dt)
 {
-	mAlpha -= (250 * dt);
+	const Animator::Animation& anim = mEnemy->animator().animation();
+
+	if (anim.currentFrame() == anim.frameCount())
+	{
+		mEnemy->animator().stop();
+		mAlpha -= (250 * dt);
+	}
 
 	// Remove enemy from play
 	if (mAlpha <= 10)

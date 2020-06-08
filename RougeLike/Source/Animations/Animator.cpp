@@ -7,11 +7,15 @@
 Action stringToAction(const std::string& action)
 {
 	if (action == "Idle")
-		return Action::Idle;
+		return Action::Idle;	
+	else if (action == "Walk")
+		return Action::Walk;
 	else if (action == "Run")
 		return Action::Run;
 	else if (action == "Attack")
 		return Action::Attack;
+	else if (action == "Alert")
+		return Action::Alert;
 	else if (action == "Hurt")
 		return Action::Hurt;
 	else if (action == "Dead")
@@ -25,11 +29,13 @@ Action stringToAction(const std::string& action)
 	}
 }
 
-
+// --- Animation --- //
 Animator::Animation::Animation(AnimationData& data) : 
 	mTexture(data.texture), mTileDimentions(data.tileDimentions), 
 	mState(data.action), mFrameCount(data.frameCount),
-	mLoops(0) { }
+	mLoops(0) {
+	printf("animation created\n");
+}
 
 
 void Animator::Animation::render(RectF rect, SDL_RendererFlip flip) const
@@ -48,6 +54,7 @@ void Animator::Animation::render(RectF rect, SDL_RendererFlip flip) const
 
 	mTexture->renderSubTexture(rect, tileRect, flip);
 }
+
 
 void Animator::Animation::render(RectF rect, SDL_RendererFlip flip, Uint8 alpha)
 {
@@ -90,6 +97,14 @@ void Animator::Animation::nextFrame()
 }
 
 
+int Animator::Animation::currentFrame() const
+{
+	Index bounaries = mTexture->originalDimentions / mTileDimentions;
+	return (mIndex.y * bounaries.x) + mIndex.x + 1;
+}
+
+
+// --- Animator --- //
 Animator::Animator() : mActiveIndex(0), speedFactor(1.0f), mFrameSpeed(0.0f) { }
 
 
@@ -143,6 +158,8 @@ void Animator::startAnimation(Action state)
 
 void Animator::slowUpdate(float dt)
 {
+	float frameSpeed = mFrameSpeed * 20 / mAnimations[mActiveIndex].mFrameCount;
+
 	if (timer.getSeconds() >= mFrameSpeed / speedFactor)
 	{
 		mAnimations[mActiveIndex].nextFrame();

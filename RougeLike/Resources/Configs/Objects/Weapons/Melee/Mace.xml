@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Melee>
+
+	<Texture>Mace</Texture>
+
+	<Properties>
+		<Damage>60</Damage>
+		<SwingSpeed>700</SwingSpeed>
+		<SwingAngle>250</SwingAngle>
+		<KnockbackDistance>100</KnockbackDistance>
+	</Properties>
+
+	<Icon>Mace</Icon>
+	<MaxSize>70</MaxSize>
+	<Offset x = "8" y = "23"></Offset>
+
+	<Audio>
+		<Hit>HammerHit</Hit>
+		<Miss>HammerSwoosh</Miss>
+	</Audio>
+
+</Melee>

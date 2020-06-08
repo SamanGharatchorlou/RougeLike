@@ -4,24 +4,14 @@
 
 class Texture;
 
-
-struct AnimationInfo
-{
-	AnimationInfo() : startingIndex(0), count(0), speed(0.0f) { }
-	AnimationInfo(int start, int length, float theSpeed) :
-		startingIndex(start), count(length), speed(theSpeed) { }
-
-	int startingIndex;
-	int count;
-	float speed;
-};
-
 enum class Action
 {
 	None,
 	Idle,
+	Walk,
 	Run,
 	Attack,
+	Alert,
 	Hurt,
 	Dead,
 
@@ -58,6 +48,8 @@ public:
 		Texture* texture() const { return mTexture; }
 
 		void nextFrame();
+		int currentFrame() const;
+		int frameCount() const { return mFrameCount; }
 
 
 	private:
@@ -101,6 +93,8 @@ public:
 	VectorF frameSize() const { return mAnimations[mActiveIndex].mTileDimentions; }
 	int count() const { return mAnimations.size(); }
 
+	const Animation& animation() const { return mAnimations[mActiveIndex]; }
+
 
 private:
 
@@ -113,55 +107,3 @@ private:
 
 	const RectF* mRect;
 };
-
-
-
-/*
-// --- Animation 1 --- //
-
-using Animations = std::unordered_map<std::string, AnimationInfo>;
-
-
-class Animator
-{
-public:
-	Animator() : mAnimationIndex(0), speedFactor(1.0f) { }
-
-	void init(Tileset spriteSheet, Animations animations);
-	void slowUpdate(float dt);
-	void render(RectF rect);
-
-	void clear();
-	bool hasAnimations() const { return (bool)mAnimations.size(); }
-
-	void start() { timer.start(); }
-	void pause() { timer.pause(); }
-	void stop() { timer.stop(); }
-
-	void selectAnimation(const std::string& name);
-
-	int animationIndex() const { return mAnimationIndex; }
-	int animationCount() { return mAnimations[mActiveAnimation].count; }
-
-	void setSpeedFactor(float speed) {
-		printf("speed factor being set to %f\n", speed);
-
-		speedFactor = speed;
-	}
-
-	Tile* getSpriteTile();
-	Texture* getSpriteTexture();
-
-private:
-	Tileset mSpriteSheet;
-	Animations mAnimations;
-
-	std::string mActiveAnimation;
-
-	float speedFactor;
-
-	int mAnimationIndex;
-
-	Timer<float> timer;
-};
-*/

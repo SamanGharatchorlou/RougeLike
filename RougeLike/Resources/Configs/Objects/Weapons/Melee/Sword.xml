@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Melee>
+
+	<Texture>Sword</Texture>
+
+	<Properties>
+		<Damage>40</Damage>
+		<SwingSpeed>1500</SwingSpeed>
+		<SwingAngle>120</SwingAngle>
+		<KnockbackDistance>40</KnockbackDistance>
+	</Properties>
+
+	<MaxSize>75</MaxSize>
+	<Offset x = "8" y = "23"></Offset>
+
+	<Audio>
+		<Hit>ShortSwordHit</Hit>
+		<Miss>ShortSwordSwoosh</Miss>
+	</Audio>
+</Melee>

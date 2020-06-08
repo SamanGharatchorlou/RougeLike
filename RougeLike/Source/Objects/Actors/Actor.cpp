@@ -47,6 +47,11 @@ void Actor::init(XMLParser& parser)
 	mPhysics.init(getPropertyValue("Force"), getPropertyValue("MaxVelocity"));
 }
 
+void Actor::updatePhysicsStats()
+{
+	mPhysics.init(getPropertyValue("Force"), getPropertyValue("MaxVelocity"));
+}
+
 
 void Actor::fastUpdate(float dt)
 {

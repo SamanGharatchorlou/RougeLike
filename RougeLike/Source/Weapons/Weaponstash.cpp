@@ -7,6 +7,7 @@
 #include "Graphics/TextureManager.h"
 
 
+
 WeaponStash::WeaponStash()
 {
 	data["empty"] = new WeaponData;
@@ -40,31 +41,14 @@ void WeaponStash::load(TextureManager* tm)
 			MeleeWeaponData* weaponData = new MeleeWeaponData;
 
 			// Texture
-			std::string fileName = FileManager::Get()->getItemName(filePath);
-			weaponData->texture = tm->getTexture(fileName, FileManager::Image_Weapons);
+			std::string weaponName = parser.firstRootNodeValue("Texture");
+			weaponData->texture = tm->getTexture(weaponName, FileManager::Image_Weapons);
 
 			fillBasicWeaponData(parser, weaponData);
 			fillMeleeWeaponData(parser, weaponData);
 
-			ASSERT(Warning, data.count(fileName) == 0, "The file: %s has already been loaded into the weapon stash.cpp\n", filePath);
-
-			data[fileName] = weaponData;
+			data[weaponName] = weaponData;
 		}
-		//else if (strcmp(parser.rootNode()->name(), "Ranged") == 0)
-		//{
-		//	RangedWeaponData* weaponData = new RangedWeaponData;
-
-		//	// Texture
-		//	std::string fileName = FileManager::Get()->getItemName(filePath);
-		//	weaponData->texture = tm->getTexture(fileName, FileManager::Image_Weapons);
-
-		//	fillBasicWeaponData(parser, weaponData);
-		//	fillRangedWeaponData(parser, weaponData, tm);
-
-		//	ASSERT(Warning, data.count(fileName) == 0, "The file: %s has already been loaded into the weapon stash\n", filePath.c_str());
-
-		//	data[fileName] = weaponData;
-		//}
 	}
 }
 
@@ -81,10 +65,14 @@ void WeaponStash::fillBasicWeaponData(XMLParser& parser, WeaponData* data)
 	// Audio
 	ValueMap audio = parser.values(parser.rootNode()->first_node("Audio"));
 	data->audioHit = audio["Hit"];
-	data->audioMiss = audio["AudioMiss"];
-
+	data->audioMiss = audio["Miss"];
 
 	data->maxDimention = std::stof(parser.firstRootNodeValue("MaxSize"));
+
+	Attributes attributes = parser.attributes(parser.rootNode()->first_node("Offset"));
+	int x = attributes.getInt("x");
+	int y = attributes.getInt("y");
+	data->offset = VectorF(x, y);
 }
 
 
@@ -100,28 +88,6 @@ void WeaponStash::fillMeleeWeaponData(XMLParser& parser, MeleeWeaponData* data)
 	data->swingArc = std::stof(properties["SwingAngle"]);
 	data->knockbackDistance = std::stof(properties["KnockbackDistance"]);
 }
-
-//
-//void WeaponStash::fillRangedWeaponData(XMLParser& parser, RangedWeaponData* data, TextureManager* tm)
-//{
-//	data->type = WeaponType::Ranged;
-//
-//	// Travel speed
-//	data->travelSpeed = std::stof(parser.firstRootNodeValue("TravelSpeed"));
-//
-//	// Projectile texture
-//	std::string projectileTexture = parser.firstRootNodeValue("ProjectileTexture");
-//	data->projectileTexture = tm->getTexture(projectileTexture, FileManager::Image_Weapons);
-//
-//	// Projectile size
-//	float width = std::stof(parser.firstRootNodeValue("ProjectileWidth"));
-//	float height = std::stof(parser.firstRootNodeValue("ProjectileHeight"));
-//	data->projectileSize = VectorF(width, height);
-//
-//	// Quiver size
-//	data->quiverSize = std::stoi(parser.firstRootNodeValue("QuiverSize"));
-//}
-
 
 
 WeaponData* WeaponStash::getData(const std::string& weaponName)
@@ -143,11 +109,6 @@ Weapon* WeaponStash::getWeapon(const std::string& weaponName)
 		meleeWeapon->equipt(data);
 		return meleeWeapon;
 	}
-	//else if (data->type == WeaponType::Ranged)
-	//{
-	//	rangedWeapon->equipt(data);
-	//	return rangedWeapon;
-	//}
 	else
 	{
 		DebugPrint(Warning, "Weapon %s data has no type\n", weaponName.c_str());

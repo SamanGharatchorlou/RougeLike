@@ -30,7 +30,7 @@
 		<AttentionTime>0.5</AttentionTime>
 	</Properties>
 
-	<MaxSize>70</MaxSize>
+	<MaxSize>60</MaxSize>
 	<ColliderScale x = "0.32" y = "0.57"></ColliderScale>
 
 	<AnimationInfo>
@@ -39,10 +39,12 @@
 		<FrameSize x = "900" y ="900"></FrameSize>
 		<Animations>
 			<Idle>16</Idle>
+			<Walk>24</Walk>
 			<Run>12</Run>
 			<Attack>16</Attack>
 			<Hurt>12</Hurt>
 			<Dead>15</Dead>
+			<Alert>6</Alert>
 		</Animations>
 	</AnimationInfo>
 

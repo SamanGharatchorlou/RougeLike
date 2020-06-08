@@ -48,6 +48,7 @@ public:
 	Animator&	animator() { return mAnimator; }
 	Physics*	physics()	 { return &mPhysics; }
 	const Physics* physics() const { return &mPhysics; }
+	void updatePhysicsStats();
 
 	// Position
 	VectorF		position() const { return mPhysics.rect().Center(); }

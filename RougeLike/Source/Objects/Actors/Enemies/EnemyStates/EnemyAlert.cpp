@@ -7,8 +7,8 @@
 
 void EnemyAlert::init()
 {
-	mEnemy->animator().selectAnimation(Action::Idle);
-	timer.restart();
+	mEnemy->animator().selectAnimation(Action::Alert);
+	mEnemy->physics()->facePoint(mEnemy->positionTargetRect()->Center());
 }
 
 
@@ -16,7 +16,7 @@ void EnemyAlert::slowUpdate(float dt)
 {
 	mEnemy->resolveCollisions();
 
-	if (timer.getSeconds() > mEnemy->getPropertyValue("AttentionTime"))
+	if (mEnemy->animator().loops() > 0)
 	{
 		mEnemy->replaceState(EnemyState::Run);
 	}

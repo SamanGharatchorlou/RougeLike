@@ -12,8 +12,16 @@ EnemyPatrol::EnemyPatrol(Enemy* enemy) : EnemyState(enemy) { }
 
 void EnemyPatrol::init()
 {
-	mEnemy->animator().selectAnimation(Action::Run);
+	printf("patrol\n");
+	mEnemy->animator().selectAnimation(Action::Walk);
 	setPatrolPoint();
+
+	Property* property = mEnemy->getProperty("MaxVelocity");
+
+	if (property)
+		property->setValue(property->value() * 0.6f);
+
+	mEnemy->updatePhysicsStats();
 }
 
 
@@ -43,7 +51,7 @@ void EnemyPatrol::render()
 
 void EnemyPatrol::resume()
 {
-	mEnemy->animator().selectAnimation(Action::Run);
+	mEnemy->animator().selectAnimation(Action::Walk);
 	setPatrolPoint();
 }
 
@@ -135,4 +143,15 @@ bool EnemyPatrol::hasReachedPositionTarget() const
 {
 	VectorF position = mEnemy->position();
 	return distanceSquared(position, mEnemy->positionTargetRect()->Center()) < 10.0f;
+}
+
+
+void EnemyPatrol::exit()
+{
+	Property* property = mEnemy->getProperty("MaxVelocity");
+
+	if (property)
+		property->setValue(property->value() / 0.6f);
+
+	mEnemy->updatePhysicsStats();
 }

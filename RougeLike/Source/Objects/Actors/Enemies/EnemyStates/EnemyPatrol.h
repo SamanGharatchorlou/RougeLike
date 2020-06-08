@@ -12,7 +12,7 @@ public:
 	void slowUpdate(float) override;
 	void fastUpdate(float dt) override;
 	void render() override;
-	void exit() override { }
+	void exit() override;
 
 	void resume() override;
 

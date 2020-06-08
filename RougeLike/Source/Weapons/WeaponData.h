@@ -19,6 +19,7 @@ struct WeaponData
 	Damage damage;
 
 	float maxDimention = 0.0f;
+	VectorF offset;
 
 	std::string audioMiss;
 	std::string audioHit;
@@ -32,11 +33,3 @@ struct MeleeWeaponData : public WeaponData
 	float knockbackDistance = 0.0f;
 };
 
-
-//struct RangedWeaponData : public WeaponData
-//{
-//	Texture* projectileTexture = nullptr;
-//	float travelSpeed = 0.0f;
-//	VectorF projectileSize;
-//	int quiverSize = 0;
-//};

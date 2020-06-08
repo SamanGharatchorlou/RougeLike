@@ -64,7 +64,7 @@ void GameState::init()
 	Collectable* Heal = new AbilityCollectable("Heal");
 	mCollectables.spawn(Heal, 12);
 
-	Collectable* wepon = new WeaponCollectable("BigHammer");
+	Collectable* wepon = new WeaponCollectable("Mace");
 	mCollectables.spawn(wepon, 10);
 }
 

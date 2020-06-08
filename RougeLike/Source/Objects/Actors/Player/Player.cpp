@@ -118,16 +118,15 @@ void Player::fastUpdate(float dt)
 	Actor::fastUpdate(dt);
 
 	// Weapon
-	VectorF offset(11.0f, 22.0f);
 	if (mPhysics.flip() == SDL_FLIP_NONE && mPhysics.direction().x < 0)
 	{
 		mPhysics.setFlip(SDL_FLIP_HORIZONTAL);
-		mWeapon->setOffset(VectorF(-offset.x, offset.y));
+		mWeapon->leftFlip();
 	}
 	else if (mPhysics.flip() == SDL_FLIP_HORIZONTAL && mPhysics.direction().x > 0)
 	{
 		mPhysics.setFlip(SDL_FLIP_NONE);
-		mWeapon->setOffset(offset);
+		mWeapon->rightFlip();
 	}
 
 	mWeapon->setPosition(rect().Center());
@@ -193,14 +192,13 @@ void Player::selectWeapon(const std::string& weaponName)
 	Weapon* wep = weaponStash.getWeapon(weaponName);
 	mWeapon =  static_cast<MeleeWeapon*>(wep);
 
-	VectorF offset(11.0f, 22.0f);
 	if (mPhysics.flip() == SDL_FLIP_HORIZONTAL)
 	{
-		mWeapon->setOffset(VectorF(-offset.x, offset.y));
+		mWeapon->leftFlip();
 	}
 	else if (mPhysics.flip() == SDL_FLIP_NONE)
 	{
-		mWeapon->setOffset(offset);
+		mWeapon->rightFlip();
 	}
 }
 

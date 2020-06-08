@@ -118,6 +118,21 @@ void Texture::render(const RectF rect, double rotation, VectorF aboutPoint) cons
 }
 
 
+// Renders part of the texture, e.g. a tile in a set with the roation specified
+void Texture::render(const RectF rect, double rotation, VectorF aboutPoint, SDL_RendererFlip flip) const
+{
+	SDL_Rect renderQuad = { static_cast<int>(rect.x1 + 0.5f),
+							static_cast<int>(rect.y1 + 0.5f),
+							static_cast<int>(rect.Width() + 0.5f),
+							static_cast<int>(rect.Height() + 0.5f) };
+
+	// rotate about this point
+	SDL_Point point = { (int)aboutPoint.x, (int)aboutPoint.y };
+
+	SDL_RenderCopyEx(renderer, texture, nullptr, &renderQuad, rotation, &point, flip);
+}
+
+
 // Renders part of the texture, e.g. a tile in a set
 void Texture::renderSubTexture(const Rect<int> rect, const Rect<int> subRect) const
 {

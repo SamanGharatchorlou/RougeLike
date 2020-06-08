@@ -12,6 +12,7 @@
 
 
 MeleeWeapon::MeleeWeapon() : 
+	mMeleeData(nullptr),
 	mSwingDirection(-1), 
 	mSwingSpeed(0.0f), 
 	mRotationSum(0.0)
@@ -47,18 +48,19 @@ MeleeWeapon::~MeleeWeapon()
 
 void MeleeWeapon::equipt(const WeaponData* data)
 {
-	mData = static_cast<const MeleeWeaponData*>(data);
+	mMeleeData = static_cast<const MeleeWeaponData*>(data);
 
 	for (unsigned int i = 0; i < mBlockColliders.size(); i++)
 	{
-		mBlockColliders[i]->initDamage(mData->damage, mData->knockbackDistance);
+		mBlockColliders[i]->initDamage(mMeleeData->damage, mMeleeData->knockbackDistance);
 	}
 
-	mSwingSpeed = mData->swingSpeed;
+	mSwingSpeed = mMeleeData->swingSpeed;
+	mOffset = mMeleeData->offset;
 
 	// Set size
-	VectorF baseSize = mData->texture->originalDimentions;
-	VectorF size = realiseSize(baseSize, mData->maxDimention);
+	VectorF baseSize = mMeleeData->texture->originalDimentions;
+	VectorF size = realiseSize(baseSize, mMeleeData->maxDimention);
 	mRect.SetSize(size);
 }
 
@@ -107,7 +109,7 @@ void MeleeWeapon::updateAimDirection(VectorF cursorPosition)
 	// Follow cursor
 	if (!mOverrideCursorControl)
 	{
-		float offsetAngle = (mData->swingArc / 2.0f) * mSwingDirection;
+		float offsetAngle = (mMeleeData->swingArc / 2.0f) * mSwingDirection;
 
 		// Camera to cursor vector
 		mDirection = (cursorPosition - Camera::Get()->toCameraCoords(rect().BotCenter()));
@@ -120,8 +122,10 @@ void MeleeWeapon::updateAimDirection(VectorF cursorPosition)
 
 void MeleeWeapon::render()
 {
-	VectorF aboutPoint(rect().Width() / 2.0f, rect().Height());
-	mData->texture->render(Camera::Get()->toCameraCoords(rect()), getRotation(mDirection), aboutPoint);
+	VectorF aboutPoint(rect().Width() / 2.0f, rect().Height() * 0.9f);
+
+	SDL_RendererFlip flip = (getRotation(mDirection) >= 0.0f && getRotation(mDirection) < 180.0f) ? SDL_FLIP_HORIZONTAL: SDL_FLIP_NONE;
+	mMeleeData->texture->render(Camera::Get()->toCameraCoords(rect()), getRotation(mDirection), aboutPoint, flip);
 }
 
 
@@ -143,12 +147,12 @@ const std::vector<Collider*> MeleeWeapon::getColliders()
 
 const float MeleeWeapon::maxSwingAngle() const
 { 
-	return mData->swingArc; 
+	return mMeleeData->swingArc;
 }
 
 const float MeleeWeapon::knockbackDistance() const
 {
-	return mData->knockbackDistance;
+	return mMeleeData->knockbackDistance;
 }
 
 
@@ -156,9 +160,9 @@ const float MeleeWeapon::knockbackDistance() const
 const std::string& MeleeWeapon::hitSoundLabel() 
 { 
 	mCanPlayHitSound = false;
-	return mData->audioHit; 
+	return mMeleeData->audioHit;
 };
-const std::string& MeleeWeapon::missSoundLabel() { return mData->audioMiss; };
+const std::string& MeleeWeapon::missSoundLabel() { return mMeleeData->audioMiss; };
 
 
 /// --- Private Functions --- ///

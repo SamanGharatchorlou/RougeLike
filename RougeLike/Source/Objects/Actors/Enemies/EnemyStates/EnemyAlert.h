@@ -21,6 +21,5 @@ public:
 	const Type type() const { return Type::Alert; }
 
 private:
-	Timer<float> timer;
 	int flipCounter;
 };

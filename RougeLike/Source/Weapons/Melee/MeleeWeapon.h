@@ -48,7 +48,7 @@ private:
 
 
 private:
-	const MeleeWeaponData* mData;
+	const MeleeWeaponData* mMeleeData;
 
 	std::vector<RectF> mBlockRects;
 	std::vector<DamageCollider*> mBlockColliders;

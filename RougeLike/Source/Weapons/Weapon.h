@@ -25,6 +25,11 @@ public:
 
 	virtual RectF rect() const { return mRect.Translate(mOffset); }
 	virtual void setPosition(VectorF position) { mRect.SetBotCenter(position); }
+	
+	virtual void leftFlip() { mOffset.x = std::abs(mOffset.x) * -1.0f; }
+	virtual void rightFlip() { mOffset.x = std::abs(mOffset.x); }
+
+
 	virtual void setOffset(VectorF offset) { mOffset = offset; }
 	virtual void updateAimDirection(VectorF cursorPosition) = 0;
 
@@ -37,7 +42,6 @@ public:
 
 
 
-
 protected:
 	RectF mRect;
 	VectorF mOffset;
@@ -46,7 +50,7 @@ protected:
 
 	bool mAttacking;
 	bool mOverrideCursorControl;
-
+	
 	bool mCanPlayHitSound;
 	const std::string* mAudioToPlay;
 	const std::string* mAudioToStop;
