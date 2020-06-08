@@ -60,7 +60,7 @@ void EnemyRun::slowUpdate(float dt)
 	}
 
 	// Face player
-	mEnemy->physics()->facePoint(mEnemy->attackTargetRect()->Center());
+	mEnemy->physics()->facePoint(mEnemy->target()->position());
 }
 
 
@@ -85,7 +85,7 @@ void EnemyRun::resume()
 // Generate a new path
 void EnemyRun::updatePath()
 {
-	mPath = mAIPathing.findPath(mEnemy->position(), mEnemy->attackTargetRect()->Center());
+	mPath = mAIPathing.findPath(mEnemy->position(), mEnemy->target()->position());
 
 	// No valid path was found, wait a bit then try again 
 	if (mPath.size() == 0)
@@ -102,7 +102,7 @@ Index EnemyRun::nextTileIndex()
 bool EnemyRun::inAttackRange() const
 {
 	VectorF position = mEnemy->rect().Center();
-	VectorF nearestTargetSide = closestRectSide(position, *mEnemy->attackTargetRect());
+	VectorF nearestTargetSide = closestRectSide(position, mEnemy->target()->scaledRect());
 
 	return distanceSquared(position, nearestTargetSide) < (mEnemy->getPropertyValue("TackleDistance") * 0.8f);
 }
@@ -111,5 +111,5 @@ bool EnemyRun::inAttackRange() const
 // --- Private Functions ---
 bool EnemyRun::inChaseRange() const
 {
-	return distanceSquared(mEnemy->attackTargetRect()->Center(), mEnemy->position()) < mEnemy->getPropertyValue("ChaseRange");
+	return distanceSquared(mEnemy->target()->position(), mEnemy->position()) < mEnemy->getPropertyValue("ChaseRange");
 }

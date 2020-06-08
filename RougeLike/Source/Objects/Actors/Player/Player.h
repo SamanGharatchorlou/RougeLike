@@ -48,7 +48,6 @@ public:
 
 
 private:
-	void initCollider(VectorF scale);
 	void initPropertBag(XMLParser& parser);
 
 	void processHit();

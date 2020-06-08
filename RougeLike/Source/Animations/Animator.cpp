@@ -33,9 +33,7 @@ Action stringToAction(const std::string& action)
 Animator::Animation::Animation(AnimationData& data) : 
 	mTexture(data.texture), mTileDimentions(data.tileDimentions), 
 	mState(data.action), mFrameCount(data.frameCount),
-	mLoops(0) {
-	printf("animation created\n");
-}
+	mLoops(0) { }
 
 
 void Animator::Animation::render(RectF rect, SDL_RendererFlip flip) const

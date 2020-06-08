@@ -16,11 +16,9 @@ EnemyAttack::EnemyAttack(Enemy* enemy) :
 
 void EnemyAttack::init()
 { 
-	startingPosition = mEnemy->position();
-	attackTargetPosition = mEnemy->attackTargetRect()->Center();
-
-	// Face player
-	mEnemy->physics()->facePoint(attackTargetPosition);
+	mStartPosition = mEnemy->position();
+	mAttackPosition = mEnemy->target()->position();
+	mEnemy->physics()->facePoint(mAttackPosition);
 }
 
 
@@ -28,13 +26,13 @@ void EnemyAttack::fastUpdate(float dt)
 {
 	if (mHasAttacked)
 	{
-		VectorF direction = startingPosition - mEnemy->position();
+		VectorF direction = mStartPosition - mEnemy->position();
 		VectorF velocity = direction.normalise() * mEnemy->getPropertyValue("TackleMovementSpeed") / 1.5f;
 		mEnemy->move(velocity, dt);
 	}
 	else
 	{
-		VectorF direction = attackTargetPosition - mEnemy->position();
+		VectorF direction = mAttackPosition - mEnemy->position();
 		VectorF velocity = direction.normalise() * mEnemy->getPropertyValue("TackleMovementSpeed");
 		mEnemy->move(velocity, dt);
 	}
@@ -75,14 +73,14 @@ void EnemyAttack::updateHasAttackedStatus()
 	if (!mHasAttacked)
 	{
 		// Maximum attack distance
-		float distanceTravelled = distanceSquared(startingPosition, mEnemy->position());
+		float distanceTravelled = distanceSquared(mStartPosition, mEnemy->position());
 		if (distanceTravelled >= mEnemy->getPropertyValue("TackleDistance"))
 			mHasAttacked = true;
 
 		if (hitCounter >= 5)
 			mHasAttacked = true;
 
-		if (distanceSquared(attackTargetPosition, mEnemy->position()) < 5.0f)
+		if (distanceSquared(mAttackPosition, mEnemy->position()) < 5.0f)
 			mHasAttacked = true;
 	}
 }
@@ -90,5 +88,5 @@ void EnemyAttack::updateHasAttackedStatus()
 
 bool EnemyAttack::attackComplete() const
 {
-	return distanceSquared(startingPosition, mEnemy->position()) < 5.0f ? mHasAttacked : false;
+	return distanceSquared(mStartPosition, mEnemy->position()) < 5.0f ? mHasAttacked : false;
 }

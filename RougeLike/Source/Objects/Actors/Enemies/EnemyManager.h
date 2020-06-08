@@ -61,8 +61,6 @@ public:
 	void spawnLevel();
 	void spawn(EnemyType type, EnemyState::Type state, VectorF position);
 
-	void setTarget(RectF* rect) { mTarget = rect; }
-
 	// General
 	Enemy* getEnemy(unsigned int index) const;
 	std::vector<Enemy*> getActiveEnemies() const { return mActiveEnemies; }
@@ -83,7 +81,6 @@ private:
 	std::vector<EnemyObject> mEnemyPool;
 	std::vector<Enemy*> mActiveEnemies;
 
-	RectF* mTarget;
 	AIPathMap mPathMap;
 
 	EnemySpawner mSpawner;

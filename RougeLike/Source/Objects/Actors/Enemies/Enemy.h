@@ -50,10 +50,8 @@ public:
 	void resolveCollisions();
 
 	// Target
-	void			setAttackTarget(const RectF* rect) { mAttackTarget = rect; }
-	const RectF*	attackTargetRect() const { return mAttackTarget; }
-	void			setPositionTarget(const RectF* rect) { mPositionTarget = rect; }
-	const RectF*	positionTargetRect() const { return mPositionTarget; }
+	void			setTarget(Actor* target) { mTarget = target; }
+	const Actor*	target() const { return mTarget; }
 
 	// Movement
 	void			accellerateTowards(VectorF position);
@@ -72,6 +70,7 @@ protected:
 
 	const RectF* mAttackTarget;
 	const RectF* mPositionTarget;
+	const Actor* mTarget;
 
 	VectorF mColliderRatio;
 

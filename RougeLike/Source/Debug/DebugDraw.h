@@ -7,7 +7,7 @@
 #define PRINT_FRAMERATE_EVERY 0 // Print at the rate you specify in milliseconds i.e. 500 = print every 0.5 seconds
 
 // Player
-#define DRAW_PLAYER_RECTS 0
+#define DRAW_PLAYER_RECTS 1
 
 // Collectables
 #define DRAW_COLLECTABLE_RECT 1
@@ -19,9 +19,9 @@
 // Enemy / AI
 #define DRAW_AI_PATH 0
 #define DRAW_AI_PATH_COSTMAP 0
-#define DRAW_ENEMY_RECTS 0
+#define DRAW_ENEMY_RECTS 1
 #define DRAW_ENEMY_TARGET_PATH 0
-#define LIMIT_ENEMY_SPAWNS 0 // Set to the max number of enemies you want to spawn + 1 i.e. set to 1 to prevent any spawning
+#define LIMIT_ENEMY_SPAWNS 2 // Set to the max number of enemies you want to spawn + 1 i.e. set to 1 to prevent any spawning
 
 // UI
 #define DRAW_UI_RECTS 0

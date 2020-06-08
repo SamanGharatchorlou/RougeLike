@@ -5,6 +5,7 @@
 #include "Collisions/CollisionManager.h"
 #include "Map/Environment.h"
 #include "Game/Camera.h"
+#include "Objects/Actors/ActorManager.h"
 #include "Objects/Actors/Player/Player.h"
 
 #include "Types/Imp.h"
@@ -45,7 +46,6 @@ EnemyManager::~EnemyManager()
 void EnemyManager::clear()
 {
 	clearAllEnemies();
-	mTarget = nullptr;
 	mPathMap.clear();
 }
 
@@ -201,7 +201,7 @@ void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF positio
 			//enemy->propertyBag().pHealth.get().setFullHp();
 			enemy->spawn(state, position);
 			enemy->setMap(&mPathMap);
-			enemy->setAttackTarget(mTarget);
+			enemy->setTarget(mGameData->actors->player());
 
 			std::vector<Collider*> defendingCollider;
 			defendingCollider.push_back(enemy->collider());

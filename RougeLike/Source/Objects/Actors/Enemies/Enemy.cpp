@@ -50,7 +50,6 @@ void Enemy::init(const std::string& config)
 
 	Actor::init(parser);
 	
-
 #if _DEBUG
 	mCollider->setName(config);
 #endif

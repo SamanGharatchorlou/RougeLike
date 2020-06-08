@@ -29,8 +29,8 @@ private:
 private:
 	bool mHasAttacked;
 
-	VectorF startingPosition;
-	VectorF attackTargetPosition;
+	VectorF mStartPosition;
+	VectorF mAttackPosition;
 
 	int hitCounter;
 };

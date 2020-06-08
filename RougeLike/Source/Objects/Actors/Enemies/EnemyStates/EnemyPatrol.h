@@ -22,9 +22,12 @@ public:
 private:
 	Vector2D<int> findYFloorTileRange(int xIndex) const;
 
-private:
 	void setPatrolPoint();
 	bool hasReachedPositionTarget() const;
 	bool canSeeAttackTarget() const;
+
+
+private:
+	VectorF mPositionTarget;
 };
 

@@ -39,7 +39,7 @@ void EnemyPreAttack::render()
 bool EnemyPreAttack::inAttackRange() const
 {
 	VectorF currentPosition = mEnemy->position();
-	VectorF nearestTargetSide = closestRectSide(currentPosition, *mEnemy->attackTargetRect());
+	VectorF nearestTargetSide = closestRectSide(currentPosition, mEnemy->target()->scaledRect());
 
 	return distanceSquared(currentPosition, nearestTargetSide) < (mEnemy->getPropertyValue("TackleDistance"));
 }

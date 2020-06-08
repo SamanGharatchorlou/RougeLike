@@ -1,10 +1,9 @@
 #include "pch.h"
 #include "EnemyPatrol.h"
 
-#include "EnemyIdle.h"
-#include "../Enemy.h"
-
 #include "Map/Map.h"
+#include "Objects/Actors/Enemies/Enemy.h"
+
 
 
 EnemyPatrol::EnemyPatrol(Enemy* enemy) : EnemyState(enemy) { }
@@ -12,12 +11,10 @@ EnemyPatrol::EnemyPatrol(Enemy* enemy) : EnemyState(enemy) { }
 
 void EnemyPatrol::init()
 {
-	printf("patrol\n");
 	mEnemy->animator().selectAnimation(Action::Walk);
 	setPatrolPoint();
 
 	Property* property = mEnemy->getProperty("MaxVelocity");
-
 	if (property)
 		property->setValue(property->value() * 0.6f);
 
@@ -27,7 +24,7 @@ void EnemyPatrol::init()
 
 void EnemyPatrol::fastUpdate(float dt)
 {
-	mEnemy->accellerateTowards(mEnemy->positionTargetRect()->Center());
+	mEnemy->accellerateTowards(mPositionTarget);
 }
 
 
@@ -75,7 +72,7 @@ void EnemyPatrol::setPatrolPoint()
 	ASSERT(Warning, map->isValidPosition(patrolTarget), "Invalid enemy patrol target: %f, %f", patrolTarget.x, patrolTarget.y);
 
 	const MapTile* tile = map->tile(patrolTarget);
-	mEnemy->setPositionTarget(tile->rectPtr());
+	mPositionTarget = tile->rect().Center();
 }
 
 
@@ -105,51 +102,22 @@ Vector2D<int> EnemyPatrol::findYFloorTileRange(int xIndex) const
 bool EnemyPatrol::canSeeAttackTarget() const
 {
 	VectorF position = mEnemy->position();
-	VectorF attackTargetPosition = mEnemy->attackTargetRect()->Center();
+	VectorF target = mEnemy->target()->position();
 
-	bool isNearby = distanceSquared(attackTargetPosition, position) < mEnemy->getPropertyValue("SightRange");
-	bool hasLineOfSight = false;
-
-	if (!isNearby)
-	{
-		// Is there a line of sight?
-		float yPatrolDirection = (mEnemy->positionTargetRect()->Center() - position).y;
-		float yTargetDirection = (attackTargetPosition - position).y;
-
-		bool isFacingTarget = 
-			(yPatrolDirection > 0.0f && yTargetDirection > 0.0f) ||
-			(yPatrolDirection < 0.0f && yTargetDirection < 0.0f);
-
-		if (isFacingTarget)
-		{
-			const Map* map = mEnemy->getEnvironmentMap();
-
-			int enemyXTile = map->index(position).x;
-			int playerXTile = -99;
-			if (map->isValidPosition(attackTargetPosition))
-			{
-				playerXTile = map->index(attackTargetPosition).x;
-			}
-			hasLineOfSight = (enemyXTile == playerXTile) || (enemyXTile == playerXTile + 1) || (enemyXTile == playerXTile - 1);
-		}
-
-	}
-
-	return isNearby || hasLineOfSight;
+	return distanceSquared(target, position) < mEnemy->getPropertyValue("SightRange");
 }
 
 
 bool EnemyPatrol::hasReachedPositionTarget() const
 {
 	VectorF position = mEnemy->position();
-	return distanceSquared(position, mEnemy->positionTargetRect()->Center()) < 10.0f;
+	return distanceSquared(position, mPositionTarget) < 10.0f;
 }
 
 
 void EnemyPatrol::exit()
 {
 	Property* property = mEnemy->getProperty("MaxVelocity");
-
 	if (property)
 		property->setValue(property->value() / 0.6f);
 

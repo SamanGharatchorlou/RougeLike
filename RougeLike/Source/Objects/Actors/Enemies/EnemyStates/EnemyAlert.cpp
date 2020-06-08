@@ -8,7 +8,7 @@
 void EnemyAlert::init()
 {
 	mEnemy->animator().selectAnimation(Action::Alert);
-	mEnemy->physics()->facePoint(mEnemy->positionTargetRect()->Center());
+	mEnemy->physics()->facePoint(mEnemy->target()->position());
 }
 
 

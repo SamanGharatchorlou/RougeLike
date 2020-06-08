@@ -23,8 +23,7 @@ void EnemyHit::init()
 	Texture* texture = mEnemy->animator().texture();
 	texture->modifyAlpha(-100);
 
-	attackTargetPosition = mEnemy->attackTargetRect()->Center();
-	mEnemy->physics()->facePoint(attackTargetPosition);
+	mEnemy->physics()->facePoint(mEnemy->target()->position());
 }
 
 
@@ -59,5 +58,5 @@ void EnemyHit::exit()
 	Texture* texture = mEnemy->animator().texture();
 	texture->setAlpha(alphaMax);
 
-	mEnemy->physics()->facePoint(mEnemy->attackTargetRect()->Center());
+	mEnemy->physics()->facePoint(mEnemy->target()->position());
 }
