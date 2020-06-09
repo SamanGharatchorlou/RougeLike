@@ -10,7 +10,7 @@
 #define DRAW_PLAYER_RECTS 0
 
 // Collectables
-#define DRAW_COLLECTABLE_RECT 1
+#define DRAW_COLLECTABLE_RECT 0
 
 // Map
 #define DRAW_BINARY_MAP 0

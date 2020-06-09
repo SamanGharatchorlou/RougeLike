@@ -64,6 +64,8 @@ void AbilityManager::exitSelection()
 	{
 		// TODO: do i need some kind of exit mechanism?
 		//mAbilities[i]->setState(Ability::Idle);
+		if (mAbilities[i]->state() == Ability::Selected)
+			mAbilities[i]->setState(Ability::Idle);
 
 		UIButton* button = mGameData->uiManager->findButton(mAbilities[i]->name());
 		if (button)
@@ -129,6 +131,9 @@ void AbilityManager::render()
 
 void AbilityManager::attemptActivation(Ability* ability)
 {
+	if (ability->state() != Ability::Selected)
+		return;
+
 	switch (ability->targetType())
 	{	
 	// Player casts on self only
@@ -225,21 +230,21 @@ void AbilityManager::attemptActivation(Ability* ability)
 
 void AbilityManager::activate(const std::string& name)
 {
-	if (hasAbility(name))
+	Ability* ability = get(name);
+
+	if (ability)
 	{
-		Ability* ability = get(name);
-		ability->activate(mGameData->actors->playerActor());
-		ability->setState(Ability::Running);
+		if (ability->state() == Ability::Selected)
+		{
+			printf("activating\n");
+			ability->activate(mGameData->actors->playerActor());
+			ability->setState(Ability::Running);
+		}
 	}
 	else
 	{
 		DebugPrint(Log, "Play does not have the '%s' ability\n", name.c_str());
 	}
-}
-
-bool AbilityManager::canActivate(const std::string& name)
-{
-	return true;
 }
 
 

@@ -52,7 +52,7 @@ void SmashAbility::activate(VectorF position)
 	mHammerRect.SetCenter(mRect.Center() + VectorF(0.0f, -fallDistance));
 
 	float animationTime = mAnimator.frameTime() * mAnimator.frameCount();
-	mFallSpeed = (fallDistance / animationTime) * 1.5f;
+	mFallSpeed = (fallDistance / animationTime) * 0.5f;
 }
 
 

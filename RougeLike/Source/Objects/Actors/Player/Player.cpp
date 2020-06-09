@@ -284,12 +284,10 @@ void Player::attack()
 {
 	if (!mWeapon->isAttacking())
 	{
-		printf("playing miss\n");
+		//printf("playing miss\n");
 		mGameData->audioManager->playSound(mWeapon->missSoundLabel(), this);
 
-		if (mAbilities.canActivate("Smash"));
-			mAbilities.activate("Smash");
-		//mAbilities.
+		//mAbilities.activate("Smash");
 	}
 
 	mWeapon->attack();
@@ -305,7 +303,7 @@ void Player::updateAttackingWeapon()
 		// Play hit sound
 		if (mGameData->audioManager->isPlaying(mWeapon->missSoundLabel(), this) && mWeapon->canPlayHitSound())
 		{
-			printf("playing hit\n");
+			//printf("playing hit\n");
 			mGameData->audioManager->playSound(mWeapon->hitSoundLabel(), this);
 		}
 	}
