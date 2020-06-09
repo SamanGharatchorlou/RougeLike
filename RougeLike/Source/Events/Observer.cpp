@@ -3,10 +3,3 @@
 
 
 EventData::~EventData() { /*printf("destroy event data\n");*/ }
-
-
-void EventPacket::free()
-{
-	delete data;
-	data = nullptr;
-}

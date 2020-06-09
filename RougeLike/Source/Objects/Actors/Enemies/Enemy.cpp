@@ -203,6 +203,11 @@ void Enemy::replaceState(EnemyState::Type state)
 	}
 }
 
+void Enemy::addWaitState(float waitTime)
+{
+	mStateMachine.addState(new EnemyWait(this, waitTime));
+}
+
 
 void Enemy::addState(EnemyState::Type state)
 {

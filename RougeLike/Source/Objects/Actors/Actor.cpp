@@ -72,6 +72,8 @@ void Actor::render()
 {
 	RectF renderRect = Camera::Get()->toCameraCoords(rect());
 	mAnimator.render(renderRect, mPhysics.flip());
+
+	mEffects.render();
 }
 
 void Actor::reset()

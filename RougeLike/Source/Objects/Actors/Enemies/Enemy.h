@@ -40,6 +40,8 @@ public:
 	void popState();
 	void replaceState(EnemyState::Type state);
 	EnemyState::Type state() const;
+
+	void addWaitState(float waitTime);
 	 
 	// Map
 	void setMap(AIPathMap* map) { mMap = map; }

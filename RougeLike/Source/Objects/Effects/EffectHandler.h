@@ -12,7 +12,7 @@ public:
 
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
-	void render() { };
+	void render();
 
 	void clear();
 

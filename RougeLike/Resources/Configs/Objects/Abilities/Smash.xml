@@ -3,12 +3,15 @@
 
 	<Properties>
 		<Damage>100</Damage>
-		<Range>150</Range>
+		<Range>250</Range>
 		<MaxSize>100</MaxSize>
 
 		<HammerTexture>Mjolnir</HammerTexture>
 		<HammerMaxSize>50</HammerMaxSize>
 		<HammerFallSpeed>750</HammerFallSpeed>
+
+		<Stun>Stun</Stun>
+		<StunMaxSize>50</StunMaxSize>
 	</Properties>
 
 	<Icon>SmashIcon</Icon>

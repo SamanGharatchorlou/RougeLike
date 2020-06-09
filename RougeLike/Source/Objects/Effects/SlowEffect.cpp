@@ -17,7 +17,8 @@ void SlowEffect::init()
 			property->setValue(property->value() * mSlowFactor);
 	}
 
-	mActor->physics()->init(mActor->getPropertyValue("Force"), mActor->getPropertyValue("MaxVelocity"));
+	
+	mActor->updatePhysicsStats();
 	mActor->animator().setSpeedFactor(mSlowFactor);
 }
 

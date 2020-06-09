@@ -1,14 +1,19 @@
 #include "pch.h"
 #include "SmashAbility.h"
 
+#include "Objects/Effects/DamageEffect.h"
+#include "Objects/Effects/StunEffect.h"
+
 #include "Objects/Actors/Player/Player.h"
 #include "Graphics/Texture.h"
 #include "Animations/Animator.h"
 #include "Game/Camera.h"
 
+#include "Events/Events.h"
 
 
-SmashAbility::SmashAbility(Texture* hammerTexture, VectorF hammerSize) : mHammerTexture(hammerTexture) 
+SmashAbility::SmashAbility(Texture* hammerTexture, VectorF hammerSize, Animator stun) 
+	: mHammerTexture(hammerTexture), mStunAnimator(stun), requestedActivate(false)
 {
 	mHammerRect.SetSize(hammerSize);
 };
@@ -19,6 +24,8 @@ void SmashAbility::fillValues(ValueMap& values)
 	mDamage = Damage(std::stof(values["Damage"]));
 	mMaxDimention = std::stof(values["MaxSize"]);
 	mRange = std::stof(values["Range"]);
+	mFallSpeed = std::stof(values["HammerFallSpeed"]);
+	mStunSize = realiseSize(mStunAnimator.frameSize(), std::stof(values["StunMaxSize"]));
 }
 
 
@@ -28,10 +35,15 @@ void SmashAbility::slowUpdate(float dt)
 
 	mHammerRect = mHammerRect.Translate(VectorF(0.0f, mFallSpeed * dt));
 
-	if (mHammerRect.BotPoint() >= mRect.Center().y)
+	if (mHammerRect.BotPoint() >= mRect.BotPoint())
 	{
 		mAnimator.start();
 		mHammerRect.SetTopLeft(VectorF(-1000.0f, -1000.0f)); // Move it out of screen
+
+		ActivateAreaAttack* smashEvent = new ActivateAreaAttack("Smash");
+		mEvents.push(EventPacket(smashEvent));
+
+		requestedActivate = true;
 	}
 
 	// Completed one animation loop 
@@ -50,9 +62,18 @@ void SmashAbility::activate(VectorF position)
 	float fallDistance = Camera::Get()->size().y - hitPosition;
 
 	mHammerRect.SetCenter(mRect.Center() + VectorF(0.0f, -fallDistance));
+}
 
-	float animationTime = mAnimator.frameTime() * mAnimator.frameCount();
-	mFallSpeed = (fallDistance / animationTime) * 0.5f;
+void SmashAbility::activate(Actor* actor)
+{
+	if (requestedActivate)
+	{
+		StunEffect* stunEffect = new StunEffect(&mStunAnimator, mStunSize);
+		actor->addEffect(stunEffect);
+
+		DamageEffect* damage = new DamageEffect(mDamage);
+		actor->addEffect(damage);
+	}
 }
 
 
@@ -83,4 +104,5 @@ void SmashAbility::render()
 void SmashAbility::exit()
 {
 	mAnimator.stop();
+	requestedActivate = false;
 }

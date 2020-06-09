@@ -5,7 +5,8 @@
 class EnemyWait : public EnemyState
 {
 public:
-	EnemyWait(Enemy* enemy) : EnemyState(enemy) { }
+	EnemyWait(Enemy* enemy) : EnemyState(enemy), mWaitTime(2.0f) { }
+	EnemyWait(Enemy* enemy, float waitTime) : EnemyState(enemy), mWaitTime(waitTime) { }
 
 	void init() override;
 	void handleInput() override { }
@@ -17,5 +18,6 @@ public:
 	const Type type() const { return Type::Wait; }
 
 private:
+	float mWaitTime;
 	Timer<float> timer;
 };

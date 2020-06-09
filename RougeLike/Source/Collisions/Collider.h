@@ -12,7 +12,6 @@ public:
 	void reset();
 
 	bool doesIntersect(Collider* collider) const;
-
 	void hasCollidedWith(Collider* collider);
 
 	inline void setDidHit(bool collisionStatus) { mDidHit = collisionStatus; }

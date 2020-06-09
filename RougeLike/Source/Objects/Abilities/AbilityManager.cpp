@@ -21,7 +21,6 @@
 
 #include "Animations/AnimationReader.h"
 
-
 // Abilities
 #include "Objects/Abilities/SlowAbility.h"
 #include "Objects/Abilities/HealAbility.h"
@@ -44,17 +43,6 @@ void AbilityManager::handleInput()
 			mAbilities[i]->setState(Ability::Selected);
 		}
 	}
-}
-
-
-void AbilityManager::completeSelection(Ability* ability)
-{
-	ability->setState(Ability::Running);
-
-	UIButton* button = mGameData->uiManager->findButton(ability->name());
-	if (button)
-		button->setActive(false);
-
 }
 
 
@@ -82,25 +70,27 @@ void AbilityManager::slowUpdate(float dt)
 
 		switch (ability->state())
 		{
+		// Ready for/attemping activation
 		case Ability::Selected:
 		{
 			attemptActivation(ability);
 			break;
 		}
+		// One frame, on activation
 		case Ability::Activating:
 		{
 			completeSelection(ability);
-
 			break;
 		}
+		// Ability doing its thing
 		case Ability::Running:
 		{
 			ability->slowUpdate(dt);
 			break;
 		}
+		// Reset... cool down etc.
 		case Ability::Finished:
 		{
-			// reset... cool down etc.
 			ability->exit();
 			ability->setState(Ability::Idle);
 			break;
@@ -109,14 +99,29 @@ void AbilityManager::slowUpdate(float dt)
 			break;
 		}
 
-		// Pass events to parent object to be handled 
-		while (ability->hasEvent())
-		{
-			mEvents.push(ability->popEvent());
-		}
+		// Either process event or pass to parent object to be handled 
+		handleEvents(ability);
 	}
 }
 
+void AbilityManager::handleEvents(Ability* ability)
+{
+	while (ability->hasEvent())
+	{
+		EventPacket event = ability->popEvent();
+
+		if (event.data->eventType == Event::ActivateAreaAttack)
+		{
+			activateOnArea(ability);
+			event.free();
+		}
+		else
+		{
+			mEvents.push(event);
+		}
+
+	}
+}
 
 
 void AbilityManager::render()
@@ -124,126 +129,6 @@ void AbilityManager::render()
 	for (int i = 0; i < mAbilities.size(); i++)
 	{
 		mAbilities[i]->render();
-	}
-}
-
-
-
-void AbilityManager::attemptActivation(Ability* ability)
-{
-	if (ability->state() != Ability::Selected)
-		return;
-
-	switch (ability->targetType())
-	{	
-	// Player casts on self only
-	case Ability::TargetType::Self:
-	{
-		ability->setState(Ability::Activating);
-		ability->activate(nullptr);
-		break;
-	}
-	// Activate on first enemy selected
-	case Ability::TargetType::Single_Enemy:
-	{
-		if (mGameData->inputManager->isCursorPressed(Cursor::Left))
-		{
-			VectorF cursorPosition = mGameData->inputManager->cursorPosition();
-			cursorPosition = mGameData->environment->toWorldCoords(cursorPosition);
-
-			std::vector<Actor*> enemies = mGameData->actors->getAllEnemies();
-			for (int i = 0; i < enemies.size(); i++)
-			{
-				// activate ability on first enemy selected
-				if (enemies[i]->collider()->contains(cursorPosition))
-				{
-					ability->setState(Ability::Activating);
-					ability->activate(enemies[i]);
-					break;
-				}
-			}
-		}
-
-		break;
-	}
-	// Select any floor tile
-	case Ability::TargetType::Area_Attack:
-	{
-		if (mGameData->inputManager->isCursorPressed(Cursor::Left))
-		{
-			VectorF cursorPosition = mGameData->inputManager->cursorPosition();
-			cursorPosition = mGameData->environment->toWorldCoords(cursorPosition);
-
-			Map* map = mGameData->environment->map(cursorPosition);
-
-			// Activate ability
-			AreaAbility* areaAbility = static_cast<AreaAbility*>(ability);
-
-			// BUG: if you select just outside of the current map this breaks?
-			if(areaAbility->isValidTarget(cursorPosition, map))
-			{
-				areaAbility->activate(cursorPosition);
-				ability->setState(Ability::Activating);
-
-				Collider abilityCollider = areaAbility->collider();
-
-				// Apply effect to all enemies caught in area
-				std::vector<Actor*> enemies = mGameData->actors->getAllEnemies();
-				for (int i = 0; i < enemies.size(); i++)
-				{
-					Collider* enemyCollider = enemies[i]->collider();
-					if (enemyCollider->doesIntersect(&abilityCollider))
-					{
-						ability->activate(enemies[i]);
-					}
-				}
-			}
-		}
-		break;
-	}
-	case Ability::TargetType::Area_Point:
-	{
-		if (mGameData->inputManager->isCursorPressed(Cursor::Left))
-		{
-			VectorF cursorPosition = mGameData->inputManager->cursorPosition();
-			cursorPosition = mGameData->environment->toWorldCoords(cursorPosition);
-
-			Map* map = mGameData->environment->map(cursorPosition);
-
-			// Activate ability
-			AreaAbility* areaAbility = static_cast<AreaAbility*>(ability);
-			if (areaAbility->isValidTarget(cursorPosition, map))
-			{
-				// Apply effect
-				areaAbility->activate(cursorPosition);
-				ability->activate(nullptr);
-				ability->setState(Ability::Activating);
-			}
-		}
-		break;
-	}
-	default:
-		break;
-	}
-}
-
-
-void AbilityManager::activate(const std::string& name)
-{
-	Ability* ability = get(name);
-
-	if (ability)
-	{
-		if (ability->state() == Ability::Selected)
-		{
-			printf("activating\n");
-			ability->activate(mGameData->actors->playerActor());
-			ability->setState(Ability::Running);
-		}
-	}
-	else
-	{
-		DebugPrint(Log, "Play does not have the '%s' ability\n", name.c_str());
 	}
 }
 
@@ -291,36 +176,6 @@ void AbilityManager::add(Ability* ability)
 }
 
 
-void AbilityManager::setState(const std::string& name, Ability::State state)
-{
-	if(hasAbility(name))
-	{
-		get(name)->setState(state);
-	}
-}
-
-
-Ability* AbilityManager::get(const std::string& name) const
-{
-	for (int i = 0; i < mAbilities.size(); i++)
-	{
-		if (mAbilities[i]->name() == name)
-		{
-			return mAbilities[i];
-		}
-	}
-
-	DebugPrint(Warning, "Ability '%s' not in ability manager\n", name.c_str());
-	return nullptr;
-}
-
-
-bool AbilityManager::hasAbility(const std::string& ability) const
-{
-	return get(ability) != nullptr;
-}
-
-
 Ability* AbilityManager::createNewAbility(const std::string& name)
 {
 	XMLParser parser;
@@ -353,10 +208,18 @@ Ability* AbilityManager::createNewAbility(const std::string& name)
 	}
 	else if (name == "Smash")
 	{
+		// Build stun animator
+		XMLParser parser;
+		parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, values["Stun"]));
+
+		AnimationReader reader(mGameData->textureManager, parser);
+		Animator animator;
+		reader.initAnimator(animator);
+
 		Texture* texture = mGameData->textureManager->getTexture(values["HammerTexture"], FileManager::Image_Weapons);
 		VectorF size = realiseSize(texture->originalDimentions, std::stof(values["HammerMaxSize"]));
 
-		ability = new SmashAbility(texture, size);
+		ability = new SmashAbility(texture, size, animator);
 	}
 
 	if (ability)
@@ -368,4 +231,170 @@ Ability* AbilityManager::createNewAbility(const std::string& name)
 		DebugPrint(Warning, "No new ability could be created wth the name '%s'\n", name.c_str());
 
 	return ability;
+}
+
+
+void AbilityManager::setState(const std::string& name, Ability::State state)
+{
+	Ability* ability = get(name);
+
+	if(ability)
+	{
+		ability->setState(state);
+	}
+}
+
+
+Ability* AbilityManager::get(const std::string& name) const
+{
+	for (int i = 0; i < mAbilities.size(); i++)
+	{
+		if (mAbilities[i]->name() == name)
+		{
+			return mAbilities[i];
+		}
+	}
+
+	DebugPrint(Warning, "Ability '%s' not in ability manager\n", name.c_str());
+	return nullptr;
+}
+
+
+
+// --- Private Functions --- //
+void AbilityManager::attemptActivation(Ability* ability)
+{
+	if (ability->state() != Ability::Selected)
+		return;
+
+	switch (ability->targetType())
+	{
+		// Player casts on self only
+	case Ability::TargetType::Self:
+	{
+		attemptActivationOnSelf(ability);
+		break;
+	}
+	// Activate on first enemy selected
+	case Ability::TargetType::Single_Enemy:
+	{
+		attemptActivationOnSingleEnemy(ability);
+		break;
+	}
+	// Select any floor tile
+	case Ability::TargetType::Area_Attack:
+	{
+		attemptActivationOnArea(ability);
+		break;
+	}
+	case Ability::TargetType::Area_Point:
+	{
+		attemptActivationOnPoint(ability);
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+
+void AbilityManager::completeSelection(Ability* ability)
+{
+	ability->setState(Ability::Running);
+
+	UIButton* button = mGameData->uiManager->findButton(ability->name());
+	if (button)
+		button->setActive(false);
+
+}
+
+
+void AbilityManager::attemptActivationOnSelf(Ability* ability)
+{
+	ability->setState(Ability::Activating);
+	ability->activate(nullptr);
+}
+
+void AbilityManager::attemptActivationOnSingleEnemy(Ability* ability)
+{
+	if (mGameData->inputManager->isCursorPressed(Cursor::Left))
+	{
+		VectorF cursorPosition = mGameData->inputManager->cursorPosition();
+		cursorPosition = mGameData->environment->toWorldCoords(cursorPosition);
+
+		std::vector<Actor*> enemies = mGameData->actors->getAllEnemies();
+		for (int i = 0; i < enemies.size(); i++)
+		{
+			// activate ability on first enemy selected
+			if (enemies[i]->collider()->contains(cursorPosition))
+			{
+				ability->setState(Ability::Activating);
+				ability->activate(enemies[i]);
+				break;
+			}
+		}
+	}
+}
+
+void AbilityManager::attemptActivationOnArea(Ability* ability)
+{
+	if (mGameData->inputManager->isCursorPressed(Cursor::Left))
+	{
+		VectorF cursorPosition = mGameData->inputManager->cursorPosition();
+		cursorPosition = mGameData->environment->toWorldCoords(cursorPosition);
+
+		Map* map = mGameData->environment->map(cursorPosition);
+
+		// Activate ability
+		AreaAbility* areaAbility = static_cast<AreaAbility*>(ability);
+
+		// BUG: if you select just outside of the current map this breaks?
+		if (areaAbility->isValidTarget(cursorPosition, map))
+		{
+			areaAbility->activate(cursorPosition);
+			activateOnArea(ability);
+		}
+	}
+}
+
+void AbilityManager::activateOnArea(Ability* ability)
+{
+	ability->setState(Ability::Activating);
+
+	AreaAbility* areaAbility = static_cast<AreaAbility*>(ability);
+	Collider abilityCollider = areaAbility->collider();
+
+	// Apply effect to all enemies caught in area
+	std::vector<Actor*> enemies = mGameData->actors->getAllEnemies();
+	for (int i = 0; i < enemies.size(); i++)
+	{
+		Collider* enemyCollider = enemies[i]->collider();
+		if (enemyCollider->doesIntersect(&abilityCollider))
+		{
+			ability->activate(enemies[i]);
+		}
+	}
+}
+
+
+
+void AbilityManager::attemptActivationOnPoint(Ability* ability)
+{
+	if (mGameData->inputManager->isCursorPressed(Cursor::Left))
+	{
+		VectorF cursorPosition = mGameData->inputManager->cursorPosition();
+		cursorPosition = mGameData->environment->toWorldCoords(cursorPosition);
+
+		Map* map = mGameData->environment->map(cursorPosition);
+
+		// Activate ability
+		AreaAbility* areaAbility = static_cast<AreaAbility*>(ability);
+		if (areaAbility->isValidTarget(cursorPosition, map))
+		{
+			// Apply effect
+			areaAbility->activate(cursorPosition);
+			ability->activate(nullptr);
+			ability->setState(Ability::Activating);
+		}
+	}
 }

@@ -115,6 +115,7 @@
     <ClCompile Include="Source\Map\MapTileDecoder.cpp" />
     <ClCompile Include="Source\Objects\Abilities\SmashAbility.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\Types\Devil.cpp" />
+    <ClCompile Include="Source\Objects\Effects\StunEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -255,6 +256,7 @@
     <ClInclude Include="Source\Map\MapTileDecoder.h" />
     <ClInclude Include="Source\Objects\Abilities\SmashAbility.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\Types\Devil.h" />
+    <ClInclude Include="Source\Objects\Effects\StunEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

@@ -44,6 +44,14 @@ void EffectHandler::slowUpdate(float dt)
 	}
 }
 
+void EffectHandler::render()
+{
+	for (Effect* effect : mEffects)
+	{
+		effect->render();
+	}
+}
+
 
 void EffectHandler::clear()
 {

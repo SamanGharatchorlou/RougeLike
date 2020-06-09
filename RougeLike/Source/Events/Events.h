@@ -33,6 +33,8 @@ enum class Event
 
 	UpdateAIPathMap,
 	UpdateAICostMap,
+
+	ActivateAreaAttack
 };
 
 
@@ -50,9 +52,20 @@ struct EventPacket
 	EventPacket(EventData* dataPtr) : data(dataPtr) { }
 	~EventPacket() { }
 
-	void free();
+	void free()
+	{
+		delete data;
+		data = nullptr;
+	}
 
 	EventData* data;
+};
+
+struct ActivateAreaAttack : public EventData
+{
+	ActivateAreaAttack(const std::string& ability) : mAbility(ability) { eventType = Event::ActivateAreaAttack; }
+	~ActivateAreaAttack() { }
+	std::string mAbility;
 };
 
 

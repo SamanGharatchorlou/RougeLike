@@ -85,10 +85,10 @@ void Player::handleInput()
 		mAbilities.setState("Smash", Ability::Selected);
 	}
 
-	if (mGameData->inputManager->isReleased(Button::One))
-	{
-		mAbilities.exitSelection();
-	}
+	//if (mGameData->inputManager->isReleased(Button::One))
+	//{
+	//	mAbilities.exitSelection();
+	//}
 
 
 
@@ -125,16 +125,6 @@ void Player::fastUpdate(float dt)
 	{
 		mPhysics.setFlip(SDL_FLIP_HORIZONTAL);
 		mWeapon->leftFlip();
-	}
-
-	// Weapon
-	if (mPhysics.flip() == SDL_FLIP_NONE && mPhysics.direction().x < 0)
-	{
-		//mPhysics.setFlip(SDL_FLIP_HORIZONTAL);
-	}
-	else if (mPhysics.flip() == SDL_FLIP_HORIZONTAL && mPhysics.direction().x > 0)
-	{
-		//mPhysics.setFlip(SDL_FLIP_NONE);
 	}
 
 	mWeapon->setPosition(rect().Center());

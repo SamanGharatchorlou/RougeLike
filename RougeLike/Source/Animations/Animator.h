@@ -82,6 +82,7 @@ public:
 	bool hasAnimations() const { return (bool)mAnimations.size(); }
 	void selectAnimation(Action state);
 	void startAnimation(Action state);
+	Action currentAction() const { return mAnimations[mActiveIndex].mState; }
 
 	void setSpeedFactor(float speed) { speedFactor = speed; }
 
