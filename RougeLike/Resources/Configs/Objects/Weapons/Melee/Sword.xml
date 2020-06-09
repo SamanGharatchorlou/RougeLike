@@ -11,7 +11,7 @@
 	</Properties>
 
 	<MaxSize>75</MaxSize>
-	<Offset x = "8" y = "23"></Offset>
+	<Offset x = "13" y = "25"></Offset>
 
 	<Audio>
 		<Hit>ShortSwordHit</Hit>

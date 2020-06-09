@@ -17,7 +17,7 @@
 
 	<AnimationInfo>
 		<ID>Soldier</ID>
-		<FrameSpeed>0.04</FrameSpeed>
+		<FrameTime>0.04</FrameTime>
 		<FrameSize x = "900" y ="900"></FrameSize>
 		<Animations>
 			<Idle>16</Idle>

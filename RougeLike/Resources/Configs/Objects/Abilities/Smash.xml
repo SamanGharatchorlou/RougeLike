@@ -5,13 +5,17 @@
 		<Damage>100</Damage>
 		<Range>150</Range>
 		<MaxSize>100</MaxSize>
+
+		<HammerTexture>Mjolnir</HammerTexture>
+		<HammerMaxSize>50</HammerMaxSize>
+		<HammerFallSpeed>750</HammerFallSpeed>
 	</Properties>
 
 	<Icon>SmashIcon</Icon>
 
 	<AnimationInfo>
 		<ID>FloorBurst</ID>
-		<FrameSpeed>0.1</FrameSpeed>
+		<FrameTime>0.1</FrameTime>
 		<FrameSize x = "894" y ="426"></FrameSize>
 		<Animations>
 			<Active>6</Active>

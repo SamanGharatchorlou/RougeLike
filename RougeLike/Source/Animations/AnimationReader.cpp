@@ -10,8 +10,8 @@ bool AnimationReader::initAnimator(Animator& animator)
 {
 	xmlNode animationNode = mParser.rootNode()->first_node("AnimationInfo");
 
-	float frameSpeed = std::stof(mParser.nodeValue(animationNode, "FrameSpeed"));
-	animator.setFrameSpeed(frameSpeed);
+	float frameTime = std::stof(mParser.nodeValue(animationNode, "FrameTime"));
+	animator.setFrameTime(frameTime);
 
 	std::string id = mParser.nodeValue(animationNode, "ID");
 
@@ -26,7 +26,7 @@ bool AnimationReader::initAnimator(Animator& animator)
 		node = node->next_sibling();
 	}
 
-	return (bool)animator.count();
+	return (bool)animator.animationCount();
 }
 
 

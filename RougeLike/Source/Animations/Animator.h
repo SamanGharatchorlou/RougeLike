@@ -68,7 +68,7 @@ public:
 public:
 	Animator();
 
-	void setFrameSpeed(float frameSpeed) { mFrameSpeed = frameSpeed; }
+	void setFrameTime(float frameTime) { mFrameTime = frameTime; }
 	void addAnimation(AnimationData& data);
 
 	void slowUpdate(float dt);
@@ -88,10 +88,13 @@ public:
 	void start() { timer.start(); }
 	void pause() { timer.pause(); }
 	void stop() { timer.stop(); }
+	bool isRunning() const { return !timer.isPaused() && timer.isStarted(); }
 
 	int loops() const { return mAnimations[mActiveIndex].mLoops; }
 	VectorF frameSize() const { return mAnimations[mActiveIndex].mTileDimentions; }
-	int count() const { return mAnimations.size(); }
+	int frameCount() const { return mAnimations[mActiveIndex].mFrameCount; }
+	float frameTime() const { return mFrameTime; }
+	int animationCount() const { return mAnimations.size(); }
 
 	const Animation& animation() const { return mAnimations[mActiveIndex]; }
 
@@ -102,7 +105,7 @@ private:
 	std::vector<Animation> mAnimations;
 
 	float speedFactor;
-	float mFrameSpeed;
+	float mFrameTime;
 	Timer<float> timer;
 
 	const RectF* mRect;

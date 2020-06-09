@@ -58,6 +58,9 @@ ValueMap XMLParser::values(xmlNode node) const
 std::string XMLParser::firstRootNodeValue(const std::string& label) const
 {
 	xmlNode node = rootNode()->first_node(label.c_str());
+
+	if (node == nullptr)
+		printf("pasue");
 	
 	ASSERT(Warning, node != nullptr, "The node '%s' does not exist, it must have a value\n", label.c_str());
 	return node->value();

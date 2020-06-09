@@ -35,7 +35,7 @@
 
 	<AnimationInfo>
 		<ID>Devil</ID>
-		<FrameSpeed>0.05</FrameSpeed>
+		<FrameTime>0.05</FrameTime>
 		<FrameSize x = "900" y ="900"></FrameSize>
 		<Animations>
 			<Idle>16</Idle>

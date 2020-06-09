@@ -20,17 +20,9 @@ Collectable::Collectable() : mIcon(nullptr)
 
 void Collectable::setIcon(Texture* icon)
 {
-	VectorF position;
-	VectorF maxDimentions(50.0f, 50.0f);
-	VectorF iconSize = icon->originalDimentions;
-	float ratio = 1.0f;
-
-	if (iconSize.y > iconSize.x)
-		ratio = iconSize.y / maxDimentions.y;
-	else
-		ratio = iconSize.x / maxDimentions.x;
-
-	mRect = RectF(position, iconSize / ratio);
+	float maxDimention = 50.0f;
+	VectorF iconSize = realiseSize(icon->originalDimentions, maxDimention);
+	mRect.SetSize(realiseSize(iconSize, maxDimention));
 	mIcon = icon;
 }
 
@@ -48,19 +40,16 @@ WeaponCollectable::WeaponCollectable(const std::string& name)
 }
 
 
-AbilityCollectable::AbilityCollectable(const std::string& name)
+// --- Ability pickup --- //
+AbilityCollectable::AbilityCollectable(const std::string& ability)
 {
-	Ability* ability = createNewAbility(name);
-	ASSERT(Warning, ability != nullptr, "the ability '%s' was not found by the finder\n", name);
-
-	mAbility = ability;
-	mName = name; // TODO: use the ability->name() instead?
+	mName = ability;
 }
 
 
 void AbilityCollectable::activate(Player* Player)
 {
-	Player->addAbility(mAbility);
+	Player->addAbility(mName);
 }
 
 
@@ -69,19 +58,3 @@ void WeaponCollectable::activate(Player* Player)
 	Player->selectWeapon(mName);
 }
 
-
-//
-//AbilityCollectable::AbilityCollectable(const std::string& ability, Texture* texture)
-//{
-//
-//}
-//
-//
-//
-//
-//// --- Health Pickup --- //
-//void HealthCollectable::activate(Player* Player)
-//{
-//	int health = std::stoi(mValue);
-////	Player->get()->propertyBag()->pHealth.get().increase(health);
-//}

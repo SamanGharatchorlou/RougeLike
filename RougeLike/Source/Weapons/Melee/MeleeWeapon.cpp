@@ -62,6 +62,8 @@ void MeleeWeapon::equipt(const WeaponData* data)
 	VectorF baseSize = mMeleeData->texture->originalDimentions;
 	VectorF size = realiseSize(baseSize, mMeleeData->maxDimention);
 	mRect.SetSize(size);
+
+	aboutPoint = VectorF(rect().Width() / 2.0f, rect().Height() * 0.85f);
 }
 
 
@@ -112,7 +114,9 @@ void MeleeWeapon::updateAimDirection(VectorF cursorPosition)
 		float offsetAngle = (mMeleeData->swingArc / 2.0f) * mSwingDirection;
 
 		// Camera to cursor vector
-		mDirection = (cursorPosition - Camera::Get()->toCameraCoords(rect().BotCenter()));
+		VectorF botPoint = rect().TopLeft() + aboutPoint;
+
+		mDirection = (cursorPosition - Camera::Get()->toCameraCoords(botPoint));
 		mDirection = rotateVector(mDirection, offsetAngle);
 	}
 
@@ -122,10 +126,18 @@ void MeleeWeapon::updateAimDirection(VectorF cursorPosition)
 
 void MeleeWeapon::render()
 {
-	VectorF aboutPoint(rect().Width() / 2.0f, rect().Height() * 0.9f);
-
 	SDL_RendererFlip flip = (getRotation(mDirection) >= 0.0f && getRotation(mDirection) < 180.0f) ? SDL_FLIP_HORIZONTAL: SDL_FLIP_NONE;
 	mMeleeData->texture->render(Camera::Get()->toCameraCoords(rect()), getRotation(mDirection), aboutPoint, flip);
+
+#if DRAW_PLAYER_RECTS
+	// About point
+	RectF about = RectF(rect().TopLeft() + aboutPoint, VectorF(2.0f, 2.0f));
+	debugDrawRect(about, RenderColour::Blue);
+
+	// Weapon vector
+	VectorF pos = rect().TopLeft() + aboutPoint;
+	debugDrawLine(pos, pos + weaponVectorTest , RenderColour::Red);
+#endif
 }
 
 
@@ -168,7 +180,11 @@ const std::string& MeleeWeapon::missSoundLabel() { return mMeleeData->audioMiss;
 /// --- Private Functions --- ///
 void MeleeWeapon::updateWeaponBlocks()
 {
-	VectorF weaponVector = mDirection.normalise() * rect().Height();
+	VectorF weaponVector = mDirection.normalise() * aboutPoint.y;
+#if DRAW_PLAYER_RECTS
+	weaponVectorTest = weaponVector;
+#endif
+
 
 	// Size
 	int blocks = mBlockRects.size();
@@ -179,14 +195,13 @@ void MeleeWeapon::updateWeaponBlocks()
 	// Position
 	for (int i = 0; i < blocks; i++)
 	{
-		// Center block on weapon aboutpoint (pommel) coords
-		RectF block = RectF(blockSize / -2, blockSize);
+		RectF block = RectF(blockSize / -2.0f, blockSize);
 
-		VectorF shaftPosition = (weaponVector / (blocks)) * (0.5 + i);
+		VectorF shaftPosition = (weaponVector / (blocks)) * (i + 0.5f);
 		block = block.Translate(shaftPosition);
 
 		// Translate to world coords
-		block = block.Translate(rect().BotCenter());
+		block = block.Translate(rect().TopLeft() + aboutPoint);
 
 		mBlockRects[i].SetRect(block);
 	}

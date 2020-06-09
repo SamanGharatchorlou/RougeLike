@@ -4,6 +4,7 @@
 
 #include "Game/GameData.h"
 #include "Game/Cursor.h"
+#include "Game/Camera.h"
 #include "Input/InputManager.h"
 #include "Audio/AudioManager.h"
 #include "UI/UIManager.h"
@@ -60,21 +61,16 @@ void Player::init(const std::string& characterConfig)
 	mCollider->setName("player");
 #endif
 
-	//// TODO: Get these strings from a set so they match up with the UI?
-	//addAbility("Slow", new SlowAbility(0.25F));
-	//addAbility("Heal", new HealAbility(50.0f));
-	//addAbility("Spikes", new SpikeAbility(Damage(100.0f), 300.0f));
-	//addAbility("Blink", new BlinkAbility(500.0f));
-	//addAbility("Armor", new ArmorAbility(50.0f));
-
-	addAbility(createNewAbility("Smash"));
+	addAbility("Smash");
 }
 
 
-void Player::addAbility(Ability* ability)
+void Player::addAbility(const std::string& name)
 {
+	Ability* ability = mAbilities.createNewAbility(name);
 	mAbilities.add(ability);
 }
+
 
 void Player::handleInput()
 {
@@ -89,10 +85,10 @@ void Player::handleInput()
 		mAbilities.setState("Smash", Ability::Selected);
 	}
 
-	//if (mGameData->inputManager->isReleased(Button::One))
-	//{
-	//	mAbilities.exitSelection();
-	//}
+	if (mGameData->inputManager->isReleased(Button::One))
+	{
+		mAbilities.exitSelection();
+	}
 
 
 
@@ -117,16 +113,28 @@ void Player::fastUpdate(float dt)
 	// Movement, animations, weapon updates
 	Actor::fastUpdate(dt);
 
-	// Weapon
-	if (mPhysics.flip() == SDL_FLIP_NONE && mPhysics.direction().x < 0)
+	VectorF cursorPosition = mGameData->inputManager->cursorPosition();
+	VectorF playerPosition = Camera::Get()->toCameraCoords(position());
+
+	if (cursorPosition.x > playerPosition.x)
+	{
+		mPhysics.setFlip(SDL_FLIP_NONE);
+		mWeapon->rightFlip();
+	}
+	else
 	{
 		mPhysics.setFlip(SDL_FLIP_HORIZONTAL);
 		mWeapon->leftFlip();
 	}
+
+	// Weapon
+	if (mPhysics.flip() == SDL_FLIP_NONE && mPhysics.direction().x < 0)
+	{
+		//mPhysics.setFlip(SDL_FLIP_HORIZONTAL);
+	}
 	else if (mPhysics.flip() == SDL_FLIP_HORIZONTAL && mPhysics.direction().x > 0)
 	{
-		mPhysics.setFlip(SDL_FLIP_NONE);
-		mWeapon->rightFlip();
+		//mPhysics.setFlip(SDL_FLIP_NONE);
 	}
 
 	mWeapon->setPosition(rect().Center());

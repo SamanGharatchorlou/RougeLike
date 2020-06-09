@@ -5,6 +5,7 @@
 
 #include "Game/GameData.h"
 #include "Input/InputManager.h"
+#include "Graphics/Texture.h"
 #include "Graphics/TextureManager.h"
 
 #include "UI/UIManager.h"
@@ -19,6 +20,15 @@
 #include "Map/Map.h"
 
 #include "Animations/AnimationReader.h"
+
+
+// Abilities
+#include "Objects/Abilities/SlowAbility.h"
+#include "Objects/Abilities/HealAbility.h"
+#include "Objects/Abilities/SpikeAbility.h"
+#include "Objects/Abilities/BilnkAbility.h"
+#include "Objects/Abilities/ArmorAbility.h"
+#include "Objects/Abilities/SmashAbility.h"
 
 
 void AbilityManager::handleInput()
@@ -52,7 +62,8 @@ void AbilityManager::exitSelection()
 {
 	for (int i = 0; i < mAbilities.size(); i++)
 	{
-		mAbilities[i]->setState(Ability::Idle);
+		// TODO: do i need some kind of exit mechanism?
+		//mAbilities[i]->setState(Ability::Idle);
 
 		UIButton* button = mGameData->uiManager->findButton(mAbilities[i]->name());
 		if (button)
@@ -88,6 +99,7 @@ void AbilityManager::slowUpdate(float dt)
 		case Ability::Finished:
 		{
 			// reset... cool down etc.
+			ability->exit();
 			ability->setState(Ability::Idle);
 			break;
 		}
@@ -301,4 +313,54 @@ Ability* AbilityManager::get(const std::string& name) const
 bool AbilityManager::hasAbility(const std::string& ability) const
 {
 	return get(ability) != nullptr;
+}
+
+
+Ability* AbilityManager::createNewAbility(const std::string& name)
+{
+	XMLParser parser;
+	parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, name));
+
+	xmlNode propertyNode = parser.rootNode()->first_node("Properties");
+	ValueMap values = parser.values(propertyNode);
+
+	Ability* ability = nullptr;
+
+	if (name == "Slow")
+	{
+		ability = new SlowAbility;
+	}
+	else if (name == "Heal")
+	{
+		ability = new HealAbility;
+	}
+	else if (name == "Spikes")
+	{
+		ability = new SpikeAbility;
+	}
+	else if (name == "Blink")
+	{
+		ability = new BlinkAbility;
+	}
+	else if (name == "Armor")
+	{
+		ability = new ArmorAbility;
+	}
+	else if (name == "Smash")
+	{
+		Texture* texture = mGameData->textureManager->getTexture(values["HammerTexture"], FileManager::Image_Weapons);
+		VectorF size = realiseSize(texture->originalDimentions, std::stof(values["HammerMaxSize"]));
+
+		ability = new SmashAbility(texture, size);
+	}
+
+	if (ability)
+	{
+		ability->fillValues(values);
+		ability->setName(name);
+	}
+	else
+		DebugPrint(Warning, "No new ability could be created wth the name '%s'\n", name.c_str());
+
+	return ability;
 }

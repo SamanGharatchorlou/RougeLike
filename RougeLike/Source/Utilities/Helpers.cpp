@@ -34,6 +34,18 @@ VectorF rotateVector(VectorF vector, float dTheta)
 }
 
 
+// NOTE: untested
+VectorF rotateVector(VectorF vector, float dTheta, VectorF about)
+{
+	VectorF outVector;
+	float radians = toRadians(dTheta);
+
+	outVector.x =  ((vector.x - about.x) * cos(radians)) - ((about.y - vector.y) * sin(radians)) + about.x;
+	outVector.y = -((vector.x - about.x) * sin(radians)) + ((about.y - vector.y) * cos(radians)) + about.y;
+
+	return outVector;
+}
+
 
 // (0,1) = 0 degrees
 float getRotation(VectorF direction)

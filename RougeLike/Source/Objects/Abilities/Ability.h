@@ -10,6 +10,7 @@ class Actor;
 class Map;
 class Player;
 
+
 class Ability
 {
 public:
@@ -44,6 +45,7 @@ public:
 	virtual void activate(Actor* target) = 0;
 	virtual void slowUpdate(float dt) = 0;
 	virtual void render();
+	virtual void exit() { };
 
 	virtual const TargetType targetType() const = 0;
 
@@ -55,8 +57,6 @@ public:
 
 	bool hasEvent() const { return mEvents.size() > 0; }
 	EventPacket popEvent();
-
-	void realiseSize();
 
 
 protected:
@@ -94,6 +94,3 @@ protected:
 	float mRange;
 	Texture* mRangeCircle;
 };
-
-
-Ability* createNewAbility(const std::string& ability);

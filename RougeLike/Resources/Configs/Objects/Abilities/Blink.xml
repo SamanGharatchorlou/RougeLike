@@ -9,7 +9,7 @@
 
 	<AnimationInfo>
 		<ID>Blink</ID>
-		<FrameSpeed>0.05</FrameSpeed>
+		<FrameTime>0.05</FrameTime>
 		<FrameSize x = "72" y ="51"></FrameSize>
 		<Animations>
 			<Active>8</Active>

@@ -64,6 +64,7 @@ int randomNumberBetween(int min, int max);
 
 float getRotation(VectorF direction);
 VectorF rotateVector(VectorF vec, float dTheta);
+VectorF rotateVector(VectorF vec, float dTheta, VectorF about);
 
 VectorF closestRectSide(VectorF point, RectF rect);
 

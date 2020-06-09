@@ -9,7 +9,7 @@
 
 	<AnimationInfo>
 		<ID>Armor</ID>
-		<FrameSpeed>0.15</FrameSpeed>
+		<FrameTime>0.15</FrameTime>
 		<FrameSize x = "72" y ="48"></FrameSize>
 		<Animations>
 			<Active>8</Active>

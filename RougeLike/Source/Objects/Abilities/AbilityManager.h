@@ -33,7 +33,7 @@ public:
 	bool hasEvent() const { return mEvents.hasEvent(); }
 	EventPacket popEvent() { return mEvents.pop(); }
 
-	
+	Ability* createNewAbility(const std::string& name);
 
 private:
 	void completeSelection(Ability* ability);

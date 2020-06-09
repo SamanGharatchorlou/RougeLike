@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Animator.h"
 
-// temp
 #include "Graphics/Texture.h"
+
 
 Action stringToAction(const std::string& action)
 {
@@ -28,6 +28,7 @@ Action stringToAction(const std::string& action)
 		return Action::None;
 	}
 }
+
 
 // --- Animation --- //
 Animator::Animation::Animation(AnimationData& data) : 
@@ -103,7 +104,7 @@ int Animator::Animation::currentFrame() const
 
 
 // --- Animator --- //
-Animator::Animator() : mActiveIndex(0), speedFactor(1.0f), mFrameSpeed(0.0f) { }
+Animator::Animator() : mActiveIndex(0), speedFactor(1.0f), mFrameTime(0.0f) { }
 
 
 void Animator::addAnimation(AnimationData& data)
@@ -130,6 +131,7 @@ void Animator::selectAnimation(Action state)
 		if (mAnimations[i].mState == state)
 		{
 			mActiveIndex = i;
+			mAnimations[i].mLoops = 0;
 			return;
 		}
 	}
@@ -137,28 +139,17 @@ void Animator::selectAnimation(Action state)
 	DebugPrint(Warning, "Animation state %d not present in animator\n", (int)state);
 }
 
+
 void Animator::startAnimation(Action state)
 {
-	for (int i = 0; i < mAnimations.size(); i++)
-	{
-		if (mAnimations[i].mState == state)
-		{
-			mActiveIndex = i;
-			mAnimations[i].mLoops = 0;
-			start();
-			return;
-		}
-	}
-
-	DebugPrint(Warning, "Animation state %d not present in animator\n", (int)state);
+	selectAnimation(state);
+	start();
 }
 
 
 void Animator::slowUpdate(float dt)
 {
-	float frameSpeed = mFrameSpeed * 20 / mAnimations[mActiveIndex].mFrameCount;
-
-	if (timer.getSeconds() >= mFrameSpeed / speedFactor)
+	if (timer.getSeconds() >= mFrameTime / speedFactor)
 	{
 		mAnimations[mActiveIndex].nextFrame();
 		timer.restart();
@@ -171,76 +162,7 @@ void Animator::clear()
 	mAnimations.clear();
 	mActiveIndex = 0;
 	speedFactor = 1.0f;
-	mFrameSpeed = -1.0f;
+	mFrameTime = -1.0f;
 	timer.stop();
 	mRect = nullptr;
 }
-
-
-// --- Animator --- //
-
-/*
-
-void Animator::init(Tileset spriteSheet, Animations animations)
-{
-	mSpriteSheet = spriteSheet;
-	mAnimations = animations;
-}
-
-void Animator::slowUpdate(float dt)
-{
-	AnimationInfo& animation = mAnimations[mActiveAnimation];
-
-	if (timer.getSeconds() >= animation.speed / speedFactor)
-	{
-		if (++mAnimationIndex >= animation.startingIndex + animation.count)
-		{
-			mAnimationIndex = animation.startingIndex;
-		}
-
-		timer.restart();
-	}
-}
-
-void Animator::clear()
-{
-	mActiveAnimation = "";
-	mAnimationIndex = 0;
-	speedFactor = 1.0f;
-	timer.stop();
-}
-
-
-void Animator::selectAnimation(const std::string& name)
-{
-	if (mActiveAnimation != name)
-	{
-		if (mAnimations.count(name) > 0)
-		{
-			timer.restart();
-			mActiveAnimation = name;
-			mAnimationIndex = mAnimations[mActiveAnimation].startingIndex;
-		}
-		else
-			DebugPrint(Warning, "No animation named '%s' available in animation map\n", name.c_str());
-	}
-}
-
-
-Tile* Animator::getSpriteTile()
-{
-	return &mSpriteSheet.getTile(mAnimationIndex);
-}
-
-
-Texture* Animator::getSpriteTexture()
-{
-	return mSpriteSheet.getTile(mAnimationIndex).getTexture();
-}
-
-
-void Animator::render(RectF rect)
-{
-	mSpriteSheet.getTile(mAnimationIndex).render(rect);
-}
-*/

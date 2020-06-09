@@ -72,8 +72,5 @@ public:
 	void activate(Player* Player) override;
 
 	Type type() const override { return Type::Ability; }
-
-private:
-	Ability* mAbility;
 };
 

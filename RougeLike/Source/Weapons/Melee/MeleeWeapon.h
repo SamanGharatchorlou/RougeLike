@@ -2,6 +2,10 @@
 
 #include "Weapons/Weapon.h"
 
+#if _DEBUG
+#include "Debug/DebugDraw.h"
+#endif
+
 struct MeleeWeaponData;
 class DamageCollider;
 
@@ -56,4 +60,10 @@ private:
 	int mSwingDirection;
 	float mRotationSum;
 	float mSwingSpeed;
+
+	VectorF aboutPoint;
+
+#if DRAW_PLAYER_RECTS
+	VectorF weaponVectorTest;
+#endif
 };

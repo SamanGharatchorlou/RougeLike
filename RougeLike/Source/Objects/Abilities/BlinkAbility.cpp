@@ -22,7 +22,7 @@ void BlinkAbility::fillValues(ValueMap& values)
 
 void BlinkAbility::activate(VectorF position)
 {
-	realiseSize();
+	mRect.SetSize(realiseSize(mAnimator.frameSize(), mMaxDimention));
 	mRect.SetCenter(position);
 	mTargetPosition = position;
 	mAnimator.startAnimation(Action::Active);

@@ -2,18 +2,10 @@
 #include "Ability.h"
 
 #include "Graphics/Texture.h"
+
 #include "Game/Camera.h"
 #include "Map/Map.h"
 #include "Objects/Actors/Player/Player.h"
-
-#include "Objects/Abilities/SlowAbility.h"
-#include "Objects/Abilities/HealAbility.h"
-#include "Objects/Abilities/SpikeAbility.h"
-#include "Objects/Abilities/BilnkAbility.h"
-#include "Objects/Abilities/ArmorAbility.h"
-#include "Objects/Abilities/SmashAbility.h"
-
-#include "Debug/DebugDraw.h"
 
 
 EventPacket Ability::popEvent()
@@ -24,24 +16,12 @@ EventPacket Ability::popEvent()
 	return event;
 }
 
+
 void Ability::init(Animator animator, Player* player)
 {
 	mPlayer = player;
 	mAnimator = animator;
-	realiseSize();
-}
-
-
-void Ability::realiseSize()
-{
-	ASSERT(Warning, mAnimator.hasAnimations(), "Must call Ability::init before realiseSize function\n");
-	ASSERT(Warning, mMaxDimention != 0.0f, "Max dimentions have not been set\n");
-
-	VectorF baseSize = mAnimator.frameSize();
-	VectorF ratio = baseSize / mMaxDimention;
-	float maxRatio = std::max(ratio.x, ratio.y);
-
-	mRect.SetSize(baseSize / maxRatio);
+	mRect.SetSize(realiseSize(animator.frameSize(), mMaxDimention));
 }
 
 
@@ -71,7 +51,6 @@ void AreaAbility::render()
 
 	Ability::render();
 }
-
 
 
 Collider AreaAbility::collider()
@@ -104,48 +83,3 @@ bool AreaAbility::isValidTarget(VectorF target, Map* map)
 }
 
 
-Ability* createNewAbility(const std::string& name)
-{
-	XMLParser parser;
-	parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, name));
-
-	xmlNode propertyNode = parser.rootNode()->first_node("Properties");
-	ValueMap values = parser.values(propertyNode);
-
-	Ability* ability = nullptr;
-
-	if (name == "Slow")
-	{
-		ability = new SlowAbility;
-	}
-	else if (name == "Heal")
-	{
-		ability = new HealAbility;
-	}
-	else if (name == "Spikes")
-	{
-		ability = new SpikeAbility;
-	}
-	else if (name == "Blink")
-	{
-		ability = new BlinkAbility;
-	}
-	else if (name == "Armor")
-	{
-		ability = new ArmorAbility;
-	}
-	else if (name == "Smash")
-	{
-		ability = new SmashAbility;
-	}
-
-	if (ability)
-	{
-		ability->fillValues(values);
-		ability->setName(name);
-	}
-	else
-		DebugPrint(Warning, "No new ability could be created wth the name '%s'\n", name.c_str());
-
-	return ability;
-}

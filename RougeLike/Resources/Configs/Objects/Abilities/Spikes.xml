@@ -11,7 +11,7 @@
 
 	<AnimationInfo>
 		<ID>Spikes</ID>
-		<FrameSpeed>0.1</FrameSpeed>
+		<FrameTime>0.1</FrameTime>
 		<FrameSize x = "72" y ="26"></FrameSize>
 		<Animations>
 			<Active>8</Active>
