@@ -25,6 +25,7 @@ private:
 	bool requestedActivate;
 
 	Damage mDamage;
+	bool mAppliedDamage;
 
 	Texture* mHammerTexture;
 	RectF mHammerRect;

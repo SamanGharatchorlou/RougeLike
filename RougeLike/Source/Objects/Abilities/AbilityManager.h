@@ -1,19 +1,16 @@
 #pragma once
 
 #include "Events/LocalDispatcher.h"
-#include "Objects/Abilities/Ability.h"
+#include "AbilityHotKeys.h"
+#include "Ability.h"
 
 class GameData;
-class Ability;
-class Actor;
-class InputManager;
-class UIManager;
 
 
 class AbilityManager
 {
 public:
-	AbilityManager(GameData* gameData) : mGameData(gameData) { }
+	AbilityManager(GameData* gameData);
 
 	void handleInput();
 	void slowUpdate(float dt);
@@ -21,8 +18,10 @@ public:
 
 	void add(Ability* ability);
 	void setState(const std::string& name, Ability::State state);
+	void setState(Ability* ability, Ability::State state);
 
 	void exitSelection();
+	void exitSelection(Ability* ability);
 	bool inSelectionMode() const;
 
 	Ability* get(const std::string& name) const;
@@ -49,6 +48,8 @@ private:
 private:
 	GameData* mGameData;
 	LocalDispatcher mEvents;
+
+	AbilityHotKeys mHotKeys;
 
 	std::vector<Ability*> mAbilities;
 };

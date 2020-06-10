@@ -13,7 +13,7 @@
 
 
 SmashAbility::SmashAbility(Texture* hammerTexture, VectorF hammerSize, Animator stun) 
-	: mHammerTexture(hammerTexture), mStunAnimator(stun), requestedActivate(false)
+	: mHammerTexture(hammerTexture), mStunAnimator(stun), requestedActivate(false), mAppliedDamage(false)
 {
 	mHammerRect.SetSize(hammerSize);
 };
@@ -68,11 +68,14 @@ void SmashAbility::activate(Actor* actor)
 {
 	if (requestedActivate)
 	{
-		StunEffect* stunEffect = new StunEffect(&mStunAnimator, mStunSize);
-		actor->addEffect(stunEffect);
-
+		// The enemy state will change to wait (from the stun) before the got hit bool
+		// from the damage will change the state to hit. Hence the damage is taken but
+		// there is no hit state change
 		DamageEffect* damage = new DamageEffect(mDamage);
 		actor->addEffect(damage);
+
+		StunEffect* stunEffect = new StunEffect(&mStunAnimator, mStunSize);
+		actor->addEffect(stunEffect);
 	}
 }
 

@@ -29,6 +29,7 @@
     <ClCompile Include="Source\Input\Button.cpp" />
     <ClCompile Include="Source\Map\MapTileDecoder.cpp" />
     <ClCompile Include="Source\Objects\Abilities\Ability.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityHotKeys.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityManager.cpp" />
     <ClCompile Include="Source\Objects\Abilities\ArmorAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\BlinkAbility.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="Source\Map\MapTileDecoder.h" />
     <ClInclude Include="Source\Objects\Abilities\Ability.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityManager.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityHotKeys.h" />
     <ClInclude Include="Source\Objects\Abilities\ArmorAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\BilnkAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\HealAbility.h" />

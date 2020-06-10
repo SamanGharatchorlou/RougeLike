@@ -61,7 +61,7 @@ void Player::init(const std::string& characterConfig)
 	mCollider->setName("player");
 #endif
 
-	addAbility("Smash");
+	//addAbility("Smash");
 }
 
 
@@ -78,22 +78,6 @@ void Player::handleInput()
 		mPhysics.handleInput(mGameData->inputManager);
 
 	mAbilities.handleInput();
-
-	// hot keys
-	if (mGameData->inputManager->isPressed(Button::One))
-	{
-		mAbilities.setState("Smash", Ability::Selected);
-	}
-
-	//if (mGameData->inputManager->isReleased(Button::One))
-	//{
-	//	mAbilities.exitSelection();
-	//}
-
-
-
-	if (mGameData->inputManager->isPressed(Button::Space))
-		mAbilities.exitSelection();
 
 	if (mGameData->inputManager->isCursorPressed(Cursor::Left) &&
 		!mGameData->uiManager->isUsingUI() && !mAbilities.inSelectionMode())

@@ -33,6 +33,7 @@
 		</TextBox>		
 	</layer>
 
+<!--
 	<layer>
 		<Button id = "Heal" x = "14.000" y = "643.000" width = "135.000" height = "86.000" texture = "Green" textureSelected = "Green_Selected" textureHovering = "Green_Highlighted"></Button>
 		<Box id = "HealIcon" parent = "Heal"  x = "42.500" y = "19.000" width = "50.000" height = "50.000" texture = "HealIcon"></Box>
@@ -49,5 +50,6 @@
 		<Button id = "Armor" x = "650.000" y = "643.000" width = "135.000" height = "86.000" texture = "Blue" textureSelected = "Blue_Selected" textureHovering = "Blue_Highlighted"></Button>
 		<Box id = "ArmorIcon" parent = "Armor"  x = "42.500" y = "19.000" width = "50.000" height = "50.000" texture = "ShieldIcon"></Box>
 	</layer>
+-->
 
 </screen>

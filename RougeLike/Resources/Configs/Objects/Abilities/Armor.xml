@@ -5,7 +5,7 @@
 		<MaxSize>100</MaxSize>
 	</Properties>
 
-	<Icon>ShieldIcon</Icon>
+	<Icon>ArmorIcon</Icon>
 
 	<AnimationInfo>
 		<ID>Armor</ID>

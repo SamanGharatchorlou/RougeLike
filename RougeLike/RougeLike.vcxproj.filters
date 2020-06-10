@@ -116,6 +116,7 @@
     <ClCompile Include="Source\Objects\Abilities\SmashAbility.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\Types\Devil.cpp" />
     <ClCompile Include="Source\Objects\Effects\StunEffect.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityHotKeys.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -257,6 +258,7 @@
     <ClInclude Include="Source\Objects\Abilities\SmashAbility.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\Types\Devil.h" />
     <ClInclude Include="Source\Objects\Effects\StunEffect.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityHotKeys.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

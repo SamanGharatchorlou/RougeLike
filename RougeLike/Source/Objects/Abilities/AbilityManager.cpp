@@ -30,6 +30,13 @@
 #include "Objects/Abilities/SmashAbility.h"
 
 
+
+
+AbilityManager::AbilityManager(GameData* gameData) 
+	: mGameData(gameData), mHotKeys(gameData, this) 
+{ }
+
+
 void AbilityManager::handleInput()
 {
 	for (int i = 0; i < mAbilities.size(); i++)
@@ -43,6 +50,8 @@ void AbilityManager::handleInput()
 			mAbilities[i]->setState(Ability::Selected);
 		}
 	}
+
+	mHotKeys.handleInput();
 }
 
 
@@ -50,15 +59,19 @@ void AbilityManager::exitSelection()
 {
 	for (int i = 0; i < mAbilities.size(); i++)
 	{
-		// TODO: do i need some kind of exit mechanism?
-		//mAbilities[i]->setState(Ability::Idle);
-		if (mAbilities[i]->state() == Ability::Selected)
-			mAbilities[i]->setState(Ability::Idle);
-
-		UIButton* button = mGameData->uiManager->findButton(mAbilities[i]->name());
-		if (button)
-			button->setActive(false);
+		exitSelection(mAbilities[i]);
 	}
+}
+
+
+void AbilityManager::exitSelection(Ability* ability)
+{
+	if (ability->state() == Ability::Selected)
+		ability->setState(Ability::Idle);
+
+	UIButton* button = mGameData->uiManager->findButton(ability->name());
+	if (button)
+		button->setActive(false);
 }
 
 
@@ -167,6 +180,7 @@ void AbilityManager::add(Ability* ability)
 			areaAbility->setRangeCircle(rangeCircle);
 		}
 
+		mHotKeys.addHotKey(ability);
 	}
 	else
 		DebugPrint(Warning, "Animator setup failed for '%s' ability\n", ability->name().c_str());
@@ -242,6 +256,11 @@ void AbilityManager::setState(const std::string& name, Ability::State state)
 	{
 		ability->setState(state);
 	}
+}
+
+void AbilityManager::setState(Ability* ability, Ability::State state)
+{
+	ability->setState(state);
 }
 
 

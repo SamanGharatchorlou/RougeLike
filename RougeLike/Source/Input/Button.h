@@ -38,6 +38,8 @@ public:
 
 		// Numbers
 		One = SDLK_1,
+		Two = SDLK_2,
+		Three = SDLK_3,
 
 		KeyCount
 	};
