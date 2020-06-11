@@ -10,7 +10,7 @@ public:
 	void init(const std::string& text, const std::string& font, int ptSize, SDL_Color colour);
 
 	void setText(const std::string& text);
-	void setColour(SDL_Color colour) { mFont.setColour(colour); }
+	void setColour(SDL_Color colour);
 
 	void displaySubText(int startIndex, int endIndex);
 

@@ -95,3 +95,37 @@ VectorF realiseSize(VectorF baseSize, float maxDimention)
 	float maxRatio = std::max(ratio.x, ratio.y);
 	return baseSize / maxRatio;
 }
+
+SDL_Colour SDLColour(Colour colour)
+{
+	Uint8 r = 0;
+	Uint8 g = 0;
+	Uint8 b = 0;
+
+	switch (colour)
+	{
+	case Colour::White:
+		r = 255; g = 255; b = 255;
+		break;
+	case Colour::Red:
+		r = 255; g = 0; b = 0;
+		break;
+	case Colour::Blue:
+		r = 0; g = 0; b = 255;
+		break;
+	case Colour::Green:
+		r = 0; g = 255; b = 0;
+		break;
+	case Colour::Yellow:
+		r = 255; g = 255; b = 0;
+		break;
+	case Colour::LightGrey:
+		r = 201; g = 201; b = 201;
+		break;
+	default:
+		DebugPrint(Warning, "Colour enum %d not recognised\n", (int)colour);
+		break;
+	}
+
+	return SDL_Color{ r, g, b };
+}

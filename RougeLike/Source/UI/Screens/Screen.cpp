@@ -16,6 +16,14 @@ void Screen::set(std::vector<UILayer*> layers)
 }
 
 
+void Screen::add(std::vector<UILayer*> layers)
+{
+	for (int i = 0; i < layers.size(); i++)
+	{
+		mLayers.push_back(layers[i]);
+	}
+}
+
 Screen::~Screen()
 {
 	for (UILayer* layer: mLayers)

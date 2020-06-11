@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Screen.h"
-#include "UI/Elements/UIBox.h"
 
 struct GameData;
+class UIElement;
 
 class GameScreen : public Screen
 {
@@ -12,14 +12,13 @@ public:
 
 	void enter() override {}
 	void update(float dt) override { }
-	void render() override;
 	void exit() override { }
 
 	Type type() override { return Type::Game; }
 
-	void AddBox(UIBox box) { mAbilityHotKeys.push_back(box); }
+	void addElement(UIElement* element);
 
 private:
 
-	std::vector<UIBox> mAbilityHotKeys;
+	UILayer* mAdditionalLayer;
 };

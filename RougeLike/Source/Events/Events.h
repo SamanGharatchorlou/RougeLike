@@ -26,6 +26,7 @@ enum class Event
 	UpdateTextBox,
 	MoveUIElement,
 	ChangeUIElementSize,
+	SetTextColour,
 	SetUIRect,
 	SetUIBar,
 
@@ -60,6 +61,15 @@ struct EventPacket
 
 	EventData* data;
 };
+
+
+struct SetTextColourEvent : public EventData
+{
+	SetTextColourEvent(const std::string& id, SDL_Color colour) : mId(id), mColour(colour) { eventType = Event::SetTextColour; }
+	SDL_Color mColour;
+	const std::string mId;
+};
+
 
 struct ActivateAreaAttack : public EventData
 {

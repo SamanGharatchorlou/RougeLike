@@ -31,8 +31,11 @@ public:
 
 	Ability* createNewAbility(const std::string& name);
 
+	void sendSetTextColourEvent(Ability* abiliy, Colour colour);
+
 
 private:
+	void handleStates(Ability* ability, float dt);
 	void handleEvents(Ability* ability);
 
 	void completeSelection(Ability* ability);
@@ -44,6 +47,7 @@ private:
 	void attemptActivationOnPoint(Ability* ability);
 
 	void activateOnArea(Ability* ability);
+
 
 private:
 	GameData* mGameData;

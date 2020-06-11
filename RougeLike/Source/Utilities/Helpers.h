@@ -69,3 +69,15 @@ VectorF rotateVector(VectorF vec, float dTheta, VectorF about);
 VectorF closestRectSide(VectorF point, RectF rect);
 
 VectorF realiseSize(VectorF baseSize, float maxDimention);
+
+enum class Colour
+{
+	White,
+	Red,
+	Blue,
+	Green,
+	Yellow,
+	LightGrey
+};
+
+SDL_Colour SDLColour(Colour colour);

@@ -67,7 +67,8 @@ void AbilityManager::exitSelection()
 void AbilityManager::exitSelection(Ability* ability)
 {
 	if (ability->state() == Ability::Selected)
-		ability->setState(Ability::Idle);
+		setState(ability, Ability::Idle);
+		//ability->setState(Ability::Idle);
 
 	UIButton* button = mGameData->uiManager->findButton(ability->name());
 	if (button)
@@ -75,45 +76,56 @@ void AbilityManager::exitSelection(Ability* ability)
 }
 
 
+void AbilityManager::handleStates(Ability* ability, float dt)
+{
+	switch (ability->state())
+	{
+		// Ready for/attemping activation
+	case Ability::Selected:
+	{
+		attemptActivation(ability);
+		break;
+	}
+	// One frame, on activation
+	case Ability::Activating:
+	{
+		completeSelection(ability);
+		break;
+	}
+	// Ability doing its thing
+	case Ability::Running:
+	{
+		ability->slowUpdate(dt);
+		break;
+	}
+	// Reset... cool down etc.
+	case Ability::Finished:
+	{
+		ability->exit();
+		setState(ability, Ability::Idle);
+		break;
+	}
+	default:
+		break;
+	}
+}
+
 void AbilityManager::slowUpdate(float dt)
 {
 	for (int i = 0; i < mAbilities.size(); i++)
 	{
 		Ability* ability = mAbilities[i];
 
-		switch (ability->state())
-		{
-		// Ready for/attemping activation
-		case Ability::Selected:
-		{
-			attemptActivation(ability);
-			break;
-		}
-		// One frame, on activation
-		case Ability::Activating:
-		{
-			completeSelection(ability);
-			break;
-		}
-		// Ability doing its thing
-		case Ability::Running:
-		{
-			ability->slowUpdate(dt);
-			break;
-		}
-		// Reset... cool down etc.
-		case Ability::Finished:
-		{
-			ability->exit();
-			ability->setState(Ability::Idle);
-			break;
-		}
-		default:
-			break;
-		}
+		handleStates(ability, dt);
 
 		// Either process event or pass to parent object to be handled 
 		handleEvents(ability);
+	}
+
+	// Handle hot key events
+	while (mHotKeys.events.hasEvent())
+	{
+		mEvents.push(mHotKeys.events.pop());
 	}
 }
 
@@ -185,7 +197,8 @@ void AbilityManager::add(Ability* ability)
 	else
 		DebugPrint(Warning, "Animator setup failed for '%s' ability\n", ability->name().c_str());
 
-	ability->setState(Ability::Idle);
+	//ability->setState(Ability::Idle);
+	setState(ability, Ability::Idle);
 	mAbilities.push_back(ability);
 }
 
@@ -254,13 +267,30 @@ void AbilityManager::setState(const std::string& name, Ability::State state)
 
 	if(ability)
 	{
-		ability->setState(state);
+		setState(ability, state);
 	}
 }
 
+
+// TODO: test all the state changes, do they make sense?
 void AbilityManager::setState(Ability* ability, Ability::State state)
 {
 	ability->setState(state);
+
+	if (state == Ability::Selected)
+	{
+		sendSetTextColourEvent(ability, Colour::Green);
+	}
+	else if (state == Ability::Activating)
+	{
+		printf("red\n");
+		sendSetTextColourEvent(ability, Colour::Red);
+	}
+	else if (state == Ability::Idle)
+	{
+		printf("white\n");
+		sendSetTextColourEvent(ability, Colour::White);
+	}
 }
 
 
@@ -319,18 +349,27 @@ void AbilityManager::attemptActivation(Ability* ability)
 
 void AbilityManager::completeSelection(Ability* ability)
 {
-	ability->setState(Ability::Running);
+	//ability->setState(Ability::Running);
+	setState(ability, Ability::Running);
 
 	UIButton* button = mGameData->uiManager->findButton(ability->name());
 	if (button)
 		button->setActive(false);
+}
 
+void AbilityManager::sendSetTextColourEvent(Ability* ability, Colour colour)
+{
+	std::string id = ability->name() + "IconText";
+	SetTextColourEvent* event = new SetTextColourEvent(id, SDLColour(colour));
+	EventPacket eventPacket(event);
+	mEvents.push(eventPacket);
 }
 
 
 void AbilityManager::attemptActivationOnSelf(Ability* ability)
 {
-	ability->setState(Ability::Activating);
+	//ability->setState(Ability::Activating);
+	setState(ability, Ability::Activating);
 	ability->activate(nullptr);
 }
 
@@ -347,7 +386,8 @@ void AbilityManager::attemptActivationOnSingleEnemy(Ability* ability)
 			// activate ability on first enemy selected
 			if (enemies[i]->collider()->contains(cursorPosition))
 			{
-				ability->setState(Ability::Activating);
+				//ability->setState(Ability::Activating);
+				setState(ability, Ability::Activating);
 				ability->activate(enemies[i]);
 				break;
 			}
@@ -378,7 +418,8 @@ void AbilityManager::attemptActivationOnArea(Ability* ability)
 
 void AbilityManager::activateOnArea(Ability* ability)
 {
-	ability->setState(Ability::Activating);
+	//ability->setState(Ability::Activating);
+	setState(ability, Ability::Activating);
 
 	AreaAbility* areaAbility = static_cast<AreaAbility*>(ability);
 	Collider abilityCollider = areaAbility->collider();
@@ -413,7 +454,8 @@ void AbilityManager::attemptActivationOnPoint(Ability* ability)
 			// Apply effect
 			areaAbility->activate(cursorPosition);
 			ability->activate(nullptr);
-			ability->setState(Ability::Activating);
+			//ability->setState(Ability::Activating);
+			setState(ability, Ability::Activating);
 		}
 	}
 }

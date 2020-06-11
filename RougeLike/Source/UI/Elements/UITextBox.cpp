@@ -43,3 +43,9 @@ void UITextBox::align()
 		mText.setOffset(VectorF(xOffset, 0.0f));
 	}
 }
+
+void UITextBox::autoSizeRectToText()
+{
+	mRect.SetSize(mText.size());
+	align();
+}

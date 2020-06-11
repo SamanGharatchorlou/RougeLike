@@ -47,6 +47,7 @@ private:
 	void moveElement(EditUIRectEvent& eventData);
 	void setElementSize(EditUIRectEvent& eventData);
 	void setRect(SetUIRectEvent& eventData);
+	void setTextColour(SetTextColourEvent& eventData);
 	//void setMusicVolume(SetVolumeEvent& eventData);
 	//void setGameVolume(SetVolumeEvent& eventData);
 

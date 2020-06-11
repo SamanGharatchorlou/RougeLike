@@ -35,9 +35,6 @@ GameState::GameState(GameData* gameData, GameController* gameController) :
 
 void GameState::init()
 {
-
-
-
 	initMap();
 	initCamera();
 	initUI();

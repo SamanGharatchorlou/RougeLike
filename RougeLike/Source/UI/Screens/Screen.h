@@ -24,6 +24,8 @@ public:
 	~Screen();
 
 	void set(std::vector<UILayer*> layers);
+	void add(std::vector<UILayer*> layers);
+
 	std::vector<UILayer*> layers() const { return mLayers; }
 
 	virtual void update(float dt) = 0;

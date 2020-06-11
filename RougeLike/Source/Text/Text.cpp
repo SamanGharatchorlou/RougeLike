@@ -21,12 +21,17 @@ void Text::init(const std::string& text, const std::string& font, int ptSize, SD
 	setText(text);
 }
 
+void Text::setColour(SDL_Color colour)
+{
+	mFont.setColour(colour);
+	mFont.setText(mText);
+}
+
 
 void Text::setText(const std::string& text) 
 { 
-	// TODO: do I need to do this std::string constructor???
-	mText = std::string(text);
-	mFont.setText(text); 
+	mText = text;
+	mFont.setText(mText); 
 }
 
 

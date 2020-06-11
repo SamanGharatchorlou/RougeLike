@@ -100,7 +100,7 @@ void UIManager::init()
 
 		if (screen)
 		{
-			screen->set(screenLayers);
+			screen->add(screenLayers);
 			screens.push_back(screen);
 		}
 		else
@@ -311,7 +311,6 @@ void UIManager::handleEvent(EventData& data)
 		moveElement(static_cast<EditUIRectEvent&>(data));
 		break;
 	}
-
 	case Event::ChangeUIElementSize:
 	{
 		setElementSize(static_cast<EditUIRectEvent&>(data));
@@ -320,6 +319,11 @@ void UIManager::handleEvent(EventData& data)
 	case Event::SetUIRect:
 	{
 		setRect(static_cast<SetUIRectEvent&>(data));
+		break;
+	}
+	case Event::SetTextColour:
+	{
+		setTextColour(static_cast<SetTextColourEvent&>(data));
 		break;
 	}
 	default:
@@ -434,6 +438,16 @@ void UIManager::setRect(SetUIRectEvent& eventData)
 	}
 }
 
+void UIManager::setTextColour(SetTextColourEvent& eventData)
+{
+	UIElement* element = findElement(eventData.mId);
+
+	if (element != nullptr && element->type() == UIElement::Type::TextBox)
+	{
+		UITextBox* textBox = static_cast<UITextBox*>(element);
+		textBox->setColour(eventData.mColour);
+	}
+}
 
 
 #if UI_EDITOR

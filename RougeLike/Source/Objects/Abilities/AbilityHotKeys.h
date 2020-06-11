@@ -1,12 +1,13 @@
 #pragma once
 
 #include "Input/Button.h"
-#include "UI/Elements/UIBox.h"
+#include "Events/LocalDispatcher.h"
 
 struct GameData;
 class AbilityManager;
 class Ability;
-
+class UIBox;
+class UITextBox;
 
 class AbilityHotKeys
 {
@@ -16,6 +17,13 @@ public:
 	void handleInput();
 
 	void addHotKey(Ability* ability);
+
+	LocalDispatcher events;
+
+
+private:
+	UIBox* createIcon(Ability* ability, int count);
+	UITextBox* createIconText(UIBox* icon, int count);
 
 
 private:

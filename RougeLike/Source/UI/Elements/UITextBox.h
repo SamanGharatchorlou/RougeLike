@@ -30,11 +30,12 @@ public:
 
 	void setText(const std::string& text) { mText.setText(text); }
 
-	//void displaySubText(int startIndex, int endIndex) { mText.displaySubText(startIndex, endIndex); }
-
+	void setColour(SDL_Color colour) { mText.setColour(colour); }
 
 	int fontSize() const { return mText.fontSize(); }
 	void autoSizeFont();
+
+	void autoSizeRectToText();
 	VectorF textSize() const { return mText.size(); }
 
 	void align();
