@@ -62,7 +62,6 @@ public:
 
 protected:
 	void init(const std::string& config);
-	void initAnimations(const std::string& config);
 
 
 protected:
@@ -70,11 +69,11 @@ protected:
 
 	StateMachine<EnemyState> mStateMachine;
 
-	const RectF* mAttackTarget;
-	const RectF* mPositionTarget;
+	const RectF* mAttackTarget;  // TODO: canm remove?
+	const RectF* mPositionTarget; // TODO: canm remove?
 	const Actor* mTarget;
 
-	VectorF mColliderRatio;
+	VectorF mColliderRatio; //  // TODO: canm remove?
 
 	Index mCurrentIndex;
 };

@@ -115,12 +115,14 @@ void Animator::addAnimation(AnimationData& data)
 
 void Animator::render(RectF rect, SDL_RendererFlip flip) const
 {
-	mAnimations[mActiveIndex].render(rect, flip);
+	if(timer.isStarted())
+		mAnimations[mActiveIndex].render(rect, flip);
 }
 
 void Animator::render(RectF rect, SDL_RendererFlip flip, Uint8 alpha)
 {
-	mAnimations[mActiveIndex].render(rect, flip, alpha);
+	if (timer.isStarted())
+		mAnimations[mActiveIndex].render(rect, flip, alpha);
 }
 
 

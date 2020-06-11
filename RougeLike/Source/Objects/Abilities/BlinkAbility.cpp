@@ -17,6 +17,7 @@ void BlinkAbility::fillValues(ValueMap& values)
 {
 	mRange = std::stof(values["Range"]);
 	mMaxDimention = std::stof(values["MaxSize"]);
+	mCooldownTime = std::stof(values["Cooldown"]);
 }
 
 
@@ -33,6 +34,7 @@ void BlinkAbility::activate(Actor* actor)
 {
 	BlinkEffect* blink = new BlinkEffect(mTargetPosition);
 	mPlayer->addEffect(blink);
+	beginCooldown();
 }
 
 
@@ -41,9 +43,9 @@ void BlinkAbility::slowUpdate(float dt)
 	if (mAnimator.loops() > 2)
 		mRect.SetSize(mRect.Size() * 0.99);
 
-	if(mRect.Size().x < 10.0f)
-		setState(Finished);
-
 	mAnimator.slowUpdate(dt);
 	mRect.SetCenter(mTargetPosition);
+
+	if (hasCooledDown())
+		endAbility();
 }

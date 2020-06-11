@@ -13,13 +13,7 @@ public:
 	void slowUpdate(float dt) override;
 	void render() override;
 	void exit() override;
+	void resume() override;
 
 	const Type type() const { return Type::Hit; }
-
-private:
-	// TODO: add 1/x^2 decay
-	Timer<float> decayTimer;
-	VectorF decayVelocity;
-
-	VectorF attackTargetPosition;
 };

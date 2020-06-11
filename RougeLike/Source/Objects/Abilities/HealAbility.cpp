@@ -13,11 +13,14 @@ void HealAbility::fillValues(ValueMap& values)
 {
 	mHeal = std::stof(values["Heal"]);
 	mMaxDimention = std::stof(values["MaxSize"]);
+	mCooldownTime = std::stof(values["Cooldown"]);
 }
 
 void HealAbility::init(Animator animator, Player* player)
 {
 	Ability::init(animator, player);
+
+	beginCooldown();
 }
 
 void HealAbility::slowUpdate(float dt)
@@ -29,7 +32,10 @@ void HealAbility::slowUpdate(float dt)
 
 	// Completed one animation loop
 	if (mAnimator.loops() > 0)
-		setState(Ability::Finished);
+		mAnimator.stop();
+
+	if (hasCooledDown())
+		endAbility();
 }
 
 

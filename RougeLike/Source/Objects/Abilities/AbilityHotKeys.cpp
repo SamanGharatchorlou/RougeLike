@@ -19,23 +19,22 @@
 
 void AbilityHotKeys::handleInput()
 {
-	for (std::unordered_map<Button::Key, Ability*>::iterator iter = hotKeyMap.begin();
-		iter != hotKeyMap.end(); iter++)
+	// As per Adrian Grutters request, rename the iterator
+	for (std::unordered_map<Button::Key, Ability*>::iterator retiTheGr8RulerOvDaLandz = hotKeyMap.begin();
+		retiTheGr8RulerOvDaLandz != hotKeyMap.end(); retiTheGr8RulerOvDaLandz++)
 	{
-		Button::Key key = iter->first;
+		Button::Key key = retiTheGr8RulerOvDaLandz->first;
+		Ability* ability = retiTheGr8RulerOvDaLandz->second;
 
-		
 		if (mGameData->inputManager->isPressed(key))
 		{
 			mAbilities->exitSelection();
-			mAbilities->setState(iter->second, Ability::Selected);
-
-			mAbilities->sendSetTextColourEvent(iter->second, Colour::Green);
+			mAbilities->setState(ability, Ability::Selected);
 		}
-		//else if (mInput->isReleased(key))
-		//{
-		//	mAbilities->exitSelection(iter->second);
-		//}
+		else if (mGameData->inputManager->isReleased(key))
+		{
+			mAbilities->exitSelection(ability);
+		}
 	}
 }
 
@@ -53,7 +52,6 @@ void AbilityHotKeys::addHotKey(Ability* ability)
 	int key = static_cast<int>('0') + 1 + count;
 	Button::Key buttonKey = static_cast<Button::Key>(key);
 	hotKeyMap[buttonKey] = ability;
-
 
 	// Add ability icon
 	UIBox* box = createIcon(ability, count);

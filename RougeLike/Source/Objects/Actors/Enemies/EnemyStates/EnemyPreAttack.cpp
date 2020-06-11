@@ -43,3 +43,9 @@ bool EnemyPreAttack::inAttackRange() const
 
 	return distanceSquared(currentPosition, nearestTargetSide) < (mEnemy->getPropertyValue("TackleDistance"));
 }
+
+void EnemyPreAttack::resume()
+{
+	mEnemy->collider()->setDidHit(false);
+	init();
+}

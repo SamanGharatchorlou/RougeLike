@@ -61,11 +61,11 @@ void GameState::init()
 	//Collectable* Heal = new AbilityCollectable("Heal");
 	//mCollectables.spawn(Heal, 12);
 
-	//Collectable* wepon = new WeaponCollectable("Mace");
-	//mCollectables.spawn(wepon, 10);
+	Collectable* weapon = new WeaponCollectable("Mace");
+	mCollectables.spawn(weapon, 12);
 
-	Collectable* wepon = new AbilityCollectable("Smash");
-	mCollectables.spawn(wepon, 10);
+	Collectable* smash = new AbilityCollectable("Smash");
+	mCollectables.spawn(smash, 10);
 }
 
 

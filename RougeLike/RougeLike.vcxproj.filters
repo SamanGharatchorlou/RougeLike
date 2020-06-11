@@ -117,6 +117,7 @@
     <ClCompile Include="Source\Objects\Actors\Enemies\Types\Devil.cpp" />
     <ClCompile Include="Source\Objects\Effects\StunEffect.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHotKeys.cpp" />
+    <ClCompile Include="Source\Objects\Actors\Enemies\EnemyStates\EnemyState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />

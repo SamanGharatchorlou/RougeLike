@@ -17,7 +17,8 @@ struct EnemyState : public State
 		Hit,
 		PreAttack,
 		Attack,
-		Dead
+		Dead,
+		Exit,
 	};
 
 	EnemyState(Enemy* enemy) : mEnemy(enemy) { }
@@ -43,3 +44,21 @@ struct EnemyNullState : public EnemyState
 
 	const Type type() const { return Type::None; }
 };
+
+// EnemyManager will remove any enemy in this state
+struct EnemyExit : public EnemyState
+{
+	EnemyExit() : EnemyState(nullptr) { }
+
+	void init() override { }
+	void handleInput() override { }
+	void slowUpdate(float /*dt*/) override { }
+	void fastUpdate(float /*dt*/) override { }
+	void render() override { }
+	void exit() override { }
+
+	const Type type() const { return Type::Exit; }
+};
+
+
+EnemyState* newEnemyState(EnemyState::Type state, Enemy* enemy);

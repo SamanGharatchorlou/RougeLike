@@ -15,7 +15,7 @@ EnemyAttack::EnemyAttack(Enemy* enemy) :
 
 
 void EnemyAttack::init()
-{ 
+{
 	mStartPosition = mEnemy->position();
 	mAttackPosition = mEnemy->target()->position();
 	mEnemy->physics()->facePoint(mAttackPosition);
@@ -89,4 +89,13 @@ void EnemyAttack::updateHasAttackedStatus()
 bool EnemyAttack::attackComplete() const
 {
 	return distanceSquared(mStartPosition, mEnemy->position()) < 5.0f ? mHasAttacked : false;
+}
+
+
+void EnemyAttack::resume()
+{
+	mHasAttacked = false;
+	hitCounter = 0;
+	mEnemy->collider()->setDidHit(false);
+	init();
 }

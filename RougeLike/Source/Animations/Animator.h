@@ -25,10 +25,10 @@ Action stringToAction(const std::string& action);
 
 struct AnimationData
 {
-	Texture* texture;
+	Texture* texture = nullptr;
 	Vector2D<int> tileDimentions;
-	int frameCount;
-	Action action;
+	int frameCount = 0;
+	Action action = Action::None;
 };
 
 

@@ -45,7 +45,7 @@ public:
 	virtual void activate(Actor* target) = 0;
 	virtual void slowUpdate(float dt) = 0;
 	virtual void render();
-	virtual void exit() { };
+	virtual void exit() { mCooldownTimer.stop(); };
 
 	virtual const TargetType targetType() const = 0;
 
@@ -58,6 +58,11 @@ public:
 	bool hasEvent() const { return mEvents.size() > 0; }
 	EventPacket popEvent();
 
+	void beginCooldown() { mCooldownTimer.restart(); }
+	bool hasCooledDown() { return mCooldownTimer.getSeconds() > mCooldownTime; }
+
+	void endAbility() { setState(Ability::Finished); }
+
 
 protected:
 	std::string mName;
@@ -67,8 +72,11 @@ protected:
 	std::queue<EventPacket> mEvents;
 
 	Player* mPlayer;
-	float mMaxDimention;
 	RectF mRect;
+	float mMaxDimention;
+
+	float mCooldownTime;
+	Timer<float> mCooldownTimer;
 };
 
 

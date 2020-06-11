@@ -131,7 +131,6 @@ void Enemy::resolveCollisions()
 		// Player weapon hit enemy
 		if (mCollider->getOtherCollider())
 		{
-
 			const DamageCollider* collider = static_cast<const DamageCollider*>(mCollider->getOtherCollider());
 
 			// Apply knockback
@@ -141,9 +140,10 @@ void Enemy::resolveCollisions()
 			// Apply damage
 			DamageEffect* damage = new DamageEffect(collider->damage());
 			mEffects.addEffect(damage);
+			//printf("taking damage hp: %f\n", getPropertyValue("Health"));
 		}
 
-		replaceState(EnemyState::Hit);
+		addState(EnemyState::Hit);
 	}
 }
 
@@ -165,42 +165,7 @@ void Enemy::accellerateTowards(VectorF position)
 
 void Enemy::replaceState(EnemyState::Type state)
 {
-	switch (state)
-	{
-	case EnemyState::Idle:
-		mStateMachine.replaceState(new EnemyIdle(this));
-		break;
-
-	case EnemyState::Run:
-		mStateMachine.replaceState(new EnemyRun(this));
-		break;
-
-	case EnemyState::Patrol:
-		mStateMachine.replaceState(new EnemyPatrol(this));
-		break;
-
-	case EnemyState::Alert:
-		mStateMachine.replaceState(new EnemyAlert(this));
-		break;
-
-	case EnemyState::Hit:
-		mStateMachine.replaceState(new EnemyHit(this));
-		break;
-
-	case EnemyState::Dead:
-		mStateMachine.replaceState(new EnemyDead(this));
-		break;
-
-	case EnemyState::Attack:
-		mStateMachine.replaceState(new EnemyAttack(this));
-		break;
-
-	case EnemyState::PreAttack:
-	case EnemyState::None:
-	default:
-		DebugPrint(Warning, "No enemy state set, no state was replaced\n");
-		break;
-	}
+	mStateMachine.replaceState(newEnemyState(state, this));
 }
 
 void Enemy::addWaitState(float waitTime)
@@ -211,39 +176,7 @@ void Enemy::addWaitState(float waitTime)
 
 void Enemy::addState(EnemyState::Type state)
 {
-	switch (state)
-	{
-	case EnemyState::Wait:
-		mStateMachine.addState(new EnemyWait(this));
-		break;
-			
-	case EnemyState::PreAttack:
-		mStateMachine.addState(new EnemyPreAttack(this));
-		break;
-
-	case EnemyState::Hit:
-		mStateMachine.addState(new EnemyHit(this));
-		break;	
-	
-	case EnemyState::Patrol:
-		mStateMachine.addState(new EnemyPatrol(this));
-		break;
-
-	case EnemyState::Idle:
-		mStateMachine.addState(new EnemyIdle(this));
-		break;
-
-	case EnemyState::None:
-		mStateMachine.addState(new EnemyNullState());
-		break;
-
-	case EnemyState::Run:
-	case EnemyState::Alert:
-	case EnemyState::Dead:
-	default:
-		DebugPrint(Warning, "No enemy state set, no state was added\n");
-		break;
-	}
+	mStateMachine.addState(newEnemyState(state, this));
 }
 
 

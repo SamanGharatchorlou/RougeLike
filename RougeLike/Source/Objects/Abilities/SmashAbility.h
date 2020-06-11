@@ -22,6 +22,10 @@ public:
 
 
 private:
+	bool hammerHitGround();
+
+
+private:
 	bool requestedActivate;
 
 	Damage mDamage;

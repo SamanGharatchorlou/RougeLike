@@ -13,6 +13,7 @@ void ArmorAbility::fillValues(ValueMap& values)
 {
 	mArmor = std::stof(values["Armor"]);
 	mMaxDimention = std::stof(values["MaxSize"]);
+	mCooldownTime = std::stof(values["Cooldown"]);
 }
 
 
@@ -23,7 +24,10 @@ void ArmorAbility::slowUpdate(float dt)
 
 	// Completed x animation loops
 	if (mAnimator.loops() > 4)
-		setState(Ability::Finished);
+		mAnimator.stop();
+
+	if (hasCooledDown())
+		endAbility();
 }
 
 
@@ -37,4 +41,6 @@ void ArmorAbility::activate(Actor* actor)
 	mEvents.push(EventPacket(dataPtr));
 
 	mAnimator.startAnimation(Action::Active);
+
+	beginCooldown();
 }

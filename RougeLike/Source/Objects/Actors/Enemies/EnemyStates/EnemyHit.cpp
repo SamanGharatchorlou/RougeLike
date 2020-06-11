@@ -16,27 +16,33 @@ EnemyHit::EnemyHit(Enemy* enemy) : EnemyState(enemy)  { }
 
 void EnemyHit::init()
 {
-	decayTimer.restart();
-
+	//printf("hit\n");
 	mEnemy->animator().selectAnimation(Action::Hurt);
 
 	Texture* texture = mEnemy->animator().texture();
 	texture->modifyAlpha(-100);
 
 	mEnemy->physics()->facePoint(mEnemy->target()->position());
+
+	Health* health = static_cast<Health*>(mEnemy->getProperty("Health"));
+
+	if (health->isDead())
+		mEnemy->addState(EnemyState::Dead);
 }
 
 
 void EnemyHit::slowUpdate(float dt)
 {
-	if (decayTimer.getSeconds() > mEnemy->getPropertyValue("HurtTime"))
+	mEnemy->resolveCollisions();
+
+	if (mEnemy->animator().loops() > 0)
 	{
 		Health* health = static_cast<Health*>(mEnemy->getProperty("Health"));
 
 		if (health->isDead())
-			mEnemy->replaceState(EnemyState::Dead);
+			mEnemy->addState(EnemyState::Dead);
 		else
-			mEnemy->replaceState(EnemyState::Run);
+			mEnemy->popState();
 	}
 }
 
@@ -59,4 +65,10 @@ void EnemyHit::exit()
 	texture->setAlpha(alphaMax);
 
 	mEnemy->physics()->facePoint(mEnemy->target()->position());
+}
+
+
+void EnemyHit::resume()
+{
+	mEnemy->popState();
 }

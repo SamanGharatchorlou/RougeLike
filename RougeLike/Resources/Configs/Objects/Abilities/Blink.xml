@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Ability>
 	<Properties>
-		<Range>250</Range>
+		<Range>500</Range>
 		<MaxSize>125</MaxSize>
+		<Cooldown>5</Cooldown>
 	</Properties>
 
 	<Icon>BlinkIcon</Icon>

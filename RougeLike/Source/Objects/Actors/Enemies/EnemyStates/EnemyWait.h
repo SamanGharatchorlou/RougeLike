@@ -17,6 +17,7 @@ public:
 
 	const Type type() const { return Type::Wait; }
 
+
 private:
 	float mWaitTime;
 	Timer<float> timer;

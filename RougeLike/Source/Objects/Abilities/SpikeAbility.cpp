@@ -18,6 +18,7 @@ void SpikeAbility::fillValues(ValueMap& values)
 	mForce = std::stof(values["Force"]);
 	mMaxDimention = std::stof(values["MaxSize"]);
 	mRange = std::stof(values["Range"]);
+	mCooldownTime = std::stof(values["Cooldown"]);
 }
 
 
@@ -35,6 +36,8 @@ void SpikeAbility::activate(Actor* actor)
 
 	DamageEffect* damage = new DamageEffect(mDamage);
 	actor->addEffect(damage);
+
+	beginCooldown();
 }
 
 
@@ -44,5 +47,8 @@ void SpikeAbility::slowUpdate(float dt)
 
 	// Completed one animation loop
 	if (mAnimator.loops() > 0)
-		setState(Ability::Finished);
+		mAnimator.stop();
+
+	if (hasCooledDown())
+		endAbility();
 }

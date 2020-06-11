@@ -19,13 +19,6 @@
 
 #include "PlayerPropertyBag.h"
 
-#include "Objects/Abilities/SlowAbility.h"
-#include "Objects/Abilities/HealAbility.h"
-#include "Objects/Abilities/SpikeAbility.h"
-#include "Objects/Abilities/BilnkAbility.h"
-#include "Objects/Abilities/ArmorAbility.h"
-#include "Objects/Abilities/SmashAbility.h"
-
 #include "Objects/Effects/KnockbackEffect.h"
 #include "Objects/Effects/DamageEffect.h"
 
@@ -60,8 +53,6 @@ void Player::init(const std::string& characterConfig)
 #if _DEBUG
 	mCollider->setName("player");
 #endif
-
-	//addAbility("Smash");
 }
 
 
@@ -85,7 +76,6 @@ void Player::handleInput()
 		attack();
 	}
 }
-
 
 
 void Player::fastUpdate(float dt)
@@ -258,10 +248,8 @@ void Player::attack()
 {
 	if (!mWeapon->isAttacking())
 	{
-		//printf("playing miss\n");
+		printf("playing miss\n");
 		mGameData->audioManager->playSound(mWeapon->missSoundLabel(), this);
-
-		//mAbilities.activate("Smash");
 	}
 
 	mWeapon->attack();
@@ -277,7 +265,7 @@ void Player::updateAttackingWeapon()
 		// Play hit sound
 		if (mGameData->audioManager->isPlaying(mWeapon->missSoundLabel(), this) && mWeapon->canPlayHitSound())
 		{
-			//printf("playing hit\n");
+			printf("playing hit\n");
 			mGameData->audioManager->playSound(mWeapon->hitSoundLabel(), this);
 		}
 	}

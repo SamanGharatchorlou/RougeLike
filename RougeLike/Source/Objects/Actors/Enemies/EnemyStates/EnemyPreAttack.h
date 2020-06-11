@@ -14,6 +14,7 @@ public:
 	void slowUpdate(float dt) override;
 	void render() override;
 	void exit() override { };
+	void resume() override;
 
 	const Type type() const { return Type::PreAttack; }
 

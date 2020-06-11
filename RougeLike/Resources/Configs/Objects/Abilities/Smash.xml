@@ -5,6 +5,7 @@
 		<Damage>100</Damage>
 		<Range>250</Range>
 		<MaxSize>100</MaxSize>
+		<Cooldown>1</Cooldown>
 
 		<HammerTexture>Mjolnir</HammerTexture>
 		<HammerMaxSize>50</HammerMaxSize>

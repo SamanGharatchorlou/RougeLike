@@ -3,6 +3,7 @@
 	<Properties>
 		<MaxSize>125</MaxSize>
 		<Heal>50</Heal>
+		<Cooldown>5</Cooldown>
 	</Properties>
 
 	<Icon>HealIcon</Icon>

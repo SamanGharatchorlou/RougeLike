@@ -36,7 +36,7 @@ void EnemyDead::slowUpdate(float dt)
 
 	// Remove enemy from play
 	if (mAlpha <= 10)
-		mEnemy->addState(EnemyState::None);
+		mEnemy->addState(EnemyState::Exit);
 }
 
 

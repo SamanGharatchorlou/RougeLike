@@ -78,7 +78,7 @@ void EnemyManager::slowUpdate(float dt)
 			mEvents.push(enemy->popEvent());
 
 		// Clear out dead enemies
-		if (enemy->state() == EnemyState::None)
+		if (enemy->state() == EnemyState::Exit)
 		{
 			clearAndRemove(iter);
 
@@ -199,8 +199,8 @@ void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF positio
 
 			// TODO: add some kind of reset attribute thing here?
 			//enemy->propertyBag().pHealth.get().setFullHp();
-			enemy->spawn(state, position);
 			enemy->setMap(&mPathMap);
+			enemy->spawn(state, position);
 			enemy->setTarget(mGameData->actors->player());
 
 			std::vector<Collider*> defendingCollider;

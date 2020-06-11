@@ -5,33 +5,27 @@
 #include "Objects/Actors/Enemies/Enemy.h"
 
 #include "Game/Camera.h"
-
+#include "Objects/Attributes/Health.h"
 
 void StunEffect::init()
 {
-	mAnimator->selectAnimation(Action::Active);
+	mAnimator->startAnimation(Action::Active);
 
-	mEnemy = dynamic_cast<Enemy*>(mActor);
-	if (mEnemy == nullptr)
+	Enemy* enemy = static_cast<Enemy*>(mActor);
+	if (enemy)
 	{
-		endEffect();
+		float hp = enemy->getPropertyValue("Health");
+
+		if (hp == 0)
+			enemy->addState(EnemyState::Dead);
+		else
+			enemy->addWaitState(mAnimator->frameCount() * mAnimator->frameTime() * 1.2f);
 	}
 }
 
 
 void StunEffect::slowUpdate(float dt)
 {
-	if (mActor->animator().currentAction() != Action::Hurt && mActor->animator().currentAction() != Action::Idle)
-	{
-		mAnimator->start();
-
-		Enemy* enemy = dynamic_cast<Enemy*>(mActor);
-		if (enemy)
-		{
-			enemy->addWaitState(mAnimator->frameCount() * mAnimator->frameTime());
-		}
-	}
-
 	mAnimator->slowUpdate(dt);
 
 	if (mAnimator->loops() > 0)

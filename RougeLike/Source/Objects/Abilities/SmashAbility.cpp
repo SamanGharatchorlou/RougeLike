@@ -23,6 +23,7 @@ void SmashAbility::fillValues(ValueMap& values)
 {
 	mDamage = Damage(std::stof(values["Damage"]));
 	mMaxDimention = std::stof(values["MaxSize"]);
+	mCooldownTime = std::stof(values["Cooldown"]);
 	mRange = std::stof(values["Range"]);
 	mFallSpeed = std::stof(values["HammerFallSpeed"]);
 	mStunSize = realiseSize(mStunAnimator.frameSize(), std::stof(values["StunMaxSize"]));
@@ -35,10 +36,9 @@ void SmashAbility::slowUpdate(float dt)
 
 	mHammerRect = mHammerRect.Translate(VectorF(0.0f, mFallSpeed * dt));
 
-	if (mHammerRect.BotPoint() >= mRect.BotPoint())
+	if (hammerHitGround() && requestedActivate == false)
 	{
 		mAnimator.start();
-		mHammerRect.SetTopLeft(VectorF(-1000.0f, -1000.0f)); // Move it out of screen
 
 		ActivateAreaAttack* smashEvent = new ActivateAreaAttack("Smash");
 		mEvents.push(EventPacket(smashEvent));
@@ -48,7 +48,10 @@ void SmashAbility::slowUpdate(float dt)
 
 	// Completed one animation loop 
 	if (mAnimator.loops() > 0)
-		setState(Ability::Finished);
+		mAnimator.stop();
+
+	if (hasCooledDown())
+		endAbility();
 }
 
 
@@ -62,15 +65,17 @@ void SmashAbility::activate(VectorF position)
 	float fallDistance = Camera::Get()->size().y - hitPosition;
 
 	mHammerRect.SetCenter(mRect.Center() + VectorF(0.0f, -fallDistance));
+
+	beginCooldown();
 }
+
 
 void SmashAbility::activate(Actor* actor)
 {
 	if (requestedActivate)
 	{
-		// The enemy state will change to wait (from the stun) before the got hit bool
-		// from the damage will change the state to hit. Hence the damage is taken but
-		// there is no hit state change
+		// The enemy state will change to wait (from the stun) before the got hit bool from the
+		// damage will change the state to hit. Hence the damage is taken but there is no hit state change
 		DamageEffect* damage = new DamageEffect(mDamage);
 		actor->addEffect(damage);
 
@@ -98,8 +103,12 @@ void SmashAbility::render()
 		if(mAnimator.isRunning())
 			Ability::render();
 
-		RectF hammerRect = Camera::Get()->toCameraCoords(mHammerRect);
-		mHammerTexture->render(hammerRect, SDL_FLIP_VERTICAL);
+		// while hammer is falling
+		if (!hammerHitGround())
+		{
+			RectF hammerRect = Camera::Get()->toCameraCoords(mHammerRect);
+			mHammerTexture->render(hammerRect, SDL_FLIP_VERTICAL);
+		}
 	}
 }
 
@@ -108,4 +117,13 @@ void SmashAbility::exit()
 {
 	mAnimator.stop();
 	requestedActivate = false;
+	mCooldownTimer.stop();
+}
+
+
+
+// --- Private Functions --- //
+bool SmashAbility::hammerHitGround()
+{
+	return mHammerRect.BotPoint() >= mRect.BotPoint();
 }

@@ -16,6 +16,7 @@ public:
 	void fastUpdate(float dt) override;
 	void render() override;
 	void exit() override { };
+	void resume() override;
 
 	const Type type() const { return Type::Attack; }
 
@@ -25,6 +26,7 @@ public:
 private:
 	void updateHasAttackedStatus();
 	bool attackComplete() const;
+
 
 private:
 	bool mHasAttacked;
