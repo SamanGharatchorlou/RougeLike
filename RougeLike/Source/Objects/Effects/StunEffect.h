@@ -21,7 +21,7 @@ public:
 
 private:
 	Enemy* mEnemy;
-	Animator* mAnimator;
+	Animator* mAnimator; // TODO is this animator dealt with?
 	VectorF mSize;
 
 	float mMaxVelocity;

@@ -37,10 +37,12 @@ void KnockbackEffect::fastUpdate(float dt)
 void KnockbackEffect::slowUpdate(float dt)
 {
 	if (timer.getSeconds() > 0.1f)
-	{
 		endEffect();
-	}
+
+	forceDecay();
 }
+
+
 
 
 /// --- Private Functions --- ///
@@ -67,4 +69,11 @@ bool KnockbackEffect::canMove(VectorF velocity, float dt) const
 		return false;
 
 	return true;
+}
+
+
+void KnockbackEffect::forceDecay()
+{
+	mForce *= 0.98; sqrt(mForce);
+
 }

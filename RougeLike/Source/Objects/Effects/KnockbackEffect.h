@@ -9,16 +9,17 @@ class KnockbackEffect : public Effect
 public:
 	KnockbackEffect(const DamageCollider* sourceCollider);
 	KnockbackEffect(VectorF source, float force);
-	~KnockbackEffect() { }
+	 virtual ~KnockbackEffect() { }
 
-	void init() override;
-	void fastUpdate(float dt) override;
-	void slowUpdate(float dt) override;
+	virtual void init() override;
+	virtual void fastUpdate(float dt) override;
+	virtual void slowUpdate(float dt) override;
 	void render() override { };
 	void exit() override { };
 
-private:
-	bool canMove(VectorF velocity, float dt) const;
+protected:
+	virtual bool canMove(VectorF velocity, float dt) const;
+	void forceDecay();
 
 private:
 	VectorF mSource;

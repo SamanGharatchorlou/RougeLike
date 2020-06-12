@@ -50,6 +50,7 @@
     <ClCompile Include="Source\Objects\Attributes\StatManager.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectHandler.cpp" />
     <ClCompile Include="Source\Objects\Effects\KnockbackEffect.cpp" />
+    <ClCompile Include="Source\Objects\Effects\KnockbackStunEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\SlowEffect.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\EnemyManager.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\Enemy.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="Source\Objects\Effects\DamageEffect.h" />
     <ClInclude Include="Source\Objects\Effects\HealEffect.h" />
     <ClInclude Include="Source\Objects\Actors\Physics.h" />
+    <ClInclude Include="Source\Objects\Effects\KnockbackStunEffect.h" />
     <ClInclude Include="Source\Objects\Effects\StunEffect.h" />
     <ClInclude Include="Source\Objects\Properties\Property.h" />
     <ClInclude Include="Source\Objects\Attributes\StatManager.h" />

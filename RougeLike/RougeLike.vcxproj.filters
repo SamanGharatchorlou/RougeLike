@@ -118,6 +118,7 @@
     <ClCompile Include="Source\Objects\Effects\StunEffect.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHotKeys.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\EnemyStates\EnemyState.cpp" />
+    <ClCompile Include="Source\Objects\Effects\KnockbackStunEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -260,6 +261,7 @@
     <ClInclude Include="Source\Objects\Actors\Enemies\Types\Devil.h" />
     <ClInclude Include="Source\Objects\Effects\StunEffect.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityHotKeys.h" />
+    <ClInclude Include="Source\Objects\Effects\KnockbackStunEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />
