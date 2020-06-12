@@ -10,14 +10,13 @@ void AIPathMap::clear()
 }
 
 
-// TODO: many things get use get by reference rather than by value here
-void AIPathMap::build(Map* map, int xSplit, int ySplit)
+void AIPathMap::build(const Map* map, int xSplit, int ySplit)
 {
-	Grid<MapTile> tileMap = map->getData();
+	const Grid<MapTile>& tileMap = map->getData();
 
 	// New larger path tile map
 	mData.clear();
-	Vector2D<int> size(tileMap.xCount() * xSplit, tileMap.yCount() * ySplit);
+	const Vector2D<int> size(tileMap.xCount() * xSplit, tileMap.yCount() * ySplit);
 	mData.set(size, PathTile());
 
 	mCostMap.set(size, 1);
@@ -37,29 +36,25 @@ void AIPathMap::build(Map* map, int xSplit, int ySplit)
 			{
 				int xPathMap = x * xSplit;
 
-				MapTile mapTile = tileMap[y][x];
+				const MapTile& mapTile = tileMap.get(Index(x, y));
 
 				// splt every x into 2
 				for (int xShift = 0; xShift < xSplit; xShift++)
 				{
 					int xIndex = xPathMap + xShift;
 
-					BasicTile::Type type = mapTile.collisionType();
+					const BasicTile::Type type = mapTile.collisionType();
 					RectF rect = mapTile.rect();
 
 					VectorF size = rect.Size();
 					rect.SetSize(size.x / xSplit, size.y / ySplit);
 					
 					VectorF topLeft = rect.TopLeft();
-
 					topLeft.x += (rect.Size().x * xShift);
 					topLeft.y += (rect.Size().y * yShift);
-
 					rect.SetTopLeft(topLeft);
 
-					PathTile pathTile(type, rect);
-
-					mData[Index(xIndex, yIndex)] = pathTile;
+					mData[Index(xIndex, yIndex)] = PathTile(type, rect);
 				}
 			}
 		}

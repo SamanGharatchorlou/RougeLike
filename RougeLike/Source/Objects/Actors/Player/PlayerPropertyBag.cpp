@@ -4,12 +4,6 @@
 #include "Objects/Attributes/Level.h"
 #include "Objects/Attributes/Armor.h"
 
-void PlayerPropertyBag::readProperties(XMLParser& parser)
-{
-	ValueMap map = readValues(parser);
-	fillProperties(map);
-}
-
 
 void PlayerPropertyBag::fillProperties(ValueMap& valueMap)
 {

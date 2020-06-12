@@ -272,10 +272,8 @@ void AbilityManager::setState(const std::string& name, Ability::State state)
 }
 
 
-// TODO: test all the state changes, do they make sense?
 void AbilityManager::setState(Ability* ability, Ability::State state)
 {
-
 	if (state == Ability::Selected)
 	{
 		if (ability->state() == Ability::Idle)
@@ -292,9 +290,7 @@ void AbilityManager::setState(Ability* ability, Ability::State state)
 		sendSetTextColourEvent(ability, Colour::White);
 	}
 
-
 	ability->setState(state);
-	printf("state: %d\n", state);
 }
 
 

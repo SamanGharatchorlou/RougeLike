@@ -4,6 +4,15 @@
 #include "Objects/Attributes/Health.h"
 
 
+void PropertyBag::readProperties(const std::string& config)
+{
+	mConfigFile = config;
+	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs_Objects, config));
+
+	ValueMap map = readValues(parser);
+	fillProperties(map);
+}
+
 
 Property* PropertyBag::get(const std::string& name) const
 {
@@ -29,8 +38,8 @@ float PropertyBag::value(const std::string& name) const
 
 void PropertyBag::resetProperties()
 {
-	DebugPrint(Log, "Unimplemented: resetProperties()\n");
-	//readProperties(mConfigFile);
+	mProperties.clear();
+	readProperties(mConfigFile);
 }
 
 

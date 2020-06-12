@@ -7,9 +7,17 @@
 
 void EffectHandler::addEffect(Effect* effect)
 {
-	effect->set(mActor);
-	effect->init();
-	mEffects.push_back(effect);
+	if (!mDelayedAdd)
+	{
+		effect->set(mActor);
+		effect->init();
+		mEffects.push_back(effect);
+		//printf("add effect\n");
+	}
+	else
+	{
+		mEffectsToAdd.push(effect);
+	}
 }
 
 
@@ -24,6 +32,8 @@ void EffectHandler::fastUpdate(float dt)
 
 void EffectHandler::slowUpdate(float dt)
 {
+	mDelayedAdd = true;
+
 	for (std::vector<Effect*>::iterator iter = mEffects.begin(); iter != mEffects.end();)
 	{
 		Effect* effect = *iter;
@@ -36,11 +46,24 @@ void EffectHandler::slowUpdate(float dt)
 
 			delete effect;
 			iter = mEffects.erase(iter);
+
+			//printf("remove effect\n");
 		}
 		else
 		{
 			iter++;
 		}
+	}
+
+	mDelayedAdd = false;
+
+	// Effects added to mEffects during the for loop can invalidate the iterator
+	while (mEffectsToAdd.size() > 0)
+	{
+		Effect* effect = mEffectsToAdd.front();
+		mEffectsToAdd.pop();
+
+		addEffect(effect);
 	}
 }
 

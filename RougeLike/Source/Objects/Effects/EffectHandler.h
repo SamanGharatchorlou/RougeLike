@@ -20,4 +20,7 @@ public:
 private:
 	Actor* mActor;
 	std::vector<Effect*> mEffects;
+
+	bool mDelayedAdd;
+	std::queue<Effect*> mEffectsToAdd;
 };

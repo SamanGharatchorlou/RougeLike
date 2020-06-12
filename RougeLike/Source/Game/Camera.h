@@ -21,22 +21,16 @@ public:
 	void fastUpdate(float dt);
 
 	template <typename T>
-	bool inView(Rect<T> object);
+	bool inView(Rect<T> object) const;
 
 	template <typename T>
-	bool inView(Vector2D<T> point);
+	bool inView(Vector2D<T> point) const;
 
-	VectorF getCenter() { return mRect.Center(); }
-	Vector2D<int> getCenterI() { return Vector2D<int>(mRect.Center()); }
-	
-	VectorF getTopLeftF() { return mRect.TopLeft(); }
-	Vector2D<int> getTopLeftI() { return Vector2D<int>(mRect.TopLeft()); }
+	template <typename T>
+	Rect<T> toCameraCoords(const Rect<T> worldCoords) const;
+	VectorF toCameraCoords(const VectorF worldCoords) const;
 
-	// TODO: make some of this stuff const
-	VectorF toCameraCoords(VectorF worldCoords);
-	RectF toCameraCoords(RectF worldRect);
-	Rect<int> toCameraCoords(Rect<int> worldRect);
-
+	RectF rect() const { return mRect; }
 	VectorF size() const { return mRect.Size(); }
 
 	void initShakeyCam(float maxTrauma, float traumaReduction, float maxAngle) { shakeyCam.init(maxTrauma, traumaReduction, maxAngle); }
@@ -59,7 +53,7 @@ private:
 
 
 template <typename T>
-bool Camera::inView(Rect<T> object)
+bool Camera::inView(Rect<T> object) const
 {
 	if (object.RightPoint() < (T)mRect.LeftPoint()	||
 		object.LeftPoint()	> (T)mRect.RightPoint() ||
@@ -74,7 +68,7 @@ bool Camera::inView(Rect<T> object)
 
 
 template <typename T>
-bool Camera::inView(Vector2D<T> object)
+bool Camera::inView(Vector2D<T> object) const
 {
 	if (object.x < (T)mRect.LeftPoint() ||
 		object.x > (T)mRect.RightPoint() ||
@@ -86,4 +80,11 @@ bool Camera::inView(Vector2D<T> object)
 	}
 	else
 		return true;
+}
+
+
+template <typename T>
+Rect<T> Camera::toCameraCoords(const Rect<T> worldCoords) const
+{
+	return Rect<T>(worldCoords.TopLeft() - mActiveRect->TopLeft(), worldCoords.Size());
 }

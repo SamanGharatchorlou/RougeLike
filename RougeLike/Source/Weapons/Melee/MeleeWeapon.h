@@ -63,6 +63,8 @@ private:
 
 	VectorF aboutPoint;
 
+	std::vector<Collider*> hitColliders;
+
 #if DRAW_PLAYER_RECTS
 	VectorF weaponVectorTest;
 #endif

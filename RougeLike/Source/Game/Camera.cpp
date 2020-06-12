@@ -29,7 +29,6 @@ void Camera::follow(RectF* rect)
 }
 
 
-// TODO: does this need to be in fast update? could be slow maybe?
 void Camera::fastUpdate(float dt)
 {
 	VectorF translation = mFollowingRect->Center() - mRect.Center();
@@ -69,17 +68,7 @@ void Camera::slowUpdate(float dt)
 }
 
 
-VectorF Camera::toCameraCoords(VectorF worldCoords)
+VectorF Camera::toCameraCoords(const VectorF worldCoords) const
 {
 	return worldCoords - mActiveRect->TopLeft();
-}
-
-RectF Camera::toCameraCoords(RectF worldRect)
-{
-	return RectF(worldRect.TopLeft() - mActiveRect->TopLeft(), worldRect.Size());
-}
-
-Rect<int> Camera::toCameraCoords(Rect<int> worldRect)
-{
-	return Rect<int>(worldRect.TopLeft() - mActiveRect->TopLeft().toInt(), worldRect.Size());
 }

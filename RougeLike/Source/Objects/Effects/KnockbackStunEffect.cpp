@@ -5,8 +5,8 @@
 #include "StunEffect.h"
 
 
-KnockbackStunEffect::KnockbackStunEffect(const DamageCollider* sourceCollider, Animator* animator, VectorF size) 
-	: KnockbackEffect(sourceCollider), mStunAnimator(animator), mStunSize(size)
+KnockbackStunEffect::KnockbackStunEffect(VectorF source, float force, Animator animator, float maxSize)
+	: KnockbackEffect(source, force), mStunAnimator(animator), mMaxStunSize(maxSize)
 {
 
 }
@@ -14,9 +14,15 @@ KnockbackStunEffect::KnockbackStunEffect(const DamageCollider* sourceCollider, A
 
 void KnockbackStunEffect::slowUpdate(float dt)
 {
-	if (!canMove)
+	KnockbackEffect::slowUpdate(dt);
+
+	VectorF direction = mActor->physics()->position() - mSource;
+	VectorF velocity = direction.normalise() * mForce;
+
+	if (!canMove(velocity, dt))
 	{
-		StunEffect* stunEffect = new StunEffect(mStunAnimator, mStunSize);
+		StunEffect* stunEffect = new StunEffect(mStunAnimator, mMaxStunSize);
 		mActor->addEffect(stunEffect);
+		endEffect();
 	}
 }

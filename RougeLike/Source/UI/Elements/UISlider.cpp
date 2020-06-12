@@ -55,8 +55,6 @@ void UISlider::setPosition(float position)
 }
 
 
-// TODO: find a way for the game state or something else to update the value at some point
-// i.e. upon entering the game default audio volume to 0.5
 void UISlider::setValue(float value)
 {
 	value = clamp(value, 0.0f, 1.0f);

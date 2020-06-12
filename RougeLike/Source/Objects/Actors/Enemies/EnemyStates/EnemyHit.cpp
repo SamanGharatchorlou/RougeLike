@@ -16,18 +16,12 @@ EnemyHit::EnemyHit(Enemy* enemy) : EnemyState(enemy)  { }
 
 void EnemyHit::init()
 {
-	//printf("hit\n");
 	mEnemy->animator().selectAnimation(Action::Hurt);
 
 	Texture* texture = mEnemy->animator().texture();
 	texture->modifyAlpha(-100);
 
 	mEnemy->physics()->facePoint(mEnemy->target()->position());
-
-	Health* health = static_cast<Health*>(mEnemy->getProperty("Health"));
-
-	if (health->isDead())
-		mEnemy->addState(EnemyState::Dead);
 }
 
 
@@ -37,12 +31,7 @@ void EnemyHit::slowUpdate(float dt)
 
 	if (mEnemy->animator().loops() > 0)
 	{
-		Health* health = static_cast<Health*>(mEnemy->getProperty("Health"));
-
-		if (health->isDead())
-			mEnemy->addState(EnemyState::Dead);
-		else
-			mEnemy->popState();
+		mEnemy->popState();
 	}
 }
 

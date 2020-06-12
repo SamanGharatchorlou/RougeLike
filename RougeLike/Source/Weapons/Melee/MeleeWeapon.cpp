@@ -145,12 +145,9 @@ const std::vector<Collider*> MeleeWeapon::getColliders()
 {
 	std::vector<Collider*> colliders;
 
-	if (mAttacking)
+	for (unsigned int i = 0; i < mBlockColliders.size(); i++)
 	{
-		for (unsigned int i = 0; i < mBlockColliders.size(); i++)
-		{
-			colliders.push_back(mBlockColliders[i]);
-		}
+		colliders.push_back(mBlockColliders[i]);
 	}
 
 	return colliders;
@@ -228,4 +225,5 @@ void MeleeWeapon::endAttack()
 	flipSide();
 	overrideCursorControl(false);
 	mCanPlayHitSound = false;
+
 }

@@ -85,6 +85,10 @@ void CollisionTracker::resetColliders()
 }
 
 
+
+
+
+
 // --- Private Functions --- //
 
 void CollisionTracker::addDefender(Collider* collider)
@@ -116,4 +120,52 @@ void CollisionTracker::addAttacker(Collider* collider)
 #endif
 
 	mAttackers.push_back(collider);
+}
+
+
+
+
+
+
+// --- Complex collision tracker --- //
+
+void ComplexCollisionTracker::checkCollisions()
+{
+	if (mCheckingCollisions)
+	{
+		for (unsigned int j = 0; j < mAttackers.size(); j++)
+		{
+			for (unsigned int i = 0; i < mDefenders.size(); i++)
+			{
+				if (mExcludedDefenders.count(mDefenders[i]) == 0)
+				{
+					// check pixle collision
+					if (mAttackers[j]->doesIntersect(mDefenders[i]))
+					{
+						// Attacker
+						mAttackers[j]->setDidHit(true);
+						mAttackers[j]->hasCollidedWith(mDefenders[i]);
+
+						// Defender
+						mDefenders[i]->setGotHit(true);
+						mDefenders[i]->hasCollidedWith(mAttackers[j]);
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+void ComplexCollisionTracker::addExcludedDefender(Collider* defender)
+{
+	mExcludedDefenders.insert(defender);
+}
+
+
+
+void ComplexCollisionTracker::clearExcluddDefenders()
+{
+	mExcludedDefenders.clear();
 }

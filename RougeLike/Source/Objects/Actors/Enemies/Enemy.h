@@ -69,11 +69,7 @@ protected:
 
 	StateMachine<EnemyState> mStateMachine;
 
-	const RectF* mAttackTarget;  // TODO: canm remove?
-	const RectF* mPositionTarget; // TODO: canm remove?
 	const Actor* mTarget;
-
-	VectorF mColliderRatio; //  // TODO: canm remove?
 
 	Index mCurrentIndex;
 };

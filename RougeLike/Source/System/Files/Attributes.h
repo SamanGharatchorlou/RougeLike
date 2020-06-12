@@ -28,46 +28,44 @@ public:
 	}
 
 
-	const std::string& getString(const std::string& name)
+	const std::string& getString(const std::string& name) const
 	{
 #if _DEBUG
 		if(!contains(name))
 			DebugPrint(Warning, "There is no attribute with the label: %s\n", name.c_str());
 #endif
-		std::string value = attributes[name];
-		return attributes[name];
+		//std::string value = attributes[name];
+		return attributes.at(name);
 	}
 
 
-	const int getInt(const std::string& name)
-	{
-#if _DEBUG
-		// TODO: is this a value check or does it need to be .count == 0 like in XMLValueMap
-		if (!contains(name))
-			DebugPrint(Warning, "There is no attribute with the label: %s\n", name.c_str());
-#endif
-		return std::stoi(attributes[name]);
-	}
-
-
-	const int getBool(const std::string& name)
-	{
-#if _DEBUG
-		// TODO: is this a value check or does it need to be .count == 0 like in XMLValueMap
-		if (!contains(name))
-			DebugPrint(Warning, "There is no attribute with the label: %s\n", name.c_str());
-#endif
-		return strcmp(attributes[name].c_str(), "true") == 0;
-	}
-
-
-	const float getFloat(const std::string& name)
+	const int getInt(const std::string& name) const
 	{
 #if _DEBUG
 		if (!contains(name))
 			DebugPrint(Warning, "There is no attribute with the label: %s\n", name.c_str());
 #endif
-		return std::stof(attributes[name]);
+		return std::stoi(attributes.at(name));
+	}
+
+
+	const int getBool(const std::string& name) const
+	{
+#if _DEBUG
+		if (!contains(name))
+			DebugPrint(Warning, "There is no attribute with the label: %s\n", name.c_str());
+#endif
+		return strcmp(attributes.at(name).c_str(), "true") == 0;
+	}
+
+
+	const float getFloat(const std::string& name) const
+	{
+#if _DEBUG
+		if (!contains(name))
+			DebugPrint(Warning, "There is no attribute with the label: %s\n", name.c_str());
+#endif
+		return std::stof(attributes.at(name));
 	}
 
 

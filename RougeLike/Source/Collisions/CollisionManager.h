@@ -4,32 +4,33 @@
 
 class Collider;
 
+
 class CollisionManager
 {
 public:
 	enum Tracker
 	{
-		// Slow Updates
-		Cursor_Actors,
-
-		fast_updates,
-
-		// Fast Updates
 		PlayerWeapon_Hit_Enemy,
 		Enemy_Hit_Player,
 		Player_Hit_Collectable,
 	};
 
 
+	using TrackerMap = std::unordered_map<CollisionManager::Tracker, CollisionTracker*>;
+
+
 public:
+
+	~CollisionManager();
+
 	void fastUpdate();
-	void slowUpdate();
 
 	void resetColliders();
 	void clearColliders();
 
 	CollisionTracker* getTracker(Tracker id);
-	void addNewCollisionTracker(Tracker id);
+	void addBasicCollisionTracker(Tracker id);
+	void addComplexCollisionTracker(Tracker id);
 
 	void addAttackers(Tracker id, std::vector<Collider*> attackers);
 	void addDefenders(Tracker id, std::vector<Collider*> defenders);
@@ -39,9 +40,8 @@ public:
 	void removeAllAttackers(Tracker id);
 
 
-
 private:
-	std::vector<std::pair<Tracker, CollisionTracker>> mCollisionTrackers;
+	TrackerMap mTrackers;
 
 
 };

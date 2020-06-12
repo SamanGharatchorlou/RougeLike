@@ -4,6 +4,10 @@
 #include "Events/Observer.h"
 #include "Events/Dispatcher.h"
 
+#if _DEBUG
+#include "Debug/DebugDraw.h"
+#endif
+
 struct GameData;
 class Texture;
 class Cursor;

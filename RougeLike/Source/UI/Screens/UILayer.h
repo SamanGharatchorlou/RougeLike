@@ -1,9 +1,9 @@
 #pragma once
 
-#include "UI/Elements/UIButton.h"
-#include "UI/Elements/UIElement.h"
 
-// TODO: const everything here that you can!
+class UIElement;
+
+
 class UILayer
 {
 public:
@@ -13,7 +13,6 @@ public:
 
 	void addElement(UIElement* element);
 
-	// TODO: make this const
 	std::vector<UIElement*> elements() const { return mElements; }
 	UIElement* element(unsigned int i) const { return mElements[i]; }
 

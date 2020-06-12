@@ -7,7 +7,7 @@
 		<Damage>60</Damage>
 		<SwingSpeed>700</SwingSpeed>
 		<SwingAngle>250</SwingAngle>
-		<KnockbackDistance>100</KnockbackDistance>
+		<KnockbackDistance>500</KnockbackDistance>
 	</Properties>
 
 	<Icon>Mace</Icon>

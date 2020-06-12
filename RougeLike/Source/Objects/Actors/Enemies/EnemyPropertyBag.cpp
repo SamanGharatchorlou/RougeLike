@@ -4,14 +4,6 @@
 #include "Objects/Attributes/Damage.h"
 
 
-void EnemyPropertyBag::readProperties(XMLParser& parser)
-{
-	ValueMap map = readValues(parser);
-
-	fillProperties(map);
-}
-
-
 void EnemyPropertyBag::fillProperties(ValueMap& valueMap)
 {
 	for (ValueMap::iterator iter = valueMap.begin(); iter != valueMap.end(); iter++)

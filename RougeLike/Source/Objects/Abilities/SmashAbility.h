@@ -36,5 +36,5 @@ private:
 	float mFallSpeed;
 
 	Animator mStunAnimator;
-	VectorF mStunSize;
+	float mStunMaxSize;
 };

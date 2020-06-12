@@ -26,6 +26,9 @@
 #include "Debug/DebugDraw.h"
 #endif
 
+// TEMP
+#include "Collisions/CollisionTracker.h"
+
 
 Player::Player(GameData* gameData) :
 	Actor(gameData), 
@@ -43,7 +46,7 @@ void Player::init(const std::string& characterConfig)
 	parser.parseXML(FileManager::Get()->findFile(FileManager::Configs_Objects, characterConfig));
 
 	// Properties
-	initPropertBag(parser);
+	initPropertBag(characterConfig);
 
 	// Collider
 	mCollider = new Collider;
@@ -74,6 +77,7 @@ void Player::handleInput()
 		!mGameData->uiManager->isUsingUI() && !mAbilities.inSelectionMode())
 	{
 		attack();
+
 	}
 }
 
@@ -109,27 +113,29 @@ void Player::fastUpdate(float dt)
 
 void Player::slowUpdate(float dt)
 {
+	// Actor
 	Actor::slowUpdate(dt);
-	mWeapon->slowUpdate(dt);
-	mAbilities.slowUpdate(dt);
 
-	// Handle ability events
+	// Weapon
+	mWeapon->slowUpdate(dt);
+	updateWeaponCollisions();
+
+	// Abilities
+	mAbilities.slowUpdate(dt);
 	if (mAbilities.hasEvent())
 		pushEvent(mAbilities.popEvent());
 
+	// Character
 	Action action = mPhysics.isMoving() ? Action::Run : Action::Idle;
 	mAnimator.selectAnimation(action);
-
-	mGameData->collisionManager->removeAllAttackers(CollisionManager::PlayerWeapon_Hit_Enemy);
-
-	if (weapon()->isAttacking())
-		updateAttackingWeapon();
 
 	if (collider()->gotHit())
 		processHit();
 
 	updateCurrentTile();
 }
+
+
 
 
 void Player::reset()
@@ -172,6 +178,9 @@ void Player::selectWeapon(const std::string& weaponName)
 	{
 		mWeapon->rightFlip();
 	}
+
+	mGameData->collisionManager->removeAllAttackers(CollisionManager::PlayerWeapon_Hit_Enemy);
+	mGameData->collisionManager->addAttackers(CollisionManager::PlayerWeapon_Hit_Enemy, mWeapon->getColliders());
 }
 
 
@@ -208,12 +217,13 @@ void Player::userHasControl(bool control)
 }
 
 
-/// --- Private Functions --- ///
 
-void Player::initPropertBag(XMLParser& parser)
+// --- Private Functions --- //
+
+void Player::initPropertBag(const std::string& config)
 {
 	PlayerPropertyBag* propertyBag = new PlayerPropertyBag;
-	propertyBag->readProperties(parser);
+	propertyBag->readProperties(config);
 	setPropertyBag(propertyBag);
 
 	mStatManager.init(propertyBag);
@@ -248,26 +258,55 @@ void Player::attack()
 {
 	if (!mWeapon->isAttacking())
 	{
-		printf("playing miss\n");
+		CollisionTracker* simpleTracker = mGameData->collisionManager->getTracker(CollisionManager::PlayerWeapon_Hit_Enemy);
+		ComplexCollisionTracker* complexTracker = static_cast<ComplexCollisionTracker*>(simpleTracker);
+		complexTracker->clearExcluddDefenders();
+
+		mWeapon->attack();
+
+		//printf("playing miss\n");
 		mGameData->audioManager->playSound(mWeapon->missSoundLabel(), this);
 	}
-
-	mWeapon->attack();
 }
 
 
 void Player::updateAttackingWeapon()
 {
-	mGameData->collisionManager->addAttackers(CollisionManager::PlayerWeapon_Hit_Enemy, weapon()->getColliders());
-
 	if (mWeapon->didHit())
 	{
 		// Play hit sound
 		if (mGameData->audioManager->isPlaying(mWeapon->missSoundLabel(), this) && mWeapon->canPlayHitSound())
 		{
-			printf("playing hit\n");
+			//printf("playing hit\n");
 			mGameData->audioManager->playSound(mWeapon->hitSoundLabel(), this);
 		}
+	}
+}
+
+
+void Player::updateWeaponCollisions()
+{
+	CollisionTracker* simpleTracker = mGameData->collisionManager->getTracker(CollisionManager::PlayerWeapon_Hit_Enemy);
+	ComplexCollisionTracker* complexTracker = static_cast<ComplexCollisionTracker*>(simpleTracker);
+
+	if (weapon()->isAttacking())
+	{
+		complexTracker->setCheckingStatus(true);
+		updateAttackingWeapon();
+
+		std::vector<Collider*> enemies = complexTracker->defenders();
+
+		for (int i = 0; i < enemies.size(); i++)
+		{
+			if (enemies[i]->gotHit())
+			{
+				complexTracker->addExcludedDefender(enemies[i]);
+			}
+		}
+	}
+	else
+	{
+		complexTracker->setCheckingStatus(false);
 	}
 }
 

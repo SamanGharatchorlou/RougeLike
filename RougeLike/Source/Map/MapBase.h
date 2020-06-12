@@ -14,6 +14,7 @@ public:
 	K& operator [] (Index index) { 
 		return mData[index.y][index.x]; 
 	}
+	const Grid<K>& getData() const { return mData; }
 	Grid<K>& getData() { return mData; }
 
 	unsigned int yCount() const { return mData.yCount(); }

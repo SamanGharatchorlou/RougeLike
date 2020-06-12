@@ -97,8 +97,6 @@ void GameState::fastUpdate(float dt)
 
 void GameState::slowUpdate(float dt)
 {
-	mGameData->collisionManager->slowUpdate();
-
 	mGameData->actors->slowUpdate(dt);
 
 	mGameData->scoreManager->slowUpdate();
@@ -115,8 +113,6 @@ void GameState::slowUpdate(float dt)
 
 	// End of slow frame
 	mGameData->collisionManager->resetColliders();
-	// TODO: the player weapon colliders are taken in and out of here when attacking and not
-	// when they are out they  do not get reset like the rest so stay as did hit, never becoming false in some cases
 }
 
 
@@ -151,7 +147,7 @@ void GameState::exit()
 }
 
 
-/// --- Private Functions --- ///
+// --- Private Functions --- //
 
 void GameState::initUI()
 {

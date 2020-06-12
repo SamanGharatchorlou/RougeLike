@@ -20,28 +20,26 @@ Note: The layers must be in order with the top layer first/at the top of the fil
 class ScreenDecoder
 {
 public:
-	ScreenDecoder(TextureManager* texManager) : tm(texManager), currentLayer(nullptr) { };
+	ScreenDecoder(TextureManager* texManager) : tm(texManager) { }
 	~ScreenDecoder() { }
 
-	ScreenAttributes getScreenAttributes(const std::string& config);
-	Layers buildUIScreenLayers(ScreenAttributes& attributes);
+	const ScreenAttributes getScreenAttributes(const std::string& config);
+	Layers buildUIScreenLayers(const ScreenAttributes& attributes);
 
 private:
-	Elements setParents(Layers layers, ScreenAttributes& screenAttributes);
+	Elements setParents(Layers layers, const ScreenAttributes& screenAttributes);
 	void setChildren(Elements parernts, Layers layers);
 	void setRects(Layers layers);
 	void setRect(UIElement* element);
 
-	void fillElementData	(UIElement::Data& data,		Attributes& attributes) const;
-	void fillBoxData		(UIBox::Data& data,			Attributes& attributes) const;
-	void fillTextBoxData	(UITextBox::Data& data,		Attributes& attributes) const;
-	void fillButtonData		(UIButton::Data& data,		Attributes& attributes) const;
+	void fillElementData	(UIElement::Data& data,		const Attributes& attributes) const;
+	void fillBoxData		(UIBox::Data& data,			const Attributes& attributes) const;
+	void fillTextBoxData	(UITextBox::Data& data,		const Attributes& attributes) const;
+	void fillButtonData		(UIButton::Data& data,		const Attributes& attributes) const;
 
 	UIElement* findElement(Layers layers, const std::string& id);
 
 private:
 	TextureManager* tm;
 	XMLParser xmlParser;
-
-	const UILayer* currentLayer;
 };

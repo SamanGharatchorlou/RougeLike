@@ -13,7 +13,7 @@
 
 
 SmashAbility::SmashAbility(Texture* hammerTexture, VectorF hammerSize, Animator stun) 
-	: mHammerTexture(hammerTexture), mStunAnimator(stun), requestedActivate(false), mAppliedDamage(false)
+	: mHammerTexture(hammerTexture), mStunAnimator(stun), requestedActivate(false), mAppliedDamage(false), mFallSpeed(0.0f), mStunMaxSize(0.0f)
 {
 	mHammerRect.SetSize(hammerSize);
 };
@@ -26,7 +26,7 @@ void SmashAbility::fillValues(ValueMap& values)
 	mCooldownTime = std::stof(values["Cooldown"]);
 	mRange = std::stof(values["Range"]);
 	mFallSpeed = std::stof(values["HammerFallSpeed"]);
-	mStunSize = realiseSize(mStunAnimator.frameSize(), std::stof(values["StunMaxSize"]));
+	mStunMaxSize = std::stof(values["StunMaxSize"]);
 }
 
 
@@ -79,7 +79,7 @@ void SmashAbility::activate(Actor* actor)
 		DamageEffect* damage = new DamageEffect(mDamage);
 		actor->addEffect(damage);
 
-		StunEffect* stunEffect = new StunEffect(&mStunAnimator, mStunSize);
+		StunEffect* stunEffect = new StunEffect(mStunAnimator, mStunMaxSize);
 		actor->addEffect(stunEffect);
 	}
 }

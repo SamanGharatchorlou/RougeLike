@@ -11,7 +11,6 @@ public:
 	Grid(unsigned int y, unsigned int x, T value);
 	Grid(Vector2D<int> size, T value);
 
-	// TODO: cannot make const?
 	std::vector<T>& operator [] (int y);
 	T& operator [] (Vector2D<int> index);
 

@@ -2,14 +2,15 @@
 
 #include "Effect.h"
 
+#include "Animations/Animator.h"
+
 class DamageCollider;
-class Animator;
 class Enemy;
 
 class StunEffect : public Effect
 {
 public:
-	StunEffect(Animator* animator, VectorF size) : mAnimator(animator), mSize(size), mMaxVelocity(0.0f) { };
+	StunEffect(Animator animator, float maxSize) : mAnimator(animator), mMaxSize(maxSize) { };
 
 	void init() override;
 	void fastUpdate(float dt) override { };
@@ -20,10 +21,7 @@ public:
 
 
 private:
-	Enemy* mEnemy;
-	Animator* mAnimator; // TODO is this animator dealt with?
-	VectorF mSize;
-
-	float mMaxVelocity;
+	Animator mAnimator;
+	float mMaxSize;
 };
 

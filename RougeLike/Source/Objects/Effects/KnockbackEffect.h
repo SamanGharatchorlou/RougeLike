@@ -17,11 +17,13 @@ public:
 	void render() override { };
 	void exit() override { };
 
+
 protected:
 	virtual bool canMove(VectorF velocity, float dt) const;
 	void forceDecay();
 
-private:
+
+protected:
 	VectorF mSource;
 	float mForce;
 

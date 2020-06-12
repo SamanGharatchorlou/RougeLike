@@ -96,12 +96,6 @@ void EnemyManager::slowUpdate(float dt)
 		updateEnemyPaths();
 	}
 
-	if (updateTimer.getMilliseconds() > 250)
-	{
-		updateAIPathCostMap();
-	}
-
-
 	mGameData->collisionManager->removeAllAttackers(CollisionManager::Enemy_Hit_Player);
 	mGameData->collisionManager->addAttackers(CollisionManager::Enemy_Hit_Player, attackingColliders);
 
@@ -128,9 +122,6 @@ void EnemyManager::generatePathMap()
 
 void EnemyManager::addEnemiesToPool(EnemyType type, unsigned int count)
 {
-
-
-	// TODO: how to do a cheaper copy, no need to open and read files everytime... 
 	for (unsigned int i = 0; i < count; i++)
 	{
 		EnemyObject enemyObject;
@@ -145,7 +136,7 @@ void EnemyManager::addEnemiesToPool(EnemyType type, unsigned int count)
 		case EnemyType::Imp:
 		{
 			Imp* imp = new Imp(mGameData);
-			imp->init(); // TODO: better way to feed this in?
+			imp->init();
 
 			enemyObject.first = imp;
 			enemyObject.second = ObjectStatus::Available;
@@ -154,7 +145,7 @@ void EnemyManager::addEnemiesToPool(EnemyType type, unsigned int count)
 		case EnemyType::Angel:
 		{
 			Angel* angel = new Angel(mGameData);
-			angel->init(); // TODO: better way to feed this in?
+			angel->init();
 
 			enemyObject.first = angel;
 			enemyObject.second = ObjectStatus::Available;
@@ -163,7 +154,7 @@ void EnemyManager::addEnemiesToPool(EnemyType type, unsigned int count)
 		case EnemyType::Devil:
 		{
 			Devil* devil= new Devil(mGameData);
-			devil->init(); // TODO: better way to feed this in?
+			devil->init();
 
 			enemyObject.first = devil;
 			enemyObject.second = ObjectStatus::Available;
@@ -365,9 +356,10 @@ void EnemyManager::clearAllEnemies()
 	for (Enemy* enemy : mActiveEnemies)
 	{
 		enemy->clear();
-		mGameData->collisionManager->removeDefender(CollisionManager::PlayerWeapon_Hit_Enemy, enemy->collider());
-		mGameData->collisionManager->removeAllAttackers(CollisionManager::Enemy_Hit_Player);
 	}
+
+	mGameData->collisionManager->removeAllDefenders(CollisionManager::PlayerWeapon_Hit_Enemy);
+	mGameData->collisionManager->removeAllAttackers(CollisionManager::Enemy_Hit_Player);
 
 	for (EnemyObject& enemy : mEnemyPool)
 	{

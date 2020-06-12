@@ -4,9 +4,6 @@
 
 class EnemyPropertyBag : public PropertyBag
 {
-public:
-	void readProperties(XMLParser& parser);
-
 private:
 	void fillProperties(ValueMap& valueMap);
 };

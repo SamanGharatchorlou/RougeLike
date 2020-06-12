@@ -48,12 +48,13 @@ public:
 
 
 private:
-	void initPropertBag(XMLParser& parser);
+	void initPropertBag(const std::string& config);
 
 	void processHit();
 
 	void attack();
 	void updateAttackingWeapon();
+	void updateWeaponCollisions();
 
 	void updateCurrentTile();
 

@@ -473,8 +473,8 @@ void UIManager::debugEditUI()
 	}
 
 	VectorF change;
-	float movementSpeed = 1.0f; // pixels moved per press
-	int holdSpeed = 1; // larger is slower, using % for it
+	float movementSpeed = 0.3f; // pixels moved per press
+	int holdSpeed = 2; // larger is slower, using % for it
 	int holdDelay = 15;
 
 	// LEFT

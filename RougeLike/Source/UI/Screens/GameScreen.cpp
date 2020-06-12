@@ -21,4 +21,16 @@ void GameScreen::addElement(UIElement* element)
 	mAdditionalLayer->addElement(element);
 }
 
-// TODO: exit needs to free all the additional items
+
+void GameScreen::exit()
+{
+	std::vector<UIElement*> elements = mAdditionalLayer->elements();
+
+	for (int i = 0; i < elements.size(); i++)
+	{
+		delete elements[i];
+		elements[i] = nullptr;
+	}
+
+	elements.clear();
+}

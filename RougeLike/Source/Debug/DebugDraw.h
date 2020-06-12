@@ -25,7 +25,7 @@
 
 // UI
 #define DRAW_UI_RECTS 0
-#define UI_EDITOR 0
+#define UI_EDITOR 1
 #define DEBUG_CURSOR 1
 
 #else

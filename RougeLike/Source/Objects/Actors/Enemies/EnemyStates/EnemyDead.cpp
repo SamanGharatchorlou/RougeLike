@@ -19,6 +19,7 @@ void EnemyDead::init()
 	const float score = mEnemy->getPropertyValue("Score");
 	const float exp = mEnemy->getPropertyValue("Experience");
 
+	printf("enemy %p sending death event\n", mEnemy);
 	EnemyDeadEvent* dataPtr = new EnemyDeadEvent(mEnemy, score, exp);
 	mEnemy->pushEvent(EventPacket(dataPtr));
 }
@@ -36,7 +37,7 @@ void EnemyDead::slowUpdate(float dt)
 
 	// Remove enemy from play
 	if (mAlpha <= 10)
-		mEnemy->addState(EnemyState::Exit);
+		mEnemy->replaceState(EnemyState::Exit);
 }
 
 

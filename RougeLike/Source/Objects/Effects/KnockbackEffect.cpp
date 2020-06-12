@@ -39,7 +39,7 @@ void KnockbackEffect::slowUpdate(float dt)
 	if (timer.getSeconds() > 0.1f)
 		endEffect();
 
-	forceDecay();
+	//forceDecay();
 }
 
 

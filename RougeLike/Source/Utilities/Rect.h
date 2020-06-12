@@ -1,11 +1,5 @@
 #pragma once
 
-#if _DEBUG
-#include "Game/GameData.h"
-#endif
-
-// TODO: const up
-
 template<class T>
 class Rect
 {
@@ -35,7 +29,6 @@ public:
 	// Side Midpoints
 	inline Vector2D<T> TopCenter() const { return Vector2D<T>(x1 + Width() / (T)2, y1); }
 	inline Vector2D<T> BotCenter() const { return Vector2D<T>(x1 + Width() / (T)2, y2); }
-
 	inline Vector2D<T> LeftCenter() const { return Vector2D<T>(x1, y1 + Height() / (T)2); }
 	inline Vector2D<T> RightCenter() const { return Vector2D<T>(x2, y1 + Height() / (T)2); }
 

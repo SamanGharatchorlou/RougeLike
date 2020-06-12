@@ -196,7 +196,7 @@ VectorF Environment::toWorldCoords(VectorF cameraCoords)
 {
 	float xOffset = mEntrace->getLastRect().RightPoint();
 
-	VectorF cameraPosition = Camera::Get()->getTopLeftF();
+	VectorF cameraPosition = Camera::Get()->rect().TopLeft();
 
 	float xDiff = cameraPosition.x - xOffset;
 

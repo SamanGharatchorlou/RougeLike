@@ -146,6 +146,25 @@ Texture* TextureManager::getTexture(const std::string& label, const FileManager:
 }
 
 
+Texture* TextureManager::getTexture(const std::string& label) const
+{
+	for (int i = 0; i < mTextures.size(); i++)
+	{
+		TextureMap textureMap = mTextures[i].second;
+
+		auto search = textureMap.find(label);
+
+		if (search != textureMap.end())
+		{
+			return search->second;
+		}
+	}
+
+	DebugPrint(Warning, "No texture with the name '%s' has been loaded into the texture map\n", label.c_str());
+	return nullptr;
+}
+
+
 /// --- Priavte Functions --- ///
 
 const TextureMap& TextureManager::findTextureMap(const FileManager::Folder folder) const
@@ -158,5 +177,5 @@ const TextureMap& TextureManager::findTextureMap(const FileManager::Folder folde
 		}
 	}
 
-	DebugPrint(Warning, "There is no texture Map in the folder '%s'\n", FileManager::Get()->generatePath(folder).c_str());
+	ASSERT(Error, false, "There is no texture Map in the folder '%s'\n", FileManager::Get()->generatePath(folder).c_str());
 }

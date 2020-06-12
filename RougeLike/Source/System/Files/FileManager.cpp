@@ -118,9 +118,6 @@ std::string FileManager::findFolder(const Folder folder, const std::string& name
 
 
 
-
-
-
 std::string FileManager::findFile(const Folder folder, const std::string& name) const
 {
 	std::string outPath = "";

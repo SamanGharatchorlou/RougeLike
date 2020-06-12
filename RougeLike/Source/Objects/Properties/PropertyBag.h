@@ -15,7 +15,7 @@ public:
 public:
 	virtual ~PropertyBag() { }
 
-	virtual void readProperties(XMLParser& parser) = 0;
+	virtual void readProperties(const std::string& config);
 	
 	void resetProperties();
 
@@ -27,7 +27,7 @@ public:
 
 protected:
 	ValueMap readValues(XMLParser& parser);
-	void fillProperties(ValueMap& valueMap);
+	virtual void fillProperties(ValueMap& valueMap);
 
 
 protected:

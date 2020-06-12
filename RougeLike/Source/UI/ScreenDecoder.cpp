@@ -7,7 +7,7 @@
 #include "UI/Screens/UILayer.h"
 
 
-ScreenAttributes ScreenDecoder::getScreenAttributes(const std::string& config)
+const ScreenAttributes ScreenDecoder::getScreenAttributes(const std::string& config)
 {
 	xmlParser.parseXML(config);
 
@@ -59,14 +59,13 @@ ScreenAttributes ScreenDecoder::getScreenAttributes(const std::string& config)
 }
 
 
-Layers ScreenDecoder::buildUIScreenLayers(ScreenAttributes& screenAttributes)
+Layers ScreenDecoder::buildUIScreenLayers(const ScreenAttributes& screenAttributes)
 {
 	Layers layers;
 
 	for (LayerAttributes layerAttribute : screenAttributes)
 	{
 		UILayer* layer = new UILayer;
-		currentLayer = layer; // TODO: expand this to all layers. also delay this so the rects are set after its all been parsed
 
 		for (Attributes attributes : layerAttribute)
 		{
@@ -130,6 +129,7 @@ Layers ScreenDecoder::buildUIScreenLayers(ScreenAttributes& screenAttributes)
 	return layers;
 }
 
+
 void ScreenDecoder::setRects(Layers layers)
 {
 	for (UILayer* layer : layers)
@@ -175,7 +175,7 @@ void ScreenDecoder::setChildren(Elements parents, Layers layers)
 }
 
 
-Elements ScreenDecoder::setParents(Layers layers, ScreenAttributes& screenAttributes)
+Elements ScreenDecoder::setParents(Layers layers, const ScreenAttributes& screenAttributes)
 {
 	// Store parents for more effcient third pass
 	Elements parentElements;
@@ -183,11 +183,11 @@ Elements ScreenDecoder::setParents(Layers layers, ScreenAttributes& screenAttrib
 	for (unsigned int layerIndex = 0; layerIndex < screenAttributes.size(); layerIndex++)
 	{
 		// TODO: does this setup a reference or value?
-		LayerAttributes layerAttributes = screenAttributes[layerIndex];
+		const LayerAttributes& layerAttributes = screenAttributes[layerIndex];
 
 		for (unsigned int elementIndex = 0; elementIndex < layerAttributes.size(); elementIndex++)
 		{
-			Attributes elementAttributes = layerAttributes[elementIndex];
+			const Attributes& elementAttributes = layerAttributes[elementIndex];
 
 			if (elementAttributes.contains("parent"))
 			{
@@ -212,7 +212,7 @@ Elements ScreenDecoder::setParents(Layers layers, ScreenAttributes& screenAttrib
 
 // --- Populate UI Element data packets --- //
 
-void ScreenDecoder::fillElementData(UIElement::Data& data, Attributes& attributes) const
+void ScreenDecoder::fillElementData(UIElement::Data& data, const Attributes& attributes) const
 {
 	// Allow these attributes not to be set, assuming they have a parent rect
 	float x = attributes.contains("x") ? attributes.getFloat("x") : 12345.0f;
@@ -240,7 +240,7 @@ void ScreenDecoder::fillElementData(UIElement::Data& data, Attributes& attribute
 }
 
 
-void ScreenDecoder::fillBoxData(UIBox::Data& data, Attributes& attributes) const
+void ScreenDecoder::fillBoxData(UIBox::Data& data, const Attributes& attributes) const
 {
 	fillElementData(data, attributes);
 
@@ -248,15 +248,7 @@ void ScreenDecoder::fillBoxData(UIBox::Data& data, Attributes& attributes) const
 	if (attributes.contains("texture"))
 	{
 		std::string textureLabel = attributes.getString("texture");
-		Texture* texture = tm->getTexture(textureLabel, FileManager::Image_UI);
-
-		// TODO: hacked in there, find a way to allow multiple folders to be searched
-		if (!texture)
-		{
-			texture = tm->getTexture(textureLabel, FileManager::Image_Weapons);
-		}
-
-		data.texture = texture;
+		data.texture = tm->getTexture(textureLabel);
 	}
 	else
 		data.texture = nullptr;
@@ -268,7 +260,7 @@ void ScreenDecoder::fillBoxData(UIBox::Data& data, Attributes& attributes) const
 }
 
 
-void ScreenDecoder::fillTextBoxData(UITextBox::Data& data, Attributes& attributes) const
+void ScreenDecoder::fillTextBoxData(UITextBox::Data& data, const Attributes& attributes) const
 {
 	fillBoxData(data, attributes);
 
@@ -287,7 +279,7 @@ void ScreenDecoder::fillTextBoxData(UITextBox::Data& data, Attributes& attribute
 }
 
 
-void ScreenDecoder::fillButtonData(UIButton::Data& data, Attributes& attributes) const
+void ScreenDecoder::fillButtonData(UIButton::Data& data, const Attributes& attributes) const
 {
 	// Box component
 	fillBoxData(data, attributes);

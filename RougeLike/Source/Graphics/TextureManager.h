@@ -16,16 +16,15 @@ public:
 	void init();
 
 	Texture* getTexture(const std::string& label, const FileManager::Folder folders) const;
+	Texture* getTexture(const std::string& label) const;
+
 	const std::string& getTextureName(const Texture* texture) const;
 
 private:
 	bool loadTexture(FolderTextureMap& folderMap, const std::string& fileName);
 	int loadAllTexturesIn(FileManager::Folder folder);
 
-	int loadAnimations(FileManager::Folder animationFolder);
-
 	const TextureMap& findTextureMap(const FileManager::Folder folder) const;
-
 
 
 private:

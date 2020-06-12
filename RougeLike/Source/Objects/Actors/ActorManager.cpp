@@ -111,7 +111,7 @@ void ActorManager::handleEvent(EventData& data)
 	switch (data.eventType)
 	{
 	case Event::EnemyDead:
-	{
+	{	
 		EnemyDeadEvent eventData = static_cast<EnemyDeadEvent&>(data);
 		mPlayer->statManager().gainExp(eventData.mExp);
 		mGameData->collisionManager->removeDefender(CollisionManager::PlayerWeapon_Hit_Enemy, eventData.mEnemy->collider());
@@ -140,7 +140,7 @@ void ActorManager::initPlayer()
 {
 	mPlayer->initCollisions();
 
-	VectorF playerPosition = VectorF(Camera::Get()->getCenter().x, mGameData->environment->size().y / 2.0f);
+	VectorF playerPosition = VectorF(Camera::Get()->rect().Center().x, mGameData->environment->size().y / 2.0f);
 	mPlayer->rectRef().SetLeftCenter(playerPosition);
 
 	// Camera

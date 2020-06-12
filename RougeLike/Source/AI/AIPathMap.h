@@ -8,7 +8,7 @@ class Map;
 class AIPathMap : public MapBase<PathTile>
 {
 public:
-	void build(Map* map, int xSplit, int ySplit);
+	void build(const Map* map, int xSplit, int ySplit);
 	void clear();
 
 	const Index index(VectorF position) const;

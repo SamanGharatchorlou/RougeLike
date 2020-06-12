@@ -22,7 +22,6 @@ public:
 		return *this;
 	}
 
-	// TODO: add effect damage e.g. fire, ice etc
 private:
 	float attackDamage;
 };

@@ -13,6 +13,11 @@
 #include "Objects/Actors/ActorManager.h"
 #include "Objects/Actors/Player/Player.h"
 #include "Objects/Effects/KnockbackEffect.h"
+
+
+#include "Objects/Effects/KnockbackStunEffect.h"
+#include "Animations/AnimationReader.h"
+
 #include "Objects/Effects/DamageEffect.h"
 
 #include "AI/AIPathMap.h"
@@ -26,8 +31,6 @@ Enemy::Enemy(GameData* gameData) :
 	Actor(gameData),
 	mStateMachine(new EnemyNullState),
 	mMap(nullptr),
-	mAttackTarget(nullptr),
-	mPositionTarget(nullptr),
 	mCurrentIndex(Vector2D<int>(-1,-1))
 {
 	physics()->setFlip(static_cast<SDL_RendererFlip>(randomNumberBetween(0, 2)));
@@ -40,7 +43,7 @@ void Enemy::init(const std::string& config)
 
 	// Property bag
 	EnemyPropertyBag* propertyBag = new EnemyPropertyBag;
-	propertyBag->readProperties(parser);
+	propertyBag->readProperties(config);
 	setPropertyBag(propertyBag);
 
 	// Collider	
@@ -82,7 +85,12 @@ void Enemy::slowUpdate(float dt)
 	{
 		UpdateAICostMapEvent* event = new UpdateAICostMapEvent;
 		pushEvent(EventPacket(event));
+		mCurrentIndex = index;
 	}
+
+	Health* health = static_cast<Health*>(getProperty("Health"));
+	if (health->isDead())
+		addState(EnemyState::Dead);
 }
 
 
@@ -117,8 +125,6 @@ void Enemy::clear()
 	mEvents.clear();
 
 	mMap = nullptr;
-	mAttackTarget = nullptr;
-	mPositionTarget = nullptr;
 
 	Actor::reset();
 }
@@ -134,8 +140,19 @@ void Enemy::resolveCollisions()
 			const DamageCollider* collider = static_cast<const DamageCollider*>(mCollider->getOtherCollider());
 
 			// Apply knockback
-			KnockbackEffect* knockback = new KnockbackEffect(mGameData->actors->player()->position(), collider->knockbackforce());
-			mEffects.addEffect(knockback);
+			//KnockbackEffect* knockback = new KnockbackEffect(mGameData->actors->player()->position(), collider->knockbackforce());
+			//mEffects.addEffect(knockback);
+
+
+			XMLParser parser;
+			parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, "Stun"));
+
+			AnimationReader reader(mGameData->textureManager, parser);
+			Animator animator;
+			reader.initAnimator(animator);
+
+			KnockbackStunEffect* knockbackStunEffect = new KnockbackStunEffect(mGameData->actors->player()->position(), collider->knockbackforce(), animator, 50.0f );
+			mEffects.addEffect(knockbackStunEffect);
 
 			// Apply damage
 			DamageEffect* damage = new DamageEffect(collider->damage());
@@ -170,13 +187,15 @@ void Enemy::replaceState(EnemyState::Type state)
 
 void Enemy::addWaitState(float waitTime)
 {
-	mStateMachine.addState(new EnemyWait(this, waitTime));
+	if(state() != EnemyState::Dead)
+		mStateMachine.addState(new EnemyWait(this, waitTime));
 }
 
 
-void Enemy::addState(EnemyState::Type state)
+void Enemy::addState(EnemyState::Type newState)
 {
-	mStateMachine.addState(newEnemyState(state, this));
+	if (state() != EnemyState::Dead)
+		mStateMachine.addState(newEnemyState(newState, this));
 }
 
 

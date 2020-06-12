@@ -48,7 +48,7 @@ void GameData::load()
 	uiManager->init();
 
 	// Rendering
-	renderManager = new RenderManager(this);
+	renderManager = new RenderManager;
 
 	// Score Manager
 	scoreManager = new ScoreManager;
@@ -64,7 +64,6 @@ void GameData::load()
 }
 
 
-// TODO: centralise some of these systems?
 void GameData::setupObservers()
 {
 	// Update the current map level

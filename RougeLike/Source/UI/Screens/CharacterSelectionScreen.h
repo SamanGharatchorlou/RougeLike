@@ -9,7 +9,7 @@ class CharacterSelectionScreen : public Screen
 public:
 	CharacterSelectionScreen(GameData* gameData);
 
-	void enter() override { }
+	void enter() override;
 	void exit() override { };
 	void update(float dt) override;
 
