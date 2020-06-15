@@ -1,14 +1,13 @@
 #pragma once
 
-#include "KnockbackEffect.h"
+#include "DisplacementEffect.h"
 #include "Animations/Animator.h"
 
 
-class KnockbackStunEffect : public KnockbackEffect
+class KnockbackStunEffect : public DisplacementEffect
 {
 public:
-	//KnockbackStunEffect(const DamageCollider* sourceCollider, Animator* animator, float maxSize);
-	KnockbackStunEffect(VectorF source, float force, Animator animator, float maxSize);
+	KnockbackStunEffect(VectorF source, float distance, float force, Animator animator, float maxSize);
 	void slowUpdate(float dt);
 
 private:

@@ -2,9 +2,7 @@
 #include "KnockbackEffect.h"
 
 #include "Objects/Actors/Actor.h"
-#include "Game/GameData.h"
 #include "Collisions/DamageCollider.h"
-#include "Map/Environment.h"
 #include "Map/Map.h"
 
 
@@ -26,7 +24,7 @@ void KnockbackEffect::init()
 
 void KnockbackEffect::fastUpdate(float dt)
 {
-	VectorF direction = mActor->physics()->position() - mSource;
+	VectorF direction = mActor->position() - mSource;
 	VectorF velocity = direction.normalise() * mForce;
 
 	if (canMove(velocity, dt))
@@ -45,11 +43,11 @@ void KnockbackEffect::slowUpdate(float dt)
 
 
 
-/// --- Private Functions --- ///
+// --- Private Functions --- //
 bool KnockbackEffect::canMove(VectorF velocity, float dt) const
 {
 	Index index;
-	const Map* map = mActor->getGameData()->environment->primaryMap();
+	const Map* map = mActor->currentMap();
 	RectF rect = mActor->scaledRect().Translate(velocity * dt);
 
 	index = map->index(rect.TopLeft());

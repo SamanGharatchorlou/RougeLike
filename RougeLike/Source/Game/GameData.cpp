@@ -15,6 +15,7 @@
 #include "Map/Environment.h"
 #include "Game/Camera.h"
 
+#include "Objects/Effects/EffectPool.h"
 #include "Objects/Actors/Player/Player.h"
 #include "Objects/Actors/Enemies/EnemyManager.h"
 
@@ -55,6 +56,9 @@ void GameData::load()
 
 	// Collision Trackers
 	collisionManager = new CollisionManager;
+
+	// Effect Pool, must be before actors
+	effectPool = new EffectPool;
 
 	// Actors
 	actors = new ActorManager(this);

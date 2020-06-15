@@ -5,6 +5,9 @@
 #include "Effect.h"
 
 
+#include "DamageEffect.h"
+
+
 void EffectHandler::addEffect(Effect* effect)
 {
 	if (!mDelayedAdd)
@@ -12,13 +15,32 @@ void EffectHandler::addEffect(Effect* effect)
 		effect->set(mActor);
 		effect->init();
 		mEffects.push_back(effect);
-		//printf("add effect\n");
 	}
 	else
 	{
 		mEffectsToAdd.push(effect);
 	}
 }
+
+//void EffectHandler::addEffect(EffectData* effect)
+//{
+//	if (!mDelayedAdd)
+//	{
+//		if (effect->type == EffectType::Damage)
+//		{
+//			DamageEffectData* data = static_cast<DamageEffectData*>(effect);
+//
+//			DamageEffect* dmgEffect = new DamageEffect(Damage(data->damage));
+//			dmgEffect->set(mActor);
+//			dmgEffect->init();
+//			mEffects.push_back(dmgEffect);
+//		}
+//	}
+//	else
+//	{
+//		//mEffectsToAdd.push(effect);
+//	}
+//}
 
 
 void EffectHandler::fastUpdate(float dt)
@@ -44,7 +66,7 @@ void EffectHandler::slowUpdate(float dt)
 		{
 			effect->exit();
 
-			delete effect;
+			//delete effect;
 			iter = mEffects.erase(iter);
 
 			//printf("remove effect\n");

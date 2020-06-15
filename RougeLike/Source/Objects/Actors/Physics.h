@@ -52,7 +52,6 @@ public:
 
 	// Position
 	void setPosition(VectorF position) { mRect.SetCenter(position); }
-	VectorF position() const { return mRect.Center(); }
 
 	// Movement distance
 	float maxMovementDistance(float dt) const { return mMaxVelocity * dt; }

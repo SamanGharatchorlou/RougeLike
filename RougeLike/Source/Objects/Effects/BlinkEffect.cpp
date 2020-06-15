@@ -40,7 +40,6 @@ void BlinkEffect::slowUpdate(float dt)
 
 void BlinkEffect::exit()
 {
-	//mActor->animator().getSpriteTexture()->setAlpha(alphaMax);
 	mActor->setVisibility(true);
 
 	// NOTE: This bit only works for a player specific, if you ever need to do this to another object

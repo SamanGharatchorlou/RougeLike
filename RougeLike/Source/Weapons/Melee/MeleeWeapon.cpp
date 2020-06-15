@@ -9,6 +9,11 @@
 #include "Graphics/Texture.h"
 
 #include "Collisions/DamageCollider.h"
+#include "Collisions/EffectCollider.h"
+
+// TEMP
+#include "Objects/Effects/DamageEffect.h"
+#include "Objects/Effects/DisplacementEffect.h"
 
 
 MeleeWeapon::MeleeWeapon() : 
@@ -23,7 +28,7 @@ MeleeWeapon::MeleeWeapon() :
 	for (unsigned int i = 0; i < blocks; i++)
 	{
 		mBlockRects.push_back(RectF());
-		mBlockColliders.push_back(new DamageCollider);
+		mBlockColliders.push_back(new EffectCollider);
 
 		mBlockColliders[i]->init(&mBlockRects[i]);
 
@@ -46,13 +51,22 @@ MeleeWeapon::~MeleeWeapon()
 }
 
 
+
+
+
 void MeleeWeapon::equipt(const WeaponData* data)
 {
 	mMeleeData = static_cast<const MeleeWeaponData*>(data);
 
 	for (unsigned int i = 0; i < mBlockColliders.size(); i++)
 	{
-		mBlockColliders[i]->initDamage(mMeleeData->damage, mMeleeData->knockbackDistance);
+		//DamageEffect* damage = new DamageEffect(mMeleeData->damage);
+		//DisplacementEffect* displacment = new DisplacementEffect(VectorF(), 20000.0f, mMeleeData->knockbackDistance);
+
+		//mBlockColliders[i]->addEffect(damage);
+		//mBlockColliders[i]->addEffect(displacment);
+
+		//mBlockColliders[i]->initDamage(mMeleeData->damage, mMeleeData->knockbackDistance);
 	}
 
 	mSwingSpeed = mMeleeData->swingSpeed;
@@ -93,7 +107,7 @@ void MeleeWeapon::fastUpdate(float dt)
 
 bool MeleeWeapon::didHit() const
 {
-	for (const DamageCollider* collider : mBlockColliders)
+	for (const Collider* collider : mBlockColliders)
 	{
 		if (collider->didHit())
 		{
@@ -182,7 +196,6 @@ void MeleeWeapon::updateWeaponBlocks()
 	weaponVectorTest = weaponVector;
 #endif
 
-
 	// Size
 	int blocks = mBlockRects.size();
 	float blockWidth = std::max(std::abs(weaponVector.x) / blocks, rect().Width());
@@ -205,6 +218,8 @@ void MeleeWeapon::updateWeaponBlocks()
 }
 
 
+
+
 void MeleeWeapon::continueAttack(float dt)
 {
 	float theta = mSwingSpeed * dt;
@@ -214,6 +229,26 @@ void MeleeWeapon::continueAttack(float dt)
 		theta = maxSwingAngle() - mRotationSum;
 
 	mDirection = rotateVector(mDirection, theta * -mSwingDirection);
+
+
+	//// TEMP
+	//if (didHit())
+	//{
+	//	printf("updating knockback source");
+
+	//	for (unsigned int i = 0; i < mBlockColliders.size(); i++)
+	//	{
+	//		
+
+
+	//		mBlockColliders[i]->addEffect(damage);
+	//		mBlockColliders[i]->addEffect(displacment);
+
+	//		mBl
+
+	//			//mBlockColliders[i]->initDamage(mMeleeData->damage, mMeleeData->knockbackDistance);
+	//	}
+	//}
 }
 
 

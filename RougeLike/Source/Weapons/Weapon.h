@@ -2,6 +2,7 @@
 
 struct WeaponData;
 class Collider;
+class Effect;
 
 
 class Weapon
@@ -40,7 +41,8 @@ public:
 
 	void overrideCursorControl(bool overrideControl) { mOverrideCursorControl = overrideControl; }
 
-
+	//virtual void addEffect(Effect* effect) = 0;
+	//virtual void clearEffect() = 0;
 
 protected:
 	RectF mRect;

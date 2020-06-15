@@ -28,6 +28,10 @@
 
 // TEMP
 #include "Collisions/CollisionTracker.h"
+// TEMP
+#include "Objects/Effects/DamageEffect.h"
+#include "Objects/Effects/DisplacementEffect.h"
+#include "Collisions/EffectCollider.h"
 
 
 Player::Player(GameData* gameData) :
@@ -84,7 +88,7 @@ void Player::handleInput()
 
 void Player::fastUpdate(float dt)
 {
-	// Restricts movemoent from input, movement should happen after this
+	// Restricts movement from input, movement should happen after this
 	if(!mControlOverride)
 		mWallCollisions.resolveWallCollisions(mGameData->environment->map(position()), dt);
 
@@ -108,7 +112,35 @@ void Player::fastUpdate(float dt)
 	mWeapon->setPosition(rect().Center());
 	mWeapon->fastUpdate(dt);
 	mWeapon->updateAimDirection(mGameData->inputManager->cursorPosition());
-}
+
+	if (mWeapon->didHit())
+	{
+		std::vector<EffectCollider*> colliders = mWeapon->getEffectColliders();
+
+		for (int i = 0; i < colliders.size(); i++)
+		{
+			if (!colliders[i]->hasEffect())
+			{
+				printf("adding effect\n");
+				const MeleeWeaponData* data = mWeapon->getData();
+
+				DamageEffect* damage = new DamageEffect(data->damage);
+				DisplacementEffect* displacment = new DisplacementEffect(position(), 20000.0f, data->knockbackDistance);
+
+				//DamageEffectData* effectData = new DamageEffectData;
+				//EffectCollider* collider = colliders[i];
+				//collider->addEffect(effectData);
+
+				colliders[i]->addEffect(damage);
+				colliders[i]->addEffect(displacment);
+			}
+			else
+			{
+				// update them
+			}
+		}
+	}
+ }
 
 
 void Player::slowUpdate(float dt)
@@ -181,6 +213,20 @@ void Player::selectWeapon(const std::string& weaponName)
 
 	mGameData->collisionManager->removeAllAttackers(CollisionManager::PlayerWeapon_Hit_Enemy);
 	mGameData->collisionManager->addAttackers(CollisionManager::PlayerWeapon_Hit_Enemy, mWeapon->getColliders());
+
+
+	std::vector<EffectCollider*> colliders = mWeapon->getEffectColliders();
+	for (int i = 0; i < colliders.size(); i++)
+	{
+		if (!colliders[i]->hasEffect())
+		{
+			printf("adding effect\n");
+			const MeleeWeaponData* data = mWeapon->getData();
+
+			DamageEffect* damage = new DamageEffect(data->damage);
+			DisplacementEffect* displacment = new DisplacementEffect(position(), 20000.0f, data->knockbackDistance);
+		}
+	} 
 }
 
 

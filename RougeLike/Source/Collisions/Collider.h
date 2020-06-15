@@ -26,6 +26,7 @@ public:
 	RectF scaledRect() const;
 
 	const Collider* getOtherCollider() const { return mOtherCollider; }
+	Collider* getOtherCollider() { return mOtherCollider; }
 
 #if _DEBUG
 	void setName(const std::string& name) { mName = name; }

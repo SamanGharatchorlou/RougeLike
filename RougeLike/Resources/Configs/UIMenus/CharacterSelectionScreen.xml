@@ -35,7 +35,7 @@
 		<Box id= "Character" parent = "MainPanel" x = "-2.000" y = "194.000" width = "345.000" height = "345.000" texture = "Soldier"></Box>
 
 		<!-- Weapon -->
-		<Box id = "Weapon" parent = "MainPanel" x = "584.250" y = "231.000" width = "51.400" height = "258.100" texture = "Sword"></Box>
+		<Box id = "Weapon" parent = "MainPanel" x = "584.250" y = "231.000" width = "51.400" height = "258.100" texture = "Mace"></Box>
 		<TextBox id = "WeaponName" parent = "MainPanel" x = "301.100" y = "240.400" width = "262.000" height = "66.000">
 			<text r = "0" g = "0" b = "0" >Basic Sword</text>
 		</TextBox>

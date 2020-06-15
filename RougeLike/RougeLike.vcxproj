@@ -23,6 +23,7 @@
     <ClCompile Include="Source\AI\AIPathMap.cpp" />
     <ClCompile Include="Source\Animations\Animator.cpp" />
     <ClCompile Include="Source\Audio\SoundController.cpp" />
+    <ClCompile Include="Source\Collisions\EffectCollider.cpp" />
     <ClCompile Include="Source\Collisions\WallCollisionTracker.cpp" />
     <ClCompile Include="Source\Game\LoadingBar.cpp" />
     <ClCompile Include="Source\Game\LoadingManager.cpp" />
@@ -45,6 +46,8 @@
     <ClCompile Include="Source\Objects\Effects\ArmorEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\BlinkEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\DamageEffect.cpp" />
+    <ClCompile Include="Source\Objects\Effects\DashEffect.cpp" />
+    <ClCompile Include="Source\Objects\Effects\DisplacementEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\HealEffect.cpp" />
     <ClCompile Include="Source\Objects\Actors\Physics.cpp" />
     <ClCompile Include="Source\Objects\Attributes\StatManager.cpp" />
@@ -60,6 +63,7 @@
     <ClCompile Include="Source\Objects\Actors\Enemies\Spawning\EnemySpawner.cpp" />
     <ClCompile Include="Source\Collisions\CollisionManager.cpp" />
     <ClCompile Include="Source\Objects\Actors\Actor.cpp" />
+    <ClCompile Include="Source\Objects\Effects\EffectPool.cpp" />
     <ClCompile Include="Source\Objects\Effects\StunEffect.cpp" />
     <ClCompile Include="Source\Objects\Properties\PropertyBag.cpp" />
     <ClCompile Include="Source\UI\Elements\UISlider.cpp" />
@@ -148,6 +152,7 @@
     <ClInclude Include="Source\AI\AIPathMap.h" />
     <ClInclude Include="Source\Animations\Animator.h" />
     <ClInclude Include="Source\Audio\SoundController.h" />
+    <ClInclude Include="Source\Collisions\EffectCollider.h" />
     <ClInclude Include="Source\Collisions\WallCollisionTracker.h" />
     <ClInclude Include="Source\Events\LocalDispatcher.h" />
     <ClInclude Include="Source\Events\LocalObserver.h" />
@@ -173,6 +178,9 @@
     <ClInclude Include="Source\Objects\Effects\ArmorEffect.h" />
     <ClInclude Include="Source\Objects\Effects\BlinkEffect.h" />
     <ClInclude Include="Source\Objects\Effects\DamageEffect.h" />
+    <ClInclude Include="Source\Objects\Effects\DashEffect.h" />
+    <ClInclude Include="Source\Objects\Effects\DisplacementEffect.h" />
+    <ClInclude Include="Source\Objects\Effects\EffectPool.h" />
     <ClInclude Include="Source\Objects\Effects\HealEffect.h" />
     <ClInclude Include="Source\Objects\Actors\Physics.h" />
     <ClInclude Include="Source\Objects\Effects\KnockbackStunEffect.h" />

@@ -4,6 +4,7 @@
 #include "Events/Dispatcher.h"
 
 class GameData;
+class EffectPool;
 class Player;
 class EnemyManager;
 class Actor;
@@ -33,12 +34,14 @@ public:
 
 
 private:
+	void initEffectPool();
 	void initPlayer();
 	void initEnemies();
 
 
 private:
 	GameData* mGameData;
+	EffectPool* mEffectPool;
 	Player* mPlayer;
 	EnemyManager* mEnemies;
 };

@@ -2,6 +2,31 @@
 
 class Actor;
 
+enum class EffectType
+{
+	None,
+	Damage,
+	Count
+};
+
+//inline bool operator <(EffectType a, EffectType b)
+//{
+//	return static_cast<int>(a) < static_cast<int>(b);
+//}
+
+//inline EffectType operator =(EffectType a, EffectType b)
+//{
+//	static_cast<int>(a) = static_cast<int>(b);
+//	return static_cast<int>(a) < static_cast<int>(b);
+//}
+
+template<class T>
+inline EffectType operator +(EffectType a, T b)
+{
+	int sum = static_cast<int>(a) + static_cast<int>(b);
+	return static_cast<EffectType>(sum);
+}
+
 class Effect
 {
 

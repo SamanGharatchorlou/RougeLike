@@ -119,6 +119,10 @@
     <ClCompile Include="Source\Objects\Abilities\AbilityHotKeys.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\EnemyStates\EnemyState.cpp" />
     <ClCompile Include="Source\Objects\Effects\KnockbackStunEffect.cpp" />
+    <ClCompile Include="Source\Objects\Effects\DashEffect.cpp" />
+    <ClCompile Include="Source\Objects\Effects\DisplacementEffect.cpp" />
+    <ClCompile Include="Source\Collisions\EffectCollider.cpp" />
+    <ClCompile Include="Source\Objects\Effects\EffectPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -262,6 +266,10 @@
     <ClInclude Include="Source\Objects\Effects\StunEffect.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityHotKeys.h" />
     <ClInclude Include="Source\Objects\Effects\KnockbackStunEffect.h" />
+    <ClInclude Include="Source\Objects\Effects\DashEffect.h" />
+    <ClInclude Include="Source\Objects\Effects\DisplacementEffect.h" />
+    <ClInclude Include="Source\Collisions\EffectCollider.h" />
+    <ClInclude Include="Source\Objects\Effects\EffectPool.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

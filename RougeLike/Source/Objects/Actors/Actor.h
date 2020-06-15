@@ -5,12 +5,11 @@
 #include "Objects/Effects/EffectHandler.h"
 #include "Events/LocalDispatcher.h"
 
-
-
 struct GameData;
 class Collider;
 class PropertyBag;
 class Property;
+class Map;
 
 
 class Actor
@@ -23,8 +22,6 @@ public:
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
 	void render();
-
-	const GameData* getGameData() const { return mGameData; }
 
 	virtual void setVisibility(bool visibility) { mVisibility = visibility; }
 	void reset();
@@ -51,6 +48,8 @@ public:
 	void updatePhysicsStats();
 
 	// Position
+	const Map*	currentMap() const;
+
 	VectorF		position() const { return mPhysics.rect().Center(); }
 	RectF&		rectRef() { return mPhysics.rectRef(); }
 	RectF		rect() const { return mPhysics.rect(); }

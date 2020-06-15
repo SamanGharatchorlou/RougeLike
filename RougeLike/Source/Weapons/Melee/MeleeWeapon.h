@@ -7,7 +7,7 @@
 #endif
 
 struct MeleeWeaponData;
-class DamageCollider;
+class EffectCollider;
 
 
 class MeleeWeapon : public Weapon
@@ -32,7 +32,12 @@ public:
 	void updateAimDirection(VectorF cursorPosition) override;
 
 
+	//void addEffect(Effect* effect) override;
+	//void clearEffect() override;
+
+
 	// Stats
+	const MeleeWeaponData* getData() const { return mMeleeData; }
 	const float getAngle() const { return getRotation(mDirection); }
 	const float maxSwingAngle() const;
 	const float swingSpeed() const { return mSwingSpeed; }
@@ -42,6 +47,8 @@ public:
 	const std::vector<RectF> getRects() const { return mBlockRects; }
 
 	void flipSide() { mSwingDirection *= -1; }
+
+	std::vector<EffectCollider*> getEffectColliders() const { return mBlockColliders; }
 
 
 private:
@@ -55,7 +62,7 @@ private:
 	const MeleeWeaponData* mMeleeData;
 
 	std::vector<RectF> mBlockRects;
-	std::vector<DamageCollider*> mBlockColliders;
+	std::vector<EffectCollider*> mBlockColliders;
 
 	int mSwingDirection;
 	float mRotationSum;

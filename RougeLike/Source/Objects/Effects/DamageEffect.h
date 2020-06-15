@@ -6,7 +6,8 @@
 class DamageEffect : public Effect
 {
 public:
-	DamageEffect(Damage damage) : mDamage(damage), loopCount(0) { };
+	DamageEffect() { }
+	DamageEffect(Damage damage) : mDamage(damage) { };
 
 	void init() override;
 	void fastUpdate(float dt) override { };
@@ -16,5 +17,4 @@ public:
 
 private:
 	Damage mDamage;
-	int loopCount;
 };

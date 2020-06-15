@@ -5,18 +5,20 @@
 #include "StunEffect.h"
 
 
-KnockbackStunEffect::KnockbackStunEffect(VectorF source, float force, Animator animator, float maxSize)
-	: KnockbackEffect(source, force), mStunAnimator(animator), mMaxStunSize(maxSize)
+KnockbackStunEffect::KnockbackStunEffect
+	(VectorF source, float distance, float force, Animator animator, float maxSize)
+	: DisplacementEffect(source, distance, force), 
+	  mStunAnimator(animator), 
+	  mMaxStunSize(maxSize)
 {
 
 }
 
 
+
 void KnockbackStunEffect::slowUpdate(float dt)
 {
-	KnockbackEffect::slowUpdate(dt);
-
-	VectorF direction = mActor->physics()->position() - mSource;
+	VectorF direction = mActor->position() - mSource;
 	VectorF velocity = direction.normalise() * mForce;
 
 	if (!canMove(velocity, dt))

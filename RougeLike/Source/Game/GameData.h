@@ -10,6 +10,7 @@ class Environment;
 class ScoreManager;
 class CollisionManager;
 class ActorManager;
+class EffectPool;
 
 
 struct GameData
@@ -31,4 +32,5 @@ struct GameData
 	Environment* environment = nullptr;
 
 	ActorManager* actors = nullptr;
+	EffectPool* effectPool = nullptr;
 };

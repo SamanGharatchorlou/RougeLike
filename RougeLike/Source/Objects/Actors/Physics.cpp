@@ -183,7 +183,7 @@ void Physics::applyDrag()
 
 void Physics::facePoint(VectorF point)
 {
-	if (point.x > position().x)		// -->
+	if (point.x > mRect.Center().x)		// -->
 		mFlip = SDL_FLIP_NONE;
 	else							// <--
 		mFlip = SDL_FLIP_HORIZONTAL;

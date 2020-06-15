@@ -11,8 +11,13 @@
 
 #include "Objects/Properties/PropertyBag.h"
 
+#include "Map/Map.h"
+#include "Map/Environment.h"
 
-Actor::Actor(GameData* gameData) : mGameData(gameData), mEffects(this), mVisibility(true) { }
+
+Actor::Actor(GameData* gameData) 
+	: mGameData(gameData), 
+	mEffects(gameData->effectPool, this), mVisibility(true) { }
 
 
 Actor::~Actor()
@@ -47,6 +52,7 @@ void Actor::init(XMLParser& parser)
 	mPhysics.init(getPropertyValue("Force"), getPropertyValue("MaxVelocity"));
 }
 
+
 void Actor::updatePhysicsStats()
 {
 	mPhysics.init(getPropertyValue("Force"), getPropertyValue("MaxVelocity"));
@@ -76,6 +82,7 @@ void Actor::render()
 	mEffects.render();
 }
 
+
 void Actor::reset()
 {
 	mPhysics.reset();
@@ -84,20 +91,24 @@ void Actor::reset()
 	mPropertyBag->resetProperties();
 }
 
+
 float Actor::getPropertyValue(const std::string& property) const 
 { 
 	return mPropertyBag->value(property); 
 }
+
 
 Property* Actor::getProperty(const std::string& property) const
 {
 	return mPropertyBag->get(property);
 }
 
+
 bool Actor::hasProperty(const std::string& property) const
 {
 	return mPropertyBag->contains(property);
 }
+
 
 void Actor::addEffect(Effect* effect)
 {
@@ -108,4 +119,10 @@ void Actor::addEffect(Effect* effect)
 RectF Actor::scaledRect() const 
 { 
 	return mCollider->scaledRect(); 
+}
+
+
+const Map* Actor::currentMap() const
+{
+	return mGameData->environment->map(position());
 }

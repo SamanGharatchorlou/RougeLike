@@ -8,7 +8,9 @@
 
 #include "EnemyPropertyBag.h"
 #include "Map/Environment.h"
+
 #include "Collisions/DamageCollider.h"
+#include "Collisions/EffectCollider.h"
 
 #include "Objects/Actors/ActorManager.h"
 #include "Objects/Actors/Player/Player.h"
@@ -137,27 +139,33 @@ void Enemy::resolveCollisions()
 		// Player weapon hit enemy
 		if (mCollider->getOtherCollider())
 		{
-			const DamageCollider* collider = static_cast<const DamageCollider*>(mCollider->getOtherCollider());
+			EffectCollider* collider = static_cast<EffectCollider*>(mCollider->getOtherCollider());
 
-			// Apply knockback
-			//KnockbackEffect* knockback = new KnockbackEffect(mGameData->actors->player()->position(), collider->knockbackforce());
-			//mEffects.addEffect(knockback);
+			//while (collider->hasEffect())
+			//{
+			//	EffectData* data = collider->popData();
+			//	mEffects.addEffect(data);
+			//}
 
+			//XMLParser parser;
+			//parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, "Stun"));
 
-			XMLParser parser;
-			parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, "Stun"));
+			//AnimationReader reader(mGameData->textureManager, parser);
+			//Animator animator;
+			//reader.initAnimator(animator);
 
-			AnimationReader reader(mGameData->textureManager, parser);
-			Animator animator;
-			reader.initAnimator(animator);
+			//VectorF playerPosition = mGameData->actors->player()->position();
+			//VectorF targetDirection = (position() - playerPosition).normalise();
 
-			KnockbackStunEffect* knockbackStunEffect = new KnockbackStunEffect(mGameData->actors->player()->position(), collider->knockbackforce(), animator, 50.0f );
-			mEffects.addEffect(knockbackStunEffect);
+			//VectorF targetPosition = position() + targetDirection * 1000.0f;
 
-			// Apply damage
-			DamageEffect* damage = new DamageEffect(collider->damage());
-			mEffects.addEffect(damage);
-			//printf("taking damage hp: %f\n", getPropertyValue("Health"));
+			//KnockbackStunEffect* knockbackStunEffect = 
+			//	new KnockbackStunEffect(targetPosition, 20000.0f, collider->knockbackforce(), animator, 50.0f );
+			//mEffects.addEffect(knockbackStunEffect);
+
+			//// Apply damage
+			//DamageEffect* damage = new DamageEffect(collider->damage());
+			//mEffects.addEffect(damage);
 		}
 
 		addState(EnemyState::Hit);
@@ -176,7 +184,7 @@ void Enemy::spawn(EnemyState::Type state, VectorF position)
 
 void Enemy::accellerateTowards(VectorF position)
 {
-	mPhysics.accellerate(position - mPhysics.position());
+	mPhysics.accellerate(position - rect().Center());
 }
 
 
