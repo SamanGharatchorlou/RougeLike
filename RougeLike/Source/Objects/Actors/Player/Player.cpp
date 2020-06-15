@@ -208,6 +208,12 @@ void Player::render()
 }
 
 
+void Player::renderAbilityCircle()
+{
+
+}
+
+
 void Player::userHasControl(bool control)
 {
 	mControlOverride = !control;

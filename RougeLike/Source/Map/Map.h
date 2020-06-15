@@ -43,12 +43,12 @@ public:
 	bool isValidPosition(VectorF position) const;
 
 	// Rendering
+	void renderFloor();
 	void renderLowerLayer();
 	void renderUpperLayer();
 
-private:
-	void renderFloor();
 
+private:
 	void populateTileRects(VectorF offset);
 
 

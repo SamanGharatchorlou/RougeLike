@@ -4,7 +4,6 @@
 
 void XMLParser::parseXML(const std::string& filePath)
 {
-	printf("file path: %s\n", filePath);
 	ASSERT(fs::exists(filePath), "File path %s does not exist, cannot parse xml file\n", filePath.c_str());
 
 	file = new rapidxml::file<>(filePath.c_str());

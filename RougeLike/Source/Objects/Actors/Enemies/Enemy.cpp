@@ -185,10 +185,18 @@ void Enemy::replaceState(EnemyState::Type state)
 	mStateMachine.replaceState(newEnemyState(state, this));
 }
 
+
 void Enemy::addWaitState(float waitTime)
 {
 	if(state() != EnemyState::Dead)
 		mStateMachine.addState(new EnemyWait(this, waitTime));
+}
+
+
+void Enemy::addIdleState(float waitTime)
+{
+	if (state() != EnemyState::Dead)
+		mStateMachine.addState(new EnemyIdle(this, waitTime));
 }
 
 

@@ -35,7 +35,7 @@ void EnemyPatrol::slowUpdate(float dt)
 	// TODO: Set idle for a time?
 	// Enemy cannot be hit while in the wait state
 	if (hasReachedPositionTarget())
-		mEnemy->addState(EnemyState::Wait);
+		mEnemy->addIdleState(1.0f);
 
 	if (canSeeAttackTarget())
 		mEnemy->replaceState(EnemyState::Alert);

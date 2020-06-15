@@ -85,7 +85,7 @@ void EnemyRun::resume()
 // Generate a new path
 void EnemyRun::updatePath()
 {
-	mPath = mAIPathing.findPath(mEnemy->position(), mEnemy->target()->position());
+	mPath = mAIPathing.findPath(mEnemy->position(), mEnemy->target()->rect().BotCenter());
 
 	// No valid path was found, wait a bit then try again 
 	if (mPath.size() == 0)

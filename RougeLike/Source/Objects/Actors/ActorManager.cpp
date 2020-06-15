@@ -14,6 +14,8 @@
 
 #include "Collisions/CollisionManager.h"
 
+#include "Graphics/RenderManager.h"
+
 
 ActorManager::ActorManager(GameData* gameData) : mGameData(gameData)
 {
@@ -125,6 +127,14 @@ void ActorManager::handleEvent(EventData& data)
 	case Event::UpdateAICostMap:
 	{
 		mEnemies->updateAIPathCostMap();
+		break;
+	}
+	case Event::Render:
+	{
+		RenderEvent eventData = static_cast<RenderEvent&>(data);
+
+		RenderPack renderPacket(eventData.mTexture, eventData.mRect, static_cast<RenderLayer>(eventData.mRenderLayer));
+		mGameData->renderManager->AddRenderPacket(renderPacket);
 		break;
 	}
 	default:

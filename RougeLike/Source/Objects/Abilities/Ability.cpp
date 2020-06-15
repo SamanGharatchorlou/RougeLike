@@ -7,6 +7,9 @@
 #include "Map/Map.h"
 #include "Objects/Actors/Player/Player.h"
 
+#include "Events/Events.h"
+#include "Graphics/RenderManager.h"
+
 
 EventPacket Ability::popEvent()
 {
@@ -46,7 +49,11 @@ void AreaAbility::render()
 		RectF rect = RectF(VectorF(), size);
 		rect.SetCenter(position);
 
-		mRangeCircle->render(rect);
+		//mRangeCircle->render(rect);
+
+		RenderEvent* event = new RenderEvent(mRangeCircle, rect, (int)RenderLayer::Floor);
+		EventPacket ep(event);
+		mEvents.push(ep);
 	}
 
 	Ability::render();

@@ -76,6 +76,13 @@ void Environment::nextLevel()
 }
 
 
+void Environment::renderFloor()
+{
+	mEntrace->renderFloor();
+	mPrimaryMap->renderFloor();
+	mExit->renderFloor();
+}
+
 
 void Environment::renderBottomLayer()
 {

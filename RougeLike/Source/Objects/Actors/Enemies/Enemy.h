@@ -42,6 +42,7 @@ public:
 	EnemyState::Type state() const;
 
 	void addWaitState(float waitTime);
+	void addIdleState(float waitTime);
 	 
 	// Map
 	void setMap(AIPathMap* map) { mMap = map; }

@@ -46,6 +46,9 @@ public:
 
 	void userHasControl(bool removeControl);
 
+	// temp
+	void renderAbilityCircle();
+
 
 private:
 	void initPropertBag(const std::string& config);

@@ -6,7 +6,8 @@
 class EnemyIdle : public EnemyState
 {
 public:
-	EnemyIdle(Enemy* enemy) : EnemyState(enemy) { }
+	EnemyIdle(Enemy* enemy);
+	EnemyIdle(Enemy* enemy, float time);
 
 	void init() override;
 	void handleInput() override { }
@@ -17,10 +18,12 @@ public:
 
 	const Type type() const { return Type::Idle; }
 
-private:
 
+private:
 	bool canSeeAttackTarget() const;
 
+
 private:
-	Timer<float> timer;
+	Timer<float> mTimer;
+	float mTime;
 };

@@ -4,11 +4,21 @@
 #include "Objects/Actors/Enemies/Enemy.h"
 
 
+EnemyIdle::EnemyIdle(Enemy* enemy, float time) : EnemyState(enemy), mTime(time)
+{
+	mTimer.start();
+}
+
+
+EnemyIdle::EnemyIdle(Enemy* enemy) : EnemyState(enemy), mTime(1.0f) 
+{
+	mTimer.stop();
+}
+
+
 void EnemyIdle::init()
 {
-	timer.restart();
 	mEnemy->animator().selectAnimation(Action::Idle);
-
 	mEnemy->physics()->setFlip(static_cast<SDL_RendererFlip>(randomNumberBetween(0, 2)));
 }
 
@@ -19,6 +29,9 @@ void EnemyIdle::slowUpdate(float dt)
 
 	if (canSeeAttackTarget())
 		mEnemy->replaceState(EnemyState::Alert);
+
+	if (mTimer.getSeconds() >= mTime)
+		mEnemy->popState();
 }
 
 

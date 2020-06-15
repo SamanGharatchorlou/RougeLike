@@ -20,6 +20,7 @@ public:
 
 	bool canClosePreviousLevel(VectorF playerPosition) const;
 
+	void renderFloor();
 	void renderBottomLayer();
 	void renderTopLayer();
 

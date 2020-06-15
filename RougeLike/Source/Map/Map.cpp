@@ -45,8 +45,6 @@ void Map::close(TextureManager* tm)
 
 void Map::renderLowerLayer()
 {
-	renderFloor();
-
 	Camera* camera = Camera::Get();
 	for (unsigned int x = 0; x < xCount(); x++)
 	{

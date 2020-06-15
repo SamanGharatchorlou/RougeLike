@@ -32,14 +32,14 @@ void Collectables::slowUpdate(float dt)
 	float theta = timer.getSeconds() * 2.0f;
 	float xOscillation = std::sin(theta);
 	float yOscillation = std::cos(theta * 2.0f);
-	VectorF oscillationVector = VectorF(xOscillation, yOscillation) / 2.0f;
+	VectorF oscillationVector = VectorF(xOscillation, yOscillation) * 100.0f;
 
 	std::vector<Collectable*>::iterator iter;
 	for (iter = mCollectables.begin(); iter != mCollectables.end(); )
 	{
 		Collectable* collectable = *iter;
 
-		collectable->move(oscillationVector);
+		collectable->move(oscillationVector * dt);
 
 		if (collectable->pickedUp())
 		{

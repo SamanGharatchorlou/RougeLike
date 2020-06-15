@@ -1,11 +1,13 @@
 #pragma once
 
 #include <string>
+#include "Utilities/Rect.h"
 
 #include "Objects/Attributes/Health.h"
 #include "Objects/Attributes/Armor.h"
 
 class Enemy;
+class Texture;
 
 enum class Event
 {
@@ -35,7 +37,9 @@ enum class Event
 	UpdateAIPathMap,
 	UpdateAICostMap,
 
-	ActivateAreaAttack
+	ActivateAreaAttack,
+
+	Render
 };
 
 
@@ -60,6 +64,15 @@ struct EventPacket
 	}
 
 	EventData* data;
+};
+
+
+struct RenderEvent : public EventData
+{
+	RenderEvent(Texture* texture, RectF rect, int renderLayer) : mTexture(texture), mRect(rect), mRenderLayer(renderLayer) { eventType = Event::Render; }
+	Texture* mTexture;
+	RectF mRect;
+	int mRenderLayer;
 };
 
 

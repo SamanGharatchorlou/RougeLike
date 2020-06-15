@@ -16,6 +16,8 @@ private:
 	void testRightCollisions(const Map* map, float dt);
 	void testBottomCollisions(const Map* map,   float dt);
 
+	RectF wallScaledRect(VectorF translation) const;
+
 
 private:
 	Actor* mActor;
