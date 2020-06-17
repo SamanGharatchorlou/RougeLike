@@ -10,40 +10,40 @@
 void BlinkEffect::init()
 {
 	//mActor->animator().getSpriteTexture()->setAlpha(alphaMin);
-	mActor->setVisibility(false);
+	mReceiver->setVisibility(false);
 
 	// NOTE: This bit only works for a player specific, if you ever need to do this to another object
 	// then change this bit, move it into BlinkAbility perhaps?
-	Player* player = static_cast<Player*>(mActor);
+	Player* player = static_cast<Player*>(mReceiver);
 	player->userHasControl(false);
 }
 
 
 void BlinkEffect::slowUpdate(float dt)
 {
-	VectorF direction = (mTarget - mActor->position()).normalise();
+	VectorF direction = (mTarget - mReceiver->position()).normalise();
 	float speed = 2500.0f;
 
 	float movementStep = distanceSquared(VectorF(), direction * speed * dt);
-	float distanceToTarget = distanceSquared(mActor->position(), mTarget);
+	float distanceToTarget = distanceSquared(mReceiver->position(), mTarget);
 
 	if (distanceToTarget < movementStep)
 	{
-		VectorF finalStep = mTarget - mActor->position();
-		mActor->physics()->move(finalStep / dt, dt);
+		VectorF finalStep = mTarget - mReceiver->position();
+		mReceiver->physics()->move(finalStep / dt, dt);
 		endEffect();
 	}
 	else
-		mActor->physics()->move(direction * speed, dt);
+		mReceiver->physics()->move(direction * speed, dt);
 }
 
 
 void BlinkEffect::exit()
 {
-	mActor->setVisibility(true);
+	mReceiver->setVisibility(true);
 
 	// NOTE: This bit only works for a player specific, if you ever need to do this to another object
 	// then change this bit, move it into BlinkAbility perhaps?
-	Player* player = static_cast<Player*>(mActor);
+	Player* player = static_cast<Player*>(mReceiver);
 	player->userHasControl(true);
 }

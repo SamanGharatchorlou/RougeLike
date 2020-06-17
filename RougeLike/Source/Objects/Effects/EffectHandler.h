@@ -1,20 +1,9 @@
 #pragma once
 
 class EffectPool;
-class Effect;
 class Actor;
 
-//struct EffectData
-//{
-//	EffectType type = EffectType::None;
-//};
-//
-//
-//struct DamageEffectData : EffectData
-//{
-//	DamageEffectData() { type = EffectType::Damage; }
-//	float damage = 100.0f;
-//};
+#include "Effect.h"
 
 
 class EffectHandler
@@ -23,7 +12,7 @@ public:
 	EffectHandler(EffectPool* pool, Actor* actor) : mPool(pool), mActor(actor) { };
 
 	void addEffect(Effect* effect);
-	//void addEffect(EffectData* data);
+	//void addEffect(const EffectData* data);
 
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
@@ -31,13 +20,22 @@ public:
 
 	void clear();
 
+	void addAttackingEffect(EffectType type) { mAttackingEffects.push_back(type); }
+	const std::vector<EffectType> attackingEffects() const { return mAttackingEffects; }
+
+
+	// temp
+	int counter = 0;
 
 private:
 	EffectPool* mPool;
 	Actor* mActor;
+
 	std::vector<Effect*> mEffects;
 
 	bool mDelayedAdd;
 	std::queue<Effect*> mEffectsToAdd;
+
+	std::vector<EffectType> mAttackingEffects;
 };
 

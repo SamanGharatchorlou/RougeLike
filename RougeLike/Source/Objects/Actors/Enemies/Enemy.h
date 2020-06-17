@@ -23,6 +23,7 @@ public:
 
 	// Core
 	void slowUpdate(float dt);
+	void effectLoop() override;
 	void fastUpdate(float dt);
 	void render();
 
@@ -73,4 +74,6 @@ protected:
 	const Actor* mTarget;
 
 	Index mCurrentIndex;
+
+	std::vector<Effect*> mAttackEffects;
 };

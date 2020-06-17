@@ -40,6 +40,7 @@ public:
 	// Core
 	void init() { };
 	void slowUpdate(float dt);
+	void effectLoop();
 	void fastUpdate(float dt);
 	void render();
 

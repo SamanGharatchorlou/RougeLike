@@ -24,11 +24,11 @@ void KnockbackEffect::init()
 
 void KnockbackEffect::fastUpdate(float dt)
 {
-	VectorF direction = mActor->position() - mSource;
+	VectorF direction = mReceiver->position() - mSource;
 	VectorF velocity = direction.normalise() * mForce;
 
 	if (canMove(velocity, dt))
-		mActor->physics()->move(velocity, dt);
+		mReceiver->physics()->move(velocity, dt);
 }
 
 
@@ -47,8 +47,8 @@ void KnockbackEffect::slowUpdate(float dt)
 bool KnockbackEffect::canMove(VectorF velocity, float dt) const
 {
 	Index index;
-	const Map* map = mActor->currentMap();
-	RectF rect = mActor->scaledRect().Translate(velocity * dt);
+	const Map* map = mReceiver->currentMap();
+	RectF rect = mReceiver->scaledRect().Translate(velocity * dt);
 
 	index = map->index(rect.TopLeft());
 	if (!map->isValidIndex(index) || !map->floorCollisionTile(index))

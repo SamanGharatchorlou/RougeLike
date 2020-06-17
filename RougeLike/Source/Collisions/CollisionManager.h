@@ -35,7 +35,7 @@ public:
 	void addAttackers(Tracker id, std::vector<Collider*> attackers);
 	void addDefenders(Tracker id, std::vector<Collider*> defenders);
 
-	void removeDefender(Tracker id, Collider* defender);
+	void removeDefender(Tracker id, const Collider* defender);
 	void removeAllDefenders(Tracker id);
 	void removeAllAttackers(Tracker id);
 

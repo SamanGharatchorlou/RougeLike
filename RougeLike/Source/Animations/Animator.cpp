@@ -37,6 +37,12 @@ Animator::Animation::Animation(AnimationData& data) :
 	mLoops(0) { }
 
 
+void Animator::Animation::reset()
+{
+	mIndex = Index(0, 0);
+	mLoops = 0;
+}
+
 void Animator::Animation::render(RectF rect, SDL_RendererFlip flip) const
 {
 #if _DEBUG
@@ -166,5 +172,17 @@ void Animator::clear()
 	speedFactor = 1.0f;
 	mFrameTime = -1.0f;
 	timer.stop();
-	mRect = nullptr;
+	mRect = nullptr; // TODO: remove
+}
+
+
+void Animator::reset()
+{
+	for (int i = 0; i < mAnimations.size(); i++)
+	{
+		mAnimations[i].reset();
+	}
+
+	speedFactor = 1.0f;
+	timer.stop();
 }

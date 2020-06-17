@@ -42,6 +42,8 @@ public:
 	public:
 		Animation(AnimationData& data);
 
+		void reset();
+
 		void render(RectF rect, SDL_RendererFlip flip) const;
 		void render(RectF rect, SDL_RendererFlip flip, Uint8 alpha);
 
@@ -75,6 +77,7 @@ public:
 	void render(RectF rect, SDL_RendererFlip flip = SDL_FLIP_NONE) const;
 	void render(RectF rect, SDL_RendererFlip flip, Uint8 alpha);
 
+	void reset();
 	void clear();
 
 	Texture* texture() const { return mAnimations[mActiveIndex].texture(); }
@@ -109,5 +112,5 @@ private:
 	float mFrameTime;
 	Timer<float> timer;
 
-	const RectF* mRect;
+	const RectF* mRect; // TODO: remove
 };

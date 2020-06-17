@@ -5,7 +5,6 @@
 class EnemyPropertyBag : public PropertyBag
 {
 private:
-	void fillProperties(ValueMap& valueMap);
 };
 
 

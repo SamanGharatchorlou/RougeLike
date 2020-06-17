@@ -26,8 +26,9 @@ public:
 
 	void init(const std::string& characterConfig);
 	void handleInput();
-	void slowUpdate(float dt);
 	void fastUpdate(float dt);
+	void effectLoop() override;
+	void slowUpdate(float dt);
 	void render();
 
 	void reset();
@@ -46,14 +47,13 @@ public:
 
 	void userHasControl(bool removeControl);
 
-	// temp
-	void renderAbilityCircle();
-
 
 private:
 	void initPropertBag(const std::string& config);
+	void updateProperties();
 
 	void processHit();
+	void updateUI();
 
 	void attack();
 	void updateAttackingWeapon();

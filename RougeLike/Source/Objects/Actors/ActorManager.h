@@ -18,6 +18,7 @@ public:
 	void init();
 	void handleInput();
 	void fastUpdate(float dt);
+	void effectLoop();
 	void slowUpdate(float dt);
 	void render();
 

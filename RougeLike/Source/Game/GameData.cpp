@@ -58,7 +58,7 @@ void GameData::load()
 	collisionManager = new CollisionManager;
 
 	// Effect Pool, must be before actors
-	effectPool = new EffectPool;
+	effectPool = new EffectPool(this);
 
 	// Actors
 	actors = new ActorManager(this);

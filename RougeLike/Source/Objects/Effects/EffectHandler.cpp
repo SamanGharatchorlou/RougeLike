@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "EffectHandler.h"
+#include "EffectPool.h"
 
 #include "Objects/Actors/Actor.h"
 #include "Effect.h"
@@ -12,7 +13,9 @@ void EffectHandler::addEffect(Effect* effect)
 {
 	if (!mDelayedAdd)
 	{
-		effect->set(mActor);
+		effect->setReceiver(mActor);
+		printf("adding new effect %p with actor %p\n", effect, mActor);
+		counter++;
 		effect->init();
 		mEffects.push_back(effect);
 	}
@@ -22,19 +25,18 @@ void EffectHandler::addEffect(Effect* effect)
 	}
 }
 
-//void EffectHandler::addEffect(EffectData* effect)
-//{
+
+//void EffectHandler::addEffect(const EffectData* data)
+//w{
 //	if (!mDelayedAdd)
 //	{
-//		if (effect->type == EffectType::Damage)
-//		{
-//			DamageEffectData* data = static_cast<DamageEffectData*>(effect);
+//		Effect* effect = mPool->getEffect(data->type);
 //
-//			DamageEffect* dmgEffect = new DamageEffect(Damage(data->damage));
-//			dmgEffect->set(mActor);
-//			dmgEffect->init();
-//			mEffects.push_back(dmgEffect);
-//		}
+//		effect->setParentActor(mActor);
+//		effect->fillData(data);
+//		effect->init();
+//
+//		mEffects.push_back(effect);
 //	}
 //	else
 //	{
@@ -45,6 +47,9 @@ void EffectHandler::addEffect(Effect* effect)
 
 void EffectHandler::fastUpdate(float dt)
 {
+	if (counter == 2)
+		printf("pause\n");
+
 	for (Effect* effect : mEffects)
 	{
 		effect->fastUpdate(dt);
@@ -69,6 +74,10 @@ void EffectHandler::slowUpdate(float dt)
 			//delete effect;
 			iter = mEffects.erase(iter);
 
+
+			mPool->returnEffect(effect);
+			printf("returning effect %p back to pool\n", effect);
+			counter--;
 			//printf("remove effect\n");
 		}
 		else

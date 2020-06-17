@@ -12,7 +12,7 @@ public:
 
 	void clearAttackers();
 	void clearDefenders();
-	void removeDefender(Collider* collider);
+	void removeDefender(const Collider* collider);
 
 	virtual void checkCollisions();
 	void resetColliders();

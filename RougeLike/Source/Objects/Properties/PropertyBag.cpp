@@ -49,7 +49,6 @@ bool PropertyBag::contains(const std::string& name) const
 }
 
 
-
 /// --- Private Functions --- ///
 PropertyBag::ValueMap PropertyBag::readValues(XMLParser& parser)
 {
@@ -88,6 +87,11 @@ void PropertyBag::fillProperties(ValueMap& valueMap)
 			{
 				Health* health = new Health(value.first);
 				mProperties[name] = health;
+			}
+			else if (name == "Damage")
+			{
+				Damage* damage = new Damage(value.first);
+				mProperties[name] = damage;
 			}
 			else
 			{

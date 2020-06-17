@@ -2,11 +2,11 @@
 
 #include "Physics.h"
 #include "Animations/Animator.h"
+#include "Collisions/EffectCollider.h"
 #include "Objects/Effects/EffectHandler.h"
 #include "Events/LocalDispatcher.h"
 
 struct GameData;
-class Collider;
 class PropertyBag;
 class Property;
 class Map;
@@ -19,8 +19,9 @@ public:
 	virtual ~Actor();
 
 	void init(XMLParser& parser);
-	void slowUpdate(float dt);
 	void fastUpdate(float dt);
+	virtual void effectLoop() { };
+	void slowUpdate(float dt);
 	void render();
 
 	virtual void setVisibility(bool visibility) { mVisibility = visibility; }
@@ -39,11 +40,12 @@ public:
 	bool hasProperty(const std::string& property) const;
 
 	// Collider
-	Collider* collider() const { return mCollider; }
+	EffectCollider* collider() { return &mCollider; }
+	const EffectCollider* collider() const { return &mCollider; }
 
 	// Systems
 	Animator&	animator() { return mAnimator; }
-	Physics*	physics()	 { return &mPhysics; }
+	Physics*	physics() { return &mPhysics; }
 	const Physics* physics() const { return &mPhysics; }
 	void updatePhysicsStats();
 
@@ -57,14 +59,14 @@ public:
 
 	// Effects
 	void addEffect(Effect* effect);
-
+	void processEffects();
 
 protected:
 	GameData* mGameData;
 
 	PropertyBag* mPropertyBag;
 
-	Collider* mCollider;
+	EffectCollider mCollider;
 
 	Animator mAnimator;
 

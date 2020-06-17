@@ -5,13 +5,17 @@
 #include "Map/Map.h"
 
 
+DisplacementEffect::DisplacementEffect() : mDistance(0.0f), mForce(0.0f), mDistanceTravelled(0.0f) { }
+
 DisplacementEffect::DisplacementEffect(VectorF source, float distance, float force)
 	: mSource(source), mDistance(distance), mForce(force), mDistanceTravelled(0.0f) { }
 
 
 void DisplacementEffect::fastUpdate(float dt)
 {
-	VectorF direction = (mActor->position() - mSource).normalise();
+
+
+	VectorF direction = (mReceiver->position() - mSource).normalise();
 	VectorF velocity = direction * mForce;
 	float movementStep = velocity.magnitudeSquared();
 
@@ -21,9 +25,36 @@ void DisplacementEffect::fastUpdate(float dt)
 	}
 	else if (canMove(velocity, dt))
 	{
-		mActor->physics()->move(velocity, dt);
+		mReceiver->physics()->move(velocity, dt);
 		mDistanceTravelled += movementStep * dt;
 	}
+}
+
+void DisplacementEffect::clearData()
+{
+	mSource = VectorF();
+	mDistance = 0.0f;
+	mForce = 0.0f;
+	mDistanceTravelled = 0.0f;
+
+	printf("clear %p data\n", this);
+
+	Effect::clearData();
+}
+
+
+void DisplacementEffect::fillData(const Actor* distributer)
+{
+	mSource = distributer->position();
+
+	if (hasProperty(distributer, "KnockbackDistance"))
+		mDistance = distributer->getPropertyValue("KnockbackDistance");
+
+
+	if (hasProperty(distributer, "KnockbackForce"))
+		mForce = distributer->getPropertyValue("KnockbackForce");
+
+	mDistanceTravelled = 0.0f;
 }
 
 
@@ -31,8 +62,8 @@ void DisplacementEffect::fastUpdate(float dt)
 bool DisplacementEffect::canMove(VectorF velocity, float dt) const
 {
 	Index index;
-	const Map* map = mActor->currentMap();
-	RectF rect = mActor->scaledRect().Translate(velocity * dt);
+	const Map* map = mReceiver->currentMap();
+	RectF rect = mReceiver->scaledRect().Translate(velocity * dt);
 
 	index = map->index(rect.TopLeft());
 	if (!map->isValidIndex(index) || !map->floorCollisionTile(index))

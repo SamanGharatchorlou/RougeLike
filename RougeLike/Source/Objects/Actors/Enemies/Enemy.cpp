@@ -9,18 +9,22 @@
 #include "EnemyPropertyBag.h"
 #include "Map/Environment.h"
 
-#include "Collisions/DamageCollider.h"
+//
+//#include "Collisions/DamageCollider.h"
 #include "Collisions/EffectCollider.h"
+
+// temp
+#include "Objects/Effects/EffectPool.h"
 
 #include "Objects/Actors/ActorManager.h"
 #include "Objects/Actors/Player/Player.h"
 #include "Objects/Effects/KnockbackEffect.h"
 
+#include "Objects/Effects/DamageEffect.h"
 
 #include "Objects/Effects/KnockbackStunEffect.h"
 #include "Animations/AnimationReader.h"
 
-#include "Objects/Effects/DamageEffect.h"
 
 #include "AI/AIPathMap.h"
 
@@ -48,16 +52,10 @@ void Enemy::init(const std::string& config)
 	propertyBag->readProperties(config);
 	setPropertyBag(propertyBag);
 
-	// Collider	
-	Damage* damage = static_cast<Damage*>(getProperty("Damage"));
-	float knockback = getPropertyValue("KnockbackDistance");
-	mCollider = new DamageCollider(*damage, knockback);
-
 	Actor::init(parser);
-	
-#if _DEBUG
-	mCollider->setName(config);
-#endif
+
+	mEffects.addAttackingEffect(EffectType::Damage);
+	mEffects.addAttackingEffect(EffectType::Displacement);
 }
 
 
@@ -68,6 +66,31 @@ void Enemy::fastUpdate(float dt)
 	mStateMachine.getActiveState().fastUpdate(dt);
 
 	Actor::fastUpdate(dt);
+}
+
+
+void Enemy::effectLoop()
+{
+	if (mCollider.didHit())
+	{
+		const std::vector<EffectType> effects = mEffects.attackingEffects();
+
+		// Make sure no effects are left over
+		while(mCollider.hasEffects())
+		{
+			Effect* effect = mCollider.popEffect();
+			mGameData->effectPool->returnEffect(effect);
+			printf("Returning an effect on the collider when there shouldnt be one, why??\n");
+		}
+
+		// Add effects to collider
+		for (int i = 0; i < effects.size(); i++)
+		{
+			Effect* effect = mGameData->effectPool->getEffect(effects[i]);
+			effect->fillData(this);
+			mCollider.addEffect(effect);
+		}
+	}
 }
 
 
@@ -134,18 +157,12 @@ void Enemy::clear()
 
 void Enemy::resolveCollisions()
 {
-	if (mCollider->gotHit())
+	if (mCollider.gotHit())
 	{
 		// Player weapon hit enemy
-		if (mCollider->getOtherCollider())
+		if (mCollider.getOtherCollider())
 		{
-			EffectCollider* collider = static_cast<EffectCollider*>(mCollider->getOtherCollider());
-
-			//while (collider->hasEffect())
-			//{
-			//	EffectData* data = collider->popData();
-			//	mEffects.addEffect(data);
-			//}
+			processEffects();
 
 			//XMLParser parser;
 			//parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, "Stun"));
@@ -155,7 +172,7 @@ void Enemy::resolveCollisions()
 			//reader.initAnimator(animator);
 
 			//VectorF playerPosition = mGameData->actors->player()->position();
-			//VectorF targetDirection = (position() - playerPosition).normalise();
+			//VectorF targetDirection = (position() - playerPosition).normalise();sd
 
 			//VectorF targetPosition = position() + targetDirection * 1000.0f;
 

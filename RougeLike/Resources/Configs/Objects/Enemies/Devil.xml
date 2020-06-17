@@ -17,7 +17,6 @@
 		<AttackSpeed>1</AttackSpeed>
 		<TackleDistance>2000</TackleDistance>
 		<TackleMovementSpeed>200</TackleMovementSpeed>
-		<KnockbackDistance >200</KnockbackDistance>
 
 		<!-- Patrol -->
 		<SightRange>50000</SightRange>
@@ -28,6 +27,10 @@
 		
 		<!-- Alert -->
 		<AttentionTime>0.5</AttentionTime>
+
+		<!-- Knockback -->
+		<KnockbackForce>200</KnockbackForce>
+		<KnockbackDistance>10000</KnockbackDistance>
 	</Properties>
 
 	<MaxSize>60</MaxSize>

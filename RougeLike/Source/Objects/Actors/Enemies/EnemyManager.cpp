@@ -52,12 +52,18 @@ void EnemyManager::clear()
 
 void EnemyManager::fastUpdate(float dt)
 {
-	if (mActiveEnemies.size() > 0)
+	for (int i = 0; i < mActiveEnemies.size(); i++)
 	{
-		for (auto enemy : mActiveEnemies)
-		{
-			enemy->fastUpdate(dt);
-		}
+		mActiveEnemies[i]->fastUpdate(dt);
+	}
+}
+
+
+void EnemyManager::effectLoop()
+{
+	for (int i = 0; i < mActiveEnemies.size(); i++)
+	{
+		mActiveEnemies[i]->effectLoop();
 	}
 }
 

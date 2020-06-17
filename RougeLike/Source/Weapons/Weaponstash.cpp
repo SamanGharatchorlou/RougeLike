@@ -87,6 +87,7 @@ void WeaponStash::fillMeleeWeaponData(XMLParser& parser, MeleeWeaponData* data)
 	data->swingSpeed = std::stof(properties["SwingSpeed"]);
 	data->swingArc = std::stof(properties["SwingAngle"]);
 	data->knockbackDistance = std::stof(properties["KnockbackDistance"]);
+	data->knockbackForce = std::stof(properties["KnockbackForce"]);
 }
 
 

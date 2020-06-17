@@ -12,6 +12,8 @@
 #include "Managers/ScoreManager.h"
 #include "Collisions/CollisionManager.h"
 
+#include "Objects/Effects/EffectPool.h"
+
 #include "Map/Environment.h"
 #include "Game/Cursor.h"
 #include "Game/Camera.h"
@@ -98,6 +100,8 @@ void GameState::fastUpdate(float dt)
 void GameState::slowUpdate(float dt)
 {
 	mGameData->actors->slowUpdate(dt);
+
+	mGameData->effectPool->slowUpdate();
 
 	mGameData->scoreManager->slowUpdate();
 

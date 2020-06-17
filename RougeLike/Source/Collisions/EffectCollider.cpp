@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "EffectCollider.h"
 
-#include "Objects/Effects/Effect.h"
-
 
 Effect* EffectCollider::popEffect()
 {
@@ -10,3 +8,4 @@ Effect* EffectCollider::popEffect()
 	mEffects.pop();
 	return effect;
 }
+

@@ -22,7 +22,7 @@ void CollisionTracker::addDefenders(std::vector<Collider*> colliders)
 }
 
 
-void CollisionTracker::removeDefender(Collider* collider)
+void CollisionTracker::removeDefender(const Collider* collider)
 {
 	for (std::vector<Collider*>::iterator iter = mDefenders.begin(); iter != mDefenders.end(); iter++)
 	{

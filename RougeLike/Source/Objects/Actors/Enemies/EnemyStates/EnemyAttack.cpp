@@ -4,6 +4,9 @@
 #include "Collisions/Collider.h"
 #include "Objects/Actors/Enemies/Enemy.h"
 
+#include "Objects/Effects/DisplacementEffect.h"
+#include "Objects/Effects/DamageEffect.h"
+
 
 EnemyAttack::EnemyAttack(Enemy* enemy) :
 	EnemyState(enemy),
@@ -19,6 +22,13 @@ void EnemyAttack::init()
 	mStartPosition = mEnemy->position();
 	mAttackPosition = mEnemy->target()->position();
 	mEnemy->physics()->facePoint(mAttackPosition);
+
+
+	//DamageEffectData* damage = new DamageEffectData(mEnemy->getPropertyValue("Damage"));
+	//DisplacementEffectData* displacement = new DisplacementEffectData(mEnemy->position(), mEnemy->getPropertyValue("KnockbackDistance"), mEnemy->getPropertyValue("KnockbackForce"));
+	//
+	//mEnemy->collider()->addEffect(damage);
+	//mEnemy->collider()->addEffect(displacement);
 }
 
 

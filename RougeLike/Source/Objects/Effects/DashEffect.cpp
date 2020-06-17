@@ -10,9 +10,9 @@
 
 void DashEffect::fastUpdate(float dt)
 {
-	float distanceToTarget = distanceSquared(mActor->position(), mTarget);
+	float distanceToTarget = distanceSquared(mReceiver->position(), mTarget);
 
-	VectorF direction = mActor->position();
+	VectorF direction = mReceiver->position();
 	VectorF velocity = direction.normalise() * 1000.0f;
 
 	float movementStep = distanceSquared(VectorF(), velocity);
@@ -20,7 +20,7 @@ void DashEffect::fastUpdate(float dt)
 	if (distanceToTarget < movementStep)
 		endEffect();
 	else if (canMove(velocity, dt))
-		mActor->physics()->move(velocity, dt);
+		mReceiver->physics()->move(velocity, dt);
 }
 
 
@@ -38,8 +38,8 @@ void DashEffect::slowUpdate(float dt)
 bool DashEffect::canMove(VectorF velocity, float dt) const
 {
 	Index index;
-	const Map* map = mActor->currentMap();
-	RectF rect = mActor->scaledRect().Translate(velocity * dt);
+	const Map* map = mReceiver->currentMap();
+	RectF rect = mReceiver->scaledRect().Translate(velocity * dt);
 
 	index = map->index(rect.TopLeft());
 	if (!map->isValidIndex(index) || !map->floorCollisionTile(index))

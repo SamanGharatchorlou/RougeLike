@@ -5,8 +5,11 @@
 #include "StunEffect.h"
 
 
-KnockbackStunEffect::KnockbackStunEffect
-	(VectorF source, float distance, float force, Animator animator, float maxSize)
+
+KnockbackStunEffect::KnockbackStunEffect(Animator animator) : mMaxStunSize(0.0f) { }
+
+
+KnockbackStunEffect::KnockbackStunEffect(VectorF source, float distance, float force, Animator animator, float maxSize)
 	: DisplacementEffect(source, distance, force), 
 	  mStunAnimator(animator), 
 	  mMaxStunSize(maxSize)
@@ -15,16 +18,30 @@ KnockbackStunEffect::KnockbackStunEffect
 }
 
 
+void KnockbackStunEffect::clearData()
+{
+	mStunAnimator.reset();
+	mMaxStunSize = 0.0f;
+
+	DisplacementEffect::clearData();
+}
+
+
+void KnockbackStunEffect::init()
+{
+	mMaxStunSize = mReceiver->rect().Size().x;
+}
+
 
 void KnockbackStunEffect::slowUpdate(float dt)
 {
-	VectorF direction = mActor->position() - mSource;
+	VectorF direction = mReceiver->position() - mSource;
 	VectorF velocity = direction.normalise() * mForce;
 
 	if (!canMove(velocity, dt))
 	{
 		StunEffect* stunEffect = new StunEffect(mStunAnimator, mMaxStunSize);
-		mActor->addEffect(stunEffect);
+		mReceiver->addEffect(stunEffect);
 		endEffect();
 	}
 }

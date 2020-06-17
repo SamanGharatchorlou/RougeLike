@@ -8,7 +8,7 @@
 
 void ArmorEffect::init()
 {
-	Armor* armor = static_cast<Armor*>(mActor->getProperty("Armor"));
+	Armor* armor = static_cast<Armor*>(mReceiver->getProperty("Armor"));
 	armor->increase(mArmor);
 	endEffect();
 }

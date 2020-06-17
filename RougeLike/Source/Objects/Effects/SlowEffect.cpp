@@ -11,15 +11,15 @@ void SlowEffect::init()
 
 	for (int i = 0; i < 4; i++)
 	{
-		Property* property = mActor->getProperty(slowingParameters[i]);
+		Property* property = mReceiver->getProperty(slowingParameters[i]);
 
 		if (property)
 			property->setValue(property->value() * mSlowFactor);
 	}
 
 	
-	mActor->updatePhysicsStats();
-	mActor->animator().setSpeedFactor(mSlowFactor);
+	mReceiver->updatePhysicsStats();
+	mReceiver->animator().setSpeedFactor(mSlowFactor);
 }
 
 
@@ -35,11 +35,11 @@ void SlowEffect::exit()
 
 	for (int i = 0; i < 4; i++)
 	{
-		Property* property = mActor->getProperty(slowingParameters[i]);
+		Property* property = mReceiver->getProperty(slowingParameters[i]);
 
 		if (property)
 			property->setValue(property->value() / mSlowFactor);
 	}
 
-	mActor->physics()->init(mActor->getPropertyValue(slowingParameters[0]), mActor->getPropertyValue(slowingParameters[1]));
+	mReceiver->physics()->init(mReceiver->getPropertyValue(slowingParameters[0]), mReceiver->getPropertyValue(slowingParameters[1]));
 }

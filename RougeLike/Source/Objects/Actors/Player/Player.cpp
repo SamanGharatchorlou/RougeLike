@@ -32,6 +32,7 @@
 #include "Objects/Effects/DamageEffect.h"
 #include "Objects/Effects/DisplacementEffect.h"
 #include "Collisions/EffectCollider.h"
+#include "Objects/Effects/EffectPool.h"
 
 
 Player::Player(GameData* gameData) :
@@ -52,14 +53,10 @@ void Player::init(const std::string& characterConfig)
 	// Properties
 	initPropertBag(characterConfig);
 
-	// Collider
-	mCollider = new Collider;
-
 	Actor::init(parser);
 
-#if _DEBUG
-	mCollider->setName("player");
-#endif
+	//mEffects.addAttackingEffect(EffectType::Damage);
+	mEffects.addAttackingEffect(EffectType::Displacement);
 }
 
 
@@ -112,35 +109,39 @@ void Player::fastUpdate(float dt)
 	mWeapon->setPosition(rect().Center());
 	mWeapon->fastUpdate(dt);
 	mWeapon->updateAimDirection(mGameData->inputManager->cursorPosition());
+ }
+
+
+void Player::effectLoop()
+{
+	// Return any unused effects back into the pool
+	std::vector<EffectCollider*> colliders = mWeapon->getEffectColliders();
+
+	for (int i = 0; i < colliders.size(); i++)
+	{
+		while (colliders[i]->hasEffects())
+		{
+			Effect* effect = colliders[i]->popEffect();
+			mGameData->effectPool->returnEffect(effect);
+		}
+	}
 
 	if (mWeapon->didHit())
 	{
-		std::vector<EffectCollider*> colliders = mWeapon->getEffectColliders();
-
-		for (int i = 0; i < colliders.size(); i++)
+		const std::vector<EffectType> effectTypes = mEffects.attackingEffects();
+		
+		for (int iCol = 0; iCol < colliders.size(); iCol++)
 		{
-			if (!colliders[i]->hasEffect())
+			// Each collider gets it own set of effects
+			for (int iEff = 0; iEff < effectTypes.size(); iEff++)
 			{
-				printf("adding effect\n");
-				const MeleeWeaponData* data = mWeapon->getData();
-
-				DamageEffect* damage = new DamageEffect(data->damage);
-				DisplacementEffect* displacment = new DisplacementEffect(position(), 20000.0f, data->knockbackDistance);
-
-				//DamageEffectData* effectData = new DamageEffectData;
-				//EffectCollider* collider = colliders[i];
-				//collider->addEffect(effectData);
-
-				colliders[i]->addEffect(damage);
-				colliders[i]->addEffect(displacment);
-			}
-			else
-			{
-				// update them
+				Effect* effect = mGameData->effectPool->getEffect(effectTypes[iEff]);
+				effect->fillData(this);
+				colliders[iCol]->addEffect(effect);
 			}
 		}
 	}
- }
+}
 
 
 void Player::slowUpdate(float dt)
@@ -168,8 +169,6 @@ void Player::slowUpdate(float dt)
 }
 
 
-
-
 void Player::reset()
 {
 	tileIndex.zero();
@@ -182,6 +181,7 @@ void Player::loadWeaponStash()
 {
 	weaponStash.load(mGameData->textureManager);
 }
+
 
 void Player::initCollisions()
 {
@@ -199,8 +199,9 @@ void Player::selectCharacter(const std::string& character)
 
 void Player::selectWeapon(const std::string& weaponName)
 {
-	Weapon* wep = weaponStash.getWeapon(weaponName);
-	mWeapon =  static_cast<MeleeWeapon*>(wep);
+	Weapon* weapon = weaponStash.getWeapon(weaponName);
+	mWeapon =  static_cast<MeleeWeapon*>(weapon);
+	updateProperties();
 
 	if (mPhysics.flip() == SDL_FLIP_HORIZONTAL)
 	{
@@ -213,20 +214,14 @@ void Player::selectWeapon(const std::string& weaponName)
 
 	mGameData->collisionManager->removeAllAttackers(CollisionManager::PlayerWeapon_Hit_Enemy);
 	mGameData->collisionManager->addAttackers(CollisionManager::PlayerWeapon_Hit_Enemy, mWeapon->getColliders());
+}
 
-
-	std::vector<EffectCollider*> colliders = mWeapon->getEffectColliders();
-	for (int i = 0; i < colliders.size(); i++)
-	{
-		if (!colliders[i]->hasEffect())
-		{
-			printf("adding effect\n");
-			const MeleeWeaponData* data = mWeapon->getData();
-
-			DamageEffect* damage = new DamageEffect(data->damage);
-			DisplacementEffect* displacment = new DisplacementEffect(position(), 20000.0f, data->knockbackDistance);
-		}
-	} 
+void Player::updateProperties()
+{
+	const MeleeWeaponData* data = mWeapon->getData();
+	mPropertyBag->get("Damage")->setValue(data->damage.value());
+	mPropertyBag->get("KnockbackDistance")->setValue(data->knockbackDistance);
+	mPropertyBag->get("KnockbackForce")->setValue(data->knockbackForce);
 }
 
 
@@ -254,12 +249,6 @@ void Player::render()
 }
 
 
-void Player::renderAbilityCircle()
-{
-
-}
-
-
 void Player::userHasControl(bool control)
 {
 	mControlOverride = !control;
@@ -267,7 +256,6 @@ void Player::userHasControl(bool control)
 	if (mWeapon)
 		mWeapon->overrideCursorControl(!control);
 }
-
 
 
 // --- Private Functions --- //
@@ -283,12 +271,18 @@ void Player::initPropertBag(const std::string& config)
 
 
 void Player::processHit()
+{ 
+	processEffects();
+
+	TraumaEvent* trauma = new TraumaEvent(40);
+	pushEvent(EventPacket(trauma));
+
+	updateUI();
+}
+
+
+void Player::updateUI()
 {
-	// Take damage
-	const DamageCollider* damageCollider = static_cast<const DamageCollider*>(collider()->getOtherCollider());
-
-	mEffects.addEffect(new DamageEffect(damageCollider->damage()));
-
 	// Update UI
 	Health* hp = static_cast<Health*>(getProperty("Health"));
 	SetHealthBarEvent* hpPtr = new SetHealthBarEvent(*hp);
@@ -297,12 +291,6 @@ void Player::processHit()
 	Armor* armor = static_cast<Armor*>(getProperty("Armor"));
 	SetArmorBarEvent* armorPtr = new SetArmorBarEvent(*armor);
 	pushEvent(EventPacket(armorPtr));
-
-	// Apply knockback
-	mEffects.addEffect(new KnockbackEffect(damageCollider));
-
-	TraumaEvent* trauma = new TraumaEvent(40);
-	pushEvent(EventPacket(trauma));
 }
 
 

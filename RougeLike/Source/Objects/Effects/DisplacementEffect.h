@@ -6,16 +6,19 @@
 class DisplacementEffect : public Effect
 {
 public:
+	DisplacementEffect();
 	DisplacementEffect(VectorF source, float distance, float force);
 	virtual ~DisplacementEffect() { }
 
-	void setSource(VectorF source) { mSource = source; }
+	virtual void fillData(const Actor* distributer) override;
+	void clearData();
 
 	virtual void init() override { };
 	virtual void fastUpdate(float dt) override;
 	virtual void slowUpdate(float dt) override { };
 	void render() override { };
-	void exit() override { };
+
+	EffectType type() const override { return EffectType::Displacement; }
 
 
 protected:

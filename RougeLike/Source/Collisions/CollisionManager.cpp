@@ -91,7 +91,7 @@ void CollisionManager::addDefenders(Tracker id, std::vector<Collider*> defenders
 }
 
 
-void CollisionManager::removeDefender(Tracker id, Collider* defender)
+void CollisionManager::removeDefender(Tracker id, const Collider* defender)
 {
 	CollisionTracker* tracker = getTracker(id);
 

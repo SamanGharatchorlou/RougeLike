@@ -123,6 +123,7 @@
     <ClCompile Include="Source\Objects\Effects\DisplacementEffect.cpp" />
     <ClCompile Include="Source\Collisions\EffectCollider.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectPool.cpp" />
+    <ClCompile Include="Source\Objects\Effects\Effect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />

@@ -2,7 +2,7 @@
 #include "Actor.h"
 
 #include "Game/GameData.h"
-#include "Collisions/Collider.h"
+#include "Collisions/EffectCollider.h"
 #include "Graphics/Texture.h"
 #include "Graphics/TextureManager.h"
 
@@ -23,7 +23,6 @@ Actor::Actor(GameData* gameData)
 Actor::~Actor()
 {
 	delete mPropertyBag;
-	delete mCollider;
 }
 
 
@@ -41,11 +40,14 @@ void Actor::init(XMLParser& parser)
 	mPhysics.setRect(RectF(VectorF(), size));
 
 	// Collider
-	ASSERT(Warning, mCollider != nullptr, "Collider must be created before being set\n");
 	Attributes attributes = parser.attributes(parser.rootNode()->first_node("ColliderScale"));
 	float x = attributes.getFloat("x");
 	float y = attributes.getFloat("y");
-	mCollider->init(&mPhysics.rectRef(), VectorF(x, y));
+	mCollider.init(&mPhysics.rectRef(), VectorF(x, y));
+
+#if _DEBUG
+	mCollider.setName(FileManager::Get()->getItemName(parser.path));
+#endif
 
 	// Properties
 	ASSERT(Warning, mPropertyBag != nullptr, "The property bag has not been set yet\n");
@@ -116,9 +118,23 @@ void Actor::addEffect(Effect* effect)
 }
 
 
+void Actor::processEffects()
+{
+	EffectCollider* effectCollider = static_cast<EffectCollider*>(mCollider.getOtherCollider());
+
+	while (effectCollider->hasEffects())
+	{
+		if (mEffects.counter == 1)
+			printf("Wait");
+
+		mEffects.addEffect(effectCollider->popEffect());
+	}
+}
+
+
 RectF Actor::scaledRect() const 
 { 
-	return mCollider->scaledRect(); 
+	return mCollider.scaledRect(); 
 }
 
 

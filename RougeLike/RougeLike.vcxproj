@@ -48,6 +48,7 @@
     <ClCompile Include="Source\Objects\Effects\DamageEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\DashEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\DisplacementEffect.cpp" />
+    <ClCompile Include="Source\Objects\Effects\Effect.cpp" />
     <ClCompile Include="Source\Objects\Effects\HealEffect.cpp" />
     <ClCompile Include="Source\Objects\Actors\Physics.cpp" />
     <ClCompile Include="Source\Objects\Attributes\StatManager.cpp" />
