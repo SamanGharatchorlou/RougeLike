@@ -7,14 +7,47 @@
 
 DisplacementEffect::DisplacementEffect() : mDistance(0.0f), mForce(0.0f), mDistanceTravelled(0.0f) { }
 
-DisplacementEffect::DisplacementEffect(VectorF source, float distance, float force)
-	: mSource(source), mDistance(distance), mForce(force), mDistanceTravelled(0.0f) { }
+
+void DisplacementEffect::set(VectorF source, float force, float distance)
+{
+	mSource = source;
+	mForce = force;
+	mDistance = distance;
+}
+
+
+void DisplacementEffect::fillData(const EffectPropertyBag* properties)
+{
+	if (properties->contains("TargetPositionX"))
+	{
+		Property* property = properties->get("TargetPositionX");
+		mSource.x = property->value();
+	}
+
+	if (properties->contains("TargetPositionY"))
+	{
+		Property* property = properties->get("TargetPositionY");
+		mSource.y = property->value();
+	}
+
+	if (properties->contains("KnockbackDistance"))
+	{
+		Property* property = properties->get("KnockbackDistance");
+		mDistance = property->value();
+	}
+
+	if (properties->contains("KnockbackForce"))
+	{
+		Property* property = properties->get("KnockbackForce");
+		mForce = property->value();
+	}
+
+	mDistanceTravelled = 0.0f;
+}
 
 
 void DisplacementEffect::fastUpdate(float dt)
 {
-
-
 	VectorF direction = (mReceiver->position() - mSource).normalise();
 	VectorF velocity = direction * mForce;
 	float movementStep = velocity.magnitudeSquared();
@@ -30,30 +63,14 @@ void DisplacementEffect::fastUpdate(float dt)
 	}
 }
 
+
 void DisplacementEffect::clearData()
 {
+	clearBaseData();
+
 	mSource = VectorF();
 	mDistance = 0.0f;
 	mForce = 0.0f;
-	mDistanceTravelled = 0.0f;
-
-	printf("clear %p data\n", this);
-
-	Effect::clearData();
-}
-
-
-void DisplacementEffect::fillData(const Actor* distributer)
-{
-	mSource = distributer->position();
-
-	if (hasProperty(distributer, "KnockbackDistance"))
-		mDistance = distributer->getPropertyValue("KnockbackDistance");
-
-
-	if (hasProperty(distributer, "KnockbackForce"))
-		mForce = distributer->getPropertyValue("KnockbackForce");
-
 	mDistanceTravelled = 0.0f;
 }
 

@@ -1,17 +1,17 @@
 #include "pch.h"
 #include "ArmorAbility.h"
 
-#include "Objects/Actors/Player/Player.h"
-#include "Objects/Properties/PropertyBag.h"
 #include "Objects/Effects/ArmorEffect.h"
+#include "Objects/Effects/EffectPool.h"
 
 #include "Animations/Animator.h"
-#include "Game/Camera.h"
+#include "Objects/Actors/Player/Player.h"
+#include "Objects/Properties/PropertyBag.h"
 
 
 void ArmorAbility::fillValues(ValueMap& values)
 {
-	mArmor = std::stof(values["Armor"]);
+	mArmor = Armor(std::stof(values["Armor"]));
 	mMaxDimention = std::stof(values["MaxSize"]);
 	mCooldownTime = std::stof(values["Cooldown"]);
 }
@@ -20,7 +20,7 @@ void ArmorAbility::fillValues(ValueMap& values)
 void ArmorAbility::slowUpdate(float dt)
 {
 	mAnimator.slowUpdate(dt);
-	mRect.SetCenter(mPlayer->position());
+	mRect.SetCenter(mPlayer->position()); // TODO: Can i remove the mPlayer from ability.h ? this is set on activate...
 
 	// Completed x animation loops
 	if (mAnimator.loops() > 4)
@@ -31,11 +31,14 @@ void ArmorAbility::slowUpdate(float dt)
 }
 
 
-void ArmorAbility::activate(Actor* actor)
+void ArmorAbility::activate(Actor* actor, EffectPool* effectPool)
 {
-	ArmorEffect* armorEffect = new ArmorEffect(mArmor);
-	mPlayer->addEffect(armorEffect);
+	Effect* effect = effectPool->getEffect(EffectType::Armor);
+	ArmorEffect* armorEffect = static_cast<ArmorEffect*>(effect);
+	armorEffect->set(mArmor);
+	actor->addEffect(effect);
 
+	// TODO: move this to somewhere else
 	Armor* armor = static_cast<Armor*>(mPlayer->getProperty("Armor"));
 	SetArmorBarEvent* dataPtr = new SetArmorBarEvent(*armor);
 	mEvents.push(EventPacket(dataPtr));

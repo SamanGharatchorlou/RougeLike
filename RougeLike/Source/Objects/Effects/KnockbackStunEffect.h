@@ -3,19 +3,21 @@
 #include "DisplacementEffect.h"
 #include "Animations/Animator.h"
 
+class StunEffect;
+
 
 class KnockbackStunEffect : public DisplacementEffect
 {
 public:
-	KnockbackStunEffect(Animator animator);
-	KnockbackStunEffect(VectorF source, float distance, float force, Animator animator, float maxSize);
+	KnockbackStunEffect(StunEffect* stunEffect) : mStunEffect(stunEffect) { };
 
+	void fillData(const EffectPropertyBag* properties) override;
 	void clearData();
 
-	void init() override;
 	void slowUpdate(float dt) override;
 
+	EffectType type() const override { return EffectType::KnockbackStun; }
+
 private:
-	Animator mStunAnimator;
-	float mMaxStunSize;
+	StunEffect* mStunEffect;
 };

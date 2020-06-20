@@ -12,7 +12,9 @@ public:
 	Health(float maxHealth) : maxHp(maxHealth), hp(maxHealth) { }
 	Health(float health, float maxHealth) : maxHp(maxHealth), hp(health) { }
 
-	void increase(float health) { hp = clamp(hp + health, 0.0f, maxHp); }
+	void init(float health) override { maxHp = health; hp = health; }
+
+	void increase(Health health) { hp = clamp(hp + health.value(), 0.0f, maxHp); }
 	void reduce(Damage damage) { hp = clamp(hp - damage.value(), 0.0f, maxHp); }
 
 	void setValue(float health) { hp = health; }

@@ -137,7 +137,8 @@ void AbilityManager::handleEvents(Ability* ability)
 
 		if (event.data->eventType == Event::ActivateAreaAttack)
 		{
-			activateOnArea(ability);
+			AreaAbility* areaAbility = static_cast<AreaAbility*>(ability);
+			activateOnArea(areaAbility);
 			event.free();
 		}
 		else
@@ -213,11 +214,7 @@ Ability* AbilityManager::createNewAbility(const std::string& name)
 
 	Ability* ability = nullptr;
 
-	if (name == "Slow")
-	{
-		ability = new SlowAbility;
-	}
-	else if (name == "Heal")
+	if (name == "Heal")
 	{
 		ability = new HealAbility;
 	}
@@ -235,18 +232,11 @@ Ability* AbilityManager::createNewAbility(const std::string& name)
 	}
 	else if (name == "Smash")
 	{
-		// Build stun animator
-		XMLParser parser;
-		parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, values["Stun"]));
-
-		AnimationReader reader(mGameData->textureManager, parser);
-		Animator animator;
-		reader.initAnimator(animator);
 
 		Texture* texture = mGameData->textureManager->getTexture(values["HammerTexture"], FileManager::Image_Weapons);
 		VectorF size = realiseSize(texture->originalDimentions, std::stof(values["HammerMaxSize"]));
 
-		ability = new SmashAbility(texture, size, animator);
+		ability = new SmashAbility(texture, size);
 	}
 
 	if (ability)
@@ -368,9 +358,8 @@ void AbilityManager::sendSetTextColourEvent(Ability* ability, Colour colour)
 
 void AbilityManager::attemptActivationOnSelf(Ability* ability)
 {
-	//ability->setState(Ability::Activating);
 	setState(ability, Ability::Activating);
-	ability->activate(nullptr);
+	ability->activate(mGameData->actors->player(), mGameData->effectPool);
 }
 
 void AbilityManager::attemptActivationOnSingleEnemy(Ability* ability)
@@ -388,7 +377,7 @@ void AbilityManager::attemptActivationOnSingleEnemy(Ability* ability)
 			{
 				//ability->setState(Ability::Activating);
 				setState(ability, Ability::Activating);
-				ability->activate(enemies[i]);
+				ability->activate(enemies[i], mGameData->effectPool);
 				break;
 			}
 		}
@@ -411,17 +400,15 @@ void AbilityManager::attemptActivationOnArea(Ability* ability)
 		if (areaAbility->isValidTarget(cursorPosition, map))
 		{
 			areaAbility->activate(cursorPosition);
-			activateOnArea(ability);
+			activateOnArea(areaAbility);
+
+			setState(areaAbility, Ability::Activating);
 		}
 	}
 }
 
-void AbilityManager::activateOnArea(Ability* ability)
+void AbilityManager::activateOnArea(AreaAbility* areaAbility)
 {
-	//ability->setState(Ability::Activating);
-	setState(ability, Ability::Activating);
-
-	AreaAbility* areaAbility = static_cast<AreaAbility*>(ability);
 	Collider abilityCollider = areaAbility->collider();
 
 	// Apply effect to all enemies caught in area
@@ -431,7 +418,7 @@ void AbilityManager::activateOnArea(Ability* ability)
 		Collider* enemyCollider = enemies[i]->collider();
 		if (enemyCollider->doesIntersect(&abilityCollider))
 		{
-			ability->activate(enemies[i]);
+			areaAbility->activate(enemies[i], mGameData->effectPool);
 		}
 	}
 }
@@ -453,9 +440,9 @@ void AbilityManager::attemptActivationOnPoint(Ability* ability)
 		{
 			// Apply effect
 			areaAbility->activate(cursorPosition);
-			ability->activate(nullptr);
-			//ability->setState(Ability::Activating);
-			setState(ability, Ability::Activating);
+			areaAbility->activate(mGameData->actors->player(), mGameData->effectPool);
+
+			setState(areaAbility, Ability::Activating);
 		}
 	}
 }

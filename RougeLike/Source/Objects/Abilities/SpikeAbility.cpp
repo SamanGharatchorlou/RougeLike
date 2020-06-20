@@ -1,21 +1,21 @@
 #include "pch.h"
 #include "SpikeAbility.h"
 
-#include "Objects/Actors/Actor.h"
-
-#include "Graphics/Texture.h"
-#include "Animations/Animator.h"
-#include "Game/Camera.h"
-
-#include "Objects/Properties/Property.h"
-#include "Objects/Effects/KnockbackEffect.h"
+#include "Objects/Effects/DisplacementEffect.h"
 #include "Objects/Effects/DamageEffect.h"
+#include "Objects/Effects/EffectPool.h"
+
+#include "Objects/Actors/Player/Player.h"
+
+#include "Animations/Animator.h"
 
 
 void SpikeAbility::fillValues(ValueMap& values)
 {
 	mDamage = Damage(std::stof(values["Damage"]));
-	mForce = std::stof(values["Force"]);
+	mKnockbackForce = std::stof(values["KnockbackForce"]);
+	mKnockbackDistance = std::stof(values["KnockbackDistance"]);
+
 	mMaxDimention = std::stof(values["MaxSize"]);
 	mRange = std::stof(values["Range"]);
 	mCooldownTime = std::stof(values["Cooldown"]);
@@ -24,17 +24,22 @@ void SpikeAbility::fillValues(ValueMap& values)
 
 void SpikeAbility::activate(VectorF position)
 {
-	mRect.SetBotCenter(position);
+	mSource = position;
+	mRect.SetBotCenter(mSource);
 	mAnimator.startAnimation(Action::Active);
 }
 
 
-void SpikeAbility::activate(Actor* actor)
+void SpikeAbility::activate(Actor* actor, EffectPool* effectPool)
 {
-	KnockbackEffect* knockback = new KnockbackEffect(mRect.Center(), mForce);
-	actor->addEffect(knockback);
+	Effect* displacement = effectPool->getEffect(EffectType::Displacement);
+	DisplacementEffect* displaceEffect = static_cast<DisplacementEffect*>(displacement);
+	displaceEffect->set(mSource, mKnockbackForce, mKnockbackDistance);
+	actor->addEffect(displacement);
 
-	DamageEffect* damage = new DamageEffect(mDamage);
+	Effect* damage = effectPool->getEffect(EffectType::Damage);
+	DamageEffect* damageEffect = static_cast<DamageEffect*>(damage);
+	damageEffect->set(mDamage);
 	actor->addEffect(damage);
 
 	beginCooldown();

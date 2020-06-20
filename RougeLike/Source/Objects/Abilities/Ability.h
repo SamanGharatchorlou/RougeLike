@@ -9,6 +9,7 @@
 class Actor;
 class Map;
 class Player;
+class EffectPool;
 
 
 class Ability
@@ -42,26 +43,25 @@ public:
 	virtual void fillValues(ValueMap& values) = 0;
 	virtual void init(Animator animator, Player* player);
 	
-	virtual void activate(Actor* target) = 0;
+	virtual void activate(Actor* target, EffectPool* pool) = 0;
 	virtual void slowUpdate(float dt) = 0;
 	virtual void render();
-	virtual void exit() { mCooldownTimer.stop(); };
+	virtual void exit();
 
 	virtual const TargetType targetType() const = 0;
 
 	void setName(const std::string& name) { mName = name; }
 	std::string name() const { return mName; }
 
-	void setState(State state) { mState = state; }
-	State state() const { return mState; }
+	void setState(State state)	{ mState = state; }
+	void endAbility()			{ setState(Ability::Finished); }
+	State state() const			{ return mState; }
 
 	bool hasEvent() const { return mEvents.size() > 0; }
 	EventPacket popEvent();
 
 	void beginCooldown() { mCooldownTimer.restart(); }
 	bool hasCooledDown() { return mCooldownTimer.getSeconds() > mCooldownTime; }
-
-	void endAbility() { setState(Ability::Finished); }
 
 
 protected:
@@ -87,6 +87,7 @@ public:
 	
 	void setRangeCircle(Texture* rangeCircle) { mRangeCircle = rangeCircle; }
 
+	virtual void activate(Actor* target, EffectPool* pool) = 0;
 	virtual void activate(VectorF position) = 0;
 	virtual void render() override;
 

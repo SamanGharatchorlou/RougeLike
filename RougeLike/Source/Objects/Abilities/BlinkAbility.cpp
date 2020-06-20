@@ -1,16 +1,13 @@
 #include "pch.h"
 #include "BilnkAbility.h"
 
-#include "Objects/Actors/Player/Player.h"
-#include "Objects/Actors/Actor.h"
-
-#include "Graphics/Texture.h"
-#include "Animations/Animator.h"
-#include "Game/Camera.h"
-
 #include "Objects/Effects/BlinkEffect.h"
+#include "Objects/Effects/EffectPool.h"
 
-#include "Map/Map.h"
+#include "Objects/Actors/Player/Player.h"
+
+#include "Animations/Animator.h"
+
 
 
 void BlinkAbility::fillValues(ValueMap& values)
@@ -23,17 +20,21 @@ void BlinkAbility::fillValues(ValueMap& values)
 
 void BlinkAbility::activate(VectorF position)
 {
-	mRect.SetSize(realiseSize(mAnimator.frameSize(), mMaxDimention));
-	mRect.SetCenter(position);
 	mTargetPosition = position;
+
+	mRect.SetSize(realiseSize(mAnimator.frameSize(), mMaxDimention));
+	mRect.SetCenter(mTargetPosition);
 	mAnimator.startAnimation(Action::Active);
 }
 
 
-void BlinkAbility::activate(Actor* actor)
+void BlinkAbility::activate(Actor* actor, EffectPool* effectPool)
 {
-	BlinkEffect* blink = new BlinkEffect(mTargetPosition);
-	mPlayer->addEffect(blink);
+	Effect* effect = effectPool->getEffect(EffectType::Blink);
+	BlinkEffect* blinkEffect = static_cast<BlinkEffect*>(effect);
+	blinkEffect->set(mTargetPosition);
+	actor->addEffect(effect);
+
 	beginCooldown();
 }
 

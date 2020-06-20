@@ -11,8 +11,7 @@
 		<HammerMaxSize>50</HammerMaxSize>
 		<HammerFallSpeed>750</HammerFallSpeed>
 
-		<Stun>Stun</Stun>
-		<StunMaxSize>50</StunMaxSize>
+		<StunTime>5</StunTime>
 	</Properties>
 
 	<Icon>SmashIcon</Icon>

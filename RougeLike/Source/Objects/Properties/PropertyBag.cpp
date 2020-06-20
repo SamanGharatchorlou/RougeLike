@@ -1,7 +1,10 @@
 #include "pch.h"
 #include "PropertyBag.h"
 
+#include "Objects/Attributes/Level.h"
 #include "Objects/Attributes/Health.h"
+#include "Objects/Attributes/Damage.h"
+#include "Objects/Attributes/Armor.h"
 
 
 void PropertyBag::readProperties(const std::string& config)
@@ -49,22 +52,23 @@ bool PropertyBag::contains(const std::string& name) const
 }
 
 
-/// --- Private Functions --- ///
+// --- Private Functions --- //
+
+
+// Pull raw config data from file into code
 PropertyBag::ValueMap PropertyBag::readValues(XMLParser& parser)
 {
-	ValueMap valueMap;
-	float value = 0.0f;
-
 	xmlNode propertyNode = parser.rootNode()->first_node("Properties");
 	xmlNode node = propertyNode->first_node();
+
+	ValueMap valueMap;
 
 	while (node != nullptr)
 	{
 		std::string name = node->name();
 		float nodeValue = std::stof(node->value());
-		bool hasBeenRead = false;
 
-		valueMap[name] = Value(nodeValue, hasBeenRead);
+		valueMap[name] = nodeValue;
 
 		node = node->next_sibling();
 	}
@@ -77,27 +81,82 @@ void PropertyBag::fillProperties(ValueMap& valueMap)
 {
 	for (ValueMap::iterator iter = valueMap.begin(); iter != valueMap.end(); iter++)
 	{
-		Value value = iter->second;
+		std::string name = iter->first;
+		float value = iter->second;
 
-		if (value.second == false)
-		{
-			std::string name = iter->first;
+		Property* property = getNewProperty(name);
+		property->init(value);
+		mProperties[name] = property;
+	}
+}
 
-			if (name == "Health")
-			{
-				Health* health = new Health(value.first);
-				mProperties[name] = health;
-			}
-			else if (name == "Damage")
-			{
-				Damage* damage = new Damage(value.first);
-				mProperties[name] = damage;
-			}
-			else
-			{
-				PropertyValue* property = new PropertyValue(value.first);
-				mProperties[name] = property;
-			}
-		}
+
+Property* PropertyBag::getNewProperty(const std::string& name)
+{
+	Property* property = nullptr;
+
+	if (name == "Health")
+	{
+		property = new Health;
+	}
+	else if (name == "Damage")
+	{
+		property = new Damage;
+	}
+	else if (name == "Armor")
+	{
+		property = new Armor;
+	}
+	else if (name == "Level")
+	{
+		property = new Level;
+	}
+	else
+	{
+		property = new PropertyValue;
+	}
+
+	return property;
+}
+
+
+
+// Effect stuff
+
+PropertyBag::ValueMap EffectPropertyBag::readValues(XMLParser& parser)
+{
+	xmlNode propertyNode = parser.rootNode()->first_node("Effects");
+	xmlNode node = propertyNode->first_node();
+
+	ValueMap valueMap;
+
+	while (node != nullptr)
+	{
+		std::string name = node->name();
+		float nodeValue = std::stof(node->value());
+
+		valueMap[name] = nodeValue;
+
+		node = node->next_sibling();
+	}
+
+	return valueMap;
+}
+
+
+
+void EffectPropertyBag::setProperty(const std::string& name, float /* Property*? */ value)
+{
+	if (contains(name))
+	{
+		Property* property = get(name);
+		//TODO: should this be init?
+		property->setValue(value);
+	}
+	else
+	{
+		Property* property = getNewProperty(name);
+		property->init(value);
+		mProperties[name] = property;
 	}
 }

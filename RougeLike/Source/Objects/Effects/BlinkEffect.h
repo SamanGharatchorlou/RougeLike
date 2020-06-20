@@ -5,7 +5,12 @@
 class BlinkEffect : public Effect
 {
 public:
-	BlinkEffect(VectorF target) : mTarget(target) { };
+	BlinkEffect() { };
+
+	void set(VectorF target) { mTarget = target; }
+
+	void fillData(const EffectPropertyBag* properties) override;
+	void clearData() override;
 
 	void init() override;
 	void fastUpdate(float dt) override { };
@@ -13,6 +18,7 @@ public:
 	void render() override { }
 	void exit() override;
 
+	EffectType type() const override { return EffectType::Blink; }
 
 private:
 	VectorF mTarget;

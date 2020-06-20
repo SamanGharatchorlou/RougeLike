@@ -43,7 +43,7 @@ public:
 
 	void addAbility(const std::string& name);
 
-	StatManager& statManager() { return mStatManager; }
+	//StatManager& statManager() { return mStatManager; }
 
 	void userHasControl(bool removeControl);
 
@@ -68,7 +68,7 @@ private:
 
 	AbilityManager mAbilities;
 
-	StatManager mStatManager;
+	//StatManager mStatManager;
 	WeaponStash weaponStash;
 
 	Vector2D<int> tileIndex;

@@ -10,7 +10,7 @@
 #include "Events/Events.h"
 #include "Graphics/RenderManager.h"
 
-
+// --- Ability --- //
 EventPacket Ability::popEvent()
 {
 	ASSERT(Error, mEvents.size() > 0, "Ability has no event when attempting to pop one.\n");
@@ -28,16 +28,25 @@ void Ability::init(Animator animator, Player* player)
 }
 
 
+void Ability::exit()
+{
+	mAnimator.reset();
+	mCooldownTimer.stop();
+}
+
+
 void Ability::render()
 {
 	if (mState == Running)
 	{
 		RectF rect = Camera::Get()->toCameraCoords(mRect);
 		mAnimator.render(rect);
+		printf("rendering rect at %f, %f\n", rect.Center().x, rect.Center().y);
 	}
 }
 
 
+// --- AreaAbility --- //
 void AreaAbility::render()
 {
 	// Range circle

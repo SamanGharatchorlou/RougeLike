@@ -8,12 +8,12 @@ class Texture;
 class SmashAbility : public AreaAbility
 {
 public:
-	SmashAbility(Texture* hammerTexture, VectorF hammerSize, Animator stun);
+	SmashAbility(Texture* hammerTexture, VectorF hammerSize);
 
 	void fillValues(ValueMap& values) override;
 
 	void activate(VectorF position) override;
-	void activate(Actor* actor) override;
+	void activate(Actor* actor, EffectPool* effectPool) override;
 	void slowUpdate(float dt) override;
 	void render() override;
 	void exit() override;
@@ -29,12 +29,11 @@ private:
 	bool requestedActivate;
 
 	Damage mDamage;
+	float mTime;
+
 	bool mAppliedDamage;
 
 	Texture* mHammerTexture;
 	RectF mHammerRect;
 	float mFallSpeed;
-
-	Animator mStunAnimator;
-	float mStunMaxSize;
 };

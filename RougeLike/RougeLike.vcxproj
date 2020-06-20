@@ -53,12 +53,10 @@
     <ClCompile Include="Source\Objects\Actors\Physics.cpp" />
     <ClCompile Include="Source\Objects\Attributes\StatManager.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectHandler.cpp" />
-    <ClCompile Include="Source\Objects\Effects\KnockbackEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\KnockbackStunEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\SlowEffect.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\EnemyManager.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\Enemy.cpp" />
-    <ClCompile Include="Source\Objects\Actors\Enemies\EnemyPropertyBag.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\EnemyStates\EnemyPreAttack.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\EnemyStates\EnemyWait.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\Spawning\EnemySpawner.cpp" />
@@ -88,7 +86,6 @@
     <ClCompile Include="Source\Objects\Actors\Enemies\EnemyStates\EnemyRun.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\Types\Imp.cpp" />
     <ClCompile Include="Source\Objects\Actors\Player\Player.cpp" />
-    <ClCompile Include="Source\Objects\Actors\Player\PlayerPropertyBag.cpp" />
     <ClCompile Include="Source\Weapons\Ranged\Projectile.cpp" />
     <ClCompile Include="Source\Weapons\Ranged\Quiver.cpp" />
     <ClCompile Include="Source\Weapons\Ranged\RangedWeapon.cpp" />
@@ -190,18 +187,15 @@
     <ClInclude Include="Source\Objects\Attributes\StatManager.h" />
     <ClInclude Include="Source\Objects\Effects\Effect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectHandler.h" />
-    <ClInclude Include="Source\Objects\Effects\KnockbackEffect.h" />
     <ClInclude Include="Source\Objects\Effects\SlowEffect.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\Enemy.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\EnemyManager.h" />
-    <ClInclude Include="Source\Objects\Actors\Enemies\EnemyPropertyBag.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\EnemyStates\EnemyPreAttack.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\EnemyStates\EnemyState.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\EnemyStates\EnemyWait.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\Spawning\EnemySpawner.h" />
     <ClInclude Include="Source\Collisions\CollisionManager.h" />
     <ClInclude Include="Source\Objects\Properties\PropertyBag.h" />
-    <ClInclude Include="Source\Objects\Properties\PropertyBase.h" />
     <ClInclude Include="Source\UI\Elements\UISlider.h" />
     <ClInclude Include="Source\UI\Screens\ScreenHeaders.h" />
     <ClInclude Include="Source\UI\Screens\SettingsScreen.h" />
@@ -230,7 +224,6 @@
     <ClInclude Include="Source\Objects\Actors\Enemies\Types\Imp.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\EnemyEnums.h" />
     <ClInclude Include="Source\Objects\Actors\Player\Player.h" />
-    <ClInclude Include="Source\Objects\Actors\Player\PlayerPropertyBag.h" />
     <ClInclude Include="Source\Weapons\Ranged\Projectile.h" />
     <ClInclude Include="Source\Weapons\Ranged\Quiver.h" />
     <ClInclude Include="Source\Weapons\Ranged\RangedWeapon.h" />

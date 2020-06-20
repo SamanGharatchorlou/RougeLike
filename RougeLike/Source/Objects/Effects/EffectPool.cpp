@@ -7,6 +7,10 @@
 #include "DamageEffect.h"
 #include "DisplacementEffect.h"
 #include "KnockbackStunEffect.h"
+#include "ArmorEffect.h"
+#include "BlinkEffect.h"
+#include "HealEffect.h"
+#include "StunEffect.h"
 
 
 EffectPool::EffectPool(GameData* gameData) : mGameData(gameData)
@@ -62,6 +66,25 @@ Effect* EffectPool::getNewEffect(EffectType type)
 	}
 	else if (type == EffectType::KnockbackStun)
 	{
+		Effect* additionalEffect = getEffect(EffectType::Stun);
+		StunEffect* stunEffect = static_cast<StunEffect*>(additionalEffect);
+
+		effect = new KnockbackStunEffect(stunEffect);
+	}
+	else if (type == EffectType::Armor)
+	{
+		effect = new ArmorEffect;
+	}
+	else if (type == EffectType::Blink)
+	{
+		effect = new BlinkEffect;
+	}
+	else if (type == EffectType::Heal)
+	{
+		effect = new HealEffect;
+	}
+	else if (type == EffectType::Stun)
+	{
 		XMLParser parser;
 		parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, "Stun"));
 
@@ -69,7 +92,7 @@ Effect* EffectPool::getNewEffect(EffectType type)
 		Animator animator;
 		reader.initAnimator(animator);
 
-		effect = new KnockbackStunEffect(animator);
+		effect = new StunEffect(animator);
 	}
 
 #if _DEBUG

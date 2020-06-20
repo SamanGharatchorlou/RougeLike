@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Damage.h"
-#include "Objects/Properties/Property.h"
 #include "Utilities/Helpers.h"
+#include "Objects/Properties/Property.h"
+#include "Damage.h"
 
 
 class Armor : public Property
@@ -12,7 +12,9 @@ public:
 	Armor(float armor) : mMaxArmor(armor), mArmor(armor) { }
 	Armor(float armor, float maxArmor) : mMaxArmor(maxArmor), mArmor(armor) { }
 
-	void increase(float armor) { mArmor = clamp(mArmor + armor, 0.0f, mMaxArmor); }
+	void init(float armor) override { mMaxArmor = armor; mArmor = armor; }
+
+	void increase(Armor armor) { mArmor = clamp(mArmor + armor.value(), 0.0f, mMaxArmor); }
 	void reduce(Damage damage) { mArmor = clamp(mArmor - damage.value(), 0.0f, mMaxArmor); }
 
 	void setValue(float armor) { mArmor = armor; }

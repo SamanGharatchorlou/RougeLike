@@ -12,7 +12,6 @@ public:
 	EffectHandler(EffectPool* pool, Actor* actor) : mPool(pool), mActor(actor) { };
 
 	void addEffect(Effect* effect);
-	//void addEffect(const EffectData* data);
 
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
@@ -23,19 +22,17 @@ public:
 	void addAttackingEffect(EffectType type) { mAttackingEffects.push_back(type); }
 	const std::vector<EffectType> attackingEffects() const { return mAttackingEffects; }
 
-
-	// temp
-	int counter = 0;
-
 private:
 	EffectPool* mPool;
 	Actor* mActor;
 
+	std::vector<EffectType> mAttackingEffects;
+
 	std::vector<Effect*> mEffects;
 
+	// TODO: do i still need this?
 	bool mDelayedAdd;
 	std::queue<Effect*> mEffectsToAdd;
 
-	std::vector<EffectType> mAttackingEffects;
 };
 

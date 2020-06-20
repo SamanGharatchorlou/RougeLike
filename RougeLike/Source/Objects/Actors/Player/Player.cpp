@@ -8,31 +8,21 @@
 #include "Input/InputManager.h"
 #include "Audio/AudioManager.h"
 #include "UI/UIManager.h"
-#include "Graphics/Texture.h"
 
 #include "Collisions/CollisionManager.h"
-#include "Collisions/DamageCollider.h"
+#include "Collisions/EffectCollider.h"
+#include "Objects/Effects/EffectPool.h"
+
 #include "Weapons/Melee/MeleeWeapon.h"
 
 #include "Map/Environment.h"
 #include "Map/Map.h"
 
-#include "PlayerPropertyBag.h"
-
-#include "Objects/Effects/KnockbackEffect.h"
-#include "Objects/Effects/DamageEffect.h"
 
 #if _DEBUG
 #include "Debug/DebugDraw.h"
 #endif
 
-// TEMP
-#include "Collisions/CollisionTracker.h"
-// TEMP
-#include "Objects/Effects/DamageEffect.h"
-#include "Objects/Effects/DisplacementEffect.h"
-#include "Collisions/EffectCollider.h"
-#include "Objects/Effects/EffectPool.h"
 
 
 Player::Player(GameData* gameData) :
@@ -47,15 +37,9 @@ Player::Player(GameData* gameData) :
 
 void Player::init(const std::string& characterConfig)
 {
-	XMLParser parser;
-	parser.parseXML(FileManager::Get()->findFile(FileManager::Configs_Objects, characterConfig));
+	Actor::init(characterConfig);
 
-	// Properties
-	initPropertBag(characterConfig);
-
-	Actor::init(parser);
-
-	//mEffects.addAttackingEffect(EffectType::Damage);
+	mEffects.addAttackingEffect(EffectType::Damage);
 	mEffects.addAttackingEffect(EffectType::Displacement);
 }
 
@@ -78,7 +62,6 @@ void Player::handleInput()
 		!mGameData->uiManager->isUsingUI() && !mAbilities.inSelectionMode())
 	{
 		attack();
-
 	}
 }
 
@@ -99,7 +82,7 @@ void Player::fastUpdate(float dt)
 	{
 		mPhysics.setFlip(SDL_FLIP_NONE);
 		mWeapon->rightFlip();
-	}
+	} 
 	else
 	{
 		mPhysics.setFlip(SDL_FLIP_HORIZONTAL);
@@ -128,6 +111,17 @@ void Player::effectLoop()
 
 	if (mWeapon->didHit())
 	{
+		// HACK: V V V V V
+		const MeleeWeaponData* weaponData = mWeapon->getData();
+
+		mEffectProperties.setProperty("TargetPositionX", position().x);
+		mEffectProperties.setProperty("TargetPositionY", position().y);
+
+		setEffectProperty("Damage", weaponData->damage.value());
+		setEffectProperty("KnockbackForce", weaponData->knockbackForce);
+		setEffectProperty("KnockbackDistance", weaponData->knockbackDistance);
+		// HACK: ^ ^ ^ ^ ^
+
 		const std::vector<EffectType> effectTypes = mEffects.attackingEffects();
 		
 		for (int iCol = 0; iCol < colliders.size(); iCol++)
@@ -136,7 +130,7 @@ void Player::effectLoop()
 			for (int iEff = 0; iEff < effectTypes.size(); iEff++)
 			{
 				Effect* effect = mGameData->effectPool->getEffect(effectTypes[iEff]);
-				effect->fillData(this);
+				effect->fillData(&mEffectProperties);
 				colliders[iCol]->addEffect(effect);
 			}
 		}
@@ -219,9 +213,9 @@ void Player::selectWeapon(const std::string& weaponName)
 void Player::updateProperties()
 {
 	const MeleeWeaponData* data = mWeapon->getData();
-	mPropertyBag->get("Damage")->setValue(data->damage.value());
-	mPropertyBag->get("KnockbackDistance")->setValue(data->knockbackDistance);
-	mPropertyBag->get("KnockbackForce")->setValue(data->knockbackForce);
+	//mPropertyBag->get("Damage")->setValue(data->damage.value());
+	//mPropertyBag->get("KnockbackDistance")->setValue(data->knockbackDistance);
+	//mPropertyBag->get("KnockbackForce")->setValue(data->knockbackForce);
 }
 
 
@@ -260,19 +254,10 @@ void Player::userHasControl(bool control)
 
 // --- Private Functions --- //
 
-void Player::initPropertBag(const std::string& config)
-{
-	PlayerPropertyBag* propertyBag = new PlayerPropertyBag;
-	propertyBag->readProperties(config);
-	setPropertyBag(propertyBag);
-
-	mStatManager.init(propertyBag);
-}
-
-
 void Player::processHit()
-{ 
-	processEffects();
+{
+	EffectCollider* effectCollider = static_cast<EffectCollider*>(mCollider.getOtherCollider());
+	processEffects(effectCollider);
 
 	TraumaEvent* trauma = new TraumaEvent(40);
 	pushEvent(EventPacket(trauma));

@@ -8,14 +8,13 @@ using PropertyMap = std::unordered_map<std::string, Property*>;
 class PropertyBag
 {
 public:
-	using Value = std::pair<float, bool>;
-	using ValueMap = std::unordered_map<std::string, Value>;
+	using ValueMap = std::unordered_map<std::string, float>;
 
 
 public:
 	virtual ~PropertyBag() { }
 
-	virtual void readProperties(const std::string& config);
+	void readProperties(const std::string& config);
 	
 	void resetProperties();
 
@@ -26,11 +25,26 @@ public:
 
 
 protected:
-	ValueMap readValues(XMLParser& parser);
+	virtual ValueMap readValues(XMLParser& parser);
+	
 	virtual void fillProperties(ValueMap& valueMap);
 
+	Property* getNewProperty(const std::string& name);
 
 protected:
 	std::string mConfigFile;
 	PropertyMap mProperties;
+};
+
+
+class EffectPropertyBag : public PropertyBag
+{
+public:
+	EffectPropertyBag() { }
+
+	void setProperty(const std::string& name, float value);
+
+
+private:
+	ValueMap readValues(XMLParser& parser) override;
 };

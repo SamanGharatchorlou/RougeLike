@@ -23,8 +23,6 @@ public:
 	void render();
 
 	Player* player() { return mPlayer; }
-	Actor* playerActor();
-
 	EnemyManager* enemies() { return mEnemies; }
 
 	std::vector<Actor*> getAllEnemies();

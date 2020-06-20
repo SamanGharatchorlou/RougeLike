@@ -2,12 +2,7 @@
 #include "DamageEffect.h"
 
 #include "Objects/Actors/Actor.h"
-
-void DamageEffect::fillData(const Actor* distributer)
-{
-	if (hasProperty(distributer, "Damage"))
-		mDamage = distributer->getPropertyValue("Damage");
-}
+#include "Objects/Properties/PropertyBag.h"
 
 
 void DamageEffect::init()
@@ -31,7 +26,23 @@ void DamageEffect::init()
 		hp->reduce(mDamage);
 	}
 
-
 	mReceiver->collider()->setGotHit(true);
 	endEffect();
+}
+
+
+void DamageEffect::fillData(const EffectPropertyBag* properties)
+{
+	if (properties->contains("Damage"))
+	{
+		Property* property = properties->get("Damage");
+		mDamage = *static_cast<Damage*>(property);
+	}
+}
+
+
+void DamageEffect::clearData()
+{
+	clearBaseData();
+	mDamage = Damage(0.0f);
 }

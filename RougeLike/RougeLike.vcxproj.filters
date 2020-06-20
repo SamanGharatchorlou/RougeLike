@@ -70,7 +70,6 @@
     <ClCompile Include="Source\Collisions\CollisionManager.cpp" />
     <ClCompile Include="Source\Objects\Attributes\Level.cpp" />
     <ClCompile Include="Source\Objects\Attributes\StatManager.cpp" />
-    <ClCompile Include="Source\Objects\Effects\KnockbackEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectHandler.cpp" />
     <ClCompile Include="Source\Objects\Effects\SlowEffect.cpp" />
     <ClCompile Include="Source\Input\Button.cpp" />
@@ -81,7 +80,6 @@
     <ClCompile Include="Source\Collisions\WallCollisionTracker.cpp" />
     <ClCompile Include="Source\Objects\Effects\HealEffect.cpp" />
     <ClCompile Include="Source\Objects\Actors\Player\Player.cpp" />
-    <ClCompile Include="Source\Objects\Actors\Player\PlayerPropertyBag.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\EnemyStates\EnemyAlert.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\EnemyStates\EnemyAttack.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\EnemyStates\EnemyDead.cpp" />
@@ -94,7 +92,6 @@
     <ClCompile Include="Source\Objects\Actors\Enemies\Spawning\EnemySpawner.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\Enemy.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\EnemyManager.cpp" />
-    <ClCompile Include="Source\Objects\Actors\Enemies\EnemyPropertyBag.cpp" />
     <ClCompile Include="Source\Objects\Actors\Actor.cpp" />
     <ClCompile Include="Source\Objects\Actors\Physics.cpp" />
     <ClCompile Include="Source\Objects\Actors\ActorManager.cpp" />
@@ -211,20 +208,17 @@
     <ClInclude Include="Source\Objects\Attributes\Level.h" />
     <ClInclude Include="Source\Objects\Attributes\StatManager.h" />
     <ClInclude Include="Source\Objects\Effects\Effect.h" />
-    <ClInclude Include="Source\Objects\Effects\KnockbackEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectHandler.h" />
     <ClInclude Include="Source\Objects\Effects\SlowEffect.h" />
     <ClInclude Include="Source\UI\Screens\SettingsScreen.h" />
     <ClInclude Include="Source\UI\Screens\ScreenHeaders.h" />
     <ClInclude Include="Source\Objects\Abilities\Ability.h" />
     <ClInclude Include="Source\Objects\Properties\PropertyBag.h" />
-    <ClInclude Include="Source\Objects\Properties\PropertyBase.h" />
     <ClInclude Include="Source\Objects\Properties\Property.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityManager.h" />
     <ClInclude Include="Source\Collisions\WallCollisionTracker.h" />
     <ClInclude Include="Source\Objects\Effects\HealEffect.h" />
     <ClInclude Include="Source\Objects\Actors\Player\Player.h" />
-    <ClInclude Include="Source\Objects\Actors\Player\PlayerPropertyBag.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\EnemyStates\EnemyAlert.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\EnemyStates\EnemyAttack.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\EnemyStates\EnemyDead.h" />
@@ -240,7 +234,6 @@
     <ClInclude Include="Source\Objects\Actors\Enemies\Enemy.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\EnemyEnums.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\EnemyManager.h" />
-    <ClInclude Include="Source\Objects\Actors\Enemies\EnemyPropertyBag.h" />
     <ClInclude Include="Source\Objects\Actors\Actor.h" />
     <ClInclude Include="Source\Objects\Actors\Physics.h" />
     <ClInclude Include="Source\Objects\Actors\ActorManager.h" />

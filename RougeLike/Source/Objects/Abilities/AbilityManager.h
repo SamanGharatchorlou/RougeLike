@@ -46,7 +46,7 @@ private:
 	void attemptActivationOnArea(Ability* ability);
 	void attemptActivationOnPoint(Ability* ability);
 
-	void activateOnArea(Ability* ability);
+	void activateOnArea(AreaAbility* areaAbility);
 
 
 private:

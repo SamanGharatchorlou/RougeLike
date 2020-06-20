@@ -9,7 +9,6 @@
 
 void BlinkEffect::init()
 {
-	//mActor->animator().getSpriteTexture()->setAlpha(alphaMin);
 	mReceiver->setVisibility(false);
 
 	// NOTE: This bit only works for a player specific, if you ever need to do this to another object
@@ -46,4 +45,27 @@ void BlinkEffect::exit()
 	// then change this bit, move it into BlinkAbility perhaps?
 	Player* player = static_cast<Player*>(mReceiver);
 	player->userHasControl(true);
+}
+
+
+void BlinkEffect::fillData(const EffectPropertyBag* properties)
+{
+	if (properties->contains("TargetPositionX"))
+	{
+		Property* property = properties->get("TargetPositionX");
+		mTarget.x = property->value();
+	}
+
+	if (properties->contains("TargetPositionY"))
+	{
+		Property* property = properties->get("TargetPositionY");
+		mTarget.y = property->value();
+	}
+}
+
+
+void BlinkEffect::clearData()
+{
+	clearBaseData();
+	mTarget = VectorF();
 }

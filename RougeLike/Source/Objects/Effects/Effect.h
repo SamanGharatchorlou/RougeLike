@@ -1,13 +1,22 @@
 #pragma once
 
 class Actor;
+class EffectPropertyBag;
 
 enum class EffectType
 {
 	None,
+
+	Armor,
+	Heal,
+
+	Blink,
+
 	Damage,
 	Displacement,
+	Stun,
 	KnockbackStun,
+
 	Count
 };
 
@@ -24,36 +33,31 @@ class Effect
 {
 
 public:
-	Effect() : mShouldExit(false) { }
+	Effect() : mReceiver(nullptr), mShouldExit(false) { }
 	virtual ~Effect() { }
 
-	void setReceiver(Actor* receiver) { 
-		if (receiver == nullptr) 
-			printf("pause"); 
-		mReceiver = receiver; }
+	void setReceiver(Actor* receiver) { mReceiver = receiver; }
 
-	virtual void fillData(const Actor* distributer) { }
-	virtual void clearData() { mReceiver = nullptr; mShouldExit = false; }
+	virtual void fillData(const EffectPropertyBag* data) = 0;
+	virtual void clearData()  = 0;
 
 	virtual void init() = 0;
 	virtual void fastUpdate(float dt) = 0;
 	virtual void slowUpdate(float dt) = 0;
 	virtual void render() = 0;
-	virtual void exit() { mReceiver = nullptr; mShouldExit = false; }
+	virtual void exit() = 0;
 
 	void endEffect() { mShouldExit = true; }
 	bool shouldExit() const { return mShouldExit; }
 
-	virtual EffectType type() const { return EffectType::None; }
+	virtual EffectType type() const = 0;
 
 
 protected:
-	bool hasProperty(const Actor* distributer, const std::string property);
+	void clearBaseData() { mReceiver = nullptr; mShouldExit = false; }
 
 
 protected:
 	Actor* mReceiver;
 	bool mShouldExit;
-
-
 };

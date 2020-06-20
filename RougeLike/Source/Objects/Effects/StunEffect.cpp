@@ -8,9 +8,32 @@
 #include "Objects/Attributes/Health.h"
 
 
+
+void StunEffect::fillData(const EffectPropertyBag* properties)
+{
+	if (properties->contains("StunTime"))
+	{
+		Property* property = properties->get("StunTime");
+		mTime = property->value();
+	}
+}
+
+
+void StunEffect::clearData()
+{
+	clearBaseData();
+
+	mMaxSize = 0.0f;
+	mTime = 0.0f;
+	mAnimator.reset();
+}
+
+
 void StunEffect::init()
 {
 	mAnimator.startAnimation(Action::Active);
+
+	mMaxSize = mReceiver->rect().Width();
 
 	Enemy* enemy = static_cast<Enemy*>(mReceiver);
 	if (enemy)

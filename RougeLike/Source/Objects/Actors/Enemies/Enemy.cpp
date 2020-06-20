@@ -6,24 +6,12 @@
 
 #include "Graphics/Texture.h"
 
-#include "EnemyPropertyBag.h"
 #include "Map/Environment.h"
 
-//
-//#include "Collisions/DamageCollider.h"
 #include "Collisions/EffectCollider.h"
 
 // temp
 #include "Objects/Effects/EffectPool.h"
-
-#include "Objects/Actors/ActorManager.h"
-#include "Objects/Actors/Player/Player.h"
-#include "Objects/Effects/KnockbackEffect.h"
-
-#include "Objects/Effects/DamageEffect.h"
-
-#include "Objects/Effects/KnockbackStunEffect.h"
-#include "Animations/AnimationReader.h"
 
 
 #include "AI/AIPathMap.h"
@@ -45,14 +33,7 @@ Enemy::Enemy(GameData* gameData) :
 
 void Enemy::init(const std::string& config)
 {
-	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs_Objects, config));
-
-	// Property bag
-	EnemyPropertyBag* propertyBag = new EnemyPropertyBag;
-	propertyBag->readProperties(config);
-	setPropertyBag(propertyBag);
-
-	Actor::init(parser);
+	Actor::init(config);
 
 	mEffects.addAttackingEffect(EffectType::Damage);
 	mEffects.addAttackingEffect(EffectType::Displacement);
@@ -75,6 +56,9 @@ void Enemy::effectLoop()
 	{
 		const std::vector<EffectType> effects = mEffects.attackingEffects();
 
+		mEffectProperties.setProperty("TargetPositionX", position().x);
+		mEffectProperties.setProperty("TargetPositionY", position().y);
+
 		// Make sure no effects are left over
 		while(mCollider.hasEffects())
 		{
@@ -87,7 +71,7 @@ void Enemy::effectLoop()
 		for (int i = 0; i < effects.size(); i++)
 		{
 			Effect* effect = mGameData->effectPool->getEffect(effects[i]);
-			effect->fillData(this);
+			effect->fillData(&mEffectProperties);
 			mCollider.addEffect(effect);
 		}
 	}
@@ -162,27 +146,8 @@ void Enemy::resolveCollisions()
 		// Player weapon hit enemy
 		if (mCollider.getOtherCollider())
 		{
-			processEffects();
-
-			//XMLParser parser;
-			//parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, "Stun"));
-
-			//AnimationReader reader(mGameData->textureManager, parser);
-			//Animator animator;
-			//reader.initAnimator(animator);
-
-			//VectorF playerPosition = mGameData->actors->player()->position();
-			//VectorF targetDirection = (position() - playerPosition).normalise();sd
-
-			//VectorF targetPosition = position() + targetDirection * 1000.0f;
-
-			//KnockbackStunEffect* knockbackStunEffect = 
-			//	new KnockbackStunEffect(targetPosition, 20000.0f, collider->knockbackforce(), animator, 50.0f );
-			//mEffects.addEffect(knockbackStunEffect);
-
-			//// Apply damage
-			//DamageEffect* damage = new DamageEffect(collider->damage());
-			//mEffects.addEffect(damage);
+			EffectCollider* effectCollider = static_cast<EffectCollider*>(mCollider.getOtherCollider());
+			processEffects(effectCollider);
 		}
 
 		addState(EnemyState::Hit);

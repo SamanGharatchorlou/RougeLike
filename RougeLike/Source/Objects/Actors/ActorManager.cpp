@@ -70,10 +70,6 @@ void ActorManager::render()
 	mEnemies->render();
 }
 
-Actor* ActorManager::playerActor()
-{
-	return mPlayer;
-}
 
 std::vector<Actor*> ActorManager::getAllActors()
 {
@@ -118,7 +114,7 @@ void ActorManager::handleEvent(EventData& data)
 	case Event::EnemyDead:
 	{	
 		EnemyDeadEvent eventData = static_cast<EnemyDeadEvent&>(data);
-		mPlayer->statManager().gainExp(eventData.mExp);
+		//mPlayer->statManager().gainExp(eventData.mExp);
 		mGameData->collisionManager->removeDefender(CollisionManager::PlayerWeapon_Hit_Enemy, eventData.mEnemy->collider());
 		break;
 	}

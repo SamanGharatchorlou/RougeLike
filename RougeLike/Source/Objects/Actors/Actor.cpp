@@ -9,8 +9,6 @@
 #include "Game/Camera.h"
 #include "Animations/AnimationReader.h"
 
-#include "Objects/Properties/PropertyBag.h"
-
 #include "Map/Map.h"
 #include "Map/Environment.h"
 
@@ -22,12 +20,17 @@ Actor::Actor(GameData* gameData)
 
 Actor::~Actor()
 {
-	delete mPropertyBag;
+
 }
 
 
-void Actor::init(XMLParser& parser)
+void Actor::init(const std::string& config)
 {
+	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs_Objects, config));
+
+	// Properties
+	mPropertyBag.readProperties(config);
+
 	// Animations
 	AnimationReader reader(mGameData->textureManager, parser);
 	reader.initAnimator(mAnimator);
@@ -38,6 +41,7 @@ void Actor::init(XMLParser& parser)
 	float maxDimention = std::stof(parser.firstRootNodeValue("MaxSize"));
 	VectorF size = realiseSize(baseSize, maxDimention);
 	mPhysics.setRect(RectF(VectorF(), size));
+	mPhysics.init(getPropertyValue("Force"), getPropertyValue("MaxVelocity"));
 
 	// Collider
 	Attributes attributes = parser.attributes(parser.rootNode()->first_node("ColliderScale"));
@@ -49,9 +53,8 @@ void Actor::init(XMLParser& parser)
 	mCollider.setName(FileManager::Get()->getItemName(parser.path));
 #endif
 
-	// Properties
-	ASSERT(Warning, mPropertyBag != nullptr, "The property bag has not been set yet\n");
-	mPhysics.init(getPropertyValue("Force"), getPropertyValue("MaxVelocity"));
+	// Effects
+	mEffectProperties.readProperties(config);
 }
 
 
@@ -90,25 +93,25 @@ void Actor::reset()
 	mPhysics.reset();
 	mAnimator.clear();
 	mEffects.clear();
-	mPropertyBag->resetProperties();
+	mPropertyBag.resetProperties();
 }
 
 
 float Actor::getPropertyValue(const std::string& property) const 
 { 
-	return mPropertyBag->value(property); 
+	return mPropertyBag.value(property); 
 }
 
 
 Property* Actor::getProperty(const std::string& property) const
 {
-	return mPropertyBag->get(property);
+	return mPropertyBag.get(property);
 }
 
 
 bool Actor::hasProperty(const std::string& property) const
 {
-	return mPropertyBag->contains(property);
+	return mPropertyBag.contains(property);
 }
 
 
@@ -118,15 +121,10 @@ void Actor::addEffect(Effect* effect)
 }
 
 
-void Actor::processEffects()
+void Actor::processEffects(EffectCollider* effectCollider)
 {
-	EffectCollider* effectCollider = static_cast<EffectCollider*>(mCollider.getOtherCollider());
-
 	while (effectCollider->hasEffects())
 	{
-		if (mEffects.counter == 1)
-			printf("Wait");
-
 		mEffects.addEffect(effectCollider->popEffect());
 	}
 }

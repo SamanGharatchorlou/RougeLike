@@ -2,7 +2,8 @@
 <Ability>
 	<Properties>
 		<Damage>50</Damage>
-		<Force>500</Force>
+		<KnockbackForce>750</KnockbackForce>
+		<KnockbackDistance>35000</KnockbackDistance>
 		<Range>250</Range>
 		<MaxSize>125</MaxSize>
 		<Cooldown>5</Cooldown>

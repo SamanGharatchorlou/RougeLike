@@ -4,7 +4,7 @@
 		<!-- Attributes -->
 		<Level>1</Level>
 		<Health>100</Health>
-		<Armor>200</Armor>
+		<Armor>10</Armor>
 		<AttackSpeed>10</AttackSpeed>
 
 		<!-- Physics -->
@@ -18,6 +18,13 @@
 		<KnockbackForce>0</KnockbackForce>
 		<KnockbackDistance>0</KnockbackDistance>
 	</Properties>
+
+	<Effects>
+		<Damage>10</Damage>
+		<StunTime>5</StunTime>
+		<KnockbackForce>200</KnockbackForce>
+		<KnockbackDistance>10000</KnockbackDistance>
+	</Effects>
 
 	<MaxSize>80</MaxSize>
 	<ColliderScale x = "0.32" y = "0.57"></ColliderScale>

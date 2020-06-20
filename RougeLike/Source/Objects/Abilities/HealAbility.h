@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Ability.h"
+#include "Objects/Attributes/Health.h"
 
-class Player;
 
 class HealAbility : public Ability
 {
@@ -11,13 +11,12 @@ public:
 
 	void fillValues(ValueMap& values) override;
 
-	void init(Animator animator, Player* player) override;
-	void activate(Actor* target) override;
+	void activate(Actor* target, EffectPool* effectPool) override;
 	void slowUpdate(float dt) override;
 
 	const TargetType targetType() const override { return TargetType::Self; }
 
 
 private:
-	float mHeal;
+	Health mHeal;
 };

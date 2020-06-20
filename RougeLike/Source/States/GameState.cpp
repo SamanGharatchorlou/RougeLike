@@ -57,11 +57,11 @@ void GameState::init()
 	Collectable* Blink = new AbilityCollectable("Blink");
 	mCollectables.spawn(Blink, 20);
 
-	//Collectable* Spikes = new AbilityCollectable("Spikes");
-	//mCollectables.spawn(Spikes, 10);
+	Collectable* Spikes = new AbilityCollectable("Spikes");
+	mCollectables.spawn(Spikes, 10);
 
-	//Collectable* Heal = new AbilityCollectable("Heal");
-	//mCollectables.spawn(Heal, 12);
+	Collectable* Heal = new AbilityCollectable("Heal");
+	mCollectables.spawn(Heal, 12);
 
 	Collectable* weapon = new WeaponCollectable("Mace");
 	mCollectables.spawn(weapon, 12);

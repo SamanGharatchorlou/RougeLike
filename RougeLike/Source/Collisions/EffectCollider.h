@@ -14,7 +14,7 @@ public:
 	void addEffect(Effect* effect) { mEffects.push(effect); }
 	Effect* popEffect();
 
-	bool hasEffects() const { return (bool)mEffects.size(); }
+	bool hasEffects() const { return mEffects.size() > 0; }
 	int effectCount() const { return mEffects.size(); }
 
 private:

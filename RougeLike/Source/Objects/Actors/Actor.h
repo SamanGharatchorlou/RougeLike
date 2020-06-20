@@ -6,8 +6,9 @@
 #include "Objects/Effects/EffectHandler.h"
 #include "Events/LocalDispatcher.h"
 
+#include "Objects/Properties/PropertyBag.h"
+
 struct GameData;
-class PropertyBag;
 class Property;
 class Map;
 
@@ -18,7 +19,7 @@ public:
 	Actor(GameData* gameData);
 	virtual ~Actor();
 
-	void init(XMLParser& parser);
+	void init(const std::string& config);
 	void fastUpdate(float dt);
 	virtual void effectLoop() { };
 	void slowUpdate(float dt);
@@ -33,8 +34,6 @@ public:
 	bool hasEvent() const { return mEvents.hasEvent(); }
 
 	// PropertyBag
-	void setPropertyBag(PropertyBag* bag) { mPropertyBag = bag; }
-	PropertyBag* propertyBag() const { return mPropertyBag; }
 	Property* getProperty(const std::string& property) const;
 	float getPropertyValue(const std::string& property) const;
 	bool hasProperty(const std::string& property) const;
@@ -58,13 +57,23 @@ public:
 	RectF		scaledRect() const;
 
 	// Effects
+	const EffectPropertyBag* effectProperties() const { return &mEffectProperties; }
+	void setEffectProperty(const std::string& name, float value) { mEffectProperties.setProperty(name, value); }
+
 	void addEffect(Effect* effect);
-	void processEffects();
+
+
+protected:
+	void processEffects(EffectCollider* effectCollider);
+
 
 protected:
 	GameData* mGameData;
 
-	PropertyBag* mPropertyBag;
+	// TODO: make this into the actors own property bag
+	// Create another property bag where the effects can pull from?
+	// See armor ability comments
+	PropertyBag mPropertyBag;
 
 	EffectCollider mCollider;
 
@@ -73,6 +82,8 @@ protected:
 	Physics mPhysics;
 
 	EffectHandler mEffects;
+
+	EffectPropertyBag mEffectProperties;
 
 	LocalDispatcher mEvents;
 

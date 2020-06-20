@@ -3,6 +3,7 @@
 
 #include "Objects/Effects/DamageEffect.h"
 #include "Objects/Effects/StunEffect.h"
+#include "Objects/Effects/EffectPool.h"
 
 #include "Objects/Actors/Player/Player.h"
 #include "Graphics/Texture.h"
@@ -12,8 +13,8 @@
 #include "Events/Events.h"
 
 
-SmashAbility::SmashAbility(Texture* hammerTexture, VectorF hammerSize, Animator stun) 
-	: mHammerTexture(hammerTexture), mStunAnimator(stun), requestedActivate(false), mAppliedDamage(false), mFallSpeed(0.0f), mStunMaxSize(0.0f)
+SmashAbility::SmashAbility(Texture* hammerTexture, VectorF hammerSize) 
+	: mHammerTexture(hammerTexture), requestedActivate(false), mAppliedDamage(false), mFallSpeed(0.0f), mTime(0.0f)
 {
 	mHammerRect.SetSize(hammerSize);
 };
@@ -21,12 +22,14 @@ SmashAbility::SmashAbility(Texture* hammerTexture, VectorF hammerSize, Animator 
 
 void SmashAbility::fillValues(ValueMap& values)
 {
-	mDamage = Damage(std::stof(values["Damage"]));
 	mMaxDimention = std::stof(values["MaxSize"]);
 	mCooldownTime = std::stof(values["Cooldown"]);
 	mRange = std::stof(values["Range"]);
+
 	mFallSpeed = std::stof(values["HammerFallSpeed"]);
-	mStunMaxSize = std::stof(values["StunMaxSize"]);
+
+	mDamage = Damage(std::stof(values["Damage"]));
+	mTime = std::stof(values["StunTime"]);
 }
 
 
@@ -70,16 +73,20 @@ void SmashAbility::activate(VectorF position)
 }
 
 
-void SmashAbility::activate(Actor* actor)
+void SmashAbility::activate(Actor* actor, EffectPool* effectPool)
 {
 	if (requestedActivate)
 	{
 		// The enemy state will change to wait (from the stun) before the got hit bool from the
 		// damage will change the state to hit. Hence the damage is taken but there is no hit state change
-		DamageEffect* damage = new DamageEffect(mDamage);
-		actor->addEffect(damage);
+		Effect* damage = effectPool->getEffect(EffectType::Damage);
+		DamageEffect* damageEffect = static_cast<DamageEffect*>(damage);
+		damageEffect->set(mDamage);
+		actor->addEffect(damageEffect);
 
-		StunEffect* stunEffect = new StunEffect(mStunAnimator, mStunMaxSize);
+		Effect* stun = effectPool->getEffect(EffectType::Stun);
+		StunEffect* stunEffect = static_cast<StunEffect*>(stun);
+		stunEffect->set(mTime);
 		actor->addEffect(stunEffect);
 	}
 }
