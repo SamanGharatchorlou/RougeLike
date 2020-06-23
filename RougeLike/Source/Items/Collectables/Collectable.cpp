@@ -5,7 +5,6 @@
 
 #include "Objects/Actors/Player/Player.h"
 
-#include "Objects/Abilities/Ability.h"
 
 
 Collectable::Collectable() : mIcon(nullptr) 

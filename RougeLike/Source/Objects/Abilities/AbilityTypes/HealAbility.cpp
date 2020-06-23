@@ -6,7 +6,6 @@
 
 #include "Animations/Animator.h"
 #include "Objects/Actors/Player/Player.h"
-#include "Objects/Properties/PropertyBag.h"
 
 
 void HealAbility::fillValues(ValueMap& values)
@@ -21,7 +20,7 @@ void HealAbility::slowUpdate(float dt)
 	mAnimator.slowUpdate(dt);
 
 	// HACK: added Offset
-	mRect.SetBotCenter(mPlayer->rect().BotCenter() + VectorF(0.0f, 10.0f));
+	mRect.SetBotCenter(mCaster->rect().BotCenter() + VectorF(0.0f, 10.0f));
 
 	// Completed one animation loop
 	if (mAnimator.loops() > 0)
@@ -34,17 +33,13 @@ void HealAbility::slowUpdate(float dt)
 
 void HealAbility::activate(Actor* actor, EffectPool* effectPool)
 {
+	mAnimator.startAnimation(Action::Active);
+
 	Effect* effect = effectPool->getEffect(EffectType::Heal);
 	HealEffect* healEffect = static_cast<HealEffect*>(effect);
 	healEffect->set(mHeal);
 	actor->addEffect(effect);
 
-	// TODO: move this to somewhere else?
-	Health* hp = static_cast<Health*>(mPlayer->getProperty("Health"));
-	SetHealthBarEvent* dataPtr = new SetHealthBarEvent(*hp);
-	mEvents.push(EventPacket(dataPtr));
-
-	mAnimator.startAnimation(Action::Active);
-
+	static_cast<Player*>(actor)->updateUI();
 	beginCooldown();
 }

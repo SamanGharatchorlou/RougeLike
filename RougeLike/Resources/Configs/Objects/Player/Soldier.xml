@@ -19,13 +19,6 @@
 		<KnockbackDistance>0</KnockbackDistance>
 	</Properties>
 
-	<Effects>
-		<Damage>10</Damage>
-		<StunTime>5</StunTime>
-		<KnockbackForce>200</KnockbackForce>
-		<KnockbackDistance>10000</KnockbackDistance>
-	</Effects>
-
 	<MaxSize>80</MaxSize>
 	<ColliderScale x = "0.32" y = "0.57"></ColliderScale>
 	<Icon>SoldierIcon</Icon>

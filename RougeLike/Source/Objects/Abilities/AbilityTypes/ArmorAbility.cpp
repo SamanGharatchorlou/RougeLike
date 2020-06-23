@@ -1,12 +1,11 @@
 #include "pch.h"
 #include "ArmorAbility.h"
 
+#include "Objects/Actors/Player/Player.h"
 #include "Objects/Effects/ArmorEffect.h"
 #include "Objects/Effects/EffectPool.h"
 
-#include "Animations/Animator.h"
-#include "Objects/Actors/Player/Player.h"
-#include "Objects/Properties/PropertyBag.h"
+#include "Animations/Animator.h" 
 
 
 void ArmorAbility::fillValues(ValueMap& values)
@@ -20,7 +19,7 @@ void ArmorAbility::fillValues(ValueMap& values)
 void ArmorAbility::slowUpdate(float dt)
 {
 	mAnimator.slowUpdate(dt);
-	mRect.SetCenter(mPlayer->position()); // TODO: Can i remove the mPlayer from ability.h ? this is set on activate...
+	mRect.SetCenter(mCaster->position());
 
 	// Completed x animation loops
 	if (mAnimator.loops() > 4)
@@ -33,17 +32,14 @@ void ArmorAbility::slowUpdate(float dt)
 
 void ArmorAbility::activate(Actor* actor, EffectPool* effectPool)
 {
+	mAnimator.startAnimation(Action::Active);
+
 	Effect* effect = effectPool->getEffect(EffectType::Armor);
 	ArmorEffect* armorEffect = static_cast<ArmorEffect*>(effect);
 	armorEffect->set(mArmor);
 	actor->addEffect(effect);
 
-	// TODO: move this to somewhere else
-	Armor* armor = static_cast<Armor*>(mPlayer->getProperty("Armor"));
-	SetArmorBarEvent* dataPtr = new SetArmorBarEvent(*armor);
-	mEvents.push(EventPacket(dataPtr));
-
-	mAnimator.startAnimation(Action::Active);
-
+	// TODO: Play specific, remove it...
+	static_cast<Player*>(actor)->updateUI();
 	beginCooldown();
 }

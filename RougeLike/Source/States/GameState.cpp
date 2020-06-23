@@ -52,7 +52,7 @@ void GameState::init()
 	//mCollectables.spawnRandomItem(Collectables::MeleeWeapon);
 
 	Collectable* Armor = new AbilityCollectable("Armor");
-	mCollectables.spawn(Armor, 15);
+	//mCollectables.spawn(Armor, 15);
 
 	Collectable* Blink = new AbilityCollectable("Blink");
 	mCollectables.spawn(Blink, 20);
@@ -68,6 +68,9 @@ void GameState::init()
 
 	Collectable* smash = new AbilityCollectable("Smash");
 	mCollectables.spawn(smash, 10);
+
+	Collectable* charge = new AbilityCollectable("Charge");
+	mCollectables.spawn(charge, 15);
 }
 
 

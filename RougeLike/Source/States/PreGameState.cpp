@@ -31,7 +31,7 @@ PreGameState::PreGameState(GameData* gameData, GameController* gameController) :
 void PreGameState::init()
 {	
 	// Setup collision tracking (before setting up any Objects)
-	initCollisions();
+	initCollisionTrackers();
 
 	mGameData->uiManager->selectScreen(Screen::CharacterSelection);
 	mSelectionScreen = static_cast<CharacterSelectionScreen*>(mGameData->uiManager->getActiveScreen());
@@ -76,10 +76,11 @@ void PreGameState::render()
 
 // --- Private Functions --- //
 
-void PreGameState::initCollisions()
+void PreGameState::initCollisionTrackers()
 {
 	CollisionManager* collisions = mGameData->collisionManager;
 	collisions->addBasicCollisionTracker(CollisionManager::Enemy_Hit_Player);
 	collisions->addBasicCollisionTracker(CollisionManager::Player_Hit_Collectable);
 	collisions->addComplexCollisionTracker(CollisionManager::PlayerWeapon_Hit_Enemy);
+	collisions->addComplexCollisionTracker(CollisionManager::Player_Hit_Enemy);
 }

@@ -12,9 +12,10 @@ public:
 
 
 public:
+	PropertyBag() : mConfigFile("") { }
 	virtual ~PropertyBag() { }
 
-	void readProperties(const std::string& config);
+	virtual void readProperties(const std::string& config);
 	
 	void resetProperties();
 
@@ -41,6 +42,8 @@ class EffectPropertyBag : public PropertyBag
 {
 public:
 	EffectPropertyBag() { }
+
+	void readProperties(const std::string& config) override { };
 
 	void setProperty(const std::string& name, float value);
 

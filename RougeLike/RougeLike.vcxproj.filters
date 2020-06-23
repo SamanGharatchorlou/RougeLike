@@ -74,7 +74,6 @@
     <ClCompile Include="Source\Objects\Effects\SlowEffect.cpp" />
     <ClCompile Include="Source\Input\Button.cpp" />
     <ClCompile Include="Source\UI\Screens\SettingsScreen.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\Ability.cpp" />
     <ClCompile Include="Source\Objects\Properties\PropertyBag.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityManager.cpp" />
     <ClCompile Include="Source\Collisions\WallCollisionTracker.cpp" />
@@ -98,19 +97,13 @@
     <ClCompile Include="Source\UI\Elements\UISlider.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\Types\Imp.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\Types\Angel.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\SlowAbility.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\HealAbility.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\BlinkAbility.cpp" />
     <ClCompile Include="Source\Animations\AnimationReader.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\SpikeAbility.cpp" />
     <ClCompile Include="Source\Objects\Effects\DamageEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\BlinkEffect.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\ArmorAbility.cpp" />
     <ClCompile Include="Source\Objects\Effects\ArmorEffect.cpp" />
     <ClCompile Include="Source\Game\LoadingManager.cpp" />
     <ClCompile Include="Source\Game\LoadingBar.cpp" />
     <ClCompile Include="Source\Map\MapTileDecoder.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\SmashAbility.cpp" />
     <ClCompile Include="Source\Objects\Actors\Enemies\Types\Devil.cpp" />
     <ClCompile Include="Source\Objects\Effects\StunEffect.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHotKeys.cpp" />
@@ -121,6 +114,17 @@
     <ClCompile Include="Source\Collisions\EffectCollider.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectPool.cpp" />
     <ClCompile Include="Source\Objects\Effects\Effect.cpp" />
+    <ClCompile Include="Source\Collisions\PlayerCollisions.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityActivator.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\SpikeAbility.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\SmashAbility.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\SlowAbility.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\HealAbility.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\ChargeAbility.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\BlinkAbility.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\ArmorAbility.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityCreator.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\Ability.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -212,7 +216,6 @@
     <ClInclude Include="Source\Objects\Effects\SlowEffect.h" />
     <ClInclude Include="Source\UI\Screens\SettingsScreen.h" />
     <ClInclude Include="Source\UI\Screens\ScreenHeaders.h" />
-    <ClInclude Include="Source\Objects\Abilities\Ability.h" />
     <ClInclude Include="Source\Objects\Properties\PropertyBag.h" />
     <ClInclude Include="Source\Objects\Properties\Property.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityManager.h" />
@@ -242,20 +245,14 @@
     <ClInclude Include="Source\Events\LocalDispatcher.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\Types\Imp.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\Types\Angel.h" />
-    <ClInclude Include="Source\Objects\Abilities\SlowAbility.h" />
-    <ClInclude Include="Source\Objects\Abilities\HealAbility.h" />
-    <ClInclude Include="Source\Objects\Abilities\BilnkAbility.h" />
     <ClInclude Include="Source\Animations\AnimationReader.h" />
-    <ClInclude Include="Source\Objects\Abilities\SpikeAbility.h" />
     <ClInclude Include="Source\Objects\Effects\DamageEffect.h" />
     <ClInclude Include="Source\Objects\Effects\BlinkEffect.h" />
     <ClInclude Include="Source\Objects\Attributes\Armor.h" />
-    <ClInclude Include="Source\Objects\Abilities\ArmorAbility.h" />
     <ClInclude Include="Source\Objects\Effects\ArmorEffect.h" />
     <ClInclude Include="Source\Game\LoadingManager.h" />
     <ClInclude Include="Source\Game\LoadingBar.h" />
     <ClInclude Include="Source\Map\MapTileDecoder.h" />
-    <ClInclude Include="Source\Objects\Abilities\SmashAbility.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\Types\Devil.h" />
     <ClInclude Include="Source\Objects\Effects\StunEffect.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityHotKeys.h" />
@@ -264,6 +261,17 @@
     <ClInclude Include="Source\Objects\Effects\DisplacementEffect.h" />
     <ClInclude Include="Source\Collisions\EffectCollider.h" />
     <ClInclude Include="Source\Objects\Effects\EffectPool.h" />
+    <ClInclude Include="Source\Collisions\PlayerCollisions.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityActivator.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\SpikeAbility.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\SmashAbility.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\SlowAbility.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\HealAbility.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\ChargeAbility.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\BilnkAbility.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\ArmorAbility.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityCreator.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\Ability.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

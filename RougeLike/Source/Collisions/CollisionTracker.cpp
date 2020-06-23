@@ -65,7 +65,7 @@ void CollisionTracker::checkCollisions()
 				// Defender
 				mDefenders[i]->setGotHit(true);
 				mDefenders[i]->hasCollidedWith(mAttackers[j]);
-			}
+			}		
 		}
 	}
 }
@@ -83,9 +83,6 @@ void CollisionTracker::resetColliders()
 		mDefenders[i]->reset();
 	}
 }
-
-
-
 
 
 
@@ -157,15 +154,13 @@ void ComplexCollisionTracker::checkCollisions()
 }
 
 
-
 void ComplexCollisionTracker::addExcludedDefender(Collider* defender)
 {
 	mExcludedDefenders.insert(defender);
 }
 
 
-
-void ComplexCollisionTracker::clearExcluddDefenders()
+void ComplexCollisionTracker::clearExcludedDefenders()
 {
 	mExcludedDefenders.clear();
 }

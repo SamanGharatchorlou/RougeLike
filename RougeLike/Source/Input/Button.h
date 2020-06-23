@@ -3,12 +3,24 @@
 #if _DEBUG
 #include "Debug/DebugDraw.h"
 #endif
+//
+//template<class T>
+//inline bool operator ==(Key a, T b)
+//{
+//	return static_cast<int>(a) + static_cast<int>(b);
+//}
+//
+//template<class T>
+//inline bool operator ==(T a, Key b)
+//{
+//	return static_cast<int>(a) + static_cast<int>(b);
+//}
+
 
 
 class Button
 {
 public:
-
 	enum Key
 	{
 		None = 0,
@@ -45,14 +57,18 @@ public:
 		One = SDLK_1,
 		Two = SDLK_2,
 		Three = SDLK_3,
-
-		KeyCount
+		Four = SDLK_4,
+		Five = SDLK_5,
+		Six = SDLK_6,
+		Seven = SDLK_7,
+		Eight = SDLK_8
 	};
 
 
 public:
-	Button() { mHeldFrames = 0; mHeld = mPressed = mReleased = false; }
-	void bindToKey(Key key) { mKeyBinding = key; }
+	Button();
+	Button(Key key);
+	void bind(Key key) { mKeyBinding = key; }
 
 	void reset();
 
@@ -60,13 +76,13 @@ public:
 	bool isPressed() const { return mPressed; }
 	bool isReleased() const { return mReleased; }
 
+	const Key key() const { return mKeyBinding; }
 	bool isKey(SDL_Keycode key) const { return mKeyBinding == key; }
+	bool isKey(Key key) const { return mKeyBinding == key; }
 
 	void setHeld(bool isHeld) { mHeld = isHeld; }
 	void setPressed(bool isPressed) { mPressed = isPressed; }
 	void setReleased(bool isReleased) { mReleased = isReleased; }
-
-	const Key key() const { return mKeyBinding; }
 
 	int getHeldFrames() const { return mHeldFrames; }
 	void setHeldFrames(int frames) { mHeldFrames = frames; }

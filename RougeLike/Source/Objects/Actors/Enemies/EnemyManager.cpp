@@ -204,6 +204,7 @@ void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF positio
 			defendingCollider.push_back(enemy->collider());
 
 			mGameData->collisionManager->addDefenders(CollisionManager::PlayerWeapon_Hit_Enemy, defendingCollider);
+			mGameData->collisionManager->addDefenders(CollisionManager::Player_Hit_Enemy, defendingCollider);
 
 			mActiveEnemies.push_back(enemy);
 #if LIMIT_ENEMY_SPAWNS
@@ -365,6 +366,7 @@ void EnemyManager::clearAllEnemies()
 	}
 
 	mGameData->collisionManager->removeAllDefenders(CollisionManager::PlayerWeapon_Hit_Enemy);
+	mGameData->collisionManager->removeAllDefenders(CollisionManager::Player_Hit_Enemy);
 	mGameData->collisionManager->removeAllAttackers(CollisionManager::Enemy_Hit_Player);
 
 	for (EnemyObject& enemy : mEnemyPool)

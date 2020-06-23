@@ -58,17 +58,6 @@ void MeleeWeapon::equipt(const WeaponData* data)
 {
 	mMeleeData = static_cast<const MeleeWeaponData*>(data);
 
-	for (unsigned int i = 0; i < mBlockColliders.size(); i++)
-	{
-		//DamageEffect* damage = new DamageEffect(mMeleeData->damage);
-		//DisplacementEffect* displacment = new DisplacementEffect(VectorF(), 20000.0f, mMeleeData->knockbackDistance);
-
-		//mBlockColliders[i]->addEffect(damage);
-		//mBlockColliders[i]->addEffect(displacment);
-
-		//mBlockColliders[i]->initDamage(mMeleeData->damage, mMeleeData->knockbackDistance);
-	}
-
 	mSwingSpeed = mMeleeData->swingSpeed;
 	mOffset = mMeleeData->offset;
 
@@ -229,26 +218,6 @@ void MeleeWeapon::continueAttack(float dt)
 		theta = maxSwingAngle() - mRotationSum;
 
 	mDirection = rotateVector(mDirection, theta * -mSwingDirection);
-
-
-	//// TEMP
-	//if (didHit())
-	//{
-	//	printf("updating knockback source");
-
-	//	for (unsigned int i = 0; i < mBlockColliders.size(); i++)
-	//	{
-	//		
-
-
-	//		mBlockColliders[i]->addEffect(damage);
-	//		mBlockColliders[i]->addEffect(displacment);
-
-	//		mBl
-
-	//			//mBlockColliders[i]->initDamage(mMeleeData->damage, mMeleeData->knockbackDistance);
-	//	}
-	//}
 }
 
 
@@ -260,5 +229,4 @@ void MeleeWeapon::endAttack()
 	flipSide();
 	overrideCursorControl(false);
 	mCanPlayHitSound = false;
-
 }

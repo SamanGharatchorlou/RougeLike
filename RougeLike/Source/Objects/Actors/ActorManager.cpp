@@ -147,8 +147,6 @@ void ActorManager::handleEvent(EventData& data)
 /// --- Private Functions --- ///
 void ActorManager::initPlayer()
 {
-	mPlayer->initCollisions();
-
 	VectorF playerPosition = VectorF(Camera::Get()->rect().Center().x, mGameData->environment->size().y / 2.0f);
 	mPlayer->rectRef().SetLeftCenter(playerPosition);
 

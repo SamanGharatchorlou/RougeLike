@@ -41,14 +41,17 @@ public:
 	virtual ~Ability() { }
 
 	virtual void fillValues(ValueMap& values) = 0;
-	virtual void init(Animator animator, Player* player);
+	virtual void init(Animator animator, Actor* caster);
 	
 	virtual void activate(Actor* target, EffectPool* pool) = 0;
+	virtual void fastUpdate(float dt) = 0;
 	virtual void slowUpdate(float dt) = 0;
 	virtual void render();
 	virtual void exit();
 
 	virtual const TargetType targetType() const = 0;
+
+	Actor* caster() const { return mCaster; }
 
 	void setName(const std::string& name) { mName = name; }
 	std::string name() const { return mName; }
@@ -71,7 +74,7 @@ protected:
 	Animator mAnimator;
 	std::queue<EventPacket> mEvents;
 
-	Player* mPlayer;
+	Actor* mCaster;
 	RectF mRect;
 	float mMaxDimention;
 
@@ -91,7 +94,7 @@ public:
 	virtual void activate(VectorF position) = 0;
 	virtual void render() override;
 
-	bool isValidTarget(VectorF target, Map* map);
+	bool isValidTarget(VectorF target, const Map* map);
 
 	RectF effectArea() const { return mRect; }
 	Collider collider();

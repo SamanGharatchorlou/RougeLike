@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Ability>
+	<Properties>
+		<Range>90000</Range>
+		<MaxSize>125</MaxSize>
+		<Cooldown>2</Cooldown>
+
+		<Damage>50</Damage>
+
+		<KnockbackForce>750</KnockbackForce>
+		<KnockbackDistance>35000</KnockbackDistance>
+
+		<ChargeForce>2000</ChargeForce>
+		<ChargeDistance>200</ChargeDistance>
+	</Properties>
+
+	<Icon>ChargeIcon</Icon>
+
+	<AnimationInfo>
+		<ID>Spikes</ID>
+		<FrameTime>0.1</FrameTime>
+		<FrameSize x = "72" y ="26"></FrameSize>
+		<Animations>
+			<Active>8</Active>
+		</Animations>
+	</AnimationInfo>
+</Ability>

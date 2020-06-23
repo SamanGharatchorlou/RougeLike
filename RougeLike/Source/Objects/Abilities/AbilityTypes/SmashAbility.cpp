@@ -97,7 +97,7 @@ void SmashAbility::render()
 	// Range circle
 	if (mState == Selected)
 	{
-		VectorF position = Camera::Get()->toCameraCoords(mPlayer->position());
+		VectorF position = Camera::Get()->toCameraCoords(mCaster->position());
 		VectorF size = VectorF(mRange, mRange) * 2.0f;
 
 		RectF rect = RectF(VectorF(), size);

@@ -12,11 +12,14 @@ public:
 	void fillValues(ValueMap& values) override;
 
 	void activate(Actor* target, EffectPool* effectPool) override;
+
+	void fastUpdate(float dt) override { };
 	void slowUpdate(float dt) override;
 
 	const TargetType targetType() const override { return TargetType::Self; }
 
 
 private:
+	Actor* mReceiver;
 	Health mHeal;
 };

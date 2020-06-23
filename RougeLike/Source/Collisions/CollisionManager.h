@@ -11,8 +11,9 @@ public:
 	enum Tracker
 	{
 		PlayerWeapon_Hit_Enemy,
-		Enemy_Hit_Player,
+		Player_Hit_Enemy,
 		Player_Hit_Collectable,
+		Enemy_Hit_Player,
 	};
 
 

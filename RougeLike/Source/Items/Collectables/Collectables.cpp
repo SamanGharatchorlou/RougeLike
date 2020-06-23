@@ -14,8 +14,6 @@
 #include"Objects/Actors/ActorManager.h"
 #include "Objects/Actors/Player/Player.h"
 
-#include "Objects/Abilities/Ability.h"
-
 #if _DEBUG
 #include "Debug/DebugDraw.h"
 #endif

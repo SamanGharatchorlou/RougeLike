@@ -1,19 +1,13 @@
 #pragma once
 
 #include "Objects/Actors/Actor.h"
-#include "States/State.h"
-#include "States/StateMachine.h"
 
 #include "Weapons/WeaponStash.h"
-#include "Objects/Attributes/StatManager.h"
-
-#include "Collisions/WallCollisionTracker.h"
-
+#include "Collisions/PlayerCollisions.h"
 #include "Objects/Abilities/AbilityManager.h"
 
 
 struct GameData;
-class Map;
 class Weapon;
 class MeleeWeapon;
 
@@ -33,8 +27,6 @@ public:
 
 	void reset();
 
-	void initCollisions();
-
 	void loadWeaponStash();
 	Weapon*	weapon();
 
@@ -43,28 +35,26 @@ public:
 
 	void addAbility(const std::string& name);
 
-	//StatManager& statManager() { return mStatManager; }
-
 	void userHasControl(bool removeControl);
+
+	void updateUI();
+
+	void enableBodyCollisions(bool isEnabled);
 
 
 private:
-	void initPropertBag(const std::string& config);
 	void updateProperties();
 
 	void processHit();
-	void updateUI();
 
 	void attack();
-	void updateAttackingWeapon();
-	void updateWeaponCollisions();
+	void updateWeaponHitSound();
 
 	void updateCurrentTile();
 
-private:
 
-	StateMachine<State> mStateMachine;
-	WallCollisionTracker mWallCollisions;
+private:
+	PlayerCollisions mCollisionManager;
 
 	AbilityManager mAbilities;
 

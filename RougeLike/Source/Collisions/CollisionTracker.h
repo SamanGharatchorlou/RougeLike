@@ -36,14 +36,12 @@ public:
 
 	ComplexCollisionTracker() : mCheckingCollisions(true) { }
 
-
 	virtual void checkCollisions() override;
-
 
 	void setCheckingStatus(bool shouldCheckCollisions) { mCheckingCollisions = shouldCheckCollisions; }
 
 	void addExcludedDefender(Collider* defender);
-	void clearExcluddDefenders();
+	void clearExcludedDefenders();
 
 	std::vector<Collider*> defenders() { return mDefenders; }
 
@@ -54,5 +52,4 @@ private:
 	std::unordered_set<Collider*> mExcludedDefenders;
 
 	bool mCheckingCollisions;
-
 };

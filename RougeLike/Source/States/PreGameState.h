@@ -25,7 +25,7 @@ public:
 	void beginGame();
 
 private:
-	void initCollisions();
+	void initCollisionTrackers();
 
 private:
 	GameController* mGameController;

@@ -18,7 +18,6 @@
 #include "Map/Environment.h"
 #include "Map/Map.h"
 
-
 #if _DEBUG
 #include "Debug/DebugDraw.h"
 #endif
@@ -26,11 +25,10 @@
 
 
 Player::Player(GameData* gameData) :
-	Actor(gameData), 
-	mStateMachine(new NullState),
-	mAbilities(mGameData),
-	mWeapon(nullptr), 
-	mWallCollisions(this),
+	Actor(gameData),
+	mCollisionManager(this, mGameData->collisionManager),
+	mAbilities(mGameData, this),
+	mWeapon(nullptr),
 	mControlOverride(false)
 { }
 
@@ -38,6 +36,9 @@ Player::Player(GameData* gameData) :
 void Player::init(const std::string& characterConfig)
 {
 	Actor::init(characterConfig);
+
+	mCollisionManager.addColliderToTrackers();
+	mCollisionManager.enableBodyCollisions(false);
 
 	mEffects.addAttackingEffect(EffectType::Damage);
 	mEffects.addAttackingEffect(EffectType::Displacement);
@@ -70,7 +71,7 @@ void Player::fastUpdate(float dt)
 {
 	// Restricts movement from input, movement should happen after this
 	if(!mControlOverride)
-		mWallCollisions.resolveWallCollisions(mGameData->environment->map(position()), dt);
+		mCollisionManager.resolveWallCollisions(mGameData->environment->map(position()), dt);
 
 	// Movement, animations, weapon updates
 	Actor::fastUpdate(dt);
@@ -97,6 +98,20 @@ void Player::fastUpdate(float dt)
 
 void Player::effectLoop()
 {
+	// Body effects
+	if (mCollider.didHit())
+	{
+		if (mCollider.hasEffects())
+		{
+			printf("effects\n");
+
+		}
+
+	}
+
+
+	// Weapon Effects
+
 	// Return any unused effects back into the pool
 	std::vector<EffectCollider*> colliders = mWeapon->getEffectColliders();
 
@@ -145,7 +160,11 @@ void Player::slowUpdate(float dt)
 
 	// Weapon
 	mWeapon->slowUpdate(dt);
-	updateWeaponCollisions();
+	mCollisionManager.updateWeaponColliders();
+	if (weapon()->isAttacking())
+	{
+		updateWeaponHitSound();
+	}
 
 	// Abilities
 	mAbilities.slowUpdate(dt);
@@ -166,7 +185,6 @@ void Player::slowUpdate(float dt)
 void Player::reset()
 {
 	tileIndex.zero();
-	mStateMachine.clearStates();
 	Actor::reset();
 }
 
@@ -174,14 +192,6 @@ void Player::reset()
 void Player::loadWeaponStash()
 {
 	weaponStash.load(mGameData->textureManager);
-}
-
-
-void Player::initCollisions()
-{
-	std::vector<Collider*> playerCollider { collider() };
-	mGameData->collisionManager->addDefenders(CollisionManager::Enemy_Hit_Player, playerCollider);
-	mGameData->collisionManager->addAttackers(CollisionManager::Player_Hit_Collectable, playerCollider);
 }
 
 
@@ -206,8 +216,7 @@ void Player::selectWeapon(const std::string& weaponName)
 		mWeapon->rightFlip();
 	}
 
-	mGameData->collisionManager->removeAllAttackers(CollisionManager::PlayerWeapon_Hit_Enemy);
-	mGameData->collisionManager->addAttackers(CollisionManager::PlayerWeapon_Hit_Enemy, mWeapon->getColliders());
+	mCollisionManager.refreshWeaponColliders();
 }
 
 void Player::updateProperties()
@@ -263,6 +272,8 @@ void Player::processHit()
 	pushEvent(EventPacket(trauma));
 
 	updateUI();
+
+	printf("got hit");
 }
 
 
@@ -283,55 +294,24 @@ void Player::attack()
 {
 	if (!mWeapon->isAttacking())
 	{
-		CollisionTracker* simpleTracker = mGameData->collisionManager->getTracker(CollisionManager::PlayerWeapon_Hit_Enemy);
-		ComplexCollisionTracker* complexTracker = static_cast<ComplexCollisionTracker*>(simpleTracker);
-		complexTracker->clearExcluddDefenders();
+		mCollisionManager.clearExcludedList();
+		mCollisionManager.enableWeaponCollisions(true);
 
 		mWeapon->attack();
 
-		//printf("playing miss\n");
 		mGameData->audioManager->playSound(mWeapon->missSoundLabel(), this);
 	}
 }
 
 
-void Player::updateAttackingWeapon()
+void Player::updateWeaponHitSound()
 {
 	if (mWeapon->didHit())
 	{
-		// Play hit sound
 		if (mGameData->audioManager->isPlaying(mWeapon->missSoundLabel(), this) && mWeapon->canPlayHitSound())
 		{
-			//printf("playing hit\n");
 			mGameData->audioManager->playSound(mWeapon->hitSoundLabel(), this);
 		}
-	}
-}
-
-
-void Player::updateWeaponCollisions()
-{
-	CollisionTracker* simpleTracker = mGameData->collisionManager->getTracker(CollisionManager::PlayerWeapon_Hit_Enemy);
-	ComplexCollisionTracker* complexTracker = static_cast<ComplexCollisionTracker*>(simpleTracker);
-
-	if (weapon()->isAttacking())
-	{
-		complexTracker->setCheckingStatus(true);
-		updateAttackingWeapon();
-
-		std::vector<Collider*> enemies = complexTracker->defenders();
-
-		for (int i = 0; i < enemies.size(); i++)
-		{
-			if (enemies[i]->gotHit())
-			{
-				complexTracker->addExcludedDefender(enemies[i]);
-			}
-		}
-	}
-	else
-	{
-		complexTracker->setCheckingStatus(false);
 	}
 }
 
@@ -352,4 +332,10 @@ void Player::updateCurrentTile()
 			pushEvent(EventPacket(eventPtr));
 		}
 	}
+}
+
+
+void Player::enableBodyCollisions(bool isEnabled)
+{
+	mCollisionManager.enableBodyCollisions(isEnabled);
 }

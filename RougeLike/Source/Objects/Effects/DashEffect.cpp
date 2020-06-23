@@ -5,9 +5,6 @@
 #include "Map/Map.h"
 
 
-
-
-
 void DashEffect::fastUpdate(float dt)
 {
 	float distanceToTarget = distanceSquared(mReceiver->position(), mTarget);
@@ -24,14 +21,10 @@ void DashEffect::fastUpdate(float dt)
 }
 
 
-
 void DashEffect::slowUpdate(float dt)
 {
 
 }
-
-
-
 
 
 // --- Private Functions --- //

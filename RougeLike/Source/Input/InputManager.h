@@ -3,7 +3,6 @@
 #include "Button.h"
 #include "Game/Cursor.h"
 
-static constexpr int maxButtons = 20;
 
 class InputManager
 {
@@ -43,6 +42,6 @@ private:
 
 
 private:
-	Button mButtons[maxButtons];
+	std::vector<Button> mButtons;
 	Cursor mCursor;
 };

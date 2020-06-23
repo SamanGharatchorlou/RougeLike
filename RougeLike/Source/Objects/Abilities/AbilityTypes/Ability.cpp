@@ -20,9 +20,9 @@ EventPacket Ability::popEvent()
 }
 
 
-void Ability::init(Animator animator, Player* player)
+void Ability::init(Animator animator, Actor* caster)
 {
-	mPlayer = player;
+	mCaster = caster;
 	mAnimator = animator;
 	mRect.SetSize(realiseSize(animator.frameSize(), mMaxDimention));
 }
@@ -41,7 +41,6 @@ void Ability::render()
 	{
 		RectF rect = Camera::Get()->toCameraCoords(mRect);
 		mAnimator.render(rect);
-		printf("rendering rect at %f, %f\n", rect.Center().x, rect.Center().y);
 	}
 }
 
@@ -52,13 +51,13 @@ void AreaAbility::render()
 	// Range circle
 	if (mState == Selected)
 	{
-		VectorF position = Camera::Get()->toCameraCoords(mPlayer->position());
+		VectorF position = Camera::Get()->toCameraCoords(mCaster->position());
 		VectorF size = VectorF(mRange, mRange) * 2.0f;
 
 		RectF rect = RectF(VectorF(), size);
 		rect.SetCenter(position);
 
-		//mRangeCircle->render(rect);
+		mRangeCircle->render(rect);
 
 		RenderEvent* event = new RenderEvent(mRangeCircle, rect, (int)RenderLayer::Floor);
 		EventPacket ep(event);
@@ -75,10 +74,10 @@ Collider AreaAbility::collider()
 }
 
 
-bool AreaAbility::isValidTarget(VectorF target, Map* map)
+bool AreaAbility::isValidTarget(VectorF target, const Map* map)
 {
 	// Is it in range
-	if (distanceSquared(mPlayer->position(), target) > mRange * mRange)
+	if (distanceSquared(mCaster->position(), target) > mRange * mRange)
 		return false;
 
 	// Is the target position a floor tile

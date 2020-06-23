@@ -13,6 +13,7 @@ public:
 
 	void activate(VectorF position) override;
 	void activate(Actor* actor, EffectPool* effectPool) override;
+	void fastUpdate(float dt) override { }
 	void slowUpdate(float dt) override;
 
 	const TargetType targetType() const override { return TargetType::Area_Attack; }

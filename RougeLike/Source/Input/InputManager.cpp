@@ -92,7 +92,7 @@ void InputManager::processInputEvent(SDL_Event& event)
 
 const Button& InputManager::getButton(Button::Key key) const
 {
-	for (unsigned int i = 0; i < maxButtons; i++)
+	for (unsigned int i = 0; i < mButtons.size(); i++)
 	{
 		if (mButtons[i].isKey(key))
 			return mButtons[i];
@@ -175,40 +175,41 @@ void InputManager::processButtonEvent(SDL_Event& event)
 
 void InputManager::bindDefaultButtons()
 {
-	int index = 0;
-	mButtons[index++].bindToKey(Button::None);
+	mButtons.push_back(Button(Button::Key::None));
 
 	// Movement
-	mButtons[index++].bindToKey(Button::Up);
-	mButtons[index++].bindToKey(Button::Down);
-	mButtons[index++].bindToKey(Button::Left);
-	mButtons[index++].bindToKey(Button::Right);
+	mButtons.push_back(Button(Button::Key::Up));
+	mButtons.push_back(Button(Button::Key::Down));
+	mButtons.push_back(Button(Button::Key::Left));
+	mButtons.push_back(Button(Button::Key::Right));
 
 #if UI_EDITOR
-	mButtons[index++].bindToKey(Button::UILeft);
-	mButtons[index++].bindToKey(Button::UIRight);
-	mButtons[index++].bindToKey(Button::UIDown);
-	mButtons[index++].bindToKey(Button::UIUp);
+	mButtons.push_back(Button(Button::Key::UILeft));
+	mButtons.push_back(Button(Button::Key::UIRight));
+	mButtons.push_back(Button(Button::Key::UIDown));
+	mButtons.push_back(Button(Button::Key::UIUp));
 #endif
 
 	// Game state
-	mButtons[index++].bindToKey(Button::Pause);
-	mButtons[index++].bindToKey(Button::Esc);
-	mButtons[index++].bindToKey(Button::Quit);
-	mButtons[index++].bindToKey(Button::Enter);
-	mButtons[index++].bindToKey(Button::Ctrl);
-	mButtons[index++].bindToKey(Button::Space);
+	mButtons.push_back(Button(Button::Key::Pause));
+	mButtons.push_back(Button(Button::Key::Esc));
+	mButtons.push_back(Button(Button::Key::Quit));
+	mButtons.push_back(Button(Button::Key::Enter));
+	mButtons.push_back(Button(Button::Key::Ctrl));
+	mButtons.push_back(Button(Button::Key::Space));
 
 	// Keys
-	mButtons[index++].bindToKey(Button::E);
+	mButtons.push_back(Button(Button::Key::E));
 
 	// Numbers
-	mButtons[index++].bindToKey(Button::One);
-	mButtons[index++].bindToKey(Button::Two);
-	mButtons[index++].bindToKey(Button::Three);
-
-
-	ASSERT(Warning, index < maxButtons, "Attempting to bind too many buttons, you need to increase the size of 'maxButtons'\n");
+	mButtons.push_back(Button(Button::Key::One));
+	mButtons.push_back(Button(Button::Key::Two));
+	mButtons.push_back(Button(Button::Key::Three));
+	mButtons.push_back(Button(Button::Key::Four));
+	mButtons.push_back(Button(Button::Key::Five));
+	mButtons.push_back(Button(Button::Key::Six));
+	mButtons.push_back(Button(Button::Key::Seven));
+	mButtons.push_back(Button(Button::Key::Eight));
 }
 
 
