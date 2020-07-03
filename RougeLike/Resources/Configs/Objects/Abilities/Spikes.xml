@@ -3,7 +3,7 @@
 	<Properties>
 		<Damage>50</Damage>
 		<KnockbackForce>750</KnockbackForce>
-		<KnockbackDistance>35000</KnockbackDistance>
+		<KnockbackDistance>100</KnockbackDistance>
 		<Range>250</Range>
 		<MaxSize>125</MaxSize>
 		<Cooldown>5</Cooldown>

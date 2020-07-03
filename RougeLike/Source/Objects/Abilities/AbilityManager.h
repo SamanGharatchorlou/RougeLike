@@ -1,14 +1,18 @@
 #pragma once
 
 #include "Events/LocalDispatcher.h"
+#include "AbilityActivator.h"
 #include "AbilityHotKeys.h"
 #include "AbilityTypes/Ability.h"
 
+
 class GameData;
+class Actor;
 
 
 class AbilityManager
 {
+	friend class AbilityHotKeys;
 	friend class AbilityActivator;
 
 public:
@@ -18,11 +22,9 @@ public:
 	void slowUpdate(float dt);
 	void render();
 
-	void add(Ability* ability);
+	void add(const std::string& name);
 	void setState(Ability* ability, Ability::State state);
 
-	void exitSelection();
-	void exitSelection(Ability* ability);
 	bool inSelectionMode() const;
 
 	Ability* get(const std::string& name) const;
@@ -30,14 +32,12 @@ public:
 	bool hasEvent() const { return mEvents.hasEvent(); }
 	EventPacket popEvent() { return mEvents.pop(); }
 
-	void sendSetTextColourEvent(Ability* abiliy, Colour colour);
-
 
 private:
+	void sendSetTextColourEvent(Ability* abiliy, Colour colour);
+
 	void handleStates(Ability* ability, float dt);
 	void handleEvents(Ability* ability);
-
-	void completeSelection(Ability* ability);
 
 
 private:
@@ -46,6 +46,7 @@ private:
 
 	LocalDispatcher mEvents;
 
+	AbilityActivator mActivator;
 	AbilityHotKeys mHotKeys;
 
 	std::vector<Ability*> mAbilities;

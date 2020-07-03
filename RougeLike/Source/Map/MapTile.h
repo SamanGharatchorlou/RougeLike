@@ -1,14 +1,27 @@
 #pragma once
 
-
 class BasicTile
 {
 public:
-	enum Type : int32_t
+	enum Type : Uint64
 	{
 		None,
+
 		Floor,
-		Wall,
+		Floor_ColumnBase = Floor << 1,
+
+		Floor_Right = Floor << 2,
+		Floor_Left = Floor << 3,
+		Floor_Top = Floor << 4,
+		Floor_Bottom = Floor << 5,
+
+		Floor_Top_Right = Floor << 6,
+		Floor_Top_Left = Floor << 7,
+		Floor_Bottom_Right = Floor << 8,
+		Floor_Bottom_Left = Floor << 9,
+
+
+		Wall = Floor << 12,
 
 		// Sides
 		Left = Wall << 1,
@@ -36,6 +49,16 @@ public:
 		Point_Bottom_Left = Wall << 14,
 		Point_Top_Right = Wall << 15,
 		Point_Top_Left = Wall << 16,
+
+		Column_Lower = Wall << 17,
+		Column_Upper = Wall << 18,
+		Column_Top = Wall << 19,
+
+
+		// Water
+		Water = Wall << 20,
+		Water_Top =  Wall << 21,
+
 	};
 
 public:
@@ -63,6 +86,7 @@ public:
 	// Collision type
 	const Type collisionType() const { return mCollisionType; }
 	bool hasCollisionType(Type type) const;
+
 
 	void setCollisionType(Type type) { mCollisionType = type; }
 	void addCollisionType(Type type);
@@ -110,49 +134,49 @@ private:
 
 inline bool operator !=(BasicTile::Type a, BasicTile::Type b)
 {
-	return static_cast<int>(a) != static_cast<int>(b);
+	return static_cast<Uint64>(a) != static_cast<Uint64>(b);
 }
 
 inline bool operator ==(BasicTile::Type a, BasicTile::Type b)
 {
-	return static_cast<int>(a) == static_cast<int>(b);
+	return static_cast<Uint64>(a) == static_cast<Uint64>(b);
 }
 
 
 inline MapTile::Type operator &(BasicTile::Type a, BasicTile::Type b)
 {
-	return static_cast<BasicTile::Type>(static_cast<int>(a) & static_cast<int>(b));
+	return static_cast<BasicTile::Type>(static_cast<Uint64>(a) & static_cast<Uint64>(b));
 }
 
 inline void operator &=(BasicTile::Type& a, BasicTile::Type b)
 {
-	a = static_cast<BasicTile::Type>(static_cast<int>(a) & static_cast<int>(b));
+	a = static_cast<BasicTile::Type>(static_cast<Uint64>(a) & static_cast<Uint64>(b));
 }
 
 inline BasicTile::Type operator |(BasicTile::Type a, BasicTile::Type b)
 {
-	return static_cast<BasicTile::Type>(static_cast<int>(a) | static_cast<int>(b));
+	return static_cast<BasicTile::Type>(static_cast<Uint64>(a) | static_cast<Uint64>(b));
 }
 
 inline void operator |=(BasicTile::Type& a, BasicTile::Type b)
 {
-	a = static_cast<BasicTile::Type>(static_cast<int>(a) | static_cast<int>(b));
+	a = static_cast<BasicTile::Type>(static_cast<Uint64>(a) | static_cast<Uint64>(b));
 }
 
 
 
 inline BasicTile::Type operator ^(BasicTile::Type a, BasicTile::Type b)
 {
-	return static_cast<BasicTile::Type>(static_cast<int>(a) ^ static_cast<int>(b));
+	return static_cast<BasicTile::Type>(static_cast<Uint64>(a) ^ static_cast<Uint64>(b));
 }
 
 inline void operator ^=(BasicTile::Type& a, BasicTile::Type b)
 {
-	a = static_cast<BasicTile::Type>(static_cast<int>(a) ^ static_cast<int>(b));
+	a = static_cast<BasicTile::Type>(static_cast<Uint64>(a) ^ static_cast<Uint64>(b));
 }
 
 inline BasicTile::Type operator ~(BasicTile::Type a)
 {
-	return static_cast<BasicTile::Type>(~static_cast<int>(a));
+	return static_cast<BasicTile::Type>(~static_cast<Uint64>(a));
 }
 

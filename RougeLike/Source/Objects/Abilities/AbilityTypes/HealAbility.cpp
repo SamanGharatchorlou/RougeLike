@@ -1,45 +1,56 @@
 #include "pch.h"
 #include "HealAbility.h"
 
+#include "Objects/Actors/Player/Player.h"
 #include "Objects/Effects/EffectPool.h"
 #include "Objects/Effects/HealEffect.h"
 
-#include "Animations/Animator.h"
-#include "Objects/Actors/Player/Player.h"
+#include "Collisions/Collider.h"
 
 
 void HealAbility::fillValues(ValueMap& values)
 {
-	mMaxDimention = std::stof(values["MaxSize"]);
-	mCooldownTime = std::stof(values["Cooldown"]);
 	mHeal = Health(std::stof(values["Heal"]));
 }
+
 
 void HealAbility::slowUpdate(float dt)
 {
 	mAnimator.slowUpdate(dt);
-
-	// HACK: added Offset
-	mRect.SetBotCenter(mCaster->rect().BotCenter() + VectorF(0.0f, 10.0f));
+	mRect.SetBotCenter(mCaster->collider()->scaledRect().BotCenter() + VectorF(0.0f, 10.0f));
 
 	// Completed one animation loop
 	if (mAnimator.loops() > 0)
 		mAnimator.stop();
-
-	if (hasCooledDown())
-		endAbility();
 }
 
 
-void HealAbility::activate(Actor* actor, EffectPool* effectPool)
+void HealAbility::activate(EffectPool* pool)
 {
 	mAnimator.startAnimation(Action::Active);
 
-	Effect* effect = effectPool->getEffect(EffectType::Heal);
+	applyEffects(pool);
+	updateUI();
+}
+
+
+void HealAbility::applyEffects(EffectPool* pool)
+{
+	Effect* effect = pool->getEffect(EffectType::Heal);
 	HealEffect* healEffect = static_cast<HealEffect*>(effect);
 	healEffect->set(mHeal);
-	actor->addEffect(effect);
+	mCaster->addEffect(effect);
+}
 
-	static_cast<Player*>(actor)->updateUI();
-	beginCooldown();
+
+void HealAbility::updateUI()
+{
+	Player* player = dynamic_cast<Player*>(mCaster);
+
+	if (mCaster)
+	{
+		Health* hp = static_cast<Health*>(mCaster->getProperty("Health"));
+		SetHealthBarEvent* hpPtr = new SetHealthBarEvent(*hp);
+		pushEvent(EventPacket(hpPtr));
+	}
 }

@@ -47,8 +47,7 @@ void Player::init(const std::string& characterConfig)
 
 void Player::addAbility(const std::string& name)
 {
-	Ability* ability = mAbilities.createNewAbility(name);
-	mAbilities.add(ability);
+	mAbilities.add(name);
 }
 
 
@@ -98,20 +97,6 @@ void Player::fastUpdate(float dt)
 
 void Player::effectLoop()
 {
-	// Body effects
-	if (mCollider.didHit())
-	{
-		if (mCollider.hasEffects())
-		{
-			printf("effects\n");
-
-		}
-
-	}
-
-
-	// Weapon Effects
-
 	// Return any unused effects back into the pool
 	std::vector<EffectCollider*> colliders = mWeapon->getEffectColliders();
 
@@ -126,15 +111,9 @@ void Player::effectLoop()
 
 	if (mWeapon->didHit())
 	{
-		// HACK: V V V V V
-		const MeleeWeaponData* weaponData = mWeapon->getData();
-
+		// HACK: V V V V V - Update knockback source
 		mEffectProperties.setProperty("TargetPositionX", position().x);
 		mEffectProperties.setProperty("TargetPositionY", position().y);
-
-		setEffectProperty("Damage", weaponData->damage.value());
-		setEffectProperty("KnockbackForce", weaponData->knockbackForce);
-		setEffectProperty("KnockbackDistance", weaponData->knockbackDistance);
 		// HACK: ^ ^ ^ ^ ^
 
 		const std::vector<EffectType> effectTypes = mEffects.attackingEffects();
@@ -205,7 +184,6 @@ void Player::selectWeapon(const std::string& weaponName)
 {
 	Weapon* weapon = weaponStash.getWeapon(weaponName);
 	mWeapon =  static_cast<MeleeWeapon*>(weapon);
-	updateProperties();
 
 	if (mPhysics.flip() == SDL_FLIP_HORIZONTAL)
 	{
@@ -217,14 +195,11 @@ void Player::selectWeapon(const std::string& weaponName)
 	}
 
 	mCollisionManager.refreshWeaponColliders();
-}
 
-void Player::updateProperties()
-{
-	const MeleeWeaponData* data = mWeapon->getData();
-	//mPropertyBag->get("Damage")->setValue(data->damage.value());
-	//mPropertyBag->get("KnockbackDistance")->setValue(data->knockbackDistance);
-	//mPropertyBag->get("KnockbackForce")->setValue(data->knockbackForce);
+	const MeleeWeaponData* weaponData = mWeapon->getData();
+	setEffectProperty("Damage", weaponData->damage.value());
+	setEffectProperty("KnockbackForce", weaponData->knockbackForce);
+	setEffectProperty("KnockbackDistance", weaponData->knockbackDistance);
 }
 
 
@@ -272,8 +247,6 @@ void Player::processHit()
 	pushEvent(EventPacket(trauma));
 
 	updateUI();
-
-	printf("got hit");
 }
 
 

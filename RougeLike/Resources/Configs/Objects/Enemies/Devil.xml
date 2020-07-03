@@ -28,16 +28,11 @@
 		<!-- Alert -->
 		<AttentionTime>0.5</AttentionTime>
 
-		<!-- Knockback -->
-		<KnockbackForce>200</KnockbackForce>
-		<KnockbackDistance>10000</KnockbackDistance>
+		<!-- Effects -->
+		<Damage>20</Damage>
+		<KnockbackForce>100</KnockbackForce>
+		<KnockbackDistance>20</KnockbackDistance>
 	</Properties>
-
-	<Effects>
-		<Damage>10</Damage>
-		<KnockbackForce>200</KnockbackForce>
-		<KnockbackDistance>10000</KnockbackDistance>
-	</Effects>
 
 	<MaxSize>60</MaxSize>
 	<ColliderScale x = "0.32" y = "0.57"></ColliderScale>

@@ -13,7 +13,6 @@ WeaponStash::WeaponStash()
 	data["empty"] = new WeaponData;
 
 	meleeWeapon = new MeleeWeapon;
-	//rangedWeapon = new RangedWeapon;
 }
 
 
@@ -21,9 +20,6 @@ WeaponStash::~WeaponStash()
 {
 	delete meleeWeapon;
 	meleeWeapon = nullptr;
-
-	//delete rangedWeapon;
-	//rangedWeapon = nullptr;
 }
 
 
@@ -62,11 +58,15 @@ void WeaponStash::fillBasicWeaponData(XMLParser& parser, WeaponData* data)
 	float damage = std::stof(properties["Damage"]);
 	data->damage = Damage(damage);
 
+	// Cooldown
+	data->cooldown = Cooldown(std::stof(properties["Cooldown"]) / 100.0f);
+
 	// Audio
 	ValueMap audio = parser.values(parser.rootNode()->first_node("Audio"));
 	data->audioHit = audio["Hit"];
 	data->audioMiss = audio["Miss"];
 
+	// Size and offset
 	data->maxDimention = std::stof(parser.firstRootNodeValue("MaxSize"));
 
 	Attributes attributes = parser.attributes(parser.rootNode()->first_node("Offset"));

@@ -31,7 +31,7 @@ void Environment::init()
 
 	// create first entrace and level
 	buildPassage(mEntrace, offset);
-	mEntrace->close(mTextureManager);
+	//mEntrace->close(mTextureManager);
 
 	// Build level
 	offset = mEntrace->getLastRect().RightPoint();
@@ -55,7 +55,7 @@ void Environment::nextLevel()
 	// Set the new entrace as the old exit
 	Map* oldEntrace = mEntrace;
 	mEntrace = mExit;
-	mEntrace->close(mTextureManager);
+	//mEntrace->close(mTextureManager);
 
 	mExit = oldEntrace;
 	mExit->clearData();

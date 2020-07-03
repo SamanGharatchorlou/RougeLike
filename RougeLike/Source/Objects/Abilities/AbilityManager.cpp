@@ -6,63 +6,23 @@
 #include "Graphics/Texture.h"
 #include "Graphics/TextureManager.h"
 
-#include "UI/UIManager.h"
-#include "UI/Elements/UIButton.h"
-
-#include "Objects/Actors/Player/Player.h"
 #include "Objects/Actors/Actor.h"
 #include "Objects/Actors/ActorManager.h"
-
-#include "Collisions/Collider.h"
-#include "Map/Environment.h"
-#include "Map/Map.h"
 
 #include "Animations/AnimationReader.h"
 
 // TEMP
-#include "AbilityActivator.h"
+#include "AbilityCreator.h"
 
 
 AbilityManager::AbilityManager(GameData* gameData, Actor* parent) 
-	: mGameData(gameData), mHotKeys(gameData, this), mCaster(parent)
+	: mGameData(gameData), mActivator(this), mHotKeys(this), mCaster(parent)
 { }
 
 
 void AbilityManager::handleInput()
 {
-	for (int i = 0; i < mAbilities.size(); i++)
-	{
-		UIButton* button = mGameData->uiManager->findButton(mAbilities[i]->name());
-
-		// Enter selection mode
-		if (button && button->isReleased())
-		{
-			exitSelection();
-			mAbilities[i]->setState(Ability::Selected);
-		}
-	}
-
-	mHotKeys.handleInput();
-}
-
-
-void AbilityManager::exitSelection()
-{
-	for (int i = 0; i < mAbilities.size(); i++)
-	{
-		exitSelection(mAbilities[i]);
-	}
-}
-
-
-void AbilityManager::exitSelection(Ability* ability)
-{
-	//if (ability->state() == Ability::Selected)
-	//	setState(ability, Ability::Idle);
-
-	UIButton* button = mGameData->uiManager->findButton(ability->name());
-	if (button)
-		button->setActive(false);
+	mHotKeys.handleInput(mGameData->inputManager);
 }
 
 
@@ -70,27 +30,35 @@ void AbilityManager::handleStates(Ability* ability, float dt)
 {
 	switch (ability->state())
 	{
-		// Ready for/attemping activation
 	case Ability::Selected:
 	{
-		//attemptActivation(ability);
-		AbilityActivator(this, ability);
+		if (mActivator.shouldActivate(ability, mGameData->inputManager))
+			setState(ability, Ability::Activate);
+
 		break;
 	}
-	// One frame, on activation
-	case Ability::Activating:
+	case Ability::Activate:
 	{
-		completeSelection(ability);
+		if (mActivator.activate(ability))
+		{
+			ability->cooldown().begin();
+			setState(ability, Ability::Running);
+		}
+
 		break;
 	}
-	// Ability doing its thing
 	case Ability::Running:
 	{
 		ability->fastUpdate(dt);
 		ability->slowUpdate(dt);
+
+		if (ability->cooldown().completed())
+		{
+			setState(ability, Ability::Finished);
+		}
+
 		break;
 	}
-	// Reset... cool down etc.
 	case Ability::Finished:
 	{
 		ability->exit();
@@ -102,16 +70,13 @@ void AbilityManager::handleStates(Ability* ability, float dt)
 	}
 }
 
+
 void AbilityManager::slowUpdate(float dt)
 {
 	for (int i = 0; i < mAbilities.size(); i++)
 	{
-		Ability* ability = mAbilities[i];
-
-		handleStates(ability, dt);
-
-		// Either process event or pass to parent object to be handled 
-		handleEvents(ability);
+		handleStates(mAbilities[i], dt);
+		handleEvents(mAbilities[i]);
 	}
 
 	// Handle hot key events
@@ -121,18 +86,16 @@ void AbilityManager::slowUpdate(float dt)
 	}
 }
 
+
 void AbilityManager::handleEvents(Ability* ability)
 {
 	while (ability->hasEvent())
 	{
 		EventPacket event = ability->popEvent();
 
-		if (event.data->eventType == Event::ActivateAreaAttack)
+		if (event.data->eventType == Event::ActivateAbilityOn)
 		{
-			// TODO: can i just replace this with the activator?
-			AreaAbility* areaAbility = static_cast<AreaAbility*>(ability);
-			activateOnArea(areaAbility);
-			//AbilityActivator(areaAbility);
+			mActivator.activateAreaAttack(ability);
 			event.free();
 		}
 		else
@@ -167,8 +130,10 @@ bool AbilityManager::inSelectionMode() const
 }
 
 
-void AbilityManager::add(Ability* ability)
+void AbilityManager::add(const std::string& name)
 {
+	Ability* ability = createNewAbility(name, mGameData->textureManager);
+
 	XMLParser parser;
 	parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, ability->name()));
 
@@ -178,15 +143,6 @@ void AbilityManager::add(Ability* ability)
 	if (reader.initAnimator(animator))
 	{
 		ability->init(animator, mCaster);
-		
-		if (ability->targetType() >= Ability::Area)
-		{
-			AreaAbility* areaAbility = static_cast<AreaAbility*>(ability);
-
-			Texture* rangeCircle = mGameData->textureManager->getTexture("RangeCircle", FileManager::Image_UI);
-			areaAbility->setRangeCircle(rangeCircle);
-		}
-
 		mHotKeys.addHotKey(ability);
 	}
 	else
@@ -199,23 +155,47 @@ void AbilityManager::add(Ability* ability)
 
 void AbilityManager::setState(Ability* ability, Ability::State state)
 {
-	if (state == Ability::Selected)
+	if (state == Ability::Idle)
 	{
+		// None OR Finished --> Idle
+		if (ability->state() == Ability::None || ability->state() == Ability::Finished)
+		{
+			ability->setState(state);
+		}
+	}
+	else if (state == Ability::Selected)
+	{
+		// Idle --> Selected
 		if (ability->state() == Ability::Idle)
+		{
 			sendSetTextColourEvent(ability, Colour::Green);
-		else
-			return;
+			ability->setState(state);
+		}
 	}
-	else if (state == Ability::Activating)
+	else if (state == Ability::Activate)
 	{
-		sendSetTextColourEvent(ability, Colour::Red);
+		// Idle OR Selected --> Activate
+		if (ability->state() == Ability::Idle || ability->state() == Ability::Selected)
+		{
+			sendSetTextColourEvent(ability, Colour::Red);
+			ability->setState(state);
+		}
 	}
-	else if (state == Ability::Idle)
+	else if (state == Ability::Running)
 	{
-		sendSetTextColourEvent(ability, Colour::White);
+		if (ability->state() == Ability::Activate)
+		{
+			ability->setState(state);
+		}
 	}
-
-	ability->setState(state);
+	else if (state == Ability::Finished)
+	{
+		if (ability->state() == Ability::Running)
+		{
+			sendSetTextColourEvent(ability, Colour::White);
+			ability->setState(state);
+		}
+	}
 }
 
 
@@ -236,15 +216,6 @@ Ability* AbilityManager::get(const std::string& name) const
 
 
 // --- Private Functions --- //
-void AbilityManager::completeSelection(Ability* ability)
-{
-	setState(ability, Ability::Running);
-
-	UIButton* button = mGameData->uiManager->findButton(ability->name());
-	if (button)
-		button->setActive(false);
-}
-
 void AbilityManager::sendSetTextColourEvent(Ability* ability, Colour colour)
 {
 	std::string id = ability->name() + "IconText";

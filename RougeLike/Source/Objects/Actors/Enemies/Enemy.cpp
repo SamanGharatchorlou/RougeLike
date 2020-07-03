@@ -37,6 +37,10 @@ void Enemy::init(const std::string& config)
 
 	mEffects.addAttackingEffect(EffectType::Damage);
 	mEffects.addAttackingEffect(EffectType::Displacement);
+
+	setEffectProperty("Damage", getPropertyValue("Damage"));
+	setEffectProperty("KnockbackForce", getPropertyValue("KnockbackForce"));
+	setEffectProperty("KnockbackDistance", getPropertyValue("KnockbackDistance"));
 }
 
 
@@ -52,20 +56,19 @@ void Enemy::fastUpdate(float dt)
 
 void Enemy::effectLoop()
 {
+	if (mCollider.hasEffects())
+	{
+		printf("enemy has %d effects\n", mCollider.effectCount());
+	}
+
 	if (mCollider.didHit())
 	{
-		const std::vector<EffectType> effects = mEffects.attackingEffects();
-
+		// HACK: V V V V V - Update knockback source
 		mEffectProperties.setProperty("TargetPositionX", position().x);
 		mEffectProperties.setProperty("TargetPositionY", position().y);
+		// HACK: ^ ^ ^ ^ ^
 
-		// Make sure no effects are left over
-		while(mCollider.hasEffects())
-		{
-			Effect* effect = mCollider.popEffect();
-			mGameData->effectPool->returnEffect(effect);
-			printf("Returning an effect on the collider when there shouldnt be one, why??\n");
-		}
+		const std::vector<EffectType> effects = mEffects.attackingEffects();
 
 		// Add effects to collider
 		for (int i = 0; i < effects.size(); i++)

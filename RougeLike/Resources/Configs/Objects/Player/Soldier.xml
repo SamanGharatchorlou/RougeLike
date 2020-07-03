@@ -4,19 +4,12 @@
 		<!-- Attributes -->
 		<Level>1</Level>
 		<Health>100</Health>
-		<Armor>10</Armor>
+		<Armor>50</Armor>
 		<AttackSpeed>10</AttackSpeed>
 
 		<!-- Physics -->
 		<Force>8000</Force>
 		<MaxVelocity>300</MaxVelocity>
-
-		<!-- Attack -->
-		<Damage>0</Damage>
-
-		<!-- Knockback -->
-		<KnockbackForce>0</KnockbackForce>
-		<KnockbackDistance>0</KnockbackDistance>
 	</Properties>
 
 	<MaxSize>80</MaxSize>

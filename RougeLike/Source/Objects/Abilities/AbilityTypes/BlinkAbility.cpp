@@ -1,41 +1,22 @@
 #include "pch.h"
 #include "BilnkAbility.h"
 
+#include "Objects/Actors/Actor.h"
 #include "Objects/Effects/BlinkEffect.h"
 #include "Objects/Effects/EffectPool.h"
-
-#include "Objects/Actors/Player/Player.h"
 
 #include "Animations/Animator.h"
 
 
-
-void BlinkAbility::fillValues(ValueMap& values)
-{
-	mRange = std::stof(values["Range"]);
-	mMaxDimention = std::stof(values["MaxSize"]);
-	mCooldownTime = std::stof(values["Cooldown"]);
-}
-
-
-void BlinkAbility::activate(VectorF position)
+void BlinkAbility::activateAt(VectorF position, EffectPool* effectPool)
 {
 	mTargetPosition = position;
 
 	mRect.SetSize(realiseSize(mAnimator.frameSize(), mMaxDimention));
 	mRect.SetCenter(mTargetPosition);
 	mAnimator.startAnimation(Action::Active);
-}
 
-
-void BlinkAbility::activate(Actor* actor, EffectPool* effectPool)
-{
-	Effect* effect = effectPool->getEffect(EffectType::Blink);
-	BlinkEffect* blinkEffect = static_cast<BlinkEffect*>(effect);
-	blinkEffect->set(mTargetPosition);
-	actor->addEffect(effect);
-
-	beginCooldown();
+	applyEffects(effectPool);
 }
 
 
@@ -46,7 +27,13 @@ void BlinkAbility::slowUpdate(float dt)
 
 	mAnimator.slowUpdate(dt);
 	mRect.SetCenter(mTargetPosition);
+}
 
-	if (hasCooledDown())
-		endAbility();
+
+void BlinkAbility::applyEffects(EffectPool* pool)
+{
+	Effect* effect = pool->getEffect(EffectType::Blink);
+	BlinkEffect* blinkEffect = static_cast<BlinkEffect*>(effect);
+	blinkEffect->set(mTargetPosition);
+	mCaster->addEffect(effect);
 }

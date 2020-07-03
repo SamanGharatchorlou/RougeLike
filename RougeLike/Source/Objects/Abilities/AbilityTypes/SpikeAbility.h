@@ -1,22 +1,24 @@
 #pragma once
 
 #include "Ability.h"
-#include "Objects/Attributes/Damage.h"
 
 
-class SpikeAbility : public AreaAbility
+class SpikeAbility : public TargePositionAttackAbility
 {
 public:
 	SpikeAbility() : mDamage(0.0f), mKnockbackDistance(0.0f), mKnockbackForce(0.0f) { }
 
 	void fillValues(ValueMap& values) override;
 
-	void activate(VectorF position) override;
-	void activate(Actor* actor, EffectPool* effectPool) override;
+	void activateAt(VectorF position, EffectPool* effectPool) override;
+	void activateOn(Actor* actor, EffectPool* effectPool) override;
+
 	void fastUpdate(float dt) override { }
 	void slowUpdate(float dt) override;
 
-	const TargetType targetType() const override { return TargetType::Area_Attack; }
+
+private:
+	void applyEffects(Actor* actor, EffectPool* effectPool);
 
 
 private:

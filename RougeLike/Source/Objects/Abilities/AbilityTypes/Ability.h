@@ -5,6 +5,8 @@
 
 #include "Animations/Animator.h"
 #include "Collisions/Collider.h"
+#include "Objects/Abilities/Cooldown.h"
+
 
 class Actor;
 class Map;
@@ -15,14 +17,12 @@ class EffectPool;
 class Ability
 {
 public:
-	enum TargetType
+	enum class TargetType
 	{
 		Self,
-		Single_Enemy,
-
-		Area,
-		Area_Attack,
-		Area_Point
+		Actor,
+		Position,
+		AttackArea,
 	};
 
 	enum State
@@ -30,7 +30,7 @@ public:
 		None,
 		Idle,
 		Selected,
-		Activating,
+		Activate,
 		Running,
 		Finished
 	};
@@ -40,13 +40,13 @@ public:
 	Ability() : mState(None) { }
 	virtual ~Ability() { }
 
-	virtual void fillValues(ValueMap& values) = 0;
+	void fillAbilityValues(ValueMap& values);
 	virtual void init(Animator animator, Actor* caster);
-	
-	virtual void activate(Actor* target, EffectPool* pool) = 0;
+
+	virtual void fillValues(ValueMap& values) = 0;
 	virtual void fastUpdate(float dt) = 0;
 	virtual void slowUpdate(float dt) = 0;
-	virtual void render();
+	virtual void render() = 0;
 	virtual void exit();
 
 	virtual const TargetType targetType() const = 0;
@@ -57,15 +57,13 @@ public:
 	std::string name() const { return mName; }
 
 	void setState(State state)	{ mState = state; }
-	void endAbility()			{ setState(Ability::Finished); }
 	State state() const			{ return mState; }
 
+	void pushEvent(EventPacket event) { mEvents.push(event); }
 	bool hasEvent() const { return mEvents.size() > 0; }
 	EventPacket popEvent();
 
-	void beginCooldown() { mCooldownTimer.restart(); }
-	bool hasCooledDown() { return mCooldownTimer.getSeconds() > mCooldownTime; }
-
+	Cooldown& cooldown() { return mCooldown; }
 
 protected:
 	std::string mName;
@@ -78,21 +76,17 @@ protected:
 	RectF mRect;
 	float mMaxDimention;
 
-	float mCooldownTime;
-	Timer<float> mCooldownTimer;
+	Cooldown mCooldown;
 };
 
 
-
-class AreaAbility : public Ability
+class RangedAbility : public Ability
 {
 public:
-	
+	void fillRangedAbilityValues(ValueMap& values);
 	void setRangeCircle(Texture* rangeCircle) { mRangeCircle = rangeCircle; }
 
-	virtual void activate(Actor* target, EffectPool* pool) = 0;
-	virtual void activate(VectorF position) = 0;
-	virtual void render() override;
+	void renderRangeCircle();
 
 	bool isValidTarget(VectorF target, const Map* map);
 
@@ -105,4 +99,51 @@ protected:
 
 	float mRange;
 	Texture* mRangeCircle;
+};
+
+
+class TargetSelfAbility : public Ability
+{
+public:
+	virtual void activate(EffectPool* pool) = 0;
+
+	const TargetType targetType() const override { return TargetType::Self; }
+
+	virtual void render() override;
+};
+
+
+class TargetActorAbility : public RangedAbility
+{
+public:
+	virtual void activateOn(Actor* target, EffectPool* pool) = 0;
+
+	const TargetType targetType() const override { return TargetType::Actor; }
+
+	void render() override { }
+};
+
+
+class TargetPositionAbility : public RangedAbility
+{
+public:
+	virtual void activateAt(VectorF position, EffectPool* pool) = 0;
+
+	const TargetType targetType() const override { return TargetType::Position; }
+
+	virtual void render() override;
+};
+
+
+class TargePositionAttackAbility : public RangedAbility
+{
+public:
+	virtual void activateAt(VectorF position, EffectPool* pool) = 0;
+	virtual void activateOn(Actor* target, EffectPool* pool) = 0;
+
+	const TargetType targetType() const override { return TargetType::AttackArea; }
+
+	virtual void render() override;
+
+	void sendActivateOnRequest();
 };

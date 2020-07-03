@@ -13,97 +13,77 @@
 #include "AbilityManager.h"
 
 
-AbilityActivator::AbilityActivator(AbilityManager* manager, Ability* ability) : mManager(manager)
-{
-	attemptActivation(ability);
-}
+AbilityActivator::AbilityActivator(AbilityManager* manager) : mManager(manager) { }
 
-void AbilityActivator::attemptActivation(Ability* ability)
+bool AbilityActivator::shouldActivate(Ability* ability, InputManager* input)
 {
-	if (ability->state() != Ability::Selected)
-		return;
+	bool activate = false;
 
 	switch (ability->targetType())
 	{
 		// Player casts on self only
 	case Ability::TargetType::Self:
 	{
-		attemptActivationOnSelf(ability);
+		Button::Key hotKey = mManager->mHotKeys.hotKey(ability);
+		activate = input->isReleased(hotKey);
 		break;
 	}
 	// Activate on first enemy selected
-	case Ability::TargetType::Single_Enemy:
+	case Ability::TargetType::Actor:
+	case Ability::TargetType::Position:
+	case Ability::TargetType::AttackArea:
 	{
-		attemptActivationOnSingleEnemy(ability);
-		break;
-	}
-	// Select any floor tile
-	case Ability::TargetType::Area_Attack:
-	{
-		attemptActivationOnArea(ability);
-		break;
-	}
-	case Ability::TargetType::Area_Point:
-	{
-		attemptActivationOnPoint(ability);
+		activate = input->isCursorReleased(Cursor::Left);
 		break;
 	}
 	default:
 		break;
 	}
+
+	return activate;
 }
 
 
-void AbilityActivator::attemptActivationOnSelf(Ability* ability)
+bool AbilityActivator::activate(Ability* ability)
 {
-	mManager->setState(ability, Ability::Activating);
-	ability->activate(ability->caster(), mManager->mGameData->effectPool);
-}
+	bool didActivate = false;
 
-
-void AbilityActivator::attemptActivationOnSingleEnemy(Ability* ability)
-{
-	if (mManager->mGameData->inputManager->isCursorPressed(Cursor::Left))
+	switch (ability->targetType())
 	{
-		std::vector<Actor*> enemies = mManager->mGameData->actors->getAllEnemies();
-		for (int i = 0; i < enemies.size(); i++)
-		{
-			// activate ability on first enemy selected
-			if (enemies[i]->collider()->contains(cursorPosition()))
-			{
-				//ability->setState(Ability::Activating);
-				mManager->setState(ability, Ability::Activating);
-				ability->activate(enemies[i], mManager->mGameData->effectPool);
-				break;
-			}
-		}
-	}
-}
-
-
-void AbilityActivator::attemptActivationOnArea(Ability* ability)
-{
-	if (mManager->mGameData->inputManager->isCursorPressed(Cursor::Left))
+		// Player casts on self only
+	case Ability::TargetType::Self:
 	{
-		VectorF cursorPos = cursorPosition();
-
-		// Activate ability
-		AreaAbility* areaAbility = static_cast<AreaAbility*>(ability);
-
-		// BUG: if you select just outside of the current map this breaks?
-		if (areaAbility->isValidTarget(cursorPos, map(cursorPos)))
-		{
-			areaAbility->activate(cursorPos);
-			activateOnArea(areaAbility);
-
-			setState(areaAbility, Ability::Activating);
-		}
+		TargetSelfAbility* selfAbility = static_cast<TargetSelfAbility*>(ability);
+		didActivate = activateOnSelf(selfAbility);
+		break;
 	}
+	// Activate on first enemy selected
+	case Ability::TargetType::Actor:
+	{
+		TargetActorAbility* actorAbility = static_cast<TargetActorAbility*>(ability);
+		didActivate = activateOnActor(actorAbility);
+		break;
+	}
+	// Select any floor tile
+	case Ability::TargetType::Position:
+	case Ability::TargetType::AttackArea:
+	{
+		TargetPositionAbility* positionAbility = static_cast<TargetPositionAbility*>(ability);
+		didActivate = activateOnPosition(positionAbility);
+		break;
+	}
+	default:
+		break;
+	}
+
+	return didActivate;
 }
 
-void AbilityActivator::activateOnArea(AreaAbility* areaAbility)
+
+void AbilityActivator::activateAreaAttack(Ability* ability)
 {
-	Collider abilityCollider = areaAbility->collider();
+	TargePositionAttackAbility* attackAbility = static_cast<TargePositionAttackAbility*>(ability);
+	Collider abilityCollider = attackAbility->collider();
 
 	// Apply effect to all enemies caught in area
 	std::vector<Actor*> enemies = mManager->mGameData->actors->getAllEnemies();
@@ -112,31 +92,53 @@ void AbilityActivator::activateOnArea(AreaAbility* areaAbility)
 		Collider* enemyCollider = enemies[i]->collider();
 		if (enemyCollider->doesIntersect(&abilityCollider))
 		{
-			areaAbility->activate(enemies[i], mManager->mGameData->effectPool);
+			attackAbility->activateOn(enemies[i], mManager->mGameData->effectPool);
 		}
 	}
 }
 
 
-
-void AbilityActivator::attemptActivationOnPoint(Ability* ability)
+bool AbilityActivator::activateOnSelf(TargetSelfAbility* ability)
 {
-	if (mManager->mGameData->inputManager->isCursorPressed(Cursor::Left))
+	ability->activate(mManager->mGameData->effectPool);
+	return true;
+}
+
+
+bool AbilityActivator::activateOnActor(TargetActorAbility* ability)
+{
+	std::vector<Actor*> enemies = mManager->mGameData->actors->getAllEnemies();
+	for (int i = 0; i < enemies.size(); i++)
 	{
-		VectorF cursorPos = cursorPosition();
-
-		// Activate ability
-		AreaAbility* areaAbility = static_cast<AreaAbility*>(ability);
-		if (areaAbility->isValidTarget(cursorPos, map(cursorPos)))
+		// activate ability on first enemy selected
+		if (enemies[i]->collider()->contains(cursorPosition()))
 		{
-			// Apply effect
-			areaAbility->activate(cursorPos);
-			areaAbility->activate(ability->caster(), mManager->mGameData->effectPool);
-
-			setState(areaAbility, Ability::Activating);
+			ability->activateOn(enemies[i], mManager->mGameData->effectPool);
+			return true;
 		}
 	}
+
+	return false;
 }
+
+
+bool AbilityActivator::activateOnPosition(TargetPositionAbility* ability)
+{
+	VectorF cursorPos = cursorPosition();
+
+	// BUG: if you select just outside of the current map this breaks?
+	if (ability->isValidTarget(cursorPos, map(cursorPos)))
+	{
+		ability->activateAt(cursorPos, mManager->mGameData->effectPool);
+		return true;
+	}
+
+	return false;
+}
+
+
+
+
 
 
 VectorF AbilityActivator::cursorPosition() const

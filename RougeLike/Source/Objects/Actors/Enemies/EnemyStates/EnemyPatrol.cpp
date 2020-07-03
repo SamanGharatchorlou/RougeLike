@@ -13,12 +13,6 @@ void EnemyPatrol::init()
 {
 	mEnemy->animator().selectAnimation(Action::Walk);
 	setPatrolPoint();
-
-	Property* property = mEnemy->getProperty("MaxVelocity");
-	if (property)
-		property->setValue(property->value() * 0.6f);
-
-	mEnemy->updatePhysicsStats();
 }
 
 
@@ -114,14 +108,4 @@ bool EnemyPatrol::hasReachedPositionTarget() const
 {
 	VectorF position = mEnemy->position();
 	return distanceSquared(position, mPositionTarget) < 10.0f;
-}
-
-
-void EnemyPatrol::exit()
-{
-	Property* property = mEnemy->getProperty("MaxVelocity");
-	if (property)
-		property->setValue(property->value() / 0.6f);
-
-	mEnemy->updatePhysicsStats();
 }

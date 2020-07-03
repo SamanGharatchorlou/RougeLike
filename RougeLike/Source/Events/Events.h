@@ -7,6 +7,7 @@
 #include "Objects/Attributes/Armor.h"
 
 class Enemy;
+class TargePositionAttackAbility;
 class Texture;
 
 enum class Event
@@ -37,7 +38,7 @@ enum class Event
 	UpdateAIPathMap,
 	UpdateAICostMap,
 
-	ActivateAreaAttack,
+	ActivateAbilityOn,
 
 	Render
 };
@@ -86,9 +87,9 @@ struct SetTextColourEvent : public EventData
 
 struct ActivateAreaAttack : public EventData
 {
-	ActivateAreaAttack(const std::string& ability) : mAbility(ability) { eventType = Event::ActivateAreaAttack; }
+	ActivateAreaAttack(const TargePositionAttackAbility* ability) : mAbility(ability) { eventType = Event::ActivateAbilityOn; }
 	~ActivateAreaAttack() { }
-	std::string mAbility;
+	const TargePositionAttackAbility* mAbility;
 };
 
 

@@ -49,3 +49,4 @@ void EnemyPreAttack::resume()
 	mEnemy->collider()->setDidHit(false);
 	init();
 }
+

@@ -31,11 +31,6 @@ public:
 
 	void updateAimDirection(VectorF cursorPosition) override;
 
-
-	//void addEffect(Effect* effect) override;
-	//void clearEffect() override;
-
-
 	// Stats
 	const MeleeWeaponData* getData() const { return mMeleeData; }
 	const float getAngle() const { return getRotation(mDirection); }
@@ -68,9 +63,7 @@ private:
 	float mRotationSum;
 	float mSwingSpeed;
 
-	VectorF aboutPoint;
-
-	std::vector<Collider*> hitColliders;
+	VectorF mAboutPoint;
 
 #if DRAW_PLAYER_RECTS
 	VectorF weaponVectorTest;

@@ -272,6 +272,7 @@
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\ArmorAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityCreator.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\Ability.h" />
+    <ClInclude Include="Source\Objects\Abilities\Cooldown.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

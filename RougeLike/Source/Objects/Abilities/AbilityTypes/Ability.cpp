@@ -10,6 +10,7 @@
 #include "Events/Events.h"
 #include "Graphics/RenderManager.h"
 
+
 // --- Ability --- //
 EventPacket Ability::popEvent()
 {
@@ -17,6 +18,13 @@ EventPacket Ability::popEvent()
 	EventPacket event = mEvents.front();
 	mEvents.pop();
 	return event;
+}
+
+
+void Ability::fillAbilityValues(ValueMap& values)
+{
+	mMaxDimention = std::stof(values["MaxSize"]);
+	mCooldown = Cooldown(std::stof(values["Cooldown"]));
 }
 
 
@@ -31,50 +39,40 @@ void Ability::init(Animator animator, Actor* caster)
 void Ability::exit()
 {
 	mAnimator.reset();
-	mCooldownTimer.stop();
+	mCooldown.stop();
 }
 
 
-void Ability::render()
+// --- Range ---
+void RangedAbility::fillRangedAbilityValues(ValueMap& values)
 {
-	if (mState == Running)
-	{
-		RectF rect = Camera::Get()->toCameraCoords(mRect);
-		mAnimator.render(rect);
-	}
+	mRange = std::stof(values["Range"]);
 }
 
 
-// --- AreaAbility --- //
-void AreaAbility::render()
+void RangedAbility::renderRangeCircle()
 {
-	// Range circle
-	if (mState == Selected)
-	{
-		VectorF position = Camera::Get()->toCameraCoords(mCaster->position());
-		VectorF size = VectorF(mRange, mRange) * 2.0f;
+	VectorF position = Camera::Get()->toCameraCoords(mCaster->position());
+	VectorF size = VectorF(mRange, mRange) * 2.0f;
 
-		RectF rect = RectF(VectorF(), size);
-		rect.SetCenter(position);
+	RectF rect = RectF(VectorF(), size);
+	rect.SetCenter(position);
 
-		mRangeCircle->render(rect);
+	mRangeCircle->render(rect);
 
-		RenderEvent* event = new RenderEvent(mRangeCircle, rect, (int)RenderLayer::Floor);
-		EventPacket ep(event);
-		mEvents.push(ep);
-	}
-
-	Ability::render();
+	RenderEvent* event = new RenderEvent(mRangeCircle, rect, (int)RenderLayer::Floor);
+	EventPacket ep(event);
+	mEvents.push(ep);
 }
 
 
-Collider AreaAbility::collider()
+Collider RangedAbility::collider()
 {
 	return Collider(&mRect);
 }
 
 
-bool AreaAbility::isValidTarget(VectorF target, const Map* map)
+bool RangedAbility::isValidTarget(VectorF target, const Map* map)
 {
 	// Is it in range
 	if (distanceSquared(mCaster->position(), target) > mRange * mRange)
@@ -89,12 +87,58 @@ bool AreaAbility::isValidTarget(VectorF target, const Map* map)
 	for (int i = 0; i < 4; i++)
 	{
 		if (!map->floorCollisionTile(points[i]))
-		{
 			validPoint = false;
-		}
 	}
 
 	return validPoint;
+}
+
+
+// -- SELF
+void TargetSelfAbility::render()
+{
+	if (mState == Running)
+	{
+		RectF rect = Camera::Get()->toCameraCoords(mRect);
+		mAnimator.render(rect);
+	}
+}
+
+
+// -- Position
+void TargetPositionAbility::render()
+{
+	if (mState == Selected)
+	{
+		renderRangeCircle();
+	}
+	else if (mState == Running)
+	{
+		RectF rect = Camera::Get()->toCameraCoords(mRect);
+		mAnimator.render(rect);
+	}
+}
+
+
+// -- Attack
+void TargePositionAttackAbility::render()
+{
+	if (mState == Selected)
+	{
+		renderRangeCircle();
+	}
+	else if (mState == Running)
+	{
+		RectF rect = Camera::Get()->toCameraCoords(mRect);
+		mAnimator.render(rect);
+	}
+}
+
+
+void TargePositionAttackAbility::sendActivateOnRequest()
+{
+	ActivateAreaAttack* smashEvent = new ActivateAreaAttack(this);
+	mEvents.push(EventPacket(smashEvent));
 }
 
 

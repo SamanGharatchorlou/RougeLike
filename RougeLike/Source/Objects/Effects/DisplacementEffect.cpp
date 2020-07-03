@@ -50,9 +50,6 @@ void DisplacementEffect::fastUpdate(float dt)
 {
 	VectorF direction = (mReceiver->position() - mSource).normalise();
 	VectorF velocity = direction * mForce;
-	float movementStep = std::sqrt(velocity.magnitudeSquared());
-
-	//printf("travelled %f : max %f\n", mDistanceTravelled, mDistance);
 
 	if (mDistanceTravelled >= mDistance)
 	{
@@ -61,6 +58,8 @@ void DisplacementEffect::fastUpdate(float dt)
 	else if (canMove(velocity, dt))
 	{
 		mReceiver->physics()->move(velocity, dt);
+
+		float movementStep = std::sqrt(velocity.magnitudeSquared());
 		mDistanceTravelled += movementStep * dt;
 	}
 }

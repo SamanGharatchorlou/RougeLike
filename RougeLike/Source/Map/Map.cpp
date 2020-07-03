@@ -54,6 +54,9 @@ void Map::renderLowerLayer()
 		{
 			MapTile tile = mData[y][x];
 
+			if (tile.hasRenderType(MapTile::Floor))
+				onTopSection = false;
+
 			if (!onTopSection)
 			{
 				// Move to next x
@@ -68,9 +71,6 @@ void Map::renderLowerLayer()
 				tileRect = camera->toCameraCoords(tileRect);
 				tile.render(tileRect);
 			}
-
-			if (tile.hasRenderType(MapTile::Bottom_Lower))
-				onTopSection = false;
 		}
 	}
 }
@@ -88,6 +88,9 @@ void Map::renderUpperLayer()
 		{
 			MapTile tile = mData[y][x];
 
+			if (tile.hasRenderType(MapTile::Floor))
+				onBottomSection = false;
+
 			if (!onBottomSection)
 			{
 				// Move to next x
@@ -102,9 +105,6 @@ void Map::renderUpperLayer()
 				tileRect = camera->toCameraCoords(tileRect);
 				tile.render(tileRect);
 			}
-
-			if (tile.hasRenderType(MapTile::Top_Upper | MapTile::Top_Left | MapTile::Top_Right))
-				onBottomSection = false;
 		}
 	}
 
@@ -227,19 +227,26 @@ void Map::renderFloor()
 
 			if (camera->inView(tileRect))
 			{
-				tileRect = camera->toCameraCoords(tileRect);
-
 				// Split each floor tile into 4
 				if (tile.hasRenderType(MapTile::Floor))
 				{
-					// Split tile into 4 pieces
-					VectorF size = tileRect.Size() / 2.0f;
-					tileRect.SetSize(size);
+					tileRect = camera->toCameraCoords(tileRect);
 
-					tile.render(tileRect);
-					tile.render(tileRect.Translate(VectorF(tileRect.Size().x, 0.0f)));
-					tile.render(tileRect.Translate(VectorF(tileRect.Size().x, tileRect.Size().x)));
-					tile.render(tileRect.Translate(VectorF(0.0f, tileRect.Size().x)));
+					//if (tile.hasRenderType(MapTile::Floor_Small))
+					//{
+					//	// Split tile into 4 pieces
+					//	VectorF size = tileRect.Size() / 2.0f;
+					//	tileRect.SetSize(size);
+
+					//	tile.render(tileRect);
+					//	tile.render(tileRect.Translate(VectorF(tileRect.Size().x, 0.0f)));
+					//	tile.render(tileRect.Translate(VectorF(tileRect.Size().x, tileRect.Size().x)));
+					//	tile.render(tileRect.Translate(VectorF(0.0f, tileRect.Size().x)));
+					//}
+					//else
+					{
+						tile.render(tileRect);
+					}
 				}
 			}
 		}
@@ -279,6 +286,53 @@ void Map::renderSurfaceTypes()
 					debugRenderText("Floor", fontSize, tileRect.TopCenter());
 					tileRect = tileRect.Translate(offset);
 				}
+
+				// Floor - Sides
+				if (tile.hasRenderType(MapTile::Floor_Left))
+				{
+					debugRenderText("Floor left", fontSize, tileRect.TopCenter());
+					tileRect = tileRect.Translate(offset);
+				}
+
+				if (tile.hasRenderType(MapTile::Floor_Right))
+				{
+					debugRenderText("Floor right", fontSize, tileRect.TopCenter());
+					tileRect = tileRect.Translate(offset);
+				}
+
+				if (tile.hasRenderType(MapTile::Floor_Top))
+				{
+					debugRenderText("Floor top", fontSize, tileRect.TopCenter());
+					tileRect = tileRect.Translate(offset);
+				}
+
+				if (tile.hasRenderType(MapTile::Floor_Bottom))
+				{
+					debugRenderText("Floor bottom", fontSize, tileRect.TopCenter());
+					tileRect = tileRect.Translate(offset);
+				}
+
+				//// Floor - Corners
+				//if (tile.hasRenderType(MapTile::Floor_Top_Left))
+				//{
+				//	debugRenderText("Floor top left", fontSize, tileRect.TopCenter());
+				//	tileRect = tileRect.Translate(offset);
+				//}
+				//if (tile.hasRenderType(MapTile::Floor_Top_Right))
+				//{
+				//	debugRenderText("Floor top right", fontSize, tileRect.TopCenter());
+				//	tileRect = tileRect.Translate(offset);
+				//}
+				//if (tile.hasRenderType(MapTile::Floor_Bottom_Left))
+				//{
+				//	debugRenderText("Floor bottom left", fontSize, tileRect.TopCenter());
+				//	tileRect = tileRect.Translate(offset);
+				//}
+				//if (tile.hasRenderType(MapTile::Floor_Bottom_Right))
+				//{
+				//	debugRenderText("Floor bottom right", fontSize, tileRect.TopCenter());
+				//	tileRect = tileRect.Translate(offset);
+				//}
 
 				// Bottom walls
 				if (tile.hasRenderType(MapTile::Bottom_Lower))
@@ -372,6 +426,38 @@ void Map::renderSurfaceTypes()
 				if (tile.hasRenderType(MapTile::Point_Top_Left))
 				{
 					debugRenderText("top left point", fontSize, tileRect.Center());
+					tileRect = tileRect.Translate(offset);
+				}
+
+				// Column parts
+				if (tile.hasRenderType(MapTile::Column_Upper))
+				{
+					debugRenderText("column upper", fontSize, tileRect.Center());
+					tileRect = tileRect.Translate(offset);
+				}
+
+				if (tile.hasRenderType(MapTile::Column_Lower))
+				{
+					debugRenderText("column lower", fontSize, tileRect.Center());
+					tileRect = tileRect.Translate(offset);
+				}
+
+				if (tile.hasRenderType(MapTile::Floor_ColumnBase))
+				{
+					debugRenderText("floor column base", fontSize, tileRect.Center());
+					tileRect = tileRect.Translate(offset);
+				}
+
+				// Water				
+				if (tile.hasRenderType(MapTile::Water))
+				{
+					debugRenderText("Water", fontSize, tileRect.Center());
+					tileRect = tileRect.Translate(offset);
+				}
+
+				if (tile.hasRenderType(MapTile::Water_Top))
+				{
+					debugRenderText("Water top", fontSize, tileRect.Center());
 					tileRect = tileRect.Translate(offset);
 				}
 			}

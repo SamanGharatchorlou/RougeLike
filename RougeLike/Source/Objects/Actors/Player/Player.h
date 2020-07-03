@@ -43,8 +43,6 @@ public:
 
 
 private:
-	void updateProperties();
-
 	void processHit();
 
 	void attack();

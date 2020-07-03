@@ -4,13 +4,19 @@
 
 
 class AbilityManager;
+class InputManager;
 class Map;
 
 
 class AbilityActivator
 {
 public:
-	AbilityActivator(AbilityManager* manager, Ability* ability);
+	AbilityActivator(AbilityManager* manager);
+
+	bool shouldActivate(Ability* ability, InputManager* input);
+
+	bool activate(Ability* ability);
+	void activateAreaAttack(Ability* ability);
 
 
 private:
@@ -19,16 +25,13 @@ private:
 
 	void setState(Ability* ability, Ability::State state);
 
-	void attemptActivation(Ability* ability);
-	void attemptActivationOnSelf(Ability* ability);
-	void attemptActivationOnSingleEnemy(Ability* ability);
-	void attemptActivationOnArea(Ability* ability);
-	void attemptActivationOnPoint(Ability* ability);
-
-	void activateOnArea(AreaAbility* areaAbility);
-
+	bool activateOnSelf(TargetSelfAbility* ability);
+	bool activateOnActor(TargetActorAbility* ability);
+	bool activateOnPosition(TargetPositionAbility* ability);
+	
 
 private:
 	AbilityManager* mManager;
+	InputManager* mInput;
 
 };

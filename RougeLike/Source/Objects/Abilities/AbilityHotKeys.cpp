@@ -9,15 +9,13 @@
 
 #include "UI/UIManager.h"
 #include "UI/Screens/GameScreen.h"
-
-
 #include "UI/Elements/UIBox.h"
 #include "UI/Elements/UITextBox.h"
 
 #include "Events/Events.h"
 
 
-void AbilityHotKeys::handleInput()
+void AbilityHotKeys::handleInput(InputManager* input)
 {
 	// As per Adrian Grutters request, rename the iterator
 	for (std::unordered_map<Button::Key, Ability*>::iterator retiTheGr8RulerOvDaLandz = hotKeyMap.begin();
@@ -26,14 +24,13 @@ void AbilityHotKeys::handleInput()
 		Button::Key key = retiTheGr8RulerOvDaLandz->first;
 		Ability* ability = retiTheGr8RulerOvDaLandz->second;
 
-		if (mGameData->inputManager->isPressed(key))
+		if (input->isPressed(key))
 		{
-			mAbilities->exitSelection();
-			mAbilities->setState(ability, Ability::Selected);
+			mManager->setState(ability, Ability::Selected);
 		}
-		else if (mGameData->inputManager->isReleased(key))
+		else if (input->isReleased(key))
 		{
-			mAbilities->exitSelection(ability);
+			mManager->setState(ability, Ability::Idle);
 		}
 	}
 }
@@ -57,7 +54,7 @@ void AbilityHotKeys::addHotKey(Ability* ability)
 	UIBox* box = createIcon(ability, count);
 	UITextBox* text = createIconText(box, count);
 
-	Screen* activeScreen = mGameData->uiManager->getActiveScreen();
+	Screen* activeScreen = mManager->mGameData->uiManager->getActiveScreen();
 	ASSERT(Warning, activeScreen->type() == Screen::Game, "Doesnt make sense not to be on the Game Screen, current screen: %d\n", activeScreen->type());
 	GameScreen* gameScreen = static_cast<GameScreen*>(activeScreen);
 	
@@ -66,11 +63,26 @@ void AbilityHotKeys::addHotKey(Ability* ability)
 }
 
 
+Button::Key AbilityHotKeys::hotKey(Ability* ability)
+{
+	for (std::unordered_map<Button::Key, Ability*>::iterator iter = hotKeyMap.begin();
+		iter != hotKeyMap.end(); iter++)
+	{
+		if (ability == iter->second)
+			return iter->first;
+	}
+
+	DebugPrint(Log, "ability '%s' has no hotkey assigned\n", ability->name().c_str());
+	return Button::Key::None;
+}
+
+
+
 // --- Private Functions --- //
 UIBox* AbilityHotKeys::createIcon(Ability* ability, int count)
 {
 	std::string id = ability->name() + "Icon";
-	Texture* icon = mGameData->textureManager->getTexture(id, FileManager::Image_UI);
+	Texture* icon = mManager->mGameData->textureManager->getTexture(id, FileManager::Image_UI);
 
 	VectorF position(75.0f * (1 + count), 650);
 	VectorF size = realiseSize(icon->originalDimentions, 50);

@@ -8,12 +8,7 @@
 #include "Game/Camera.h"
 #include "Graphics/Texture.h"
 
-#include "Collisions/DamageCollider.h"
 #include "Collisions/EffectCollider.h"
-
-// TEMP
-#include "Objects/Effects/DamageEffect.h"
-#include "Objects/Effects/DisplacementEffect.h"
 
 
 MeleeWeapon::MeleeWeapon() : 
@@ -66,15 +61,21 @@ void MeleeWeapon::equipt(const WeaponData* data)
 	VectorF size = realiseSize(baseSize, mMeleeData->maxDimention);
 	mRect.SetSize(size);
 
-	aboutPoint = VectorF(rect().Width() / 2.0f, rect().Height() * 0.85f);
+	mAboutPoint = VectorF(rect().Width() / 2.0f, rect().Height() * 0.85f);
+
+	mCooldown = mMeleeData->cooldown;
+	mCooldown.begin();
 }
 
 
 void MeleeWeapon::attack()
 {
-	mAttacking = true;
-	overrideCursorControl(true);
-	mCanPlayHitSound = true;
+	if (mCooldown.completed())
+	{
+		mAttacking = true;
+		overrideCursorControl(true);
+		mCanPlayHitSound = true;
+	}
 }
 
 
@@ -117,7 +118,7 @@ void MeleeWeapon::updateAimDirection(VectorF cursorPosition)
 		float offsetAngle = (mMeleeData->swingArc / 2.0f) * mSwingDirection;
 
 		// Camera to cursor vector
-		VectorF botPoint = rect().TopLeft() + aboutPoint;
+		VectorF botPoint = rect().TopLeft() + mAboutPoint;
 
 		mDirection = (cursorPosition - Camera::Get()->toCameraCoords(botPoint));
 		mDirection = rotateVector(mDirection, offsetAngle);
@@ -130,7 +131,7 @@ void MeleeWeapon::updateAimDirection(VectorF cursorPosition)
 void MeleeWeapon::render()
 {
 	SDL_RendererFlip flip = (getRotation(mDirection) >= 0.0f && getRotation(mDirection) < 180.0f) ? SDL_FLIP_HORIZONTAL: SDL_FLIP_NONE;
-	mMeleeData->texture->render(Camera::Get()->toCameraCoords(rect()), getRotation(mDirection), aboutPoint, flip);
+	mMeleeData->texture->render(Camera::Get()->toCameraCoords(rect()), getRotation(mDirection), mAboutPoint, flip);
 
 #if DRAW_PLAYER_RECTS
 	// About point
@@ -180,7 +181,7 @@ const std::string& MeleeWeapon::missSoundLabel() { return mMeleeData->audioMiss;
 /// --- Private Functions --- ///
 void MeleeWeapon::updateWeaponBlocks()
 {
-	VectorF weaponVector = mDirection.normalise() * aboutPoint.y;
+	VectorF weaponVector = mDirection.normalise() * mAboutPoint.y;
 #if DRAW_PLAYER_RECTS
 	weaponVectorTest = weaponVector;
 #endif
@@ -200,7 +201,7 @@ void MeleeWeapon::updateWeaponBlocks()
 		block = block.Translate(shaftPosition);
 
 		// Translate to world coords
-		block = block.Translate(rect().TopLeft() + aboutPoint);
+		block = block.Translate(rect().TopLeft() + mAboutPoint);
 
 		mBlockRects[i].SetRect(block);
 	}
@@ -229,4 +230,6 @@ void MeleeWeapon::endAttack()
 	flipSide();
 	overrideCursorControl(false);
 	mCanPlayHitSound = false;
+
+	mCooldown.begin();
 }

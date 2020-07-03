@@ -3,8 +3,8 @@
 #include "Input/Button.h"
 #include "Events/LocalDispatcher.h"
 
-struct GameData;
 class AbilityManager;
+class InputManager;
 class Ability;
 class UIBox;
 class UITextBox;
@@ -12,11 +12,12 @@ class UITextBox;
 class AbilityHotKeys
 {
 public:
-	AbilityHotKeys(GameData* gameData, AbilityManager* abilities) : mGameData(gameData), mAbilities(abilities) { }
+	AbilityHotKeys(AbilityManager* abilities) : mManager(abilities) { }
 
-	void handleInput();
+	void handleInput(InputManager* input);
 
 	void addHotKey(Ability* ability);
+	Button::Key hotKey(Ability* ability);
 
 	LocalDispatcher events;
 
@@ -27,8 +28,7 @@ private:
 
 
 private:
-	GameData* mGameData;
-	AbilityManager* mAbilities;
+	AbilityManager* mManager;
 
 	std::unordered_map<Button::Key, Ability*> hotKeyMap;
 };

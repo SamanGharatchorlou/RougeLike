@@ -14,17 +14,28 @@ public:
 
 
 private:
-	bool isValidIndex(Index index, Grid<MapTile>& data) const;
+	bool isValidIndex(const Index index, const Grid<MapTile>& data) const;
 
 	// Render info
 	void fillRenderInfo(Grid<MapTile>& data);
+
+	// Base wall types
 	void topBottom(Grid<MapTile>& data);
 	void leftRight(Grid<MapTile>& data);
 	void corners(Grid<MapTile>& data);
 	void pointCorners(Grid<MapTile>& data);
+
+	// Finishing
 	void cleanLabels(Grid<MapTile>& data);
 	void setTextures(Grid<MapTile>& data);
 
+	// Columns
+	void addColumns(Grid<MapTile>& data);
+	bool canBeColumn(const Grid<MapTile>& data, const Index lowerIndex) const;
+
+	// Water
+	void addWater(Grid<MapTile>& data);
+	bool canAddWater(const Grid<MapTile>& data, const Index index, Vector2D<int> size) const;
 
 	// Collision Info
 	void fillCollisionInfo(Grid<MapTile>& data);

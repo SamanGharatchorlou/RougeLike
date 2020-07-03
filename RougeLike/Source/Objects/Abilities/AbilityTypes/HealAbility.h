@@ -4,22 +4,24 @@
 #include "Objects/Attributes/Health.h"
 
 
-class HealAbility : public Ability
+class HealAbility : public TargetSelfAbility
 {
 public:
 	HealAbility() { };
 
 	void fillValues(ValueMap& values) override;
+	
+	void activate(EffectPool* pool) override;
 
-	void activate(Actor* target, EffectPool* effectPool) override;
-
-	void fastUpdate(float dt) override { };
+	void fastUpdate(float dt) override { }
 	void slowUpdate(float dt) override;
 
-	const TargetType targetType() const override { return TargetType::Self; }
+
+protected:
+	void applyEffects(EffectPool* pool);
+	void updateUI();
 
 
 private:
-	Actor* mReceiver;
 	Health mHeal;
 };

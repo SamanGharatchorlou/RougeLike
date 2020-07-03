@@ -3,14 +3,14 @@
 	<Properties>
 		<Range>90000</Range>
 		<MaxSize>125</MaxSize>
-		<Cooldown>2</Cooldown>
+		<Cooldown>5</Cooldown>
 
 		<Damage>50</Damage>
 
 		<KnockbackForce>750</KnockbackForce>
-		<KnockbackDistance>35000</KnockbackDistance>
+		<KnockbackDistance>100</KnockbackDistance>
 
-		<ChargeForce>2000</ChargeForce>
+		<ChargeForce>20</ChargeForce>
 		<ChargeDistance>200</ChargeDistance>
 	</Properties>
 

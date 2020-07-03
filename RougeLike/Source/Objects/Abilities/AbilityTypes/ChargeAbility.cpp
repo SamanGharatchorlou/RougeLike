@@ -7,14 +7,12 @@
 
 #include "Map/Map.h"
 
+// TEMP
+#include "Debug/DebugDraw.h"
+
 
 void ChargeAbility::fillValues(ValueMap& values)
 {
-	// Charge data
-	mMaxDimention = std::stof(values["MaxSize"]); // TODO: what would this be for?
-	mCooldownTime = std::stof(values["Cooldown"]);
-	mRange = std::stof(values["Range"]);
-
 	mChargeForce = std::stof(values["ChargeForce"]);
 	mChargeDistance = std::stof(values["ChargeDistance"]);
 
@@ -25,34 +23,32 @@ void ChargeAbility::fillValues(ValueMap& values)
 }
 
 
-void ChargeAbility::activate(VectorF position)
+void ChargeAbility::activateAt(VectorF position, EffectPool* effectPool)
 {
 	mDistanceTravelled = 0.0f;
 
 	VectorF direction = (mCaster->position() - position).normalise();
 	mChargeSource = mCaster->position() + direction; // any random point in this particular direction
-}
-
-
-void ChargeAbility::activate(Actor* target, EffectPool* effectPool)
-{
-	mEffectPool = effectPool;
-
-	//Effect* effect = effectPool->getEffect(EffectType::Displacement);
-	//DisplacementEffect* displacementEffect = static_cast<DisplacementEffect*>(effect);
-	//displacementEffect->set(mChargeSource, mChargeForce, mChargeDistance);
-	//mCaster->addEffect(effect);
-
-	//mCaster->collider()->setIsActive(true);
 
 	Player* player = static_cast<Player*>(mCaster);
 	player->enableBodyCollisions(true);
 
-	//mCaster->getProperty("Damage")->setValue(mDamage.value());
-	//mCaster->getProperty("KnockbackForce")->setValue(mKnockbackForce);
-	//mCaster->getProperty("KnockbackDistance")->setValue(mKnockbackDistance);
-	beginCooldown();
+	start = player->position();
+	end = start - ( direction * mChargeDistance);
 }
+
+
+void ChargeAbility::activateOn(Actor* target, EffectPool* effectPool)
+{
+	if (mHitList.count(target) == 0)
+	{
+		applyEffects(target, effectPool);
+		mHitList.insert(target);
+		printf("applying effect onto actor\n");
+	}
+}
+
+
 
 
 void ChargeAbility::fastUpdate(float dt)
@@ -61,11 +57,7 @@ void ChargeAbility::fastUpdate(float dt)
 	VectorF velocity = direction * mChargeForce;
 	float movementStep = std::sqrt(velocity.magnitudeSquared());
 
-	if (mDistanceTravelled >= mChargeDistance)
-	{
-		endAbility();
-	}
-	else if (canMove(velocity, dt))
+	if (mDistanceTravelled < mChargeDistance && canMove(velocity, dt))
 	{
 		mCaster->physics()->move(velocity, dt);
 		mDistanceTravelled += movementStep * dt;
@@ -75,22 +67,25 @@ void ChargeAbility::fastUpdate(float dt)
 
 void ChargeAbility::slowUpdate(float dt)
 {
-	if (hasCooledDown())
-		endAbility();
+	mRect = mCaster->collider()->scaledRect();
 
 	if (mCaster->collider()->didHit())
-	{	
-		Effect* effect = mEffectPool->getEffect(EffectType::Displacement);
-		DisplacementEffect* displacementEffect = static_cast<DisplacementEffect*>(effect);
-		displacementEffect->set(mCaster->position(), mKnockbackForce, mKnockbackDistance);
-
-		mCaster->addEffect(effect);
-
+	{
+		sendActivateOnRequest();
 	}
-		printf("hit\n");
-	// copy ability managers apply to multiple enemies thing
-	// does this need to be a area ability then?
-	// single point type, something between single enemy and self??
+}
+
+void ChargeAbility::render()
+{
+	if (mState == Selected)
+	{
+		renderRangeCircle();
+	}
+
+	// TODO: get the point on this line (the players charge line) which is clostest to the enemy position
+	// this will allow you to provide a better 'source' value for the displacement effect.
+	// maybe I can implement this on weapon attacks as well?
+	//debugDrawLine(start, end, RenderColour::Red);
 }
 
 
@@ -98,6 +93,9 @@ void ChargeAbility::exit()
 {
 	Player* player = static_cast<Player*>(mCaster);
 	player->enableBodyCollisions(false);
+
+	mDistanceTravelled = 0.0f;
+	mHitList.clear();
 }
 
 
@@ -125,4 +123,14 @@ bool ChargeAbility::canMove(VectorF velocity, float dt) const
 		return false;
 
 	return true;
+}
+
+
+
+void ChargeAbility::applyEffects(Actor* actor, EffectPool* effectPool)
+{
+	Effect* displacement = effectPool->getEffect(EffectType::Displacement);
+	DisplacementEffect* displacementEffect = static_cast<DisplacementEffect*>(displacement);
+	displacementEffect->set(mCaster->position(), mKnockbackForce, mKnockbackDistance);
+	actor->addEffect(displacement);
 }

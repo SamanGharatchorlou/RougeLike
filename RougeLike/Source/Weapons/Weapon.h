@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Objects/Abilities/Cooldown.h"
+
 struct WeaponData;
 class Collider;
 class Effect;
@@ -41,8 +43,6 @@ public:
 
 	void overrideCursorControl(bool overrideControl) { mOverrideCursorControl = overrideControl; }
 
-	//virtual void addEffect(Effect* effect) = 0;
-	//virtual void clearEffect() = 0;
 
 protected:
 	RectF mRect;
@@ -56,4 +56,6 @@ protected:
 	bool mCanPlayHitSound;
 	const std::string* mAudioToPlay;
 	const std::string* mAudioToStop;
+
+	Cooldown mCooldown;
 };

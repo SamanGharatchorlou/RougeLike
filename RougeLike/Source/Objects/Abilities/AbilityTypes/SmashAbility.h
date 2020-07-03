@@ -5,34 +5,28 @@
 class Texture;
 
 
-class SmashAbility : public AreaAbility
+class SmashAbility : public TargePositionAttackAbility
 {
 public:
 	SmashAbility(Texture* hammerTexture, VectorF hammerSize);
 
 	void fillValues(ValueMap& values) override;
 
-	void activate(VectorF position) override;
-	void activate(Actor* actor, EffectPool* effectPool) override;
+	void activateAt(VectorF position, EffectPool* pool) override;
+	void activateOn(Actor* target, EffectPool* pool) override;
+
 	void fastUpdate(float dt) override { }
 	void slowUpdate(float dt) override;
 	void render() override;
-	void exit() override;
-
-	const TargetType targetType() const override { return TargetType::Area_Attack; }
 
 
 private:
 	bool hammerHitGround();
-
+	void applyEffects(Actor* actor, EffectPool* effectPool);
 
 private:
-	bool requestedActivate;
-
 	Damage mDamage;
 	float mTime;
-
-	bool mAppliedDamage;
 
 	Texture* mHammerTexture;
 	RectF mHammerRect;

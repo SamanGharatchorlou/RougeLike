@@ -2,6 +2,7 @@
 
 #include "pch.h"
 #include "Objects/Attributes/Damage.h"
+#include "Objects/Abilities/Cooldown.h"
 
 class Texture;
 
@@ -17,6 +18,7 @@ struct WeaponData
 	WeaponType type = WeaponType::None;
 	Texture* texture = nullptr;
 	Damage damage;
+	Cooldown cooldown;
 
 	float maxDimention = 0.0f;
 	VectorF offset;

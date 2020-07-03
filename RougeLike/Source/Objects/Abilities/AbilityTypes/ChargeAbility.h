@@ -1,33 +1,32 @@
 #pragma once
 
 #include "Ability.h"
+#include <unordered_set>
 
-class ChargeAbility : public AreaAbility
+class ChargeAbility : public TargePositionAttackAbility
 {
 public:
 	ChargeAbility() { };
 
+
 	void fillValues(ValueMap& values) override;
 
-	void activate(VectorF position) override;
-	void activate(Actor* target, EffectPool* effectPool) override;
+	void activateAt(VectorF position, EffectPool* effectPool) override;
+	void activateOn(Actor* actor, EffectPool* effectPool) override;
+
 	void fastUpdate(float dt) override;
 	void slowUpdate(float dt) override;
 	void exit() override;
 
-	const TargetType targetType() const override { return TargetType::Area_Point; }
-
+	void render() override;
 
 private:
 	bool canMove(VectorF velocity, float dt) const;
 
+	void applyEffects(Actor* actor, EffectPool* effectPool);
+
 
 private:
-	EffectPool* mEffectPool;
-
-	// Charge
-	bool isCharging;
-
 	VectorF mChargeSource;
 	float mChargeForce;
 	float mChargeDistance;
@@ -39,5 +38,9 @@ private:
 	float mKnockbackForce;
 	float mKnockbackDistance;
 
-	bool mColliderActiveState;
+	std::unordered_set<Actor*> mHitList;
+
+	// TEMP
+	VectorF start;
+	VectorF end;
 };
