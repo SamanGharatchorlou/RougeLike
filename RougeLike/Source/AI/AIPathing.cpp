@@ -45,7 +45,7 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 			const PathTile* nextTile = *(neighbours + i);
 
 			// valid tile
-			if (nextTile && nextTile->hasCollisionType(BasicTile::Floor))
+			if (nextTile && nextTile->has(CollisionTile::Floor))
 			{
 				Index nextIndex = mMap->index(nextTile);
 				Index currentIndex = mMap->index(currentTile);
@@ -175,7 +175,7 @@ Index AIPathing::nearestFloorTile(Index index) const
 	// Search all neighbours
 	for (unsigned int i = 0; i < 4; i++)
 	{
-		if (neighbours[i] && neighbours[i]->hasCollisionType(BasicTile::Floor))
+		if (neighbours[i] && neighbours[i]->has(CollisionTile::Floor))
 		{
 			return mMap->index(neighbours[i]);
 		}

@@ -30,6 +30,8 @@
     <ClCompile Include="Source\Game\LoadingManager.cpp" />
     <ClCompile Include="Source\Input\Button.cpp" />
     <ClCompile Include="Source\Map\MapTileDecoder.cpp" />
+    <ClCompile Include="Source\Map\PrimaryMap.cpp" />
+    <ClCompile Include="Source\Map\TileType.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\Ability.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityActivator.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHotKeys.cpp" />
@@ -162,6 +164,8 @@
     <ClInclude Include="Source\Game\LoadingBar.h" />
     <ClInclude Include="Source\Game\LoadingManager.h" />
     <ClInclude Include="Source\Map\MapTileDecoder.h" />
+    <ClInclude Include="Source\Map\PrimaryMap.h" />
+    <ClInclude Include="Source\Map\TileType.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\Ability.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityActivator.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityManager.h" />

@@ -42,8 +42,7 @@ void AIPathMap::build(const Map* map, int xSplit, int ySplit)
 				for (int xShift = 0; xShift < xSplit; xShift++)
 				{
 					int xIndex = xPathMap + xShift;
-
-					const BasicTile::Type type = mapTile.collisionType();
+					CollisionTile type = mapTile.collisionType();
 					RectF rect = mapTile.rect();
 
 					VectorF size = rect.Size();

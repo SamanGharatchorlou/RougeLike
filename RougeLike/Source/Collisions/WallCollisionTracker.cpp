@@ -28,7 +28,7 @@ void WallCollisionTracker::testLeftCollisions(const Map* map, float dt)
 	const MapTile* bottomLeft = map->tile(rect.BotLeft());
 
 	if ((topLeft && bottomLeft) &&
-		(topLeft->hasCollisionType(MapTile::Wall) || bottomLeft->hasCollisionType(MapTile::Wall)))
+		(topLeft->has(CollisionTile::Wall) || bottomLeft->has(CollisionTile::Wall)))
 	{
 		mActor->physics()->restrictMovement(Physics::Left, true);
 	}
@@ -45,7 +45,7 @@ void WallCollisionTracker::testRightCollisions(const Map* map, float dt)
 	const MapTile* bottomRight = map->tile(rect.BotRight());
 
 	if ((topRight && bottomRight) &&
-		(topRight->hasCollisionType(MapTile::Wall) || bottomRight->hasCollisionType(MapTile::Wall)))
+		(topRight->has(CollisionTile::Wall) || bottomRight->has(CollisionTile::Wall)))
 	{
 		mActor->physics()->restrictMovement(Physics::Right, true);
 	}
@@ -62,7 +62,7 @@ void WallCollisionTracker::testBottomCollisions(const Map* map, float dt)
 	const MapTile* bottomLeft = map->tile(rect.BotLeft());
 
 	if (!bottomRight || !bottomLeft ||
-		bottomRight->hasCollisionType(MapTile::Wall) || bottomLeft->hasCollisionType(MapTile::Wall))
+		bottomRight->has(CollisionTile::Wall) || bottomLeft->has(CollisionTile::Wall))
 	{
 		mActor->physics()->restrictMovement(Physics::Down, true);
 	}
@@ -79,7 +79,7 @@ void WallCollisionTracker::testTopCollisions(const Map* map, float dt)
 	const MapTile* topRight = map->tile(rect.TopRight());
 
 	if (!topLeft || !topRight ||
-		topLeft->hasCollisionType(MapTile::Wall) || topRight->hasCollisionType(MapTile::Wall))
+		topLeft->has(CollisionTile::Wall) || topRight->has(CollisionTile::Wall))
 	{
 		mActor->physics()->restrictMovement(Physics::Up, true);
 	}

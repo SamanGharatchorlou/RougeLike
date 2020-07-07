@@ -2,42 +2,48 @@
 #include "MapTile.h"
 #include "Graphics/Texture.h"
 
+
 // --- PathTile --- //
-void PathTile::addCollisionType(Type type)
+void PathTile::add(CollisionTile type)
 {
-	mCollisionType |= type;
+	mCollisionType = mCollisionType | type;
 }
 
-bool PathTile::hasCollisionType(Type type) const
+bool PathTile::has(CollisionTile type) const
 {
-	return (mCollisionType & type) != MapTile::None;
+	return (mCollisionType & type) != CollisionTile::None;
 }
 
-void PathTile::removeCollisionType(Type type)
+//bool PathTile::is(CollisionTile type) const
+//{
+//	return mRenderType == type;
+//}
+
+void PathTile::remove(CollisionTile type)
 {
-	mCollisionType &= ~type;
+	mCollisionType = mCollisionType & ~type;
 }
 
 
 // --- MapTile --- //
-bool MapTile::hasRenderType(Type type) const 
+bool MapTile::has(RenderTile type) const
 {
-	return (mRenderType & type) != MapTile::None;
+	return (mRenderType & type) != RenderTile::None;
 }
 
-bool MapTile::isRenderType(Type type) const
+bool MapTile::is(RenderTile type) const
 {
 	return mRenderType == type;
 }
 
-void MapTile::addRenderType(Type type)
+void MapTile::add(RenderTile type)
 {
-	mRenderType |= type;
+	mRenderType = mRenderType | type;
 }
 
-void MapTile::removeRenderType(Type type)
+void MapTile::remove(RenderTile type)
 {
-	mRenderType &= ~type;
+	mRenderType = mRenderType & ~type;
 }
 
 

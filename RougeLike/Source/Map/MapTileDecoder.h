@@ -19,6 +19,8 @@ private:
 	// Render info
 	void fillRenderInfo(Grid<MapTile>& data);
 
+	
+
 	// Base wall types
 	void topBottom(Grid<MapTile>& data);
 	void leftRight(Grid<MapTile>& data);
@@ -36,6 +38,9 @@ private:
 	// Water
 	void addWater(Grid<MapTile>& data);
 	bool canAddWater(const Grid<MapTile>& data, const Index index, Vector2D<int> size) const;
+
+	// Flame tourch
+	void addTourch(Grid<MapTile>& data);
 
 	// Collision Info
 	void fillCollisionInfo(Grid<MapTile>& data);

@@ -27,7 +27,7 @@ void TunnelGenerator::buildRandomA(Grid<MapTile>& map)
 		for (int yPath = y - width / 2; yPath <= y + width / 2; yPath++)
 		{
 			Index index(x, yPath);
-			map[index].setRenderType(MapTile::Floor);
+			map[index].set(RenderTile::Floor);
 		}
 
 		// Increment x atleast once before changing the path
@@ -76,7 +76,7 @@ void TunnelGenerator::buildRandomA(Grid<MapTile>& map)
 		for (int yPath = y - width / 2; yPath <= y + width / 2; yPath++)
 		{
 			Index index(x, yPath);
-			map[index].setRenderType(MapTile::Floor);
+			map[index].set(RenderTile::Floor);
 		}
 	}
 }
@@ -89,6 +89,6 @@ void TunnelGenerator::buildSimpleLine(Grid<MapTile>& mapData)
 	// build tunnel
 	for (unsigned int x = 0; x < mapData[0].size(); x++)
 	{
-		mapData[yPosition][x].setRenderType(MapTile::Floor);
+		mapData[yPosition][x].set(RenderTile::Floor);
 	}
 }

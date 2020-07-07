@@ -10,7 +10,7 @@ class Texture;
 class Map : public MapBase<MapTile>
 {
 public:
-	Map(Vector2D<int> ampIndexSize, VectorF tileSize);
+	Map(Vector2D<int> mapIndexSize, VectorF tileSize);
 
 	void populateData(TextureManager* tm, VectorF offset);
 	void clearData();
@@ -32,19 +32,21 @@ public:
 	const Vector2D<int> index(const MapTile* tile) const;
 
 	// Query tiles
-	bool wallRenderTile(Index index) const { return mData.get(index).hasRenderType(MapTile::Wall); }
-	bool floorRenderTile(Index index) const { return mData.get(index).hasRenderType(MapTile::Floor); }
+	//bool wallRenderTile(Index index) const { return mData.get(index).hasRenderType(MapTile::Wall); }
+	//bool floorRenderTile(Index index) const { return mData.get(index).hasRenderType(MapTile::Floor); }
 
-	bool wallCollisionTile(Index index) const { return mData.get(index).hasCollisionType(MapTile::Wall); }
-	bool floorCollisionTile(Index index) const { return mData.get(index).hasCollisionType(MapTile::Floor); }
-	bool floorCollisionTile(VectorF position) const { return mData.get(index(position)).hasCollisionType(MapTile::Floor); }
+	CollisionTile collisionType(Index index) const { return mData.get(index).collisionType(); }
+
+	//bool wallCollisionTile(Index index) const { return mData.get(index).has(CollisionTile::Wall); }
+	//bool floorCollisionTile(Index index) const { return mData.get(index).has(CollisionTile::Floor); }
+	//bool floorCollisionTile(VectorF position) const { return mData.get(index(position)).has(CollisionTile::Floor); }
 
 	bool isValidTile(RectF rect) const;
 	bool isValidPosition(VectorF position) const;
 
 	// Rendering
 	void renderFloor();
-	void renderLowerLayer();
+	virtual void renderLowerLayer();
 	void renderUpperLayer();
 
 
@@ -54,6 +56,7 @@ private:
 
 #if _DEBUG
 	void renderSurfaceTypes();
+	int frames = 0;
 #endif
 
 private:

@@ -84,19 +84,19 @@ bool DisplacementEffect::canMove(VectorF velocity, float dt) const
 	RectF rect = mReceiver->scaledRect().Translate(velocity * dt);
 
 	index = map->index(rect.TopLeft());
-	if (!map->isValidIndex(index) || !map->floorCollisionTile(index))
+	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
 		return false;
 
 	index = map->index(rect.TopRight());
-	if (!map->isValidIndex(index) || !map->floorCollisionTile(index))
+	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
 		return false;
 
 	index = map->index(rect.BotRight());
-	if (!map->isValidIndex(index) || !map->floorCollisionTile(index))
+	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
 		return false;
 
 	index = map->index(rect.BotLeft());
-	if (!map->isValidIndex(index) || !map->floorCollisionTile(index))
+	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
 		return false;
 
 	return true;

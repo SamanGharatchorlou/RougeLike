@@ -125,6 +125,8 @@
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\ArmorAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityCreator.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\Ability.cpp" />
+    <ClCompile Include="Source\Map\PrimaryMap.cpp" />
+    <ClCompile Include="Source\Map\TileType.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -273,6 +275,8 @@
     <ClInclude Include="Source\Objects\Abilities\AbilityCreator.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\Ability.h" />
     <ClInclude Include="Source\Objects\Abilities\Cooldown.h" />
+    <ClInclude Include="Source\Map\PrimaryMap.h" />
+    <ClInclude Include="Source\Map\TileType.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

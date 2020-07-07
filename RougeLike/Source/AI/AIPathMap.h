@@ -16,7 +16,7 @@ public:
 
 	const VectorF tileSize() const;
 
-	bool floorCollisionTile(Index index) const { return mData.get(index).collisionType() == MapTile::Floor; }
+	bool floorCollisionTile(Index index) const { return mData.get(index).collisionType() == CollisionTile::Floor; }
 
 	const PathTile* offsetTile(const PathTile* target, int xOffset, int yOffset) const;
 

@@ -9,6 +9,7 @@ class MapBase
 {
 public:
 	MapBase() { }
+	MapBase(Vector2D<int> size) : mData(size, K()) { }
 	MapBase(Vector2D<int> size, K value) : mData(size, value) { }
 
 	K& operator [] (Index index) { 

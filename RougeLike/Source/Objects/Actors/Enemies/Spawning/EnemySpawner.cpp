@@ -43,8 +43,8 @@ void EnemySpawner::spawnPatrollers(Map* map, int xIncrement, EnemyType type)
 {
 	for (unsigned int xPoint = xIncrement; xPoint < 100 - xIncrement; xPoint += xIncrement)
 	{
-		VectorF position = findSpawnPoint(map, xPoint);
-		mEnemies->spawn(type, EnemyState::Patrol, position);
+		//VectorF position = findSpawnPoint(map, xPoint);
+		//mEnemies->spawn(type, EnemyState::Patrol, position);
 	}
 }
 
@@ -63,12 +63,12 @@ void EnemySpawner::spawnShape(Map* map, int xPoint, Shape shape, EnemyType type)
 		Index index = map->index(shapePosition);
 
 		// If any point is invalid, start again at another point
-		if (!map->floorCollisionTile(index))
-		{
-			i = 0;
-			topLeftPosition = findSpawnPoint(map, xPoint);
-			sanityCounter++;
-		}
+		//if (!map->floorCollisionTile(index))
+		//{
+		//	i = 0;
+		//	topLeftPosition = findSpawnPoint(map, xPoint);
+		//	sanityCounter++;
+		//}
 
 		// Just in case no spawn point can be found, prevent infinite loop
 		if (sanityCounter > 50)

@@ -14,7 +14,7 @@
 #endif
 
 
-Map::Map(Vector2D<int> mapIndexSize, VectorF tileSize) : MapBase(mapIndexSize, MapTile(MapTile::Wall)), mTileSize(tileSize) { }
+Map::Map(Vector2D<int> mapIndexSize, VectorF tileSize) : MapBase(mapIndexSize), mTileSize(tileSize) { }
 
 
 void Map::populateData(TextureManager* tm, VectorF offset)
@@ -34,7 +34,7 @@ void Map::close(TextureManager* tm)
 		for (int x = 0; x < 2; x++)
 		{
 			Index index(x, y);
-			mData[index].setRenderType(MapTile::Wall);
+			mData[index].set(RenderTile::Wall);
 		}
 	}
 
@@ -54,7 +54,7 @@ void Map::renderLowerLayer()
 		{
 			MapTile tile = mData[y][x];
 
-			if (tile.hasRenderType(MapTile::Floor))
+			if (tile.has(RenderTile::Floor))
 				onTopSection = false;
 
 			if (!onTopSection)
@@ -88,7 +88,7 @@ void Map::renderUpperLayer()
 		{
 			MapTile tile = mData[y][x];
 
-			if (tile.hasRenderType(MapTile::Floor))
+			if (tile.has(RenderTile::Floor))
 				onBottomSection = false;
 
 			if (!onBottomSection)
@@ -123,8 +123,8 @@ void Map::clearData()
 			MapTile& tile = mData[Index(x, y)];
 
 			tile.setTexture(nullptr);
-			tile.setRenderType(MapTile::Wall);
-			tile.setCollisionType(MapTile::Wall);
+			tile.set(RenderTile::Wall);
+			tile.set(CollisionTile::Wall);
 			tile.setRect(RectF());
 		}
 	}
@@ -206,10 +206,6 @@ void Map::populateTileRects(VectorF offset)
 			VectorF position = VectorF(x * mTileSize.x, y * mTileSize.y);
 			RectF rect(position + offset, mTileSize);
 			mData[y][x].setRect(rect);
-
-#if _DEBUG
-			mData[y][x].index = Index(x, y);
-#endif
 		}
 	}
 }
@@ -227,8 +223,11 @@ void Map::renderFloor()
 
 			if (camera->inView(tileRect))
 			{
+
+				RenderTile type = tile.renderType();
+
 				// Split each floor tile into 4
-				if (tile.hasRenderType(MapTile::Floor))
+				if (tile.has(RenderTile::Floor) || type >= RenderTile::Water)
 				{
 					tileRect = camera->toCameraCoords(tileRect);
 
@@ -258,6 +257,15 @@ void Map::renderFloor()
 #if MARK_SURFACE_TYPES
 void Map::renderSurfaceTypes()
 {
+	if (frames++ % 10 == 0)
+	{
+		frames = 0;
+	}
+	else
+	{
+		return;
+	}
+
 	Camera* camera = Camera::Get();
 
 	int fontSize = 16;
@@ -312,27 +320,27 @@ void Map::renderSurfaceTypes()
 					tileRect = tileRect.Translate(offset);
 				}
 
-				//// Floor - Corners
-				//if (tile.hasRenderType(MapTile::Floor_Top_Left))
-				//{
-				//	debugRenderText("Floor top left", fontSize, tileRect.TopCenter());
-				//	tileRect = tileRect.Translate(offset);
-				//}
-				//if (tile.hasRenderType(MapTile::Floor_Top_Right))
-				//{
-				//	debugRenderText("Floor top right", fontSize, tileRect.TopCenter());
-				//	tileRect = tileRect.Translate(offset);
-				//}
-				//if (tile.hasRenderType(MapTile::Floor_Bottom_Left))
-				//{
-				//	debugRenderText("Floor bottom left", fontSize, tileRect.TopCenter());
-				//	tileRect = tileRect.Translate(offset);
-				//}
-				//if (tile.hasRenderType(MapTile::Floor_Bottom_Right))
-				//{
-				//	debugRenderText("Floor bottom right", fontSize, tileRect.TopCenter());
-				//	tileRect = tileRect.Translate(offset);
-				//}
+				// Floor - Corners
+				if (tile.hasRenderType(MapTile::Floor_Top_Left))
+				{
+					debugRenderText("Floor top left", fontSize, tileRect.TopCenter());
+					tileRect = tileRect.Translate(offset);
+				}
+				if (tile.hasRenderType(MapTile::Floor_Top_Right))
+				{
+					debugRenderText("Floor top right", fontSize, tileRect.TopCenter());
+					tileRect = tileRect.Translate(offset);
+				}
+				if (tile.hasRenderType(MapTile::Floor_Bottom_Left))
+				{
+					debugRenderText("Floor bottom left", fontSize, tileRect.TopCenter());
+					tileRect = tileRect.Translate(offset);
+				}
+				if (tile.hasRenderType(MapTile::Floor_Bottom_Right))
+				{
+					debugRenderText("Floor bottom right", fontSize, tileRect.TopCenter());
+					tileRect = tileRect.Translate(offset);
+				}
 
 				// Bottom walls
 				if (tile.hasRenderType(MapTile::Bottom_Lower))

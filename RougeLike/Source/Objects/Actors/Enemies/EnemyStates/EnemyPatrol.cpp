@@ -74,23 +74,25 @@ void EnemyPatrol::setPatrolPoint()
 
 Vector2D<int> EnemyPatrol::findYFloorTileRange(int xIndex) const
 {
-	int yTileIndex = 0;
-	Vector2D<int> yTileRange;
-	const Map* map = mEnemy->getEnvironmentMap();
+	//int yTileIndex = 0;
+	//Vector2D<int> yTileRange;
+	//const Map* map = mEnemy->getEnvironmentMap();
 
-	while (map->wallCollisionTile(Index(xIndex, ++yTileIndex))) {}
+	//while (map->wallCollisionTile(Index(xIndex, ++yTileIndex))) {}
 
-	// Top
-	yTileRange.x = yTileIndex;
+	//// Top
+	//yTileRange.x = yTileIndex;
 
-	while (map->floorCollisionTile(Index(xIndex, ++yTileIndex)))
-	{
-		if (yTileIndex >= map->yCount() - 1)
-			break;
-	}
+	//while (map->floorCollisionTile(Index(xIndex, ++yTileIndex)))
+	//{
+	//	if (yTileIndex >= map->yCount() - 1)
+	//		break;
+	//}
 
-	yTileRange.y = clamp(yTileIndex - 2, yTileRange.x, (int)map->yCount() - 2);
-	return yTileRange;
+	//yTileRange.y = clamp(yTileIndex - 2, yTileRange.x, (int)map->yCount() - 2);
+	//return yTileRange;
+
+	return Vector2D<int>();
 }
 
 

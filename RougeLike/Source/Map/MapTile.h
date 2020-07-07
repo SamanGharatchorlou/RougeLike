@@ -1,66 +1,79 @@
 #pragma once
 
+
+class Texture;
+
+enum class CollisionTile : Uint32
+{
+	None,
+	Floor,
+	Wall
+};
+
+enum class RenderTile : Uint64
+{
+	None,
+
+	Floor,
+
+	Floor_ColumnBase = Floor << 1,
+
+	Floor_Right = Floor << 2,
+	Floor_Left = Floor << 3,
+	Floor_Top = Floor << 4,
+	Floor_Bottom = Floor << 5,
+
+	Floor_Top_Right = Floor << 6,
+	Floor_Top_Left = Floor << 7,
+	Floor_Bottom_Right = Floor << 8,
+	Floor_Bottom_Left = Floor << 9,
+
+
+	Wall = Floor << 12,
+
+	// Sides
+	Left = Wall << 1,
+	Right = Wall << 2,
+
+	// Top / Bottom
+	Bottom_Lower = Wall << 3,
+	Bottom_Upper = Wall << 4,
+
+	Top_Lower = Wall << 5,
+	Top_Upper = Wall << 6,
+
+	// Top/Bottom ends
+	Bottom = Wall << 7,
+	Top = Wall << 8,
+
+	// Corners
+	Top_Right = Wall << 9,
+	Top_Left = Wall << 10,
+	Bottom_Right = Wall << 11,
+	Bottom_Left = Wall << 12,
+
+	// Point corners
+	Point_Bottom_Right = Wall << 13,
+	Point_Bottom_Left = Wall << 14,
+	Point_Top_Right = Wall << 15,
+	Point_Top_Left = Wall << 16,
+
+	Column_Lower = Wall << 17,
+	Column_Upper = Wall << 18,
+	Column_Top = Wall << 19,
+
+	Tourch = Wall << 20,
+
+
+	// Water
+	Water = Wall << 21,
+	Water_Top = Wall << 22,
+};
+
+
+
 class BasicTile
 {
-public:
-	enum Type : Uint64
-	{
-		None,
-
-		Floor,
-		Floor_ColumnBase = Floor << 1,
-
-		Floor_Right = Floor << 2,
-		Floor_Left = Floor << 3,
-		Floor_Top = Floor << 4,
-		Floor_Bottom = Floor << 5,
-
-		Floor_Top_Right = Floor << 6,
-		Floor_Top_Left = Floor << 7,
-		Floor_Bottom_Right = Floor << 8,
-		Floor_Bottom_Left = Floor << 9,
-
-
-		Wall = Floor << 12,
-
-		// Sides
-		Left = Wall << 1,
-		Right = Wall << 2,
-
-		// Top / Bottom
-		Bottom_Lower = Wall << 3,
-		Bottom_Upper = Wall << 4,
-
-		Top_Lower = Wall << 5,
-		Top_Upper = Wall << 6,
-
-		// Top/Bottom ends
-		Bottom = Wall << 7,
-		Top = Wall << 8,
-
-		// Corners
-		Top_Right = Wall << 9,
-		Top_Left = Wall << 10,
-		Bottom_Right = Wall << 11,
-		Bottom_Left = Wall << 12,
-
-		// Point corners
-		Point_Bottom_Right = Wall << 13,
-		Point_Bottom_Left = Wall << 14,
-		Point_Top_Right = Wall << 15,
-		Point_Top_Left = Wall << 16,
-
-		Column_Lower = Wall << 17,
-		Column_Upper = Wall << 18,
-		Column_Top = Wall << 19,
-
-
-		// Water
-		Water = Wall << 20,
-		Water_Top =  Wall << 21,
-
-	};
-
 public:
 	BasicTile() : mRect(-1) { }
 	BasicTile(RectF rect) : mRect(rect) { }
@@ -78,105 +91,113 @@ protected:
 class PathTile : public BasicTile
 {
 public:
-	PathTile() : mCollisionType(Wall) { }
-	PathTile(Type type) : mCollisionType(type) { }
-	PathTile(RectF rect) : BasicTile(rect), mCollisionType(Wall) { }
-	PathTile(Type type, RectF rect) : mCollisionType(type), BasicTile(rect) { }
+	PathTile() : mCollisionType(CollisionTile::None) { }
+	PathTile(CollisionTile type, RectF rect) : mCollisionType(type), BasicTile(rect) { }
 
 	// Collision type
-	const Type collisionType() const { return mCollisionType; }
-	bool hasCollisionType(Type type) const;
+	const CollisionTile collisionType() const { return mCollisionType; }
+	virtual bool has(CollisionTile type) const;
 
 
-	void setCollisionType(Type type) { mCollisionType = type; }
-	void addCollisionType(Type type);
-	void removeCollisionType(Type type);
+	virtual void set(CollisionTile type) { mCollisionType = type; }
+	void add(CollisionTile type);
+	void remove(CollisionTile type);
 
 
 protected:
-	Type mCollisionType;
+	CollisionTile mCollisionType;
 };
 
-
-class Texture;
 
 // Add rendering info and texture
 class MapTile : public PathTile
 {
 public:
-	MapTile() : mRenderType(Wall), mTexture(nullptr) { }
-	MapTile(Type type) : mRenderType(type), PathTile(type), mTexture(nullptr) { }
-	MapTile(RectF rect) : PathTile(rect), mRenderType(Wall), mTexture(nullptr) { }
+	MapTile() : mRenderType(RenderTile::None), mTexture(nullptr) { }
 
 	void setTexture(Texture* texture) { mTexture = texture; }
 
 	// Render type
-	const Type renderType() const { return mRenderType; }
-	bool hasRenderType(Type type) const;
-	bool isRenderType(Type type) const;
+	const RenderTile renderType() const { return mRenderType; }
+	bool has(RenderTile type) const;
+	bool is(RenderTile type) const;
+	void set(RenderTile type) { mRenderType = type; }
 
-	void setRenderType(Type type) { mRenderType = type; }
-	void addRenderType(Type type);
-	void removeRenderType(Type type);
+	void add(RenderTile type);
+	void remove(RenderTile type);
+
+	// Collision type
+	void set(CollisionTile type) { PathTile::set(type); }
+	bool has(CollisionTile type) const { return PathTile::has(type); }
 
 	void render(RectF rect);
 
-#if _DEBUG
-	Vector2D<int> index;
-#endif
-
 private:
-	Type mRenderType;
+	RenderTile mRenderType;
 	Texture* mTexture;
 };
 
 
+// -- Collision Tile -- //
+inline bool operator !=(CollisionTile a, CollisionTile b)
+{
+	return static_cast<Uint32>(a) != static_cast<Uint32>(b);
+}
 
-inline bool operator !=(BasicTile::Type a, BasicTile::Type b)
+inline CollisionTile operator &(CollisionTile a, CollisionTile b)
+{
+	return static_cast<CollisionTile>(static_cast<Uint32>(a) & static_cast<Uint32>(b));
+}
+
+inline CollisionTile operator |(CollisionTile a, CollisionTile b)
+{
+	return static_cast<CollisionTile>(static_cast<Uint32>(a) | static_cast<Uint32>(b));
+}
+
+inline CollisionTile operator ~(CollisionTile a)
+{
+	return static_cast<CollisionTile>(~static_cast<Uint32>(a));
+}
+
+// -- Render Tile -- //
+inline bool operator !=(RenderTile a, RenderTile b)
 {
 	return static_cast<Uint64>(a) != static_cast<Uint64>(b);
 }
 
-inline bool operator ==(BasicTile::Type a, BasicTile::Type b)
+inline bool operator ==(RenderTile a, RenderTile b)
 {
 	return static_cast<Uint64>(a) == static_cast<Uint64>(b);
 }
 
 
-inline MapTile::Type operator &(BasicTile::Type a, BasicTile::Type b)
+inline RenderTile operator &(RenderTile a, RenderTile b)
 {
-	return static_cast<BasicTile::Type>(static_cast<Uint64>(a) & static_cast<Uint64>(b));
+	return static_cast<RenderTile>(static_cast<Uint64>(a) & static_cast<Uint64>(b));
 }
 
-inline void operator &=(BasicTile::Type& a, BasicTile::Type b)
+inline RenderTile operator |(RenderTile a, RenderTile b)
 {
-	a = static_cast<BasicTile::Type>(static_cast<Uint64>(a) & static_cast<Uint64>(b));
-}
-
-inline BasicTile::Type operator |(BasicTile::Type a, BasicTile::Type b)
-{
-	return static_cast<BasicTile::Type>(static_cast<Uint64>(a) | static_cast<Uint64>(b));
-}
-
-inline void operator |=(BasicTile::Type& a, BasicTile::Type b)
-{
-	a = static_cast<BasicTile::Type>(static_cast<Uint64>(a) | static_cast<Uint64>(b));
+	return static_cast<RenderTile>(static_cast<Uint64>(a) | static_cast<Uint64>(b));
 }
 
 
-
-inline BasicTile::Type operator ^(BasicTile::Type a, BasicTile::Type b)
+inline RenderTile operator ^(RenderTile a, RenderTile b)
 {
-	return static_cast<BasicTile::Type>(static_cast<Uint64>(a) ^ static_cast<Uint64>(b));
+	return static_cast<RenderTile>(static_cast<Uint64>(a) ^ static_cast<Uint64>(b));
 }
 
-inline void operator ^=(BasicTile::Type& a, BasicTile::Type b)
+inline void operator ^=(RenderTile& a, RenderTile b)
 {
-	a = static_cast<BasicTile::Type>(static_cast<Uint64>(a) ^ static_cast<Uint64>(b));
+	a = static_cast<RenderTile>(static_cast<Uint64>(a) ^ static_cast<Uint64>(b));
 }
 
-inline BasicTile::Type operator ~(BasicTile::Type a)
+inline RenderTile operator ~(RenderTile a)
 {
-	return static_cast<BasicTile::Type>(~static_cast<Uint64>(a));
+	return static_cast<RenderTile>(~static_cast<Uint64>(a));
 }
 
+inline bool operator >(RenderTile a, RenderTile b)
+{
+	return static_cast<Uint64>(a) > static_cast<Uint64>(b);
+}
