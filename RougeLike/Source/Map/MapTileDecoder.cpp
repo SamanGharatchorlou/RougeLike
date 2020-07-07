@@ -8,18 +8,8 @@
 
 void MapTileDecoder::populateData(Grid<MapTile>& data)
 {
-	fillRenderInfo(data);
-
-
-	addWater(data);
-
-	// Add decorations
-	//addColumns(data);
-
-	fillCollisionInfo(data);
-
-
-
+	populateRenderInfo(data);
+	editCollisionInfo(data);
 
 	setTextures(data);
 }
@@ -40,7 +30,7 @@ void MapTileDecoder::setTextures(Grid<MapTile>& data)
 	tileTextures[RenderTile::Floor_Bottom_Right] = mTextureManager->getTexture("floor_bottom_right", FileManager::Image_Maps);
 	tileTextures[RenderTile::Floor_Bottom_Left] = mTextureManager->getTexture("floor_bottom_left", FileManager::Image_Maps);
 
-	tileTextures[RenderTile::Water] = mTextureManager->getTexture("water", FileManager::Image_Maps);
+	tileTextures[RenderTile::Water_Middle] = mTextureManager->getTexture("water", FileManager::Image_Maps);
 	tileTextures[RenderTile::Water_Top] = mTextureManager->getTexture("water_top", FileManager::Image_Maps);
 
 	tileTextures[RenderTile::Wall] = mTextureManager->getTexture("wall", FileManager::Image_Maps);
@@ -89,26 +79,6 @@ void MapTileDecoder::setTextures(Grid<MapTile>& data)
 }
 
 
-void MapTileDecoder::addTourch(Grid<MapTile>& data)
-{
-	//int wallCounter = 0;
-	//for (int y = 0; y < data.yCount(); y++)
-	//{
-	//	for (int x = 0; x < data.xCount(); x++)
-	//	{
-	//		Index index(x, y);
-	//		if (!data[index].has(MapTile::Column_Upper))
-	//		{
-	//			if (wallCounter % 10)
-	//			{
-	//				data[index].add(MapTile::Tourch);
-	//			}
-	//		}
-	//	}
-	//}
-}
-
-
 void MapTileDecoder::addWater(Grid<MapTile>& data)
 {
 	Vector2D<int> poolSize(2, 2);
@@ -119,14 +89,14 @@ void MapTileDecoder::addWater(Grid<MapTile>& data)
 		{
 			Index index(x, y);
 
-			if (canAddWater(data, index, poolSize))
+			if (data[index].is(CollisionTile::Water))
 			{
 				// Fill water
 				for (int xPool = index.x + 1; xPool < index.x + 1 + poolSize.x; xPool++)
 				{
 					for (int yPool = index.y + 1; yPool < index.y + 1 + poolSize.y; yPool++)
 					{
-						data[Index(xPool, yPool)].set(RenderTile::Wall | RenderTile::Water);
+						data[Index(xPool, yPool)].set(RenderTile::Wall | RenderTile::Water_Middle);
 					}
 				}
 
@@ -143,7 +113,6 @@ void MapTileDecoder::addWater(Grid<MapTile>& data)
 				{
 					data[Index(xPoolRight, yPool)].set(RenderTile::Floor | RenderTile::Floor_Left);
 				}
-
 
 				// yPool = top
 				int yPoolTop = index.y;
@@ -162,40 +131,14 @@ void MapTileDecoder::addWater(Grid<MapTile>& data)
 
 
 				// Corners
-				data[Index(index.x, index.y - 1)].set(RenderTile::Floor | RenderTile::Floor_Bottom_Right);
-
-				data[Index(index.x + 1 + poolSize.x, index.y - 1)].set(RenderTile::Floor | RenderTile::Floor_Bottom_Left);
-
+				data[Index(index.x, index.y - 1)].set(								RenderTile::Floor | RenderTile::Floor_Bottom_Right);
+				data[Index(index.x + 1 + poolSize.x, index.y - 1)].set(				RenderTile::Floor | RenderTile::Floor_Bottom_Left);
 				data[Index(index.x + 1 + poolSize.x, index.y + 1 + poolSize.y)].set(RenderTile::Floor | RenderTile::Floor_Top_Left);
-
-				data[Index(index.x, index.y + 1 + poolSize.y)].set(RenderTile::Floor | RenderTile::Floor_Top_Right);
-
+				data[Index(index.x, index.y + 1 + poolSize.y)].set(					RenderTile::Floor | RenderTile::Floor_Top_Right);
 			}
 		}
 	}
 }
-
-
-
-bool MapTileDecoder::canAddWater(const Grid<MapTile>& data, const Index index, Vector2D<int> size) const
-{
-	// +1 either side or pool size
-	for (int x = index.x; x < index.x + size.x + 2; x++)
-	{
-		// +2 on top, + 1 on bot
-		for (int y = index.y - 1; y < index.y + size.y + 2; y++)
-		{
-			if (!isValidIndex(Index(x, y), data))
-				return false;
-
-			if (!data.get(Index(x, y)).is(RenderTile::Floor))
-				return false;
-		}
-	}
-
-	return true;
-}
-
 
 
 void MapTileDecoder::addColumns(Grid<MapTile>& data)
@@ -257,7 +200,7 @@ bool MapTileDecoder::canBeColumn(const Grid<MapTile>& data, const Index lowerInd
 }
 
 
-void MapTileDecoder::fillRenderInfo(Grid<MapTile>& data)
+void MapTileDecoder::populateRenderInfo(Grid<MapTile>& data)
 {
 	// Label all bottom and top side walls
 	topBottom(data);
@@ -273,8 +216,9 @@ void MapTileDecoder::fillRenderInfo(Grid<MapTile>& data)
 
 	// Remove unused labels
 	cleanLabels(data);
-/*
-	setTextures(data);*/
+
+	addWater(data);
+
 }
 
 
@@ -286,7 +230,7 @@ bool MapTileDecoder::isValidIndex(const Index index, const Grid<MapTile>& data) 
 }
 
 
-void MapTileDecoder::fillCollisionInfo(Grid<MapTile>& data)
+void MapTileDecoder::editCollisionInfo(Grid<MapTile>& data)
 {
 	for (int x = 0; x < data.xCount(); x++)
 	{
@@ -294,19 +238,16 @@ void MapTileDecoder::fillCollisionInfo(Grid<MapTile>& data)
 		{
 			Index index(x, y);
 
-			if (data[index].has(RenderTile::Floor))
-			{
-				data[index].set(CollisionTile::Floor);
-			}
-			else
-			{
-				data[index].set(CollisionTile::Wall);
-			}
+			RenderTile renderTile = data[index].renderType();
 
 			// In top down view these tiles can be moved 'under'
 			if (data[index].has(RenderTile::Top_Left | RenderTile::Top_Upper | RenderTile::Top_Right))
 			{
 				data[index].set(CollisionTile::Floor);
+			}
+			else if (renderTile > RenderTile::Water)
+			{
+				data[index].set(CollisionTile::Wall);
 			}
 		}
 	}

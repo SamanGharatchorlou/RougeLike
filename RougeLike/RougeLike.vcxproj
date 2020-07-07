@@ -112,7 +112,7 @@
     <ClCompile Include="Source\Items\Collectables\Collectables.cpp" />
     <ClCompile Include="Source\Managers\ScoreManager.cpp" />
     <ClCompile Include="Source\Map\MapTile.cpp" />
-    <ClCompile Include="Source\Map\TunnelGenerator.cpp" />
+    <ClCompile Include="Source\Map\MapGenerator.cpp" />
     <ClCompile Include="Source\Game\Camera.cpp" />
     <ClCompile Include="Source\Game\Cursor.cpp" />
     <ClCompile Include="Source\Graphics\RenderManager.cpp" />
@@ -261,7 +261,7 @@
     <ClInclude Include="Source\Managers\ScoreManager.h" />
     <ClInclude Include="Source\Map\Map.h" />
     <ClInclude Include="Source\Map\MapTile.h" />
-    <ClInclude Include="Source\Map\TunnelGenerator.h" />
+    <ClInclude Include="Source\Map\MapGenerator.h" />
     <ClInclude Include="Source\Game\Camera.h" />
     <ClInclude Include="Source\Game\Cursor.h" />
     <ClInclude Include="Source\Graphics\RenderManager.h" />

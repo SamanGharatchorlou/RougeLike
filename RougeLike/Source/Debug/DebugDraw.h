@@ -14,7 +14,8 @@
 
 // Map
 #define DRAW_BINARY_MAP 0
-#define MARK_SURFACE_TYPES 0
+#define LABEL_SURFACE_RENDER_TYPES 1
+#define LABEL_SURFACE_COLLISION_TYPES 1
 
 // Enemy / AI
 #define DRAW_AI_PATH 0
@@ -104,4 +105,4 @@ void debugDrawLine(VectorF pointA, VectorF pointB, RenderColour colour);
 void debugDrawRectOutline(RectF rect, RenderColour colour);
 void debugDrawRect(RectF rect, RenderColour colour);
 void debugDrawRects(std::vector<RectF> rects, RenderColour colour);
-void debugRenderText(const std::string text, int ptSize, VectorF position);
+void debugRenderText(const std::string text, int ptSize, VectorF position, RenderColour colour);

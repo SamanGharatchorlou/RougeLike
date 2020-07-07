@@ -32,14 +32,7 @@ public:
 	const Vector2D<int> index(const MapTile* tile) const;
 
 	// Query tiles
-	//bool wallRenderTile(Index index) const { return mData.get(index).hasRenderType(MapTile::Wall); }
-	//bool floorRenderTile(Index index) const { return mData.get(index).hasRenderType(MapTile::Floor); }
-
 	CollisionTile collisionType(Index index) const { return mData.get(index).collisionType(); }
-
-	//bool wallCollisionTile(Index index) const { return mData.get(index).has(CollisionTile::Wall); }
-	//bool floorCollisionTile(Index index) const { return mData.get(index).has(CollisionTile::Floor); }
-	//bool floorCollisionTile(VectorF position) const { return mData.get(index(position)).has(CollisionTile::Floor); }
 
 	bool isValidTile(RectF rect) const;
 	bool isValidPosition(VectorF position) const;

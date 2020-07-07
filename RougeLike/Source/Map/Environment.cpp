@@ -2,7 +2,7 @@
 #include "Environment.h"
 
 #include "Game/Camera.h"
-#include "TunnelGenerator.h"
+#include "MapGenerator.h"
 #include "Map.h"
 
 
@@ -117,8 +117,6 @@ Map* Environment::map(VectorF position) const
 }
 
 
-
-
 void Environment::setCameraBoundaries()
 {
 	float xLeft = mEntrace->getFirstRect().LeftPoint();
@@ -181,8 +179,9 @@ void Environment::buildLevel(float offset)
 {
 	mPrimaryMap->clearData();
 
-	TunnelGenerator generator;
-	generator.buildRandomA(mPrimaryMap->getData());
+	MapGenerator generator;
+	generator.buildDungeon(mPrimaryMap->getData());
+	generator.addWaterFeatures(mPrimaryMap->getData());
 
 	mPrimaryMap->populateData(mTextureManager, VectorF(offset, 0.0f));
 }
@@ -192,8 +191,8 @@ void Environment::buildPassage(Map* map, float offset)
 {
 	map->clearData();
 
-	TunnelGenerator generator;
-	generator.buildSimpleLine(map->getData());
+	MapGenerator generator;
+	generator.buildCorridor(map->getData());
 
 	map->populateData(mTextureManager, VectorF(offset, 0.0f));
 }

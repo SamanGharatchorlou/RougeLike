@@ -3,21 +3,16 @@
 #include "Graphics/Texture.h"
 
 
-// --- PathTile --- //
+// --- CollisionTile --- //
 void PathTile::add(CollisionTile type)
 {
 	mCollisionType = mCollisionType | type;
 }
 
-bool PathTile::has(CollisionTile type) const
+bool PathTile::is(CollisionTile type) const
 {
-	return (mCollisionType & type) != CollisionTile::None;
+	return mCollisionType == type;
 }
-
-//bool PathTile::is(CollisionTile type) const
-//{
-//	return mRenderType == type;
-//}
 
 void PathTile::remove(CollisionTile type)
 {
@@ -25,7 +20,7 @@ void PathTile::remove(CollisionTile type)
 }
 
 
-// --- MapTile --- //
+// --- RenderTile --- //
 bool MapTile::has(RenderTile type) const
 {
 	return (mRenderType & type) != RenderTile::None;
@@ -47,5 +42,17 @@ void MapTile::remove(RenderTile type)
 }
 
 
+// --- AnimationTile --- //
+bool MapTile::is(AnimationTile type) const
+{
+	return mAnimationType == type;
+}
 
-void MapTile::render(RectF rect) { mTexture->render(rect); }
+
+void MapTile::render(RectF rect) 
+{
+#if _DEBUG
+	if(mTexture)
+#endif
+		mTexture->render(rect); 
+}

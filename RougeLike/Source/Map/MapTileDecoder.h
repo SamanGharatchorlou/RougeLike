@@ -17,9 +17,7 @@ private:
 	bool isValidIndex(const Index index, const Grid<MapTile>& data) const;
 
 	// Render info
-	void fillRenderInfo(Grid<MapTile>& data);
-
-	
+	void populateRenderInfo(Grid<MapTile>& data);
 
 	// Base wall types
 	void topBottom(Grid<MapTile>& data);
@@ -37,13 +35,12 @@ private:
 
 	// Water
 	void addWater(Grid<MapTile>& data);
-	bool canAddWater(const Grid<MapTile>& data, const Index index, Vector2D<int> size) const;
 
 	// Flame tourch
 	void addTourch(Grid<MapTile>& data);
 
 	// Collision Info
-	void fillCollisionInfo(Grid<MapTile>& data);
+	void editCollisionInfo(Grid<MapTile>& data);
 
 
 private:

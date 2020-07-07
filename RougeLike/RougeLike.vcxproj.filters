@@ -60,7 +60,6 @@
     <ClCompile Include="Source\Text\Text.cpp" />
     <ClCompile Include="Source\UI\Screens\CharacterSelectionScreen.cpp" />
     <ClCompile Include="Source\States\PreGameState.cpp" />
-    <ClCompile Include="Source\Map\TunnelGenerator.cpp" />
     <ClCompile Include="Source\AI\AIPathMap.cpp" />
     <ClCompile Include="Source\Map\Environment.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Shape.cpp" />
@@ -127,6 +126,7 @@
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\Ability.cpp" />
     <ClCompile Include="Source\Map\PrimaryMap.cpp" />
     <ClCompile Include="Source\Map\TileType.cpp" />
+    <ClCompile Include="Source\Map\MapGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -200,7 +200,6 @@
     <ClInclude Include="Source\Text\Text.h" />
     <ClInclude Include="Source\UI\Screens\CharacterSelectionScreen.h" />
     <ClInclude Include="Source\States\PreGameState.h" />
-    <ClInclude Include="Source\Map\TunnelGenerator.h" />
     <ClInclude Include="Source\AI\AIPathMap.h" />
     <ClInclude Include="Source\Map\MapBase.h" />
     <ClInclude Include="Source\Map\Environment.h" />
@@ -277,6 +276,7 @@
     <ClInclude Include="Source\Objects\Abilities\Cooldown.h" />
     <ClInclude Include="Source\Map\PrimaryMap.h" />
     <ClInclude Include="Source\Map\TileType.h" />
+    <ClInclude Include="Source\Map\MapGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

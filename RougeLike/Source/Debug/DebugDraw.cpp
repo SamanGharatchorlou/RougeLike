@@ -60,13 +60,13 @@ void debugDrawRects(std::vector<RectF> rects, RenderColour colour)
 	}
 }
 
-void debugRenderText(const std::string text, int ptSize, VectorF position)
+void debugRenderText(const std::string text, int ptSize, VectorF position, RenderColour colour)
 {
 	UITextBox::Data textData;
 	textData.aligment = "Center";
 	textData.font = "";
 	textData.ptSize = ptSize;
-	textData.colour = SDL_Color{ 255, 0, 0 };
+	textData.colour = SDL_Color{ colour.r, colour.g, colour.b };
 	textData.texture = nullptr;
 	textData.rect = RectF(Camera::Get()->toCameraCoords(position), VectorF(0.0f,0.0f));
 	textData.text = text;

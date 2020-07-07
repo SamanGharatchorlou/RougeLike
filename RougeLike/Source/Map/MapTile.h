@@ -7,7 +7,8 @@ enum class CollisionTile : Uint32
 {
 	None,
 	Floor,
-	Wall
+	Wall,
+	Water,
 };
 
 enum class RenderTile : Uint64
@@ -62,12 +63,17 @@ enum class RenderTile : Uint64
 	Column_Upper = Wall << 18,
 	Column_Top = Wall << 19,
 
-	Tourch = Wall << 20,
+	Water = Column_Top << 20,
+
+	Water_Middle = Water << 1,
+	Water_Top = Water << 2,
+};
 
 
-	// Water
-	Water = Wall << 21,
-	Water_Top = Wall << 22,
+enum class AnimationTile : Uint32
+{
+	None,
+	Torch
 };
 
 
@@ -96,8 +102,7 @@ public:
 
 	// Collision type
 	const CollisionTile collisionType() const { return mCollisionType; }
-	virtual bool has(CollisionTile type) const;
-
+	virtual bool is(CollisionTile type) const;
 
 	virtual void set(CollisionTile type) { mCollisionType = type; }
 	void add(CollisionTile type);
@@ -113,7 +118,7 @@ protected:
 class MapTile : public PathTile
 {
 public:
-	MapTile() : mRenderType(RenderTile::None), mTexture(nullptr) { }
+	MapTile() : mRenderType(RenderTile::None), mAnimationType(AnimationTile::None), mTexture(nullptr) { }
 
 	void setTexture(Texture* texture) { mTexture = texture; }
 
@@ -128,13 +133,19 @@ public:
 
 	// Collision type
 	void set(CollisionTile type) { PathTile::set(type); }
-	bool has(CollisionTile type) const { return PathTile::has(type); }
+	bool is(CollisionTile type) const { return PathTile::is(type); }
+
+	// Animation type
+	void set(AnimationTile type) { mAnimationType = type; }
+	bool is(AnimationTile type) const;
 
 	void render(RectF rect);
 
 private:
-	RenderTile mRenderType;
 	Texture* mTexture;
+
+	RenderTile mRenderType;
+	AnimationTile mAnimationType;
 };
 
 
