@@ -257,11 +257,6 @@ void Map::renderFloor()
 #if LABEL_SURFACE_RENDER_TYPES || LABEL_SURFACE_COLLISION_TYPES
 void Map::renderSurfaceTypes()
 {
-	if (frames++ % 30 == 0)
-		frames = 0;
-	else
-		return;
-
 	Camera* camera = Camera::Get();
 
 	int fontSize = 16;

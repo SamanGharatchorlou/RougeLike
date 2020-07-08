@@ -49,7 +49,6 @@ private:
 
 #if _DEBUG
 	void renderSurfaceTypes();
-	int frames = 0;
 #endif
 
 private:

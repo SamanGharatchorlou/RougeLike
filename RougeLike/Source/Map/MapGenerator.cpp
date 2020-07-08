@@ -138,34 +138,25 @@ void MapGenerator::addWaterFeatures(Grid<MapTile>& data)
 	int minPoolSpace = data.xCount() / 4;
 	int xWaterIndex = -minPoolSpace;
 
-	for (int y = 0; y < data.yCount(); y++)
+	for (int x = 0; x < data.xCount(); x++)
 	{
-		for (int x = 0; x < data.xCount(); x++)
+		for (int y = 0; y < data.yCount(); y++)
 		{
 			Index index(x, y);
-
-			if (canAddWater(data, index, poolSize))
-			{
-				printf("can add water at %d\n", x);
-				printf("xWaterIndex: %d || minPoolSpace: %d\n", xWaterIndex, minPoolSpace);
-			}
-
 
 			if (x > xWaterIndex + minPoolSpace && canAddWater(data, index, poolSize))
 			{
 				xWaterIndex = x;
 				data[Index(x, y)].set(CollisionTile::Water);
-				printf("adding water at index(%d)\n", xWaterIndex);
 
-				//// +1 either side or pool size
-				//for (int x = index.x; x < index.x + poolSize.x + 2; x++)
-				//{
-				//	// +2 on top, + 1 on bot
-				//	for (int y = index.y - 1; y < index.y + poolSize.y + 2; y++)
-				//	{
-				//		data[Index(x, y)].set(CollisionTile::Water);
-				//	}
-				//}
+				// +1 either sides of pool size
+				for (int x = index.x; x < index.x + poolSize.x + 2; x++)
+				{
+					for (int y = index.y; y < index.y + poolSize.y + 3; y++)
+					{
+						data[Index(x, y)].set(CollisionTile::Water);
+					}
+				}
 			}
 		}
 	}
@@ -175,11 +166,11 @@ void MapGenerator::addWaterFeatures(Grid<MapTile>& data)
 
 bool MapGenerator::canAddWater(const Grid<MapTile>& data, const Index index, Vector2D<int> size) const
 {
-	// +1 either side or pool size
+	// +1 either sides of pool
 	for (int x = index.x; x < index.x + size.x + 2; x++)
 	{
-		// +2 on top, + 1 on bot
-		for (int y = index.y - 1; y < index.y + size.y + 2; y++)
+		// +2 on top + 1 on bottom
+		for (int y = index.y; y < index.y + size.y + 3; y++)
 		{
 			if (!isValidIndex(Index(x, y), data))
 				return false;

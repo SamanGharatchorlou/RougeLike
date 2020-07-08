@@ -83,15 +83,30 @@ void MapTileDecoder::addWater(Grid<MapTile>& data)
 {
 	Vector2D<int> poolSize(2, 2);
 
-	for (int y = 0; y < data.yCount(); y++)
+
+	for (int x = 0; x < data.xCount(); x++)
 	{
-		for (int x = 0; x < data.xCount(); x++)
+		for (int y = 0; y < data.yCount(); y++)
 		{
 			Index index(x, y);
 
 			if (data[index].is(CollisionTile::Water))
 			{
-				// Fill water
+				// very top row not considered to keep symmetry 
+				index += Index(0, 1);
+
+				// width
+				int width = 0;
+				while (data[index + width].is(CollisionTile::Water))
+					width++;
+
+				// height
+				int height = 0;
+				while (data[index + height].is(CollisionTile::Water))
+					height++;
+
+
+				// Fill water center
 				for (int xPool = index.x + 1; xPool < index.x + 1 + poolSize.x; xPool++)
 				{
 					for (int yPool = index.y + 1; yPool < index.y + 1 + poolSize.y; yPool++)
@@ -100,41 +115,41 @@ void MapTileDecoder::addWater(Grid<MapTile>& data)
 					}
 				}
 
-				// xPool = left
-				int xPoolLeft = index.x;
-				for (int yPool = index.y; yPool < index.y + 1 + poolSize.y; yPool++)
+				// Left
+				for (int yPool = 0; yPool < height - 1; yPool++)
 				{
-					data[Index(xPoolLeft, yPool)].set(RenderTile::Floor | RenderTile::Floor_Right);
+					data[index + Index(0, yPool)].set(RenderTile::Floor | RenderTile::Floor_Right);
 				}
 
-				// xPool = right
-				int xPoolRight = index.x + 1 + poolSize.x;
-				for (int yPool = index.y; yPool < index.y + 1 + poolSize.y; yPool++)
+				// Right
+				for (int yPool = 0; yPool < height - 1; yPool++)
 				{
-					data[Index(xPoolRight, yPool)].set(RenderTile::Floor | RenderTile::Floor_Left);
+					data[index + Index(width - 1, yPool)].set(RenderTile::Floor | RenderTile::Floor_Left);
 				}
 
-				// yPool = top
-				int yPoolTop = index.y;
-				for (int xPool = index.x + 1; xPool < index.x + 1 + poolSize.x; xPool++)
+
+				// Top
+				for (int xPool = 1; xPool < width - 1; xPool++)
 				{
-					data[Index(xPool, yPoolTop)].set(RenderTile::Wall | RenderTile::Water_Top);
-					data[Index(xPool, yPoolTop - 1)].set(RenderTile::Floor | RenderTile::Floor_Bottom);
+					data[index + Index(xPool, 0)].set(RenderTile::Floor | RenderTile::Water_Top);
+
+					data[index + Index(xPool, -1)].set(RenderTile::Floor | RenderTile::Floor_Bottom);
 				}
 
-				// yPool = bot
-				int yPoolBot = index.y + 1 + poolSize.y;
-				for (int xPool = index.x + 1; xPool < index.x + 1 + poolSize.x; xPool++)
+				// Bot
+				for (int xPool = 1; xPool < width - 1; xPool++)
 				{
-					data[Index(xPool, yPoolBot)].set(RenderTile::Floor | RenderTile::Floor_Top);
+					data[index + Index(xPool, height-1)].set(RenderTile::Floor | RenderTile::Floor_Top);
 				}
 
 
 				// Corners
-				data[Index(index.x, index.y - 1)].set(								RenderTile::Floor | RenderTile::Floor_Bottom_Right);
-				data[Index(index.x + 1 + poolSize.x, index.y - 1)].set(				RenderTile::Floor | RenderTile::Floor_Bottom_Left);
-				data[Index(index.x + 1 + poolSize.x, index.y + 1 + poolSize.y)].set(RenderTile::Floor | RenderTile::Floor_Top_Left);
-				data[Index(index.x, index.y + 1 + poolSize.y)].set(					RenderTile::Floor | RenderTile::Floor_Top_Right);
+				data[Index(index.x, index.y - 1)].set(RenderTile::Floor | RenderTile::Floor_Bottom_Right);
+				data[Index(index.x + width - 1, index.y - 1)].set(RenderTile::Floor | RenderTile::Floor_Bottom_Left);
+				data[Index(index.x + width - 1, index.y + height - 1)].set(RenderTile::Floor | RenderTile::Floor_Top_Left);
+				data[Index(index.x, index.y + height - 1)].set(RenderTile::Floor | RenderTile::Floor_Top_Right);
+			
+				x = index.x + width + 1;
 			}
 		}
 	}
