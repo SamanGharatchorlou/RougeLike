@@ -102,6 +102,8 @@ void GameState::fastUpdate(float dt)
 
 void GameState::slowUpdate(float dt)
 {
+	mGameData->environment->slowUpdate(dt);
+
 	mGameData->actors->slowUpdate(dt);
 
 	mGameData->effectPool->slowUpdate();

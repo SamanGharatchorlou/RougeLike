@@ -172,7 +172,6 @@ void Animator::clear()
 	speedFactor = 1.0f;
 	mFrameTime = -1.0f;
 	timer.stop();
-	mRect = nullptr; // TODO: remove
 }
 
 

@@ -13,6 +13,7 @@ public:
 	Environment(TextureManager* textureManager);
 
 	void init();
+	void slowUpdate(float dt);
 	void restart();
 
 

@@ -11,6 +11,7 @@
 
 #if _DEBUG
 #include "Debug/DebugDraw.h"
+#include "MapDebugging.h"
 #endif
 
 
@@ -43,29 +44,32 @@ void Map::close(TextureManager* tm)
 }
 
 
+void Map::slowUpdate(float dt)
+{
+	for (int y = 0; y < yCount(); y++)
+	{
+		for (int x = 0; x < xCount(); x++)
+		{
+			Index index(x, y);
+			mData[index].slowUpdate(dt);
+		}
+	}
+}
+
 void Map::renderLowerLayer()
 {
 	Camera* camera = Camera::Get();
 	for (unsigned int x = 0; x < xCount(); x++)
 	{
-		bool onTopSection = true;
-
 		for (unsigned int y = 0; y < yCount(); y++)
 		{
-			MapTile tile = mData[y][x];
+			Index index(x, y);
+			MapTile tile = mData[index];
 
-			if (tile.has(RenderTile::Floor))
-				onTopSection = false;
-
-			if (!onTopSection)
-			{
-				// Move to next x
-				onTopSection = true;
+			if(tile.is(CollisionTile::Floor))
 				break;
-			}
 
 			RectF tileRect = tile.rect();
-
 			if (camera->inView(tileRect))
 			{
 				tileRect = camera->toCameraCoords(tileRect);
@@ -82,24 +86,15 @@ void Map::renderUpperLayer()
 
 	for (unsigned int x = 0; x < xCount(); x++)
 	{
-		bool onBottomSection = true;
-
 		for (unsigned int y = yCount() - 1; y > 0; y--)
 		{
-			MapTile tile = mData[y][x];
+			Index index(x, y);
+			MapTile tile = mData[index];
 
-			if (tile.has(RenderTile::Floor))
-				onBottomSection = false;
-
-			if (!onBottomSection)
-			{
-				// Move to next x
-				onBottomSection = true;
+			if (tile.renderType() < RenderTile::Wall)
 				break;
-			}
 
 			RectF tileRect = tile.rect();
-
 			if (camera->inView(tileRect))
 			{
 				tileRect = camera->toCameraCoords(tileRect);
@@ -108,8 +103,8 @@ void Map::renderUpperLayer()
 		}
 	}
 
-#if LABEL_SURFACE_RENDER_TYPES || LABEL_SURFACE_COLLISION_TYPES
-	renderSurfaceTypes();
+#if RENDER_SURFACE_TYPES
+	renderSurfaceTypes(mData);
 #endif
 }
 
@@ -227,7 +222,8 @@ void Map::renderFloor()
 				RenderTile type = tile.renderType();
 
 				// Split each floor tile into 4
-				if (tile.has(RenderTile::Floor) || type >= RenderTile::Water_Middle)
+				//if (tile.has(RenderTile::Floor) || type >= RenderTile::Water_Middle)
+				if(tile.is(CollisionTile::Floor))
 				{
 					tileRect = camera->toCameraCoords(tileRect);
 
@@ -251,239 +247,4 @@ void Map::renderFloor()
 		}
 	}
 }
-
-
-// -- Debugging --
-#if LABEL_SURFACE_RENDER_TYPES || LABEL_SURFACE_COLLISION_TYPES
-void Map::renderSurfaceTypes()
-{
-	Camera* camera = Camera::Get();
-
-	int fontSize = 16;
-	VectorF offset = VectorF(0.0f, 20.0f);
-
-	for (unsigned int y = 0; y < yCount(); y++)
-	{
-		for (unsigned int x = 0; x < xCount(); x++)
-		{
-			MapTile tile = mData[y][x];
-			RectF tileRect = tile.rect();
-
-			if (camera->inView(tileRect))
-			{
-				debugDrawRectOutline(Camera::Get()->toCameraCoords(tileRect), RenderColour::Green);
-
-#if LABEL_SURFACE_RENDER_TYPES
-				if (tile.has(RenderTile::Wall))
-				{
-					debugRenderText("Wall", fontSize, tileRect.TopCenter(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				// Floor
-				if (tile.has(RenderTile::Floor))
-				{
-					debugRenderText("Floor", fontSize, tileRect.TopCenter(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				// Floor - Sides
-				if (tile.has(RenderTile::Floor_Left))
-				{
-					debugRenderText("Floor left", fontSize, tileRect.TopCenter(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				if (tile.has(RenderTile::Floor_Right))
-				{
-					debugRenderText("Floor right", fontSize, tileRect.TopCenter(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				if (tile.has(RenderTile::Floor_Top))
-				{
-					debugRenderText("Floor top", fontSize, tileRect.TopCenter(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				if (tile.has(RenderTile::Floor_Bottom))
-				{
-					debugRenderText("Floor bottom", fontSize, tileRect.TopCenter(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				// Floor - Corners
-				if (tile.has(RenderTile::Floor_Top_Left))
-				{
-					debugRenderText("Floor top left", fontSize, tileRect.TopCenter(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-				if (tile.has(RenderTile::Floor_Top_Right))
-				{
-					debugRenderText("Floor top right", fontSize, tileRect.TopCenter(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-				if (tile.has(RenderTile::Floor_Bottom_Left))
-				{
-					debugRenderText("Floor bottom left", fontSize, tileRect.TopCenter(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-				if (tile.has(RenderTile::Floor_Bottom_Right))
-				{
-					debugRenderText("Floor bottom right", fontSize, tileRect.TopCenter(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				// Bottom walls
-				if (tile.has(RenderTile::Bottom_Lower))
-				{
-					debugRenderText("Bottom lower", fontSize, tileRect.Center(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				if (tile.has(RenderTile::Bottom_Upper))
-				{
-					debugRenderText("Bottom upper", fontSize, tileRect.Center(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				// Top walls
-				if (tile.has(RenderTile::Top_Lower))
-				{
-					debugRenderText("Top lower", fontSize, tileRect.Center(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				if (tile.has(RenderTile::Top_Upper))
-				{
-					debugRenderText("Top upper", fontSize, tileRect.Center(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				// Side walls
-				if (tile.has(RenderTile::Right))
-				{
-					debugRenderText("Right", fontSize, tileRect.Center(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				if (tile.has(RenderTile::Left))
-				{
-					debugRenderText("Left", fontSize, tileRect.Center(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				if (tile.has(RenderTile::Bottom))
-				{
-					debugRenderText("Bottom", fontSize, tileRect.Center(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				// Corners
-				if (tile.has(RenderTile::Bottom_Right))
-				{
-					debugRenderText("Bottom right", fontSize, tileRect.Center(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				if (tile.has(RenderTile::Bottom_Left))
-				{
-					debugRenderText("Bottom left", fontSize, tileRect.Center(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				if (tile.has(RenderTile::Top_Right))
-				{
-					debugRenderText("Top right", fontSize, tileRect.Center(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				if (tile.has(RenderTile::Top_Left))
-				{
-					debugRenderText("Top left", fontSize, tileRect.Center(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				// Points
-				if (tile.has(RenderTile::Point_Bottom_Right))
-				{
-					debugRenderText("bot right point", fontSize, tileRect.Center(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				if (tile.has(RenderTile::Point_Bottom_Left))
-				{
-					debugRenderText("bot left point", fontSize, tileRect.Center(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				if (tile.has(RenderTile::Point_Top_Right))
-				{
-					debugRenderText("top right point", fontSize, tileRect.Center(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				if (tile.has(RenderTile::Point_Top_Left))
-				{
-					debugRenderText("top left point", fontSize, tileRect.Center(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				// Column parts
-				if (tile.has(RenderTile::Column_Upper))
-				{
-					debugRenderText("column upper", fontSize, tileRect.Center(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				if (tile.has(RenderTile::Column_Lower))
-				{
-					debugRenderText("column lower", fontSize, tileRect.Center(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				if (tile.has(RenderTile::Floor_ColumnBase))
-				{
-					debugRenderText("floor column base", fontSize, tileRect.Center(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				// Water				
-				if (tile.has(RenderTile::Water_Middle))
-				{
-					debugRenderText("Water", fontSize, tileRect.Center(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				if (tile.has(RenderTile::Water_Top))
-				{
-					debugRenderText("Water top", fontSize, tileRect.Center(), RenderColour::Red);
-					tileRect = tileRect.Translate(offset);
-				}
-#endif // LABEL_SURFACE_RENDER_TYPES
-
-#if LABEL_SURFACE_COLLISION_TYPES
-				if (tile.is(CollisionTile::Floor))
-				{
-					debugRenderText("Floor", fontSize, tileRect.Center(), RenderColour::Blue);
-					tileRect = tileRect.Translate(offset);
-				}	
-
-				if (tile.is(CollisionTile::Wall))
-				{
-					debugRenderText("Wall", fontSize, tileRect.Center(), RenderColour::Blue);
-					tileRect = tileRect.Translate(offset);
-				}
-
-				if (tile.is(CollisionTile::Water))
-				{
-					debugRenderText("Water", fontSize, tileRect.Center(), RenderColour::Blue);
-					tileRect = tileRect.Translate(offset);
-				}
-#endif  // LABEL_SURFACE_COLLISION_TYPES
-			}
-		}
-	}
-}
-#endif 
 

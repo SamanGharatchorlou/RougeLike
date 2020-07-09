@@ -37,6 +37,9 @@ public:
 	bool isValidTile(RectF rect) const;
 	bool isValidPosition(VectorF position) const;
 
+	// Update
+	void slowUpdate(float dt);
+
 	// Rendering
 	void renderFloor();
 	virtual void renderLowerLayer();
@@ -45,11 +48,6 @@ public:
 
 private:
 	void populateTileRects(VectorF offset);
-
-
-#if _DEBUG
-	void renderSurfaceTypes();
-#endif
 
 private:
 	VectorF mTileSize;

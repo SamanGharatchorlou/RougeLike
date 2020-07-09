@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Animations/Animator.h"
+
 
 class Texture;
 
@@ -8,6 +10,7 @@ enum class CollisionTile : Uint32
 	None,
 	Floor,
 	Wall,
+	Column,
 	Water,
 };
 
@@ -29,8 +32,13 @@ enum class RenderTile : Uint64
 	Floor_Bottom_Right = Floor << 8,
 	Floor_Bottom_Left = Floor << 9,
 
+	Water = Floor << 10,
 
-	Wall = Floor << 12,
+	Water_Middle = Water << 1,
+	Water_Top = Water << 2,
+
+
+	Wall = Water << 3,
 
 	// Sides
 	Left = Wall << 1,
@@ -62,18 +70,16 @@ enum class RenderTile : Uint64
 	Column_Lower = Wall << 17,
 	Column_Upper = Wall << 18,
 	Column_Top = Wall << 19,
-
-	Water = Column_Top << 20,
-
-	Water_Middle = Water << 1,
-	Water_Top = Water << 2,
 };
 
 
-enum class AnimationTile : Uint32
+enum class DecorTile : Uint32
 {
-	None,
-	Torch
+	None, 
+	Column = 1,
+	Water = Column << 1,
+	Torch = Column << 2,
+	Spikes = Column << 3
 };
 
 
@@ -118,7 +124,9 @@ protected:
 class MapTile : public PathTile
 {
 public:
-	MapTile() : mRenderType(RenderTile::None), mAnimationType(AnimationTile::None), mTexture(nullptr) { }
+	MapTile() : mRenderType(RenderTile::None), mDecorType(DecorTile::None), mTexture(nullptr) { }
+
+	void slowUpdate(float dt);
 
 	void setTexture(Texture* texture) { mTexture = texture; }
 
@@ -136,25 +144,24 @@ public:
 	bool is(CollisionTile type) const { return PathTile::is(type); }
 
 	// Animation type
-	void set(AnimationTile type) { mAnimationType = type; }
-	bool is(AnimationTile type) const;
+	void add(DecorTile type);
+	bool is(DecorTile type) const;
+	bool has(DecorTile type) const;
 
 	void render(RectF rect);
 
+	void addAnimation(Animator animation);
+
 private:
 	Texture* mTexture;
+	std::vector<Animator> mAnimations;
 
 	RenderTile mRenderType;
-	AnimationTile mAnimationType;
+	DecorTile mDecorType;
 };
 
 
 // -- Collision Tile -- //
-inline bool operator !=(CollisionTile a, CollisionTile b)
-{
-	return static_cast<Uint32>(a) != static_cast<Uint32>(b);
-}
-
 inline CollisionTile operator &(CollisionTile a, CollisionTile b)
 {
 	return static_cast<CollisionTile>(static_cast<Uint32>(a) & static_cast<Uint32>(b));
@@ -170,18 +177,8 @@ inline CollisionTile operator ~(CollisionTile a)
 	return static_cast<CollisionTile>(~static_cast<Uint32>(a));
 }
 
+
 // -- Render Tile -- //
-inline bool operator !=(RenderTile a, RenderTile b)
-{
-	return static_cast<Uint64>(a) != static_cast<Uint64>(b);
-}
-
-inline bool operator ==(RenderTile a, RenderTile b)
-{
-	return static_cast<Uint64>(a) == static_cast<Uint64>(b);
-}
-
-
 inline RenderTile operator &(RenderTile a, RenderTile b)
 {
 	return static_cast<RenderTile>(static_cast<Uint64>(a) & static_cast<Uint64>(b));
@@ -192,15 +189,9 @@ inline RenderTile operator |(RenderTile a, RenderTile b)
 	return static_cast<RenderTile>(static_cast<Uint64>(a) | static_cast<Uint64>(b));
 }
 
-
 inline RenderTile operator ^(RenderTile a, RenderTile b)
 {
 	return static_cast<RenderTile>(static_cast<Uint64>(a) ^ static_cast<Uint64>(b));
-}
-
-inline void operator ^=(RenderTile& a, RenderTile b)
-{
-	a = static_cast<RenderTile>(static_cast<Uint64>(a) ^ static_cast<Uint64>(b));
 }
 
 inline RenderTile operator ~(RenderTile a)
@@ -211,4 +202,16 @@ inline RenderTile operator ~(RenderTile a)
 inline bool operator >(RenderTile a, RenderTile b)
 {
 	return static_cast<Uint64>(a) > static_cast<Uint64>(b);
+}
+
+
+// -- Decoration Tile -- //
+inline DecorTile operator |(DecorTile a, DecorTile b)
+{
+	return static_cast<DecorTile>(static_cast<Uint32>(a) | static_cast<Uint32>(b));
+}
+
+inline DecorTile operator &(DecorTile a, DecorTile b)
+{
+	return static_cast<DecorTile>(static_cast<Uint32>(a) & static_cast<Uint32>(b));
 }

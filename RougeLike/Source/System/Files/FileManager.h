@@ -23,7 +23,6 @@ public:
 		Configs_Objects,
 		Config_UI,
 		Config_Map,
-		Config_Animations,
 		Config_Enemies,
 		Config_Player,
 		Config_Weapons,

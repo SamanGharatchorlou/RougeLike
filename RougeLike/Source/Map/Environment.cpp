@@ -48,6 +48,14 @@ void Environment::init()
 }
 
 
+void Environment::slowUpdate(float dt)
+{
+	mEntrace->slowUpdate(dt);
+	mPrimaryMap->slowUpdate(dt);
+	mExit->slowUpdate(dt);
+}
+
+
 void Environment::nextLevel()
 {
 	float offset = 0.0f;
@@ -182,6 +190,9 @@ void Environment::buildLevel(float offset)
 	MapGenerator generator;
 	generator.buildDungeon(mPrimaryMap->getData());
 	generator.addWaterFeatures(mPrimaryMap->getData());
+	generator.addColumns(mPrimaryMap->getData());
+	generator.addTorches(mPrimaryMap->getData());
+	generator.addSpikes(mPrimaryMap->getData());
 
 	mPrimaryMap->populateData(mTextureManager, VectorF(offset, 0.0f));
 }

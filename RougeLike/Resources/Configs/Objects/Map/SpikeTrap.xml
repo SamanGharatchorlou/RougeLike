@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Decor>
+	<AnimationInfo>
+		<ID>SpikeTrap</ID>
+		<FrameTime>0.5</FrameTime>
+		<FrameSize x = "256" y ="264"></FrameSize>
+		<Animations>
+			<Active>2</Active>
+		</Animations>
+	</AnimationInfo>
+</Decor>

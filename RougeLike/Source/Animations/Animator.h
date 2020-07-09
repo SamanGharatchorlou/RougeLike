@@ -111,6 +111,4 @@ private:
 	float speedFactor;
 	float mFrameTime;
 	Timer<float> timer;
-
-	const RectF* mRect; // TODO: remove
 };

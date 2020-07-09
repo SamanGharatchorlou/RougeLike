@@ -44,7 +44,7 @@ void MapGenerator::buildDungeon(Grid<MapTile>& data)
 		}
 
 		// Increment x atleast once before changing the path
-		if (x >= previousChange + 1 && x < mainEnd - 3)
+		if (x >= previousChange + 2 && x < mainEnd - 3)
 		{
 			bool validPath = false;
 
@@ -131,6 +131,7 @@ void MapGenerator::completeBuild(Grid<MapTile>& data)
 }
 
 
+// Water
 void MapGenerator::addWaterFeatures(Grid<MapTile>& data)
 {
 	Vector2D<int> poolSize(2, 2);
@@ -138,23 +139,22 @@ void MapGenerator::addWaterFeatures(Grid<MapTile>& data)
 	int minPoolSpace = data.xCount() / 4;
 	int xWaterIndex = -minPoolSpace;
 
-	for (int x = 0; x < data.xCount(); x++)
+	for (int x = poolSize.x + 1; x < data.xCount() - poolSize.x - 1; x++)
 	{
-		for (int y = 0; y < data.yCount(); y++)
+		for (int y = poolSize.y + 3; y < data.yCount() - poolSize.y - 2; y++)
 		{
 			Index index(x, y);
 
 			if (x > xWaterIndex + minPoolSpace && canAddWater(data, index, poolSize))
 			{
 				xWaterIndex = x;
-				data[Index(x, y)].set(CollisionTile::Water);
 
 				// +1 either sides of pool size
 				for (int x = index.x; x < index.x + poolSize.x + 2; x++)
 				{
 					for (int y = index.y; y < index.y + poolSize.y + 3; y++)
 					{
-						data[Index(x, y)].set(CollisionTile::Water);
+						data[Index(x, y)].add(DecorTile::Water);
 					}
 				}
 			}
@@ -163,18 +163,14 @@ void MapGenerator::addWaterFeatures(Grid<MapTile>& data)
 }
 
 
-
-bool MapGenerator::canAddWater(const Grid<MapTile>& data, const Index index, Vector2D<int> size) const
+bool MapGenerator::canAddWater(const Grid<MapTile>& data, Index index, Vector2D<int> size) const
 {
 	// +1 either sides of pool
 	for (int x = index.x; x < index.x + size.x + 2; x++)
 	{
-		// +2 on top + 1 on bottom
-		for (int y = index.y; y < index.y + size.y + 3; y++)
+		// +3 (two water tiles + one empty tile for column base) on top + 1 on bottom
+		for (int y = index.y - 1; y < index.y + size.y + 3; y++)
 		{
-			if (!isValidIndex(Index(x, y), data))
-				return false;
-
 			if (!data.get(Index(x, y)).is(CollisionTile::Floor))
 				return false;
 		}
@@ -184,7 +180,108 @@ bool MapGenerator::canAddWater(const Grid<MapTile>& data, const Index index, Vec
 }
 
 
-bool MapGenerator::isValidIndex(const Index index, const Grid<MapTile>& data) const
+// Columns
+void MapGenerator::addColumns(Grid<MapTile>& data)
+{
+	int columnWidth = 3;
+
+	for (int x = 0; x < data.xCount(); x++)
+	{
+		for (int y = 0; y < data.yCount(); y++)
+		{
+			Index index(x, y);
+			Index down(index + Index(0, 1));
+
+			bool isLowerWall = data[index].is(CollisionTile::Wall) && isValid(down, data) && data[down].is(CollisionTile::Floor);
+
+			if (isLowerWall && canAddColumn(data, index, columnWidth))
+			{
+				Index up(index + Index(0, -1));
+				Index up2(index + Index(0, -2));
+
+				if(isValid(up2, data))
+					data[up2].add(DecorTile::Column); // Wall top
+
+				if(isValid(up, data))
+					data[up].add(DecorTile::Column); // Upper
+
+				data[index].add(DecorTile::Column); // Lower
+				data[down].add(DecorTile::Column); // Base
+
+				x += columnWidth - 1;
+				break;
+			}
+		}
+	}
+}
+
+
+bool MapGenerator::canAddColumn(const Grid<MapTile>& data, Index lowerIndex, int columnWidth) const
+{
+	for (int i = lowerIndex.x - (columnWidth / 2); i <= lowerIndex.x + (columnWidth / 2); i++)
+	{
+		Index index(i, lowerIndex.y);
+		Index down(index + Index(0, 1));
+
+		bool validIndexes = isValid(index, data) && isValid(down, data);
+		bool isLowerWall = validIndexes && data.get(index).is(CollisionTile::Wall) && data.get(down).is(CollisionTile::Floor);
+
+		if (!isLowerWall)
+			return false;
+	}
+
+	return true;
+}
+
+
+// Torches
+void MapGenerator::addTorches(Grid<MapTile>& data)
+{
+	for (int x = 0; x < data.xCount(); x++)
+	{
+		for (int y = 0; y < data.yCount(); y++)
+		{
+			Index index(x, y);
+			Index left(index + Index(-1, 0));
+			Index down(index + Index(0, 1));
+			Index down2(index + Index(0, 2));
+
+			if (isValid(left, data) && isValid(down2, data) && isValid(down2, data))
+			{
+				if (data[left].has(DecorTile::Column) && data[down].is(CollisionTile::Wall) && data[down2].is(CollisionTile::Floor))
+				{
+					data[index].add(DecorTile::Torch);
+				}
+			}
+		}
+	}
+}
+
+
+// Spikes
+void MapGenerator::addSpikes(Grid<MapTile>& data)
+{
+	for (int x = 0; x < data.xCount(); x++)
+	{
+		for (int y = 0; y < data.yCount(); y++)
+		{
+			Index index(x, y);
+			Index up(x, y);
+
+			if (data[index].is(CollisionTile::Floor) && data[index].is(DecorTile::None))
+			{
+				bool addSpike = randomNumberBetween(0, 101) > 85;
+				if (addSpike)
+				{
+					data[Index(x, y)].add(DecorTile::Spikes);
+				}
+			}
+		}
+	}
+}
+
+
+bool MapGenerator::isValid(const Index index, const Grid<MapTile>& data) const
 {
 	return (index.x >= 0 && index.x < data.xCount()) &&
 		(index.y >= 0 && index.y < data.yCount());

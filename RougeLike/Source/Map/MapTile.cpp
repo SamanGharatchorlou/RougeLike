@@ -42,12 +42,39 @@ void MapTile::remove(RenderTile type)
 }
 
 
-// --- AnimationTile --- //
-bool MapTile::is(AnimationTile type) const
+// --- DecorationTile --- //
+void MapTile::add(DecorTile type)
 {
-	return mAnimationType == type;
+	mDecorType = mDecorType | type;
 }
 
+bool MapTile::has(DecorTile type) const
+{
+	return (mDecorType & type) != DecorTile::None;
+}
+
+bool MapTile::is(DecorTile type) const
+{
+	return mDecorType == type;
+}
+
+
+
+// --- MapTile --- //
+
+void MapTile::addAnimation(Animator animation)
+{
+	animation.start();
+	mAnimations.push_back(animation);
+}
+
+void MapTile::slowUpdate(float dt)
+{
+	for (int i = 0; i < mAnimations.size(); i++)
+	{
+		mAnimations[i].slowUpdate(dt);
+	}
+}
 
 void MapTile::render(RectF rect) 
 {
@@ -55,4 +82,9 @@ void MapTile::render(RectF rect)
 	if(mTexture)
 #endif
 		mTexture->render(rect); 
+
+	for (int i = 0; i < mAnimations.size(); i++)
+	{
+		mAnimations[i].render(rect);
+	}
 }

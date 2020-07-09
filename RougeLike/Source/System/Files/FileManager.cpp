@@ -27,7 +27,6 @@ FileManager::FileManager()
 	folderPaths[Image_Weapons] = std::string(folderPaths[Images] + "Weapons\\");
 	folderPaths[Image_Animations] = std::string(folderPaths[Images] + "Animations\\");
 
-
 	// Audio
 	folderPaths[Audio] = std::string(folderPaths[Root] + "Audio\\");
 	folderPaths[Audio_Music] = std::string(folderPaths[Audio] + "Music\\");
@@ -43,10 +42,10 @@ FileManager::FileManager()
 
 	folderPaths[Config_UI] = std::string(folderPaths[Configs] + "UIMenus\\");
 	folderPaths[Config_Map] = std::string(folderPaths[Configs] + "Map\\");
-	folderPaths[Config_Animations] = std::string(folderPaths[Configs] + "Animations\\");
 	folderPaths[Config_Enemies] = std::string(folderPaths[Configs_Objects] + "Enemies\\");
 	folderPaths[Config_Player] = std::string(folderPaths[Configs_Objects] + "Player\\");
 	folderPaths[Config_Abilities] = std::string(folderPaths[Configs_Objects] + "Abilities\\");
+
 	folderPaths[Config_Weapons] = std::string(folderPaths[Configs_Objects] + "Weapons\\");
 	folderPaths[Config_MeleeWeapons] = std::string(folderPaths[Configs_Objects] + "Weapons\\Melee\\");
 

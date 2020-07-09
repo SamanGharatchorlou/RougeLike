@@ -127,6 +127,7 @@
     <ClCompile Include="Source\Map\PrimaryMap.cpp" />
     <ClCompile Include="Source\Map\TileType.cpp" />
     <ClCompile Include="Source\Map\MapGenerator.cpp" />
+    <ClCompile Include="Source\Map\MapDebugging.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -277,6 +278,7 @@
     <ClInclude Include="Source\Map\PrimaryMap.h" />
     <ClInclude Include="Source\Map\TileType.h" />
     <ClInclude Include="Source\Map\MapGenerator.h" />
+    <ClInclude Include="Source\Map\MapDebugging.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

@@ -29,6 +29,7 @@
     <ClCompile Include="Source\Game\LoadingBar.cpp" />
     <ClCompile Include="Source\Game\LoadingManager.cpp" />
     <ClCompile Include="Source\Input\Button.cpp" />
+    <ClCompile Include="Source\Map\MapDebugging.cpp" />
     <ClCompile Include="Source\Map\MapTileDecoder.cpp" />
     <ClCompile Include="Source\Map\PrimaryMap.cpp" />
     <ClCompile Include="Source\Map\TileType.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="Source\Events\LocalObserver.h" />
     <ClInclude Include="Source\Game\LoadingBar.h" />
     <ClInclude Include="Source\Game\LoadingManager.h" />
+    <ClInclude Include="Source\Map\MapDebugging.h" />
     <ClInclude Include="Source\Map\MapTileDecoder.h" />
     <ClInclude Include="Source\Map\PrimaryMap.h" />
     <ClInclude Include="Source\Map\TileType.h" />
