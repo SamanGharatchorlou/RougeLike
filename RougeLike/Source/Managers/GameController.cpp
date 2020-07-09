@@ -149,7 +149,7 @@ void GameController::run()
 	mGameStateMachine.addState(new PreGameState(&mGameData, this));
 
 	// frame rate timer
-	Timer<float> frameTimer(Timer<float>::START);
+	Timer<float> frameTimer(Timer<float>::Start);
 	float dt = 0.0f;
 
 	// Run the update loop this many times every frame

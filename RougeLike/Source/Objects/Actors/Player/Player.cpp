@@ -69,8 +69,11 @@ void Player::handleInput()
 void Player::fastUpdate(float dt)
 {
 	// Restricts movement from input, movement should happen after this
-	if(!mControlOverride)
+	if (!mControlOverride)
+	{
+		mCollisionManager.triggerTraps(mGameData->environment->map(position()));
 		mCollisionManager.resolveWallCollisions(mGameData->environment->map(position()), dt);
+	}
 
 	// Movement, animations, weapon updates
 	Actor::fastUpdate(dt);
@@ -136,6 +139,8 @@ void Player::slowUpdate(float dt)
 {
 	// Actor
 	Actor::slowUpdate(dt);
+
+	mCollisionManager.updateTraps(mGameData->environment->map(position()));
 
 	// Weapon
 	mWeapon->slowUpdate(dt);

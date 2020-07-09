@@ -105,7 +105,7 @@ void Animator::Animation::nextFrame()
 int Animator::Animation::currentFrame() const
 {
 	Index bounaries = mTexture->originalDimentions / mTileDimentions;
-	return (mIndex.y * bounaries.x) + mIndex.x + 1;
+	return (mIndex.y * bounaries.x) + mIndex.x;
 }
 
 

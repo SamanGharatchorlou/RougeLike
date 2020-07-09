@@ -101,7 +101,7 @@ public:
 	int animationCount() const { return mAnimations.size(); }
 
 	const Animation& animation() const { return mAnimations[mActiveIndex]; }
-
+	Animation& getAnimation(int index) { return mAnimations[index]; }
 
 private:
 

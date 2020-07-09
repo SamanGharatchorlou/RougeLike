@@ -12,9 +12,9 @@ public:
 	MapBase(Vector2D<int> size) : mData(size, K()) { }
 	MapBase(Vector2D<int> size, K value) : mData(size, value) { }
 
-	K& operator [] (Index index) { 
-		return mData[index.y][index.x]; 
-	}
+	K& operator [] (Index index) { return mData[index.y][index.x]; }
+	K& get(Index index) { return mData[index]; }
+
 	const Grid<K>& getData() const { return mData; }
 	Grid<K>& getData() { return mData; }
 

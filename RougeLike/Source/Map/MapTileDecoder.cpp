@@ -220,7 +220,7 @@ void MapTileDecoder::addAnimations(Grid<MapTile>& data)
 				if (reader.initAnimator(animator))
 				{
 					data[index].addAnimation(animator);
-					animator.pause(); // need reference not copy
+					data[index].animation(0).pause();
 				}
 			}
 		}

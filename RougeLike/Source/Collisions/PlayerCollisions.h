@@ -13,6 +13,9 @@ class PlayerCollisions
 public:
 	PlayerCollisions(Player* player, CollisionManager* collisionManager);
 
+	void updateTraps(Map* map);
+	void triggerTraps(Map* map);
+
 	void resolveWallCollisions(const Map* map, float dt);
 	void updateWeaponColliders();
 
@@ -34,4 +37,7 @@ private:
 	CollisionManager* cManager;
 
 	WallCollisionTracker mWallCollisions;
+
+	std::queue<std::pair<Index, TimerF>> mUntriggeredTraps;
+	std::queue<std::pair<Index, TimerF>> mTriggeredTraps;
 };

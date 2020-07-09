@@ -151,6 +151,7 @@ public:
 	void render(RectF rect);
 
 	void addAnimation(Animator animation);
+	Animator& animation(int index) { return mAnimations[index]; }
 
 private:
 	Texture* mTexture;

@@ -6,8 +6,8 @@ class Timer
 public:
 	enum Command
 	{
-		STOP,
-		START
+		Stop,
+		Start
 	};
 
 private:
@@ -19,7 +19,7 @@ private:
 	};
 
 public:
-	Timer(Command startingState = STOP);
+	Timer(Command startingState = Stop);
 
 	// Timer Controls
 	void start();
@@ -43,11 +43,13 @@ private:
 	State state;
 };
 
+using TimerF = Timer<float>;
+
 
 template <typename T>
 Timer<T>::Timer(Command startingState) : startTicks(0), pauseTicks(0)
 {
-	if (startingState == START)
+	if (startingState == Start)
 	{
 		state = kRunning;
 		start();
