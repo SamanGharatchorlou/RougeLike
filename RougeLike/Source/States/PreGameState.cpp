@@ -83,4 +83,5 @@ void PreGameState::initCollisionTrackers()
 	collisions->addBasicCollisionTracker(CollisionManager::Player_Hit_Collectable);
 	collisions->addComplexCollisionTracker(CollisionManager::PlayerWeapon_Hit_Enemy);
 	collisions->addComplexCollisionTracker(CollisionManager::Player_Hit_Enemy);
+	collisions->addComplexCollisionTracker(CollisionManager::Player_Hit_Trap);
 }

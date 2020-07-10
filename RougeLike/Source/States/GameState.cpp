@@ -176,6 +176,8 @@ void GameState::initCamera()
 void GameState::initMap()
 {
 	mGameData->environment->init();
+
+	//mGameData->collisionManager->addAttackers(CollisionManager::Player_Hit_Trap, std::vector<Col)
 }
 
 void GameState::initRendering()

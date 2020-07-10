@@ -14,6 +14,8 @@
 #include <vector>
 #include <unordered_map>
 #include <queue>
+#include <deque>
+#include <unordered_set>
 
 // Logging
 #include <cstdarg>
@@ -47,6 +49,7 @@ namespace fs = std::experimental::filesystem;
 #include "Utilities/Helpers.h"
 #include "Utilities/Grid.h"
 #include "Utilities/Timer.h"
+#include "Utilities/UniqueQueue.h"
 
 // File accessors
 #include "System/Files/XMLParser.h"

@@ -54,7 +54,10 @@ void Map::slowUpdate(float dt)
 			mData[index].slowUpdate(dt);
 		}
 	}
+
+	mTrapManager.slowUpdate(this);
 }
+
 
 void Map::renderLowerLayer()
 {

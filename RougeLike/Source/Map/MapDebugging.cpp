@@ -40,7 +40,7 @@ void renderSurfaceTypes(const Grid<MapTile>& data)
 	}
 }
 
-void renderCollisionTypes(const MapTile& tile, RectF& tileRect, VectorF& offset, int fontSize)
+void renderRenderTypes(const MapTile& tile, RectF& tileRect, VectorF& offset, int fontSize)
 {
 	RenderColour colour = RenderColour::Red;
 
@@ -231,7 +231,7 @@ void renderCollisionTypes(const MapTile& tile, RectF& tileRect, VectorF& offset,
 		tileRect = tileRect.Translate(offset);
 	}
 }
-void renderRenderTypes(const MapTile& tile, RectF& tileRect, VectorF& offset, int fontSize)
+void renderCollisionTypes(const MapTile& tile, RectF& tileRect, VectorF& offset, int fontSize)
 {
 	RenderColour colour = RenderColour::Blue;
 
@@ -244,18 +244,6 @@ void renderRenderTypes(const MapTile& tile, RectF& tileRect, VectorF& offset, in
 	if (tile.is(CollisionTile::Wall))
 	{
 		debugRenderText("Wall", fontSize, tileRect.TopCenter(), colour);
-		tileRect = tileRect.Translate(offset);
-	}
-
-	if (tile.is(CollisionTile::Water))
-	{
-		debugRenderText("Water", fontSize, tileRect.TopCenter(), colour);
-		tileRect = tileRect.Translate(offset);
-	}
-
-	if (tile.is(CollisionTile::Column))
-	{
-		debugRenderText("Column", fontSize, tileRect.TopCenter(), colour);
 		tileRect = tileRect.Translate(offset);
 	}
 }

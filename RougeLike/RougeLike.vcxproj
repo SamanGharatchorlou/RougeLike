@@ -31,8 +31,7 @@
     <ClCompile Include="Source\Input\Button.cpp" />
     <ClCompile Include="Source\Map\MapDebugging.cpp" />
     <ClCompile Include="Source\Map\MapTileDecoder.cpp" />
-    <ClCompile Include="Source\Map\PrimaryMap.cpp" />
-    <ClCompile Include="Source\Map\TileType.cpp" />
+    <ClCompile Include="Source\Map\TrapManager.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\Ability.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityActivator.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHotKeys.cpp" />
@@ -166,8 +165,8 @@
     <ClInclude Include="Source\Game\LoadingManager.h" />
     <ClInclude Include="Source\Map\MapDebugging.h" />
     <ClInclude Include="Source\Map\MapTileDecoder.h" />
-    <ClInclude Include="Source\Map\PrimaryMap.h" />
-    <ClInclude Include="Source\Map\TileType.h" />
+    <ClInclude Include="Source\Map\TileTypes.h" />
+    <ClInclude Include="Source\Map\TrapManager.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\Ability.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityActivator.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityManager.h" />
@@ -226,6 +225,7 @@
     <ClInclude Include="Source\Utilities\Buffer.h" />
     <ClInclude Include="Source\Utilities\Queue.h" />
     <ClInclude Include="Source\Utilities\RingBuffer.h" />
+    <ClInclude Include="Source\Utilities\UniqueQueue.h" />
     <ClInclude Include="Source\Weapons\Melee\MeleeWeapon.h" />
     <ClInclude Include="Source\Items\Spawner.h" />
     <ClInclude Include="Source\Objects\Actors\Enemies\EnemyStates\EnemyAlert.h" />

@@ -61,7 +61,6 @@ bool MapTile::is(DecorTile type) const
 
 
 // --- MapTile --- //
-
 void MapTile::addAnimation(Animator animation)
 {
 	animation.start();

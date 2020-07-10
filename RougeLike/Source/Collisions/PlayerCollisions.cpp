@@ -1,11 +1,18 @@
 #include "pch.h"
 #include "PlayerCollisions.h"
 
+
+#include "Game/GameData.h"
+#include "Objects/Effects/EffectPool.h"
+#include "Objects/Effects/DamageEffect.h"
+
 #include "Objects/Actors/Player/Player.h"
 #include "Weapons/Weapon.h"
 #include "CollisionManager.h"
 
 #include "Map/Map.h"
+
+
 
 
 PlayerCollisions::PlayerCollisions(Player* player, CollisionManager* collisionManager) 
@@ -18,6 +25,7 @@ void PlayerCollisions::addColliderToTrackers()
 	cManager->addDefenders(CollisionManager::Enemy_Hit_Player, playerCollider);
 	cManager->addAttackers(CollisionManager::Player_Hit_Collectable, playerCollider);
 	cManager->addAttackers(CollisionManager::Player_Hit_Enemy, playerCollider);
+	cManager->addAttackers(CollisionManager::Player_Hit_Trap, playerCollider);
 }
 
 
@@ -87,32 +95,47 @@ void PlayerCollisions::enableBodyCollisions(bool isEnabled)
 	complexTracker->setCheckingStatus(isEnabled);
 }
 
+
 void PlayerCollisions::triggerTraps(Map* map)
 {
-	Index index = map->index(mPlayer->position());
-	MapTile& tile = map->get(index);// map->tile(mPlayer->position());
-
-	// Add untriggered trap
-	if (tile.has(DecorTile::Spikes))
-	{
-		Animator& animator = tile.animation(0);
-
-		if (animator.animation().currentFrame() == 0)
-		{
-			std::pair<Index, TimerF> indexTimer(index, TimerF(TimerF::Start));
-			mUntriggeredTraps.push(indexTimer);
-		}
-	}
+	map->triggerTraps(mPlayer->position());
 }
 
+
+void PlayerCollisions::resolveTrapCollisions(const Map* map)
+{
+	Effect* effect = mPlayer->mGameData->effectPool->getEffect(EffectType::Damage);
+	DamageEffect* damageEffect = static_cast<DamageEffect*>(effect);
+	damageEffect->set(Damage(100));
+
+	EffectCollider trapCollider;
+	trapCollider.addEffect(damageEffect);
+
+	
+
+
+	//const MapTile* tile = map->tile(mPlayer->position());
+
+	//// Add untriggered trap
+	//if (tile->has(DecorTile::Spikes))
+	//{
+	//	const Animator& animator = tile->animation(0);
+
+	//	if (animator.animation().currentFrame() == 1)
+	//	{
+	//		DamageEffect damage
+	//	}
+	//}
+}
+
+/*
 void PlayerCollisions::updateTraps(Map* map)
 {
 	// Trigger trap
-	if (mUntriggeredTraps.size() > 0 && mUntriggeredTraps.front().second.getSeconds() > 1.0f)
+	if (mUntriggeredTraps.size() > 0 && mUntriggeredTraps.front().timer.getSeconds() > 1.0f)
 	{
-		Index trapIndex = mUntriggeredTraps.front().first;
+		Index trapIndex = mUntriggeredTraps.front().index;
 		MapTile& tile = map->get(trapIndex);
-
 		Animator& animator = tile.animation(0);
 
 		// TODO: this is being triggered everyframe, make it only once
@@ -120,20 +143,18 @@ void PlayerCollisions::updateTraps(Map* map)
 		{
 			animator.getAnimation(0).nextFrame();
 
-			std::pair<Index, TimerF>& trap = mUntriggeredTraps.front();
-			trap.second.restart();
+			IndexTimer& trap = mUntriggeredTraps.popFront();
+			trap.timer.restart();
 
-			mUntriggeredTraps.pop();
 			mTriggeredTraps.push(trap);
 		}
 	}
 
 	// Reset trap
-	if (mTriggeredTraps.size() > 0 && mTriggeredTraps.front().second.getSeconds() > 2.0f)
+	if (mTriggeredTraps.size() > 0 && mTriggeredTraps.front().timer.getSeconds() > 2.0f)
 	{
-		Index trapIndex = mTriggeredTraps.front().first;
+		Index trapIndex = mTriggeredTraps.front().index;
 		MapTile& tile = map->get(trapIndex);
-
 		Animator& animator = tile.animation(0);
 
 		if (animator.animation().currentFrame() == 1)
@@ -143,3 +164,21 @@ void PlayerCollisions::updateTraps(Map* map)
 		}
 	}
 }
+
+
+void PlayerCollisions::resolveTrapCollisions(const Map* map)
+{
+	const MapTile* tile = map->tile(mPlayer->position());
+
+	// Add untriggered trap
+	if (tile->has(DecorTile::Spikes))
+	{
+		const Animator& animator = tile->animation(0);
+
+		if (animator.animation().currentFrame() == 1)
+		{
+			DamageEffect damage
+		}
+	}
+}
+*/

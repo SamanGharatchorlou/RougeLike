@@ -5,6 +5,8 @@
 #include "MapGenerator.h"
 #include "Map.h"
 
+#include "TrapManager.h"
+
 
 Environment::Environment(TextureManager* textureManager) : mTextureManager(textureManager), mMapLevel(1)
 {

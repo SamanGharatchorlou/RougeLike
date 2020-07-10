@@ -14,6 +14,8 @@ class MeleeWeapon;
 
 class Player : public Actor
 {
+	friend class PlayerCollisions;
+
 public:
 	Player(GameData* gameData);
 	~Player() { };

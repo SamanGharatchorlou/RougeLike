@@ -124,10 +124,9 @@
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\ArmorAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityCreator.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\Ability.cpp" />
-    <ClCompile Include="Source\Map\PrimaryMap.cpp" />
-    <ClCompile Include="Source\Map\TileType.cpp" />
     <ClCompile Include="Source\Map\MapGenerator.cpp" />
     <ClCompile Include="Source\Map\MapDebugging.cpp" />
+    <ClCompile Include="Source\Map\TrapManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -275,10 +274,11 @@
     <ClInclude Include="Source\Objects\Abilities\AbilityCreator.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\Ability.h" />
     <ClInclude Include="Source\Objects\Abilities\Cooldown.h" />
-    <ClInclude Include="Source\Map\PrimaryMap.h" />
-    <ClInclude Include="Source\Map\TileType.h" />
     <ClInclude Include="Source\Map\MapGenerator.h" />
     <ClInclude Include="Source\Map\MapDebugging.h" />
+    <ClInclude Include="Source\Utilities\UniqueQueue.h" />
+    <ClInclude Include="Source\Map\TileTypes.h" />
+    <ClInclude Include="Source\Map\TrapManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

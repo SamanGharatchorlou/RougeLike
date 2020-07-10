@@ -1,5 +1,6 @@
 #pragma once
 
+#include "TrapManager.h"
 #include "Map/MapBase.h"
 #include "MapTile.h"
 
@@ -11,6 +12,15 @@ class Map : public MapBase<MapTile>
 {
 public:
 	Map(Vector2D<int> mapIndexSize, VectorF tileSize);
+
+	// Update
+	void slowUpdate(float dt);
+	void triggerTraps(VectorF position) { mTrapManager.triggerTrap(this, position); }
+
+	// Rendering
+	void renderFloor();
+	virtual void renderLowerLayer();
+	void renderUpperLayer();
 
 	void populateData(TextureManager* tm, VectorF offset);
 	void clearData();
@@ -37,18 +47,13 @@ public:
 	bool isValidTile(RectF rect) const;
 	bool isValidPosition(VectorF position) const;
 
-	// Update
-	void slowUpdate(float dt);
 
-	// Rendering
-	void renderFloor();
-	virtual void renderLowerLayer();
-	void renderUpperLayer();
 
 
 private:
 	void populateTileRects(VectorF offset);
 
 private:
+	TrapManager mTrapManager;
 	VectorF mTileSize;
 };
