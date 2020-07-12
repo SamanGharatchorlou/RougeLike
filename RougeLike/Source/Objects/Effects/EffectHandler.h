@@ -3,7 +3,7 @@
 class EffectPool;
 class Actor;
 
-#include "Effect.h"
+#include "EffectTypes/Effect.h"
 
 
 class EffectHandler
@@ -19,20 +19,13 @@ public:
 
 	void clear();
 
-	void addAttackingEffect(EffectType type) { mAttackingEffects.push_back(type); }
-	const std::vector<EffectType> attackingEffects() const { return mAttackingEffects; }
-
 private:
 	EffectPool* mPool;
 	Actor* mActor;
 
-	std::vector<EffectType> mAttackingEffects;
-
 	std::vector<Effect*> mEffects;
 
-	// TODO: do i still need this?
 	bool mDelayedAdd;
 	std::queue<Effect*> mEffectsToAdd;
-
 };
 

@@ -10,8 +10,9 @@ public:
 	virtual ~DisplacementEffect() { }
 
 	void set(VectorF source, float force, float distance);
-
-	virtual void fillData(const EffectPropertyBag* properties) override;
+	void update(VectorF source) { mSource = source; }
+/*
+	virtual void fillData(const EffectPropertyBag* properties) override;*/
 	void clearData() override;
 
 	virtual void init() override { };

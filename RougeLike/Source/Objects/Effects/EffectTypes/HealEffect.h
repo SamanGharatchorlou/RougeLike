@@ -11,7 +11,6 @@ public:
 
 	void set(Health health) { mHeal = health; }
 
-	void fillData(const EffectPropertyBag* properties) override;
 	void clearData() override;
 
 	void init() override;

@@ -59,15 +59,6 @@ void EnemyManager::fastUpdate(float dt)
 }
 
 
-void EnemyManager::effectLoop()
-{
-	for (int i = 0; i < mActiveEnemies.size(); i++)
-	{
-		mActiveEnemies[i]->effectLoop();
-	}
-}
-
-
 void EnemyManager::slowUpdate(float dt)
 {
 	std::vector<Collider*> attackingColliders;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Events/Events.h"
-#include "Objects/Effects/Effect.h"
+#include "Objects/Effects/EffectTypes/Effect.h"
 
 #include "Animations/Animator.h"
 #include "Collisions/Collider.h"

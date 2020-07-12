@@ -122,7 +122,7 @@ Property* PropertyBag::getNewProperty(const std::string& name)
 
 
 // Effect stuff
-
+/*
 PropertyBag::ValueMap EffectPropertyBag::readValues(XMLParser& parser)
 {
 	xmlNode propertyNode = parser.rootNode()->first_node("Effects");
@@ -145,7 +145,7 @@ PropertyBag::ValueMap EffectPropertyBag::readValues(XMLParser& parser)
 
 
 
-void EffectPropertyBag::setProperty(const std::string& name, float /* Property*? */ value)
+void EffectPropertyBag::setProperty(const std::string& name, float value)
 {
 	if (contains(name))
 	{
@@ -160,3 +160,4 @@ void EffectPropertyBag::setProperty(const std::string& name, float /* Property*?
 		mProperties[name] = property;
 	}
 }
+*/

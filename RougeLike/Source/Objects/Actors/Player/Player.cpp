@@ -12,6 +12,8 @@
 #include "Collisions/CollisionManager.h"
 #include "Collisions/EffectCollider.h"
 #include "Objects/Effects/EffectPool.h"
+#include "Objects/Effects/EffectTypes/DamageEffect.h"
+#include "Objects/Effects/EffectTypes/DisplacementEffect.h"
 
 #include "Weapons/Melee/MeleeWeapon.h"
 
@@ -37,11 +39,7 @@ void Player::init(const std::string& characterConfig)
 {
 	Actor::init(characterConfig);
 
-	mCollisionManager.addColliderToTrackers();
-	mCollisionManager.enableBodyCollisions(false);
-
-	mEffects.addAttackingEffect(EffectType::Damage);
-	mEffects.addAttackingEffect(EffectType::Displacement);
+	mCollisionManager.init();
 }
 
 
@@ -68,11 +66,7 @@ void Player::handleInput()
 
 void Player::fastUpdate(float dt)
 {
-	// Restricts movement from input, movement should happen after this
-	if (!mControlOverride)
-	{
-		mCollisionManager.resolveWallCollisions(mGameData->environment->map(position()), dt);
-	}
+	mCollisionManager.fastUpdate(dt, mGameData->environment->map(position()));
 
 	// Movement, animations, weapon updates
 	Actor::fastUpdate(dt);
@@ -97,53 +91,15 @@ void Player::fastUpdate(float dt)
  }
 
 
-void Player::effectLoop()
-{
-	// Return any unused effects back into the pool
-	std::vector<EffectCollider*> colliders = mWeapon->getEffectColliders();
-
-	for (int i = 0; i < colliders.size(); i++)
-	{
-		while (colliders[i]->hasEffects())
-		{
-			Effect* effect = colliders[i]->popEffect();
-			mGameData->effectPool->returnEffect(effect);
-		}
-	}
-
-	if (mWeapon->didHit())
-	{
-		// HACK: V V V V V - Update knockback source
-		mEffectProperties.setProperty("TargetPositionX", position().x);
-		mEffectProperties.setProperty("TargetPositionY", position().y);
-		// HACK: ^ ^ ^ ^ ^
-
-		const std::vector<EffectType> effectTypes = mEffects.attackingEffects();
-		
-		for (int iCol = 0; iCol < colliders.size(); iCol++)
-		{
-			// Each collider gets it own set of effects
-			for (int iEff = 0; iEff < effectTypes.size(); iEff++)
-			{
-				Effect* effect = mGameData->effectPool->getEffect(effectTypes[iEff]);
-				effect->fillData(&mEffectProperties);
-				colliders[iCol]->addEffect(effect);
-			}
-		}
-	}
-}
-
-
 void Player::slowUpdate(float dt)
 {
 	// Actor
 	Actor::slowUpdate(dt);
 
-	mCollisionManager.triggerTraps(mGameData->environment->map(position()));
+	mCollisionManager.slowUpdate(mGameData->environment->map(position()));
 
 	// Weapon
 	mWeapon->slowUpdate(dt);
-	mCollisionManager.updateWeaponColliders();
 	if (weapon()->isAttacking())
 	{
 		updateWeaponHitSound();
@@ -199,15 +155,10 @@ void Player::selectWeapon(const std::string& weaponName)
 	}
 
 	mCollisionManager.refreshWeaponColliders();
-
-	const MeleeWeaponData* weaponData = mWeapon->getData();
-	setEffectProperty("Damage", weaponData->damage.value());
-	setEffectProperty("KnockbackForce", weaponData->knockbackForce);
-	setEffectProperty("KnockbackDistance", weaponData->knockbackDistance);
 }
 
 
-Weapon* Player::weapon()
+MeleeWeapon* Player::weapon()
 {
 	return mWeapon;
 }
@@ -244,11 +195,18 @@ void Player::userHasControl(bool control)
 
 void Player::processHit()
 {
-	EffectCollider* effectCollider = static_cast<EffectCollider*>(mCollider.getOtherCollider());
-	processEffects(effectCollider);
+	if (mCollider.getOtherCollider())
+	{
+		EffectCollider* effectCollider = static_cast<EffectCollider*>(mCollider.getOtherCollider());
+		processEffects(effectCollider);
 
-	TraumaEvent* trauma = new TraumaEvent(40);
-	pushEvent(EventPacket(trauma));
+		if (effectCollider->effectCount() == 0)
+			printf("zero effects?\n");
+
+
+		TraumaEvent* trauma = new TraumaEvent(40);
+		pushEvent(EventPacket(trauma));
+	}
 
 	updateUI();
 }
@@ -271,11 +229,8 @@ void Player::attack()
 {
 	if (!mWeapon->isAttacking())
 	{
-		mCollisionManager.clearExcludedList();
-		mCollisionManager.enableWeaponCollisions(true);
-
+		mCollisionManager.clearExcludedColliders(CollisionManager::PlayerWeapon_Hit_Enemy);
 		mWeapon->attack();
-
 		mGameData->audioManager->playSound(mWeapon->missSoundLabel(), this);
 	}
 }
@@ -314,5 +269,5 @@ void Player::updateCurrentTile()
 
 void Player::enableBodyCollisions(bool isEnabled)
 {
-	mCollisionManager.enableBodyCollisions(isEnabled);
+	mCollisionManager.enableCollisions(CollisionManager::Player_Hit_Enemy, isEnabled);
 }

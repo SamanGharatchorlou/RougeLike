@@ -31,16 +31,6 @@ void DamageEffect::init()
 }
 
 
-void DamageEffect::fillData(const EffectPropertyBag* properties)
-{
-	if (properties->contains("Damage"))
-	{
-		Property* property = properties->get("Damage");
-		mDamage = *static_cast<Damage*>(property);
-	}
-}
-
-
 void DamageEffect::clearData()
 {
 	clearBaseData();

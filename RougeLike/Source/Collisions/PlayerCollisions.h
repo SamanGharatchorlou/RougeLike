@@ -1,13 +1,13 @@
 #pragma once
 
 
-#include "Collisions/WallCollisionTracker.h"
-#include "Map/TrapManager.h"
+#include "WallCollisionTracker.h"
+#include "WeaponCollisionManager.h"
+#include "CollisionManager.h"
 
 class CollisionManager;
 class Player;
 class Map;
-
 
 
 class PlayerCollisions
@@ -15,35 +15,24 @@ class PlayerCollisions
 public:
 	PlayerCollisions(Player* player, CollisionManager* collisionManager);
 
-	void triggerTraps(Map* map);
-	void resolveTrapCollisions(const Map* map);
+	void init();
+	void fastUpdate(float dt, Map* map);
+	void slowUpdate(Map* map);
 
-	void resolveWallCollisions(const Map* map, float dt);
-	void updateWeaponColliders();
-
-	void addColliderToTrackers();
 	void refreshWeaponColliders();
 
-	void clearExcludedList();
-	void addEnemiesToExcludedList();
+	void clearExcludedColliders(CollisionManager::Tracker tracker);
+	void enableCollisions(CollisionManager::Tracker tracker, bool isEnabled);
 
-	void enableBodyCollisions(bool isEnabled);
-	void enableWeaponCollisions(bool isEnabled);
+
+	Player* player() { return mPlayer; }
+	CollisionManager* collisionManager() { return cManager; }
 
 
 private:
-	struct IndexTimer
-	{
-		IndexTimer(Index i, TimerF time) : index(i), timer(time) { }
-
-		inline bool operator == (IndexTimer value)
-		{
-			return index == value.index;
-		}
-
-		Index index;
-		TimerF timer;
-	};
+	void addCollidersToTrackers();
+	void updateWeaponColliders();
+	void resolveTrapCollisions(Map* map);
 
 
 private:
@@ -51,6 +40,5 @@ private:
 	CollisionManager* cManager;
 
 	WallCollisionTracker mWallCollisions;
-
-	TrapManager mTrapManager;
+	WeaponCollisionManager mWeaponCollisions;
 };

@@ -9,7 +9,6 @@ public:
 
 	void set(VectorF target) { mTarget = target; }
 
-	void fillData(const EffectPropertyBag* properties) override;
 	void clearData() override;
 
 	void init() override;

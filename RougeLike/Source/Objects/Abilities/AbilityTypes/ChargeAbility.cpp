@@ -2,7 +2,7 @@
 #include "ChargeAbility.h"
 
 #include "Objects/Effects/EffectPool.h"
-#include "Objects/Effects/DisplacementEffect.h"
+#include "Objects/Effects/EffectTypes/DisplacementEffect.h"
 #include "Objects/Actors/Player/Player.h"
 
 #include "Map/Map.h"

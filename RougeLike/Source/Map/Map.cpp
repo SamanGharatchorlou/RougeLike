@@ -15,7 +15,8 @@
 #endif
 
 
-Map::Map(Vector2D<int> mapIndexSize, VectorF tileSize) : MapBase(mapIndexSize), mTileSize(tileSize) { }
+Map::Map(Vector2D<int> mapIndexSize, VectorF tileSize) : 
+	MapBase(mapIndexSize), mTrapManager(this), mTileSize(tileSize) { }
 
 
 void Map::populateData(TextureManager* tm, VectorF offset)
@@ -55,7 +56,7 @@ void Map::slowUpdate(float dt)
 		}
 	}
 
-	mTrapManager.slowUpdate(this);
+	mTrapManager.slowUpdate();
 }
 
 

@@ -15,11 +15,10 @@ public:
 
 	// Update
 	void slowUpdate(float dt);
-	void triggerTraps(VectorF position) { mTrapManager.triggerTrap(this, position); }
 
 	// Rendering
 	void renderFloor();
-	virtual void renderLowerLayer();
+	void renderLowerLayer();
 	void renderUpperLayer();
 
 	void populateData(TextureManager* tm, VectorF offset);
@@ -48,6 +47,7 @@ public:
 	bool isValidPosition(VectorF position) const;
 
 
+	TrapManager& traps() { return mTrapManager; }
 
 
 private:

@@ -4,13 +4,13 @@
 #include "Game/GameData.h"
 #include "Animations/AnimationReader.h"
 
-#include "DamageEffect.h"
-#include "DisplacementEffect.h"
-#include "KnockbackStunEffect.h"
-#include "ArmorEffect.h"
-#include "BlinkEffect.h"
-#include "HealEffect.h"
-#include "StunEffect.h"
+#include "EffectTypes/DamageEffect.h"
+#include "EffectTypes/DisplacementEffect.h"
+#include "EffectTypes/KnockbackStunEffect.h"
+#include "EffectTypes/ArmorEffect.h"
+#include "EffectTypes/BlinkEffect.h"
+#include "EffectTypes/HealEffect.h"
+#include "EffectTypes/StunEffect.h"
 
 
 EffectPool::EffectPool(GameData* gameData) : mGameData(gameData)

@@ -43,8 +43,8 @@ void EnemySpawner::spawnPatrollers(Map* map, int xIncrement, EnemyType type)
 {
 	for (unsigned int xPoint = xIncrement; xPoint < 100 - xIncrement; xPoint += xIncrement)
 	{
-		//VectorF position = findSpawnPoint(map, xPoint);
-		//mEnemies->spawn(type, EnemyState::Patrol, position);
+		VectorF position = findSpawnPoint(map, xPoint);
+		mEnemies->spawn(type, EnemyState::Patrol, position);
 	}
 }
 

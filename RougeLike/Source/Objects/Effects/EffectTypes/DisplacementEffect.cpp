@@ -16,34 +16,34 @@ void DisplacementEffect::set(VectorF source, float force, float distance)
 }
 
 
-void DisplacementEffect::fillData(const EffectPropertyBag* properties)
-{
-	if (properties->contains("TargetPositionX"))
-	{
-		Property* property = properties->get("TargetPositionX");
-		mSource.x = property->value();
-	}
-
-	if (properties->contains("TargetPositionY"))
-	{
-		Property* property = properties->get("TargetPositionY");
-		mSource.y = property->value();
-	}
-
-	if (properties->contains("KnockbackDistance"))
-	{
-		Property* property = properties->get("KnockbackDistance");
-		mDistance = property->value();
-	}
-
-	if (properties->contains("KnockbackForce"))
-	{
-		Property* property = properties->get("KnockbackForce");
-		mForce = property->value();
-	}
-
-	mDistanceTravelled = 0.0f;
-}
+//void DisplacementEffect::fillData(const EffectPropertyBag* properties)
+//{
+//	if (properties->contains("TargetPositionX"))
+//	{
+//		Property* property = properties->get("TargetPositionX");
+//		mSource.x = property->value();
+//	}
+//
+//	if (properties->contains("TargetPositionY"))
+//	{
+//		Property* property = properties->get("TargetPositionY");
+//		mSource.y = property->value();
+//	}
+//
+//	if (properties->contains("KnockbackDistance"))
+//	{
+//		Property* property = properties->get("KnockbackDistance");
+//		mDistance = property->value();
+//	}
+//
+//	if (properties->contains("KnockbackForce"))
+//	{
+//		Property* property = properties->get("KnockbackForce");
+//		mForce = property->value();
+//	}
+//
+//	mDistanceTravelled = 0.0f;
+//}
 
 
 void DisplacementEffect::fastUpdate(float dt)

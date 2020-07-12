@@ -24,6 +24,9 @@ public:
 
 
 private:
+	void addEffects();
+	void updateEffects();
+
 	void updateHasAttackedStatus();
 	bool attackComplete() const;
 

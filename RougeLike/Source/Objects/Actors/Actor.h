@@ -17,11 +17,10 @@ class Actor
 {
 public:
 	Actor(GameData* gameData);
-	virtual ~Actor();
+	virtual ~Actor() { };
 
 	void init(const std::string& config);
 	void fastUpdate(float dt);
-	virtual void effectLoop() { };
 	void slowUpdate(float dt);
 	void render();
 
@@ -57,11 +56,11 @@ public:
 	RectF		scaledRect() const;
 
 	// Effects
-	const EffectPropertyBag* effectProperties() const { return &mEffectProperties; }
-	void setEffectProperty(const std::string& name, float value) { mEffectProperties.setProperty(name, value); }
+	//const EffectPropertyBag* effectProperties() const { return &mEffectProperties; }
+	//void setEffectProperty(const std::string& name, float value) { mEffectProperties.setProperty(name, value); }
 
 	void addEffect(Effect* effect);
-
+	Effect* getEffectFromPool(EffectType type);
 
 protected:
 	void processEffects(EffectCollider* effectCollider);
@@ -70,9 +69,6 @@ protected:
 protected:
 	GameData* mGameData;
 
-	// TODO: make this into the actors own property bag
-	// Create another property bag where the effects can pull from?
-	// See armor ability comments
 	PropertyBag mPropertyBag;
 
 	EffectCollider mCollider;
@@ -83,7 +79,7 @@ protected:
 
 	EffectHandler mEffects;
 
-	EffectPropertyBag mEffectProperties;
+	/*EffectPropertyBag mEffectProperties;*/
 
 	LocalDispatcher mEvents;
 

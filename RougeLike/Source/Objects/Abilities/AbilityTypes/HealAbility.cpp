@@ -3,7 +3,7 @@
 
 #include "Objects/Actors/Player/Player.h"
 #include "Objects/Effects/EffectPool.h"
-#include "Objects/Effects/HealEffect.h"
+#include "Objects/Effects/EffectTypes/HealEffect.h"
 
 #include "Collisions/Collider.h"
 

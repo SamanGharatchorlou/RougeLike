@@ -51,9 +51,6 @@ void ActorManager::fastUpdate(float dt)
 
 void ActorManager::slowUpdate(float dt)
 {
-	mPlayer->effectLoop();
-	mEnemies->effectLoop();
-
 	mPlayer->slowUpdate(dt);
 	while (mPlayer->hasEvent())
 		sendEvent(mPlayer->popEvent());

@@ -2,6 +2,8 @@
 
 #include "EnemyState.h"
 
+class Map;
+
 class EnemyPatrol : public EnemyState
 {
 public:
@@ -20,7 +22,7 @@ public:
 
 
 private:
-	Vector2D<int> findYFloorTileRange(int xIndex) const;
+	Vector2D<int> findYFloorTileRange(int xIndex, const Map* map) const;
 
 	void setPatrolPoint();
 	bool hasReachedPositionTarget() const;

@@ -12,15 +12,6 @@ void ArmorEffect::init()
 }
 
 
-void ArmorEffect::fillData(const EffectPropertyBag* properties)
-{
-	if (properties->contains("Armor"))
-	{
-		Property* property = properties->get("Armor");
-		mArmor = *static_cast<Armor*>(property);
-	}
-}
-
 void ArmorEffect::clearData()
 {
 	clearBaseData();

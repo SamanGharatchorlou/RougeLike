@@ -49,26 +49,26 @@ void CollisionTracker::clearDefenders()
 }
 
 
-void CollisionTracker::checkCollisions()
-{
-	for (unsigned int j = 0; j < mAttackers.size(); j++)
-	{
-		for (unsigned int i = 0; i < mDefenders.size(); i++)
-		{
-			// check pixle collision
-			if (mAttackers[j]->doesIntersect(mDefenders[i]))
-			{
-				// Attacker
-				mAttackers[j]->setDidHit(true);
-				mAttackers[j]->hasCollidedWith(mDefenders[i]);
-
-				// Defender
-				mDefenders[i]->setGotHit(true);
-				mDefenders[i]->hasCollidedWith(mAttackers[j]);
-			}		
-		}
-	}
-}
+//void CollisionTracker::checkCollisions()
+//{
+//	for (unsigned int j = 0; j < mAttackers.size(); j++)
+//	{
+//		for (unsigned int i = 0; i < mDefenders.size(); i++)
+//		{
+//			// check pixle collision
+//			if (mAttackers[j]->doesIntersect(mDefenders[i]))
+//			{
+//				// Attacker
+//				mAttackers[j]->setDidHit(true);
+//				mAttackers[j]->hasCollidedWith(mDefenders[i]);
+//
+//				// Defender
+//				mDefenders[i]->setGotHit(true);
+//				mDefenders[i]->hasCollidedWith(mAttackers[j]);
+//			}		
+//		}
+//	}
+//}
 
 
 void CollisionTracker::resetColliders()
@@ -121,12 +121,9 @@ void CollisionTracker::addAttacker(Collider* collider)
 
 
 
-
-
-
 // --- Complex collision tracker --- //
 
-void ComplexCollisionTracker::checkCollisions()
+void CollisionTracker::checkCollisions()
 {
 	if (mCheckingCollisions)
 	{
@@ -154,13 +151,13 @@ void ComplexCollisionTracker::checkCollisions()
 }
 
 
-void ComplexCollisionTracker::addExcludedDefender(Collider* defender)
+void CollisionTracker::addExcludedDefender(Collider* defender)
 {
 	mExcludedDefenders.insert(defender);
 }
 
 
-void ComplexCollisionTracker::clearExcludedDefenders()
+void CollisionTracker::clearExcludedDefenders()
 {
 	mExcludedDefenders.clear();
 }

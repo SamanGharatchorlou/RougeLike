@@ -14,7 +14,6 @@ public:
 
 	void set(float time) { mTime = time; }
 
-	void fillData(const EffectPropertyBag* properties) override;
 	void clearData() override;
 
 	void init() override;

@@ -4,8 +4,8 @@
 #include "Collisions/Collider.h"
 #include "Objects/Actors/Enemies/Enemy.h"
 
-#include "Objects/Effects/DisplacementEffect.h"
-#include "Objects/Effects/DamageEffect.h"
+#include "Objects/Effects/EffectTypes/DisplacementEffect.h"
+#include "Objects/Effects/EffectTypes/DamageEffect.h"
 
 
 EnemyAttack::EnemyAttack(Enemy* enemy) :
@@ -22,13 +22,7 @@ void EnemyAttack::init()
 	mStartPosition = mEnemy->position();
 	mAttackPosition = mEnemy->target()->position();
 	mEnemy->physics()->facePoint(mAttackPosition);
-
-
-	//DamageEffectData* damage = new DamageEffectData(mEnemy->getPropertyValue("Damage"));
-	//DisplacementEffectData* displacement = new DisplacementEffectData(mEnemy->position(), mEnemy->getPropertyValue("KnockbackDistance"), mEnemy->getPropertyValue("KnockbackForce"));
-	//
-	//mEnemy->collider()->addEffect(damage);
-	//mEnemy->collider()->addEffect(displacement);
+	addEffects();
 }
 
 
@@ -51,6 +45,8 @@ void EnemyAttack::fastUpdate(float dt)
 
 void EnemyAttack::slowUpdate(float dt)
 {
+	updateEffects();
+
 	mEnemy->resolveCollisions();
 
 	// Return to starting position
@@ -60,6 +56,8 @@ void EnemyAttack::slowUpdate(float dt)
 	if (attackComplete() == true)
 		mEnemy->popState();
 }
+
+
 
 
 void EnemyAttack::render()
@@ -108,4 +106,42 @@ void EnemyAttack::resume()
 	hitCounter = 0;
 	mEnemy->collider()->setDidHit(false);
 	init();
+}
+
+
+void EnemyAttack::addEffects()
+{
+	Effect* dmgEffect = mEnemy->getEffectFromPool(EffectType::Damage);
+	DamageEffect* damageEffect = static_cast<DamageEffect*>(dmgEffect);
+	damageEffect->set(mEnemy->getPropertyValue("Damage"));
+
+	Effect* displaceEffect = mEnemy->getEffectFromPool(EffectType::Displacement);
+	DisplacementEffect* displacementEffect = static_cast<DisplacementEffect*>(displaceEffect);
+
+	VectorF source; // to be updated
+	float force = mEnemy->getPropertyValue("KnockbackForce");
+	float distance = mEnemy->getPropertyValue("KnockbackDistance");
+	displacementEffect->set(source, force, distance);
+
+	mEnemy->collider()->addEffect(damageEffect);
+	mEnemy->collider()->addEffect(displacementEffect);
+}
+
+
+void EnemyAttack::updateEffects()
+{
+	EffectCollider* collider = mEnemy->collider();
+
+	for (int i = 0; i < collider->effectCount(); i++)
+	{
+		Effect* effect = collider->popEffect();
+
+		if (effect->type() == EffectType::Displacement)
+		{
+			DisplacementEffect* displacementEffect = static_cast<DisplacementEffect*>(effect);
+			displacementEffect->update(mEnemy->position());
+		}
+
+		collider->addEffect(effect);
+	}
 }

@@ -158,6 +158,26 @@ const std::vector<Collider*> MeleeWeapon::getColliders()
 }
 
 
+void MeleeWeapon::addEffect(Effect* effect)
+{
+	for (unsigned int i = 0; i < mBlockColliders.size(); i++)
+	{
+		mBlockColliders[i]->addEffect(effect);
+	}
+}
+
+bool MeleeWeapon::hasEffects() const
+{
+	for (unsigned int i = 0; i < mBlockColliders.size(); i++)
+	{
+		if (!mBlockColliders[i]->hasEffects())
+			return false;
+	}
+
+	return true;
+}
+
+
 const float MeleeWeapon::maxSwingAngle() const
 { 
 	return mMeleeData->swingArc;

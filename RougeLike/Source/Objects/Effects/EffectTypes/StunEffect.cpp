@@ -1,22 +1,9 @@
 #include "pch.h"
 #include "StunEffect.h"
 
-#include "Objects/Actors/Actor.h"
+#include "Game/Camera.h"
 #include "Objects/Actors/Enemies/Enemy.h"
 
-#include "Game/Camera.h"
-#include "Objects/Attributes/Health.h"
-
-
-
-void StunEffect::fillData(const EffectPropertyBag* properties)
-{
-	if (properties->contains("StunTime"))
-	{
-		Property* property = properties->get("StunTime");
-		mTime = property->value();
-	}
-}
 
 
 void StunEffect::clearData()

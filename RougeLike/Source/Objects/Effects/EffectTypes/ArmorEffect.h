@@ -11,7 +11,6 @@ public:
 
 	void set(Armor armor) { mArmor = armor; }
 	
-	void fillData(const EffectPropertyBag* properties) override;
 	void clearData() override;
 
 	void init() override;

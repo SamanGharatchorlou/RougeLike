@@ -34,13 +34,6 @@ Enemy::Enemy(GameData* gameData) :
 void Enemy::init(const std::string& config)
 {
 	Actor::init(config);
-
-	mEffects.addAttackingEffect(EffectType::Damage);
-	mEffects.addAttackingEffect(EffectType::Displacement);
-
-	setEffectProperty("Damage", getPropertyValue("Damage"));
-	setEffectProperty("KnockbackForce", getPropertyValue("KnockbackForce"));
-	setEffectProperty("KnockbackDistance", getPropertyValue("KnockbackDistance"));
 }
 
 
@@ -51,33 +44,6 @@ void Enemy::fastUpdate(float dt)
 	mStateMachine.getActiveState().fastUpdate(dt);
 
 	Actor::fastUpdate(dt);
-}
-
-
-void Enemy::effectLoop()
-{
-	if (mCollider.hasEffects())
-	{
-		printf("enemy has %d effects\n", mCollider.effectCount());
-	}
-
-	if (mCollider.didHit())
-	{
-		// HACK: V V V V V - Update knockback source
-		mEffectProperties.setProperty("TargetPositionX", position().x);
-		mEffectProperties.setProperty("TargetPositionY", position().y);
-		// HACK: ^ ^ ^ ^ ^
-
-		const std::vector<EffectType> effects = mEffects.attackingEffects();
-
-		// Add effects to collider
-		for (int i = 0; i < effects.size(); i++)
-		{
-			Effect* effect = mGameData->effectPool->getEffect(effects[i]);
-			effect->fillData(&mEffectProperties);
-			mCollider.addEffect(effect);
-		}
-	}
 }
 
 

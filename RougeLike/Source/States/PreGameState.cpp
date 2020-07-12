@@ -79,9 +79,8 @@ void PreGameState::render()
 void PreGameState::initCollisionTrackers()
 {
 	CollisionManager* collisions = mGameData->collisionManager;
-	collisions->addBasicCollisionTracker(CollisionManager::Enemy_Hit_Player);
-	collisions->addBasicCollisionTracker(CollisionManager::Player_Hit_Collectable);
-	collisions->addComplexCollisionTracker(CollisionManager::PlayerWeapon_Hit_Enemy);
-	collisions->addComplexCollisionTracker(CollisionManager::Player_Hit_Enemy);
-	collisions->addComplexCollisionTracker(CollisionManager::Player_Hit_Trap);
+	for (int i = 0; i < (int)CollisionManager::Count; i++)
+	{
+		collisions->addCollisionTracker((CollisionManager::Tracker)i);
+	}
 }

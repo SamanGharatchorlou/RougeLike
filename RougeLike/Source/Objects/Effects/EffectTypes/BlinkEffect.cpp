@@ -48,22 +48,6 @@ void BlinkEffect::exit()
 }
 
 
-void BlinkEffect::fillData(const EffectPropertyBag* properties)
-{
-	if (properties->contains("TargetPositionX"))
-	{
-		Property* property = properties->get("TargetPositionX");
-		mTarget.x = property->value();
-	}
-
-	if (properties->contains("TargetPositionY"))
-	{
-		Property* property = properties->get("TargetPositionY");
-		mTarget.y = property->value();
-	}
-}
-
-
 void BlinkEffect::clearData()
 {
 	clearBaseData();

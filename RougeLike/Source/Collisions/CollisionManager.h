@@ -14,9 +14,8 @@ public:
 		Player_Hit_Enemy,
 		Player_Hit_Collectable,
 		Enemy_Hit_Player,
-		Player_Hit_Trap
+		Count
 	};
-
 
 	using TrackerMap = std::unordered_map<CollisionManager::Tracker, CollisionTracker*>;
 
@@ -31,8 +30,8 @@ public:
 	void clearColliders();
 
 	CollisionTracker* getTracker(Tracker id);
-	void addBasicCollisionTracker(Tracker id);
-	void addComplexCollisionTracker(Tracker id);
+	void addCollisionTracker(Tracker id);
+	//void addComplexCollisionTracker(Tracker id);
 
 	void addAttackers(Tracker id, std::vector<Collider*> attackers);
 	void addDefenders(Tracker id, std::vector<Collider*> defenders);
@@ -44,6 +43,5 @@ public:
 
 private:
 	TrackerMap mTrackers;
-
 
 };

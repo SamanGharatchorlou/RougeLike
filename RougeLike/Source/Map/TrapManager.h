@@ -10,36 +10,50 @@ class Map;
 class TrapManager
 {
 public:
-	struct IndexTimer
+	class Trap
 	{
-		IndexTimer(Index i, TimerF time) : index(i), timer(time) { }
+	public:
+		Trap(Index index) : mIndex(index), timer(TimerF::Start), exhausted(false) { }
 
-		inline bool operator == (IndexTimer value)
+		inline bool operator == (Trap value)
 		{
-			return index == value.index;
+			return is(value.index());
 		}
 
-		Index index;
+		Index index() const { return mIndex; }
+		bool is(Index index) const { return index == mIndex; }
+
+		bool isExhausted() const { return exhausted; }
+		void exhaust() { exhausted = true; }
+
+		float time() const { return timer.getSeconds(); }
+		void reset() { timer.restart(); }
+
+	private:
+		Index mIndex;
 		TimerF timer;
+		bool exhausted;
+
 	};
 
 
 public:
-	TrapManager() { }
+	TrapManager(Map* map) : mMap(map) { }
 
-	void addTrapColliders(Map* map, CollisionTracker* tracker);
+	void slowUpdate();
 
-	void slowUpdate(Map* map);
+	void triggerTrap(VectorF position);
 
-	void triggerTrap(Map* map, VectorF position);
+	bool didCollide(VectorF position);
 
 	
 private:
-	void updateTriggerTraps(Map* map);
-	void updateResetTraps(Map* map);
+	void updateTriggerTraps();
+	void updateResetTraps();
 
 
 private:
-	UniqueQueue<IndexTimer> mUntriggeredTraps;
-	std::queue<IndexTimer> mTriggeredTraps;
+	Map* mMap;
+	UniqueQueue<Trap> mUntriggeredTraps;
+	std::deque<Trap> mTriggeredTraps;
 };

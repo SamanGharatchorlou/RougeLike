@@ -5,13 +5,6 @@
 #include "StunEffect.h"
 
 
-void KnockbackStunEffect::fillData(const EffectPropertyBag* properties)
-{
-	DisplacementEffect::fillData(properties);
-	mStunEffect->fillData(properties);
-}
-
-
 void KnockbackStunEffect::clearData()
 {
 	mStunEffect = nullptr;

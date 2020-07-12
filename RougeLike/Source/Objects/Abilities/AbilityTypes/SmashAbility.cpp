@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "SmashAbility.h"
 
-#include "Objects/Effects/DamageEffect.h"
-#include "Objects/Effects/StunEffect.h"
+#include "Objects/Effects/EffectTypes/DamageEffect.h"
+#include "Objects/Effects/EffectTypes/StunEffect.h"
 #include "Objects/Effects/EffectPool.h"
 
 #include "Objects/Actors/Actor.h"

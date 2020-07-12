@@ -3,52 +3,18 @@
 
 #include "Map.h"
 
-#include "Collisions/CollisionTracker.h"
 
-void TrapManager::init(Map* map)
+
+void TrapManager::slowUpdate()
 {
-	mMap = map;
-
-	for (int y = 0; y < map->yCount(); y++)
-	{
-		for (int x = 0; x < map->xCount(); x++)
-		{
-			Index index(x, y);
-			MapTile& tile = mMap->get(index);
-
-			if (tile.has(DecorTile::Spikes))
-			{
-				EffectCollider collider(&tile.rectRef());
-
-				// add damage effect  
-
-				mColliders.push_back(collider);
-			}
-		}
-	}
-
+	updateTriggerTraps();
+	updateResetTraps();
 }
 
-void TrapManager::addTrapColliders(Map* map, CollisionTracker* tracker)
+void TrapManager::triggerTrap(VectorF position)
 {
-	mMap = map;
-
-	
-
-	tracker->addDefenders();
-}
-
-
-void TrapManager::slowUpdate(Map* map)
-{
-	updateTriggerTraps(map);
-	updateResetTraps(map);
-}
-
-void TrapManager::triggerTrap(Map* map, VectorF position)
-{
-	Index index = map->index(position);
-	MapTile& tile = map->get(index);
+	Index index = mMap->index(position);
+	MapTile& tile = mMap->get(index);
 
 	// Add untriggered trap
 	if (tile.has(DecorTile::Spikes))
@@ -57,19 +23,37 @@ void TrapManager::triggerTrap(Map* map, VectorF position)
 
 		if (animator.animation().currentFrame() == 0)
 		{
-			IndexTimer indexTimer(index, TimerF(TimerF::Start));
-			mUntriggeredTraps.push(indexTimer);
+			Trap trap(index);
+			mUntriggeredTraps.push(trap);
 		}
 	}
 }
 
 
-void TrapManager::updateTriggerTraps(Map* map)
+bool TrapManager::didCollide(VectorF position)
 {
-	if (mUntriggeredTraps.size() > 0 && mUntriggeredTraps.front().timer.getSeconds() > 1.0f)
+	Index index = mMap->index(position);
+
+	for (std::deque<Trap>::iterator iter = mTriggeredTraps.begin(); iter != mTriggeredTraps.end(); iter++)
 	{
-		Index trapIndex = mUntriggeredTraps.front().index;
-		MapTile& tile = map->get(trapIndex);
+		Trap& trap = *iter;
+		if (trap.is(index) && !trap.isExhausted())
+		{
+			trap.exhaust();
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
+void TrapManager::updateTriggerTraps()
+{
+	if (mUntriggeredTraps.size() > 0 && mUntriggeredTraps.front().time() > 1.0f)
+	{
+		Index trapIndex = mUntriggeredTraps.front().index();
+		MapTile& tile = mMap->get(trapIndex);
 		Animator& animator = tile.animation(0);
 
 		// TODO: this is being triggered everyframe, make it only once
@@ -77,26 +61,26 @@ void TrapManager::updateTriggerTraps(Map* map)
 		{
 			animator.getAnimation(0).nextFrame();
 
-			IndexTimer& trap = mUntriggeredTraps.popFront();
-			trap.timer.restart();
+			Trap& trap = mUntriggeredTraps.popFront();
+			trap.reset();
 
-			mTriggeredTraps.push(trap);
+			mTriggeredTraps.push_back(trap);
 		}
 	}
 }
 
-void TrapManager::updateResetTraps(Map* map)
+void TrapManager::updateResetTraps()
 {
-	if (mTriggeredTraps.size() > 0 && mTriggeredTraps.front().timer.getSeconds() > 2.0f)
+	if (mTriggeredTraps.size() > 0 && mTriggeredTraps.front().time() > 2.0f)
 	{
-		Index trapIndex = mTriggeredTraps.front().index;
-		MapTile& tile = map->get(trapIndex);
+		Index trapIndex = mTriggeredTraps.front().index();
+		MapTile& tile = mMap->get(trapIndex);
 		Animator& animator = tile.animation(0);
 
 		if (animator.animation().currentFrame() == 1)
 		{
 			animator.getAnimation(0).nextFrame();
-			mTriggeredTraps.pop();
+			mTriggeredTraps.pop_front();
 		}
 	}
 }

@@ -23,7 +23,6 @@ public:
 
 	// Core
 	void slowUpdate(float dt);
-	void effectLoop() override;
 	void fastUpdate(float dt);
 	void render();
 

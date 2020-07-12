@@ -14,7 +14,6 @@ public:
 
 	void set(Damage damage) { mDamage = damage; }
 
-	void fillData(const EffectPropertyBag* properties) override;
 	void clearData() override;
 
 	void init() override;

@@ -44,7 +44,8 @@ public:
 	void flipSide() { mSwingDirection *= -1; }
 
 	std::vector<EffectCollider*> getEffectColliders() const { return mBlockColliders; }
-
+	bool hasEffects() const;
+	void addEffect(Effect* effect);
 
 private:
 	void updateWeaponBlocks();

@@ -14,9 +14,15 @@ public:
 	void clearDefenders();
 	void removeDefender(const Collider* collider);
 
-	virtual void checkCollisions();
+	std::vector<Collider*> defenders() { return mDefenders; }
+
+	void checkCollisions();
 	void resetColliders();
 
+	void setCheckingStatus(bool shouldCheckCollisions) { mCheckingCollisions = shouldCheckCollisions; }
+
+	void addExcludedDefender(Collider* defender);
+	void clearExcludedDefenders();
 
 private:
 	void addAttacker(Collider* colliders);
@@ -26,30 +32,34 @@ private:
 protected:
 	std::vector<Collider*> mAttackers;
 	std::vector<Collider*> mDefenders;
-};
 
-
-
-class ComplexCollisionTracker : public CollisionTracker
-{
-public:
-
-	ComplexCollisionTracker() : mCheckingCollisions(true) { }
-
-	virtual void checkCollisions() override;
-
-	void setCheckingStatus(bool shouldCheckCollisions) { mCheckingCollisions = shouldCheckCollisions; }
-
-	void addExcludedDefender(Collider* defender);
-	void clearExcludedDefenders();
-
-	std::vector<Collider*> defenders() { return mDefenders; }
-
-	int count() { return mExcludedDefenders.size(); }
-
-
-private:
 	std::unordered_set<Collider*> mExcludedDefenders;
 
-	bool mCheckingCollisions;
+	bool mCheckingCollisions = true;
 };
+
+
+
+//class ComplexCollisionTracker : public CollisionTracker
+//{
+//public:
+//
+//	//ComplexCollisionTracker() : mCheckingCollisions(true) { }
+//
+//	//virtual void checkCollisions() override;
+//
+//	//void setCheckingStatus(bool shouldCheckCollisions) { mCheckingCollisions = shouldCheckCollisions; }
+//
+//	//void addExcludedDefender(Collider* defender);
+//	//void clearExcludedDefenders();
+//
+//	//std::vector<Collider*> defenders() { return mDefenders; }
+//
+//	//int count() { return mExcludedDefenders.size(); }
+//
+//
+//private:
+//	std::unordered_set<Collider*> mExcludedDefenders;
+//
+//	bool mCheckingCollisions;
+//};

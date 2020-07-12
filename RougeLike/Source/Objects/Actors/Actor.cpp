@@ -5,6 +5,7 @@
 #include "Collisions/EffectCollider.h"
 #include "Graphics/Texture.h"
 #include "Graphics/TextureManager.h"
+#include "Objects/Effects/EffectPool.h"
 
 #include "Game/Camera.h"
 #include "Animations/AnimationReader.h"
@@ -13,15 +14,7 @@
 #include "Map/Environment.h"
 
 
-Actor::Actor(GameData* gameData) 
-	: mGameData(gameData), 
-	mEffects(gameData->effectPool, this), mVisibility(true) { }
-
-
-Actor::~Actor()
-{
-
-}
+Actor::Actor(GameData* gameData) : mGameData(gameData), mEffects(gameData->effectPool, this), mVisibility(true) { }
 
 
 void Actor::init(const std::string& config)
@@ -52,9 +45,6 @@ void Actor::init(const std::string& config)
 #if _DEBUG
 	mCollider.setName(FileManager::Get()->getItemName(parser.path));
 #endif
-
-	// Effects
-	mEffectProperties.readProperties(config);
 }
 
 
@@ -120,6 +110,10 @@ void Actor::addEffect(Effect* effect)
 	mEffects.addEffect(effect);
 }
 
+Effect* Actor::getEffectFromPool(EffectType type)
+{
+	return mGameData->effectPool->getEffect(type);
+}
 
 void Actor::processEffects(EffectCollider* effectCollider)
 {

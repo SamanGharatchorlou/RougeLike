@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Effect.h"
+#include "EffectTypes/Effect.h"
 
 struct GameData;
 

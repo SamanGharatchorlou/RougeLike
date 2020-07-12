@@ -23,14 +23,13 @@ public:
 	void init(const std::string& characterConfig);
 	void handleInput();
 	void fastUpdate(float dt);
-	void effectLoop() override;
 	void slowUpdate(float dt);
 	void render();
 
 	void reset();
 
 	void loadWeaponStash();
-	Weapon*	weapon();
+	MeleeWeapon*	weapon();
 
 	void selectCharacter(const std::string& character);
 	void selectWeapon(const std::string& weaponName);
@@ -38,6 +37,7 @@ public:
 	void addAbility(const std::string& name);
 
 	void userHasControl(bool removeControl);
+	bool userHasControl() { return !mControlOverride; }
 
 	void updateUI();
 
@@ -58,7 +58,6 @@ private:
 
 	AbilityManager mAbilities;
 
-	//StatManager mStatManager;
 	WeaponStash weaponStash;
 
 	Vector2D<int> tileIndex;

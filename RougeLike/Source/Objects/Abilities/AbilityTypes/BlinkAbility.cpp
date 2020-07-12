@@ -2,7 +2,7 @@
 #include "BilnkAbility.h"
 
 #include "Objects/Actors/Actor.h"
-#include "Objects/Effects/BlinkEffect.h"
+#include "Objects/Effects/EffectTypes/BlinkEffect.h"
 #include "Objects/Effects/EffectPool.h"
 
 #include "Animations/Animator.h"

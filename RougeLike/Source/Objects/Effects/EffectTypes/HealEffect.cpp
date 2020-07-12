@@ -12,15 +12,6 @@ void HealEffect::init()
 }
 
 
-void HealEffect::fillData(const EffectPropertyBag* properties)
-{
-	if (properties->contains("Heal"))
-	{
-		Property* property = properties->get("Heal");
-		mHeal = *static_cast<Health*>(property);
-	}
-}
-
 void HealEffect::clearData()
 {
 	clearBaseData();

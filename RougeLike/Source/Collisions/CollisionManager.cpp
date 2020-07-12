@@ -40,7 +40,7 @@ void CollisionManager::clearColliders()
 }
 
 
-void CollisionManager::addBasicCollisionTracker(Tracker id)
+void CollisionManager::addCollisionTracker(Tracker id)
 {
 	for (TrackerMap::iterator iter = mTrackers.begin(); iter != mTrackers.end(); iter++)
 	{
@@ -56,20 +56,20 @@ void CollisionManager::addBasicCollisionTracker(Tracker id)
 }
 
 
-void CollisionManager::addComplexCollisionTracker(Tracker id)
-{
-	for (TrackerMap::iterator iter = mTrackers.begin(); iter != mTrackers.end(); iter++)
-	{
-		if (iter->first == id)
-		{
-			DebugPrint(Log, "A collision tracker with the id: %d already exists\n", id);
-			return;
-		}
-	}
-
-	CollisionTracker* tracker = new ComplexCollisionTracker;
-	mTrackers[id] = tracker;
-}
+//void CollisionManager::addComplexCollisionTracker(Tracker id)
+//{
+//	for (TrackerMap::iterator iter = mTrackers.begin(); iter != mTrackers.end(); iter++)
+//	{
+//		if (iter->first == id)
+//		{
+//			DebugPrint(Log, "A collision tracker with the id: %d already exists\n", id);
+//			return;
+//		}
+//	}
+//
+//	CollisionTracker* tracker = new ComplexCollisionTracker;
+//	mTrackers[id] = tracker;
+//}
 
 
 

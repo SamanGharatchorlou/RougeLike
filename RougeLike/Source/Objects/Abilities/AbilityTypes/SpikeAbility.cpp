@@ -4,8 +4,8 @@
 #include "Objects/Actors/Actor.h"
 
 #include "Objects/Effects/EffectPool.h"
-#include "Objects/Effects/DisplacementEffect.h"
-#include "Objects/Effects/DamageEffect.h"
+#include "Objects/Effects/EffectTypes/DisplacementEffect.h"
+#include "Objects/Effects/EffectTypes/DamageEffect.h"
 
 
 void SpikeAbility::fillValues(ValueMap& values)

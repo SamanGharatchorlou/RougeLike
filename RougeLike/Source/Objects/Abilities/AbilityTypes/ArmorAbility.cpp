@@ -2,7 +2,7 @@
 #include "ArmorAbility.h"
 
 #include "Objects/Actors/Player/Player.h"
-#include "Objects/Effects/ArmorEffect.h"
+#include "Objects/Effects/EffectTypes/ArmorEffect.h"
 #include "Objects/Effects/EffectPool.h"
 
 

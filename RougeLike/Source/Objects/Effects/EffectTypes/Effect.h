@@ -38,7 +38,6 @@ public:
 
 	void setReceiver(Actor* receiver) { mReceiver = receiver; }
 
-	virtual void fillData(const EffectPropertyBag* data) = 0;
 	virtual void clearData()  = 0;
 
 	virtual void init() = 0;
