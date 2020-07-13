@@ -12,7 +12,7 @@ public:
 	void slowUpdate(float dt);
 	void render();
 
-	void spawn(Collectable* collectable, float xPosition);
+	void spawn(Collectable* collectable, int xPosition);
 
 
 private:

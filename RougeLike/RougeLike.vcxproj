@@ -29,8 +29,10 @@
     <ClCompile Include="Source\Game\LoadingBar.cpp" />
     <ClCompile Include="Source\Game\LoadingManager.cpp" />
     <ClCompile Include="Source\Input\Button.cpp" />
+    <ClCompile Include="Source\Map\MapBuilding\DecorTilePopulator.cpp" />
     <ClCompile Include="Source\Map\MapDebugging.cpp" />
-    <ClCompile Include="Source\Map\MapTileDecoder.cpp" />
+    <ClCompile Include="Source\Map\MapBuilding\MapTileDecoder.cpp" />
+    <ClCompile Include="Source\Map\MapBuilding\RenderTilePopulator.cpp" />
     <ClCompile Include="Source\Map\TrapManager.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\Ability.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityActivator.cpp" />
@@ -113,7 +115,7 @@
     <ClCompile Include="Source\Items\Collectables\Collectables.cpp" />
     <ClCompile Include="Source\Managers\ScoreManager.cpp" />
     <ClCompile Include="Source\Map\MapTile.cpp" />
-    <ClCompile Include="Source\Map\MapGenerator.cpp" />
+    <ClCompile Include="Source\Map\MapBuilding\MapGenerator.cpp" />
     <ClCompile Include="Source\Game\Camera.cpp" />
     <ClCompile Include="Source\Game\Cursor.cpp" />
     <ClCompile Include="Source\Graphics\RenderManager.cpp" />
@@ -164,8 +166,10 @@
     <ClInclude Include="Source\Events\LocalObserver.h" />
     <ClInclude Include="Source\Game\LoadingBar.h" />
     <ClInclude Include="Source\Game\LoadingManager.h" />
+    <ClInclude Include="Source\Map\MapBuilding\DecorTilePopulator.h" />
     <ClInclude Include="Source\Map\MapDebugging.h" />
-    <ClInclude Include="Source\Map\MapTileDecoder.h" />
+    <ClInclude Include="Source\Map\MapBuilding\MapTileDecoder.h" />
+    <ClInclude Include="Source\Map\MapBuilding\RenderTilePopulator.h" />
     <ClInclude Include="Source\Map\TileTypes.h" />
     <ClInclude Include="Source\Map\TrapManager.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\Ability.h" />
@@ -265,7 +269,7 @@
     <ClInclude Include="Source\Managers\ScoreManager.h" />
     <ClInclude Include="Source\Map\Map.h" />
     <ClInclude Include="Source\Map\MapTile.h" />
-    <ClInclude Include="Source\Map\MapGenerator.h" />
+    <ClInclude Include="Source\Map\MapBuilding\MapGenerator.h" />
     <ClInclude Include="Source\Game\Camera.h" />
     <ClInclude Include="Source\Game\Cursor.h" />
     <ClInclude Include="Source\Graphics\RenderManager.h" />

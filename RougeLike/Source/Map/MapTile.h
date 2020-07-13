@@ -83,3 +83,12 @@ private:
 	RenderTile mRenderType;
 	DecorTile mDecorType;
 };
+
+
+
+template<typename T>
+bool isValid(Index index, const Grid<T>& data)
+{
+	return (index.x >= 0 && index.x < data.xCount()) &&
+		(index.y >= 0 && index.y < data.yCount());
+}

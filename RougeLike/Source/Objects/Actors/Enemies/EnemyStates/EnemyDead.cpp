@@ -48,7 +48,7 @@ void EnemyDead::render()
 #if DRAW_ENEMY_RECT
 	debugDrawRect(mEnemy->rect(), RenderColour(RenderColour::Red));
 #else
-	mEnemy->animator().render(rect, mEnemy->physics()->flip(), mAlpha);
+	mEnemy->animator().render(rect, mEnemy->physics()->flip(), (Uint8)mAlpha);
 #endif
 
 }

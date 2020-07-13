@@ -58,7 +58,6 @@ float magnitudeSqrd(Vector2D<T> vector)
 	return (float)((vector.x * vector.x) + (vector.y * vector.y));
 }
 
-
 int randomNumberBetween(int min, int max);
 
 
@@ -69,6 +68,7 @@ VectorF rotateVector(VectorF vec, float dTheta, VectorF about);
 VectorF closestRectSide(VectorF point, RectF rect);
 
 VectorF realiseSize(VectorF baseSize, float maxDimention);
+
 
 enum class Colour
 {

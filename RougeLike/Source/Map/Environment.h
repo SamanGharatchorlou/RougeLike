@@ -16,7 +16,6 @@ public:
 	void slowUpdate(float dt);
 	void restart();
 
-
 	void nextLevel();
 
 	bool canClosePreviousLevel(VectorF playerPosition) const;

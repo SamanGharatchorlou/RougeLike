@@ -129,3 +129,4 @@ SDL_Colour SDLColour(Colour colour)
 
 	return SDL_Color{ r, g, b };
 }
+

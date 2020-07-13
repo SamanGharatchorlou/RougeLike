@@ -218,10 +218,22 @@ void renderRenderTypes(const MapTile& tile, RectF& tileRect, VectorF& offset, in
 		tileRect = tileRect.Translate(offset);
 	}
 
-	// Water				
+	// Water
+	if (tile.has(RenderTile::Water_Left))
+	{
+		debugRenderText("Water left", fontSize, tileRect.TopCenter(), colour);
+		tileRect = tileRect.Translate(offset);
+	}
+
 	if (tile.has(RenderTile::Water_Middle))
 	{
 		debugRenderText("Water middle", fontSize, tileRect.TopCenter(), colour);
+		tileRect = tileRect.Translate(offset);
+	}
+
+	if (tile.has(RenderTile::Water_Top_Left))
+	{
+		debugRenderText("Water top left", fontSize, tileRect.TopCenter(), colour);
 		tileRect = tileRect.Translate(offset);
 	}
 

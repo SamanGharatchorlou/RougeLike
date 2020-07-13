@@ -2,7 +2,7 @@
 #include "Environment.h"
 
 #include "Game/Camera.h"
-#include "MapGenerator.h"
+#include "MapBuilding/MapGenerator.h"
 #include "Map.h"
 
 #include "TrapManager.h"

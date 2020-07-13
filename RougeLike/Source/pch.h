@@ -1,5 +1,6 @@
 #pragma once
 
+#pragma warning(disable : 4018)
 
 // --- Standard Library --- 
 

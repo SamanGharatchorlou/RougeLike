@@ -5,6 +5,7 @@
 #include "Texture.h"
 
 
+
 TextureManager::TextureManager()
 {
 	DebugPrint(Log, "Texture manager created\n");
@@ -123,7 +124,8 @@ const std::string& TextureManager::getTextureName(const Texture* texture) const
 		}
 	}
 
-	DebugPrint(Log, "No texture was found within any texture map\n");
+	ASSERT(Error, false, "No texture was found within any texture map\n");
+	return std::string("");
 }
 
 

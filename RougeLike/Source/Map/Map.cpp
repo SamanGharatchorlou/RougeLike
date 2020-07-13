@@ -5,9 +5,9 @@
 #include "Graphics/Texture.h"
 #include "Graphics/TextureManager.h"
 
-#include "MapGenerator.h"
+#include "Map/MapBuilding/MapGenerator.h"
 
-#include "MapTileDecoder.h"
+#include "MapBuilding/MapTileDecoder.h"
 
 #if _DEBUG
 #include "Debug/DebugDraw.h"

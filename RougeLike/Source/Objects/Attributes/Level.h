@@ -12,7 +12,7 @@ public:
 
 	int getCurrentExp() const { return currentExp; }
 	const float value() const override { return (float)level; }
-	void setValue(float value) override { level = value; }
+	void setValue(float value) override { level = (int)value; }
 
 	int nextLevelExp();
 

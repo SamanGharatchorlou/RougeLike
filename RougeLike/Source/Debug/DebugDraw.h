@@ -15,9 +15,9 @@
 
 // Map
 #define DRAW_BINARY_MAP 0
-#define LABEL_SURFACE_RENDER_TYPES 0
-#define LABEL_SURFACE_COLLISION_TYPES 0
-#define LABEL_SURFACE_DECOR_TYPES 0
+#define LABEL_SURFACE_RENDER_TYPES 1
+#define LABEL_SURFACE_COLLISION_TYPES 1
+#define LABEL_SURFACE_DECOR_TYPES 1
 #define RENDER_SURFACE_TYPES (LABEL_SURFACE_RENDER_TYPES ||  LABEL_SURFACE_RENDER_TYPES || LABEL_SURFACE_DECOR_TYPES)
 
 // Enemy / AI
@@ -94,7 +94,7 @@ struct RenderColour
 	void setOpacity(float opacity)
 	{
 		opacity = clamp(opacity, 0.0f, 1.0f);
-		a = 255 * opacity;
+		a = (Uint8)(255 * opacity);
 	}
 
 	Uint8 r = 0;

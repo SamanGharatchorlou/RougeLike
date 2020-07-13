@@ -4,7 +4,7 @@
 #include "Audio.h"
 
 
-SoundController::SoundController() : gameVolume(-1.0f), musicVolume(-1.0f), muted(false)
+SoundController::SoundController() : gameVolume(-1), musicVolume(-1), muted(false)
 {
 	// Defualt to 8 channels
 	Mix_AllocateChannels(MIX_CHANNELS);

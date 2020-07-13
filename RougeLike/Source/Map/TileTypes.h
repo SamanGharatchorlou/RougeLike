@@ -75,8 +75,8 @@ enum class DecorTile : Uint32
 	Column = 1,
 	Water = Column << 1,
 	Torch_Handle = Column << 2,
-	Torch_Bowl = Column << 2,
-	Spikes = Column << 3
+	Torch_Bowl = Column << 3,
+	Spikes = Column << 4
 };
 
 

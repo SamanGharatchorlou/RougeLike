@@ -276,9 +276,11 @@ void MapGenerator::addTorchHandles(Grid<MapTile>& data)
 
 			if (isValid(left, data) && isValid(down2, data) && isValid(down2, data))
 			{
-				if (data[left].has(DecorTile::Column) && data[down].is(CollisionTile::Wall) && data[down2].is(CollisionTile::Floor))
+				if (data[left].has(DecorTile::Column) && 
+					data[down].is(CollisionTile::Wall) && 
+					data[down2].is(CollisionTile::Floor))
 				{
-					data[down].add(DecorTile::Torch_Handle);
+					data[index].add(DecorTile::Torch_Handle);
 				}
 			}
 		}

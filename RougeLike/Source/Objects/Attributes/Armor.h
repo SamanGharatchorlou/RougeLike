@@ -22,7 +22,7 @@ public:
 
 	float getPercentage() const { return mArmor / mMaxArmor; }
 
-	int getMax() const { return mMaxArmor; }
+	float getMax() const { return mMaxArmor; }
 	void increaseMax(float armor) { mArmor += armor; mMaxArmor += armor; }
 
 	bool hasArmor() const { return mArmor > 0; }

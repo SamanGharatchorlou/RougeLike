@@ -141,7 +141,12 @@ bool AudioManager::isPlaying(const std::string& label, void* sourceId)
 	Audio* audio = getAudio(label);
 
 	if (audio)
-		 return mSoundController.isPlaying(audio, sourceId);
+		return mSoundController.isPlaying(audio, sourceId);
+	else
+	{
+		DebugPrint(Warning, "No audio with label '%s' found, cannot check if playing\n", label.c_str());
+		return false;
+	}
 }
 
 

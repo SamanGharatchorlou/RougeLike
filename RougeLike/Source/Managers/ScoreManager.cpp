@@ -38,7 +38,7 @@ void ScoreManager::handleEvent(EventData& data)
 	case Event::EnemyDead:
 	{
 		EnemyDeadEvent deathData = static_cast<EnemyDeadEvent&>(data);
-		mScore += deathData.mScore;
+		mScore += (int)deathData.mScore;
 
 		updateUI = true;
 		break;

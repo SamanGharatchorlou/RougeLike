@@ -2,7 +2,7 @@
 
 #include "Observer.h"
 
-class Observer;
+struct Observer;
 
 class Dispatcher
 {

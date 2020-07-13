@@ -3,7 +3,7 @@
 #include "Events/Observer.h"
 #include "Events/Dispatcher.h"
 
-class GameData;
+struct GameData;
 class EffectPool;
 class Player;
 class EnemyManager;

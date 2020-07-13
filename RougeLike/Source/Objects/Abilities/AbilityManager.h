@@ -6,7 +6,7 @@
 #include "AbilityTypes/Ability.h"
 
 
-class GameData;
+struct GameData;
 class Actor;
 
 

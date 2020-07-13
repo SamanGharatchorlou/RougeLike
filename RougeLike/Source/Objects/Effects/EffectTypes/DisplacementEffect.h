@@ -11,8 +11,7 @@ public:
 
 	void set(VectorF source, float force, float distance);
 	void update(VectorF source) { mSource = source; }
-/*
-	virtual void fillData(const EffectPropertyBag* properties) override;*/
+	
 	void clearData() override;
 
 	virtual void init() override { };

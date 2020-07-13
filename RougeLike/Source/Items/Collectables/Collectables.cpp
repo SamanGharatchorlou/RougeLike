@@ -75,7 +75,7 @@ void Collectables::render()
 }
 
 
-void Collectables::spawn(Collectable* collectable, float xPosition)
+void Collectables::spawn(Collectable* collectable, int xPosition)
 {
 	Spawner itemSpawner;
 	VectorF position = itemSpawner.findSpawnPoint(mGameData->environment->primaryMap(), xPosition);
