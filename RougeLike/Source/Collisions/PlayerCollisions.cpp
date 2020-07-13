@@ -33,9 +33,11 @@ void PlayerCollisions::init()
 
 void PlayerCollisions::fastUpdate(float dt, Map* map)
 {
-	if (!mPlayer->userHasControl())
+	if (mPlayer->userHasControl())
 	{
+#if !IGNORE_WALLS
 		mWallCollisions.resolveWallCollisions(map, dt);
+#endif
 	}
 }
 

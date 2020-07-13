@@ -30,10 +30,11 @@ enum class RenderTile : Uint64
 	Water = Floor << 10,
 
 	Water_Middle = Water << 1,
-	Water_Top = Water << 2,
+	Water_Left = Water << 2,
+	Water_Top = Water << 3,
+	Water_Top_Left = Water << 4,
 
-
-	Wall = Water << 3,
+	Wall = Water << 5,
 
 	// Sides
 	Left = Wall << 1,
@@ -73,7 +74,8 @@ enum class DecorTile : Uint32
 	None,
 	Column = 1,
 	Water = Column << 1,
-	Torch = Column << 2,
+	Torch_Handle = Column << 2,
+	Torch_Bowl = Column << 2,
 	Spikes = Column << 3
 };
 

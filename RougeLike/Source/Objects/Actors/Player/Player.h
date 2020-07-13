@@ -36,7 +36,7 @@ public:
 
 	void addAbility(const std::string& name);
 
-	void userHasControl(bool removeControl);
+	void overrideControl(bool removeControl);
 	bool userHasControl() { return !mControlOverride; }
 
 	void updateUI();

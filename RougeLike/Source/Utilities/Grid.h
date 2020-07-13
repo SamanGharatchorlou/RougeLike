@@ -18,6 +18,8 @@ public:
 	void set(Vector2D<int> size, T value);
 	void setAllValues(T value);
 
+	// Getters
+	const T& get(Index index) const { return data[index.y][index.x]; }
 	const std::vector<std::vector<T>>& get() const { return data; }
 
 	const int rows() const { return data.size(); }
@@ -25,23 +27,8 @@ public:
 	const int yCount() const { return data.size(); }
 	const int xCount() const { return data[0].size(); }
 
-	// Getters
-	const T& get(Index index) const { return data[index.y][index.x]; }
+	bool inBounds(Vector2D<int> index) const;
 
-	const std::vector<T> getRow( int y) const;
-	const std::vector<T> getColumn(int x) const;
-
-	bool inBounds(Vector2D<int> index) const 
-	{
-		return index.x >= 0 && index.x < xCount() &&
-			index.y >= 0 && index.y < yCount();
-	}
-
-#if _DEBUG
-	void printBinaryMap(T zero, T one) const;
-	void printBinaryMap(T zero) const;
-	void printMap() const;
-#endif
 
 private:
 	std::vector<std::vector<T>> data;
@@ -99,34 +86,6 @@ T& Grid<T>::operator [] (Vector2D<int> index)
 
 
 template<class T>
-const std::vector<T> Grid<T>::getRow(int y) const
-{
-	ASSERT(Error, y >= 0 && y < yCount(),
-		"Attempting to get out of bounds row %d. Data only has %d rows\n", y, yCount());
-
-	return data[y];
-}
-
-
-template<class T>
-const std::vector<T> Grid<T>::getColumn(int x) const
-{
-	ASSERT(Warning, x >= 0 && x < xCount(),
-		"Attempting to get out of bounds column %d. Data only has %d columns\n", x, xCount());
-
-	std::vector<T> column;
-	column.reserve(data.size());
-
-	for (unsigned int i = 0; i < yCount(); i++)
-	{
-		column.push_back(data[i][x]);
-	}
-
-	return column;
-}
-
-
-template<class T>
 void Grid<T>::set(Vector2D<int> size, T value)
 {
 	ASSERT(Warning, size.y > 0 && size.x > 0,
@@ -155,61 +114,9 @@ void Grid<T>::clear()
 }
 
 
-
-
-
-// --- Debugging --- //
-#if _DEBUG
-
 template<class T>
-void Grid<T>::printBinaryMap(T zero, T one) const
+bool Grid<T>::inBounds(Vector2D<int> index) const
 {
-	for (int y = 0; y < yCount(); y++)
-	{
-		for (int x = 0; x < xCount(); x++)
-		{
-			if (data[y][x] == zero)
-				DebugPrint(Log, "0 ");
-			else if (data[y][x] == one)
-				DebugPrint(Log, "1 ");
-
-		}
-
-		DebugPrint(Log, "\n");
-	}
+	return index.x >= 0 && index.x < xCount() &&
+		index.y >= 0 && index.y < yCount();
 }
-
-
-template<class T>
-void Grid<T>::printBinaryMap(T zero) const
-{
-	for (int y = 0; y < yCount(); y++)
-	{
-		for (int x = 0; x < xCount(); x++)
-		{
-			if (data[y][x] == zero)
-				DebugPrint(Log, "0 ");
-			else
-				DebugPrint(Log, "1 ");
-
-		}
-
-		DebugPrint(Log, "\n");
-	}
-}
-
-
-template<class T>
-void Grid<T>::printMap() const
-{
-	for (int y = 0; y < yCount(); y++)
-	{
-		for (int x = 0; x < xCount(); x++)
-		{
-			DebugPrint(Log, "%d ", (int)data[y][x]);
-		}
-
-		DebugPrint(Log, "\n");
-	}
-}
-#endif

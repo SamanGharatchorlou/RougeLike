@@ -182,9 +182,9 @@ void Player::render()
 }
 
 
-void Player::userHasControl(bool control)
+void Player::overrideControl(bool control)
 {
-	mControlOverride = !control;
+	mControlOverride = control;
 	
 	if (mWeapon)
 		mWeapon->overrideCursorControl(!control);

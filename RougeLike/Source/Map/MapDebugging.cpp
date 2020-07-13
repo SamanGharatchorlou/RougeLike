@@ -265,9 +265,15 @@ void renderDecorTypes(const MapTile& tile, RectF& tileRect, VectorF& offset, int
 		tileRect = tileRect.Translate(offset);
 	}
 
-	if (tile.has(DecorTile::Torch))
+	if (tile.has(DecorTile::Torch_Handle))
 	{
-		debugRenderText("Torch", fontSize, tileRect.TopCenter(), colour);
+		debugRenderText("Torch handle", fontSize, tileRect.TopCenter(), colour);
+		tileRect = tileRect.Translate(offset);
+	}
+
+	if (tile.has(DecorTile::Torch_Bowl))
+	{
+		debugRenderText("Torch bowl", fontSize, tileRect.TopCenter(), colour);
 		tileRect = tileRect.Translate(offset);
 	}
 

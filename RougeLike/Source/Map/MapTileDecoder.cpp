@@ -35,7 +35,9 @@ void MapTileDecoder::setTextures(Grid<MapTile>& data)
 	tileTextures[RenderTile::Floor_Bottom_Left] = mTextureManager->getTexture("floor_bottom_left", FileManager::Image_Maps);
 
 	tileTextures[RenderTile::Water_Middle] = mTextureManager->getTexture("water", FileManager::Image_Maps);
+	tileTextures[RenderTile::Water_Left] = mTextureManager->getTexture("water_left", FileManager::Image_Maps);
 	tileTextures[RenderTile::Water_Top] = mTextureManager->getTexture("water_top", FileManager::Image_Maps);
+	tileTextures[RenderTile::Water_Top_Left] = mTextureManager->getTexture("water_top_left", FileManager::Image_Maps);
 
 	tileTextures[RenderTile::Wall] = mTextureManager->getTexture("wall", FileManager::Image_Maps);
 	tileTextures[RenderTile::Left] = mTextureManager->getTexture("wall_left", FileManager::Image_Maps);
@@ -123,7 +125,10 @@ void MapTileDecoder::addWater(Grid<MapTile>& data)
 				{
 					for (int yPool = index.y + 1; yPool < index.y + height - 1; yPool++)
 					{
-						data[Index(xPool, yPool)].set(RenderTile::Water_Middle);
+						if(xPool == index.x + 1)
+							data[Index(xPool, yPool)].set(RenderTile::Water_Left);
+						else
+							data[Index(xPool, yPool)].set(RenderTile::Water_Middle);
 					}
 				}
 
@@ -143,7 +148,11 @@ void MapTileDecoder::addWater(Grid<MapTile>& data)
 				// Top
 				for (int xPool = 1; xPool < width - 1; xPool++)
 				{
-					data[index + Index(xPool, 0)].set(RenderTile::Water_Top);
+					if(xPool == 1)
+						data[index + Index(xPool, 0)].set(RenderTile::Water_Top_Left);
+					else
+						data[index + Index(xPool, 0)].set(RenderTile::Water_Top);
+
 					// Fill very top row
 					data[index + Index(xPool, -1)].set(RenderTile::Floor_Bottom);
 				}
@@ -194,7 +203,8 @@ void MapTileDecoder::addColumns(Grid<MapTile>& data)
 }
 void MapTileDecoder::addAnimations(Grid<MapTile>& data)
 {
-	XMLParser tourchParser(FileManager::Get()->findFile(FileManager::Configs_Objects, "Torch"));
+	XMLParser tourchHandleParser(FileManager::Get()->findFile(FileManager::Configs_Objects, "TorchHandle"));
+	XMLParser tourchBowlParser(FileManager::Get()->findFile(FileManager::Configs_Objects, "TorchBowl"));
 	XMLParser spikeParser(FileManager::Get()->findFile(FileManager::Configs_Objects, "SpikeTrap"));
 
 	for (int x = 0; x < data.xCount(); x++)
@@ -203,10 +213,20 @@ void MapTileDecoder::addAnimations(Grid<MapTile>& data)
 		{
 			Index index(x, y);
 
-			if (data[index].has(DecorTile::Torch))
+			if (data[index].has(DecorTile::Torch_Handle))
 			{
 				Animator animator;
-				AnimationReader reader(mTextureManager, tourchParser);
+				AnimationReader reader(mTextureManager, tourchHandleParser);
+				if (reader.initAnimator(animator))
+				{
+					data[index].addAnimation(animator);
+				}
+			}
+
+			if (data[index].has(DecorTile::Torch_Bowl))
+			{
+				Animator animator;
+				AnimationReader reader(mTextureManager, tourchBowlParser);
 				if (reader.initAnimator(animator))
 				{
 					data[index].addAnimation(animator);

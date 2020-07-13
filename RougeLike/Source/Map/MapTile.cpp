@@ -84,6 +84,9 @@ void MapTile::render(RectF rect)
 
 	for (int i = 0; i < mAnimations.size(); i++)
 	{
+		if(is(DecorTile::Torch_Bowl))
+			rect.SetBotCenter(rect.Center());
+
 		mAnimations[i].render(rect);
 	}
 }

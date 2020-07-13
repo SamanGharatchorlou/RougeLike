@@ -8,6 +8,7 @@
 
 // Player
 #define DRAW_PLAYER_RECTS 0
+#define IGNORE_WALLS 1
 
 // Collectables
 #define DRAW_COLLECTABLE_RECT 0

@@ -11,12 +11,17 @@ public:
 
 	void addColumns(Grid<MapTile>& data);
 	void addWaterFeatures(Grid<MapTile>& data);
-	void addTorches(Grid<MapTile>& data);
+	void addTorchHandles(Grid<MapTile>& data);
 	void addSpikes(Grid<MapTile>& data);
 
 private:	
-	void prepareMap(Grid<MapTile>& data);
-	void completeBuild(Grid<MapTile>& data);
+	void fillWithDefaultTiles(Grid<MapTile>& data);
+	void setRenderTiles(Grid<MapTile>& data);
+
+	void carveRandomTunnel(Grid<MapTile>& data, Index& outEndIndex);
+	void carveStraightTunnel(Grid<MapTile>& data);
+
+	void addExitOpening(Grid<MapTile>& data, Index opening);
 
 	bool isValid(const Index index, const Grid<MapTile>& data) const;
 

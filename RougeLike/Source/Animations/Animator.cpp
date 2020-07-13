@@ -53,11 +53,16 @@ void Animator::Animation::render(RectF rect, SDL_RendererFlip flip) const
 		DebugPrint(Error, "Index(%d,%d) out of bounds\n", mIndex.x, mIndex.y);
 #endif
 
-	VectorF size = mTileDimentions; // keep as ints?
+	VectorF size = mTileDimentions;
 	VectorF position = mTileDimentions * mIndex;
 	RectF tileRect(position, size);
 
-	mTexture->renderSubTexture(rect, tileRect, flip);
+	// Resize and reposition texture to keep fixed ration and center within rect
+	VectorF theSize = realiseSize(size, std::max(rect.Width(), rect.Height()));
+	VectorF offset = (rect.Size() - theSize) / 2.0f;
+	RectF renderRect = RectF(rect.TopLeft() + offset, theSize);
+
+	mTexture->renderSubTexture(renderRect, tileRect, flip);
 }
 
 

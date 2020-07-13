@@ -196,7 +196,7 @@ void Environment::buildLevel(float offset)
 	generator.buildDungeon(mPrimaryMap->getData());
 	generator.addWaterFeatures(mPrimaryMap->getData());
 	generator.addColumns(mPrimaryMap->getData());
-	generator.addTorches(mPrimaryMap->getData());
+	generator.addTorchHandles(mPrimaryMap->getData());
 	generator.addSpikes(mPrimaryMap->getData());
 
 	mPrimaryMap->populateData(mTextureManager, VectorF(offset, 0.0f));

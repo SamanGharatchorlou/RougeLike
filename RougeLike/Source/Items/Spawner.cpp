@@ -12,7 +12,7 @@ VectorF Spawner::findSpawnPoint(Map* map, int xPositionPercentage)
 
 	int xTileIndex = (int)((map->xCount() * xPositionPercentage) / 100);
 
-	Vector2D<int> yTileRange = findYFloorTileRange(map, xTileIndex);
+	Vector2D<int> yTileRange = map->yTileFloorRange(xTileIndex);// findYFloorTileRange(map, xTileIndex);
 
 	ASSERT(Warning, yTileRange.x > 0 && yTileRange.y < (int)map->yCount(),
 		"No valid tile was found to spawn enemy at x = %d\n", xTileIndex);

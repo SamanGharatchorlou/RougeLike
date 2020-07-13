@@ -8,7 +8,28 @@ MapGenerator::MapGenerator()
 }
 
 
-void MapGenerator::prepareMap(Grid<MapTile>& data)
+
+
+void MapGenerator::buildDungeon(Grid<MapTile>& data)
+{
+	fillWithDefaultTiles(data);
+
+	Index endIndex;
+	carveRandomTunnel(data, endIndex);
+	addExitOpening(data, endIndex);
+	setRenderTiles(data);
+}
+
+
+void MapGenerator::buildCorridor(Grid<MapTile>& data)
+{
+	fillWithDefaultTiles(data);
+	carveStraightTunnel(data);
+	setRenderTiles(data);
+}
+
+
+void MapGenerator::fillWithDefaultTiles(Grid<MapTile>& data)
 {
 	for (int y = 0; y < data.yCount(); y++)
 	{
@@ -20,10 +41,8 @@ void MapGenerator::prepareMap(Grid<MapTile>& data)
 }
 
 
-void MapGenerator::buildDungeon(Grid<MapTile>& data)
+void MapGenerator::carveRandomTunnel(Grid<MapTile>& data, Index& outEndIndex)
 {
-	prepareMap(data);
-
 	int widthMax = 9;
 	int widthMin = 1;
 
@@ -72,12 +91,25 @@ void MapGenerator::buildDungeon(Grid<MapTile>& data)
 		}
 	}
 
+	outEndIndex = Index(x, y);
 
-	// Exit
-	float halfWidth = std::abs(y - (data.yCount() / 2)) + 1;
-	width = halfWidth * 2;
+	// add wall barriers top and bottom
+	int yIndexs[4] = { 0, 1, data.yCount() - 2, data.yCount() - 1 };
+	for (int j = 0; j < 4; j++)
+	{
+		for (int i = 0; i < data.xCount(); i++)
+		{
+			data[Index(i, yIndexs[j])].set(CollisionTile::Wall);
+		}
+	}
+}
 
-	y = data.yCount() / 2;
+
+void MapGenerator::addExitOpening(Grid<MapTile>& data, Index opening)
+{
+	int x = opening.x;
+	int y = data.yCount() / 2;
+	int width = (std::abs(opening.y - (data.yCount() / 2)) + 1) * 2;
 
 	for (; x < data.xCount(); x++)
 	{
@@ -91,28 +123,24 @@ void MapGenerator::buildDungeon(Grid<MapTile>& data)
 			data[Index(x, yPath)].set(CollisionTile::Floor);
 		}
 	}
-
-	completeBuild(data);
 }
 
 
-void MapGenerator::buildCorridor(Grid<MapTile>& data)
-{
-	prepareMap(data);
 
+
+void MapGenerator::carveStraightTunnel(Grid<MapTile>& data)
+{
 	int yPosition = data.yCount() / 2;
 
 	// build tunnel
 	for (unsigned int x = 0; x < data[0].size(); x++)
 	{
-		data[Index(x,yPosition)].set(CollisionTile::Floor);
+		data[Index(x, yPosition)].set(CollisionTile::Floor);
 	}
-
-	completeBuild(data);
 }
 
 
-void MapGenerator::completeBuild(Grid<MapTile>& data)
+void MapGenerator::setRenderTiles(Grid<MapTile>& data)
 {
 	for (int y = 0; y < data.yCount(); y++)
 	{
@@ -235,7 +263,7 @@ bool MapGenerator::canAddColumn(const Grid<MapTile>& data, Index lowerIndex, int
 
 
 // Torches
-void MapGenerator::addTorches(Grid<MapTile>& data)
+void MapGenerator::addTorchHandles(Grid<MapTile>& data)
 {
 	for (int x = 0; x < data.xCount(); x++)
 	{
@@ -250,7 +278,7 @@ void MapGenerator::addTorches(Grid<MapTile>& data)
 			{
 				if (data[left].has(DecorTile::Column) && data[down].is(CollisionTile::Wall) && data[down2].is(CollisionTile::Floor))
 				{
-					data[index].add(DecorTile::Torch);
+					data[down].add(DecorTile::Torch_Handle);
 				}
 			}
 		}

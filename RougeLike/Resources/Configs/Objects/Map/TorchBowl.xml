@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Decor>
 	<AnimationInfo>
-		<ID>Torch</ID>
+		<ID>TorchBowl</ID>
 		<FrameTime>0.15</FrameTime>
-		<FrameSize x = "275" y = "248"></FrameSize>
+		<FrameSize x = "165" y = "300"></FrameSize>
 		<Animations>
 			<Active>4</Active>
 		</Animations>

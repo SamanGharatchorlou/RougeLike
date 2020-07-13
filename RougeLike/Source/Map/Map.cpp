@@ -172,6 +172,35 @@ const RectF Map::getLastRect() const
 }
 
 
+Vector2D<int> Map::yTileFloorRange(int xIndex) const
+{
+	int yTileIndex = 0;
+
+	bool isFloor = false;
+	while (!isFloor)
+	{
+		Index index(xIndex, ++yTileIndex);
+		isFloor = tile(index)->is(CollisionTile::Floor);
+	}
+
+	int yTop = yTileIndex;
+
+	while (isFloor)
+	{
+		if (yTileIndex == yCount() - 1)
+			break;
+
+		Index index(xIndex, ++yTileIndex);
+		isFloor = tile(index)->is(CollisionTile::Floor);
+	}
+
+	// Bottom
+	int yBottom = yTileIndex;
+
+	return Vector2D<int>(yTop, yBottom);
+}
+
+
 
 // -- Validity functions -- //
 bool Map::isValidTile(RectF rect) const

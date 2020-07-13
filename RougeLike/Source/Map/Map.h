@@ -40,6 +40,8 @@ public:
 	const Vector2D<int> index(RectF rect) const;
 	const Vector2D<int> index(const MapTile* tile) const;
 
+	Vector2D<int> yTileFloorRange(int xIndex) const;
+
 	// Query tiles
 	CollisionTile collisionType(Index index) const { return mData.get(index).collisionType(); }
 
@@ -52,6 +54,7 @@ public:
 
 private:
 	void populateTileRects(VectorF offset);
+
 
 private:
 	TrapManager mTrapManager;

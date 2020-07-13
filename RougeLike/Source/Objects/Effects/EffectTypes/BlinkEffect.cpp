@@ -14,7 +14,7 @@ void BlinkEffect::init()
 	// NOTE: This bit only works for a player specific, if you ever need to do this to another object
 	// then change this bit, move it into BlinkAbility perhaps?
 	Player* player = static_cast<Player*>(mReceiver);
-	player->userHasControl(false);
+	player->overrideControl(true);
 }
 
 
@@ -44,7 +44,7 @@ void BlinkEffect::exit()
 	// NOTE: This bit only works for a player specific, if you ever need to do this to another object
 	// then change this bit, move it into BlinkAbility perhaps?
 	Player* player = static_cast<Player*>(mReceiver);
-	player->userHasControl(true);
+	player->overrideControl(false);
 }
 
 
