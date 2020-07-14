@@ -55,10 +55,6 @@ public:
 	RectF		rect() const { return mPhysics.rect(); }
 	RectF		scaledRect() const;
 
-	// Effects
-	//const EffectPropertyBag* effectProperties() const { return &mEffectProperties; }
-	//void setEffectProperty(const std::string& name, float value) { mEffectProperties.setProperty(name, value); }
-
 	void addEffect(Effect* effect);
 	Effect* getEffectFromPool(EffectType type);
 
@@ -78,8 +74,6 @@ protected:
 	Physics mPhysics;
 
 	EffectHandler mEffects;
-
-	/*EffectPropertyBag mEffectProperties;*/
 
 	LocalDispatcher mEvents;
 

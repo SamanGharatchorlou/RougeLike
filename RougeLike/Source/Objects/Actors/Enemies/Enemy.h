@@ -46,8 +46,8 @@ public:
 	 
 	// Map
 	void setMap(AIPathMap* map) { mMap = map; }
-	AIPathMap*					getPathMap() { return mMap; }
-	const Map*					getEnvironmentMap() const;
+	AIPathMap* getPathMap() { return mMap; }
+	const Map* getEnvironmentMap() const;
 
 	// Collisions
 	void resolveCollisions();
@@ -55,6 +55,7 @@ public:
 	// Target
 	void			setTarget(Actor* target) { mTarget = target; }
 	const Actor*	target() const { return mTarget; }
+	bool			hasTarget() const { return mTarget != nullptr; }
 
 	// Movement
 	void			accellerateTowards(VectorF position);

@@ -172,32 +172,34 @@ const RectF Map::getLastRect() const
 }
 
 
-Vector2D<int> Map::yTileFloorRange(int xIndex) const
+
+Vector2D<int> Map::yTileFloorRange(VectorF position) const
 {
-	int yTileIndex = 0;
+	ASSERT(Warning, tile(position)->is(CollisionTile::Floor), "Not a floor tile, cannot get yTile floor range");
 
-	bool isFloor = false;
-	while (!isFloor)
+	Index currentIndex = index(position);
+
+	Index bottomIndex(currentIndex);
+	while (true)
 	{
-		Index index(xIndex, ++yTileIndex);
-		isFloor = tile(index)->is(CollisionTile::Floor);
-	}
-
-	int yTop = yTileIndex;
-
-	while (isFloor)
-	{
-		if (yTileIndex == yCount() - 1)
+		Index increment(0, 1);
+		if(!tile(bottomIndex + increment)->is(CollisionTile::Floor))
 			break;
 
-		Index index(xIndex, ++yTileIndex);
-		isFloor = tile(index)->is(CollisionTile::Floor);
+		bottomIndex += increment;
 	}
 
-	// Bottom
-	int yBottom = yTileIndex;
+	Index topIndex(currentIndex);
+	while (true)
+	{
+		Index increment(0, -1);
+		if (!tile(topIndex + increment)->is(CollisionTile::Floor))
+			break;
 
-	return Vector2D<int>(yTop, yBottom);
+		topIndex += increment;
+	}
+
+	return Vector2D<int>(topIndex.y, bottomIndex.y);
 }
 
 
@@ -238,6 +240,7 @@ void Map::populateTileRects(VectorF offset)
 	}
 }
 
+
 void Map::renderFloor()
 {
 	Camera* camera = Camera::Get();
@@ -256,7 +259,7 @@ void Map::renderFloor()
 
 				// Split each floor tile into 4
 				//if (tile.has(RenderTile::Floor) || type >= RenderTile::Water_Middle)
-				if(tile.is(CollisionTile::Floor))
+				if(tile.has(CollisionTile::Floor | CollisionTile::Water))
 				{
 					tileRect = camera->toCameraCoords(tileRect);
 

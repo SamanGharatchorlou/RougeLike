@@ -22,8 +22,6 @@ public:
 
 
 private:
-	Vector2D<int> findYFloorTileRange(int xIndex, const Map* map) const;
-
 	void setPatrolPoint();
 	bool hasReachedPositionTarget() const;
 	bool canSeeAttackTarget() const;

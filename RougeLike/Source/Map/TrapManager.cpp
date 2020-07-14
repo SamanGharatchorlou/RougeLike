@@ -14,12 +14,12 @@ void TrapManager::slowUpdate()
 void TrapManager::triggerTrap(VectorF position)
 {
 	Index index = mMap->index(position);
-	MapTile& tile = mMap->get(index);
+	MapTile* tile = mMap->tile(index);
 
 	// Add untriggered trap
-	if (tile.has(DecorTile::Spikes))
+	if (tile->has(DecorTile::Spikes))
 	{
-		Animator& animator = tile.animation(0);
+		Animator& animator = tile->animation(0);
 
 		if (animator.animation().currentFrame() == 0)
 		{
@@ -53,8 +53,8 @@ void TrapManager::updateTriggerTraps()
 	if (mUntriggeredTraps.size() > 0 && mUntriggeredTraps.front().time() > 1.0f)
 	{
 		Index trapIndex = mUntriggeredTraps.front().index();
-		MapTile& tile = mMap->get(trapIndex);
-		Animator& animator = tile.animation(0);
+		MapTile* tile = mMap->tile(trapIndex);
+		Animator& animator = tile->animation(0);
 
 		// TODO: this is being triggered everyframe, make it only once
 		if (animator.animation().currentFrame() == 0)
@@ -74,8 +74,8 @@ void TrapManager::updateResetTraps()
 	if (mTriggeredTraps.size() > 0 && mTriggeredTraps.front().time() > 2.0f)
 	{
 		Index trapIndex = mTriggeredTraps.front().index();
-		MapTile& tile = mMap->get(trapIndex);
-		Animator& animator = tile.animation(0);
+		MapTile* tile = mMap->tile(trapIndex);
+		Animator& animator = tile->animation(0);
 
 		if (animator.animation().currentFrame() == 1)
 		{

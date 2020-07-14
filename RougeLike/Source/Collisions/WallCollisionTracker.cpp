@@ -1,25 +1,20 @@
 #include "pch.h"
 #include "WallCollisionTracker.h"
 
-#include "Objects/Actors/Actor.h"
-#include "Collider.h"
-
 #include "Map/Map.h"
+#include "Objects/Actors/Actor.h"
 
-// Wall Collisions
+
 void WallCollisionTracker::resolveWallCollisions(const Map* map, float dt)
 {
-	mActor->physics()->resetAllowedMovement();
-
-	testLeftCollisions(map, dt);
-	testTopCollisions(map, dt);
-	testRightCollisions(map, dt);
-	testBottomCollisions(map, dt);
+	mActor->physics()->restrictMovement(Physics::Left, restrictLeftMovement(map, dt));
+	mActor->physics()->restrictMovement(Physics::Right, restrictRightMovement(map, dt));
+	mActor->physics()->restrictMovement(Physics::Up, restrictTopMovement(map, dt));
+	mActor->physics()->restrictMovement(Physics::Down, restrictDownMovement(map, dt));
 }
 
 
-// Allow <-> movement if tiles == nullptr
-void WallCollisionTracker::testLeftCollisions(const Map* map, float dt)
+bool WallCollisionTracker::restrictLeftMovement(const Map* map, float dt) const
 {
 	float movement = mActor->physics()->maxMovementDistance(dt);
 	RectF rect = wallScaledRect(VectorF(-movement, 0.0f));
@@ -27,16 +22,10 @@ void WallCollisionTracker::testLeftCollisions(const Map* map, float dt)
 	const MapTile* topLeft = map->tile(rect.TopLeft());
 	const MapTile* bottomLeft = map->tile(rect.BotLeft());
 
-	if ((topLeft && bottomLeft) &&
-		(topLeft->is(CollisionTile::Wall) || bottomLeft->is(CollisionTile::Wall)))
-	{
-		mActor->physics()->restrictMovement(Physics::Left, true);
-	}
+	return cannotMove(topLeft) || cannotMove(bottomLeft);
 }
 
-
-// Allow <-> movement if tiles == nullptr
-void WallCollisionTracker::testRightCollisions(const Map* map, float dt)
+bool WallCollisionTracker::restrictRightMovement(const Map* map, float dt) const
 {
 	float movement = mActor->physics()->maxMovementDistance(dt);
 	RectF rect = wallScaledRect(VectorF(movement, 0.0f));
@@ -44,16 +33,10 @@ void WallCollisionTracker::testRightCollisions(const Map* map, float dt)
 	const MapTile* topRight = map->tile(rect.TopRight());
 	const MapTile* bottomRight = map->tile(rect.BotRight());
 
-	if ((topRight && bottomRight) &&
-		(topRight->is(CollisionTile::Wall) || bottomRight->is(CollisionTile::Wall)))
-	{
-		mActor->physics()->restrictMovement(Physics::Right, true);
-	}
+	return cannotMove(topRight) || cannotMove(bottomRight);
 }
 
-
-// Prevent ^v movement if tiles == nullptr
-void WallCollisionTracker::testBottomCollisions(const Map* map, float dt)
+bool WallCollisionTracker::restrictDownMovement(const Map* map, float dt) const
 {
 	float movement = mActor->physics()->maxMovementDistance(dt);
 	RectF rect = wallScaledRect(VectorF(0.0f, movement));
@@ -61,16 +44,10 @@ void WallCollisionTracker::testBottomCollisions(const Map* map, float dt)
 	const MapTile* bottomRight = map->tile(rect.BotRight());
 	const MapTile* bottomLeft = map->tile(rect.BotLeft());
 
-	if (!bottomRight || !bottomLeft ||
-		bottomRight->is(CollisionTile::Wall) || bottomLeft->is(CollisionTile::Wall))
-	{
-		mActor->physics()->restrictMovement(Physics::Down, true);
-	}
+	return cannotMove(bottomRight) || cannotMove(bottomLeft);
 }
 
-
-// Prevent ^v movement if tiles == nullptr
-void WallCollisionTracker::testTopCollisions(const Map* map, float dt)
+bool WallCollisionTracker::restrictTopMovement(const Map* map, float dt) const
 {
 	float movement = mActor->physics()->maxMovementDistance(dt);
 	RectF rect = wallScaledRect(VectorF(0.0f, -movement));
@@ -78,11 +55,7 @@ void WallCollisionTracker::testTopCollisions(const Map* map, float dt)
 	const MapTile* topLeft = map->tile(rect.TopLeft());
 	const MapTile* topRight = map->tile(rect.TopRight());
 
-	if (!topLeft || !topRight ||
-		topLeft->is(CollisionTile::Wall) || topRight->is(CollisionTile::Wall))
-	{
-		mActor->physics()->restrictMovement(Physics::Up, true);
-	}
+	return cannotMove(topLeft) || cannotMove(topRight);
 }
 
 
@@ -96,4 +69,11 @@ RectF WallCollisionTracker::wallScaledRect(VectorF translation) const
 	rect.SetBotCenter(botCenter);
 
 	return rect.Translate(translation);
+}
+
+
+
+bool WallCollisionTracker::cannotMove(const MapTile* tile) const
+{
+	return tile && !tile->is(CollisionTile::Floor);
 }

@@ -168,7 +168,7 @@ void Player::render()
 {
 #if DRAW_PLAYER_RECTS
 	debugDrawRect(rect(), RenderColour(RenderColour::Green));
-	debugDrawRect(mCollider->scaledRect(), RenderColour(RenderColour::Blue));
+	debugDrawRect(mCollider.scaledRect(), RenderColour(RenderColour::Blue));
 	debugDrawRects(mWeapon->getRects(), RenderColour(RenderColour::Yellow));
 #endif
 

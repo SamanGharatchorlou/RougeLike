@@ -189,7 +189,9 @@ void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF positio
 			//enemy->propertyBag().pHealth.get().setFullHp();
 			enemy->setMap(&mPathMap);
 			enemy->spawn(state, position);
+#if !IGNORED_BY_ENEMIES
 			enemy->setTarget(mGameData->actors->player());
+#endif
 
 			std::vector<Collider*> defendingCollider;
 			defendingCollider.push_back(enemy->collider());

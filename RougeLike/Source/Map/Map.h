@@ -33,21 +33,18 @@ public:
 	const RectF getFirstRect() const;
 	const RectF getLastRect() const;
 
-	const MapTile* tile(Index index) const { return MapBase<MapTile>::tile(index); };
+	MapTile* tile(Index index) { return &mData[index]; };
+	const MapTile* tile(Index index) const { return &mData.get(index); };
 	const MapTile* tile(VectorF position) const;
 
 	const Vector2D<int> index(VectorF position) const;
 	const Vector2D<int> index(RectF rect) const;
 	const Vector2D<int> index(const MapTile* tile) const;
 
-	Vector2D<int> yTileFloorRange(int xIndex) const;
-
-	// Query tiles
-	CollisionTile collisionType(Index index) const { return mData.get(index).collisionType(); }
+	Vector2D<int> yTileFloorRange(VectorF position) const;
 
 	bool isValidTile(RectF rect) const;
 	bool isValidPosition(VectorF position) const;
-
 
 	TrapManager& traps() { return mTrapManager; }
 

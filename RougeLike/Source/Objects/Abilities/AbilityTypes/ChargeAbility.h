@@ -20,8 +20,8 @@ public:
 
 	void render() override;
 
-private:
-	bool canMove(VectorF velocity, float dt) const;
+private:/*
+	bool canMove(VectorF velocity, float dt) const;*/
 
 	void applyEffects(Actor* actor, EffectPool* effectPool);
 

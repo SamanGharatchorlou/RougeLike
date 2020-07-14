@@ -3,7 +3,7 @@
 <Map>
 	<TilesetInfo>
 		<TileSize x = "256" y ="256"></TileSize>
-		<TileCount x = "30" y = "20"></TileCount>
+		<TileCount x = "35" y = "25"></TileCount>
 	</TilesetInfo>
 	<Scale>0.5</Scale>
 </Map>

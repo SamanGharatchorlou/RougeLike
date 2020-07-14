@@ -1,7 +1,7 @@
 #pragma once
 
 class Actor;
-class EffectPropertyBag;
+class Map;
 
 enum class EffectType
 {
@@ -60,3 +60,7 @@ protected:
 	Actor* mReceiver;
 	bool mShouldExit;
 };
+
+
+bool canMove(const Actor* actor, VectorF velocity, float dt);
+bool isValidFloor(const Map* map, VectorF point);

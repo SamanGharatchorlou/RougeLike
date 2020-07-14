@@ -36,18 +36,3 @@ protected:
 	std::string mConfigFile;
 	PropertyMap mProperties;
 };
-
-
-//class EffectPropertyBag : public PropertyBag
-//{
-//public:
-//	EffectPropertyBag() { }
-//
-//	void readProperties(const std::string& config) override { };
-//
-//	void setProperty(const std::string& name, float value);
-//
-//
-//private:
-//	ValueMap readValues(XMLParser& parser) override;
-//};

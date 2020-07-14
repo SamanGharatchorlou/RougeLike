@@ -17,7 +17,7 @@ void KnockbackStunEffect::slowUpdate(float dt)
 	VectorF direction = mReceiver->position() - mSource;
 	VectorF velocity = direction.normalise() * mForce;
 
-	if (!canMove(velocity, dt))
+	if (!canMove(mReceiver, velocity, dt))
 	{
 		mReceiver->addEffect(mStunEffect);
 		endEffect();

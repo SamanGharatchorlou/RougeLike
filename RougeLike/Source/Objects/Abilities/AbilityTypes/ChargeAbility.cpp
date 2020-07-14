@@ -57,7 +57,7 @@ void ChargeAbility::fastUpdate(float dt)
 	VectorF velocity = direction * mChargeForce;
 	float movementStep = std::sqrt(velocity.magnitudeSquared());
 
-	if (mDistanceTravelled < mChargeDistance && canMove(velocity, dt))
+	if (mDistanceTravelled < mChargeDistance && canMove(mCaster, velocity, dt))
 	{
 		mCaster->physics()->move(velocity, dt);
 		mDistanceTravelled += movementStep * dt;
@@ -99,31 +99,31 @@ void ChargeAbility::exit()
 }
 
 
-// --- Private Functions --- //
-bool ChargeAbility::canMove(VectorF velocity, float dt) const
-{
-	Index index;
-	const Map* map = mCaster->currentMap();
-	RectF rect = mCaster->scaledRect().Translate(velocity * dt);
-
-	index = map->index(rect.TopLeft());
-	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall )
-		return false;
-
-	index = map->index(rect.TopRight());
-	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
-		return false;
-
-	index = map->index(rect.BotRight());
-	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
-		return false;
-
-	index = map->index(rect.BotLeft());
-	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
-		return false;
-
-	return true;
-}
+//// --- Private Functions --- //
+//bool ChargeAbility::canMove(VectorF velocity, float dt) const
+//{
+//	Index index;
+//	const Map* map = mCaster->currentMap();
+//	RectF rect = mCaster->scaledRect().Translate(velocity * dt);
+//
+//	index = map->index(rect.TopLeft());
+//	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall )
+//		return false;
+//
+//	index = map->index(rect.TopRight());
+//	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
+//		return false;
+//
+//	index = map->index(rect.BotRight());
+//	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
+//		return false;
+//
+//	index = map->index(rect.BotLeft());
+//	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
+//		return false;
+//
+//	return true;
+//}
 
 
 

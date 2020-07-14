@@ -19,7 +19,7 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 
 	// Lowest to highest path cost queue
 	std::priority_queue<TileCost, std::vector<TileCost>, GreaterThanByCost> frontier;
-	frontier.push(TileCost(mMap->tile(startingIndex), 0));
+	frontier.push(TileCost(tile(startingIndex), 0));
 
 	Grid<Index> cameFrom(mMap->yCount(), mMap->xCount(), Index(-1,-1));
 	Grid<int> cost(mMap->yCount(), mMap->xCount(), 0);
@@ -123,14 +123,14 @@ Path AIPathing::getPath(Index start, Index finish, Grid<Index>& pathing)
 // For Enemy class
 VectorF AIPathing::position(Index tileIndex) const
 {
-	return mMap->tile(tileIndex)->rect().Center();
+	return tile(tileIndex)->rect().Center();
 }
 
 
 // TEMP
-PathTile AIPathing::tile(Index tileIndex)
+const PathTile* AIPathing::tile(Index tileIndex) const
 {
-	return *mMap->tile(tileIndex);
+	return &(*mMap)[tileIndex];
 }
 
 
@@ -164,7 +164,7 @@ void AIPathing::draw()
 // Fix when player is in wall, and invalid end path is given
 Index AIPathing::nearestFloorTile(Index index) const
 {
-	const PathTile* wallTile = mMap->tile(index);
+	const PathTile* wallTile = tile(index);
 
 	const PathTile* neighbours[4] = {
 		mMap->offsetTile(wallTile, 0, -1),

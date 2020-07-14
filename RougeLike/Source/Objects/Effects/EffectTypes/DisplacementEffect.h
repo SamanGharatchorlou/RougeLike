@@ -24,7 +24,7 @@ public:
 
 
 protected:
-	virtual bool canMove(VectorF velocity, float dt) const;
+	//virtual bool canMove(VectorF velocity, float dt) const;
 
 
 protected:

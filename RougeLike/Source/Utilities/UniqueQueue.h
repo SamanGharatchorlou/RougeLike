@@ -10,6 +10,8 @@ public:
 	T& front() { return mQueue.front(); }
 	T& popFront();
 
+	void reserve(int size) {}
+
 	void push(T value);
 
 	bool contains(const T& value) const;

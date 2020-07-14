@@ -14,6 +14,11 @@ bool PathTile::is(CollisionTile type) const
 	return mCollisionType == type;
 }
 
+bool PathTile::has(CollisionTile type) const
+{
+	return (mCollisionType & type) != CollisionTile::None;
+}
+
 void PathTile::remove(CollisionTile type)
 {
 	mCollisionType = mCollisionType & ~type;

@@ -135,11 +135,11 @@ void MeleeWeapon::render()
 
 #if DRAW_PLAYER_RECTS
 	// About point
-	RectF about = RectF(rect().TopLeft() + aboutPoint, VectorF(2.0f, 2.0f));
+	RectF about = RectF(rect().TopLeft() + mAboutPoint, VectorF(2.0f, 2.0f));
 	debugDrawRect(about, RenderColour::Blue);
 
 	// Weapon vector
-	VectorF pos = rect().TopLeft() + aboutPoint;
+	VectorF pos = rect().TopLeft() + mAboutPoint;
 	debugDrawLine(pos, pos + weaponVectorTest , RenderColour::Red);
 #endif
 }

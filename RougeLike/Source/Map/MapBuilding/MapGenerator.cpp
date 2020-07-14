@@ -43,8 +43,8 @@ void MapGenerator::fillWithDefaultTiles(Grid<MapTile>& data)
 
 void MapGenerator::carveRandomTunnel(Grid<MapTile>& data, Index& outEndIndex)
 {
-	int widthMax = 9;
-	int widthMin = 1;
+	int widthMax = 12;
+	int widthMin = 2;
 
 	// Entrace values
 	int y = data.yCount() / 2;
@@ -182,6 +182,7 @@ void MapGenerator::addWaterFeatures(Grid<MapTile>& data)
 				{
 					for (int y = index.y; y < index.y + poolSize.y + 3; y++)
 					{
+						data[Index(x, y)].set(CollisionTile::Water);
 						data[Index(x, y)].add(DecorTile::Water);
 					}
 				}

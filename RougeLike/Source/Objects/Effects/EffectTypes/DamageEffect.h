@@ -3,8 +3,6 @@
 #include "Effect.h"
 #include "Objects/Attributes/Damage.h"
 
-class EffectPropertyBag;
-
 
 class DamageEffect : public Effect
 {

@@ -78,8 +78,8 @@ void MapTileDecoder::setTextures(Grid<MapTile>& data)
 			RenderTile type = tile.renderType();
 
 			//if (tile.has(RenderTile::Water_Middle) ||
-			if (tile.has(RenderTile::Water_Middle))
-				printf("pause\n");
+			if (tile.has(CollisionTile::Water))
+				printf("we have water (%d,%d)\n", x,y);
 
 			tile.setTexture(tileTextures[type]);
 
@@ -105,9 +105,9 @@ void MapTileDecoder::editCollisionInfo(Grid<MapTile>& data)
 			{
 				data[index].set(CollisionTile::Floor);
 			}
-			else if (data[index].has(DecorTile::Water) && renderTile > RenderTile::Water)
+			else if (data[index].has(DecorTile::Water) && renderTile < RenderTile::Water)
 			{
-				data[index].set(CollisionTile::Wall);
+				data[index].set(CollisionTile::Floor);
 			}
 		}
 	}

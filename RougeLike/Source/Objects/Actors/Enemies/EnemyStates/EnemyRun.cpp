@@ -32,7 +32,7 @@ void EnemyRun::slowUpdate(float dt)
 	{
 		if (mPath.size() > 0)
 		{
-			if (!inChaseRange()) // Out of chase range
+			if (!inChaseRange())
 			{
 				mEnemy->replaceState(EnemyState::Patrol);
 			}

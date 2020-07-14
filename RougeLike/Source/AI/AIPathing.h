@@ -19,7 +19,7 @@ public:
 	VectorF position(Index tileIndex) const;
 
 	// TEMP
-	PathTile tile(Index index);
+	const PathTile* tile(Index index) const;
 
 #if DRAW_AI_PATH
 	std::vector<PathTile> debugPath;

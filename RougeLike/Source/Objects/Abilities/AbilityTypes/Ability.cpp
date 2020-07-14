@@ -83,10 +83,9 @@ bool RangedAbility::isValidTarget(VectorF target, const Map* map)
 	VectorF points[4]{ rect.TopLeft(), rect.TopRight(), rect.BotRight(), rect.BotLeft() };
 
 	bool validPoint = true;
-
 	for (int i = 0; i < 4; i++)
 	{
-		if (map->collisionType(points[i]) != CollisionTile::Floor)
+		if (!map->tile(points[i])->is(CollisionTile::Floor))
 			validPoint = false;
 	}
 

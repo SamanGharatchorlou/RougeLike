@@ -5,7 +5,8 @@ enum class CollisionTile : Uint32
 {
 	None,
 	Floor,
-	Wall
+	Wall = Floor << 1,
+	Water = Floor << 2
 };
 
 
@@ -119,10 +120,10 @@ inline RenderTile operator ~(RenderTile a)
 	return static_cast<RenderTile>(~static_cast<Uint64>(a));
 }
 
-inline bool operator >(RenderTile a, RenderTile b)
-{
-	return static_cast<Uint64>(a) > static_cast<Uint64>(b);
-}
+//inline bool operator >(RenderTile a, RenderTile b)
+//{
+//	return static_cast<Uint64>(a) > static_cast<Uint64>(b);
+//}
 
 
 // -- Decoration Tile -- //

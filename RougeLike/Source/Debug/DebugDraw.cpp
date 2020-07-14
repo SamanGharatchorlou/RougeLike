@@ -60,10 +60,10 @@ void debugDrawRects(std::vector<RectF> rects, RenderColour colour)
 	}
 }
 
-void debugRenderText(const std::string text, int ptSize, VectorF position, RenderColour colour)
+void debugRenderText(const std::string text, int ptSize, VectorF position, RenderColour colour, const std::string& alignment)
 {
 	UITextBox::Data textData;
-	textData.aligment = "Center";
+	textData.aligment = alignment;
 	textData.font = "";
 	textData.ptSize = ptSize;
 	textData.colour = SDL_Color{ colour.r, colour.g, colour.b };

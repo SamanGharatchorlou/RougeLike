@@ -37,8 +37,13 @@ void EnemyIdle::slowUpdate(float dt)
 
 bool EnemyIdle::canSeeAttackTarget() const
 {
-	float targetDistanceSqrd = distanceSquared(mEnemy->target()->position(), mEnemy->position());
-	return targetDistanceSqrd < mEnemy->getPropertyValue("SightRange");
+	if (mEnemy->hasTarget())
+	{
+		float targetDistanceSqrd = distanceSquared(mEnemy->target()->position(), mEnemy->position());
+		return targetDistanceSqrd < mEnemy->getPropertyValue("SightRange");
+	}
+	else
+		return false;
 }
 
 

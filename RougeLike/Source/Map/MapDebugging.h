@@ -4,6 +4,7 @@
 #include "MapTile.h"
 
 void renderSurfaceTypes(const Grid<MapTile>& data);
+void renderTileIndexes(const Grid<MapTile>& data, Index index, int fontSize);
 void renderCollisionTypes(const MapTile& tile, RectF& tileRect, VectorF& offset, int fontSize);
 void renderRenderTypes(const MapTile& tile, RectF& tileRect, VectorF& offset, int fontSize);
 void renderDecorTypes(const MapTile& tile, RectF& tileRect, VectorF& offset, int fontSize);

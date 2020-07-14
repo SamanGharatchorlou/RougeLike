@@ -31,6 +31,7 @@ public:
 	// Collision type
 	const CollisionTile collisionType() const { return mCollisionType; }
 	virtual bool is(CollisionTile type) const;
+	virtual bool has(CollisionTile type) const;
 
 	virtual void set(CollisionTile type) { mCollisionType = type; }
 	void add(CollisionTile type);
@@ -64,6 +65,7 @@ public:
 	// Collision type
 	void set(CollisionTile type) { PathTile::set(type); }
 	bool is(CollisionTile type) const { return PathTile::is(type); }
+	bool has(CollisionTile type) const { return PathTile::has(type); }
 
 	// Animation type
 	void add(DecorTile type);

@@ -5,6 +5,7 @@
 #include "Game/Camera.h"
 #include "Debug/DebugDraw.h"
 
+
 void renderSurfaceTypes(const Grid<MapTile>& data)
 {
 	Camera* camera = Camera::Get();
@@ -35,13 +36,49 @@ void renderSurfaceTypes(const Grid<MapTile>& data)
 #if LABEL_SURFACE_DECOR_TYPES
 				renderDecorTypes(tile, tileRect, offset, fontSize);
 #endif
+
+#if LABEL_TILE_INDEX
+				renderTileIndexes(data, index, 12);
+#endif
 			}
 		}
 	}
 }
 
+
+void renderTileIndexes(const Grid<MapTile>& data, Index index, int fontSize)
+{
+	RenderColour colour = RenderColour::Black;
+
+	int end = 0;
+	char indexString[15];
+	// Add some front spacing
+	indexString[end++] = ' ';
+	indexString[end++] = ' ';
+
+	int xEnd = 0;
+	char xIndex[5];
+
+	_itoa_s(index.x, xIndex, 10);
+	while (xIndex[xEnd] != '\0') { indexString[end++] = xIndex[xEnd++]; }
+
+	// Make it look nice
+	indexString[end++] = ' ';
+	indexString[end++] = ',';
+
+	int yEnd = 0;
+	char yIndex[5];
+
+	_itoa_s(index.y, yIndex, 10);
+	while (yIndex[yEnd] != '\0') { indexString[end++] = yIndex[yEnd++]; }
+	indexString[end] = '\0';
+
+	debugRenderText(indexString, fontSize, data.get(index).rect().TopLeft(), colour, "None");
+}
+
 void renderRenderTypes(const MapTile& tile, RectF& tileRect, VectorF& offset, int fontSize)
 {
+	VectorF startingPoint = tileRect.TopLeft();
 	RenderColour colour = RenderColour::Red;
 
 	if (tile.has(RenderTile::Wall))
@@ -242,9 +279,16 @@ void renderRenderTypes(const MapTile& tile, RectF& tileRect, VectorF& offset, in
 		debugRenderText("Water top", fontSize, tileRect.TopCenter(), colour);
 		tileRect = tileRect.Translate(offset);
 	}
+
+	if (startingPoint == tileRect.TopLeft())
+	{
+		debugRenderText("No render label", fontSize, tileRect.TopCenter(), colour);
+		tileRect = tileRect.Translate(offset);
+	}
 }
 void renderCollisionTypes(const MapTile& tile, RectF& tileRect, VectorF& offset, int fontSize)
 {
+	VectorF startingPoint = tileRect.TopLeft();
 	RenderColour colour = RenderColour::Blue;
 
 	if (tile.is(CollisionTile::Floor))
@@ -256,6 +300,19 @@ void renderCollisionTypes(const MapTile& tile, RectF& tileRect, VectorF& offset,
 	if (tile.is(CollisionTile::Wall))
 	{
 		debugRenderText("Wall", fontSize, tileRect.TopCenter(), colour);
+		tileRect = tileRect.Translate(offset);
+	}
+
+	if (tile.is(CollisionTile::Water))
+	{
+		debugRenderText("Water", fontSize, tileRect.TopCenter(), colour);
+		tileRect = tileRect.Translate(offset);
+	}
+
+
+	if (startingPoint == tileRect.TopLeft())
+	{
+		debugRenderText("No collision label", fontSize, tileRect.TopCenter(), colour);
 		tileRect = tileRect.Translate(offset);
 	}
 }
@@ -295,5 +352,6 @@ void renderDecorTypes(const MapTile& tile, RectF& tileRect, VectorF& offset, int
 		tileRect = tileRect.Translate(offset);
 	}
 }
+
 
 #endif // DEBUG

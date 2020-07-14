@@ -15,7 +15,7 @@ public:
 
 
 private:
-	bool canMove(VectorF velocity, float dt) const;
+	//bool canMove(VectorF velocity, float dt) const;
 
 
 private:

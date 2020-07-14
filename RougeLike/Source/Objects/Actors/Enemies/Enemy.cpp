@@ -2,19 +2,15 @@
 #include "Enemy.h"
 
 #include "Game/GameData.h"
+#include "Graphics/Texture.h"
+#include "Collisions/EffectCollider.h"
 #include "EnemyStates/EnemyStateHeaders.h"
 
-#include "Graphics/Texture.h"
-
 #include "Map/Environment.h"
-
-#include "Collisions/EffectCollider.h"
-
-// temp
-#include "Objects/Effects/EffectPool.h"
-
-
 #include "AI/AIPathMap.h"
+
+// TEMP
+#include "Map/Map.h"
 
 #if _DEBUG
 #include "Debug/DebugDraw.h"

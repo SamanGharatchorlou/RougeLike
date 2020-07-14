@@ -8,17 +8,18 @@
 
 // Player
 #define DRAW_PLAYER_RECTS 0
-#define IGNORE_WALLS 1
+#define IGNORE_WALLS 0
+#define IGNORED_BY_ENEMIES 1
 
 // Collectables
 #define DRAW_COLLECTABLE_RECT 0
 
 // Map
-#define DRAW_BINARY_MAP 0
-#define LABEL_SURFACE_RENDER_TYPES 1
-#define LABEL_SURFACE_COLLISION_TYPES 1
-#define LABEL_SURFACE_DECOR_TYPES 1
-#define RENDER_SURFACE_TYPES (LABEL_SURFACE_RENDER_TYPES ||  LABEL_SURFACE_RENDER_TYPES || LABEL_SURFACE_DECOR_TYPES)
+#define LABEL_TILE_INDEX 0
+#define LABEL_SURFACE_RENDER_TYPES 0
+#define LABEL_SURFACE_COLLISION_TYPES 0
+#define LABEL_SURFACE_DECOR_TYPES 0
+#define RENDER_SURFACE_TYPES (LABEL_SURFACE_RENDER_TYPES ||  LABEL_SURFACE_COLLISION_TYPES || LABEL_SURFACE_DECOR_TYPES || LABEL_TILE_INDEX)
 
 // Enemy / AI
 #define DRAW_AI_PATH 0
@@ -57,11 +58,11 @@ struct RenderColour
 		Blue,
 		Green,
 		Yellow,
-		LightGrey
+		LightGrey,
+		Black
 	};
 
 	RenderColour() { }
-
 	RenderColour(Colour colour) 
 	{
 		a = 255;
@@ -86,7 +87,11 @@ struct RenderColour
 		case RenderColour::LightGrey:
 			r = 201; g = 201; b = 201;
 			break;
+		case RenderColour::Black:
+			r = 0; g = 0; b = 0;
+			break;
 		default:
+			DebugPrint(Log, "Render colour has not been defined\n");
 			break;
 		}
 	}
@@ -108,4 +113,4 @@ void debugDrawLine(VectorF pointA, VectorF pointB, RenderColour colour);
 void debugDrawRectOutline(RectF rect, RenderColour colour);
 void debugDrawRect(RectF rect, RenderColour colour);
 void debugDrawRects(std::vector<RectF> rects, RenderColour colour);
-void debugRenderText(const std::string text, int ptSize, VectorF position, RenderColour colour);
+void debugRenderText(const std::string text, int ptSize, VectorF position, RenderColour colour, const std::string& alignment = "Center");

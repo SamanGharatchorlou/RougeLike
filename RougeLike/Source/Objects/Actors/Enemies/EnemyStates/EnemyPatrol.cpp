@@ -33,6 +33,14 @@ void EnemyPatrol::slowUpdate(float dt)
 
 	if (canSeeAttackTarget())
 		mEnemy->replaceState(EnemyState::Alert);
+
+	const Map* map = mEnemy->getEnvironmentMap();
+
+	VectorF position = mEnemy->position();
+	Index index = map->index(position);
+
+	if (map->tile(index)->is(CollisionTile::Water))
+		printf("water acnnot");
 }
 
 
@@ -58,7 +66,7 @@ void EnemyPatrol::setPatrolPoint()
 	VectorF position = mEnemy->position();
 	Index index = map->index(position);
 
-	Vector2D<int> yTileRange = map->yTileFloorRange(index.x);// findYFloorTileRange(tilePositionIndex.x, map);
+	Vector2D<int> yTileRange = map->yTileFloorRange(position);
 
 	VectorF highestPoint = map->tile(Index(index.x, yTileRange.x))->rect().Center();
 	VectorF lowestPoint = map->tile(Index(index.x, yTileRange.y))->rect().Center();
@@ -72,42 +80,18 @@ void EnemyPatrol::setPatrolPoint()
 }
 
 
-Vector2D<int> EnemyPatrol::findYFloorTileRange(int xIndex, const Map* map) const
-{
-	int yTileIndex = 0;
-	Vector2D<int> yTileRange;
-
-	bool isWall = true;
-	while (isWall)
-	{
-		Index index(xIndex, ++yTileIndex);
-		isWall = map->tile(index)->is(CollisionTile::Wall);
-	}
-
-	// Top
-	yTileRange.x = yTileIndex;
-
-	while (!isWall)
-	{
-		if (yTileIndex == map->yCount() - 1)
-			break;
-
-		Index index(xIndex, ++yTileIndex);
-		isWall = map->tile(index)->is(CollisionTile::Wall);
-	}
-
-	yTileRange.y = yTileIndex;
-	return yTileRange;
-}
-
-
 
 bool EnemyPatrol::canSeeAttackTarget() const
 {
-	VectorF position = mEnemy->position();
-	VectorF target = mEnemy->target()->position();
+	if (mEnemy->hasTarget())
+	{
+		VectorF position = mEnemy->position();
+		VectorF target = mEnemy->target()->position();
 
-	return distanceSquared(target, position) < mEnemy->getPropertyValue("SightRange");
+		return distanceSquared(target, position) < mEnemy->getPropertyValue("SightRange");
+	}
+	else
+		return false;
 }
 
 

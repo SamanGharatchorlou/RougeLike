@@ -22,19 +22,19 @@ void DecorTilePopulator::addWater(Grid<MapTile>& data)
 		{
 			Index index(x, y);
 
-			if (data[index].has(DecorTile::Water))
+			if (data[index].is(CollisionTile::Water))
 			{
 				// very top row not considered to keep symmetry 
 				index += Index(0, 1);
 
 				// width
 				int width = 0;
-				while (data[index + width].has(DecorTile::Water))
+				while (data[index + width].is(CollisionTile::Water))
 					width++;
 
 				// height
 				int height = 0;
-				while (data[index + height].has(DecorTile::Water))
+				while (data[index + height].is(CollisionTile::Water))
 					height++;
 
 
@@ -83,10 +83,10 @@ void DecorTilePopulator::addWater(Grid<MapTile>& data)
 
 
 				// Corners
-				data[Index(index.x, index.y - 1)].set(RenderTile::Floor_Bottom_Right);
-				data[Index(index.x + width - 1, index.y - 1)].set(RenderTile::Floor_Bottom_Left);
-				data[Index(index.x + width - 1, index.y + height - 1)].set(RenderTile::Floor_Top_Left);
-				data[Index(index.x, index.y + height - 1)].set(RenderTile::Floor_Top_Right);
+				data[Index(index.x, index.y - 1)].set(						RenderTile::Floor_Bottom_Right);
+				data[Index(index.x + width - 1, index.y - 1)].set(			RenderTile::Floor_Bottom_Left);
+				data[Index(index.x + width - 1, index.y + height - 1)].set(	RenderTile::Floor_Top_Left);
+				data[Index(index.x, index.y + height - 1)].set(				RenderTile::Floor_Top_Right);
 
 				// Move to end of pool + 1
 				x = index.x + width + 1;

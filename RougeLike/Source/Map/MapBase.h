@@ -13,7 +13,7 @@ public:
 	MapBase(Vector2D<int> size, K value) : mData(size, value) { }
 
 	K& operator [] (Index index) { return mData[index.y][index.x]; }
-	K& get(Index index) { return mData[index]; }
+	const K& get(Index index) const { return mData.get(index); }
 
 	const Grid<K>& getData() const { return mData; }
 	Grid<K>& getData() { return mData; }
@@ -21,21 +21,12 @@ public:
 	unsigned int yCount() const { return mData.yCount(); }
 	unsigned int xCount() const { return mData.xCount(); }
 
-	const K* tile(Index index) const;
-
 	bool inBounds(Index index) const;
 	bool isValidIndex(Index index) const;
 
 protected:
 	Grid<K> mData;
 };
-
-
-template<class K>
-const K* MapBase<K>::tile(const Index index) const
-{
-	return isValidIndex(index) ? &mData.get(index) : nullptr;
-}
 
 
 template <class K>

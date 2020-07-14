@@ -16,36 +16,6 @@ void DisplacementEffect::set(VectorF source, float force, float distance)
 }
 
 
-//void DisplacementEffect::fillData(const EffectPropertyBag* properties)
-//{
-//	if (properties->contains("TargetPositionX"))
-//	{
-//		Property* property = properties->get("TargetPositionX");
-//		mSource.x = property->value();
-//	}
-//
-//	if (properties->contains("TargetPositionY"))
-//	{
-//		Property* property = properties->get("TargetPositionY");
-//		mSource.y = property->value();
-//	}
-//
-//	if (properties->contains("KnockbackDistance"))
-//	{
-//		Property* property = properties->get("KnockbackDistance");
-//		mDistance = property->value();
-//	}
-//
-//	if (properties->contains("KnockbackForce"))
-//	{
-//		Property* property = properties->get("KnockbackForce");
-//		mForce = property->value();
-//	}
-//
-//	mDistanceTravelled = 0.0f;
-//}
-
-
 void DisplacementEffect::fastUpdate(float dt)
 {
 	VectorF direction = (mReceiver->position() - mSource).normalise();
@@ -55,7 +25,7 @@ void DisplacementEffect::fastUpdate(float dt)
 	{
 		endEffect();
 	}
-	else if (canMove(velocity, dt))
+	else if (canMove(mReceiver, velocity, dt))
 	{
 		mReceiver->physics()->move(velocity, dt);
 
@@ -77,27 +47,27 @@ void DisplacementEffect::clearData()
 
 
 // --- Private Functions --- //
-bool DisplacementEffect::canMove(VectorF velocity, float dt) const
-{
-	Index index;
-	const Map* map = mReceiver->currentMap();
-	RectF rect = mReceiver->scaledRect().Translate(velocity * dt);
-
-	index = map->index(rect.TopLeft());
-	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
-		return false;
-
-	index = map->index(rect.TopRight());
-	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
-		return false;
-
-	index = map->index(rect.BotRight());
-	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
-		return false;
-
-	index = map->index(rect.BotLeft());
-	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
-		return false;
-
-	return true;
-}
+//bool DisplacementEffect::canMove(VectorF velocity, float dt) const
+//{
+//	Index index;
+//	const Map* map = mReceiver->currentMap();
+//	RectF rect = mReceiver->scaledRect().Translate(velocity * dt);
+//
+//	index = map->index(rect.TopLeft());
+//	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
+//		return false;
+//
+//	index = map->index(rect.TopRight());
+//	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
+//		return false;
+//
+//	index = map->index(rect.BotRight());
+//	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
+//		return false;
+//
+//	index = map->index(rect.BotLeft());
+//	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
+//		return false;
+//
+//	return true;
+//}
