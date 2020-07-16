@@ -70,15 +70,20 @@ enum class RenderTile : Uint64
 };
 
 
-enum class DecorTile : Uint32
+enum class DecorType : Uint32
 {
 	None,
 	Column = 1,
 	Water = Column << 1,
-	Torch_Handle = Column << 2,
-	Torch_Bowl = Column << 3,
-	Spikes = Column << 4
+	Torch = Column << 2,
+	Torch_Handle = Column << 3,
+	Torch_Bowl = Column << 4,
+	Spikes = Column << 5
 };
+
+
+using DecorMap = std::map<DecorType, Attributes>;
+DecorType stringToType(const std::string& decorString);
 
 
 
@@ -110,29 +115,20 @@ inline RenderTile operator |(RenderTile a, RenderTile b)
 	return static_cast<RenderTile>(static_cast<Uint64>(a) | static_cast<Uint64>(b));
 }
 
-inline RenderTile operator ^(RenderTile a, RenderTile b)
-{
-	return static_cast<RenderTile>(static_cast<Uint64>(a) ^ static_cast<Uint64>(b));
-}
-
 inline RenderTile operator ~(RenderTile a)
 {
 	return static_cast<RenderTile>(~static_cast<Uint64>(a));
 }
 
-//inline bool operator >(RenderTile a, RenderTile b)
-//{
-//	return static_cast<Uint64>(a) > static_cast<Uint64>(b);
-//}
-
 
 // -- Decoration Tile -- //
-inline DecorTile operator |(DecorTile a, DecorTile b)
+inline DecorType operator |(DecorType a, DecorType b)
 {
-	return static_cast<DecorTile>(static_cast<Uint32>(a) | static_cast<Uint32>(b));
+	return static_cast<DecorType>(static_cast<Uint32>(a) | static_cast<Uint32>(b));
 }
 
-inline DecorTile operator &(DecorTile a, DecorTile b)
+inline DecorType operator &(DecorType a, DecorType b)
 {
-	return static_cast<DecorTile>(static_cast<Uint32>(a) & static_cast<Uint32>(b));
+	return static_cast<DecorType>(static_cast<Uint32>(a) & static_cast<Uint32>(b));
 }
+

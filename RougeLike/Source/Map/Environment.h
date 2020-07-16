@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Events/Dispatcher.h"
-
+#include "LevelManager.h"
+#include "Actors/Enemies/Spawning/EnemySpawner.h"
 
 class Map;
 class TextureManager;
@@ -28,7 +29,7 @@ public:
 	Map* primaryMap() const { return mPrimaryMap; }
 
 	VectorF size() const;
-	int mapLevel() const { return mMapLevel; }
+	int mapLevel() const { return mLevelManager.level(); }
 
 	void setCameraBoundaries();
 	VectorF toWorldCoords(VectorF cameraCoords);
@@ -38,20 +39,14 @@ private:
 	void createNewMaps();
 	void readConfigData(Vector2D<int>& mapIndexSize, VectorF& tileSize, float& scale);
 
-	void buildLevel(float offset);
-	void buildPassage(Map* map, float offset);
-
 
 private:
-	TextureManager* mTextureManager;
+	LevelManager mLevelManager;
+	EnemySpawner mSpawner;
 
 	Map* mEntrace;
 	Map* mPrimaryMap;
 	Map* mExit;
 
-	std::vector<Map*> maps;
-
 	Vector2D<int> mMapSize;
-
-	int mMapLevel;
 };

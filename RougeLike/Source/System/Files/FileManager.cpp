@@ -139,7 +139,7 @@ std::string FileManager::findFile(const Folder folder, const std::string& name) 
 	}
 
 	DebugPrint(Warning, "No file named '%s' was found in the folder '%s'\n", name.c_str(), generatePath(folder).c_str());
-	std::string("No file found");
+	return outPath;
 }
 
 

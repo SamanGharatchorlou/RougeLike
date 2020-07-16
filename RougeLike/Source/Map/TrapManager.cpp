@@ -4,6 +4,17 @@
 #include "Map.h"
 
 
+void TrapManager::set(float triggerTime, float recoveryTime)
+{
+	mTriggerTime = triggerTime;
+	mRecoveryTime = recoveryTime;
+}
+
+void TrapManager::flushQueues()
+{
+	mUntriggeredTraps.clear();
+	mTriggeredTraps.clear();
+}
 
 void TrapManager::slowUpdate()
 {
@@ -17,7 +28,7 @@ void TrapManager::triggerTrap(VectorF position)
 	MapTile* tile = mMap->tile(index);
 
 	// Add untriggered trap
-	if (tile->has(DecorTile::Spikes))
+	if (tile->has(DecorType::Spikes))
 	{
 		Animator& animator = tile->animation(0);
 
@@ -50,7 +61,7 @@ bool TrapManager::didCollide(VectorF position)
 
 void TrapManager::updateTriggerTraps()
 {
-	if (mUntriggeredTraps.size() > 0 && mUntriggeredTraps.front().time() > 1.0f)
+	if (mUntriggeredTraps.size() > 0 && mUntriggeredTraps.front().time() > mTriggerTime)
 	{
 		Index trapIndex = mUntriggeredTraps.front().index();
 		MapTile* tile = mMap->tile(trapIndex);
@@ -71,7 +82,7 @@ void TrapManager::updateTriggerTraps()
 
 void TrapManager::updateResetTraps()
 {
-	if (mTriggeredTraps.size() > 0 && mTriggeredTraps.front().time() > 2.0f)
+	if (mTriggeredTraps.size() > 0 && mTriggeredTraps.front().time() > mRecoveryTime)
 	{
 		Index trapIndex = mTriggeredTraps.front().index();
 		MapTile* tile = mMap->tile(trapIndex);

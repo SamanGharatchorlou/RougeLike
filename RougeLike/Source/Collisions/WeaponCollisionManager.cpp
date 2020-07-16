@@ -5,7 +5,7 @@
 #include "CollisionManager.h"
 
 #include "PlayerCollisions.h"
-#include "Objects/Actors/Player/Player.h"
+#include "Actors/Player/Player.h"
 
 #include "EffectCollider.h"
 #include "Weapons/Melee/MeleeWeapon.h"

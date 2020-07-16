@@ -48,17 +48,17 @@ void MapTile::remove(RenderTile type)
 
 
 // --- DecorationTile --- //
-void MapTile::add(DecorTile type)
+void MapTile::add(DecorType type)
 {
 	mDecorType = mDecorType | type;
 }
 
-bool MapTile::has(DecorTile type) const
+bool MapTile::has(DecorType type) const
 {
-	return (mDecorType & type) != DecorTile::None;
+	return (mDecorType & type) != DecorType::None;
 }
 
-bool MapTile::is(DecorTile type) const
+bool MapTile::is(DecorType type) const
 {
 	return mDecorType == type;
 }
@@ -89,8 +89,8 @@ void MapTile::render(RectF rect)
 
 	for (int i = 0; i < mAnimations.size(); i++)
 	{
-		if(is(DecorTile::Torch_Bowl))
-			rect.SetTopCenter(rect.Center());
+		if(has(DecorType::Torch))
+			rect.SetBotCenter(rect.Center());
 
 		mAnimations[i].render(rect);
 	}

@@ -1,20 +1,20 @@
 #include "pch.h"
-#include "Objects/Actors/Enemies/EnemyManager.h"
+#include "Actors/Enemies/EnemyManager.h"
 
 #include "Game/GameData.h"
 #include "Collisions/CollisionManager.h"
 #include "Map/Environment.h"
 #include "Game/Camera.h"
-#include "Objects/Actors/ActorManager.h"
-#include "Objects/Actors/Player/Player.h"
+#include "Actors/ActorManager.h"
+#include "Actors/Player/Player.h"
 
 #include "Types/Imp.h"
 #include "Types/Angel.h"
 #include "Types/Devil.h"
 
 // State specific updates
-#include "Objects/Actors/Enemies/EnemyStates/EnemyRun.h"
-#include "Objects/Actors/Enemies/EnemyStates/EnemyAttack.h"
+#include "Actors/Enemies/EnemyStates/EnemyRun.h"
+#include "Actors/Enemies/EnemyStates/EnemyAttack.h"
 
 #include "Utilities/Shapes/Square.h"
 
@@ -24,7 +24,7 @@
 #endif
 
 
-EnemyManager::EnemyManager(GameData* gameData) : mGameData(gameData), mSpawner(this), pathUpdateRequests(0), pathUpdateStaggerCounter(0)
+EnemyManager::EnemyManager(GameData* gameData) : mGameData(gameData), pathUpdateRequests(0), pathUpdateStaggerCounter(0)
 {
 	updateTimer.start();
 }

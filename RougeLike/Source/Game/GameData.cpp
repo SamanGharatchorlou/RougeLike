@@ -10,14 +10,13 @@
 #include "UI/UIManager.h"
 #include "Managers/ScoreManager.h"
 #include "Collisions/CollisionManager.h"
-#include "Objects/Actors/ActorManager.h"
+#include "Actors/ActorManager.h"
+#include "Objects/Effects/EffectPool.h"
+#include "Actors/Enemies/EnemyManager.h"
 
 #include "Map/Environment.h"
 #include "Game/Camera.h"
 
-#include "Objects/Effects/EffectPool.h"
-#include "Objects/Actors/Player/Player.h"
-#include "Objects/Actors/Enemies/EnemyManager.h"
 
 // GameInfo
 #include "Map/Map.h"
@@ -26,6 +25,7 @@
 void GameData::load()
 {
 	// Texture Manager
+
 	textureManager = new TextureManager;
 	textureManager->init();
 

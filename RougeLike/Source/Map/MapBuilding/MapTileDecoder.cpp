@@ -105,7 +105,7 @@ void MapTileDecoder::editCollisionInfo(Grid<MapTile>& data)
 			{
 				data[index].set(CollisionTile::Floor);
 			}
-			else if (data[index].has(DecorTile::Water) && renderTile < RenderTile::Water)
+			else if (data[index].has(DecorType::Water) && renderTile < RenderTile::Water)
 			{
 				data[index].set(CollisionTile::Floor);
 			}

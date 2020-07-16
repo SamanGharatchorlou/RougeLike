@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "HealAbility.h"
 
-#include "Objects/Actors/Player/Player.h"
+#include "Actors/Player/Player.h"
 #include "Objects/Effects/EffectPool.h"
 #include "Objects/Effects/EffectTypes/HealEffect.h"
 

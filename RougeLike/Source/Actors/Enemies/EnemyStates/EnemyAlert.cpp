@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "EnemyAlert.h"
 
-#include "Objects/Actors/Enemies/Enemy.h"
+#include "Actors/Enemies/Enemy.h"
 #include "EnemyRun.h"
 
 

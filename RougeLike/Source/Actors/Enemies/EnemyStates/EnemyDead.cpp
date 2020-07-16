@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "EnemyDead.h"
 
-#include "Objects/Actors/Enemies/Enemy.h"
+#include "Actors/Enemies/Enemy.h"
 
 #include "Game/Camera.h"
 #include "Graphics/Texture.h"

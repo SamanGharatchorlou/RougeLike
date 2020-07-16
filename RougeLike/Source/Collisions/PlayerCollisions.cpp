@@ -5,7 +5,7 @@
 #include "Objects/Effects/EffectTypes/DamageEffect.h"
 #include "Objects/Effects/EffectTypes/DisplacementEffect.h"
 
-#include "Objects/Actors/Player/Player.h"
+#include "Actors/Player/Player.h"
 #include "Weapons/Melee/MeleeWeapon.h"
 #include "CollisionManager.h"
 

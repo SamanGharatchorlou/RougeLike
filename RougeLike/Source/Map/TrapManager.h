@@ -38,7 +38,11 @@ public:
 
 
 public:
-	TrapManager(Map* map) : mMap(map) { }
+	TrapManager(Map* map) : mMap(map), mTriggerTime(0.75f), mRecoveryTime(1.0f) { }
+	void set(float triggerTime, float recoveryTime);
+
+
+	void flushQueues();
 
 	void slowUpdate();
 
@@ -56,4 +60,7 @@ private:
 	Map* mMap;
 	UniqueQueue<Trap> mUntriggeredTraps;
 	std::deque<Trap> mTriggeredTraps;
+
+	float mTriggerTime;
+	float mRecoveryTime;
 };

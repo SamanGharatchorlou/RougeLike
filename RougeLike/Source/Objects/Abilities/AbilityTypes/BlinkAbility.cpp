@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "BilnkAbility.h"
 
-#include "Objects/Actors/Actor.h"
+#include "Actors/Actor.h"
 #include "Objects/Effects/EffectTypes/BlinkEffect.h"
 #include "Objects/Effects/EffectPool.h"
 

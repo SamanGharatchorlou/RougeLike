@@ -2,7 +2,7 @@
 
 #include "States/StateMachine.h"
 #include "EnemyStates/EnemyState.h"
-#include "EnemyEnums.h"
+#include "Types/EnemyTypes.h"
 
 #include "../Actor.h"
 

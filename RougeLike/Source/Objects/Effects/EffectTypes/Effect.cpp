@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Effect.h"
 
-#include "Objects/Actors/Actor.h"
+#include "Actors/Actor.h"
 #include "Map/Map.h"
 
 bool canMove(const Actor* actor, VectorF velocity, float dt)

@@ -10,7 +10,7 @@ public:
 	T& front() { return mQueue.front(); }
 	T& popFront();
 
-	void reserve(int size) {}
+	void clear() { mQueue.clear(); }
 
 	void push(T value);
 

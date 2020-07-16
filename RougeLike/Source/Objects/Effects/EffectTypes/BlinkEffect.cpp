@@ -1,10 +1,9 @@
 #include "pch.h"
 #include "BlinkEffect.h"
 
-#include "Objects/Actors/Actor.h"
 #include "Graphics/Texture.h"
 
-#include "Objects/Actors/Player/Player.h"
+#include "Actors/Player/Player.h"
 
 
 void BlinkEffect::init()

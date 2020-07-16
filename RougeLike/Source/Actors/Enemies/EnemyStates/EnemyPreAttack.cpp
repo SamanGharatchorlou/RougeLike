@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "EnemyPreAttack.h"
 
-#include "Objects/Actors/Enemies/Enemy.h"
+#include "Actors/Enemies/Enemy.h"
 #include "Collisions/Collider.h"
 
 EnemyPreAttack::EnemyPreAttack(Enemy* enemy) : EnemyState(enemy)

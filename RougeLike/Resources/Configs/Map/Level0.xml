@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Level>
+	<Primary>
+		<Decor>
+			<Column spacing="3"></Column>
+			<Spikes rate="10"></Spikes>
+			<Water width="3" height="2" spacing="10"></Water>
+			<Torch type = "TorchBowl" spacing ="1"></Torch>
+		</Decor>
+
+		<Traps>
+			<Spikes triggerTime="0.15" recoveryTime="5"></Spikes>
+		</Traps>
+	</Primary>
+
+	<Exit>
+		<Decor>
+			<Torch type = "TorchBowl" spacing ="2"></Torch>
+			<Spikes rate="100"></Spikes>
+		</Decor>
+
+		<Traps>
+			<Spikes triggerTime="0.4" recoveryTime="1.0"></Spikes>
+		</Traps>
+	</Exit>
+
+	<Spawning>
+		<Patrol type="Devil" xIncrement="10"></Patrol>
+		<Shape type="Devil" xPosition="30"></Shape>
+		<Shape type="Devil" xPosition="60"></Shape>
+	</Spawning>
+</Level>

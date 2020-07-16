@@ -5,7 +5,7 @@
 
 #include "Game/Camera.h"
 #include "Map/Map.h"
-#include "Objects/Actors/Player/Player.h"
+#include "Actors/Player/Player.h"
 
 #include "Events/Events.h"
 #include "Graphics/RenderManager.h"

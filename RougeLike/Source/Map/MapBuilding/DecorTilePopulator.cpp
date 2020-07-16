@@ -20,33 +20,47 @@ void DecorTilePopulator::addWater(Grid<MapTile>& data)
 	{
 		for (int y = 0; y < data.yCount(); y++)
 		{
-			Index index(x, y);
+			const Index index(x, y);
 
 			if (data[index].is(CollisionTile::Water))
 			{
 				// very top row not considered to keep symmetry 
-				index += Index(0, 1);
+				//index += Index(0, 1);
 
 				// width
 				int width = 0;
-				while (data[index + width].is(CollisionTile::Water))
+				while (data[index + Index(width,0)].is(CollisionTile::Water))
 					width++;
 
 				// height
 				int height = 0;
-				while (data[index + height].is(CollisionTile::Water))
+				while (data[index + Index(0,height)].is(CollisionTile::Water))
 					height++;
 
+				// Top floor
+				for (int xPool = 1; xPool < width - 1; xPool++)
+				{
+					data[index + Index(xPool, 0)].set(RenderTile::Floor_Bottom);
+				}
+
+				// Top water
+				for (int xPool = 1; xPool < width - 1; xPool++)
+				{
+					if (xPool == 1)
+						data[index + Index(xPool, 1)].set(RenderTile::Water_Top_Left);
+					else
+						data[index + Index(xPool, 1)].set(RenderTile::Water_Top);
+				}
 
 				// Fill water center
-				for (int xPool = index.x + 1; xPool < index.x + width - 1; xPool++)
+				for (int xPool = 1; xPool < width - 1; xPool++)
 				{
-					for (int yPool = index.y + 1; yPool < index.y + height - 1; yPool++)
+					for (int yPool = 2; yPool < height - 1; yPool++)
 					{
 						if (xPool == index.x + 1)
-							data[Index(xPool, yPool)].set(RenderTile::Water_Left);
+							data[index + Index(xPool, yPool)].set(RenderTile::Water_Left);
 						else
-							data[Index(xPool, yPool)].set(RenderTile::Water_Middle);
+							data[index + Index(xPool, yPool)].set(RenderTile::Water_Middle);
 					}
 				}
 
@@ -62,19 +76,6 @@ void DecorTilePopulator::addWater(Grid<MapTile>& data)
 					data[index + Index(width - 1, yPool)].set(RenderTile::Floor_Left);
 				}
 
-
-				// Top
-				for (int xPool = 1; xPool < width - 1; xPool++)
-				{
-					if (xPool == 1)
-						data[index + Index(xPool, 0)].set(RenderTile::Water_Top_Left);
-					else
-						data[index + Index(xPool, 0)].set(RenderTile::Water_Top);
-
-					// Fill very top row
-					data[index + Index(xPool, -1)].set(RenderTile::Floor_Bottom);
-				}
-
 				// Bot
 				for (int xPool = 1; xPool < width - 1; xPool++)
 				{
@@ -83,10 +84,10 @@ void DecorTilePopulator::addWater(Grid<MapTile>& data)
 
 
 				// Corners
-				data[Index(index.x, index.y - 1)].set(						RenderTile::Floor_Bottom_Right);
-				data[Index(index.x + width - 1, index.y - 1)].set(			RenderTile::Floor_Bottom_Left);
-				data[Index(index.x + width - 1, index.y + height - 1)].set(	RenderTile::Floor_Top_Left);
-				data[Index(index.x, index.y + height - 1)].set(				RenderTile::Floor_Top_Right);
+				data[index].set(						RenderTile::Floor_Bottom_Right);
+				data[index + Index(width - 1, 0)].set(			RenderTile::Floor_Bottom_Left);
+				data[index + Index(width - 1, height - 1)].set(	RenderTile::Floor_Top_Left);
+				data[index + Index(0, height - 1)].set(				RenderTile::Floor_Top_Right);
 
 				// Move to end of pool + 1
 				x = index.x + width + 1;
@@ -103,7 +104,7 @@ void DecorTilePopulator::addColumns(Grid<MapTile>& data)
 		{
 			Index index(x, y);
 
-			if (data[index].has(DecorTile::Column))
+			if (data[index].has(DecorType::Column))
 			{
 				if (data[index].has(RenderTile::Bottom))
 					data[index].set(RenderTile::Column_Top);
@@ -133,7 +134,7 @@ void DecorTilePopulator::addAnimations(Grid<MapTile>& data)
 		{
 			Index index(x, y);
 
-			if (data[index].has(DecorTile::Torch_Handle))
+			if (data[index].has(DecorType::Torch_Handle))
 			{
 				Animator animator;
 				AnimationReader reader(mTextureManager, tourchHandleParser);
@@ -143,7 +144,7 @@ void DecorTilePopulator::addAnimations(Grid<MapTile>& data)
 				}
 			}
 
-			if (data[index].has(DecorTile::Torch_Bowl))
+			if (data[index].has(DecorType::Torch_Bowl))
 			{
 				Animator animator;
 				AnimationReader reader(mTextureManager, tourchBowlParser);
@@ -153,7 +154,7 @@ void DecorTilePopulator::addAnimations(Grid<MapTile>& data)
 				}
 			}
 
-			if (data[index].has(DecorTile::Spikes))
+			if (data[index].has(DecorType::Spikes))
 			{
 				Animator animator;
 				AnimationReader reader(mTextureManager, spikeParser);

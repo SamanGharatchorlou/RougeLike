@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "EnemyIdle.h"
 
-#include "Objects/Actors/Enemies/Enemy.h"
+#include "Actors/Enemies/Enemy.h"
 
 
 EnemyIdle::EnemyIdle(Enemy* enemy, float time) : EnemyState(enemy), mTime(time)

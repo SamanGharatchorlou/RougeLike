@@ -2,7 +2,7 @@
 #include "StunEffect.h"
 
 #include "Game/Camera.h"
-#include "Objects/Actors/Enemies/Enemy.h"
+#include "Actors/Enemies/Enemy.h"
 
 
 

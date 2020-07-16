@@ -18,9 +18,9 @@
 #include "Game/Cursor.h"
 #include "Game/Camera.h"
 
-#include "Objects/Actors/ActorManager.h"
-#include "Objects/Actors/Player/Player.h"
-#include "Objects/Actors/Enemies/EnemyManager.h"
+#include "Actors/ActorManager.h"
+#include "Actors/Player/Player.h"
+#include "Actors/Enemies/EnemyManager.h"
 
 // temp
 #include "Items/Collectables/Collectable.h"

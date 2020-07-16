@@ -5,7 +5,7 @@
 #include "Objects/Effects/EffectTypes/StunEffect.h"
 #include "Objects/Effects/EffectPool.h"
 
-#include "Objects/Actors/Actor.h"
+#include "Actors/Actor.h"
 #include "Graphics/Texture.h"
 #include "Animations/Animator.h"
 #include "Game/Camera.h"

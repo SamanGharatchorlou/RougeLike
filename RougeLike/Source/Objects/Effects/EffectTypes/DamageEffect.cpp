@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "DamageEffect.h"
 
-#include "Objects/Actors/Actor.h"
+#include "Actors/Actor.h"
 #include "Objects/Properties/PropertyBag.h"
 
 

@@ -15,8 +15,8 @@
 #include "Graphics/RenderManager.h"
 #include "UI/UIManager.h"
 #include "Managers/ScoreManager.h"
-#include "Objects/Actors/Player/Player.h"
-#include "Objects/Actors/Enemies/EnemyManager.h"
+#include "Actors/Player/Player.h"
+#include "Actors/Enemies/EnemyManager.h"
 
 #include "Map/Map.h"
 #include "Game/Camera.h"

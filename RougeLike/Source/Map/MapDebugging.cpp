@@ -322,31 +322,31 @@ void renderDecorTypes(const MapTile& tile, RectF& tileRect, VectorF& offset, int
 {
 	RenderColour colour = RenderColour::Green;
 
-	if (tile.has(DecorTile::Water))
+	if (tile.has(DecorType::Water))
 	{
 		debugRenderText("Water", fontSize, tileRect.TopCenter(), colour);
 		tileRect = tileRect.Translate(offset);
 	}
 
-	if (tile.has(DecorTile::Column))
+	if (tile.has(DecorType::Column))
 	{
 		debugRenderText("Column", fontSize, tileRect.TopCenter(), colour);
 		tileRect = tileRect.Translate(offset);
 	}
 
-	if (tile.has(DecorTile::Torch_Handle))
+	if (tile.has(DecorType::Torch_Handle))
 	{
 		debugRenderText("Torch handle", fontSize, tileRect.TopCenter(), colour);
 		tileRect = tileRect.Translate(offset);
 	}
 
-	if (tile.has(DecorTile::Torch_Bowl))
+	if (tile.has(DecorType::Torch_Bowl))
 	{
 		debugRenderText("Torch bowl", fontSize, tileRect.TopCenter(), colour);
 		tileRect = tileRect.Translate(offset);
 	}
 
-	if (tile.has(DecorTile::Spikes))
+	if (tile.has(DecorType::Spikes))
 	{
 		debugRenderText("Spikes", fontSize, tileRect.TopCenter(), colour);
 		tileRect = tileRect.Translate(offset);

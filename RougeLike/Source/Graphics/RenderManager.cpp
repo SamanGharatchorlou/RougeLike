@@ -3,7 +3,7 @@
 
 #include "Map/Environment.h"
 #include "UI/UIManager.h"
-#include "Objects/Actors/ActorManager.h"
+#include "Actors/ActorManager.h"
 #include "Items/Collectables/Collectables.h"
 
 #include "Graphics/Texture.h"

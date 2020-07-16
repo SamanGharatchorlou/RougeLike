@@ -174,22 +174,22 @@ void RenderTilePopulator::corners(Grid<MapTile>& data)
 
 			if (isTopHalf)
 			{
-				if (data[index].is(RenderTile::Wall ^ RenderTile::Left ^ RenderTile::Bottom))
+				if (data[index].is(RenderTile::Wall | RenderTile::Left | RenderTile::Bottom))
 				{
 					data[index].set(RenderTile::Bottom_Left);
 				}
-				if (data[index].is(RenderTile::Wall ^ RenderTile::Right ^ RenderTile::Bottom))
+				if (data[index].is(RenderTile::Wall | RenderTile::Right | RenderTile::Bottom))
 				{
 					data[index].set(RenderTile::Bottom_Right);
 				}
 			}
 			else // bottom half
 			{
-				if (data[index].is(RenderTile::Wall ^ RenderTile::Left ^ RenderTile::Top_Upper))
+				if (data[index].is(RenderTile::Wall | RenderTile::Left | RenderTile::Top_Upper))
 				{
 					data[index].set(RenderTile::Top_Left);
 				}
-				else if (data[index].is(RenderTile::Wall ^ RenderTile::Right ^ RenderTile::Top_Upper))
+				else if (data[index].is(RenderTile::Wall | RenderTile::Right | RenderTile::Top_Upper))
 				{
 					data[index].set(RenderTile::Top_Right);
 

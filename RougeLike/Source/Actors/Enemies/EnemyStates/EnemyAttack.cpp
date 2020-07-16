@@ -2,7 +2,7 @@
 #include "EnemyAttack.h"
 
 #include "Collisions/Collider.h"
-#include "Objects/Actors/Enemies/Enemy.h"
+#include "Actors/Enemies/Enemy.h"
 
 #include "Objects/Effects/EffectTypes/DisplacementEffect.h"
 #include "Objects/Effects/EffectTypes/DamageEffect.h"

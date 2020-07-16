@@ -6,8 +6,8 @@
 #include "Graphics/Texture.h"
 #include "Graphics/TextureManager.h"
 
-#include "Objects/Actors/Actor.h"
-#include "Objects/Actors/ActorManager.h"
+#include "Actors/Actor.h"
+#include "Actors/ActorManager.h"
 
 #include "Animations/AnimationReader.h"
 

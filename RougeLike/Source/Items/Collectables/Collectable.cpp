@@ -3,7 +3,7 @@
 
 #include "Graphics/Texture.h"
 
-#include "Objects/Actors/Player/Player.h"
+#include "Actors/Player/Player.h"
 
 
 

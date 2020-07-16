@@ -17,9 +17,6 @@ void XMLParser::parseXML(const std::string& filePath)
 
 Attributes XMLParser::attributes(xmlNode node) const
 {
-	if (node == nullptr)
-		printf("pause");
-
 	ASSERT(Warning, node != nullptr, "Attempting to get attributes for non-existant node\n");
 	Attributes attributes;
 
@@ -28,7 +25,6 @@ Attributes XMLParser::attributes(xmlNode node) const
 		attributes.add(attr->name(), attr->value());
 	}
 
-	ASSERT(Warning, attributes.getMap().size() != 0, "Node %s has no attributes\n", node->name());
 	return attributes;
 }
 

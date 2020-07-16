@@ -115,18 +115,8 @@ void Map::renderUpperLayer()
 
 void Map::clearData()
 {
-	for (int y = 0; y < mData.yCount(); y++)
-	{
-		for (int x = 0; x < mData.xCount(); x++)
-		{
-			MapTile& tile = mData[Index(x, y)];
-
-			tile.setTexture(nullptr);
-			tile.set(RenderTile::None);
-			tile.set(CollisionTile::None);
-			tile.setRect(RectF());
-		}
-	}
+	mData = Grid<MapTile>(Vector2D<int>(xCount(), yCount()), MapTile());
+	mTrapManager.flushQueues();
 }
 
 

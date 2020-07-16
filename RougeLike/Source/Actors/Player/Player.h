@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Objects/Actors/Actor.h"
+#include "Actors/Actor.h"
 
 #include "Weapons/WeaponStash.h"
 #include "Collisions/PlayerCollisions.h"

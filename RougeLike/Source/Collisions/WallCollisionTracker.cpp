@@ -2,7 +2,7 @@
 #include "WallCollisionTracker.h"
 
 #include "Map/Map.h"
-#include "Objects/Actors/Actor.h"
+#include "Actors/Actor.h"
 
 
 void WallCollisionTracker::resolveWallCollisions(const Map* map, float dt)

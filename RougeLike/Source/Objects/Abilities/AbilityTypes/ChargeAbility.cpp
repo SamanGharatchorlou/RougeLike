@@ -3,7 +3,7 @@
 
 #include "Objects/Effects/EffectPool.h"
 #include "Objects/Effects/EffectTypes/DisplacementEffect.h"
-#include "Objects/Actors/Player/Player.h"
+#include "Actors/Player/Player.h"
 
 #include "Map/Map.h"
 

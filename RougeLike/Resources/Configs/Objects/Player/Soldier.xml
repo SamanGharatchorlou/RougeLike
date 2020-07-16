@@ -9,7 +9,7 @@
 
 		<!-- Physics -->
 		<Force>8000</Force>
-		<MaxVelocity>300</MaxVelocity>
+		<MaxVelocity>800</MaxVelocity>
 	</Properties>
 
 	<MaxSize>80</MaxSize>

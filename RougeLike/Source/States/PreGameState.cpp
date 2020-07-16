@@ -14,8 +14,8 @@
 #include "Graphics/TextureManager.h"
 #include "UI/Screens/CharacterselectionScreen.h"
 
-#include "Objects/Actors/ActorManager.h"
-#include "Objects/Actors/Player/Player.h"
+#include "Actors/ActorManager.h"
+#include "Actors/Player/Player.h"
 
 // TEMP
 

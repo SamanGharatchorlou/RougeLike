@@ -5,8 +5,8 @@
 #include "Input/InputManager.h"
 #include "Map/Environment.h"
 
-#include "Objects/Actors/Actor.h"
-#include "Objects/Actors/ActorManager.h"
+#include "Actors/Actor.h"
+#include "Actors/ActorManager.h"
 
 #include "Collisions/Collider.h"
 

@@ -11,8 +11,8 @@
 #include "Map/Environment.h"
 #include "Graphics/TextureManager.h"
 
-#include"Objects/Actors/ActorManager.h"
-#include "Objects/Actors/Player/Player.h"
+#include "Actors/ActorManager.h"
+#include "Actors/Player/Player.h"
 
 #if _DEBUG
 #include "Debug/DebugDraw.h"

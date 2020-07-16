@@ -2,7 +2,7 @@
 #include "EnemyPatrol.h"
 
 #include "Map/Map.h"
-#include "Objects/Actors/Enemies/Enemy.h"
+#include "Actors/Enemies/Enemy.h"
 
 
 
@@ -26,8 +26,6 @@ void EnemyPatrol::slowUpdate(float dt)
 {
 	mEnemy->resolveCollisions();
 
-	// TODO: Set idle for a time?
-	// Enemy cannot be hit while in the wait state
 	if (hasReachedPositionTarget())
 		mEnemy->addIdleState(1.0f);
 

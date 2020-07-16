@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "DisplacementEffect.h"
 
-#include "Objects/Actors/Actor.h"
+#include "Actors/Actor.h"
 #include "Map/Map.h"
 
 

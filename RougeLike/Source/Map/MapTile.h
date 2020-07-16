@@ -47,11 +47,12 @@ protected:
 class MapTile : public PathTile
 {
 public:
-	MapTile() : mRenderType(RenderTile::None), mDecorType(DecorTile::None), mTexture(nullptr) { }
+	MapTile() : mRenderType(RenderTile::None), mDecorType(DecorType::None), mTexture(nullptr) { }
 
 	void slowUpdate(float dt);
 
 	void setTexture(Texture* texture) { mTexture = texture; }
+	void clear();
 
 	// Render type
 	const RenderTile renderType() const { return mRenderType; }
@@ -67,10 +68,11 @@ public:
 	bool is(CollisionTile type) const { return PathTile::is(type); }
 	bool has(CollisionTile type) const { return PathTile::has(type); }
 
-	// Animation type
-	void add(DecorTile type);
-	bool is(DecorTile type) const;
-	bool has(DecorTile type) const;
+	// Decoration type
+	void set(DecorType type) { mDecorType = type; }
+	void add(DecorType type);
+	bool is(DecorType type) const;
+	bool has(DecorType type) const;
 
 	void render(RectF rect);
 
@@ -83,7 +85,7 @@ private:
 	std::vector<Animator> mAnimations;
 
 	RenderTile mRenderType;
-	DecorTile mDecorType;
+	DecorType mDecorType;
 };
 
 

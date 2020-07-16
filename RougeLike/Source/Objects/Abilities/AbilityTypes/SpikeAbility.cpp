@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "SpikeAbility.h"
 
-#include "Objects/Actors/Actor.h"
+#include "Actors/Actor.h"
 
 #include "Objects/Effects/EffectPool.h"
 #include "Objects/Effects/EffectTypes/DisplacementEffect.h"

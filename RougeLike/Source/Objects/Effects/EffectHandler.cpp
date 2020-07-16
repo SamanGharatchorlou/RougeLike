@@ -2,7 +2,7 @@
 #include "EffectHandler.h"
 #include "EffectPool.h"
 
-#include "Objects/Actors/Actor.h"
+#include "Actors/Actor.h"
 
 
 void EffectHandler::addEffect(Effect* effect)

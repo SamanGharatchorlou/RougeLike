@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ArmorEffect.h"
 
-#include "Objects/Actors/Actor.h"
+#include "Actors/Actor.h"
 
 
 void ArmorEffect::init()

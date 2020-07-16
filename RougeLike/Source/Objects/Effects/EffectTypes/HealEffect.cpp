@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "HealEffect.h"
 
-#include "Objects/Actors/Actor.h"
+#include "Actors/Actor.h"
 
 
 void HealEffect::init()

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ArmorAbility.h"
 
-#include "Objects/Actors/Player/Player.h"
+#include "Actors/Player/Player.h"
 #include "Objects/Effects/EffectTypes/ArmorEffect.h"
 #include "Objects/Effects/EffectPool.h"
 

@@ -3,7 +3,7 @@
 #include "Events/LocalDispatcher.h"
 
 #include "Collisions/CollisionTracker.h"
-#include "EnemyEnums.h"
+#include "Types/EnemyTypes.h"
 
 #include "EnemyStates/EnemyState.h"
 #include "Spawning/EnemySpawner.h"
