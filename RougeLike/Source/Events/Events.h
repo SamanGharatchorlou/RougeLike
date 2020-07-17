@@ -10,6 +10,7 @@ class Enemy;
 class TargePositionAttackAbility;
 class Texture;
 
+// TODO: do i still use all of these?
 enum class Event
 {
 	None,
@@ -39,6 +40,7 @@ enum class Event
 	UpdateAICostMap,
 
 	ActivateAbilityOn,
+	WeaponSelected,
 
 	Render
 };
@@ -65,6 +67,12 @@ struct EventPacket
 	}
 
 	EventData* data;
+};
+
+struct WeaponSelectedEvent : public EventData
+{
+	WeaponSelectedEvent() { eventType = Event::WeaponSelected; }
+	~WeaponSelectedEvent() { }
 };
 
 

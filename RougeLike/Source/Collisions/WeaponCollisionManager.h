@@ -9,9 +9,9 @@ class CollisionTracker;
 class WeaponCollisionManager
 {
 public:
-	WeaponCollisionManager(Player* player) : mPlayer(player) { }
+	WeaponCollisionManager() { }
 
-	void setTracker(CollisionTracker* tracker);
+	void init(Player* player, CollisionTracker* tracker);
 
 	void processWeaponEffects();
 

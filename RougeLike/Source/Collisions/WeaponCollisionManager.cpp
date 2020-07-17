@@ -14,8 +14,9 @@
 #include "Objects/Effects/EffectTypes/DisplacementEffect.h"
 
 
-void WeaponCollisionManager::setTracker(CollisionTracker* tracker)
+void WeaponCollisionManager::init(Player* player, CollisionTracker* tracker)
 {
+	mPlayer = player;
 	mTracker = tracker;
 }
 

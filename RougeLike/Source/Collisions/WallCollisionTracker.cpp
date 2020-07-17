@@ -4,6 +4,10 @@
 #include "Map/Map.h"
 #include "Actors/Actor.h"
 
+void WallCollisionTracker::init(Actor* actor)
+{
+	mActor = actor;
+}
 
 void WallCollisionTracker::resolveWallCollisions(const Map* map, float dt)
 {

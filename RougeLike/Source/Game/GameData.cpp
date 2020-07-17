@@ -18,9 +18,6 @@
 #include "Game/Camera.h"
 
 
-// GameInfo
-#include "Map/Map.h"
-
 
 void GameData::load()
 {
@@ -36,9 +33,6 @@ void GameData::load()
 	inputManager = new InputManager;
 	inputManager->init();
 	inputManager->setCursorSize(VectorF(25.0f, 25.0f));
-
-	// Map Level
-	environment = new Environment(textureManager);
 
 	// Audio
 	audioManager = new AudioManager;
@@ -56,12 +50,17 @@ void GameData::load()
 
 	// Collision Trackers
 	collisionManager = new CollisionManager;
+	collisionManager->init();
 
 	// Effect Pool, must be before actors
 	effectPool = new EffectPool(this);
 
+	// Map Level
+	environment = new Environment(this);
+	environment->init();
+
 	// Actors
-	actors = new ActorManager(this);
+	//actors = new ActorManager(this);
 
 	// Must be done AFTER everything has been new'd
 	setupObservers();
@@ -77,17 +76,15 @@ void GameData::setupObservers()
 	scoreManager->addObserver(uiManager);
 
 	// Update the UI with the players hp and the stats attack, defence etc.
-	actors->addObserver(actors);
-	actors->addObserver(uiManager);
-	actors->addObserver(Camera::Get()->getShake());
-	actors->addObserver(scoreManager);
+	environment->actors()->addObserver(environment->actors());
+	environment->actors()->addObserver(uiManager);
+	environment->actors()->addObserver(Camera::Get()->getShake());
+	environment->actors()->addObserver(scoreManager);
 }
 
 
 void GameData::free()
 {
-	delete actors;
-
 	delete collisionManager;
 	delete environment;
 

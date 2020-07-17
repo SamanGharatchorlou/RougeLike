@@ -25,7 +25,7 @@ void RenderManager::render()
 
 	renderPackets(RenderLayer::LowerTiles);
 
-	mActors->render();
+	//mActors->render();
 
 	renderPackets(RenderLayer::Actors);
 

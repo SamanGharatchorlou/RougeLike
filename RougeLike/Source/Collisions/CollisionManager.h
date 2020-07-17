@@ -23,14 +23,14 @@ public:
 public:
 
 	~CollisionManager();
-
+	void init();
 	void fastUpdate();
 
 	void resetColliders();
 	void clearColliders();
 
 	CollisionTracker* getTracker(Tracker id);
-	void addCollisionTracker(Tracker id);
+	void addCollisionTracker(Tracker id); // TODO: make private?
 	//void addComplexCollisionTracker(Tracker id);
 
 	void addAttackers(Tracker id, std::vector<Collider*> attackers);

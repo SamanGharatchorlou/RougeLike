@@ -28,7 +28,6 @@
 
 Player::Player(GameData* gameData) :
 	Actor(gameData),
-	mCollisionManager(this, mGameData->collisionManager),
 	mAbilities(mGameData, this),
 	mWeapon(nullptr),
 	mControlOverride(false)
@@ -38,8 +37,6 @@ Player::Player(GameData* gameData) :
 void Player::init(const std::string& characterConfig)
 {
 	Actor::init(characterConfig);
-
-	mCollisionManager.init();
 }
 
 
@@ -49,45 +46,56 @@ void Player::addAbility(const std::string& name)
 }
 
 
-void Player::handleInput()
+void Player::handleInput(InputManager* input)
 {
-	if (!mControlOverride)
-		mPhysics.handleInput(mGameData->inputManager);
-
+	mPhysics.handleInput(input);
 	mAbilities.handleInput();
-
-	if (mGameData->inputManager->isCursorPressed(Cursor::Left) &&
-		!mGameData->uiManager->isUsingUI() && !mAbilities.inSelectionMode())
-	{
-		attack();
-	}
 }
 
-
-void Player::fastUpdate(float dt)
+void Player::updateCursorPosition(VectorF cursorPosition)
 {
-	mCollisionManager.fastUpdate(dt, mGameData->environment->map(position()));
-
-	// Movement, animations, weapon updates
-	Actor::fastUpdate(dt);
-
-	VectorF cursorPosition = mGameData->inputManager->cursorPosition();
 	VectorF playerPosition = Camera::Get()->toCameraCoords(position());
 
 	if (cursorPosition.x > playerPosition.x)
 	{
 		mPhysics.setFlip(SDL_FLIP_NONE);
 		mWeapon->rightFlip();
-	} 
+	}
 	else
 	{
 		mPhysics.setFlip(SDL_FLIP_HORIZONTAL);
 		mWeapon->leftFlip();
 	}
 
+	mWeapon->updateAimDirection(cursorPosition);
+}
+
+
+void Player::fastUpdate(float dt)
+{
+	//mCollisionManager.fastUpdate(dt, mGameData->environment->map(position()));
+
+	// Movement, animations, weapon updates
+	Actor::fastUpdate(dt);
+
+	//VectorF cursorPosition = mGameData->inputManager->cursorPosition();
+	//VectorF playerPosition = Camera::Get()->toCameraCoords(position());
+
+	//if (cursorPosition.x > playerPosition.x)
+	//{
+	//	mPhysics.setFlip(SDL_FLIP_NONE);
+	//	mWeapon->rightFlip();
+	//}
+	//else
+	//{
+	//	mPhysics.setFlip(SDL_FLIP_HORIZONTAL);
+	//	mWeapon->leftFlip();
+	//}
+
 	mWeapon->setPosition(rect().Center());
 	mWeapon->fastUpdate(dt);
-	mWeapon->updateAimDirection(mGameData->inputManager->cursorPosition());
+
+	//mWeapon->updateAimDirection(cursorPosition);
  }
 
 
@@ -96,14 +104,14 @@ void Player::slowUpdate(float dt)
 	// Actor
 	Actor::slowUpdate(dt);
 
-	mCollisionManager.slowUpdate(mGameData->environment->map(position()));
+	//mCollisionManager.slowUpdate(mGameData->environment->map(position()));
 
 	// Weapon
 	mWeapon->slowUpdate(dt);
-	if (weapon()->isAttacking())
-	{
-		updateWeaponHitSound();
-	}
+	//if (weapon()->isAttacking())
+	//{
+	//	updateWeaponHitSound();
+	//}
 
 	// Abilities
 	mAbilities.slowUpdate(dt);
@@ -116,8 +124,8 @@ void Player::slowUpdate(float dt)
 
 	if (collider()->gotHit())
 		processHit();
-
-	updateCurrentTile();
+/*
+	updateCurrentTile();*/
 }
 
 
@@ -128,23 +136,17 @@ void Player::reset()
 }
 
 
-void Player::loadWeaponStash()
-{
-	weaponStash.load(mGameData->textureManager);
-}
-
-
 void Player::selectCharacter(const std::string& character)
 {
 	init(character);
 }
 
 
-void Player::selectWeapon(const std::string& weaponName)
+void Player::setWeapon(MeleeWeapon* weapon)
 {
-	Weapon* weapon = weaponStash.getWeapon(weaponName);
-	mWeapon =  static_cast<MeleeWeapon*>(weapon);
+	mWeapon = weapon;
 
+	// TODO: can i remove this?
 	if (mPhysics.flip() == SDL_FLIP_HORIZONTAL)
 	{
 		mWeapon->leftFlip();
@@ -153,8 +155,6 @@ void Player::selectWeapon(const std::string& weaponName)
 	{
 		mWeapon->rightFlip();
 	}
-
-	mCollisionManager.refreshWeaponColliders();
 }
 
 
@@ -225,37 +225,39 @@ void Player::updateUI()
 }
 
 
-void Player::attack()
+bool Player::attemptAttack()
 {
-	if (!mWeapon->isAttacking())
+	bool canAttack = !mAbilities.inSelectionMode() && !mWeapon->isAttacking();
+
+	if (canAttack)
 	{
-		mCollisionManager.clearExcludedColliders(CollisionManager::PlayerWeapon_Hit_Enemy);
 		mWeapon->attack();
-		mGameData->audioManager->playSound(mWeapon->missSoundLabel(), this);
 	}
+
+	return canAttack;
 }
 
 
-void Player::updateWeaponHitSound()
+void Player::updateWeaponHitSound(AudioManager* audio)
 {
 	if (mWeapon->didHit())
 	{
-		if (mGameData->audioManager->isPlaying(mWeapon->missSoundLabel(), this) && mWeapon->canPlayHitSound())
+		if (audio->isPlaying(mWeapon->missSoundLabel(), this) && mWeapon->canPlayHitSound())
 		{
-			mGameData->audioManager->playSound(mWeapon->hitSoundLabel(), this);
+			audio->playSound(mWeapon->hitSoundLabel(), this);
 		}
 	}
 }
 
 
-void Player::updateCurrentTile()
+void Player::updateCurrentTile(Map* map)
 {
-	// Update enemy paths when player changes tile
-	Map* currentMap = mGameData->environment->map(position());
+	//// Update enemy paths when player changes tile
+	//Map* currentMap = mGameData->environment->map(position());
 
-	if (currentMap->isValidPosition(position()))
+	if (map->isValidPosition(position()))
 	{
-		Vector2D<int> currentTile = currentMap->index(position());
+		Vector2D<int> currentTile = map->index(position());
 		if (tileIndex != currentTile)
 		{
 			tileIndex = currentTile;
@@ -269,5 +271,5 @@ void Player::updateCurrentTile()
 
 void Player::enableBodyCollisions(bool isEnabled)
 {
-	mCollisionManager.enableCollisions(CollisionManager::Player_Hit_Enemy, isEnabled);
+	mBodyCollisions = isEnabled;
 }

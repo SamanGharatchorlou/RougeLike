@@ -18,7 +18,7 @@
 #include "Actors/Player/Player.h"
 
 // TEMP
-
+#include "Map/Environment.h"
 #include "Animations/AnimationReader.h"
 
 PreGameState::PreGameState(GameData* gameData, GameController* gameController) :
@@ -38,7 +38,7 @@ void PreGameState::init()
 	
 	mGameData->uiManager->setCursorTexture(mGameData->textureManager->getTexture("UICursor", FileManager::Image_UI));
 
-	mGameData->actors->player()->loadWeaponStash();
+	//mGameData->actors->player()->loadWeaponStash();
 }
 
 
@@ -51,8 +51,8 @@ void PreGameState::slowUpdate(float dt)
 
 	if (mSelectionScreen->enterGame())
 	{
-		mGameData->actors->player()->selectCharacter(mSelectionScreen->selectedCharacter());
-		mGameData->actors->player()->selectWeapon(mSelectionScreen->selectedWeapon());
+		mGameData->environment->actors()->player()->selectCharacter(mSelectionScreen->selectedCharacter());
+		mGameData->environment->actors()->selectWeapon(mSelectionScreen->selectedWeapon());
 
 		mGameController->getStateMachine()->replaceState(new GameState(mGameData, mGameController));
 	}
@@ -78,9 +78,5 @@ void PreGameState::render()
 
 void PreGameState::initCollisionTrackers()
 {
-	CollisionManager* collisions = mGameData->collisionManager;
-	for (int i = 0; i < (int)CollisionManager::Count; i++)
-	{
-		collisions->addCollisionTracker((CollisionManager::Tracker)i);
-	}
+
 }

@@ -3,14 +3,14 @@
 #include "Actors/Actor.h"
 
 #include "Weapons/WeaponStash.h"
-#include "Collisions/PlayerCollisions.h"
+#include "Collisions/PlayerCollisions.h" // TODO: can i remove?
 #include "Objects/Abilities/AbilityManager.h"
 
 
 struct GameData;
-class Weapon;
 class MeleeWeapon;
-
+class InputManager;
+class AudioManager;
 
 class Player : public Actor
 {
@@ -21,18 +21,20 @@ public:
 	~Player() { };
 
 	void init(const std::string& characterConfig);
-	void handleInput();
+	void handleInput(InputManager* input);
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
 	void render();
 
 	void reset();
 
-	void loadWeaponStash();
+	bool attemptAttack();
+	void updateCursorPosition(VectorF cursorPosition);
+
 	MeleeWeapon*	weapon();
 
 	void selectCharacter(const std::string& character);
-	void selectWeapon(const std::string& weaponName);
+	void setWeapon(MeleeWeapon* weapon);
 
 	void addAbility(const std::string& name);
 
@@ -42,27 +44,24 @@ public:
 	void updateUI();
 
 	void enableBodyCollisions(bool isEnabled);
+	bool hasBodyCollisions() { return mBodyCollisions; }
 
 
+	void updateWeaponHitSound(AudioManager* audio);
+	void updateCurrentTile(Map* map);
 private:
 	void processHit();
 
-	void attack();
-	void updateWeaponHitSound();
 
-	void updateCurrentTile();
 
 
 private:
-	PlayerCollisions mCollisionManager;
-
 	AbilityManager mAbilities;
-
-	WeaponStash weaponStash;
 
 	Vector2D<int> tileIndex;
 
 	MeleeWeapon* mWeapon;
 
 	bool mControlOverride;
+	bool mBodyCollisions;
 };

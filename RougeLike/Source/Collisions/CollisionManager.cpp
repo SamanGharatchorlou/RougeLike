@@ -131,3 +131,12 @@ CollisionTracker* CollisionManager::getTracker(Tracker id)
 	DebugPrint(Log, "No collision tracker with the id: %d exists.\n", id);
 	return nullptr;
 }
+
+
+void CollisionManager::init()
+{
+	for (int i = 0; i < (int)CollisionManager::Count; i++)
+	{
+		addCollisionTracker((CollisionManager::Tracker)i);
+	}
+}

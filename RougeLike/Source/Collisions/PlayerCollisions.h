@@ -13,9 +13,9 @@ class Map;
 class PlayerCollisions
 {
 public:
-	PlayerCollisions(Player* player, CollisionManager* collisionManager);
+	PlayerCollisions() { };
 
-	void init();
+	void init(Player* player, CollisionManager* collisionManager);
 	void fastUpdate(float dt, Map* map);
 	void slowUpdate(Map* map);
 

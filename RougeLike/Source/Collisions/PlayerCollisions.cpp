@@ -13,22 +13,18 @@
 #include "Map/TrapManager.h"
 
 
-
-PlayerCollisions::PlayerCollisions(Player* player, CollisionManager* collisionManager) : 
-	mPlayer(player),
-	cManager(collisionManager), 
-	mWallCollisions(player),
-	mWeaponCollisions(player)
-{ }
-
-void PlayerCollisions::init()
+void PlayerCollisions::init(Player* player, CollisionManager* collisionManager)
 {
+	mPlayer = player;
+	cManager = collisionManager;
+
+	mWallCollisions.init(player);
+	mWeaponCollisions.init(player, collisionManager->getTracker(CollisionManager::PlayerWeapon_Hit_Enemy));
+
 	addCollidersToTrackers();
 	enableCollisions(CollisionManager::Player_Hit_Collectable, true);
 	enableCollisions(CollisionManager::Player_Hit_Enemy, false);
 	enableCollisions(CollisionManager::PlayerWeapon_Hit_Enemy, false);
-
-	mWeaponCollisions.setTracker(cManager->getTracker(CollisionManager::PlayerWeapon_Hit_Enemy));
 }
 
 void PlayerCollisions::fastUpdate(float dt, Map* map)
@@ -47,6 +43,9 @@ void PlayerCollisions::slowUpdate(Map* map)
 	resolveTrapCollisions(map);
 
 	updateWeaponColliders();
+
+	// TODO: not set this every frame... feels dirty
+	enableCollisions(CollisionManager::Player_Hit_Enemy, mPlayer->hasBodyCollisions());
 }
 
 

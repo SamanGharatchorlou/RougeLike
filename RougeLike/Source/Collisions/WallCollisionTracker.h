@@ -7,7 +7,8 @@ class MapTile;
 class WallCollisionTracker
 {
 public:
-	WallCollisionTracker(Actor* actor) : mActor(actor) { };
+	WallCollisionTracker() { };
+	void init(Actor* actor);
 	void resolveWallCollisions(const Map* map, float dt);
 
 

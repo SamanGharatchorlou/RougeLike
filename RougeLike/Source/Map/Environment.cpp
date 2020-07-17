@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Environment.h"
 
+#include "Game/GameData.h"
 #include "Game/Camera.h"
 #include "MapBuilding/MapGenerator.h"
 #include "Map.h"
@@ -8,7 +9,7 @@
 #include "TrapManager.h"
 
 
-Environment::Environment(TextureManager* textureManager) : mLevelManager(textureManager)
+Environment::Environment(GameData* mGameData) : mLevelManager(mGameData->textureManager), mActors(mGameData)
 {
 	createNewMaps();
 };
@@ -27,6 +28,13 @@ void Environment::restart()
 
 void Environment::init()
 {
+
+	DebugPrint(Log, "\n--- Loading Environment ---\n\n");
+
+	DebugPrint(Log, "\n Loading Maps\n");
+	int fails = 0;
+
+
 	mLevelManager.init(mEntrace);
 	VectorF offset = mLevelManager.getOffset(mEntrace);
 
@@ -36,6 +44,14 @@ void Environment::init()
 	mLevelManager.buildExit(mExit, offset);
 
 	setCameraBoundaries();
+
+
+	DebugPrint(Log, "\n Loading Characters\n", fails);
+
+	mActors.init();
+
+
+	DebugPrint(Log, "\n--- Environment Load Complete---\n\n", fails);
 
 	std::vector<SpawnData> data = mSpawner.getspawnList(mPrimaryMap, mLevelManager.level());
 
@@ -68,12 +84,29 @@ void Environment::nextLevel()
 	int a = 4;
 }
 
+void Environment::handleInput()
+{
+
+}
+
+void Environment::exit()
+{
+	mActors.exit();
+	restart();
+}
+
+void Environment::fastUpdate(float dt)
+{
+	mActors.fastUpdate(dt);
+}
 
 void Environment::slowUpdate(float dt)
 {
 	mEntrace->slowUpdate(dt);
 	mPrimaryMap->slowUpdate(dt);
 	mExit->slowUpdate(dt);
+
+	mActors.slowUpdate(dt);
 }
 
 
@@ -88,6 +121,8 @@ void Environment::renderBottomLayer()
 	mEntrace->renderLowerLayer();
 	mPrimaryMap->renderLowerLayer();
 	mExit->renderLowerLayer();
+
+	mActors.render();
 }
 void Environment::renderTopLayer()
 {

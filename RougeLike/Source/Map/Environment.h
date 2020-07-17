@@ -2,22 +2,27 @@
 
 #include "Events/Dispatcher.h"
 #include "LevelManager.h"
+#include "Actors/ActorManager.h"
 #include "Actors/Enemies/Spawning/EnemySpawner.h"
 
 class Map;
-class TextureManager;
+struct GameData;
 
 
 class Environment : public Dispatcher
 {
 public:
-	Environment(TextureManager* textureManager);
+	Environment(GameData* gameData);
 
 	void init();
+	void handleInput();
+	void fastUpdate(float dt);
 	void slowUpdate(float dt);
-	void restart();
 
 	void nextLevel();
+	void restart();
+	void exit();
+
 
 	bool canClosePreviousLevel(VectorF playerPosition) const;
 
@@ -34,6 +39,8 @@ public:
 	void setCameraBoundaries();
 	VectorF toWorldCoords(VectorF cameraCoords);
 
+	ActorManager* actors() { return &mActors; }
+
 
 private:
 	void createNewMaps();
@@ -41,6 +48,7 @@ private:
 
 
 private:
+	ActorManager mActors;
 	LevelManager mLevelManager;
 	EnemySpawner mSpawner;
 

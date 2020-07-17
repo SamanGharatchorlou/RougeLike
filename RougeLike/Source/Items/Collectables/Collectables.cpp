@@ -41,7 +41,7 @@ void Collectables::slowUpdate(float dt)
 
 		if (collectable->pickedUp())
 		{
-			collectable->activate(mGameData->actors->player());
+			//collectable->activate(mGameData->actors->player());
 
 			// Destroy the collectable from game
 			iter = mCollectables.erase(iter);

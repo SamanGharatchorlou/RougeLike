@@ -54,6 +54,6 @@ void AbilityCollectable::activate(Player* Player)
 
 void WeaponCollectable::activate(Player* Player)
 {
-	Player->selectWeapon(mName);
+	//Player->selectWeapon(mName);
 }
 

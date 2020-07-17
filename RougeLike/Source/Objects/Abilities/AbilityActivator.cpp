@@ -86,7 +86,7 @@ void AbilityActivator::activateAreaAttack(Ability* ability)
 	Collider abilityCollider = attackAbility->collider();
 
 	// Apply effect to all enemies caught in area
-	std::vector<Actor*> enemies = mManager->mGameData->actors->getAllEnemies();
+	std::vector<Actor*> enemies = mManager->mGameData->environment->actors()->getAllEnemies();
 	for (int i = 0; i < enemies.size(); i++)
 	{
 		Collider* enemyCollider = enemies[i]->collider();
@@ -107,7 +107,7 @@ bool AbilityActivator::activateOnSelf(TargetSelfAbility* ability)
 
 bool AbilityActivator::activateOnActor(TargetActorAbility* ability)
 {
-	std::vector<Actor*> enemies = mManager->mGameData->actors->getAllEnemies();
+	std::vector<Actor*> enemies = mManager->mGameData->environment->actors()->getAllEnemies();
 	for (int i = 0; i < enemies.size(); i++)
 	{
 		// activate ability on first enemy selected
