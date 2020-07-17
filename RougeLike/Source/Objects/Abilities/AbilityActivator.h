@@ -6,14 +6,12 @@
 class AbilityManager;
 class InputManager;
 class Map;
-
+class Environment;
 
 class AbilityActivator
 {
 public:
-	AbilityActivator(AbilityManager* manager);
-
-	bool shouldActivate(Ability* ability, InputManager* input);
+	AbilityActivator(Environment* environment);
 
 	bool activate(Ability* ability);
 	void activateAreaAttack(Ability* ability);
@@ -23,15 +21,11 @@ private:
 	VectorF cursorPosition() const;
 	const Map* map(VectorF position) const;
 
-	void setState(Ability* ability, Ability::State state);
-
 	bool activateOnSelf(TargetSelfAbility* ability);
 	bool activateOnActor(TargetActorAbility* ability);
 	bool activateOnPosition(TargetPositionAbility* ability);
 	
 
 private:
-	AbilityManager* mManager;
-	InputManager* mInput;
-
+	Environment* mEnvironment;
 };

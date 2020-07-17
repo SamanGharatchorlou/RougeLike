@@ -8,7 +8,10 @@
 
 struct GameData;
 class Actor;
-
+class TextureManager;
+class InputManager;
+class EffectPool;
+class Environment;
 
 class AbilityManager
 {
@@ -16,9 +19,12 @@ class AbilityManager
 	friend class AbilityActivator;
 
 public:
-	AbilityManager(GameData* gameData, Actor* parent);
+	AbilityManager(TextureManager* textures, Environment* environment, Actor* parent);
 
-	void handleInput();
+
+	bool shouldActivate(Ability* ability, const InputManager* input);
+
+	void handleInput(const InputManager* input);
 	void slowUpdate(float dt);
 	void render();
 
@@ -41,8 +47,10 @@ private:
 
 
 private:
-	GameData* mGameData;
 	Actor* mCaster;
+
+	Environment* mEnvironment;
+	TextureManager* mTextures;
 
 	LocalDispatcher mEvents;
 

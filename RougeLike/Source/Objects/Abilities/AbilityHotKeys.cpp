@@ -15,7 +15,7 @@
 #include "Events/Events.h"
 
 
-void AbilityHotKeys::handleInput(InputManager* input)
+void AbilityHotKeys::handleInput(const InputManager* input)
 {
 	// As per Adrian Grutters request, rename the iterator
 	for (std::unordered_map<Button::Key, Ability*>::iterator retiTheGr8RulerOvDaLandz = hotKeyMap.begin();
@@ -51,15 +51,15 @@ void AbilityHotKeys::addHotKey(Ability* ability)
 	hotKeyMap[buttonKey] = ability;
 
 	// Add ability icon
-	UIBox* box = createIcon(ability, count);
-	UITextBox* text = createIconText(box, count);
+	//UIBox* box = createIcon(ability, count);
+	//UITextBox* text = createIconText(box, count);
 
-	Screen* activeScreen = mManager->mGameData->uiManager->getActiveScreen();
-	ASSERT(Warning, activeScreen->type() == Screen::Game, "Doesnt make sense not to be on the Game Screen, current screen: %d\n", activeScreen->type());
-	GameScreen* gameScreen = static_cast<GameScreen*>(activeScreen);
-	
-	gameScreen->addElement(box);
-	gameScreen->addElement(text);
+	//Screen* activeScreen = mManager->mGameData->uiManager->getActiveScreen();
+	//ASSERT(Warning, activeScreen->type() == Screen::Game, "Doesnt make sense not to be on the Game Screen, current screen: %d\n", activeScreen->type());
+	//GameScreen* gameScreen = static_cast<GameScreen*>(activeScreen);
+	//
+	//gameScreen->addElement(box);
+	//gameScreen->addElement(text);
 }
 
 
@@ -82,7 +82,7 @@ Button::Key AbilityHotKeys::hotKey(Ability* ability)
 UIBox* AbilityHotKeys::createIcon(Ability* ability, int count)
 {
 	std::string id = ability->name() + "Icon";
-	Texture* icon = mManager->mGameData->textureManager->getTexture(id, FileManager::Image_UI);
+	Texture* icon = nullptr;// mManager->mGameData->textureManager->getTexture(id, FileManager::Image_UI);
 
 	VectorF position(75.0f * (1 + count), 650);
 	VectorF size = realiseSize(icon->originalDimentions, 50);

@@ -37,10 +37,10 @@ GameState::GameState(GameData* gameData, GameController* gameController) :
 
 void GameState::init()
 {
-	//initMap();
+	mGameData->environment->init();
+
 	initCamera();
 	initUI();
-	//mGameData->actors->init();
 	initRendering();
 
 	// Start Audio
@@ -107,7 +107,7 @@ void GameState::slowUpdate(float dt)
 
 	//mGameData->actors->slowUpdate(dt);
 
-	mGameData->effectPool->slowUpdate();
+	mGameData->environment->effectPool()->slowUpdate();
 
 	mGameData->scoreManager->slowUpdate();
 
@@ -115,11 +115,11 @@ void GameState::slowUpdate(float dt)
 
 	Camera::Get()->slowUpdate(dt);
 
-	// End current level, close old level exit, open new level entrance
-	if (mGameData->environment->canClosePreviousLevel(mGameData->environment->actors()->player()->position()))
-	{
-		nextLevel();
-	}
+	//// End current level, close old level exit, open new level entrance
+	//if (mGameData->environment->canClosePreviousLevel(mGameData->environment->actors()->player()->position()))
+	//{
+	//	nextLevel();
+	//}
 
 	// End of slow frame
 	mGameData->collisionManager->resetColliders();
@@ -172,10 +172,6 @@ void GameState::initCamera()
 	Camera::Get()->initShakeyCam(150.0f, 100.0f, 50.0f);
 }
 
-void GameState::initMap()
-{
-	mGameData->environment->init();
-}
 
 void GameState::initRendering()
 {

@@ -134,6 +134,7 @@
     <ClCompile Include="Source\Map\TileTypes.cpp" />
     <ClCompile Include="Source\Map\MapBuilding\MapDecorator.cpp" />
     <ClCompile Include="Source\Actors\Enemies\Types\EnemyTypes.cpp" />
+    <ClCompile Include="Source\Actors\Player\PlayerManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -291,6 +292,7 @@
     <ClInclude Include="Source\Map\LevelManager.h" />
     <ClInclude Include="Source\Map\MapBuilding\MapDecorator.h" />
     <ClInclude Include="Source\Actors\Enemies\Types\EnemyTypes.h" />
+    <ClInclude Include="Source\Actors\Player\PlayerManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

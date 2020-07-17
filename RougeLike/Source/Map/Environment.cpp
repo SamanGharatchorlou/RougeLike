@@ -3,15 +3,16 @@
 
 #include "Game/GameData.h"
 #include "Game/Camera.h"
+#include "Input/InputManager.h"
 #include "MapBuilding/MapGenerator.h"
 #include "Map.h"
 
 #include "TrapManager.h"
 
 
-Environment::Environment(GameData* mGameData) : mLevelManager(mGameData->textureManager), mActors(mGameData)
+Environment::Environment(GameData* mGameData) : 
+	mLevelManager(mGameData->textureManager), mActors(mGameData), mCursor(mGameData->inputManager->getCursor())
 {
-	createNewMaps();
 };
 
 
@@ -25,16 +26,18 @@ void Environment::restart()
 	createNewMaps();
 }
 
-
 void Environment::init()
 {
+	mActors.init(this);
+}
 
+
+void Environment::load()
+{
 	DebugPrint(Log, "\n--- Loading Environment ---\n\n");
 
 	DebugPrint(Log, "\n Loading Maps\n");
-	int fails = 0;
-
-
+	createNewMaps();
 	mLevelManager.init(mEntrace);
 	VectorF offset = mLevelManager.getOffset(mEntrace);
 
@@ -45,13 +48,15 @@ void Environment::init()
 
 	setCameraBoundaries();
 
+	DebugPrint(Log, "\n Loading Effect pool\n");
 
-	DebugPrint(Log, "\n Loading Characters\n", fails);
+	mEffectPool.load();
 
-	mActors.init();
+	DebugPrint(Log, "\n Loading Characters\n");
 
+	mActors.load();
 
-	DebugPrint(Log, "\n--- Environment Load Complete---\n\n", fails);
+	DebugPrint(Log, "\n--- Environment Load Complete---\n\n");
 
 	std::vector<SpawnData> data = mSpawner.getspawnList(mPrimaryMap, mLevelManager.level());
 
@@ -86,7 +91,7 @@ void Environment::nextLevel()
 
 void Environment::handleInput()
 {
-
+	mActors.handleInput();
 }
 
 void Environment::exit()

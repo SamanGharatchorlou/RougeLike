@@ -11,7 +11,7 @@
 struct GameData;
 class Property;
 class Map;
-
+class EffectPool;
 
 class Actor
 {
@@ -19,7 +19,7 @@ public:
 	Actor(GameData* gameData);
 	virtual ~Actor() { };
 
-	void init(const std::string& config);
+	void set(const std::string& config);
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
 	void render();
@@ -64,6 +64,7 @@ protected:
 
 protected:
 	GameData* mGameData;
+	EffectPool* mEffectPool;
 
 	PropertyBag mPropertyBag;
 

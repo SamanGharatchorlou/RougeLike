@@ -2,18 +2,16 @@
 
 #include "EffectTypes/Effect.h"
 
-struct GameData;
-
 
 class EffectPool
 {
 public:
-	EffectPool(GameData* gameData);
+	EffectPool();
 
+	void load();
 	void slowUpdate();
 
 	Effect* getEffect(EffectType type);
-
 	void returnEffect(Effect* effect);
 
 private:
@@ -21,8 +19,6 @@ private:
 
 
 private:
-	GameData* mGameData;
-
 	// Effects are pulled from this pool then returned when finished with
 	std::unordered_map<EffectType, std::queue<Effect*>> mPool;
 	std::unordered_map<EffectType, int> mPoolSizes;

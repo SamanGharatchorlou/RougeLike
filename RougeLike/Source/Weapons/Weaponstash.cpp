@@ -23,7 +23,7 @@ WeaponStash::~WeaponStash()
 }
 
 
-void WeaponStash::load(TextureManager* tm)
+void WeaponStash::init(TextureManager* tm)
 {
 	std::vector<std::string> filePaths = FileManager::Get()->allFilesInFolder(FileManager::Config_Weapons);
 

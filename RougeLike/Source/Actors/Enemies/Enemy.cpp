@@ -29,7 +29,7 @@ Enemy::Enemy(GameData* gameData) :
 
 void Enemy::init(const std::string& config)
 {
-	Actor::init(config);
+	Actor::set(config);
 }
 
 

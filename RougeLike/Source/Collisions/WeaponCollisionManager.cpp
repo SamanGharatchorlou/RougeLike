@@ -2,13 +2,10 @@
 #include "WeaponCollisionManager.h"
 
 #include "CollisionTracker.h"
-#include "CollisionManager.h"
 
-#include "PlayerCollisions.h"
 #include "Actors/Player/Player.h"
-
-#include "EffectCollider.h"
 #include "Weapons/Melee/MeleeWeapon.h"
+#include "Weapons/WeaponData.h"
 
 #include "Objects/Effects/EffectTypes/DamageEffect.h"
 #include "Objects/Effects/EffectTypes/DisplacementEffect.h"
@@ -30,6 +27,8 @@ void WeaponCollisionManager::processWeaponEffects()
 		if(!weaponColliders[i]->hasEffects())
 			addWeaponEffects(weaponColliders[i]);
 
+
+		// this will trigger as soon as I attack, only if I didHit()?
 		updateWeaponEffect(weaponColliders[i]);
 	}
 }

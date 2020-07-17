@@ -113,6 +113,7 @@ void EnemyManager::slowUpdate(float dt)
 
 void EnemyManager::generatePathMap()
 {
+	ASSERT(Warning, mGameData->environment->primaryMap(), "The environment has not been loaded. Make sure the maps have been built before attempting to generate the enemy path maps\n");
 	mPathMap.build(mGameData->environment->primaryMap(), 4, 4);
 }
 
@@ -213,9 +214,16 @@ void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF positio
 
 void EnemyManager::spawnLevel()
 {
-	// Update ai path map
+	//mSpawner.spawnLevel(mGameData->environment->primaryMap(), mGameData->environment->mapLevel());
+
+
+}
+
+void EnemyManager::load()
+{
+	// Set ai path map
 	generatePathMap();
-	mSpawner.spawnLevel(mGameData->environment->primaryMap(), mGameData->environment->mapLevel());
+	addEnemiesToPool(EnemyType::Devil, 50);
 }
 
 

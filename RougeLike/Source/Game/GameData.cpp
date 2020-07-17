@@ -11,7 +11,7 @@
 #include "Managers/ScoreManager.h"
 #include "Collisions/CollisionManager.h"
 #include "Actors/ActorManager.h"
-#include "Objects/Effects/EffectPool.h"
+//#include "Objects/Effects/EffectPool.h"
 #include "Actors/Enemies/EnemyManager.h"
 
 #include "Map/Environment.h"
@@ -22,7 +22,6 @@
 void GameData::load()
 {
 	// Texture Manager
-
 	textureManager = new TextureManager;
 	textureManager->init();
 
@@ -52,12 +51,12 @@ void GameData::load()
 	collisionManager = new CollisionManager;
 	collisionManager->init();
 
-	// Effect Pool, must be before actors
-	effectPool = new EffectPool(this);
+	//// Effect Pool, must be before actors
+	//effectPool = new EffectPool(this);
 
 	// Map Level
 	environment = new Environment(this);
-	environment->init();
+	environment->load();
 
 	// Actors
 	//actors = new ActorManager(this);

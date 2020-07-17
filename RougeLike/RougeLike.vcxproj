@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Actors\Enemies\Types\EnemyTypes.cpp" />
+    <ClCompile Include="Source\Actors\Player\PlayerManager.cpp" />
     <ClCompile Include="Source\AI\AIPathing.cpp" />
     <ClCompile Include="Source\AI\AIPathMap.cpp" />
     <ClCompile Include="Source\Animations\Animator.cpp" />
@@ -159,6 +160,7 @@
     <ClCompile Include="Source\System\Files\XMLParser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Actors\Player\PlayerManager.h" />
     <ClInclude Include="Source\AI\AIPathing.h" />
     <ClInclude Include="Source\AI\AIPathMap.h" />
     <ClInclude Include="Source\Animations\Animator.h" />

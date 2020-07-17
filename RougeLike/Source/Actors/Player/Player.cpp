@@ -1,24 +1,13 @@
-
 #include "pch.h"
 #include "Player.h"
 
-#include "Game/GameData.h"
-#include "Game/Cursor.h"
 #include "Game/Camera.h"
-#include "Input/InputManager.h"
+#include "Game/Cursor.h"
 #include "Audio/AudioManager.h"
-#include "UI/UIManager.h"
 
-#include "Collisions/CollisionManager.h"
-#include "Collisions/EffectCollider.h"
-#include "Objects/Effects/EffectPool.h"
-#include "Objects/Effects/EffectTypes/DamageEffect.h"
-#include "Objects/Effects/EffectTypes/DisplacementEffect.h"
-
+#include "Map/Map.h"
 #include "Weapons/Melee/MeleeWeapon.h"
 
-#include "Map/Environment.h"
-#include "Map/Map.h"
 
 #if _DEBUG
 #include "Debug/DebugDraw.h"
@@ -28,7 +17,7 @@
 
 Player::Player(GameData* gameData) :
 	Actor(gameData),
-	mAbilities(mGameData, this),
+	//mAbilities(mGameData, this),
 	mWeapon(nullptr),
 	mControlOverride(false)
 { }
@@ -36,20 +25,20 @@ Player::Player(GameData* gameData) :
 
 void Player::init(const std::string& characterConfig)
 {
-	Actor::init(characterConfig);
+	Actor::set(characterConfig);
 }
 
 
 void Player::addAbility(const std::string& name)
 {
-	mAbilities.add(name);
+	//mAbilities.add(name);
 }
 
 
-void Player::handleInput(InputManager* input)
+void Player::handleInput(const InputManager* input)
 {
 	mPhysics.handleInput(input);
-	mAbilities.handleInput();
+	//mAbilities.handleInput(input);
 }
 
 void Player::updateCursorPosition(VectorF cursorPosition)
@@ -73,29 +62,11 @@ void Player::updateCursorPosition(VectorF cursorPosition)
 
 void Player::fastUpdate(float dt)
 {
-	//mCollisionManager.fastUpdate(dt, mGameData->environment->map(position()));
-
 	// Movement, animations, weapon updates
 	Actor::fastUpdate(dt);
 
-	//VectorF cursorPosition = mGameData->inputManager->cursorPosition();
-	//VectorF playerPosition = Camera::Get()->toCameraCoords(position());
-
-	//if (cursorPosition.x > playerPosition.x)
-	//{
-	//	mPhysics.setFlip(SDL_FLIP_NONE);
-	//	mWeapon->rightFlip();
-	//}
-	//else
-	//{
-	//	mPhysics.setFlip(SDL_FLIP_HORIZONTAL);
-	//	mWeapon->leftFlip();
-	//}
-
 	mWeapon->setPosition(rect().Center());
 	mWeapon->fastUpdate(dt);
-
-	//mWeapon->updateAimDirection(cursorPosition);
  }
 
 
@@ -104,19 +75,13 @@ void Player::slowUpdate(float dt)
 	// Actor
 	Actor::slowUpdate(dt);
 
-	//mCollisionManager.slowUpdate(mGameData->environment->map(position()));
-
 	// Weapon
 	mWeapon->slowUpdate(dt);
-	//if (weapon()->isAttacking())
-	//{
-	//	updateWeaponHitSound();
-	//}
 
 	// Abilities
-	mAbilities.slowUpdate(dt);
-	if (mAbilities.hasEvent())
-		pushEvent(mAbilities.popEvent());
+	//mAbilities.slowUpdate(dt);
+	//if (mAbilities.hasEvent())
+	//	pushEvent(mAbilities.popEvent());
 
 	// Character
 	Action action = mPhysics.isMoving() ? Action::Run : Action::Idle;
@@ -124,8 +89,6 @@ void Player::slowUpdate(float dt)
 
 	if (collider()->gotHit())
 		processHit();
-/*
-	updateCurrentTile();*/
 }
 
 
@@ -145,16 +108,6 @@ void Player::selectCharacter(const std::string& character)
 void Player::setWeapon(MeleeWeapon* weapon)
 {
 	mWeapon = weapon;
-
-	// TODO: can i remove this?
-	if (mPhysics.flip() == SDL_FLIP_HORIZONTAL)
-	{
-		mWeapon->leftFlip();
-	}
-	else if (mPhysics.flip() == SDL_FLIP_NONE)
-	{
-		mWeapon->rightFlip();
-	}
 }
 
 
@@ -172,7 +125,7 @@ void Player::render()
 	debugDrawRects(mWeapon->getRects(), RenderColour(RenderColour::Yellow));
 #endif
 
-	mAbilities.render();
+	//mAbilities.render();
 
 	if (mVisibility)
 	{
@@ -203,7 +156,6 @@ void Player::processHit()
 		if (effectCollider->effectCount() == 0)
 			printf("zero effects?\n");
 
-
 		TraumaEvent* trauma = new TraumaEvent(40);
 		pushEvent(EventPacket(trauma));
 	}
@@ -227,7 +179,7 @@ void Player::updateUI()
 
 bool Player::attemptAttack()
 {
-	bool canAttack = !mAbilities.inSelectionMode() && !mWeapon->isAttacking();
+	bool canAttack = !mWeapon->isAttacking();
 
 	if (canAttack)
 	{
@@ -252,9 +204,6 @@ void Player::updateWeaponHitSound(AudioManager* audio)
 
 void Player::updateCurrentTile(Map* map)
 {
-	//// Update enemy paths when player changes tile
-	//Map* currentMap = mGameData->environment->map(position());
-
 	if (map->isValidPosition(position()))
 	{
 		Vector2D<int> currentTile = map->index(position());

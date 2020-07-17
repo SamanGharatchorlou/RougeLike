@@ -1,15 +1,11 @@
 #pragma once
 
 #include "Actors/Actor.h"
-
-#include "Weapons/WeaponStash.h"
-#include "Collisions/PlayerCollisions.h" // TODO: can i remove?
-#include "Objects/Abilities/AbilityManager.h"
+//#include "Objects/Abilities/AbilityManager.h"
 
 
 struct GameData;
 class MeleeWeapon;
-class InputManager;
 class AudioManager;
 
 class Player : public Actor
@@ -21,7 +17,7 @@ public:
 	~Player() { };
 
 	void init(const std::string& characterConfig);
-	void handleInput(InputManager* input);
+	void handleInput(const InputManager* input);
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
 	void render();
@@ -56,7 +52,7 @@ private:
 
 
 private:
-	AbilityManager mAbilities;
+	//AbilityManager mAbilities;
 
 	Vector2D<int> tileIndex;
 

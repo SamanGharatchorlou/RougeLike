@@ -14,7 +14,7 @@ class AbilityHotKeys
 public:
 	AbilityHotKeys(AbilityManager* abilities) : mManager(abilities) { }
 
-	void handleInput(InputManager* input);
+	void handleInput(const InputManager* input);
 
 	void addHotKey(Ability* ability);
 	Button::Key hotKey(Ability* ability);

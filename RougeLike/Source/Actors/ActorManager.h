@@ -3,14 +3,13 @@
 #include "Events/Observer.h"
 #include "Events/Dispatcher.h"
 
-#include "Collisions/PlayerCollisions.h"
-#include "Weapons/WeaponStash.h"
+#include "Player/PlayerManager.h"
+
 
 struct GameData;
 class EffectPool;
-class Player;
 class EnemyManager;
-class Actor;
+class Environment;
 
 class ActorManager : public Observer, public Dispatcher
 {
@@ -18,24 +17,23 @@ public:
 	ActorManager(GameData* gameData);
 	~ActorManager();
 
-	void init();
+	void init(Environment* environment);
+	void load();
+
 	void handleInput();
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
 	void render();
 	void exit();
 
-	Player* player() { return mPlayer; }
+	PlayerManager* player() { return &mPlayer; }
 	EnemyManager* enemies() { return mEnemies; }
 
 	std::vector<Actor*> getAllEnemies();
-	std::vector<Actor*> getAllActors();
 
 	void handleEvent(EventData& data) override;
 	void sendEvent(EventPacket event);
 
-	// temp
-	void selectWeapon(const std::string& weaponName);
 
 private:
 	void initPlayer();
@@ -44,12 +42,7 @@ private:
 
 private:
 	GameData* mGameData;
-	EffectPool* mEffectPool;
 
-	// Player stuff
-	PlayerCollisions mPlayerCollisions;
-	WeaponStash weaponStash;
-
-	Player* mPlayer;
+	PlayerManager mPlayer;
 	EnemyManager* mEnemies;
 };

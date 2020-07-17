@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "EffectPool.h"
 
-#include "Game/GameData.h"
-#include "Animations/AnimationReader.h"
+//#include "Game/GameData.h"
+//#include "Animations/AnimationReader.h"
 
 #include "EffectTypes/DamageEffect.h"
 #include "EffectTypes/DisplacementEffect.h"
@@ -13,10 +13,14 @@
 #include "EffectTypes/StunEffect.h"
 
 
-EffectPool::EffectPool(GameData* gameData) : mGameData(gameData)
+EffectPool::EffectPool()
 {
 	mPoolSizes[EffectType::None] = 0;
+	mPool[EffectType::None] = std::queue<Effect*>();
+}
 
+void EffectPool::load()
+{
 	int defaultPoolSize = 10;
 
 	for (EffectType type = EffectType::None + 1; type < EffectType::Count; type = type + 1)
@@ -51,7 +55,7 @@ void EffectPool::slowUpdate()
 }
 
 
-// TODO: set some kind of requirment so effects can only be created here, i.e. requires a null void* pointer or something
+// TODO: set some kind of requirment so effects can only be created here, i.e. requires a null void* pointer or something?
 Effect* EffectPool::getNewEffect(EffectType type)
 {
 	Effect* effect = nullptr;
@@ -83,17 +87,17 @@ Effect* EffectPool::getNewEffect(EffectType type)
 	{
 		effect = new HealEffect;
 	}
-	else if (type == EffectType::Stun)
-	{
-		XMLParser parser;
-		parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, "Stun"));
+	//else if (type == EffectType::Stun)
+	//{
+	//	XMLParser parser;
+	//	parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, "Stun"));
 
-		AnimationReader reader(mGameData->textureManager, parser);
-		Animator animator;
-		reader.initAnimator(animator);
+	//	AnimationReader reader(mGameData->textureManager, parser);
+	//	Animator animator;
+	//	reader.initAnimator(animator);
 
-		effect = new StunEffect(animator);
-	}
+	//	effect = new StunEffect(animator);
+	//}
 
 #if _DEBUG
 	mTrackerPool[type].push(effect);
@@ -118,7 +122,6 @@ Effect* EffectPool::getEffect(EffectType type)
 	{
 		mPool[type].push(getNewEffect(type));
 		mPoolSizes[type] = mPoolSizes[type] + 1;
-		printf("increasing type %d pool size to %d\n", (int)type, mPoolSizes[type]);
 		return getEffect(type);
 	}
 }
@@ -130,7 +133,4 @@ void EffectPool::returnEffect(Effect* effect)
 	effect->clearData();
 
 	mPool[type].push(effect);
-
-	//if (mPool[type].size() > mPoolSizes[type])
-	//	printf("returning type %d to pool, mPool.size() = %d & mPoolSizes = %d\n", type, mPool[type].size(), mPoolSizes[type]);
 }

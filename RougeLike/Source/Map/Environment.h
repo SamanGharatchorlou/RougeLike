@@ -4,9 +4,11 @@
 #include "LevelManager.h"
 #include "Actors/ActorManager.h"
 #include "Actors/Enemies/Spawning/EnemySpawner.h"
+#include "Objects/Effects/EffectPool.h"
 
 class Map;
 struct GameData;
+class Cursor;
 
 
 class Environment : public Dispatcher
@@ -15,6 +17,8 @@ public:
 	Environment(GameData* gameData);
 
 	void init();
+
+	void load();
 	void handleInput();
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
@@ -40,6 +44,8 @@ public:
 	VectorF toWorldCoords(VectorF cameraCoords);
 
 	ActorManager* actors() { return &mActors; }
+	EffectPool* effectPool() { return &mEffectPool; }
+	Cursor* cursor() { return mCursor; }
 
 
 private:
@@ -51,10 +57,13 @@ private:
 	ActorManager mActors;
 	LevelManager mLevelManager;
 	EnemySpawner mSpawner;
+	EffectPool mEffectPool;
 
+	// move these into level manager?
 	Map* mEntrace;
 	Map* mPrimaryMap;
 	Map* mExit;
-
 	Vector2D<int> mMapSize;
+
+	Cursor* mCursor;
 };

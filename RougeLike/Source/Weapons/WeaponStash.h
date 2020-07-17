@@ -13,7 +13,7 @@ public:
 	WeaponStash();
 	~WeaponStash();
 
-	void load(TextureManager* tm);
+	void init(TextureManager* tm);
 
 	MeleeWeapon* getMeleeWeapon() const { return meleeWeapon; }
 	//RangedWeapon* getRangedWeapon() const { return rangedWeapon; }

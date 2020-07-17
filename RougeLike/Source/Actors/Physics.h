@@ -27,7 +27,7 @@ public:
 	Physics() : mForce(0), mMaxVelocity(0), mDragFactor(0), mMass(1.0f) { };
 
 	void init(float force, float maxVelocity);
-	void handleInput(InputManager* input);
+	void handleInput(const InputManager* input);
 	void fastUpdate(float dt);
 	
 	// Force

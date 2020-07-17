@@ -14,10 +14,10 @@
 #include "Map/Environment.h"
 
 
-Actor::Actor(GameData* gameData) : mGameData(gameData), mEffects(gameData->effectPool, this), mVisibility(true) { }
+Actor::Actor(GameData* gameData) : mGameData(gameData), mEffects(gameData->environment->effectPool(), this), mVisibility(true), mEffectPool(gameData->environment->effectPool()) { }
 
 
-void Actor::init(const std::string& config)
+void Actor::set(const std::string& config)
 {
 	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs_Objects, config));
 
@@ -29,11 +29,11 @@ void Actor::init(const std::string& config)
 	reader.initAnimator(mAnimator);
 	mAnimator.start();
 
-	// Physics
+	// Physics 
 	VectorF baseSize = mAnimator.frameSize();
-	float maxDimention = std::stof(parser.firstRootNodeValue("MaxSize"));
+	float maxDimention = std::stof(parser.firstRootNodeValue("MaxSize")); // added new calculations to animator, can i remove the realise size bit and just set the rect to (maxDim, maxDim). it should auto size.
 	VectorF size = realiseSize(baseSize, maxDimention);
-	mPhysics.setRect(RectF(VectorF(), size));
+	mPhysics.rectRef().SetSize(size);
 	mPhysics.init(getPropertyValue("Force"), getPropertyValue("MaxVelocity"));
 
 	// Collider
@@ -112,7 +112,7 @@ void Actor::addEffect(Effect* effect)
 
 Effect* Actor::getEffectFromPool(EffectType type)
 {
-	return mGameData->effectPool->getEffect(type);
+	return mEffectPool->getEffect(type);
 }
 
 void Actor::processEffects(EffectCollider* effectCollider)

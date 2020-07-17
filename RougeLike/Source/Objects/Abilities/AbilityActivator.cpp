@@ -9,39 +9,12 @@
 #include "Actors/ActorManager.h"
 
 #include "Collisions/Collider.h"
+#include "Game/Cursor.h"
 
 #include "AbilityManager.h"
 
 
-AbilityActivator::AbilityActivator(AbilityManager* manager) : mManager(manager) { }
-
-bool AbilityActivator::shouldActivate(Ability* ability, InputManager* input)
-{
-	bool activate = false;
-
-	switch (ability->targetType())
-	{
-		// Player casts on self only
-	case Ability::TargetType::Self:
-	{
-		Button::Key hotKey = mManager->mHotKeys.hotKey(ability);
-		activate = input->isReleased(hotKey);
-		break;
-	}
-	// Activate on first enemy selected
-	case Ability::TargetType::Actor:
-	case Ability::TargetType::Position:
-	case Ability::TargetType::AttackArea:
-	{
-		activate = input->isCursorReleased(Cursor::Left);
-		break;
-	}
-	default:
-		break;
-	}
-
-	return activate;
-}
+AbilityActivator::AbilityActivator(Environment* environment) : mEnvironment(environment) { }
 
 
 bool AbilityActivator::activate(Ability* ability)
@@ -86,13 +59,13 @@ void AbilityActivator::activateAreaAttack(Ability* ability)
 	Collider abilityCollider = attackAbility->collider();
 
 	// Apply effect to all enemies caught in area
-	std::vector<Actor*> enemies = mManager->mGameData->environment->actors()->getAllEnemies();
+	std::vector<Actor*> enemies = mEnvironment->actors()->getAllEnemies();
 	for (int i = 0; i < enemies.size(); i++)
 	{
 		Collider* enemyCollider = enemies[i]->collider();
 		if (enemyCollider->doesIntersect(&abilityCollider))
 		{
-			attackAbility->activateOn(enemies[i], mManager->mGameData->effectPool);
+			attackAbility->activateOn(enemies[i], mEnvironment->effectPool());
 		}
 	}
 }
@@ -100,20 +73,20 @@ void AbilityActivator::activateAreaAttack(Ability* ability)
 
 bool AbilityActivator::activateOnSelf(TargetSelfAbility* ability)
 {
-	ability->activate(mManager->mGameData->effectPool);
+	ability->activate(mEnvironment->effectPool());
 	return true;
 }
 
 
 bool AbilityActivator::activateOnActor(TargetActorAbility* ability)
 {
-	std::vector<Actor*> enemies = mManager->mGameData->environment->actors()->getAllEnemies();
+	std::vector<Actor*> enemies = mEnvironment->actors()->getAllEnemies();
 	for (int i = 0; i < enemies.size(); i++)
 	{
 		// activate ability on first enemy selected
 		if (enemies[i]->collider()->contains(cursorPosition()))
 		{
-			ability->activateOn(enemies[i], mManager->mGameData->effectPool);
+			ability->activateOn(enemies[i], mEnvironment->effectPool());
 			return true;
 		}
 	}
@@ -129,7 +102,7 @@ bool AbilityActivator::activateOnPosition(TargetPositionAbility* ability)
 	// BUG: if you select just outside of the current map this breaks?
 	if (ability->isValidTarget(cursorPos, map(cursorPos)))
 	{
-		ability->activateAt(cursorPos, mManager->mGameData->effectPool);
+		ability->activateAt(cursorPos, mEnvironment->effectPool());
 		return true;
 	}
 
@@ -137,24 +110,14 @@ bool AbilityActivator::activateOnPosition(TargetPositionAbility* ability)
 }
 
 
-
-
-
-
 VectorF AbilityActivator::cursorPosition() const
 {
-	VectorF cursorPosition = mManager->mGameData->inputManager->cursorPosition();
-	return mManager->mGameData->environment->toWorldCoords(cursorPosition);
+	VectorF cursorPosition = mEnvironment->cursor()->position();
+	return mEnvironment->toWorldCoords(cursorPosition);
 }
 
 
 const Map* AbilityActivator::map(VectorF position) const
 {
-	return mManager->mGameData->environment->map(position);
-}
-
-
-void AbilityActivator::setState(Ability* ability, Ability::State state)
-{
-	mManager->setState(ability, state);
+	return mEnvironment->map(position);
 }

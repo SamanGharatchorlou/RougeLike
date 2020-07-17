@@ -12,7 +12,7 @@ void Physics::init(float force, float maxVelocity)
 }
 
 
-void Physics::handleInput(InputManager* input)
+void Physics::handleInput(const InputManager* input)
 {
 	mHasForce.zero();
 

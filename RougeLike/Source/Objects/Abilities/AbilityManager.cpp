@@ -15,14 +15,55 @@
 #include "AbilityCreator.h"
 
 
-AbilityManager::AbilityManager(GameData* gameData, Actor* parent) 
-	: mGameData(gameData), mActivator(this), mHotKeys(this), mCaster(parent)
+AbilityManager::AbilityManager(TextureManager* textures, Environment* environment, Actor* parent)
+	: mActivator(environment), mHotKeys(this), mCaster(parent), mTextures(textures)
 { }
 
 
-void AbilityManager::handleInput()
+void AbilityManager::handleInput(const InputManager* input)
 {
-	mHotKeys.handleInput(mGameData->inputManager);
+	mHotKeys.handleInput(input);
+
+	for (int i = 0; i < mAbilities.size(); i++)
+	{
+		Ability* ability = mAbilities[i];
+
+		if (ability->state() == Ability::Selected)
+		{
+			if (shouldActivate(ability, input))
+			{
+				setState(ability, Ability::Activate);
+			}
+		}
+	}
+}
+
+bool AbilityManager::shouldActivate(Ability* ability, const InputManager* input)
+{
+	bool activate = false;
+
+	switch (ability->targetType())
+	{
+		// Player casts on self only
+	case Ability::TargetType::Self:
+	{
+		Button::Key hotKey = mHotKeys.hotKey(ability);
+		activate = input->isReleased(hotKey);
+		break;
+	}
+	// Activate on first enemy selected
+	case Ability::TargetType::Actor:
+	case Ability::TargetType::Position:
+	case Ability::TargetType::AttackArea:
+	{
+		activate = input->isCursorReleased(Cursor::Left);
+		break;
+	}
+	default:
+		break;
+	}
+
+	return activate;
 }
 
 
@@ -30,13 +71,6 @@ void AbilityManager::handleStates(Ability* ability, float dt)
 {
 	switch (ability->state())
 	{
-	case Ability::Selected:
-	{
-		if (mActivator.shouldActivate(ability, mGameData->inputManager))
-			setState(ability, Ability::Activate);
-
-		break;
-	}
 	case Ability::Activate:
 	{
 		if (mActivator.activate(ability))
@@ -132,12 +166,12 @@ bool AbilityManager::inSelectionMode() const
 
 void AbilityManager::add(const std::string& name)
 {
-	Ability* ability = createNewAbility(name, mGameData->textureManager);
+	Ability* ability = createNewAbility(name, mTextures);
 
 	XMLParser parser;
 	parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, ability->name()));
 
-	AnimationReader reader(mGameData->textureManager, parser);
+	AnimationReader reader(mTextures, parser);
 	Animator animator;
 
 	if (reader.initAnimator(animator))

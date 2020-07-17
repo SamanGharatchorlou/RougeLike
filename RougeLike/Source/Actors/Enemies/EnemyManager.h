@@ -38,6 +38,7 @@ public:
 	~EnemyManager();
 
 	// Core
+	void load();
 	void init() { };
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
