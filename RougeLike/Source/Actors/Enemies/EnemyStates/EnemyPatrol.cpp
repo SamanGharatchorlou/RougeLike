@@ -31,14 +31,6 @@ void EnemyPatrol::slowUpdate(float dt)
 
 	if (canSeeAttackTarget())
 		mEnemy->replaceState(EnemyState::Alert);
-
-	const Map* map = mEnemy->getEnvironmentMap();
-
-	VectorF position = mEnemy->position();
-	Index index = map->index(position);
-
-	if (map->tile(index)->is(CollisionTile::Water))
-		printf("water acnnot");
 }
 
 

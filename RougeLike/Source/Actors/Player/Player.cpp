@@ -17,7 +17,6 @@
 
 Player::Player(GameData* gameData) :
 	Actor(gameData),
-	//mAbilities(mGameData, this),
 	mWeapon(nullptr),
 	mControlOverride(false)
 { }
@@ -38,7 +37,6 @@ void Player::addAbility(const std::string& name)
 void Player::handleInput(const InputManager* input)
 {
 	mPhysics.handleInput(input);
-	//mAbilities.handleInput(input);
 }
 
 void Player::updateCursorPosition(VectorF cursorPosition)

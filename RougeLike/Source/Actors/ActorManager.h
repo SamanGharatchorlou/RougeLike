@@ -4,18 +4,17 @@
 #include "Events/Dispatcher.h"
 
 #include "Player/PlayerManager.h"
-
+#include "Enemies/EnemyManager.h"
 
 struct GameData;
 class EffectPool;
-class EnemyManager;
 class Environment;
 
 class ActorManager : public Observer, public Dispatcher
 {
 public:
 	ActorManager(GameData* gameData);
-	~ActorManager();
+	~ActorManager() { }
 
 	void init(Environment* environment);
 	void load();
@@ -27,7 +26,7 @@ public:
 	void exit();
 
 	PlayerManager* player() { return &mPlayer; }
-	EnemyManager* enemies() { return mEnemies; }
+	EnemyManager* enemies() { return &mEnemies; }
 
 	std::vector<Actor*> getAllEnemies();
 
@@ -44,5 +43,5 @@ private:
 	GameData* mGameData;
 
 	PlayerManager mPlayer;
-	EnemyManager* mEnemies;
+	EnemyManager mEnemies;
 };

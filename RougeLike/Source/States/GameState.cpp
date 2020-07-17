@@ -37,11 +37,15 @@ GameState::GameState(GameData* gameData, GameController* gameController) :
 
 void GameState::init()
 {
-	mGameData->environment->init();
+	//mGameData->environment->init();
+
+	VectorF playerPosition = VectorF(Camera::Get()->rect().Center().x, mGameData->environment->size().y / 2.0f);
+	mGameData->environment->actors()->player()->setPosition(playerPosition);
 
 	initCamera();
 	initUI();
 	initRendering();
+
 
 	// Start Audio
 	mGameData->audioManager->playMusic("Ludumdum");
@@ -165,11 +169,16 @@ void GameState::initUI()
 
 void GameState::initCamera()
 {
+	Camera* camera = Camera::Get();
+
 	VectorF cameraPosition = VectorF(0.0f, mGameData->environment->size().y / 2.0f);
-	Camera::Get()->setPosition(cameraPosition);
+	camera->setPosition(cameraPosition);
 
 	// TODO: fix these values
-	Camera::Get()->initShakeyCam(150.0f, 100.0f, 50.0f);
+	camera->initShakeyCam(150.0f, 100.0f, 50.0f);
+
+	RectF* playerRect = &mGameData->environment->actors()->player()->get()->rectRef();
+	camera->follow(playerRect);
 }
 
 

@@ -17,19 +17,18 @@ PlayerManager::PlayerManager(GameData* gameData) :
 {
 	mPlayerCollisions.init(&mPlayer, gameData->collisionManager);
 	weaponStash.init(gameData->textureManager);
-
-
 }
+
 
 void PlayerManager::init(Environment* environment)
 {
 	mEnvironment = environment;
+}
 
+void PlayerManager::setPosition(VectorF position)
+{
 	VectorF playerPosition = VectorF(Camera::Get()->rect().Center().x, mEnvironment->size().y / 2.0f);
-	mPlayer.rectRef().SetLeftCenter(playerPosition);
-
-	// Camera
-	Camera::Get()->follow(&(mPlayer.rectRef()));
+	mPlayer.rectRef().SetLeftCenter(position);
 }
 
 

@@ -18,6 +18,8 @@ class PlayerManager
 public:
 	PlayerManager(GameData* gameData);
 
+	Player* get() { return &mPlayer; }
+
 	void init(Environment* environment);
 
 	void handleInput(const InputManager* input);
@@ -29,6 +31,7 @@ public:
 
 	LocalDispatcher& events() { return mEvents; }
 
+	void setPosition(VectorF position);
 	void selectCharacter(const std::string& characterConfig) { mPlayer.init(characterConfig); }
 	void selectWeapon(const std::string& weaponName);
 
@@ -38,7 +41,6 @@ private:
 
 	Player mPlayer;
 	AbilityManager mAbilities;
-
 
 	// Player stuff
 	PlayerCollisions mPlayerCollisions;

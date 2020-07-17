@@ -56,23 +56,6 @@ void CollisionManager::addCollisionTracker(Tracker id)
 }
 
 
-//void CollisionManager::addComplexCollisionTracker(Tracker id)
-//{
-//	for (TrackerMap::iterator iter = mTrackers.begin(); iter != mTrackers.end(); iter++)
-//	{
-//		if (iter->first == id)
-//		{
-//			DebugPrint(Log, "A collision tracker with the id: %d already exists\n", id);
-//			return;
-//		}
-//	}
-//
-//	CollisionTracker* tracker = new ComplexCollisionTracker;
-//	mTrackers[id] = tracker;
-//}
-
-
-
 void CollisionManager::addAttackers(Tracker id, std::vector<Collider*> attackers)
 {
 	CollisionTracker* tracker = getTracker(id);
@@ -138,5 +121,20 @@ void CollisionManager::init()
 	for (int i = 0; i < (int)CollisionManager::Count; i++)
 	{
 		addCollisionTracker((CollisionManager::Tracker)i);
+	}
+}
+
+
+int CollisionManager::defenderCount(Tracker id)
+{
+	CollisionTracker* tracker = getTracker(id);
+
+	if (tracker)
+	{
+		return tracker->defenders().size();
+	}
+	else
+	{
+		return -1;
 	}
 }

@@ -31,7 +31,6 @@ public:
 
 	CollisionTracker* getTracker(Tracker id);
 	void addCollisionTracker(Tracker id); // TODO: make private?
-	//void addComplexCollisionTracker(Tracker id);
 
 	void addAttackers(Tracker id, std::vector<Collider*> attackers);
 	void addDefenders(Tracker id, std::vector<Collider*> defenders);
@@ -39,6 +38,9 @@ public:
 	void removeDefender(Tracker id, const Collider* defender);
 	void removeAllDefenders(Tracker id);
 	void removeAllAttackers(Tracker id);
+
+	// TEMP: for debugging...
+	int defenderCount(Tracker id);
 
 
 private:

@@ -56,6 +56,7 @@ void GameData::load()
 
 	// Map Level
 	environment = new Environment(this);
+	environment->init();
 	environment->load();
 
 	// Actors

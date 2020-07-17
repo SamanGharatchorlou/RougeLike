@@ -23,25 +23,19 @@
 #include "Player/PlayerManager.h"
 
 
-ActorManager::ActorManager(GameData* gameData) : mGameData(gameData), mPlayer(gameData)
-{
-	mEnemies = new EnemyManager(gameData);
-}
+ActorManager::ActorManager(GameData* gameData) : mGameData(gameData), mPlayer(gameData), mEnemies(gameData) { }
 
 
-ActorManager::~ActorManager()
-{
-	delete mEnemies;
-}
 
 void ActorManager::load()
 {
-	mEnemies->load();
+	mEnemies.load();
 }
 
 void ActorManager::init(Environment* environment)
 {
 	mPlayer.init(environment);
+	mEnemies.init(environment);
 }
 
 
@@ -53,7 +47,7 @@ void ActorManager::handleInput()
 void ActorManager::fastUpdate(float dt)
 {
 	mPlayer.fastUpdate(dt);
-	mEnemies->fastUpdate(dt);
+	mEnemies.fastUpdate(dt);
 }
 
 
@@ -63,16 +57,16 @@ void ActorManager::slowUpdate(float dt)
 	while (mPlayer.events().hasEvent())
 		sendEvent(mPlayer.events().pop());
 	   
-	mEnemies->slowUpdate(dt);
-	while (mEnemies->hasEvent())
-		sendEvent(mEnemies->popEvent());
+	mEnemies.slowUpdate(dt);
+	while (mEnemies.hasEvent())
+		sendEvent(mEnemies.popEvent());
 }
 
 
 void ActorManager::render()
 {
 	mPlayer.render();
-	mEnemies->render();
+	mEnemies.render();
 }
 
 
@@ -80,7 +74,7 @@ std::vector<Actor*> ActorManager::getAllEnemies()
 {
 	std::vector<Actor*> actorList;
 
-	std::vector<Enemy*> enemyList = mEnemies->getActiveEnemies();
+	std::vector<Enemy*> enemyList = mEnemies.getActiveEnemies();
 	actorList.reserve(enemyList.size());
 
 	for (int i = 0; i < enemyList.size(); i++)
@@ -105,12 +99,12 @@ void ActorManager::handleEvent(EventData& data)
 	}
 	case Event::UpdateAIPathMap:
 	{
-		mEnemies->requestEnemyPathUpdates();
+		mEnemies.requestEnemyPathUpdates();
 		break;
 	}
 	case Event::UpdateAICostMap:
 	{
-		mEnemies->updateAIPathCostMap();
+		mEnemies.updateAIPathCostMap();
 		break;
 	}
 	case Event::Render:
@@ -132,7 +126,7 @@ void ActorManager::handleEvent(EventData& data)
 
 void ActorManager::exit()
 {
-	mEnemies->clear();
+	mEnemies.clear();
 	mPlayer.exit();
 }
 
@@ -140,8 +134,8 @@ void ActorManager::exit()
 
 void ActorManager::initEnemies()
 {
-	mEnemies->addEnemiesToPool(EnemyType::Devil, 50);
-	mEnemies->spawnLevel();
+	mEnemies.addEnemiesToPool(EnemyType::Devil, 50);
+	mEnemies.spawnLevel();
 }
 
 

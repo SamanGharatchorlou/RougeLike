@@ -16,18 +16,17 @@
 #include "Actors/Enemies/EnemyStates/EnemyRun.h"
 #include "Actors/Enemies/EnemyStates/EnemyAttack.h"
 
-#include "Utilities/Shapes/Square.h"
-
-
 #if DRAW_AI_PATH_COSTMAP
 #include "UI/Elements/UITextBox.h"
 #endif
 
 
-EnemyManager::EnemyManager(GameData* gameData) : mGameData(gameData), pathUpdateRequests(0), pathUpdateStaggerCounter(0)
+EnemyManager::EnemyManager(GameData* gameData) : 
+	mGameData(gameData), mCollisions(gameData->collisionManager), pathUpdateRequests(0), pathUpdateStaggerCounter(0)
 {
 	updateTimer.start();
 }
+
 
 EnemyManager::~EnemyManager()
 {
@@ -50,6 +49,12 @@ void EnemyManager::clear()
 }
 
 
+void EnemyManager::init(Environment* environment)
+{
+	mEnvironment = environment;
+}
+
+
 void EnemyManager::fastUpdate(float dt)
 {
 	for (int i = 0; i < mActiveEnemies.size(); i++)
@@ -61,8 +66,6 @@ void EnemyManager::fastUpdate(float dt)
 
 void EnemyManager::slowUpdate(float dt)
 {
-	std::vector<Collider*> attackingColliders;
-
 	for (std::vector<Enemy*>::iterator iter = mActiveEnemies.begin(); iter != mActiveEnemies.end(); iter++)
 	{
 		Enemy* enemy = *iter;
@@ -82,10 +85,6 @@ void EnemyManager::slowUpdate(float dt)
 			if (iter == mActiveEnemies.end())
 				break;
 		}
-
-		Collider* collider = getAttackingCollider(enemy);
-		if (collider)
-			attackingColliders.push_back(collider);
 	}
 
 	if (pathUpdateStaggerCounter != 0 || pathUpdateRequests)
@@ -93,8 +92,7 @@ void EnemyManager::slowUpdate(float dt)
 		updateEnemyPaths();
 	}
 
-	mGameData->collisionManager->removeAllAttackers(CollisionManager::Enemy_Hit_Player);
-	mGameData->collisionManager->addAttackers(CollisionManager::Enemy_Hit_Player, attackingColliders);
+	mCollisions.updateAttackingColliders(attackingColliders());
 
 #if _DEBUG // Police the pool and active enemy lists
 	int activeEnemies = 0;
@@ -111,10 +109,11 @@ void EnemyManager::slowUpdate(float dt)
 }
 
 
+
+
 void EnemyManager::generatePathMap()
 {
-	ASSERT(Warning, mGameData->environment->primaryMap(), "The environment has not been loaded. Make sure the maps have been built before attempting to generate the enemy path maps\n");
-	mPathMap.build(mGameData->environment->primaryMap(), 4, 4);
+	mPathMap.build(mEnvironment->primaryMap(), 4, 4);
 }
 
 
@@ -194,11 +193,7 @@ void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF positio
 			enemy->setTarget(mGameData->actors->player());
 #endif
 
-			std::vector<Collider*> defendingCollider;
-			defendingCollider.push_back(enemy->collider());
-
-			mGameData->collisionManager->addDefenders(CollisionManager::PlayerWeapon_Hit_Enemy, defendingCollider);
-			mGameData->collisionManager->addDefenders(CollisionManager::Player_Hit_Enemy, defendingCollider);
+			mCollisions.add(enemy->collider());
 
 			mActiveEnemies.push_back(enemy);
 #if LIMIT_ENEMY_SPAWNS
@@ -218,6 +213,7 @@ void EnemyManager::spawnLevel()
 
 
 }
+
 
 void EnemyManager::load()
 {
@@ -299,16 +295,10 @@ void EnemyManager::updateAIPathCostMap()
 }
 
 
-Enemy* EnemyManager::getEnemy(unsigned int index) const 
-{
-	ASSERT(Warning, index <= mActiveEnemies.size(), "Enemy index out of bounds\n");
-	return mActiveEnemies[index];
-}
-
-
 void EnemyManager::render()
 {
 #if DRAW_AI_PATH_COSTMAP
+	// Replace all this with the debugRenderText function
 	UITextBox::Data textData;
 	textData.aligment = "";
 	textData.font = "";
@@ -363,12 +353,17 @@ void EnemyManager::clearAllEnemies()
 {
 	for (Enemy* enemy : mActiveEnemies)
 	{
+		mCollisions.remove(enemy->collider());
 		enemy->clear();
 	}
 
-	mGameData->collisionManager->removeAllDefenders(CollisionManager::PlayerWeapon_Hit_Enemy);
-	mGameData->collisionManager->removeAllDefenders(CollisionManager::Player_Hit_Enemy);
-	mGameData->collisionManager->removeAllAttackers(CollisionManager::Enemy_Hit_Player);
+	ASSERT(Warning, mCollisions.isEmpty(), "Enemy colliders are left in the collision trackers when they shouldn't be!\n");
+
+	//mGameData->collisionManager->removeAllDefenders(CollisionManager::PlayerWeapon_Hit_Enemy);
+	//mGameData->collisionManager->removeAllDefenders(CollisionManager::Player_Hit_Enemy);
+	//mGameData->collisionManager->removeAllAttackers(CollisionManager::Enemy_Hit_Player);
+
+
 
 	for (EnemyObject& enemy : mEnemyPool)
 	{
@@ -380,21 +375,25 @@ void EnemyManager::clearAllEnemies()
 
 
 // --- Collisions --- //
-
-// Enemies are attacking with these colliders
-Collider* EnemyManager::getAttackingCollider(Enemy* enemy) const
+std::vector<Collider*> EnemyManager::attackingColliders() const
 {
-	if (enemy->state() == EnemyState::Attack)
-	{
-		const EnemyAttack* attackState = static_cast<const EnemyAttack*>(&(enemy->getStateMachine()->getActiveState()));
+	std::vector<Collider*> colliders;
 
-		if (!attackState->didConnectWithTarget())
+	for (std::vector<Enemy*>::const_iterator iter = mActiveEnemies.begin(); iter != mActiveEnemies.end(); iter++)
+	{
+		Enemy* enemy = *iter;
+		if (enemy->state() == EnemyState::Attack)
 		{
-			return enemy->collider();
+			const EnemyAttack* attackState = static_cast<const EnemyAttack*>(&(enemy->getStateMachine()->getActiveState()));
+			if (!attackState->didConnectWithTarget())
+			{
+				Collider* collider = enemy->collider();
+				colliders.push_back(collider);
+			}
 		}
 	}
 
-	return nullptr;
+	return colliders;
 }
 
 
@@ -403,6 +402,7 @@ Collider* EnemyManager::getAttackingCollider(Enemy* enemy) const
 
 void EnemyManager::clearAndRemove(std::vector<Enemy*>::iterator& iter)
 {
+	mCollisions.remove((*iter)->collider());
 	(*iter)->clear();
 
 	// Find this enemy in the pool

@@ -35,7 +35,7 @@ public:
 	void spawn(EnemyState::Type state, VectorF position);
 
 	// State handling
-	StateMachine<EnemyState>*	getStateMachine() { return &mStateMachine; }
+	const StateMachine<EnemyState>*	getStateMachine() const { return &mStateMachine; }
 	void addState(EnemyState::Type state);
 	void popState();
 	void replaceState(EnemyState::Type state);

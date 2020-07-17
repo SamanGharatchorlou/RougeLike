@@ -2,7 +2,8 @@
 
 #include "Events/LocalDispatcher.h"
 
-#include "Collisions/CollisionTracker.h"
+#include "Collisions/EnemyCollisions.h"
+
 #include "Types/EnemyTypes.h"
 
 #include "EnemyStates/EnemyState.h"
@@ -16,8 +17,10 @@
 
 
 struct GameData;
-class Enemy;
 
+struct Environment;
+class Enemy;
+class Collider;
 
 class EnemyManager
 {
@@ -39,7 +42,7 @@ public:
 
 	// Core
 	void load();
-	void init() { };
+	void init(Environment* environment);
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
 	void render();
@@ -62,9 +65,8 @@ public:
 	void spawnLevel();
 	void spawn(EnemyType type, EnemyState::Type state, VectorF position);
 
-	// General
-	Enemy* getEnemy(unsigned int index) const;
 	std::vector<Enemy*> getActiveEnemies() const { return mActiveEnemies; }
+	std::vector<Collider*> attackingColliders() const;
 
 	unsigned int size() const { return mActiveEnemies.size(); }
 
@@ -74,10 +76,12 @@ private:
 
 	void updateEnemyPaths();
 
-	Collider* getAttackingCollider(Enemy* enemy) const;
 
 private:
 	GameData* mGameData;
+	Environment* mEnvironment;
+
+	EnemyCollisions mCollisions;
 
 	std::vector<EnemyObject> mEnemyPool;
 	std::vector<Enemy*> mActiveEnemies;

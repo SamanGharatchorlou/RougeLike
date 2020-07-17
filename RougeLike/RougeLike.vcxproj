@@ -26,6 +26,7 @@
     <ClCompile Include="Source\Animations\Animator.cpp" />
     <ClCompile Include="Source\Audio\SoundController.cpp" />
     <ClCompile Include="Source\Collisions\EffectCollider.cpp" />
+    <ClCompile Include="Source\Collisions\EnemyCollisions.cpp" />
     <ClCompile Include="Source\Collisions\PlayerCollisions.cpp" />
     <ClCompile Include="Source\Collisions\WallCollisionTracker.cpp" />
     <ClCompile Include="Source\Game\LoadingBar.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="Source\Animations\Animator.h" />
     <ClInclude Include="Source\Audio\SoundController.h" />
     <ClInclude Include="Source\Collisions\EffectCollider.h" />
+    <ClInclude Include="Source\Collisions\EnemyCollisions.h" />
     <ClInclude Include="Source\Collisions\PlayerCollisions.h" />
     <ClInclude Include="Source\Collisions\WallCollisionTracker.h" />
     <ClInclude Include="Source\Events\LocalDispatcher.h" />
