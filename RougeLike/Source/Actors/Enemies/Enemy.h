@@ -1,25 +1,27 @@
 #pragma once
 
+#include "Actors/Actor.h"
 #include "States/StateMachine.h"
 #include "EnemyStates/EnemyState.h"
 #include "Types/EnemyTypes.h"
 
-#include "../Actor.h"
-
-#include "Events/LocalDispatcher.h"
 
 
 struct GameData;
 class AIPathMap;
 class Map;
 class DamageCollider;
+class Environment;
+class TextureManager;
 
 
 class Enemy : public Actor
 {
 public:
-	Enemy(GameData* gameData);
+	Enemy();
 	~Enemy() { }
+
+	void init(const std::string& config, Environment* environment, TextureManager* textureManager);
 
 	// Core
 	void slowUpdate(float dt);
@@ -63,10 +65,8 @@ public:
 
 
 protected:
-	void init(const std::string& config);
 
 
-protected:
 	AIPathMap* mMap;
 
 	StateMachine<EnemyState> mStateMachine;

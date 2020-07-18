@@ -11,7 +11,8 @@
 
 
 struct GameData;
-struct Environment;
+class Environment;
+class TextureManager;
 
 class PlayerManager
 {
@@ -32,7 +33,7 @@ public:
 	LocalDispatcher& events() { return mEvents; }
 
 	void setPosition(VectorF position);
-	void selectCharacter(const std::string& characterConfig) { mPlayer.init(characterConfig); }
+	void selectCharacter(const std::string& characterConfig, TextureManager* textureManager);
 	void selectWeapon(const std::string& weaponName);
 
 

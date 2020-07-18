@@ -15,16 +15,14 @@
 
 
 
-Player::Player(GameData* gameData) :
-	Actor(gameData),
+Player::Player() :
 	mWeapon(nullptr),
 	mControlOverride(false)
 { }
 
-
-void Player::init(const std::string& characterConfig)
+void Player::setCharacter(const std::string& characterConfig, TextureManager* textureManager)
 {
-	Actor::set(characterConfig);
+	Actor::setCharacter(characterConfig, textureManager);
 }
 
 
@@ -94,12 +92,6 @@ void Player::reset()
 {
 	tileIndex.zero();
 	Actor::reset();
-}
-
-
-void Player::selectCharacter(const std::string& character)
-{
-	init(character);
 }
 
 

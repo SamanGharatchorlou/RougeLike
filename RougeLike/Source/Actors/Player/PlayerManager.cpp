@@ -10,8 +10,7 @@
 #include "Weapons/Melee/MeleeWeapon.h"
 
 
-PlayerManager::PlayerManager(GameData* gameData) : 
-	mPlayer(gameData), 
+PlayerManager::PlayerManager(GameData* gameData) :
 	mEnvironment(gameData->environment), 
 	mAbilities(gameData->textureManager, gameData->environment, &mPlayer)
 {
@@ -23,6 +22,7 @@ PlayerManager::PlayerManager(GameData* gameData) :
 void PlayerManager::init(Environment* environment)
 {
 	mEnvironment = environment;
+	mPlayer.init(environment);
 }
 
 void PlayerManager::setPosition(VectorF position)
@@ -91,6 +91,11 @@ void PlayerManager::render()
 void PlayerManager::exit()
 {
 	mPlayer.reset();
+}
+
+void PlayerManager::selectCharacter(const std::string& characterConfig, TextureManager* textureManager)
+{ 
+	mPlayer.setCharacter(characterConfig, textureManager); 
 }
 
 

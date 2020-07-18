@@ -121,9 +121,7 @@
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyState.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyWait.cpp" />
     <ClCompile Include="Source\Actors\Enemies\Spawning\EnemySpawner.cpp" />
-    <ClCompile Include="Source\Actors\Enemies\Types\Angel.cpp" />
     <ClCompile Include="Source\Actors\Enemies\Types\Devil.cpp" />
-    <ClCompile Include="Source\Actors\Enemies\Types\Imp.cpp" />
     <ClCompile Include="Source\Actors\Enemies\Enemy.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyManager.cpp" />
     <ClCompile Include="Source\Actors\Player\Player.cpp" />
@@ -136,6 +134,8 @@
     <ClCompile Include="Source\Actors\Enemies\Types\EnemyTypes.cpp" />
     <ClCompile Include="Source\Actors\Player\PlayerManager.cpp" />
     <ClCompile Include="Source\Collisions\EnemyCollisions.cpp" />
+    <ClCompile Include="Source\Actors\Enemies\EnemyPool.cpp" />
+    <ClCompile Include="Source\Utilities\ObjectPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -281,9 +281,7 @@
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyStateHeaders.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyWait.h" />
     <ClInclude Include="Source\Actors\Enemies\Spawning\EnemySpawner.h" />
-    <ClInclude Include="Source\Actors\Enemies\Types\Angel.h" />
     <ClInclude Include="Source\Actors\Enemies\Types\Devil.h" />
-    <ClInclude Include="Source\Actors\Enemies\Types\Imp.h" />
     <ClInclude Include="Source\Actors\Enemies\Enemy.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyManager.h" />
     <ClInclude Include="Source\Actors\Player\Player.h" />
@@ -295,6 +293,8 @@
     <ClInclude Include="Source\Actors\Enemies\Types\EnemyTypes.h" />
     <ClInclude Include="Source\Actors\Player\PlayerManager.h" />
     <ClInclude Include="Source\Collisions\EnemyCollisions.h" />
+    <ClInclude Include="Source\Actors\Enemies\EnemyPool.h" />
+    <ClInclude Include="Source\Utilities\ObjectPool.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

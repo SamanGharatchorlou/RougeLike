@@ -8,8 +8,6 @@
 #include "Actors/ActorManager.h"
 #include "Actors/Player/Player.h"
 
-#include "Types/Imp.h"
-#include "Types/Angel.h"
 #include "Types/Devil.h"
 
 // State specific updates
@@ -129,29 +127,10 @@ void EnemyManager::addEnemiesToPool(EnemyType type, unsigned int count)
 		case EnemyType::None:
 			enemyObject.second = ObjectStatus::None;
 			break;
-
-		case EnemyType::Imp:
-		{
-			Imp* imp = new Imp(mGameData);
-			imp->init();
-
-			enemyObject.first = imp;
-			enemyObject.second = ObjectStatus::Available;
-			break;
-		}
-		case EnemyType::Angel:
-		{
-			Angel* angel = new Angel(mGameData);
-			angel->init();
-
-			enemyObject.first = angel;
-			enemyObject.second = ObjectStatus::Available;
-			break;
-		}
 		case EnemyType::Devil:
 		{
-			Devil* devil= new Devil(mGameData);
-			devil->init();
+			Devil* devil= new Devil();
+			devil->init("Devil", mGameData->environment, mGameData->textureManager);
 
 			enemyObject.first = devil;
 			enemyObject.second = ObjectStatus::Available;
@@ -187,6 +166,7 @@ void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF positio
 
 			// TODO: add some kind of reset attribute thing here?
 			//enemy->propertyBag().pHealth.get().setFullHp();
+			enemy->Actor::init(mEnvironment);
 			enemy->setMap(&mPathMap);
 			enemy->spawn(state, position);
 #if !IGNORED_BY_ENEMIES

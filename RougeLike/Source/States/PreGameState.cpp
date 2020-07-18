@@ -51,7 +51,7 @@ void PreGameState::slowUpdate(float dt)
 
 	if (mSelectionScreen->enterGame())
 	{
-		mGameData->environment->actors()->player()->selectCharacter(mSelectionScreen->selectedCharacter());
+		mGameData->environment->actors()->player()->selectCharacter(mSelectionScreen->selectedCharacter(), mGameData->textureManager);
 		mGameData->environment->actors()->player()->selectWeapon(mSelectionScreen->selectedWeapon());
 
 		mGameController->getStateMachine()->replaceState(new GameState(mGameData, mGameController));

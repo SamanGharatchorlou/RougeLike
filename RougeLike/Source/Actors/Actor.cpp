@@ -13,11 +13,13 @@
 #include "Map/Map.h"
 #include "Map/Environment.h"
 
+#include "Objects/Effects/EffectTypes/Effect.h"
 
-Actor::Actor(GameData* gameData) : mGameData(gameData), mEffects(gameData->environment->effectPool(), this), mVisibility(true), mEffectPool(gameData->environment->effectPool()) { }
+
+Actor::Actor() : mVisibility(true) { }
 
 
-void Actor::set(const std::string& config)
+void Actor::setCharacter(const std::string& config, TextureManager* textureManager)
 {
 	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs_Objects, config));
 
@@ -25,7 +27,7 @@ void Actor::set(const std::string& config)
 	mPropertyBag.readProperties(config);
 
 	// Animations
-	AnimationReader reader(mGameData->textureManager, parser);
+	AnimationReader reader(textureManager, parser);
 	reader.initAnimator(mAnimator);
 	mAnimator.start();
 
@@ -107,19 +109,20 @@ bool Actor::hasProperty(const std::string& property) const
 
 void Actor::addEffect(Effect* effect)
 {
+	effect->setReceiver(this);
 	mEffects.addEffect(effect);
 }
 
 Effect* Actor::getEffectFromPool(EffectType type)
 {
-	return mEffectPool->getEffect(type);
+	return nullptr; // mEffectPool->getEffect(type);
 }
 
 void Actor::processEffects(EffectCollider* effectCollider)
 {
 	while (effectCollider->hasEffects())
 	{
-		mEffects.addEffect(effectCollider->popEffect());
+		addEffect(effectCollider->popEffect());
 	}
 }
 
@@ -132,5 +135,5 @@ RectF Actor::scaledRect() const
 
 const Map* Actor::currentMap() const
 {
-	return mGameData->environment->map(position());
+	return mEnvironment->map(position());
 }

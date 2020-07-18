@@ -83,6 +83,7 @@ private:
 
 	EnemyCollisions mCollisions;
 
+	// move this functionality into a class?
 	std::vector<EnemyObject> mEnemyPool;
 	std::vector<Enemy*> mActiveEnemies;
 

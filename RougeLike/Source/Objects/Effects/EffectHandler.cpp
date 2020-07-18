@@ -1,15 +1,12 @@
 #include "pch.h"
 #include "EffectHandler.h"
-#include "EffectPool.h"
-
-#include "Actors/Actor.h"
+#include "EffectTypes/Effect.h"
 
 
 void EffectHandler::addEffect(Effect* effect)
 {
 	if (!mDelayedAdd)
 	{
-		effect->setReceiver(mActor);
 		effect->init();
 		mEffects.push_back(effect);
 	}
@@ -43,7 +40,8 @@ void EffectHandler::slowUpdate(float dt)
 		{
 			effect->exit();
 			iter = mEffects.erase(iter);
-			mPool->returnEffect(effect);
+			// TODO: replace this with something... needs to be handled
+			//mPool->returnEffect(effect);
 		}
 		else
 		{
@@ -75,13 +73,14 @@ void EffectHandler::render()
 
 void EffectHandler::clear()
 {
-	for (std::vector<Effect*>::iterator iter = mEffects.begin(); iter != mEffects.end();)
-	{
-		Effect* effect = *iter;
+	// DO NOT NEW OR DELETE EFFECT, POOL HANDLES THIS STUFF
+	//for (std::vector<Effect*>::iterator iter = mEffects.begin(); iter != mEffects.end();)
+	//{
+	//	Effect* effect = *iter;
 
-		effect->exit();
+	//	effect->exit();
 
-		delete effect;
-		iter = mEffects.erase(iter);
-	}
+	//	delete effect;
+	//	iter = mEffects.erase(iter);
+	//}
 }

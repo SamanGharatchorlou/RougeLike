@@ -8,18 +8,26 @@
 
 #include "Objects/Properties/PropertyBag.h"
 
+// temp
+#include "Objects/Effects/EffectTypes/Effect.h"
+
 struct GameData;
 class Property;
 class Map;
 class EffectPool;
+class Environment;
+class TextureManager;
+
 
 class Actor
 {
 public:
-	Actor(GameData* gameData);
+	Actor();
 	virtual ~Actor() { };
 
-	void set(const std::string& config);
+	void init(Environment* environment) { mEnvironment = environment; }
+
+	void setCharacter(const std::string& config, TextureManager* textureManager);
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
 	void render();
@@ -63,18 +71,18 @@ protected:
 
 
 protected:
-	GameData* mGameData;
-	EffectPool* mEffectPool;
+	Environment* mEnvironment;
+
+	//GameData* mGameData;
+	//EffectPool* mEffectPool;
+	EffectHandler mEffects;
 
 	PropertyBag mPropertyBag;
 
+	Physics mPhysics;
 	EffectCollider mCollider;
 
 	Animator mAnimator;
-
-	Physics mPhysics;
-
-	EffectHandler mEffects;
 
 	LocalDispatcher mEvents;
 

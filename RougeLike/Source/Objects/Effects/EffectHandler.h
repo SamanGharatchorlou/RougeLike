@@ -1,15 +1,11 @@
 #pragma once
 
-class EffectPool;
-class Actor;
-
-#include "EffectTypes/Effect.h"
-
+class Effect;
 
 class EffectHandler
 {
 public:
-	EffectHandler(EffectPool* pool, Actor* actor) : mPool(pool), mActor(actor) { };
+	EffectHandler() { }
 
 	void addEffect(Effect* effect);
 
@@ -20,10 +16,7 @@ public:
 	void clear();
 
 private:
-	EffectPool* mPool;
-	Actor* mActor;
-
-	std::vector<Effect*> mEffects;
+	std::vector<Effect*> mEffects; // turn this into a linked list?
 
 	bool mDelayedAdd;
 	std::queue<Effect*> mEffectsToAdd;

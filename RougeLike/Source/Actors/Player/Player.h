@@ -7,16 +7,17 @@
 struct GameData;
 class MeleeWeapon;
 class AudioManager;
+class TextureManager;
+
 
 class Player : public Actor
 {
 	friend class PlayerCollisions;
 
 public:
-	Player(GameData* gameData);
+	Player();
 	~Player() { };
 
-	void init(const std::string& characterConfig);
 	void handleInput(const InputManager* input);
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
@@ -29,7 +30,7 @@ public:
 
 	MeleeWeapon*	weapon();
 
-	void selectCharacter(const std::string& character);
+	void setCharacter(const std::string& characterConfig, TextureManager* textureManager);
 	void setWeapon(MeleeWeapon* weapon);
 
 	void addAbility(const std::string& name);
@@ -45,6 +46,8 @@ public:
 
 	void updateWeaponHitSound(AudioManager* audio);
 	void updateCurrentTile(Map* map);
+
+
 private:
 	void processHit();
 

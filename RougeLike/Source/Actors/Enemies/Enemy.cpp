@@ -17,8 +17,7 @@
 #endif
 
 
-Enemy::Enemy(GameData* gameData) :
-	Actor(gameData),
+Enemy::Enemy() :
 	mStateMachine(new EnemyNullState),
 	mMap(nullptr),
 	mCurrentIndex(Vector2D<int>(-1,-1))
@@ -27,9 +26,10 @@ Enemy::Enemy(GameData* gameData) :
 }
 
 
-void Enemy::init(const std::string& config)
+void Enemy::init(const std::string& config, Environment* environment, TextureManager* textureManager)
 {
-	Actor::set(config);
+	Actor::init(environment);
+	Actor::setCharacter(config, textureManager);
 }
 
 
@@ -87,7 +87,7 @@ void Enemy::renderCharacter()
 
 const Map* Enemy::getEnvironmentMap() const
 {
-	return mGameData->environment->primaryMap();
+	return mEnvironment->primaryMap();
 }
 
 

@@ -7,9 +7,7 @@ struct GameData;
 class Devil : public Enemy
 {
 public:
-	Devil(GameData* gameData);
-
-	void init();
+	Devil();
 
 	const EnemyType type() const override { return EnemyType::Devil; }
 };
