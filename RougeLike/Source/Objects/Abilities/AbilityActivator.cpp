@@ -9,15 +9,38 @@
 #include "Actors/ActorManager.h"
 
 #include "Collisions/Collider.h"
+#include "Input/InputManager.h"
 #include "Game/Cursor.h"
 
 #include "AbilityManager.h"
 
 
-AbilityActivator::AbilityActivator(Environment* environment) : mEnvironment(environment) { }
+bool AbilityActivator::selected(Ability* ability, const InputManager* input)
+{
+	AbilityType type = ability->type();
+	Button::State buttonState = input->getButton(Button::E).state(); // mHotKeys.state(type, input);
+
+	if (buttonState == Button::State::Pressed)
+		return true;
+	else
+		return false;
+}
 
 
-bool AbilityActivator::activate(Ability* ability)
+bool AbilityActivator::released(Ability* ability, const InputManager* input)
+{
+	AbilityType type = ability->type();
+	Button::State buttonState = input->getButton(Button::E).state(); // mHotKeys.state(type, input);
+
+	if (buttonState == Button::State::Released)
+		return true;
+	else
+		return false;
+}
+
+
+
+bool AbilityActivator::activate(Ability* ability, const InputManager* input)
 {
 	bool didActivate = false;
 
@@ -34,7 +57,7 @@ bool AbilityActivator::activate(Ability* ability)
 	case Ability::TargetType::Actor:
 	{
 		TargetActorAbility* actorAbility = static_cast<TargetActorAbility*>(ability);
-		didActivate = activateOnActor(actorAbility);
+		didActivate = activateOnActor(actorAbility, input);
 		break;
 	}
 	// Select any floor tile
@@ -42,7 +65,7 @@ bool AbilityActivator::activate(Ability* ability)
 	case Ability::TargetType::AttackArea:
 	{
 		TargetPositionAbility* positionAbility = static_cast<TargetPositionAbility*>(ability);
-		didActivate = activateOnPosition(positionAbility);
+		didActivate = activateOnPosition(positionAbility, input);
 		break;
 	}
 	default:
@@ -78,13 +101,14 @@ bool AbilityActivator::activateOnSelf(TargetSelfAbility* ability)
 }
 
 
-bool AbilityActivator::activateOnActor(TargetActorAbility* ability)
+bool AbilityActivator::activateOnActor(TargetActorAbility* ability, const InputManager* input)
 {
 	std::vector<Actor*> enemies = mEnvironment->actors()->getAllEnemies();
+	VectorF cursorPosition = cursorWorldPosition(input->cursorPosition());
 	for (int i = 0; i < enemies.size(); i++)
 	{
 		// activate ability on first enemy selected
-		if (enemies[i]->collider()->contains(cursorPosition()))
+		if (enemies[i]->collider()->contains(cursorPosition))
 		{
 			ability->activateOn(enemies[i], mEnvironment->effectPool());
 			return true;
@@ -95,9 +119,9 @@ bool AbilityActivator::activateOnActor(TargetActorAbility* ability)
 }
 
 
-bool AbilityActivator::activateOnPosition(TargetPositionAbility* ability)
+bool AbilityActivator::activateOnPosition(TargetPositionAbility* ability, const InputManager* input)
 {
-	VectorF cursorPos = cursorPosition();
+	VectorF cursorPos = cursorWorldPosition(input->cursorPosition());
 
 	// BUG: if you select just outside of the current map this breaks?
 	if (ability->isValidTarget(cursorPos, map(cursorPos)))
@@ -110,9 +134,8 @@ bool AbilityActivator::activateOnPosition(TargetPositionAbility* ability)
 }
 
 
-VectorF AbilityActivator::cursorPosition() const
+VectorF AbilityActivator::cursorWorldPosition(VectorF cursorPosition) const
 {
-	VectorF cursorPosition = mEnvironment->cursor()->position();
 	return mEnvironment->toWorldCoords(cursorPosition);
 }
 

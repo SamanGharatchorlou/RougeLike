@@ -108,9 +108,10 @@ void LevelManager::setTrapInfo(Map* map, DecorMap& trapInfo)
 		const Attributes attributes = trapInfo[DecorType::Spikes];
 		if (attributes.contains("triggerTime") && attributes.contains("recoveryTime"))
 		{
+			Damage damage = attributes.getFloat("damage");
 			float triggerTime = attributes.getFloat("triggerTime");
 			float recoveryTime = attributes.getFloat("recoveryTime");
-			map->traps().set(triggerTime, recoveryTime);
+			map->traps().set(damage, triggerTime, recoveryTime);
 		}
 	}
 }

@@ -7,11 +7,14 @@
 
 
 struct GameData;
+class GameScreen;
 class Actor;
 class TextureManager;
 class InputManager;
 class EffectPool;
 class Environment;
+class Screen;
+
 
 class AbilityManager
 {
@@ -19,8 +22,9 @@ class AbilityManager
 	friend class AbilityActivator;
 
 public:
-	AbilityManager(TextureManager* textures, Environment* environment, Actor* parent);
+	AbilityManager(TextureManager* textures, Actor* parent, Screen* screen);
 
+	void init(Environment* environment);
 
 	bool shouldActivate(Ability* ability, const InputManager* input);
 
@@ -40,6 +44,8 @@ public:
 
 
 private:
+	void addAbility(Ability* ability);
+
 	void sendSetTextColourEvent(Ability* abiliy, Colour colour);
 
 	void handleStates(Ability* ability, float dt);
@@ -55,7 +61,9 @@ private:
 	LocalDispatcher mEvents;
 
 	AbilityActivator mActivator;
-	AbilityHotKeys mHotKeys;
+	//AbilityHotKeys mHotKeys;
+	//HotKeys<AbilityType> mHotKeyMgr;
 
 	std::vector<Ability*> mAbilities;
+	//std::unordered_map<AbilityType, Ability*> mAbilityMap;
 };

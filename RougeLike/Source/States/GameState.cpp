@@ -96,22 +96,17 @@ void GameState::handleInput()
 
 void GameState::fastUpdate(float dt)
 {
-	//mGameData->actors->fastUpdate(dt);
-	mGameData->environment->fastUpdate(dt);
-
 	Camera::Get()->fastUpdate(dt);
 
 	mGameData->collisionManager->fastUpdate();
+
+	mGameData->environment->fastUpdate(dt);
 }
 
 
 void GameState::slowUpdate(float dt)
 {
 	mGameData->environment->slowUpdate(dt);
-
-	//mGameData->actors->slowUpdate(dt);
-
-	mGameData->environment->effectPool()->slowUpdate();
 
 	mGameData->scoreManager->slowUpdate();
 

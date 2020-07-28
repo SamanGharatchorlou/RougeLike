@@ -133,5 +133,5 @@ ValueMap Collectables::getConfigInfo(Collectable* collectable) const
 	XMLParser parser;
 	std::string filePath = FileManager::Get()->findFile(FileManager::Configs_Objects, collectable->name());
 	parser.parseXML(filePath);
-	return parser.values(parser.rootNode()->first_node("Properties"));
+	return parser.valueMap(parser.rootNode()->first_node("Properties"));
 }

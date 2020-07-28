@@ -34,6 +34,25 @@
 		<KnockbackDistance>20</KnockbackDistance>
 	</Properties>
 
+	<Effects>
+				<!-- Damage -->
+		<Damage>
+			<Damage>100</Damage>
+		</Damage>
+		<!-- Damage -->
+		<Damage>100</Damage>
+
+		<!-- Displacement -->
+		<Displacement>
+			<KnockbackForce>750</KnockbackForce>
+			<KnockbackDistance>100</KnockbackDistance>
+		</Displacement>
+
+		<!-- Displacement -->
+		<KnockbackForce>750</KnockbackForce>
+		<KnockbackDistance>100</KnockbackDistance>
+	</Effects>
+
 	<MaxSize>60</MaxSize>
 	<ColliderScale x = "0.32" y = "0.57"></ColliderScale>
 

@@ -30,7 +30,7 @@ public:
 
 	MeleeWeapon*	weapon();
 
-	void setCharacter(const std::string& characterConfig, TextureManager* textureManager);
+	void setCharacter(XMLParser& parser, TextureManager* textureManager);
 	void setWeapon(MeleeWeapon* weapon);
 
 	void addAbility(const std::string& name);

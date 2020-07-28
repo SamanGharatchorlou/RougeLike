@@ -9,4 +9,12 @@ enum class EnemyType
 	Devil
 };
 
+
+
+inline void operator >>(EnemyType a, std::string& str)
+{
+	if (a == EnemyType::Devil)
+		str = "Devil";
+}
+
 EnemyType stringToEnemyType(const std::string& type);

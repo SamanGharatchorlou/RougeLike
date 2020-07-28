@@ -8,12 +8,12 @@
 #include "Objects/Effects/EffectTypes/DamageEffect.h"
 
 
-void SpikeAbility::fillValues(ValueMap& values)
-{
-	mDamage = Damage(std::stof(values["Damage"]));
-	mKnockbackForce = std::stof(values["KnockbackForce"]);
-	mKnockbackDistance = std::stof(values["KnockbackDistance"]);
-}
+//void SpikeAbility::fillValues(ValueMap& values)
+//{
+//	mDamage = Damage(std::stof(values["Damage"]));
+//	mKnockbackForce = std::stof(values["KnockbackForce"]);
+//	mKnockbackDistance = std::stof(values["KnockbackDistance"]);
+//}
 
 
 void SpikeAbility::activateAt(VectorF position, EffectPool* effectPool)
@@ -34,12 +34,12 @@ void SpikeAbility::activateOn(Actor* actor, EffectPool* effectPool)
 
 void SpikeAbility::applyEffects(Actor* actor, EffectPool* effectPool)
 {
-	Effect* displacement = effectPool->getEffect(EffectType::Displacement);
+	Effect* displacement = effectPool->getObject(EffectType::Displacement);
 	DisplacementEffect* displaceEffect = static_cast<DisplacementEffect*>(displacement);
 	displaceEffect->set(mSource, mKnockbackForce, mKnockbackDistance);
 	actor->addEffect(displacement);
 
-	Effect* damage = effectPool->getEffect(EffectType::Damage);
+	Effect* damage = effectPool->getObject(EffectType::Damage);
 	DamageEffect* damageEffect = static_cast<DamageEffect*>(damage);
 	damageEffect->set(mDamage);
 	actor->addEffect(damage);

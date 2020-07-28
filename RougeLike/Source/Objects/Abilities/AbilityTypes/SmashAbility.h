@@ -10,7 +10,7 @@ class SmashAbility : public TargePositionAttackAbility
 public:
 	SmashAbility(Texture* hammerTexture, VectorF hammerSize);
 
-	void fillValues(ValueMap& values) override;
+	//void fillValues(ValueMap& values) override;
 
 	void activateAt(VectorF position, EffectPool* pool) override;
 	void activateOn(Actor* target, EffectPool* pool) override;

@@ -1,29 +1,64 @@
 #pragma once
 
-#include "EffectTypes/Effect.h"
+#include "Utilities/ObjectPool.h"
+#include "EffectTypes/EffectTypes.h"
+
+class Effect;
 
 
-class EffectPool
+class EffectPool : public ObjectPool<Effect, EffectType>
 {
 public:
-	EffectPool();
+	EffectPool() { }
 
-	void load();
-	void slowUpdate();
+	void load() override;
 
-	Effect* getEffect(EffectType type);
-	void returnEffect(Effect* effect);
+	void returnObject(Effect* effect) override;
 
 private:
-	Effect* getNewEffect(EffectType type);
-
-
-private:
-	// Effects are pulled from this pool then returned when finished with
-	std::unordered_map<EffectType, std::queue<Effect*>> mPool;
-	std::unordered_map<EffectType, int> mPoolSizes;
-
-#if _DEBUG // Tracker contains all effects at all times
-	std::unordered_map<EffectType, std::queue<Effect*>> mTrackerPool;
-#endif
+	Effect* createNewObject(EffectType type) const override;
 };
+
+
+
+/*
+
+if (type == EffectType::Damage)
+{
+	effect = new DamageEffect;
+}
+else if (type == EffectType::Displacement)
+{
+	effect = new DisplacementEffect;
+}
+else if (type == EffectType::KnockbackStun)
+{
+	Effect* additionalEffect = getEffect(EffectType::Stun);
+	StunEffect* stunEffect = static_cast<StunEffect*>(additionalEffect);
+
+	effect = new KnockbackStunEffect(stunEffect);
+}
+else if (type == EffectType::Armor)
+{
+	effect = new ArmorEffect;
+}
+else if (type == EffectType::Blink)
+{
+	effect = new BlinkEffect;
+}
+else if (type == EffectType::Heal)
+{
+	effect = new HealEffect;
+}
+//else if (type == EffectType::Stun)
+//{
+//	XMLParser parser;
+//	parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, "Stun"));
+
+//	AnimationReader reader(mGameData->textureManager, parser);
+//	Animator animator;
+//	reader.initAnimator(animator);
+
+//	effect = new StunEffect(animator);
+//}
+*/

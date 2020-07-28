@@ -52,17 +52,17 @@ void WeaponStash::init(TextureManager* tm)
 
 void WeaponStash::fillBasicWeaponData(XMLParser& parser, WeaponData* data)
 {
-	ValueMap properties = parser.values(parser.rootNode()->first_node("Properties"));
+	ValueMap properties = parser.valueMap(parser.rootNode()->first_node("Properties"));
 
 	// Damage
-	float damage = std::stof(properties["Damage"]);
+	float damage = properties["Damage"];
 	data->damage = Damage(damage);
 
 	// Cooldown
-	data->cooldown = Cooldown(std::stof(properties["Cooldown"]) / 100.0f);
+	data->cooldown = Cooldown(properties["Cooldown"] / 100.0f);
 
 	// Audio
-	ValueMap audio = parser.values(parser.rootNode()->first_node("Audio"));
+	StringMap audio = parser.stringMap(parser.rootNode()->first_node("Audio"));
 	data->audioHit = audio["Hit"];
 	data->audioMiss = audio["Miss"];
 
@@ -81,13 +81,13 @@ void WeaponStash::fillMeleeWeaponData(XMLParser& parser, MeleeWeaponData* data)
 {
 	data->type = WeaponType::Melee;
 
-	ValueMap properties = parser.values(parser.rootNode()->first_node("Properties"));
+	ValueMap properties = parser.valueMap(parser.rootNode()->first_node("Properties"));
 
 	// Swing speed & angle
-	data->swingSpeed = std::stof(properties["SwingSpeed"]);
-	data->swingArc = std::stof(properties["SwingAngle"]);
-	data->knockbackDistance = std::stof(properties["KnockbackDistance"]);
-	data->knockbackForce = std::stof(properties["KnockbackForce"]);
+	data->swingSpeed = properties["SwingSpeed"];
+	data->swingArc = properties["SwingAngle"];
+	data->knockbackDistance = properties["KnockbackDistance"];
+	data->knockbackForce = properties["KnockbackForce"];
 }
 
 

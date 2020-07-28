@@ -20,7 +20,7 @@ void EnemyDead::init()
 	const float exp = mEnemy->getPropertyValue("Experience");
 
 	EnemyDeadEvent* dataPtr = new EnemyDeadEvent(mEnemy, score, exp);
-	mEnemy->pushEvent(EventPacket(dataPtr));
+	mEnemy->events().push(EventPacket(dataPtr));
 }
 
 

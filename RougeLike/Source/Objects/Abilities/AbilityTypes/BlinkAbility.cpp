@@ -32,7 +32,7 @@ void BlinkAbility::slowUpdate(float dt)
 
 void BlinkAbility::applyEffects(EffectPool* pool)
 {
-	Effect* effect = pool->getEffect(EffectType::Blink);
+	Effect* effect = pool->getObject(EffectType::Blink);
 	BlinkEffect* blinkEffect = static_cast<BlinkEffect*>(effect);
 	blinkEffect->set(mTargetPosition);
 	mCaster->addEffect(effect);

@@ -18,6 +18,7 @@ public:
 	// Buttons
 	const Button& getButton(Button::Key key) const;
 
+	Button::State state(Button::Key key) const { return getButton(key).state(); }
 	bool isHeld(Button::Key key) const { return getButton(key).isHeld(); }
 	bool isPressed(Button::Key key) const { return getButton(key).isPressed(); }
 	bool isReleased(Button::Key key) const { return getButton(key).isReleased(); }

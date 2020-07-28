@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Actor.h"
 
-#include "Game/GameData.h"
 #include "Collisions/EffectCollider.h"
 #include "Graphics/Texture.h"
 #include "Graphics/TextureManager.h"
@@ -19,12 +18,12 @@
 Actor::Actor() : mVisibility(true) { }
 
 
-void Actor::setCharacter(const std::string& config, TextureManager* textureManager)
+void Actor::setCharacter(XMLParser& parser, TextureManager* textureManager)
 {
-	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs_Objects, config));
+	//XMLParser parser(FileManager::Get()->findFile(FileManager::Configs_Objects, config));
 
 	// Properties
-	mPropertyBag.readProperties(config);
+	mPropertyBag.readProperties(parser);
 
 	// Animations
 	AnimationReader reader(textureManager, parser);
@@ -113,12 +112,7 @@ void Actor::addEffect(Effect* effect)
 	mEffects.addEffect(effect);
 }
 
-Effect* Actor::getEffectFromPool(EffectType type)
-{
-	return nullptr; // mEffectPool->getEffect(type);
-}
-
-void Actor::processEffects(EffectCollider* effectCollider)
+void Actor::handleEffects(EffectCollider* effectCollider)
 {
 	while (effectCollider->hasEffects())
 	{

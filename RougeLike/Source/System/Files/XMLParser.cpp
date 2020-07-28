@@ -29,7 +29,26 @@ Attributes XMLParser::attributes(xmlNode node) const
 }
 
 
-ValueMap XMLParser::values(xmlNode node) const
+StringMap XMLParser::stringMap(xmlNode node) const
+{
+	if (node == nullptr)
+		printf("pause");
+	ASSERT(Warning, node != nullptr, "Attempting to get values for non-existant node\n");
+	StringMap stringMap;
+
+	xmlNode childNode = node->first_node();
+
+	while (childNode != nullptr)
+	{
+		stringMap[childNode->name()] = childNode->value();
+		childNode = childNode->next_sibling();
+	}
+
+	ASSERT(Warning, stringMap.size() != 0, "Node %s has no value\n", node->name());
+	return stringMap;
+}
+
+ValueMap XMLParser::valueMap(xmlNode node) const
 {
 	if (node == nullptr)
 		printf("pause");
@@ -40,7 +59,7 @@ ValueMap XMLParser::values(xmlNode node) const
 
 	while (childNode != nullptr)
 	{
-		valueMap[childNode->name()] = childNode->value();
+		valueMap[childNode->name()] = std::stof(childNode->value());
 		childNode = childNode->next_sibling();
 	}
 

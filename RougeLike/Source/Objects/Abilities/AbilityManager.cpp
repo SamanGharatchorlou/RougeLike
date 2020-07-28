@@ -15,28 +15,61 @@
 #include "AbilityCreator.h"
 
 
-AbilityManager::AbilityManager(TextureManager* textures, Environment* environment, Actor* parent)
-	: mActivator(environment), mHotKeys(this), mCaster(parent), mTextures(textures)
+AbilityManager::AbilityManager(TextureManager* textures, Actor* parent, Screen* screen) : 
+	mCaster(parent), mTextures(textures)//, mHotKeys(screen)
 { }
+
+
+void AbilityManager::init(Environment* environment)
+{
+	mActivator.init(environment);
+}
 
 
 void AbilityManager::handleInput(const InputManager* input)
 {
-	mHotKeys.handleInput(input);
-
 	for (int i = 0; i < mAbilities.size(); i++)
 	{
 		Ability* ability = mAbilities[i];
+		AbilityType type = ability->type();
+		Button::State buttonState = input->getButton(Button::E).state(); // mHotKeys.state(type, input);
 
-		if (ability->state() == Ability::Selected)
+		if (mActivator.selected(ability, input))
 		{
-			if (shouldActivate(ability, input))
-			{
-				setState(ability, Ability::Activate);
-			}
+			setState(ability, Ability::Activate/*Selected*/);
+			mActivator.activate(ability, input);
 		}
+		else if (mActivator.released(ability, input))
+		{
+
+			setState(ability, Ability::Idle);
+		}
+			
+
+		//mActivator.activate(ability, input);
+
+		//if (buttonState == Button::State::Pressed)
+		//	setState(ability, Ability::Activate/*Selected*/);
+		//else if (buttonState == Button::State::Released)
+		//	setState(ability, Ability::Idle);
 	}
+
+
+	// does this need to happen before the loop above? for the self target?
+	//for (int i = 0; i < mAbilities.size(); i++)
+	//{
+	//	Ability* ability = mAbilities[i];
+
+	//	if (ability->state() == Ability::Selected)
+	//	{
+	//		if (shouldActivate(ability, input))
+	//		{
+	//			setState(ability, Ability::Activate);
+	//		}
+	//	}
+	//}
 }
+
 
 bool AbilityManager::shouldActivate(Ability* ability, const InputManager* input)
 {
@@ -47,8 +80,8 @@ bool AbilityManager::shouldActivate(Ability* ability, const InputManager* input)
 		// Player casts on self only
 	case Ability::TargetType::Self:
 	{
-		Button::Key hotKey = mHotKeys.hotKey(ability);
-		activate = input->isReleased(hotKey);
+		//Button::State state = mHotKeys.state(ability->type(), input);
+		//activate = state == Button::State::Released;
 		break;
 	}
 	// Activate on first enemy selected
@@ -73,10 +106,13 @@ void AbilityManager::handleStates(Ability* ability, float dt)
 	{
 	case Ability::Activate:
 	{
-		if (mActivator.activate(ability))
+		//if (mActivator.activate(ability))
 		{
-			ability->cooldown().begin();
-			setState(ability, Ability::Running);
+			if (!ability->cooldown().hasStarted())
+			{
+				ability->cooldown().begin();
+				setState(ability, Ability::Running);
+			}
 		}
 
 		break;
@@ -86,7 +122,7 @@ void AbilityManager::handleStates(Ability* ability, float dt)
 		ability->fastUpdate(dt);
 		ability->slowUpdate(dt);
 
-		if (ability->cooldown().completed())
+		if (ability->cooldown().hasCompleted())
 		{
 			setState(ability, Ability::Finished);
 		}
@@ -112,12 +148,6 @@ void AbilityManager::slowUpdate(float dt)
 		handleStates(mAbilities[i], dt);
 		handleEvents(mAbilities[i]);
 	}
-
-	// Handle hot key events
-	while (mHotKeys.events.hasEvent())
-	{
-		mEvents.push(mHotKeys.events.pop());
-	}
 }
 
 
@@ -129,7 +159,7 @@ void AbilityManager::handleEvents(Ability* ability)
 
 		if (event.data->eventType == Event::ActivateAbilityOn)
 		{
-			mActivator.activateAreaAttack(ability);
+			//mActivator.activateAreaAttack(ability);
 			event.free();
 		}
 		else
@@ -167,9 +197,7 @@ bool AbilityManager::inSelectionMode() const
 void AbilityManager::add(const std::string& name)
 {
 	Ability* ability = createNewAbility(name, mTextures);
-
-	XMLParser parser;
-	parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, ability->name()));
+	XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Abilities, ability->name()));
 
 	AnimationReader reader(mTextures, parser);
 	Animator animator;
@@ -177,12 +205,20 @@ void AbilityManager::add(const std::string& name)
 	if (reader.initAnimator(animator))
 	{
 		ability->init(animator, mCaster);
-		mHotKeys.addHotKey(ability);
+		addAbility(ability);
 	}
 	else
 		DebugPrint(Warning, "Animator setup failed for '%s' ability\n", ability->name().c_str());
 
+}
+
+
+void AbilityManager::addAbility(Ability* ability)
+{
+	AbilityType type = ability->type();
 	setState(ability, Ability::Idle);
+
+	//mHotKeys.addHotKey(type);
 	mAbilities.push_back(ability);
 }
 

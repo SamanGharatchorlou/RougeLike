@@ -8,7 +8,7 @@ class SpikeAbility : public TargePositionAttackAbility
 public:
 	SpikeAbility() : mDamage(0.0f), mKnockbackDistance(0.0f), mKnockbackForce(0.0f) { }
 
-	void fillValues(ValueMap& values) override;
+	//void fillValues(ValueMap& values) override;
 
 	void activateAt(VectorF position, EffectPool* effectPool) override;
 	void activateOn(Actor* actor, EffectPool* effectPool) override;

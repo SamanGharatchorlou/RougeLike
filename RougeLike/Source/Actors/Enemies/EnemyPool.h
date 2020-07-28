@@ -5,27 +5,15 @@
 
 class Enemy;
 
-class EnemyPool : public ObjectPool<Enemy*, EnemyType>
+class EnemyPool : public ObjectPool<Enemy, EnemyType>
 {
-	enum ObjectStatus
-	{
-		None,
-		Uninitialised,
-		Available,
-		Active,
-		Inactive,
-	};
-
-	using EnemyObject = std::pair<Enemy*, ObjectStatus>;
+public:
+	// add load function (info pulled from config file?)
+	void load() override { }
+	void returnObject(Enemy* enemy) override;
 
 private:
 
-	Enemy* createNewObject(EnemyType type) const override { return nullptr; }
+	Enemy* createNewObject(EnemyType type) const override;
 
-private:
-	// move this functionality into a class?
-	std::vector<EnemyObject> mEnemyPool;
-	std::vector<Enemy*> mActiveEnemies;
-
-	std::list<Enemy*> mActiveEnims;
 };

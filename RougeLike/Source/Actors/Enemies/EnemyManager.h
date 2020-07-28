@@ -15,27 +15,20 @@
 #include "Debug/DebugDraw.h"
 #endif
 
+// TEMP
+#include "EnemyPool.h"
+
 
 struct GameData;
 
-struct Environment;
+class Environment;
 class Enemy;
 class Collider;
+class TextureManager;
+class EffectPool;
 
 class EnemyManager
 {
-public:
-	enum ObjectStatus
-	{
-		None,
-		Uninitialised,
-		Available,
-		Active,
-		Inactive,
-	};
-
-	using EnemyObject = std::pair<Enemy*, ObjectStatus>;
-
 public:
 	EnemyManager(GameData* gameData);
 	~EnemyManager();
@@ -51,7 +44,7 @@ public:
 	void clearAllEnemies();
 
 	// AI pathing
-	void generatePathMap();
+	void generateAIPathMap();
 	void updateAIPathCostMap();
 	void requestEnemyPathUpdates() { pathUpdateRequests++; }
 
@@ -61,9 +54,7 @@ public:
 	bool hasEvent() const { return mEvents.hasEvent(); }
 
 	// Spawning
-	void addEnemiesToPool(EnemyType type, unsigned int count);
-	void spawnLevel();
-	void spawn(EnemyType type, EnemyState::Type state, VectorF position);
+	void spawn(EnemyType type, EnemyState::Type state, VectorF position, TextureManager* textureManager, EffectPool* effectPool);
 
 	std::vector<Enemy*> getActiveEnemies() const { return mActiveEnemies; }
 	std::vector<Collider*> attackingColliders() const;
@@ -78,13 +69,11 @@ private:
 
 
 private:
-	GameData* mGameData;
 	Environment* mEnvironment;
 
 	EnemyCollisions mCollisions;
 
-	// move this functionality into a class?
-	std::vector<EnemyObject> mEnemyPool;
+	EnemyPool mPool;
 	std::vector<Enemy*> mActiveEnemies;
 
 	AIPathMap mPathMap;
@@ -97,8 +86,4 @@ private:
 
 	int pathUpdateRequests;
 	int pathUpdateStaggerCounter;
-
-#if LIMIT_ENEMY_SPAWNS
-	int spawnCount = 0;
-#endif
 };

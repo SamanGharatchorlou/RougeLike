@@ -132,13 +132,6 @@ void ActorManager::exit()
 
 /// --- Private Functions --- ///
 
-void ActorManager::initEnemies()
-{
-	mEnemies.addEnemiesToPool(EnemyType::Devil, 50);
-	mEnemies.spawnLevel();
-}
-
-
 void ActorManager::sendEvent(EventPacket eventPacket)
 {
 	notify(*eventPacket.data);

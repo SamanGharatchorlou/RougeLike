@@ -11,7 +11,8 @@ public:
 	void stop() { mTimer.stop(); }
 
 	void begin() { mTimer.restart(); }
-	bool completed() const { return mTimer.getSeconds() > mCooldownTime; }
+	bool hasCompleted() const { return mTimer.getSeconds() > mCooldownTime; }
+	bool hasStarted() const { return mTimer.isStarted(); }
 
 	float timeElapsed() const { return mTimer.getSeconds(); }
 

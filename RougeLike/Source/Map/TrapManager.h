@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Collisions/EffectCollider.h"
+#include "Objects/Attributes/Damage.h"
 
 
 class CollisionTracker;
@@ -33,13 +34,12 @@ public:
 		Index mIndex;
 		TimerF timer;
 		bool exhausted;
-
 	};
 
 
 public:
 	TrapManager(Map* map) : mMap(map), mTriggerTime(0.75f), mRecoveryTime(1.0f) { }
-	void set(float triggerTime, float recoveryTime);
+	void set(Damage damage, float triggerTime, float recoveryTime);
 
 
 	void flushQueues();
@@ -49,6 +49,8 @@ public:
 	void triggerTrap(VectorF position);
 
 	bool didCollide(VectorF position);
+
+	Damage damage() const { return mDamage; }
 
 	
 private:
@@ -63,4 +65,6 @@ private:
 
 	float mTriggerTime;
 	float mRecoveryTime;
+
+	Damage mDamage;
 };

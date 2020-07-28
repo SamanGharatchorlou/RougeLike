@@ -34,6 +34,7 @@ public:
 	UIElement* findElement(const std::string& id);
 	UIButton* findButton(const std::string& id);
 
+	Screen* screen(Screen::Type type);
 	Screen* getActiveScreen() { return activeScreen; }
 	std::string typeToString(Screen::Type screenType);
 

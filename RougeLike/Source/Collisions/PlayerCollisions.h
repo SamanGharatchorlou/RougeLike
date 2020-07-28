@@ -8,6 +8,7 @@
 class CollisionManager;
 class Player;
 class Map;
+class EffectPool;
 
 
 class PlayerCollisions
@@ -16,8 +17,13 @@ public:
 	PlayerCollisions() { };
 
 	void init(Player* player, CollisionManager* collisionManager);
-	void fastUpdate(float dt, Map* map);
-	void slowUpdate(Map* map);
+	void resolveWalls(Map* map, float dt);
+
+	
+	void resolveTraps(Map* map, EffectPool* effects);
+	void resolveWeapons(EffectPool* effects);
+	void resolveBody();
+
 
 	void refreshWeaponColliders();
 
@@ -32,7 +38,7 @@ public:
 private:
 	void addCollidersToTrackers();
 	void updateWeaponColliders();
-	void resolveTrapCollisions(Map* map);
+	void resolveTrapCollisions(Map* map, EffectPool* effects);
 
 
 private:

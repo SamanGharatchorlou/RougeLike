@@ -18,12 +18,12 @@ SmashAbility::SmashAbility(Texture* hammerTexture, VectorF hammerSize)
 };
 
 
-void SmashAbility::fillValues(ValueMap& values)
-{
-	mFallSpeed = std::stof(values["HammerFallSpeed"]);
-	mDamage = Damage(std::stof(values["Damage"]));
-	mTime = std::stof(values["StunTime"]);
-}
+//void SmashAbility::fillValues(ValueMap& values)
+//{
+//	mFallSpeed = values["HammerFallSpeed"];
+//	mDamage = Damage(values["Damage"]);
+//	mTime = values["StunTime"];
+//}
 
 
 void SmashAbility::slowUpdate(float dt)
@@ -94,12 +94,12 @@ void SmashAbility::applyEffects(Actor* actor, EffectPool* effectPool)
 {
 	// The enemy state will change to wait (from the stun) before the got hit bool from the
 	// damage will change the state to hit. Hence the damage is taken but there is no hit state change
-	Effect* damage = effectPool->getEffect(EffectType::Damage);
+	Effect* damage = effectPool->getObject(EffectType::Damage);
 	DamageEffect* damageEffect = static_cast<DamageEffect*>(damage);
 	damageEffect->set(mDamage);
 	actor->addEffect(damageEffect);
 
-	Effect* stun = effectPool->getEffect(EffectType::Stun);
+	Effect* stun = effectPool->getObject(EffectType::Stun);
 	StunEffect* stunEffect = static_cast<StunEffect*>(stun);
 	stunEffect->set(mTime);
 	actor->addEffect(stunEffect);

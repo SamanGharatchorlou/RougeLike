@@ -21,10 +21,10 @@ EventPacket Ability::popEvent()
 }
 
 
-void Ability::fillAbilityValues(ValueMap& values)
+void Ability::fillAbilityValues(const ValueBag& values)
 {
-	mMaxDimention = std::stof(values["MaxSize"]);
-	mCooldown = Cooldown(std::stof(values["Cooldown"]));
+	mMaxDimention = values.get("MaxSize");
+	mCooldown = Cooldown(values.get("Cooldown"));
 }
 
 
@@ -44,9 +44,9 @@ void Ability::exit()
 
 
 // --- Range ---
-void RangedAbility::fillRangedAbilityValues(ValueMap& values)
+void RangedAbility::fillRangedAbilityValues(const ValueBag& values)
 {
-	mRange = std::stof(values["Range"]);
+	mRange = values.get("Range");
 }
 
 

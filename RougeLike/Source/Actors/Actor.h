@@ -25,20 +25,15 @@ public:
 	Actor();
 	virtual ~Actor() { };
 
-	void init(Environment* environment) { mEnvironment = environment; }
+	void set(Environment* environment) { mEnvironment = environment; }
 
-	void setCharacter(const std::string& config, TextureManager* textureManager);
+	void setCharacter(XMLParser& parser, TextureManager* textureManager);
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
 	void render();
 
 	virtual void setVisibility(bool visibility) { mVisibility = visibility; }
 	void reset();
-
-	// Event handling
-	EventPacket popEvent() { return mEvents.pop(); }
-	void pushEvent(EventPacket event) { mEvents.push(event); }
-	bool hasEvent() const { return mEvents.hasEvent(); }
 
 	// PropertyBag
 	Property* getProperty(const std::string& property) const;
@@ -50,6 +45,7 @@ public:
 	const EffectCollider* collider() const { return &mCollider; }
 
 	// Systems
+	LocalDispatcher& events() { return mEvents; }
 	Animator&	animator() { return mAnimator; }
 	Physics*	physics() { return &mPhysics; }
 	const Physics* physics() const { return &mPhysics; }
@@ -64,17 +60,15 @@ public:
 	RectF		scaledRect() const;
 
 	void addEffect(Effect* effect);
-	Effect* getEffectFromPool(EffectType type);
+
 
 protected:
-	void processEffects(EffectCollider* effectCollider);
+	void handleEffects(EffectCollider* effectCollider);
 
 
 protected:
 	Environment* mEnvironment;
 
-	//GameData* mGameData;
-	//EffectPool* mEffectPool;
 	EffectHandler mEffects;
 
 	PropertyBag mPropertyBag;

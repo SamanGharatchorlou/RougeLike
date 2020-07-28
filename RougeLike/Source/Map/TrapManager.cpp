@@ -4,8 +4,9 @@
 #include "Map.h"
 
 
-void TrapManager::set(float triggerTime, float recoveryTime)
+void TrapManager::set(Damage damage, float triggerTime, float recoveryTime)
 {
+	mDamage = damage;
 	mTriggerTime = triggerTime;
 	mRecoveryTime = recoveryTime;
 }

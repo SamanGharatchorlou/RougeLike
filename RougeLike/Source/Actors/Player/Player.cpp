@@ -20,9 +20,9 @@ Player::Player() :
 	mControlOverride(false)
 { }
 
-void Player::setCharacter(const std::string& characterConfig, TextureManager* textureManager)
+void Player::setCharacter(XMLParser& parser, TextureManager* textureManager)
 {
-	Actor::setCharacter(characterConfig, textureManager);
+	Actor::setCharacter(parser, textureManager);
 }
 
 
@@ -141,13 +141,13 @@ void Player::processHit()
 	if (mCollider.getOtherCollider())
 	{
 		EffectCollider* effectCollider = static_cast<EffectCollider*>(mCollider.getOtherCollider());
-		processEffects(effectCollider);
+		handleEffects(effectCollider);
 
 		if (effectCollider->effectCount() == 0)
 			printf("zero effects?\n");
 
 		TraumaEvent* trauma = new TraumaEvent(40);
-		pushEvent(EventPacket(trauma));
+		mEvents.push(EventPacket(trauma));
 	}
 
 	updateUI();
@@ -159,11 +159,11 @@ void Player::updateUI()
 	// Update UI
 	Health* hp = static_cast<Health*>(getProperty("Health"));
 	SetHealthBarEvent* hpPtr = new SetHealthBarEvent(*hp);
-	pushEvent(EventPacket(hpPtr));
+	mEvents.push(EventPacket(hpPtr));
 
 	Armor* armor = static_cast<Armor*>(getProperty("Armor"));
 	SetArmorBarEvent* armorPtr = new SetArmorBarEvent(*armor);
-	pushEvent(EventPacket(armorPtr));
+	mEvents.push(EventPacket(armorPtr));
 }
 
 
@@ -202,7 +202,7 @@ void Player::updateCurrentTile(Map* map)
 			tileIndex = currentTile;
 
 			UpdateAIPathMapEvent* eventPtr = new UpdateAIPathMapEvent;
-			pushEvent(EventPacket(eventPtr));
+			mEvents.push(EventPacket(eventPtr));
 		}
 	}
 }

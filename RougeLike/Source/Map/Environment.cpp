@@ -11,7 +11,7 @@
 
 
 Environment::Environment(GameData* mGameData) : 
-	mLevelManager(mGameData->textureManager), mActors(mGameData), mCursor(mGameData->inputManager->getCursor())
+	mLevelManager(mGameData->textureManager), mActors(mGameData)
 {
 };
 
@@ -19,9 +19,9 @@ Environment::Environment(GameData* mGameData) :
 
 void Environment::restart()
 {
-	delete mEntrace;
-	delete mPrimaryMap;
-	delete mExit;
+	delete mMaps.entrance;
+	delete mMaps.primaryMap;
+	delete mMaps.exit;
 
 	createNewMaps();
 }
@@ -38,13 +38,13 @@ void Environment::load()
 
 	DebugPrint(Log, "\n Loading Maps\n");
 	createNewMaps();
-	mLevelManager.init(mEntrace);
-	VectorF offset = mLevelManager.getOffset(mEntrace);
+	mLevelManager.init(mMaps.entrance);
+	VectorF offset = mLevelManager.getOffset(mMaps.entrance);
 
-	mLevelManager.buildPrimary(mPrimaryMap, offset);
-	offset = mLevelManager.getOffset(mPrimaryMap);
+	mLevelManager.buildPrimary(mMaps.primaryMap, offset);
+	offset = mLevelManager.getOffset(mMaps.primaryMap);
 
-	mLevelManager.buildExit(mExit, offset);
+	mLevelManager.buildExit(mMaps.exit, offset);
 
 	setCameraBoundaries();
 
@@ -58,7 +58,7 @@ void Environment::load()
 
 	DebugPrint(Log, "\n--- Environment Load Complete---\n\n");
 
-	std::vector<SpawnData> data = mSpawner.getspawnList(mPrimaryMap, mLevelManager.level());
+	std::vector<SpawnData> data = mSpawner.getspawnList(mMaps.primaryMap, mLevelManager.level());
 
 	int a = 4;
 }
@@ -69,13 +69,13 @@ void Environment::nextLevel()
 	// wipe enemies
 
 	mLevelManager.incrementLevel();
-	mLevelManager.swapEntranceExit(mEntrace, mExit);
+	mLevelManager.swapEntranceExit(mMaps.entrance, mMaps.exit);
 
-	VectorF offset = mLevelManager.getOffset(mEntrace);
-	mLevelManager.buildPrimary(mPrimaryMap, offset);
+	VectorF offset = mLevelManager.getOffset(mMaps.entrance);
+	mLevelManager.buildPrimary(mMaps.primaryMap, offset);
 
-	offset = mLevelManager.getOffset(mPrimaryMap);
-	mLevelManager.buildExit(mExit, offset);
+	offset = mLevelManager.getOffset(mMaps.primaryMap);
+	mLevelManager.buildExit(mMaps.exit, offset);
 
 	setCameraBoundaries();
 
@@ -84,7 +84,7 @@ void Environment::nextLevel()
 
 	// spawn new enemies
 
-	std::vector<SpawnData> data = mSpawner.getspawnList(mPrimaryMap, mLevelManager.level());
+	std::vector<SpawnData> data = mSpawner.getspawnList(mMaps.primaryMap, mLevelManager.level());
 
 	int a = 4;
 }
@@ -107,9 +107,9 @@ void Environment::fastUpdate(float dt)
 
 void Environment::slowUpdate(float dt)
 {
-	mEntrace->slowUpdate(dt);
-	mPrimaryMap->slowUpdate(dt);
-	mExit->slowUpdate(dt);
+	mMaps.entrance->slowUpdate(dt);
+	mMaps.primaryMap->slowUpdate(dt);
+	mMaps.exit->slowUpdate(dt);
 
 	mActors.slowUpdate(dt);
 }
@@ -117,48 +117,48 @@ void Environment::slowUpdate(float dt)
 
 void Environment::renderFloor()
 {
-	mEntrace->renderFloor();
-	mPrimaryMap->renderFloor();
-	mExit->renderFloor();
+	mMaps.entrance->renderFloor();
+	mMaps.primaryMap->renderFloor();
+	mMaps.exit->renderFloor();
 }
 void Environment::renderBottomLayer()
 {
-	mEntrace->renderLowerLayer();
-	mPrimaryMap->renderLowerLayer();
-	mExit->renderLowerLayer();
+	mMaps.entrance->renderLowerLayer();
+	mMaps.primaryMap->renderLowerLayer();
+	mMaps.exit->renderLowerLayer();
 
 	mActors.render();
 }
 void Environment::renderTopLayer()
 {
-	mEntrace->renderUpperLayer();
-	mPrimaryMap->renderUpperLayer();
-	mExit->renderUpperLayer();
+	mMaps.entrance->renderUpperLayer();
+	mMaps.primaryMap->renderUpperLayer();
+	mMaps.exit->renderUpperLayer();
 }
 
 
 VectorF Environment::size() const
 {
-	return mPrimaryMap->size();
+	return mMaps.primaryMap->size();
 }
 
 
 Map* Environment::map(VectorF position) const
 {
-	if (position.x < mPrimaryMap->getFirstRect().LeftPoint())
-		return mEntrace;
-	else if (position.x < mPrimaryMap->getLastRect().RightPoint())
-		return mPrimaryMap;
+	if (position.x < mMaps.primaryMap->getFirstRect().LeftPoint())
+		return mMaps.entrance;
+	else if (position.x < mMaps.primaryMap->getLastRect().RightPoint())
+		return mMaps.primaryMap;
 	else
-		return mExit;
+		return mMaps.exit;
 }
 
 
 void Environment::setCameraBoundaries()
 {
-	float xLeft = mEntrace->getFirstRect().LeftPoint();
-	float xRight = mExit->getLastRect().RightPoint();
-	RectF boundaries(xLeft, 0.0f, xRight, mPrimaryMap->size().y);
+	float xLeft = mMaps.entrance->getFirstRect().LeftPoint();
+	float xRight = mMaps.exit->getLastRect().RightPoint();
+	RectF boundaries(xLeft, 0.0f, xRight, mMaps.primaryMap->size().y);
 
 	Camera::Get()->setMapBoundaries(boundaries);
 }
@@ -167,7 +167,7 @@ void Environment::setCameraBoundaries()
 bool Environment::canClosePreviousLevel(VectorF playerPosition) const
 {
 	float buffer = 100.0f;
-	float x = mPrimaryMap->getLastRect().RightPoint() + buffer;
+	float x = mMaps.primaryMap->getLastRect().RightPoint() + buffer;
 	float y = playerPosition.y;
 
 	if (playerPosition.x > x)
@@ -214,7 +214,7 @@ void Environment::readConfigData(Vector2D<int>& mapIndexSize, VectorF& tileSize,
 
 VectorF Environment::toWorldCoords(VectorF cameraCoords)
 {
-	float xOffset = mEntrace->getLastRect().RightPoint();
+	float xOffset = mMaps.entrance->getLastRect().RightPoint();
 
 	VectorF cameraPosition = Camera::Get()->rect().TopLeft();
 
@@ -233,13 +233,13 @@ void Environment::createNewMaps()
 
 	tileSize *= scale;
 
-	mPrimaryMap = new Map(primaryMapSize, tileSize);
+	mMaps.primaryMap = new Map(primaryMapSize, tileSize);
 
 
 	Vector2D<int> corridorMapSize;
-	corridorMapSize.x = (int)((Camera::Get()->size().x / mPrimaryMap->tileSize().x) * 1.5f);
+	corridorMapSize.x = (int)((Camera::Get()->size().x / mMaps.primaryMap->tileSize().x) * 1.5f);
 	corridorMapSize.y = primaryMapSize.y;
 
-	mEntrace = new Map(corridorMapSize, tileSize);
-	mExit = new Map(corridorMapSize, tileSize);
+	mMaps.entrance = new Map(corridorMapSize, tileSize);
+	mMaps.exit = new Map(corridorMapSize, tileSize);
 }

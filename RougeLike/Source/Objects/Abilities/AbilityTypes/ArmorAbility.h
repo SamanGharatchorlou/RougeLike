@@ -8,14 +8,14 @@ class ArmorAbility : public TargetSelfAbility
 public:
 	ArmorAbility() { };
 
-	void fillValues(ValueMap& values) override;
+	//void fillValues(ValueMap& values) override;
 
 	void activate(EffectPool* pool) override;
 
 	void fastUpdate(float dt) override { }
 	void slowUpdate(float dt) override;
 
-	const TargetType targetType() const override { return TargetType::Self; }
+	TargetType targetType() const override { return TargetType::Self; }
 
 
 protected:

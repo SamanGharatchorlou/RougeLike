@@ -26,13 +26,6 @@ Enemy::Enemy() :
 }
 
 
-void Enemy::init(const std::string& config, Environment* environment, TextureManager* textureManager)
-{
-	Actor::init(environment);
-	Actor::setCharacter(config, textureManager);
-}
-
-
 void Enemy::fastUpdate(float dt)
 {
 	mPhysics.resetHasForce();
@@ -58,7 +51,7 @@ void Enemy::slowUpdate(float dt)
 	if (mCurrentIndex != index)
 	{
 		UpdateAICostMapEvent* event = new UpdateAICostMapEvent;
-		pushEvent(EventPacket(event));
+		mEvents.push(EventPacket(event));
 		mCurrentIndex = index;
 	}
 
@@ -112,7 +105,7 @@ void Enemy::resolveCollisions()
 		if (mCollider.getOtherCollider())
 		{
 			EffectCollider* effectCollider = static_cast<EffectCollider*>(mCollider.getOtherCollider());
-			processEffects(effectCollider);
+			handleEffects(effectCollider);
 		}
 
 		addState(EnemyState::Hit);
@@ -179,4 +172,31 @@ EnemyState::Type Enemy::state() const
 		DebugPrint(Warning, "Enemy state machine has no state, size = 0\n");
 		return EnemyState::None;
 	}
+}
+
+
+
+void Enemy::readEffects(const XMLParser& parser, EffectPool* effects)
+{
+	ValueBag effectBag;
+	xmlNode rootNode = parser.rootNode();
+	xmlNode effectRootNode = rootNode->first_node("Effects");
+	xmlNode effectNode = effectRootNode->first_node();
+
+	//while (effectNode)
+	//{
+	//	effectBag.readData(parser, "Effects");
+
+	//	EffectType type = EffectType::None;
+	//	type << effectNode->name();
+
+	//	if (type != EffectType::None)
+	//	{
+	//		Effect* effect = effects->getObject(type);
+	//		effect->fill(map);
+	//		mAttackEffects.push_back(effects->getObject(type));
+	//	}
+
+	//	effectNode = effectNode->next_sibling();
+	//}
 }

@@ -10,6 +10,7 @@ public:
 	HealEffect(float heal) : mHeal(heal) { };
 
 	void set(Health health) { mHeal = health; }
+	void fill(ValueMap& valueMap);
 
 	void clearData() override;
 

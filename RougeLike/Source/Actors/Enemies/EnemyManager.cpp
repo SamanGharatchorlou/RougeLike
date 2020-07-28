@@ -20,7 +20,7 @@
 
 
 EnemyManager::EnemyManager(GameData* gameData) : 
-	mGameData(gameData), mCollisions(gameData->collisionManager), pathUpdateRequests(0), pathUpdateStaggerCounter(0)
+	mCollisions(gameData->collisionManager), pathUpdateRequests(0), pathUpdateStaggerCounter(0)
 {
 	updateTimer.start();
 }
@@ -28,15 +28,8 @@ EnemyManager::EnemyManager(GameData* gameData) :
 
 EnemyManager::~EnemyManager()
 {
-	for (auto enemy : mEnemyPool)
-	{
-		delete enemy.first;
-		enemy.first = nullptr;
-		enemy.second = ObjectStatus::None;
-	}
-
 	mActiveEnemies.clear();
-	mEnemyPool.clear();
+	mPool.freeAll();
 }
 
 
@@ -46,6 +39,12 @@ void EnemyManager::clear()
 	mPathMap.clear();
 }
 
+void EnemyManager::load()
+{
+	// Set ai path map
+	generateAIPathMap();
+	mPool.addNewObjects(EnemyType::Devil, 50);
+}
 
 void EnemyManager::init(Environment* environment)
 {
@@ -72,8 +71,8 @@ void EnemyManager::slowUpdate(float dt)
 		enemy->slowUpdate(dt);
 
 		// Handle enemy messages
-		while (enemy->hasEvent())
-			mEvents.push(enemy->popEvent());
+		while (enemy->events().hasEvent())
+			mEvents.push(enemy->events().pop());
 
 		// Clear out dead enemies
 		if (enemy->state() == EnemyState::Exit)
@@ -91,115 +90,48 @@ void EnemyManager::slowUpdate(float dt)
 	}
 
 	mCollisions.updateAttackingColliders(attackingColliders());
-
-#if _DEBUG // Police the pool and active enemy lists
-	int activeEnemies = 0;
-	for (unsigned int i = 0; i < mEnemyPool.size(); i++)
-	{
-		if (mEnemyPool[i].second == ObjectStatus::Active)
-			activeEnemies++;
-	}
-
-	ASSERT(Warning, activeEnemies == mActiveEnemies.size(),
-		"There is a mismatch between the number of active enemies in the pool(%d) and the number active in the active list %d\n",
-		activeEnemies, mActiveEnemies.size());
-#endif
 }
 
 
 
 
-void EnemyManager::generatePathMap()
+void EnemyManager::generateAIPathMap()
 {
 	mPathMap.build(mEnvironment->primaryMap(), 4, 4);
 }
 
 
-void EnemyManager::addEnemiesToPool(EnemyType type, unsigned int count)
-{
-	for (unsigned int i = 0; i < count; i++)
-	{
-		EnemyObject enemyObject;
-		enemyObject.second = ObjectStatus::Uninitialised;
 
-		switch (type)
-		{
-		case EnemyType::None:
-			enemyObject.second = ObjectStatus::None;
-			break;
-		case EnemyType::Devil:
-		{
-			Devil* devil= new Devil();
-			devil->init("Devil", mGameData->environment, mGameData->textureManager);
-
-			enemyObject.first = devil;
-			enemyObject.second = ObjectStatus::Available;
-			break;
-		}
-		default:
-			DebugPrint(Warning, "Invalid enemy type %d\n", type);
-			break;
-		}
-
-		mEnemyPool.push_back(enemyObject);
-	}
-
-	DebugPrint(Log, "%d enemies of type %d added to the enemy pool, pool is now size %d\n", count, type, mEnemyPool.size());
-}
-
-
-void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF position)
+void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF position, TextureManager* textureManager, EffectPool* effectPool)
 {
 #if LIMIT_ENEMY_SPAWNS
-	if (spawnCount >= LIMIT_ENEMY_SPAWNS - 1)
+	if (mActiveEnemies.size() >= LIMIT_ENEMY_SPAWNS - 1)
 		return;
 #endif
+	
+	std::string enemyType;
+	type >> enemyType;
 
-	// Find available enemy to spawn
-	for (unsigned int i = 0; i < mEnemyPool.size(); i++)
-	{
-		if (mEnemyPool[i].first->type() == type &&
-			mEnemyPool[i].second == ObjectStatus::Available)
-		{
-			Enemy* enemy = mEnemyPool[i].first;
-			mEnemyPool[i].second = ObjectStatus::Active;
+	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs_Objects, enemyType));
 
-			// TODO: add some kind of reset attribute thing here?
-			//enemy->propertyBag().pHealth.get().setFullHp();
-			enemy->Actor::init(mEnvironment);
-			enemy->setMap(&mPathMap);
-			enemy->spawn(state, position);
+	Enemy* enemy = mPool.getObject(type);
+
+	enemy->setCharacter(parser, textureManager);
+	enemy->readEffects(parser, effectPool);
+
+	// TODO: add some kind of reset attribute thing here?
+	//enemy->propertyBag().pHealth.get().setFullHp();
+	enemy->set(mEnvironment);
+
+	enemy->setMap(&mPathMap);
+	enemy->spawn(state, position);
 #if !IGNORED_BY_ENEMIES
-			enemy->setTarget(mGameData->actors->player());
+	enemy->setTarget(mGameData->actors->player());
 #endif
 
-			mCollisions.add(enemy->collider());
+	mCollisions.add(enemy->collider());
 
-			mActiveEnemies.push_back(enemy);
-#if LIMIT_ENEMY_SPAWNS
-			spawnCount++;
-#endif
-			return;
-		}
-	}
-
-	DebugPrint(Warning, "No available enemies of type %d in enemy pool of size %d, consider adding more\n", type, mEnemyPool.size());
-}
-
-
-void EnemyManager::spawnLevel()
-{
-	//mSpawner.spawnLevel(mGameData->environment->primaryMap(), mGameData->environment->mapLevel());
-
-
-}
-
-
-void EnemyManager::load()
-{
-	// Set ai path map
-	generatePathMap();
-	addEnemiesToPool(EnemyType::Devil, 50);
+	mActiveEnemies.push_back(enemy);
 }
 
 
@@ -331,24 +263,13 @@ void EnemyManager::render()
 
 void EnemyManager::clearAllEnemies()
 {
-	for (Enemy* enemy : mActiveEnemies)
+	for (std::vector<Enemy*>::iterator iter = mActiveEnemies.begin(); iter != mActiveEnemies.end(); iter++)
 	{
-		mCollisions.remove(enemy->collider());
-		enemy->clear();
+		clearAndRemove(iter);
 	}
 
 	ASSERT(Warning, mCollisions.isEmpty(), "Enemy colliders are left in the collision trackers when they shouldn't be!\n");
-
-	//mGameData->collisionManager->removeAllDefenders(CollisionManager::PlayerWeapon_Hit_Enemy);
-	//mGameData->collisionManager->removeAllDefenders(CollisionManager::Player_Hit_Enemy);
-	//mGameData->collisionManager->removeAllAttackers(CollisionManager::Enemy_Hit_Player);
-
-
-
-	for (EnemyObject& enemy : mEnemyPool)
-	{
-		 enemy.second = ObjectStatus::Available;
-	}
+	ASSERT(Warning, mActiveEnemies.size() == 0, "Enemies are left in the active enemy list when they shouldn't be!\n");
 
 	mActiveEnemies.clear();
 }
@@ -382,15 +303,11 @@ std::vector<Collider*> EnemyManager::attackingColliders() const
 
 void EnemyManager::clearAndRemove(std::vector<Enemy*>::iterator& iter)
 {
-	mCollisions.remove((*iter)->collider());
-	(*iter)->clear();
+	Enemy* enemy = *iter;
+	enemy->clear();
 
-	// Find this enemy in the pool
-	for (std::vector<EnemyObject>::iterator poolIter = mEnemyPool.begin(); poolIter != mEnemyPool.end(); poolIter++)
-	{
-		if (*iter == poolIter->first)
-			poolIter->second = ObjectStatus::Available;
-	}
+	mCollisions.remove(enemy->collider());
+	mPool.returnObject(enemy);
 
 	iter = mActiveEnemies.erase(iter);
 }

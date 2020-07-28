@@ -8,8 +8,7 @@ class ChargeAbility : public TargePositionAttackAbility
 public:
 	ChargeAbility() { };
 
-
-	void fillValues(ValueMap& values) override;
+	//void fillValues(ValueMap& values) override;
 
 	void activateAt(VectorF position, EffectPool* effectPool) override;
 	void activateOn(Actor* actor, EffectPool* effectPool) override;

@@ -95,15 +95,10 @@
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\Ability.cpp" />
     <ClCompile Include="Source\Map\MapDebugging.cpp" />
     <ClCompile Include="Source\Map\TrapManager.cpp" />
-    <ClCompile Include="Source\Objects\Effects\EffectTypes\ArmorEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\BlinkEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\DamageEffect.cpp" />
-    <ClCompile Include="Source\Objects\Effects\EffectTypes\DashEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\DisplacementEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\Effect.cpp" />
-    <ClCompile Include="Source\Objects\Effects\EffectTypes\KnockbackStunEffect.cpp" />
-    <ClCompile Include="Source\Objects\Effects\EffectTypes\SlowEffect.cpp" />
-    <ClCompile Include="Source\Objects\Effects\EffectTypes\StunEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\HealEffect.cpp" />
     <ClCompile Include="Source\Collisions\WeaponCollisionManager.cpp" />
     <ClCompile Include="Source\Map\MapBuilding\DecorTilePopulator.cpp" />
@@ -135,7 +130,6 @@
     <ClCompile Include="Source\Actors\Player\PlayerManager.cpp" />
     <ClCompile Include="Source\Collisions\EnemyCollisions.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyPool.cpp" />
-    <ClCompile Include="Source\Utilities\ObjectPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -254,15 +248,10 @@
     <ClInclude Include="Source\Utilities\UniqueQueue.h" />
     <ClInclude Include="Source\Map\TileTypes.h" />
     <ClInclude Include="Source\Map\TrapManager.h" />
-    <ClInclude Include="Source\Objects\Effects\EffectTypes\ArmorEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\BlinkEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\DamageEffect.h" />
-    <ClInclude Include="Source\Objects\Effects\EffectTypes\DashEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\DisplacementEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\Effect.h" />
-    <ClInclude Include="Source\Objects\Effects\EffectTypes\KnockbackStunEffect.h" />
-    <ClInclude Include="Source\Objects\Effects\EffectTypes\SlowEffect.h" />
-    <ClInclude Include="Source\Objects\Effects\EffectTypes\StunEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\HealEffect.h" />
     <ClInclude Include="Source\Collisions\WeaponCollisionManager.h" />
     <ClInclude Include="Source\Map\MapBuilding\DecorTilePopulator.h" />
@@ -295,6 +284,7 @@
     <ClInclude Include="Source\Collisions\EnemyCollisions.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyPool.h" />
     <ClInclude Include="Source\Utilities\ObjectPool.h" />
+    <ClInclude Include="Source\Objects\Effects\EffectTypes\EffectTypes.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

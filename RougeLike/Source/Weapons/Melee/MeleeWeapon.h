@@ -28,10 +28,12 @@ public:
 	const std::string& missSoundLabel() override;
 
 	bool didHit() const override;
+	bool containsCollider(Collider* collider) const;
 
 	void updateAimDirection(VectorF cursorPosition) override;
 
 	// Stats
+	// TODO: can remove some of these? just pull from the data?
 	const MeleeWeaponData* getData() const { return mMeleeData; }
 	const float getAngle() const { return getRotation(mDirection); }
 	const float maxSwingAngle() const;

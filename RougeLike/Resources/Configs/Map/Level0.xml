@@ -10,7 +10,7 @@
 		</Decor>
 
 		<Traps>
-			<Spikes triggerTime="0.15" recoveryTime="5"></Spikes>
+			<Spikes damage = "10" triggerTime="0.15" recoveryTime="5"></Spikes>
 		</Traps>
 	</Primary>
 
@@ -21,7 +21,7 @@
 		</Decor>
 
 		<Traps>
-			<Spikes triggerTime="0.4" recoveryTime="1.0"></Spikes>
+			<Spikes damage = "10" triggerTime="0.4" recoveryTime="1.0"></Spikes>
 		</Traps>
 	</Exit>
 

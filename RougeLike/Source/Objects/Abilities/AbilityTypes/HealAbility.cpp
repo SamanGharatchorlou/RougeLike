@@ -8,9 +8,10 @@
 #include "Collisions/Collider.h"
 
 
-void HealAbility::fillValues(ValueMap& values)
+void HealAbility::fillValues(const ValueBag& values)
 {
-	mHeal = Health(std::stof(values["Heal"]));
+	Ability::fillValues(values);
+	mHeal = Health(values.get("Heal"));
 }
 
 
@@ -36,7 +37,7 @@ void HealAbility::activate(EffectPool* pool)
 
 void HealAbility::applyEffects(EffectPool* pool)
 {
-	Effect* effect = pool->getEffect(EffectType::Heal);
+	Effect* effect = pool->getObject(EffectType::Heal);
 	HealEffect* healEffect = static_cast<HealEffect*>(effect);
 	healEffect->set(mHeal);
 	mCaster->addEffect(effect);

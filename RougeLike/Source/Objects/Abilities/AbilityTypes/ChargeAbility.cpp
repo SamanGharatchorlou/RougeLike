@@ -11,16 +11,16 @@
 #include "Debug/DebugDraw.h"
 
 
-void ChargeAbility::fillValues(ValueMap& values)
-{
-	mChargeForce = std::stof(values["ChargeForce"]);
-	mChargeDistance = std::stof(values["ChargeDistance"]);
-
-	// Knockback data
-	mDamage = Damage(std::stof(values["Damage"]));
-	mKnockbackForce = std::stof(values["KnockbackForce"]);
-	mKnockbackDistance = std::stof(values["KnockbackDistance"]);
-}
+//void ChargeAbility::fillValues(ValueMap& values)
+//{
+//	mChargeForce = values["ChargeForce"];
+//	mChargeDistance = values["ChargeDistance"];
+//
+//	// Knockback data
+//	mDamage = Damage(values["Damage"]);
+//	mKnockbackForce = values["KnockbackForce"];
+//	mKnockbackDistance = values["KnockbackDistance"];
+//}
 
 
 void ChargeAbility::activateAt(VectorF position, EffectPool* effectPool)
@@ -129,8 +129,8 @@ void ChargeAbility::exit()
 
 void ChargeAbility::applyEffects(Actor* actor, EffectPool* effectPool)
 {
-	Effect* displacement = effectPool->getEffect(EffectType::Displacement);
-	DisplacementEffect* displacementEffect = static_cast<DisplacementEffect*>(displacement);
-	displacementEffect->set(mCaster->position(), mKnockbackForce, mKnockbackDistance);
-	actor->addEffect(displacement);
+	//Effect* displacement = effectPool->getEffect(EffectType::Displacement);
+	//DisplacementEffect* displacementEffect = static_cast<DisplacementEffect*>(displacement);
+	//displacementEffect->set(mCaster->position(), mKnockbackForce, mKnockbackDistance);
+	//actor->addEffect(displacement);
 }

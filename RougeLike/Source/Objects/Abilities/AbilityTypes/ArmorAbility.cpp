@@ -6,10 +6,10 @@
 #include "Objects/Effects/EffectPool.h"
 
 
-void ArmorAbility::fillValues(ValueMap& values)
-{
-	mArmor = Armor(std::stof(values["Armor"]));
-}
+//void ArmorAbility::fillValues(ValueMap& values)
+//{
+//	mArmor = Armor(values["Armor"]);
+//}
 
 
 void ArmorAbility::slowUpdate(float dt)
@@ -32,10 +32,10 @@ void ArmorAbility::activate(EffectPool* pool)
 
 void ArmorAbility::applyEffects(EffectPool* pool)
 {
-	Effect* effect = pool->getEffect(EffectType::Armor);
-	ArmorEffect* armorEffect = static_cast<ArmorEffect*>(effect);
-	armorEffect->set(mArmor);
-	mCaster->addEffect(effect);
+	//Effect* effect = pool->getObject(EffectType::Armor);
+	//ArmorEffect* armorEffect = static_cast<ArmorEffect*>(effect);
+	//armorEffect->set(mArmor);
+	//mCaster->addEffect(effect);
 }
 
 

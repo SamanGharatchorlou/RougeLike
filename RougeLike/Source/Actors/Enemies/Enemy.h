@@ -21,7 +21,7 @@ public:
 	Enemy();
 	~Enemy() { }
 
-	void init(const std::string& config, Environment* environment, TextureManager* textureManager);
+	virtual void init(TextureManager* textureManager, EffectPool* effects) = 0;
 
 	// Core
 	void slowUpdate(float dt);
@@ -63,10 +63,17 @@ public:
 	void			accellerateTowards(VectorF position);
 	void			move(VectorF velocity, float dt) { mPhysics.move(velocity, dt); }
 
+	// Effects
+	//void addAttackingEffect(Effect* effect) { mAttackEffects.push_front(effect); }
+
+
+	void readEffects(const XMLParser& parser, EffectPool* effects);
 
 protected:
+	// TODO: change all parser parameters to const
 
 
+protected:
 	AIPathMap* mMap;
 
 	StateMachine<EnemyState> mStateMachine;
@@ -75,5 +82,5 @@ protected:
 
 	Index mCurrentIndex;
 
-	std::vector<Effect*> mAttackEffects;
+	std::deque<Effect*> mAttackEffects;
 };

@@ -70,7 +70,7 @@ void MeleeWeapon::equipt(const WeaponData* data)
 
 void MeleeWeapon::attack()
 {
-	if (mCooldown.completed())
+	if (mCooldown.hasCompleted())
 	{
 		mAttacking = true;
 		overrideCursorControl(true);
@@ -103,6 +103,18 @@ bool MeleeWeapon::didHit() const
 		{
 			return true;
 		}
+	}
+
+	return false;
+}
+
+
+bool MeleeWeapon::containsCollider(Collider* collider) const
+{
+	for (const Collider* blockCollider : mBlockColliders)
+	{
+		if (collider == blockCollider)
+			return true;
 	}
 
 	return false;

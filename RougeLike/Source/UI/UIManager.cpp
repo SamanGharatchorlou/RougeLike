@@ -45,6 +45,19 @@ void UIManager::clearScreens()
 }
 
 
+Screen* UIManager::screen(Screen::Type type)
+{
+	for (int i = 0; i < screens.size(); i++)
+	{
+		if (screens[i]->type() == type)
+			return screens[i];
+	}
+
+	DebugPrint(Log, "No screen found with type %d\n", type);
+	return nullptr;
+}
+
+
 void UIManager::selectScreen(Screen::Type screenType)
 {
 	if (activeScreen)

@@ -8,7 +8,7 @@ class BlinkAbility: public TargetPositionAbility
 public:
 	BlinkAbility() { }
 
-	void fillValues(ValueMap& values) override { };
+	//void fillValues(ValueMap& values) override { };
 
 	void activateAt(VectorF position, EffectPool* pool) override;
 

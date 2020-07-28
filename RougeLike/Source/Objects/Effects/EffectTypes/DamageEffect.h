@@ -11,6 +11,7 @@ public:
 	DamageEffect(Damage damage) : mDamage(damage) { };
 
 	void set(Damage damage) { mDamage = damage; }
+	void fill(ValueMap& valueMap);
 
 	void clearData() override;
 

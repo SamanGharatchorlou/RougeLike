@@ -24,7 +24,7 @@ public:
 
 
 private:
-	void addEffects();
+	//void addEffects();
 	void updateEffects();
 
 	void updateHasAttackedStatus();

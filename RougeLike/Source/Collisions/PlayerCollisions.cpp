@@ -1,9 +1,7 @@
 #include "pch.h"
 #include "PlayerCollisions.h"
 
-#include "Game/GameData.h"
-#include "Objects/Effects/EffectTypes/DamageEffect.h"
-#include "Objects/Effects/EffectTypes/DisplacementEffect.h"
+#include "Objects/Effects/EffectPool.h"
 
 #include "Actors/Player/Player.h"
 #include "Weapons/Melee/MeleeWeapon.h"
@@ -27,7 +25,7 @@ void PlayerCollisions::init(Player* player, CollisionManager* collisionManager)
 	enableCollisions(CollisionManager::PlayerWeapon_Hit_Enemy, false);
 }
 
-void PlayerCollisions::fastUpdate(float dt, Map* map)
+void PlayerCollisions::resolveWalls(Map* map, float dt)
 {
 	if (mPlayer->userHasControl())
 	{
@@ -37,31 +35,30 @@ void PlayerCollisions::fastUpdate(float dt, Map* map)
 	}
 }
 
-void PlayerCollisions::slowUpdate(Map* map)
+void PlayerCollisions::resolveTraps(Map* map, EffectPool* effects)
 {
 	map->traps().triggerTrap(mPlayer->position());
-	resolveTrapCollisions(map);
-
-	updateWeaponColliders();
-
-	// TODO: not set this every frame... feels dirty
-	enableCollisions(CollisionManager::Player_Hit_Enemy, mPlayer->hasBodyCollisions());
+	resolveTrapCollisions(map, effects);
 }
 
-
-// Weapon collisions
-void PlayerCollisions::updateWeaponColliders()
+void PlayerCollisions::resolveWeapons(EffectPool* effects)
 {
 	if (mPlayer->mWeapon->isAttacking())
 	{
 		enableCollisions(CollisionManager::PlayerWeapon_Hit_Enemy, true);
-		mWeaponCollisions.processWeaponEffects();
-		mWeaponCollisions.addEnemiesToExcludedList();
+		mWeaponCollisions.processWeaponEffects(effects);
+		mWeaponCollisions.addCollidersToExcludedList();
 	}
 	else
 	{
 		enableCollisions(CollisionManager::PlayerWeapon_Hit_Enemy, false);
 	}
+}
+
+void PlayerCollisions::resolveBody()
+{
+	// TODO: not set this every frame... feels dirty
+	enableCollisions(CollisionManager::Player_Hit_Enemy, mPlayer->hasBodyCollisions());
 }
 
 
@@ -98,13 +95,16 @@ void PlayerCollisions::addCollidersToTrackers()
 }
 
 
-void PlayerCollisions::resolveTrapCollisions(Map* map)
+void PlayerCollisions::resolveTrapCollisions(Map* map, EffectPool* effects)
 {
 	if (map->traps().didCollide(mPlayer->position()))
 	{
-		Effect* effect = mPlayer->getEffectFromPool(EffectType::Damage);
-		DamageEffect* damageEffect = static_cast<DamageEffect*>(effect);
-		damageEffect->set(Damage(10));
-		mPlayer->addEffect(damageEffect);
+		ValueMap valueMap;
+		Damage trapDamage = map->traps().damage();
+		valueMap["Damage"] = trapDamage.value();
+
+		Effect* effect = effects->getObject(EffectType::Damage);
+		effect->fill(valueMap);
+		mPlayer->addEffect(effect);
 	}
 }

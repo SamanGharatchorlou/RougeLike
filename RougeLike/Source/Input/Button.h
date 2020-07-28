@@ -21,6 +21,13 @@
 class Button
 {
 public:
+	enum class State
+	{
+		None,
+		Pressed,
+		Released
+	};
+
 	enum Key
 	{
 		None = 0,
@@ -71,6 +78,8 @@ public:
 	void bind(Key key) { mKeyBinding = key; }
 
 	void reset();
+
+	State state() const;
 
 	bool isHeld() const { return mHeld; }
 	bool isPressed() const { return mPressed; }

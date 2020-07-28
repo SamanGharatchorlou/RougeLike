@@ -5,6 +5,7 @@
 #include "Game/GameData.h"
 #include "Map/Environment.h"
 #include "Input/InputManager.h"
+#include "UI/UIManager.h"
 
 
 #include "Weapons/Melee/MeleeWeapon.h"
@@ -12,7 +13,7 @@
 
 PlayerManager::PlayerManager(GameData* gameData) :
 	mEnvironment(gameData->environment), 
-	mAbilities(gameData->textureManager, gameData->environment, &mPlayer)
+	mAbilities(gameData->textureManager, &mPlayer, gameData->uiManager->screen(Screen::Game))
 {
 	mPlayerCollisions.init(&mPlayer, gameData->collisionManager);
 	weaponStash.init(gameData->textureManager);
@@ -22,7 +23,10 @@ PlayerManager::PlayerManager(GameData* gameData) :
 void PlayerManager::init(Environment* environment)
 {
 	mEnvironment = environment;
-	mPlayer.init(environment);
+	mPlayer.set(environment);
+	mAbilities.init(environment);
+
+	mAbilities.add("Heal");
 }
 
 void PlayerManager::setPosition(VectorF position)
@@ -56,14 +60,20 @@ void PlayerManager::handleInput(const InputManager* input)
 
 void PlayerManager::fastUpdate(float dt)
 {
-	mPlayerCollisions.fastUpdate(dt, mEnvironment->map(mPlayer.position()));
 	mPlayer.fastUpdate(dt);
+
+	Map* playerMap = mEnvironment->map(mPlayer.position());
+	mPlayerCollisions.resolveWalls(playerMap, dt);
+	mPlayerCollisions.resolveWeapons(mEnvironment->effectPool());
+
 }
 
 void PlayerManager::slowUpdate(float dt)
 {
+	// TODO: move any of these into fast update?
 	Map* playerMap = mEnvironment->map(mPlayer.position());
-	mPlayerCollisions.slowUpdate(playerMap);
+	mPlayerCollisions.resolveTraps(playerMap, mEnvironment->effectPool());
+	mPlayerCollisions.resolveBody();
 
 	mPlayer.slowUpdate(dt);
 	mPlayer.updateCurrentTile(playerMap);
@@ -77,8 +87,8 @@ void PlayerManager::slowUpdate(float dt)
 	while (mAbilities.hasEvent())
 		 mEvents.push(mAbilities.popEvent());
 
-	while (mPlayer.hasEvent())
-		mEvents.push(mPlayer.popEvent());
+	while (mPlayer.events().hasEvent())
+		mEvents.push(mPlayer.events().pop());
 }
 
 void PlayerManager::render()
@@ -95,7 +105,8 @@ void PlayerManager::exit()
 
 void PlayerManager::selectCharacter(const std::string& characterConfig, TextureManager* textureManager)
 { 
-	mPlayer.setCharacter(characterConfig, textureManager); 
+	XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Player, characterConfig));
+	mPlayer.setCharacter(parser, textureManager);
 }
 
 

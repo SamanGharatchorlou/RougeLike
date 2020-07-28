@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "AbilityHotKeys.h"
 
+
 #include "AbilityManager.h"
 #include "Game/GameData.h"
 #include "Input/InputManager.h"
@@ -14,7 +15,7 @@
 
 #include "Events/Events.h"
 
-
+/*
 void AbilityHotKeys::handleInput(const InputManager* input)
 {
 	// As per Adrian Grutters request, rename the iterator
@@ -61,6 +62,7 @@ void AbilityHotKeys::addHotKey(Ability* ability)
 	//gameScreen->addElement(box);
 	//gameScreen->addElement(text);
 }
+
 
 
 Button::Key AbilityHotKeys::hotKey(Ability* ability)
@@ -122,3 +124,50 @@ UITextBox* AbilityHotKeys::createIconText(UIBox* icon, int count)
 
 	return text;
 }
+*/
+
+/*
+UIBox* AbilityHotKeys::createIcon(AbilityType item, int keyNumber, TextureManager* textureManager)
+{
+	std::string id;
+	item >> id;
+
+	Texture* icon = textureManager->getTexture(id + "Icon", FileManager::Image_UI);
+	VectorF position(75.0f * (1 + keyNumber), 650);
+	VectorF size = realiseSize(icon->originalDimentions, 50);
+	RectF rect(position, size);
+
+	UIBox::Data data;
+	data.id = id;
+	data.rect = rect;
+	data.texture = icon;
+
+	return new UIBox(data);
+}
+
+UITextBox* AbilityHotKeys::createIconText(UIBox* icon, int count)
+{
+	UITextBox::Data textData;
+	textData.id = icon->id() + "Text";
+	textData.aligment = "Center";
+	textData.font = "";
+	textData.ptSize = 48;
+	textData.colour = SDL_Color{ 255, 255, 255 };
+	textData.texture = nullptr;
+	textData.rect = RectF();
+
+	int number = count + 1;
+	char buffer[5];
+	_itoa_s(number, buffer, 10);
+	textData.text = std::string(buffer);
+
+	UITextBox* text = new UITextBox(textData);
+	text->autoSizeRectToText();
+
+	RectF rect = text->rect();
+	rect.SetTopCenter(icon->rect().BotCenter());
+	text->setRect(rect);
+
+	return text;
+}
+*/

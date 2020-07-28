@@ -14,6 +14,14 @@ class Cursor;
 class Environment : public Dispatcher
 {
 public:
+	struct Maps
+	{
+		Map* entrance;
+		Map* primaryMap;
+		Map* exit;
+	};
+
+public:
 	Environment(GameData* gameData);
 
 	void init();
@@ -35,7 +43,7 @@ public:
 	void renderTopLayer();
 
 	Map* map(VectorF position) const;
-	Map* primaryMap() const { return mPrimaryMap; }
+	Map* primaryMap() const { return mMaps.primaryMap; }
 
 	VectorF size() const;
 	int mapLevel() const { return mLevelManager.level(); }
@@ -45,7 +53,6 @@ public:
 
 	ActorManager* actors() { return &mActors; }
 	EffectPool* effectPool() { return &mEffectPool; }
-	Cursor* cursor() { return mCursor; }
 
 
 private:
@@ -59,11 +66,7 @@ private:
 	EnemySpawner mSpawner;
 	EffectPool mEffectPool;
 
-	// move these into level manager?
-	Map* mEntrace;
-	Map* mPrimaryMap;
-	Map* mExit;
-	Vector2D<int> mMapSize;
+	Maps mMaps;
 
-	Cursor* mCursor;
+	Vector2D<int> mMapSize;
 };

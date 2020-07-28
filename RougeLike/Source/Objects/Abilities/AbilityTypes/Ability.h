@@ -7,11 +7,27 @@
 #include "Collisions/Collider.h"
 #include "Objects/Abilities/Cooldown.h"
 
+#include "Objects/Properties/PropertyBag.h"
+
 
 class Actor;
 class Map;
 class Player;
 class EffectPool;
+
+
+enum class AbilityType
+{
+	None,
+	Heal
+};
+
+
+inline void operator >>(AbilityType a, std::string& str)
+{
+	if (a == AbilityType::Heal)
+		str = "Heal";
+}
 
 
 class Ability
@@ -40,16 +56,17 @@ public:
 	Ability() : mState(None) { }
 	virtual ~Ability() { }
 
-	void fillAbilityValues(ValueMap& values);
+	void fillAbilityValues(const ValueBag& values);	
 	virtual void init(Animator animator, Actor* caster);
 
-	virtual void fillValues(ValueMap& values) = 0;
+	virtual void fillValues(const ValueBag& values) { };
 	virtual void fastUpdate(float dt) = 0;
 	virtual void slowUpdate(float dt) = 0;
 	virtual void render() = 0;
 	virtual void exit();
 
-	virtual const TargetType targetType() const = 0;
+	virtual TargetType targetType() const = 0;
+	virtual AbilityType type() const { return AbilityType::None; } // = 0;
 
 	Actor* caster() const { return mCaster; }
 
@@ -70,7 +87,7 @@ protected:
 
 	State mState;
 	Animator mAnimator;
-	std::queue<EventPacket> mEvents;
+	std::queue<EventPacket> mEvents; // TODO: replace with local dispatcher
 
 	Actor* mCaster;
 	RectF mRect;
@@ -83,7 +100,7 @@ protected:
 class RangedAbility : public Ability
 {
 public:
-	void fillRangedAbilityValues(ValueMap& values);
+	void fillRangedAbilityValues(const ValueBag& values);
 	void setRangeCircle(Texture* rangeCircle) { mRangeCircle = rangeCircle; }
 
 	void renderRangeCircle();
@@ -107,7 +124,7 @@ class TargetSelfAbility : public Ability
 public:
 	virtual void activate(EffectPool* pool) = 0;
 
-	const TargetType targetType() const override { return TargetType::Self; }
+	TargetType targetType() const override { return TargetType::Self; }
 
 	virtual void render() override;
 };
@@ -118,7 +135,7 @@ class TargetActorAbility : public RangedAbility
 public:
 	virtual void activateOn(Actor* target, EffectPool* pool) = 0;
 
-	const TargetType targetType() const override { return TargetType::Actor; }
+	TargetType targetType() const override { return TargetType::Actor; }
 
 	void render() override { }
 };
@@ -129,7 +146,7 @@ class TargetPositionAbility : public RangedAbility
 public:
 	virtual void activateAt(VectorF position, EffectPool* pool) = 0;
 
-	const TargetType targetType() const override { return TargetType::Position; }
+	TargetType targetType() const override { return TargetType::Position; }
 
 	virtual void render() override;
 };
@@ -141,7 +158,7 @@ public:
 	virtual void activateAt(VectorF position, EffectPool* pool) = 0;
 	virtual void activateOn(Actor* target, EffectPool* pool) = 0;
 
-	const TargetType targetType() const override { return TargetType::AttackArea; }
+	TargetType targetType() const override { return TargetType::AttackArea; }
 
 	virtual void render() override;
 

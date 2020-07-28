@@ -15,3 +15,13 @@ void Button::reset()
 	else
 		mHeldFrames = 0;
 }
+
+Button::State Button::state() const
+{
+	if (mPressed)
+		return State::Pressed;
+	else if (mReleased)
+		return State::Released;
+	else
+		return State::None;
+}

@@ -3,6 +3,7 @@
 
 #include "Graphics/TextureManager.h"
 #include "Graphics/Texture.h"
+#include "Objects/Properties/PropertyBag.h"
 
 #include "Objects/Abilities/AbilityTypes/Ability.h"
 #include "Objects/Abilities/AbilityTypes/SlowAbility.h"
@@ -19,8 +20,13 @@ Ability* createNewAbility(const std::string& name, TextureManager* textureManage
 	XMLParser parser;
 	parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, name));
 
-	xmlNode propertyNode = parser.rootNode()->first_node("Properties");
-	ValueMap values = parser.values(propertyNode);
+	//xmlNode propertyNode = parser.rootNode()->first_node("Properties");
+	//ValueMap values = parser.valueMap(propertyNode);
+
+	ValueBag values;
+	values.readData(parser, "Properties");
+
+
 
 	Ability* ability = nullptr;
 
@@ -43,8 +49,8 @@ Ability* createNewAbility(const std::string& name, TextureManager* textureManage
 	else if (name == "Smash")
 	{
 		// Create hammer
-		Texture* texture = textureManager->getTexture(values["HammerTexture"], FileManager::Image_Weapons);
-		VectorF size = realiseSize(texture->originalDimentions, std::stof(values["HammerMaxSize"]));
+		Texture* texture = nullptr; // textureManager->getTexture(values.get("HammerTexture"), FileManager::Image_Weapons);
+		VectorF size = realiseSize(texture->originalDimentions, values.get("HammerMaxSize"));
 		ability = new SmashAbility(texture, size);
 	}
 	else if (name == "Charge")

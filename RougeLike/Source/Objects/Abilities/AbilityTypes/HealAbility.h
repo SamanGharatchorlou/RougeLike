@@ -9,13 +9,14 @@ class HealAbility : public TargetSelfAbility
 public:
 	HealAbility() { };
 
-	void fillValues(ValueMap& values) override;
+	void fillValues(const ValueBag& values) override;
 	
 	void activate(EffectPool* pool) override;
 
 	void fastUpdate(float dt) override { }
 	void slowUpdate(float dt) override;
 
+	AbilityType type() const override { return AbilityType::Heal; }
 
 protected:
 	void applyEffects(EffectPool* pool);

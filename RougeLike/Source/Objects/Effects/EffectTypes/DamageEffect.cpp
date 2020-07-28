@@ -36,3 +36,12 @@ void DamageEffect::clearData()
 	clearBaseData();
 	mDamage = Damage(0.0f);
 }
+
+void DamageEffect::fill(ValueMap& valueMap)
+{
+	std::string damage = "Damage";
+	if (valueMap.count(damage))
+		mDamage = Damage(valueMap[damage]);
+	else
+		DebugPrint(Warning, "Value map has no %s effect node\n", damage.c_str());
+}
