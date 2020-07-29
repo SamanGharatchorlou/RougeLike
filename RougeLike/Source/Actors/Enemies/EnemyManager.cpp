@@ -11,7 +11,6 @@
 #include "Types/Devil.h"
 
 // State specific updates
-#include "Actors/Enemies/EnemyStates/EnemyRun.h"
 #include "Actors/Enemies/EnemyStates/EnemyAttack.h"
 
 #if DRAW_AI_PATH_COSTMAP
@@ -19,31 +18,25 @@
 #endif
 
 
-EnemyManager::EnemyManager(GameData* gameData) : 
-	mCollisions(gameData->collisionManager), pathUpdateRequests(0), pathUpdateStaggerCounter(0)
-{
-	updateTimer.start();
-}
+EnemyManager::EnemyManager(GameData* gameData) : mCollisions(gameData->collisionManager), mBuilder(gameData->textureManager) { }
 
 
 EnemyManager::~EnemyManager()
 {
 	mActiveEnemies.clear();
-	mPool.freeAll();
 }
 
 
 void EnemyManager::clear()
 {
 	clearAllEnemies();
-	mPathMap.clear();
+	mAIController.clearMap();
 }
 
 void EnemyManager::load()
 {
-	// Set ai path map
-	generateAIPathMap();
-	mPool.addNewObjects(EnemyType::Devil, 50);
+	mAIController.loadAIPathMap(mEnvironment->primaryMap());
+	mBuilder.loadSpawnPool();
 }
 
 void EnemyManager::init(Environment* environment)
@@ -74,135 +67,22 @@ void EnemyManager::slowUpdate(float dt)
 		while (enemy->events().hasEvent())
 			mEvents.push(enemy->events().pop());
 
-		// Clear out dead enemies
-		if (enemy->state() == EnemyState::Exit)
-		{
-			clearAndRemove(iter);
-
-			if (iter == mActiveEnemies.end())
-				break;
-		}
+		clearDead();
 	}
 
-	if (pathUpdateStaggerCounter != 0 || pathUpdateRequests)
-	{
-		updateEnemyPaths();
-	}
-
+	mAIController.updatePaths(mActiveEnemies);
 	mCollisions.updateAttackingColliders(attackingColliders());
 }
 
 
 
-
-void EnemyManager::generateAIPathMap()
+void EnemyManager::spawn(const XMLParser& parser, const Map* map)
 {
-	mPathMap.build(mEnvironment->primaryMap(), 4, 4);
-}
+	std::vector<SpawnData> spawnData = mSpawner.getspawnList(parser, map);
 
-
-
-void EnemyManager::spawn(EnemyType type, EnemyState::Type state, VectorF position, TextureManager* textureManager, EffectPool* effectPool)
-{
-#if LIMIT_ENEMY_SPAWNS
-	if (mActiveEnemies.size() >= LIMIT_ENEMY_SPAWNS - 1)
-		return;
-#endif
-	
-	std::string enemyType;
-	type >> enemyType;
-
-	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs_Objects, enemyType));
-
-	Enemy* enemy = mPool.getObject(type);
-
-	enemy->setCharacter(parser, textureManager);
-	enemy->readEffects(parser, effectPool);
-
-	// TODO: add some kind of reset attribute thing here?
-	//enemy->propertyBag().pHealth.get().setFullHp();
-	enemy->set(mEnvironment);
-
-	enemy->setMap(&mPathMap);
-	enemy->spawn(state, position);
-#if !IGNORED_BY_ENEMIES
-	enemy->setTarget(mGameData->actors->player());
-#endif
-
-	mCollisions.add(enemy->collider());
-
-	mActiveEnemies.push_back(enemy);
-}
-
-
-// If player moves tile or an enemy moves a tile update this bad boi
-void EnemyManager::updateEnemyPaths()
-{
-	mPathMap.costMap().setAllValues(1);
-	updateAIPathCostMap();
-
-	int loopCount = 0;
-
-	for (; pathUpdateStaggerCounter < mActiveEnemies.size(); pathUpdateStaggerCounter++)
+	for (int i = 0; i < spawnData.size(); i++)
 	{
-		// Only allow a number of these (expensive) updates per frame, reduce stuttering
-		if (loopCount++ >= 3)
-			return;
-
-		if (mActiveEnemies[pathUpdateStaggerCounter]->state() == EnemyState::Run)
-		{
-			EnemyRun& runState = static_cast<EnemyRun&>(mActiveEnemies[pathUpdateStaggerCounter]->getStateMachine()->getActiveState());
-
-			// No need to update anything if in attack range
-			if (!runState.inAttackRange())
-			{
-				runState.updatePath();
-			}
-		}
-	}
-
-	if (pathUpdateStaggerCounter == mActiveEnemies.size())
-	{
-		pathUpdateStaggerCounter = 0;
-		pathUpdateRequests--;
-
-		ASSERT(Warning, pathUpdateRequests >= 0, "Cannot have negative path update requests, count: %d\n", pathUpdateRequests);
-
-		// No reason to have more than 1 request queued up after completing a request
-		pathUpdateRequests = clamp(pathUpdateStaggerCounter, 0, 1);
-	}
-}
-
-
-void EnemyManager::updateAIPathCostMap()
-{
-	Grid<int>& AICostMap = mPathMap.costMap();
-	AICostMap.setAllValues(1);
-
-	for (int i = 0; i < mActiveEnemies.size(); i++)
-	{
-		// Current tile
-		Index index = mPathMap.index(mActiveEnemies[i]->position());
-		AICostMap[index] += 10;
-
-		// Immediate surrounding tiles
-		Index surroundingIndexsLayer1[8]{
-			Index(index + Index(-1,-1)),
-			Index(index + Index(+0, -1)),
-			Index(index + Index(+1,-1)),
-
-			Index(index + Index(-1,0)),
-			Index(index + Index(+1,0)),
-
-			Index(index + Index(-1,+1)),
-			Index(index + Index(+0, +1)),
-			Index(index + Index(+1,+1))
-		};
-
-		for (int i = 0; i < 8; i++)
-		{
-			AICostMap[surroundingIndexsLayer1[i]] += 2;
-		}
+		spawnEnemy(spawnData[i]);
 	}
 }
 
@@ -210,43 +90,8 @@ void EnemyManager::updateAIPathCostMap()
 void EnemyManager::render()
 {
 #if DRAW_AI_PATH_COSTMAP
-	// Replace all this with the debugRenderText function
-	UITextBox::Data textData;
-	textData.aligment = "";
-	textData.font = "";
-	textData.ptSize = 16;
-	textData.colour = SDL_Color{ 255, 0, 0 };
-	textData.texture = nullptr;
-	// to be set
-	textData.rect = RectF(); 
-	textData.text = "";
-
-	UITextBox text(textData);
-
-	char cost[3];
-
-	for (int y = 0; y < mPathMap.yCount(); y++)
-	{
-		for (int x = 0; x < mPathMap.xCount(); x++)
-		{
-			Index index(x, y);
-			RectF rect = mPathMap[index].rect();
-
-			if (Camera::Get()->inView(rect) && mPathMap[index].hasCollisionType(MapTile::Floor))
-			{
-				rect = Camera::Get()->toCameraCoords(rect);
-
-				_itoa_s(mPathMap.costMap()[index], cost, 10);
-
-				text.setText(cost);
-				text.setRect(rect);
-
-				text.render();
-			}
-		}
-	}
+	mAIController.drawCostMap();
 #endif
-
 
 	for (Enemy* enemy : mActiveEnemies)
 	{
@@ -255,23 +100,19 @@ void EnemyManager::render()
 			enemy->render();
 		}
 	}
-
-
-
 }
 
 
 void EnemyManager::clearAllEnemies()
 {
-	for (std::vector<Enemy*>::iterator iter = mActiveEnemies.begin(); iter != mActiveEnemies.end(); iter++)
+	std::vector<Enemy*>::iterator iter = mActiveEnemies.begin();
+
+	while (mActiveEnemies.size() > 0)
 	{
 		clearAndRemove(iter);
 	}
 
 	ASSERT(Warning, mCollisions.isEmpty(), "Enemy colliders are left in the collision trackers when they shouldn't be!\n");
-	ASSERT(Warning, mActiveEnemies.size() == 0, "Enemies are left in the active enemy list when they shouldn't be!\n");
-
-	mActiveEnemies.clear();
 }
 
 
@@ -307,7 +148,40 @@ void EnemyManager::clearAndRemove(std::vector<Enemy*>::iterator& iter)
 	enemy->clear();
 
 	mCollisions.remove(enemy->collider());
-	mPool.returnObject(enemy);
+	mBuilder.returnEnemy(enemy);
 
 	iter = mActiveEnemies.erase(iter);
+}
+
+
+void EnemyManager::spawnEnemy(const SpawnData spawnData)
+{
+#if LIMIT_ENEMY_SPAWNS
+	if (mActiveEnemies.size() >= LIMIT_ENEMY_SPAWNS - 1)
+		return;
+#endif
+
+	Enemy* enemy = mBuilder.buildEnemy(spawnData, mEnvironment, mAIController.pathMap());
+
+#if !IGNORED_BY_ENEMIES
+	enemy->setTarget(mGameData->actors->player());
+#endif
+
+	mCollisions.add(enemy->collider());
+	mActiveEnemies.push_back(enemy);
+}
+
+
+void EnemyManager::clearDead()
+{
+	for (std::vector<Enemy*>::iterator iter = mActiveEnemies.begin(); iter != mActiveEnemies.end(); iter++)
+	{
+		if ((*iter)->state() == EnemyState::Exit)
+		{
+			clearAndRemove(iter);
+
+			if (iter == mActiveEnemies.end())
+				break;
+		}
+	}
 }

@@ -27,7 +27,7 @@ public:
 
 	void set(Environment* environment) { mEnvironment = environment; }
 
-	void setCharacter(XMLParser& parser, TextureManager* textureManager);
+	void setCharacter(const XMLParser& parser, TextureManager* textureManager);
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
 	void render();

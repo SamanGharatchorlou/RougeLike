@@ -54,12 +54,14 @@ K* ObjectPool<K, T>::getObject(T type)
 		}
 		else
 		{
-
+			addNewObjects(type, 1);
+			DebugPrint(Warning, "No enough objects in the pool, size increased by 1\n");
+			return getObject(type);
 		}
-			// TODO: add new objects;
 	}
-	else
-		DebugPrint(Warning, "No objects of requested type have been setup in the pool, use addNewObjects() before\n");
+
+	DebugPrint(Warning, "No objects of requested type have been setup in the pool, use addNewObjects() before\n");
+	return nullptr;
 }
 
 

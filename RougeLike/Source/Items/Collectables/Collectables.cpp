@@ -77,15 +77,15 @@ void Collectables::render()
 
 void Collectables::spawn(Collectable* collectable, int xPosition)
 {
-	Spawner itemSpawner;
-	VectorF position = itemSpawner.findSpawnPoint(mGameData->environment->primaryMap(), xPosition);
+	//Spawner itemSpawner;
+	//VectorF position = itemSpawner.findSpawnPoint(mGameData->environment->primaryMap(), xPosition);
 
-	collectable->setIcon(findIcon(collectable));
-	collectable->setPosition(position);
-	mCollectables.push_back(collectable);
+	//collectable->setIcon(findIcon(collectable));
+	//collectable->setPosition(position);
+	//mCollectables.push_back(collectable);
 
-	std::vector<Collider*> collider{ collectable->collider() };
-	mGameData->collisionManager->addDefenders(CollisionManager::Player_Hit_Collectable, collider);
+	//std::vector<Collider*> collider{ collectable->collider() };
+	//mGameData->collisionManager->addDefenders(CollisionManager::Player_Hit_Collectable, collider);
 }
 
 

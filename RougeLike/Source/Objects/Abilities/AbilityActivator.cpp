@@ -15,10 +15,21 @@
 #include "AbilityManager.h"
 
 
-bool AbilityActivator::selected(Ability* ability, const InputManager* input)
+
+bool AbilityActivator::canSelect(Ability* ability) const
+{
+	if (ability->state() == Ability::Idle)
+	{
+		return true;
+	}
+	else
+		return false;
+}
+
+
+bool AbilityActivator::selected(Ability* ability, Button::State buttonState) const
 {
 	AbilityType type = ability->type();
-	Button::State buttonState = input->getButton(Button::E).state(); // mHotKeys.state(type, input);
 
 	if (buttonState == Button::State::Pressed)
 		return true;
@@ -27,10 +38,9 @@ bool AbilityActivator::selected(Ability* ability, const InputManager* input)
 }
 
 
-bool AbilityActivator::released(Ability* ability, const InputManager* input)
+bool AbilityActivator::released(Ability* ability, Button::State buttonState) const
 {
 	AbilityType type = ability->type();
-	Button::State buttonState = input->getButton(Button::E).state(); // mHotKeys.state(type, input);
 
 	if (buttonState == Button::State::Released)
 		return true;
@@ -39,37 +49,48 @@ bool AbilityActivator::released(Ability* ability, const InputManager* input)
 }
 
 
-
-bool AbilityActivator::activate(Ability* ability, const InputManager* input)
+bool AbilityActivator::activate(Ability* ability, Button::State buttonState, const InputManager* input)
 {
 	bool didActivate = false;
 
-	switch (ability->targetType())
+	if (ability->state() == Ability::Selected)
 	{
-		// Player casts on self only
-	case Ability::TargetType::Self:
-	{
-		TargetSelfAbility* selfAbility = static_cast<TargetSelfAbility*>(ability);
-		didActivate = activateOnSelf(selfAbility);
-		break;
-	}
-	// Activate on first enemy selected
-	case Ability::TargetType::Actor:
-	{
-		TargetActorAbility* actorAbility = static_cast<TargetActorAbility*>(ability);
-		didActivate = activateOnActor(actorAbility, input);
-		break;
-	}
-	// Select any floor tile
-	case Ability::TargetType::Position:
-	case Ability::TargetType::AttackArea:
-	{
-		TargetPositionAbility* positionAbility = static_cast<TargetPositionAbility*>(ability);
-		didActivate = activateOnPosition(positionAbility, input);
-		break;
-	}
-	default:
-		break;
+		switch (ability->targetType())
+		{
+			// Player casts on self
+		case Ability::TargetType::Self:
+		{
+			if (buttonState == Button::State::Released)
+			{
+				TargetSelfAbility* selfAbility = static_cast<TargetSelfAbility*>(ability);
+				didActivate = activateOnSelf(selfAbility);
+			}
+			break;
+		}
+		// Activate on first enemy selected
+		case Ability::TargetType::Actor:
+		{
+			if (input->isCursorReleased(Cursor::Left))
+			{
+				TargetActorAbility* actorAbility = static_cast<TargetActorAbility*>(ability);
+				didActivate = activateOnActor(actorAbility, input);
+			}
+			break;
+		}
+		// Select any floor tile
+		case Ability::TargetType::Position:
+		case Ability::TargetType::AttackArea:
+		{
+			if (input->isCursorReleased(Cursor::Left))
+			{
+				TargetPositionAbility* positionAbility = static_cast<TargetPositionAbility*>(ability);
+				didActivate = activateOnPosition(positionAbility, input);
+			}
+			break;
+		}
+		default:
+			break;
+		}
 	}
 
 	return didActivate;

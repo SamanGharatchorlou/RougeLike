@@ -5,7 +5,7 @@
 
 
 // Find a random valid y tile at map position x
-VectorF Spawner::findSpawnPoint(Map* map, int xPositionPercentage)
+VectorF Spawner::findSpawnPoint(const Map* map, int xPositionPercentage)
 {
 	int xTileIndex = (int)((map->xCount() * xPositionPercentage) / 100);
 	ASSERT(Warning, map->isValidIndex(Index(xTileIndex,0)),

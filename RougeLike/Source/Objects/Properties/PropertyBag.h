@@ -36,7 +36,7 @@ public:
 	PropertyBag() : mConfigFile("") { }
 	virtual ~PropertyBag() { }
 
-	virtual void readProperties(XMLParser& parser);
+	virtual void readProperties(const XMLParser& parser);
 	virtual void readProperties(const std::string& config);
 	
 	void resetProperties();

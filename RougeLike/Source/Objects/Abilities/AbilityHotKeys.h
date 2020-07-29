@@ -1,9 +1,14 @@
 #pragma once
-/*
+
 #include "Input/Button.h"
+#include "UI/Screens/GameScreen.h"
+#include "UI/Elements/UIBox.h"
+#include "UI/Elements/UITextBox.h"
+
 
 // TEMP
 #include "AbilityTypes/Ability.h"
+#include "Input/InputManager.h"
 
 class Screen;
 class GameScreen;
@@ -18,11 +23,11 @@ template<typename T>
 class HotKeys
 {
 public:
-	HotKeys(Screen* screen) : mGameScreen(screen) { }
+	HotKeys(GameScreen* gameScreen) : mGameScreen(gameScreen) { }
 
 	Button::State state(T item, const InputManager* input);
 
-	void addHotKey(T item);
+	void addHotKey(T item, TextureManager* textureManager);
 
 
 protected:
@@ -39,21 +44,23 @@ private:
 template<typename T>
 Button::State HotKeys<T>::state(T item, const InputManager* input)
 {
+	Button but = input->getButton(mHotKeyMap[item]);
+
 	return input->state(mHotKeyMap[item]);
 }
 
 
 template<typename T>
-void HotKeys<T>::addHotKey(T item)
+void HotKeys<T>::addHotKey(T item, TextureManager* textureManager)
 {
 	int hotKeyCount = mHotKeyMap.size();
-	int keyNumber = hotKeyCount + static_cast<int>('0');
+	int keyNumber = hotKeyCount + static_cast<int>('1');
 	Button::Key buttonKey = static_cast<Button::Key>(keyNumber);
-	hotKeyMap[buttonKey] = item;
+	mHotKeyMap[item] = buttonKey;
 
 	// Add ability icon
-	UIBox* box = createIcon(ability, count);
-	UITextBox* text = createIconText(box, count);
+	UIBox* box = createIcon(item, hotKeyCount, textureManager);
+	UITextBox* text = createIconText(box, hotKeyCount);
 
 	mGameScreen->addElement(box);
 	mGameScreen->addElement(text);
@@ -63,7 +70,7 @@ void HotKeys<T>::addHotKey(T item)
 class AbilityHotKeys : public HotKeys<AbilityType>
 {
 public:
-	AbilityHotKeys(Screen* screen) : HotKeys(screen) { }
+	AbilityHotKeys(Screen* screen) : HotKeys(static_cast<GameScreen*>(screen)) { }
 
 private:
 	UIBox* createIcon(AbilityType item, int keyNumber, TextureManager* textureManager) override;
@@ -71,4 +78,3 @@ private:
 
 };
 
-*/

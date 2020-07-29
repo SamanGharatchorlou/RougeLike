@@ -10,7 +10,7 @@ class Texture;
 class AnimationReader
 {
 public:
-	AnimationReader(const TextureManager* textureManager, XMLParser& parser) : tm(textureManager), mParser(parser) { };
+	AnimationReader(const TextureManager* textureManager, const XMLParser& parser) : tm(textureManager), mParser(parser) { };
 	bool initAnimator(Animator& animator);
 
 
@@ -20,6 +20,6 @@ private:
 
 
 private:
-	XMLParser& mParser;
+	const XMLParser& mParser;
 	const TextureManager* tm;
 };

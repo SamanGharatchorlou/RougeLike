@@ -19,7 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Actors\Enemies\AIController.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyPool.cpp" />
+    <ClCompile Include="Source\Actors\Enemies\Spawning\EnemyBuilder.cpp" />
     <ClCompile Include="Source\Actors\Enemies\Types\EnemyTypes.cpp" />
     <ClCompile Include="Source\Actors\Player\PlayerManager.cpp" />
     <ClCompile Include="Source\AI\AIPathing.cpp" />
@@ -33,6 +35,7 @@
     <ClCompile Include="Source\Game\LoadingBar.cpp" />
     <ClCompile Include="Source\Game\LoadingManager.cpp" />
     <ClCompile Include="Source\Input\Button.cpp" />
+    <ClCompile Include="Source\Items\Collectables\CollectablesPool.cpp" />
     <ClCompile Include="Source\Map\LevelManager.cpp" />
     <ClCompile Include="Source\Map\MapBuilding\DecorTilePopulator.cpp" />
     <ClCompile Include="Source\Map\MapBuilding\MapDecorator.cpp" />
@@ -75,6 +78,8 @@
     <ClCompile Include="Source\Objects\Effects\EffectPool.cpp" />
     <ClCompile Include="Source\Collisions\WeaponCollisionManager.cpp" />
     <ClCompile Include="Source\Objects\Properties\PropertyBag.cpp" />
+    <ClCompile Include="Source\Objects\Spawning\CollectableSpawner.cpp" />
+    <ClCompile Include="Source\System\Files\XMLNode.cpp" />
     <ClCompile Include="Source\UI\Elements\UISlider.cpp" />
     <ClCompile Include="Source\UI\Screens\SettingsScreen.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Circle.cpp.cpp" />
@@ -155,7 +160,9 @@
     <ClCompile Include="Source\System\Files\XMLParser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Actors\Enemies\AIController.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyPool.h" />
+    <ClInclude Include="Source\Actors\Enemies\Spawning\EnemyBuilder.h" />
     <ClInclude Include="Source\Actors\Player\PlayerManager.h" />
     <ClInclude Include="Source\AI\AIPathing.h" />
     <ClInclude Include="Source\AI\AIPathMap.h" />
@@ -169,6 +176,7 @@
     <ClInclude Include="Source\Events\LocalObserver.h" />
     <ClInclude Include="Source\Game\LoadingBar.h" />
     <ClInclude Include="Source\Game\LoadingManager.h" />
+    <ClInclude Include="Source\Items\Collectables\CollectablesPool.h" />
     <ClInclude Include="Source\Map\LevelManager.h" />
     <ClInclude Include="Source\Map\MapBuilding\DecorTilePopulator.h" />
     <ClInclude Include="Source\Map\MapBuilding\MapDecorator.h" />
@@ -216,6 +224,8 @@
     <ClInclude Include="Source\Actors\Enemies\Spawning\EnemySpawner.h" />
     <ClInclude Include="Source\Collisions\CollisionManager.h" />
     <ClInclude Include="Source\Objects\Properties\PropertyBag.h" />
+    <ClInclude Include="Source\Objects\Spawning\CollectableSpawner.h" />
+    <ClInclude Include="Source\System\Files\XMLNode.h" />
     <ClInclude Include="Source\UI\Elements\UISlider.h" />
     <ClInclude Include="Source\UI\Screens\ScreenHeaders.h" />
     <ClInclude Include="Source\UI\Screens\SettingsScreen.h" />
@@ -288,7 +298,6 @@
     <ClInclude Include="Source\States\State.h" />
     <ClInclude Include="Source\States\StateMachine.h" />
     <ClInclude Include="Source\Animations\AnimationReader.h" />
-    <ClInclude Include="Source\System\Files\XMLValueMap.h" />
     <ClInclude Include="Source\System\Window.h" />
     <ClInclude Include="Source\UI\Elements\UIElement.h" />
     <ClInclude Include="Source\UI\Screens\GameScreen.h" />

@@ -2,8 +2,7 @@
 #include "rapidxml.hpp"
 #include "rapidxml_utils.hpp"
 
-typedef rapidxml::xml_node<>* xmlNode;
-typedef rapidxml::xml_attribute<>* xmlAttributes;
+#include "XMLNode.h"
 
 
 class XMLParser
@@ -24,7 +23,7 @@ public:
 
 	xmlNode rootNode() const;
 
-	std::string nodeValue(xmlNode node, const std::string& label);
+	std::string nodeValue(xmlNode node, const std::string& label) const;
 
 	Attributes attributes(xmlNode root) const;
 

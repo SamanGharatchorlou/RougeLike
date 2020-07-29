@@ -33,25 +33,25 @@ public:
 	EnemySpawner() { }
 
 	void wipeEnemies();
-	std::vector<SpawnData> getspawnList(Map* map, int level);
+	std::vector<SpawnData> getspawnList(const XMLParser& parser, const Map* map);
 
-	void spawnLevel(Map* map, int level);
+	//void spawnLevel(const Map* map, int level);
 
-	void spawnPatrollers(Map* map, int xIncrement, EnemyType type);
+	void spawnPatrollers(const Map* map, int xIncrement, EnemyType type);
 
-	void spawnShape(Map* map, int xPoint, Shape shape, EnemyType type);
+	void spawnShape(const Map* map, int xPoint, Shape shape, EnemyType type);
 	//void spawnShape(Map* map, const Attributes& attributes);
 
 
 private:
-	std::vector<SpawnData> spawnEnemies(Map* map, Type spawnType, const Attributes& attributes);
-	std::vector<SpawnData> spawnPatrollers(Map* map, const Attributes& attributes);
+	std::vector<SpawnData> spawnEnemies(const Map* map, Type spawnType, const Attributes& attributes);
+	std::vector<SpawnData> spawnPatrollers(const Map* map, const Attributes& attributes);
 
 	Type stringToType(const std::string& spawnType);
 
-	void level1(Map* map);
-	void level2(Map* map);
-	void level3(Map* map);
+	//void level1(Map* map);
+	//void level2(Map* map);
+	//void level3(Map* map);
 
 	Shape pickRandomShape();
 

@@ -7,100 +7,224 @@
 #include "MapBuilding/MapGenerator.h"
 #include "MapBuilding/MapDecorator.h"
 
+#include "Game/Camera.h"
 
-void LevelManager::init(Map* map)
+
+void LevelManager::load(const XMLParser& parser)
 {
+	createNewMaps();
+
+	buildEntrance();
+	buildPrimary(parser);
+	buildExit(parser);
+}
+
+
+void LevelManager::buildLevel(const XMLParser& parser)
+{
+	swapEntranceExit();
+
+	buildPrimary(parser);
+	buildExit(parser);
+}
+
+
+void LevelManager::slowUpdate(float dt)
+{
+	mMaps.entrance->slowUpdate(dt);
+	mMaps.primaryMap->slowUpdate(dt);
+	mMaps.exit->slowUpdate(dt);
+}
+
+
+void LevelManager::renderLowDepth()
+{
+	mMaps.entrance->renderFloor();
+	mMaps.primaryMap->renderFloor();
+	mMaps.exit->renderFloor();
+
+	mMaps.entrance->renderLowerLayer();
+	mMaps.primaryMap->renderLowerLayer();
+	mMaps.exit->renderLowerLayer();
+}
+
+
+void LevelManager::renderHeighDepth()
+{
+	mMaps.entrance->renderUpperLayer();
+	mMaps.primaryMap->renderUpperLayer();
+	mMaps.exit->renderUpperLayer();
+}
+
+
+VectorF LevelManager::size() const
+{
+	return mMaps.primaryMap->size();
+}
+
+
+Map* LevelManager::map(VectorF position) const
+{
+	if (position.x < mMaps.primaryMap->getFirstRect().LeftPoint())
+		return mMaps.entrance;
+	else if (position.x < mMaps.primaryMap->getLastRect().RightPoint())
+		return mMaps.primaryMap;
+	else
+		return mMaps.exit;
+}
+
+
+// --- Private Functions --- //
+
+// Building
+void LevelManager::createNewMaps()
+{
+	Vector2D<int> primaryMapSize;
+	VectorF tileSize;
+	float scale = -1.0f;
+	readConfigData(primaryMapSize, tileSize, scale);
+
+	tileSize *= scale;
+
+	mMaps.primaryMap = new Map(primaryMapSize, tileSize);
+
+
+	Vector2D<int> corridorMapSize;
+	corridorMapSize.x = (int)((Camera::Get()->size().x / mMaps.primaryMap->tileSize().x) * 1.5f); // TODO: replace with config data
+	corridorMapSize.y = primaryMapSize.y;
+
+	mMaps.entrance = new Map(corridorMapSize, tileSize);
+	mMaps.exit = new Map(corridorMapSize, tileSize);
+}
+
+
+void LevelManager::buildEntrance()
+{
+	Map* map = mMaps.entrance;
 	map->clearData();
 	MapGenerator generator;
 	generator.buildCorridor(map->getData());
-	map->populateData(mTextureManager, VectorF(0,0));
+	map->populateData(mTextureManager, VectorF(0, 0));
 }
 
-void LevelManager::buildPrimary(Map* map, VectorF offset)
+
+void LevelManager::buildPrimary(const XMLParser& parser)
 {
+	Map* map = mMaps.primaryMap;
 	map->clearData();
 
 	MapGenerator generator;
 	generator.buildDungeon(map->getData());
 
-	decorate(map, "Primary");
+	readMapData("Primary", map, parser);
 
+	VectorF offset = getOffset(mMaps.entrance);
 	map->populateData(mTextureManager, offset);
 }
 
-void LevelManager::buildExit(Map* map, VectorF offset)
+
+void LevelManager::buildExit(const XMLParser& parser)
 {
+	Map* map = mMaps.exit;
 	map->clearData();
 
 	MapGenerator generator;
 	generator.buildCorridor(map->getData());
 
-	decorate(map, "Exit");
+	readMapData("Exit", map, parser);
 
+	VectorF offset = getOffset(mMaps.primaryMap);
 	map->populateData(mTextureManager, offset);
 }
+
+
+void LevelManager::swapEntranceExit()
+{
+	Map* oldEntrace = mMaps.entrance;
+	mMaps.entrance = mMaps.exit;
+	mMaps.exit = oldEntrace;
+}
+
 
 VectorF LevelManager::getOffset(const Map* map) const
 {
 	return VectorF(map->getLastRect().RightPoint(), 0.0f);
 }
 
-
-void LevelManager::swapEntranceExit(Map*& entrance, Map*& exit)
+// Reading data
+void LevelManager::readConfigData(Vector2D<int>& mapIndexSize, VectorF& tileSize, float& scale)
 {
-	Map* oldEntrace = entrance;
-	entrance = exit;
-	exit = oldEntrace;
+	XMLParser parser;
+	std::string path = FileManager::Get()->findFile(FileManager::Config_Map, "Map");
+	parser.parseXML(path);
+
+	xmlNode rootNode = parser.rootNode();
+	xmlNode tileSetInfoNode = rootNode->first_node("TilesetInfo");
+	xmlNode node = nullptr;
+	Attributes attributes;
+
+	// Map size
+	node = tileSetInfoNode->first_node("TileCount");
+	attributes = parser.attributes(node);
+
+	int tileCountX = attributes.getInt("x");
+	int tileCountY = attributes.getInt("y");
+	mapIndexSize.set(tileCountX, tileCountY);
+
+	// Tile size
+	node = tileSetInfoNode->first_node("TileSize");
+	attributes = parser.attributes(node);
+
+	float tileSizeX = attributes.getFloat("x");
+	float tileSizeY = attributes.getFloat("y");
+	tileSize.set(tileSizeX, tileSizeY);
+
+	// Scale
+	node = rootNode->first_node("Scale");
+	scale = std::stof(node->value());
 }
 
 
-// Decorations
-void LevelManager::decorate(Map* map, const std::string& section)
+void LevelManager::readMapData(const std::string& section, Map* map, const XMLParser& parser)
 {
-	std::string fileName = "Level" + std::to_string(mLevel);
-	std::string path = FileManager::Get()->findFile(FileManager::Config_Map, fileName);
-
-	if (!path.empty())
-	{
-		// Decorations
-		XMLParser parser(path);
-		DecorMap decorations = getLevelDecorInfo(parser, section);
-		MapDecorator decorator;
-		decorator.addDecor(decorations, map->getData());
-
-		// Traps
-		DecorMap trapInfo = getLevelTrapInfo(parser, section);
-		setTrapInfo(map, trapInfo);
-	}
-}
-
-DecorMap LevelManager::getLevelDecorInfo(XMLParser& parser, const std::string& section)
-{
-	DecorMap decorMap;
 	xmlNode rootNode = parser.rootNode();
 	xmlNode sectionNode = rootNode->first_node(section.c_str());
 
-	if (sectionNode)
+	// Decorations
+	XMLNode decorNode = XMLNode(sectionNode->first_node("Decor"));
+	DecorMap decorations = readDecorData(decorNode);
+	MapDecorator decorator;
+	decorator.addDecor(decorations, map->getData());
+
+	// Traps
+	XMLNode trapNode = XMLNode(sectionNode->first_node("Traps"));
+	DecorMap trapInfo = readDecorData(trapNode);
+	setTrapInfo(map, trapInfo);
+}
+
+
+DecorMap LevelManager::readDecorData(const XMLNode& root) const
+{
+	DecorMap decorMap;
+	if (root)
 	{
-		xmlNode decorNode = sectionNode->first_node("Decor");
-		xmlNode decorItemNode = decorNode->first_node();
-		while (decorItemNode)
+		XMLNode item = root.first();
+
+		while (!item.isEmpty())
+
 		{
-			DecorType type = stringToType(decorItemNode->name());
-			Attributes attributes = parser.attributes(decorItemNode);
+			DecorType type = stringToType(item.name());
+			Attributes attributes = item.attributes();
 			decorMap[type] = attributes;
 
-			decorItemNode = decorItemNode->next_sibling();
+			item = item.next();
 		}
 	}
-	else
-		DebugPrint(Log, "Not a valid section '%s'\n", section.c_str());
 
 	return decorMap;
 }
 
 
-// Traps
 void LevelManager::setTrapInfo(Map* map, DecorMap& trapInfo)
 {
 	if (trapInfo.count(DecorType::Spikes))
@@ -117,28 +241,4 @@ void LevelManager::setTrapInfo(Map* map, DecorMap& trapInfo)
 }
 
 
-DecorMap LevelManager::getLevelTrapInfo(XMLParser& parser, const std::string& section)
-{
-	DecorMap decorMap;
-	xmlNode rootNode = parser.rootNode();
-	xmlNode sectionNode = rootNode->first_node(section.c_str());
 
-	if (sectionNode)
-	{
-		xmlNode trapNode = sectionNode->first_node("Traps");
-		if (trapNode)
-		{
-			xmlNode spikesNode = trapNode->first_node("Spikes");
-			if (spikesNode)
-			{
-				DecorType type = stringToType(spikesNode->name());
-				Attributes attributes = parser.attributes(spikesNode);
-				decorMap[type] = attributes;
-			}
-		}
-	}
-	else
-		DebugPrint(Log, "Not a valid section '%s'\n", section.c_str());
-
-	return decorMap;
-}

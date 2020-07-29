@@ -44,11 +44,7 @@ void BlinkEffect::exit()
 	// then change this bit, move it into BlinkAbility perhaps?
 	Player* player = static_cast<Player*>(mReceiver);
 	player->overrideControl(false);
-}
 
-
-void BlinkEffect::clearData()
-{
-	clearBaseData();
 	mTarget = VectorF();
+	clearBaseData();
 }

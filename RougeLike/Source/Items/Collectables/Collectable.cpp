@@ -16,6 +16,11 @@ Collectable::Collectable() : mIcon(nullptr)
 #endif
 };
 
+void Collectable::set(const std::string& id)
+{
+	mID = id;
+}
+
 
 void Collectable::setIcon(Texture* icon)
 {
@@ -33,27 +38,18 @@ void Collectable::render(RectF cameraRect) const
 
 
 // --- Weapon pickup --- //
-WeaponCollectable::WeaponCollectable(const std::string& name)
-{
-	mName = name;
-}
-
-
-// --- Ability pickup --- //
-AbilityCollectable::AbilityCollectable(const std::string& ability)
-{
-	mName = ability;
-}
-
-
-void AbilityCollectable::activate(Player* Player)
-{
-	Player->addAbility(mName);
-}
-
-
 void WeaponCollectable::activate(Player* Player)
 {
 	//Player->selectWeapon(mName);
 }
+
+
+// --- Ability pickup --- //
+void AbilityCollectable::activate(Player* Player)
+{
+	Player->addAbility(mID);
+}
+
+
+
 

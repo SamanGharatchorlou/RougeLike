@@ -22,7 +22,10 @@ void HealAbility::slowUpdate(float dt)
 
 	// Completed one animation loop
 	if (mAnimator.loops() > 0)
+	{
+
 		mAnimator.stop();
+	}
 }
 
 

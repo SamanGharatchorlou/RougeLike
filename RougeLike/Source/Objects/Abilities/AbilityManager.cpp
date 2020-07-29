@@ -15,8 +15,8 @@
 #include "AbilityCreator.h"
 
 
-AbilityManager::AbilityManager(TextureManager* textures, Actor* parent, Screen* screen) : 
-	mCaster(parent), mTextures(textures)//, mHotKeys(screen)
+AbilityManager::AbilityManager(TextureManager* textures, Actor* caster, Screen* screen) :
+	mCaster(caster), mTextures(textures), mHotKeys(screen)
 { }
 
 
@@ -32,71 +32,23 @@ void AbilityManager::handleInput(const InputManager* input)
 	{
 		Ability* ability = mAbilities[i];
 		AbilityType type = ability->type();
-		Button::State buttonState = input->getButton(Button::E).state(); // mHotKeys.state(type, input);
+		Button::State buttonState = mHotKeys.state(type, input);
 
-		if (mActivator.selected(ability, input))
+		if (mActivator.canSelect(ability) && mActivator.selected(ability, buttonState))
 		{
-			setState(ability, Ability::Activate/*Selected*/);
-			mActivator.activate(ability, input);
+			setState(ability, Ability::Selected);
 		}
-		else if (mActivator.released(ability, input))
-		{
 
+		if (mActivator.activate(ability, buttonState, input))
+		{
+			setState(ability, Ability::Activate);
+		}
+
+		if (ability->state() == Ability::Selected && mActivator.released(ability, buttonState))
+		{
 			setState(ability, Ability::Idle);
 		}
-			
-
-		//mActivator.activate(ability, input);
-
-		//if (buttonState == Button::State::Pressed)
-		//	setState(ability, Ability::Activate/*Selected*/);
-		//else if (buttonState == Button::State::Released)
-		//	setState(ability, Ability::Idle);
 	}
-
-
-	// does this need to happen before the loop above? for the self target?
-	//for (int i = 0; i < mAbilities.size(); i++)
-	//{
-	//	Ability* ability = mAbilities[i];
-
-	//	if (ability->state() == Ability::Selected)
-	//	{
-	//		if (shouldActivate(ability, input))
-	//		{
-	//			setState(ability, Ability::Activate);
-	//		}
-	//	}
-	//}
-}
-
-
-bool AbilityManager::shouldActivate(Ability* ability, const InputManager* input)
-{
-	bool activate = false;
-
-	switch (ability->targetType())
-	{
-		// Player casts on self only
-	case Ability::TargetType::Self:
-	{
-		//Button::State state = mHotKeys.state(ability->type(), input);
-		//activate = state == Button::State::Released;
-		break;
-	}
-	// Activate on first enemy selected
-	case Ability::TargetType::Actor:
-	case Ability::TargetType::Position:
-	case Ability::TargetType::AttackArea:
-	{
-		activate = input->isCursorReleased(Cursor::Left);
-		break;
-	}
-	default:
-		break;
-	}
-
-	return activate;
 }
 
 
@@ -106,15 +58,11 @@ void AbilityManager::handleStates(Ability* ability, float dt)
 	{
 	case Ability::Activate:
 	{
-		//if (mActivator.activate(ability))
+		if (!ability->cooldown().hasStarted())
 		{
-			if (!ability->cooldown().hasStarted())
-			{
-				ability->cooldown().begin();
-				setState(ability, Ability::Running);
-			}
+			ability->cooldown().begin();
+			setState(ability, Ability::Running);
 		}
-
 		break;
 	}
 	case Ability::Running:
@@ -135,6 +83,8 @@ void AbilityManager::handleStates(Ability* ability, float dt)
 		setState(ability, Ability::Idle);
 		break;
 	}
+	case Ability::Idle:
+	case Ability::Selected:
 	default:
 		break;
 	}
@@ -218,54 +168,25 @@ void AbilityManager::addAbility(Ability* ability)
 	AbilityType type = ability->type();
 	setState(ability, Ability::Idle);
 
-	//mHotKeys.addHotKey(type);
+	mHotKeys.addHotKey(type, mTextures);
 	mAbilities.push_back(ability);
 }
 
 
+// TODO: do i need to add these restrictions?
 void AbilityManager::setState(Ability* ability, Ability::State state)
 {
-	if (state == Ability::Idle)
-	{
-		// None OR Finished --> Idle
-		if (ability->state() == Ability::None || ability->state() == Ability::Finished)
-		{
-			ability->setState(state);
-		}
-	}
-	else if (state == Ability::Selected)
-	{
-		// Idle --> Selected
-		if (ability->state() == Ability::Idle)
-		{
-			sendSetTextColourEvent(ability, Colour::Green);
-			ability->setState(state);
-		}
-	}
-	else if (state == Ability::Activate)
-	{
-		// Idle OR Selected --> Activate
-		if (ability->state() == Ability::Idle || ability->state() == Ability::Selected)
-		{
-			sendSetTextColourEvent(ability, Colour::Red);
-			ability->setState(state);
-		}
-	}
+
+	ability->setState(state);
+
+	if(state == Ability::Selected)
+		sendSetTextColourEvent(ability, Colour::Green);
+
 	else if (state == Ability::Running)
-	{
-		if (ability->state() == Ability::Activate)
-		{
-			ability->setState(state);
-		}
-	}
-	else if (state == Ability::Finished)
-	{
-		if (ability->state() == Ability::Running)
-		{
-			sendSetTextColourEvent(ability, Colour::White);
-			ability->setState(state);
-		}
-	}
+		sendSetTextColourEvent(ability, Colour::Red);
+
+	else if (state == Ability::Idle)
+		sendSetTextColourEvent(ability, Colour::White);
 }
 
 

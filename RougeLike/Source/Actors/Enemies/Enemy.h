@@ -47,8 +47,8 @@ public:
 	void addIdleState(float waitTime);
 	 
 	// Map
-	void setMap(AIPathMap* map) { mMap = map; }
-	AIPathMap* getPathMap() { return mMap; }
+	void setMap(const AIPathMap* map) { mMap = map; }
+	const AIPathMap* getPathMap() { return mMap; }
 	const Map* getEnvironmentMap() const;
 
 	// Collisions
@@ -74,7 +74,7 @@ protected:
 
 
 protected:
-	AIPathMap* mMap;
+	const AIPathMap* mMap;
 
 	StateMachine<EnemyState> mStateMachine;
 

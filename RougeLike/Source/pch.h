@@ -58,7 +58,6 @@ using ValueMap = std::unordered_map<std::string, float>;
 using StringMap = std::unordered_map<std::string, std::string>;
 #include "System/Files/XMLParser.h"
 #include "System/Files/FileManager.h"
-#include "System/Files/XMLValueMap.h"
 
 // Globals
 #include "Graphics/Renderer.h"

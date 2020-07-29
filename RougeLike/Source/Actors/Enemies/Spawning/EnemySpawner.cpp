@@ -10,61 +10,30 @@
 #include "Map/Map.h"
 
 
-
-
-
-//
-//// Decorations
-//void LevelManager::decorate(Map* map, const std::string& section)
-//{
-//	std::string fileName = "Level" + std::to_string(mLevel);
-//	std::string path = FileManager::Get()->findFile(FileManager::Config_Map, fileName);
-//
-//	if (!path.empty())
-//	{
-//		// Decorations
-//		XMLParser parser(path);
-//		DecorMap decorations = getLevelDecorInfo(parser, section);
-//		MapDecorator decorator;
-//		decorator.addDecor(decorations, map->getData());
-//
-//		// Traps
-//		DecorMap trapInfo = getLevelTrapInfo(parser, section);
-//		setTrapInfo(map, trapInfo);
-//	}
-//}
-
-
 void EnemySpawner::wipeEnemies()
 {
 	//mEnemies->clearAllEnemies();
 }
 
-std::vector<SpawnData> EnemySpawner::getspawnList(Map* map, int level)
+std::vector<SpawnData> EnemySpawner::getspawnList(const XMLParser& parser, const Map* map)
 {
 	std::vector<SpawnData> spawnList;
 
-	std::string fileName = "Level" + std::to_string(level);
-	std::string path = FileManager::Get()->findFile(FileManager::Config_Map, fileName);
-	if (!path.empty())
+	xmlNode root = parser.rootNode();
+	xmlNode spawnerLevelNode = root->first_node("Spawning");
+	if (spawnerLevelNode)
 	{
-		XMLParser parser(path);
-		xmlNode root = parser.rootNode();
-		xmlNode spawnerLevelNode = root->first_node("Spawning");
-		if (spawnerLevelNode)
+		xmlNode spawnNode = spawnerLevelNode->first_node();
+		while (spawnNode)
 		{
-			xmlNode spawnNode = spawnerLevelNode->first_node();
-			while (spawnNode)
-			{
-				Type spawnType = stringToType(spawnNode->name());
-				Attributes attributes = parser.attributes(spawnNode);
+			Type spawnType = stringToType(spawnNode->name());
+			Attributes attributes = parser.attributes(spawnNode);
 
-				std::vector<SpawnData> list = spawnEnemies(map, spawnType, attributes);
-				spawnList.reserve(spawnList.size() + list.size());
-				spawnList.insert(spawnList.end(), list.begin(), list.end());
+			std::vector<SpawnData> list = spawnEnemies(map, spawnType, attributes);
+			spawnList.reserve(spawnList.size() + list.size());
+			spawnList.insert(spawnList.end(), list.begin(), list.end());
 
-				spawnNode = spawnNode->next_sibling();
-			}
+			spawnNode = spawnNode->next_sibling();
 		}
 	}
 
@@ -72,7 +41,7 @@ std::vector<SpawnData> EnemySpawner::getspawnList(Map* map, int level)
 }
 
 
-std::vector<SpawnData> EnemySpawner::spawnEnemies(Map* map, Type spawnType, const Attributes& attributes)
+std::vector<SpawnData> EnemySpawner::spawnEnemies(const Map* map, Type spawnType, const Attributes& attributes)
 {
 	if (spawnType == Type::Patrol)
 		 return spawnPatrollers(map, attributes);
@@ -93,36 +62,36 @@ EnemySpawner::Type EnemySpawner::stringToType(const std::string& spawnType)
 }
 
 
-void EnemySpawner::spawnLevel(Map* map, int level)
-{
-	switch (level)
-	{
-	case 1:
-	{
-		level1(map);
-		break;
-	}
-	case 2:
-	{
-		level2(map);
-		break;
-	}
-	case 3:
-	{
-		level3(map);
-		break;
-	}
-	case 4:
-	{
+//void EnemySpawner::spawnLevel(Map* map, int level)
+//{
+//	switch (level)
+//	{
+//	case 1:
+//	{
+//		level1(map);
+//		break;
+//	}
+//	case 2:
+//	{
+//		level2(map);
+//		break;
+//	}
+//	case 3:
+//	{
+//		level3(map);
+//		break;
+//	}
+//	case 4:
+//	{
+//
+//	}
+//	default:
+//		break;
+//	}
+//}
 
-	}
-	default:
-		break;
-	}
-}
 
-
-void EnemySpawner::spawnPatrollers(Map* map, int xIncrement, EnemyType type)
+void EnemySpawner::spawnPatrollers(const Map* map, int xIncrement, EnemyType type)
 {
 	for (unsigned int xPoint = xIncrement; xPoint < 100 - xIncrement; xPoint += xIncrement)
 	{
@@ -131,14 +100,12 @@ void EnemySpawner::spawnPatrollers(Map* map, int xIncrement, EnemyType type)
 	}
 }
 
-std::vector<SpawnData> EnemySpawner::spawnPatrollers(Map* map, const Attributes& attributes)
+std::vector<SpawnData> EnemySpawner::spawnPatrollers(const Map* map, const Attributes& attributes)
 {
 	EnemyType enemyType = stringToEnemyType(attributes.getString("type"));
 	int xIncrement = attributes.getInt("xIncrement");
 
 	std::vector<SpawnData> spawnList;
-	spawnList.reserve(90 / xIncrement);
-
 	for (unsigned int xPoint = 5; xPoint <= 95; xPoint += xIncrement)
 	{
 		VectorF position = findSpawnPoint(map, xPoint);
@@ -149,7 +116,7 @@ std::vector<SpawnData> EnemySpawner::spawnPatrollers(Map* map, const Attributes&
 }
 
 
-void EnemySpawner::spawnShape(Map* map, int xPoint, Shape shape, EnemyType type)
+void EnemySpawner::spawnShape(const Map* map, int xPoint, Shape shape, EnemyType type)
 {
 	PointList points = shape.points();
 
@@ -213,32 +180,32 @@ Shape EnemySpawner::pickRandomShape()
 
 
 
-// Level spawning functions
-void EnemySpawner::level1(Map* map)
-{
-	spawnPatrollers(map, 5, EnemyType::Devil);
-
-	//spawnShape(map, 30, pickRandomShape(), EnemyType::Imp);
-	//spawnShape(map, 60, pickRandomShape(), EnemyType::Angel);
-}
-
-
-void EnemySpawner::level2(Map* map)
-{
-	spawnPatrollers(map, 7, EnemyType::Imp);
-
-	spawnShape(map, 20, pickRandomShape(), EnemyType::Imp);
-	spawnShape(map, 50, pickRandomShape(), EnemyType::Angel);
-	spawnShape(map, 75, pickRandomShape(), EnemyType::Imp);
-}
-
-
-void EnemySpawner::level3(Map* map)
-{
-	spawnPatrollers(map, 10, EnemyType::Angel);
-
-	spawnShape(map, 20, pickRandomShape(), EnemyType::Imp);
-	spawnShape(map, 50, pickRandomShape(), EnemyType::Angel);
-	spawnShape(map, 60, pickRandomShape(), EnemyType::Imp);
-	spawnShape(map, 80, pickRandomShape(), EnemyType::Angel);
-}
+//// Level spawning functions
+//void EnemySpawner::level1(Map* map)
+//{
+//	spawnPatrollers(map, 5, EnemyType::Devil);
+//
+//	//spawnShape(map, 30, pickRandomShape(), EnemyType::Imp);
+//	//spawnShape(map, 60, pickRandomShape(), EnemyType::Angel);
+//}
+//
+//
+//void EnemySpawner::level2(Map* map)
+//{
+//	spawnPatrollers(map, 7, EnemyType::Imp);
+//
+//	spawnShape(map, 20, pickRandomShape(), EnemyType::Imp);
+//	spawnShape(map, 50, pickRandomShape(), EnemyType::Angel);
+//	spawnShape(map, 75, pickRandomShape(), EnemyType::Imp);
+//}
+//
+//
+//void EnemySpawner::level3(Map* map)
+//{
+//	spawnPatrollers(map, 10, EnemyType::Angel);
+//
+//	spawnShape(map, 20, pickRandomShape(), EnemyType::Imp);
+//	spawnShape(map, 50, pickRandomShape(), EnemyType::Angel);
+//	spawnShape(map, 60, pickRandomShape(), EnemyType::Imp);
+//	spawnShape(map, 80, pickRandomShape(), EnemyType::Angel);
+//}

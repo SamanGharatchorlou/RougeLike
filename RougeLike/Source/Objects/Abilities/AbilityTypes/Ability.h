@@ -56,7 +56,7 @@ public:
 	Ability() : mState(None) { }
 	virtual ~Ability() { }
 
-	void fillAbilityValues(const ValueBag& values);	
+	virtual void fillAbilityValues(const ValueBag& values);	
 	virtual void init(Animator animator, Actor* caster);
 
 	virtual void fillValues(const ValueBag& values) { };
@@ -100,7 +100,7 @@ protected:
 class RangedAbility : public Ability
 {
 public:
-	void fillRangedAbilityValues(const ValueBag& values);
+	void fillAbilityValues(const ValueBag& values) override;
 	void setRangeCircle(Texture* rangeCircle) { mRangeCircle = rangeCircle; }
 
 	void renderRangeCircle();

@@ -10,7 +10,7 @@
 		</Decor>
 
 		<Traps>
-			<Spikes damage = "10" triggerTime="0.15" recoveryTime="5"></Spikes>
+			<Spikes damage = "10" triggerTime="0.15" recoveryTime="0.5"></Spikes>
 		</Traps>
 	</Primary>
 
@@ -25,8 +25,12 @@
 		</Traps>
 	</Exit>
 
+	<Collectables>
+			<Ability x="10" id="Heal"></Ability>
+	</Collectables>
+
 	<Spawning>
-		<Patrol type="Devil" xIncrement="10"></Patrol>
+		<Patrol type="Devil" xIncrement="20"></Patrol>
 		<Shape type="Devil" xPosition="30"></Shape>
 		<Shape type="Devil" xPosition="60"></Shape>
 	</Spawning>

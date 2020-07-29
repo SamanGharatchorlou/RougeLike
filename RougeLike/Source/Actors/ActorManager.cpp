@@ -2,34 +2,32 @@
 #include "ActorManager.h"
 
 #include "Game/GameData.h"
-#include "Input/InputManager.h"
+#include "Graphics/RenderManager.h"
 #include "UI/UIManager.h"
 #include "Audio/AudioManager.h"
-
-#include "Player/Player.h"
-#include "Weapons/Melee/MeleeWeapon.h"
-#include "Objects/Attributes/StatManager.h"
 
 #include "Game/Camera.h"
 #include "Map/Environment.h"
 
+#include "Player/PlayerManager.h"
+#include "Player/Player.h"
+#include "Weapons/Melee/MeleeWeapon.h"
+#include "Objects/Attributes/StatManager.h"
+
 #include "Enemies/Enemy.h"
 #include "Enemies/EnemyManager.h"
 
-#include "Collisions/CollisionManager.h"
 
-#include "Graphics/RenderManager.h"
-
-#include "Player/PlayerManager.h"
-
-
-ActorManager::ActorManager(GameData* gameData) : mGameData(gameData), mPlayer(gameData), mEnemies(gameData) { }
+ActorManager::ActorManager(GameData* gameData) : 
+	mRendering(gameData->renderManager), mTextures(gameData->textureManager), mPlayer(gameData), mEnemies(gameData) { }
 
 
 
-void ActorManager::load()
+void ActorManager::load(const XMLParser& parser, const Map* map)
 {
 	mEnemies.load();
+
+	spawnEnemies(parser, map);
 }
 
 void ActorManager::init(Environment* environment)
@@ -39,9 +37,9 @@ void ActorManager::init(Environment* environment)
 }
 
 
-void ActorManager::handleInput()
+void ActorManager::handleInput(const InputManager* input)
 {
-	mPlayer.handleInput(mGameData->inputManager);
+	mPlayer.handleInput(input);
 }
 
 void ActorManager::fastUpdate(float dt)
@@ -58,8 +56,8 @@ void ActorManager::slowUpdate(float dt)
 		sendEvent(mPlayer.events().pop());
 	   
 	mEnemies.slowUpdate(dt);
-	while (mEnemies.hasEvent())
-		sendEvent(mEnemies.popEvent());
+	while (mEnemies.events().hasEvent())
+		sendEvent(mEnemies.events().pop());
 }
 
 
@@ -67,6 +65,12 @@ void ActorManager::render()
 {
 	mPlayer.render();
 	mEnemies.render();
+}
+
+
+void ActorManager::spawnEnemies(const XMLParser& parser, const Map* map)
+{
+	mEnemies.spawn(parser, map);
 }
 
 
@@ -90,13 +94,13 @@ void ActorManager::handleEvent(EventData& data)
 {
 	switch (data.eventType)
 	{
-	case Event::EnemyDead:
-	{	
-		EnemyDeadEvent eventData = static_cast<EnemyDeadEvent&>(data);
-		//mPlayer->statManager().gainExp(eventData.mExp);
-		mGameData->collisionManager->removeDefender(CollisionManager::PlayerWeapon_Hit_Enemy, eventData.mEnemy->collider());
-		break;
-	}
+	//case Event::EnemyDead:
+	//{	
+	//	EnemyDeadEvent eventData = static_cast<EnemyDeadEvent&>(data);
+	//	//mPlayer->statManager().gainExp(eventData.mExp);
+	//	mCollisions->removeDefender(CollisionManager::PlayerWeapon_Hit_Enemy, eventData.mEnemy->collider());
+	//	break;
+	//}
 	case Event::UpdateAIPathMap:
 	{
 		mEnemies.requestEnemyPathUpdates();
@@ -112,7 +116,7 @@ void ActorManager::handleEvent(EventData& data)
 		RenderEvent eventData = static_cast<RenderEvent&>(data);
 
 		RenderPack renderPacket(eventData.mTexture, eventData.mRect, static_cast<RenderLayer>(eventData.mRenderLayer));
-		mGameData->renderManager->AddRenderPacket(renderPacket);
+		mRendering->AddRenderPacket(renderPacket);
 		break;
 	}
 	default:

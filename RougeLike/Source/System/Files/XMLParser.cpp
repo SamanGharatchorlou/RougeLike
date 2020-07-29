@@ -86,7 +86,7 @@ xmlNode XMLParser::rootNode() const
 }
 
 
-std::string XMLParser::nodeValue(xmlNode node, const std::string& label)
+std::string XMLParser::nodeValue(xmlNode node, const std::string& label) const
 {		
 	return node->first_node(label.c_str())->value();
 }

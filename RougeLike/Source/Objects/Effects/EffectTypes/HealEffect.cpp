@@ -12,12 +12,6 @@ void HealEffect::init()
 }
 
 
-void HealEffect::clearData()
-{
-	clearBaseData();
-	mHeal = Health(0.0f);
-}
-
 void HealEffect::fill(ValueMap& valueMap)
 {
 	std::string health = "Health";
@@ -25,4 +19,11 @@ void HealEffect::fill(ValueMap& valueMap)
 		mHeal = Health(valueMap[health]);
 	else
 		DebugPrint(Warning, "Value map has no %s effect node\n", health.c_str());
+}
+
+
+void HealEffect::exit()
+{
+	clearBaseData();
+	mHeal = Health(0.0f);
 }

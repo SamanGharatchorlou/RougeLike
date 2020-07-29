@@ -6,9 +6,13 @@
 #include "Player/PlayerManager.h"
 #include "Enemies/EnemyManager.h"
 
+
 struct GameData;
 class EffectPool;
 class Environment;
+class InputManager;
+class RenderManager;
+class TextureManager;
 
 class ActorManager : public Observer, public Dispatcher
 {
@@ -17,9 +21,9 @@ public:
 	~ActorManager() { }
 
 	void init(Environment* environment);
-	void load();
+	void load(const XMLParser& parser, const Map* map);
 
-	void handleInput();
+	void handleInput(const InputManager* input);
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
 	void render();
@@ -28,6 +32,8 @@ public:
 	PlayerManager* player() { return &mPlayer; }
 	EnemyManager* enemies() { return &mEnemies; }
 
+	void spawnEnemies(const XMLParser& parser, const Map* map);
+
 	std::vector<Actor*> getAllEnemies();
 
 	void handleEvent(EventData& data) override;
@@ -35,13 +41,10 @@ public:
 
 
 private:
-	void initPlayer();
-	void initEnemies();
-
-
-private:
-	GameData* mGameData;
+	TextureManager* mTextures;
+	RenderManager* mRendering;
 
 	PlayerManager mPlayer;
+
 	EnemyManager mEnemies;
 };

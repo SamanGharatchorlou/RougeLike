@@ -15,7 +15,7 @@ public:
 
 	void setReceiver(Actor* receiver) { mReceiver = receiver; }
 	
-	virtual void clearData()  = 0;
+	virtual void clearData() { };
 	virtual void fill(ValueMap& valueMap) { } // = 0;
 
 	virtual void init() = 0;

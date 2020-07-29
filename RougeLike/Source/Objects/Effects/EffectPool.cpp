@@ -32,7 +32,6 @@ Effect* EffectPool::createNewObject(EffectType type) const
 
 	switch (type)
 	{
-		break;
 	case EffectType::Heal:
 		effect = new HealEffect;
 		break;
@@ -51,7 +50,7 @@ Effect* EffectPool::createNewObject(EffectType type) const
 		DebugPrint(Log, "Effect of type %d is unimplemented\n", (int)type);
 		break;
 	case EffectType::Count:
-		break;
+	case EffectType::None:
 	default:
 		break;
 	}

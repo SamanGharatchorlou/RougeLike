@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "EnemyTypes.h"
 
+// TODO: replace with << operator
 EnemyType stringToEnemyType(const std::string& type)
 {
 	if (type == "Devil")

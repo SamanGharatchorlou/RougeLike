@@ -3,29 +3,20 @@
 #include "Events/LocalDispatcher.h"
 
 #include "Collisions/EnemyCollisions.h"
-
-#include "Types/EnemyTypes.h"
-
-#include "EnemyStates/EnemyState.h"
 #include "Spawning/EnemySpawner.h"
+#include "Actors/Enemies/Spawning/EnemyBuilder.h"
 
-#include "AI/AIPathMap.h"
+#include "AIController.h"
 
 #if _DEBUG
 #include "Debug/DebugDraw.h"
 #endif
 
-// TEMP
-#include "EnemyPool.h"
-
 
 struct GameData;
-
 class Environment;
 class Enemy;
 class Collider;
-class TextureManager;
-class EffectPool;
 
 class EnemyManager
 {
@@ -44,17 +35,15 @@ public:
 	void clearAllEnemies();
 
 	// AI pathing
-	void generateAIPathMap();
-	void updateAIPathCostMap();
-	void requestEnemyPathUpdates() { pathUpdateRequests++; }
+	void updateAIPathCostMap() { mAIController.updateAIPathCostMap(mActiveEnemies); }
+	void requestEnemyPathUpdates() { mAIController.addPathUpdateRequest(); }
 
 	// Event handling
-	EventPacket popEvent() { return mEvents.pop(); }
-	void pushEvent(EventPacket event) { mEvents.push(event); }
-	bool hasEvent() const { return mEvents.hasEvent(); }
+	LocalDispatcher& events() { return mEvents; }
 
 	// Spawning
-	void spawn(EnemyType type, EnemyState::Type state, VectorF position, TextureManager* textureManager, EffectPool* effectPool);
+	void spawn(const XMLParser& parser, const Map* map);
+
 
 	std::vector<Enemy*> getActiveEnemies() const { return mActiveEnemies; }
 	std::vector<Collider*> attackingColliders() const;
@@ -63,27 +52,21 @@ public:
 
 
 private:
+	void clearDead();
+	void spawnEnemy(const SpawnData spawnData);
 	void clearAndRemove(std::vector<Enemy*>::iterator& iter);
-
-	void updateEnemyPaths();
 
 
 private:
 	Environment* mEnvironment;
 
-	EnemyCollisions mCollisions;
+	AIController mAIController;
 
-	EnemyPool mPool;
+	EnemyCollisions mCollisions;	
+	EnemySpawner mSpawner;
+	EnemyBuilder mBuilder;
+
 	std::vector<Enemy*> mActiveEnemies;
 
-	AIPathMap mPathMap;
-
-	EnemySpawner mSpawner;
-
 	LocalDispatcher mEvents;
-
-	Timer<float> updateTimer;
-
-	int pathUpdateRequests;
-	int pathUpdateStaggerCounter;
 };

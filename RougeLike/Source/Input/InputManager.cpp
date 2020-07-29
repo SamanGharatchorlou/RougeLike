@@ -202,6 +202,7 @@ void InputManager::bindDefaultButtons()
 	mButtons.push_back(Button(Button::Key::E));
 
 	// Numbers
+	mButtons.push_back(Button(Button::Key::Zero));
 	mButtons.push_back(Button(Button::Key::One));
 	mButtons.push_back(Button(Button::Key::Two));
 	mButtons.push_back(Button(Button::Key::Three));

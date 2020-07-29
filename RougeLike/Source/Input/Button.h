@@ -61,6 +61,7 @@ public:
 		E = SDLK_e,
 
 		// Numbers
+		Zero = SDLK_0,
 		One = SDLK_1,
 		Two = SDLK_2,
 		Three = SDLK_3,

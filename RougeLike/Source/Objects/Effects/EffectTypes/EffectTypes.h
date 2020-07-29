@@ -24,14 +24,6 @@ inline EffectType operator +(EffectType a, T b)
 	return static_cast<EffectType>(sum);
 }
 
-//EffectType stringToEffectType(const std::string effect)
-//{
-//	if (effect == "Damage")
-//		return EffectType::Damage;
-//	else
-//		return EffectType::None;
-//}
-
 inline void operator >>(EffectType a, std::string& str)
 {
 	if (a == EffectType::Damage)

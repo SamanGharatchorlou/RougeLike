@@ -18,10 +18,8 @@
 Actor::Actor() : mVisibility(true) { }
 
 
-void Actor::setCharacter(XMLParser& parser, TextureManager* textureManager)
+void Actor::setCharacter(const XMLParser& parser, TextureManager* textureManager)
 {
-	//XMLParser parser(FileManager::Get()->findFile(FileManager::Configs_Objects, config));
-
 	// Properties
 	mPropertyBag.readProperties(parser);
 
@@ -66,7 +64,9 @@ void Actor::fastUpdate(float dt)
 void Actor::slowUpdate(float dt)
 {
 	mAnimator.slowUpdate(dt);
+
 	mEffects.slowUpdate(dt);
+	mEffects.returnExhaustedEffects(mEnvironment->effectPool());
 }
 
 
@@ -84,7 +84,7 @@ void Actor::reset()
 	mPhysics.reset();
 	mAnimator.clear();
 	mEffects.clear();
-	mPropertyBag.resetProperties();
+	//mPropertyBag.resetProperties(); // TODO: need to clear properties?
 }
 
 

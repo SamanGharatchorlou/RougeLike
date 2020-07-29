@@ -14,9 +14,7 @@ public:
 	const Index index(VectorF position) const;
 	const Index index(const PathTile* tile) const;
 
-	//MapTile* tile(Index index) { return &mData[index]; };
 	const PathTile* tile(Index index) const { return &mData.get(index); };
-	//const MapTile* tile(VectorF position) const;
 
 	const VectorF tileSize() const;
 
@@ -24,7 +22,8 @@ public:
 
 	const PathTile* offsetTile(const PathTile* target, int xOffset, int yOffset) const;
 
-	Grid<int>& costMap() { return mCostMap; }
+	const Grid<int>& costMap() const { return mCostMap; }
+	Grid<int>& costMapRef() { return mCostMap; }
 
 private:
 	bool isValidPosition(VectorF position) const;

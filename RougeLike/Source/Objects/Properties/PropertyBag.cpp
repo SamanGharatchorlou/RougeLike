@@ -84,7 +84,7 @@ void PropertyBag::readProperties(const std::string& config)
 	fillProperties(map);
 }
 
-void PropertyBag::readProperties(XMLParser& parser)
+void PropertyBag::readProperties(const XMLParser& parser)
 {
 	xmlNode propertyNode = parser.rootNode()->first_node("Properties");
 	ValueMap map = readValues(propertyNode);

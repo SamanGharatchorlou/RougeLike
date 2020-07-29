@@ -2,7 +2,10 @@
 #include "EffectHandler.h"
 #include "EffectTypes/Effect.h"
 
+#include "EffectPool.h"
 
+
+// TODO: split this us so everything is delayed added
 void EffectHandler::addEffect(Effect* effect)
 {
 	if (!mDelayedAdd)
@@ -15,6 +18,8 @@ void EffectHandler::addEffect(Effect* effect)
 		mEffectsToAdd.push(effect);
 	}
 }
+
+
 
 
 void EffectHandler::fastUpdate(float dt)
@@ -40,8 +45,8 @@ void EffectHandler::slowUpdate(float dt)
 		{
 			effect->exit();
 			iter = mEffects.erase(iter);
-			// TODO: replace this with something... needs to be handled
-			//mPool->returnEffect(effect);
+
+			mExhausted.push(effect);
 		}
 		else
 		{
@@ -83,4 +88,16 @@ void EffectHandler::clear()
 	//	delete effect;
 	//	iter = mEffects.erase(iter);
 	//}
+}
+
+
+void EffectHandler::returnExhaustedEffects(EffectPool* pool)
+{
+	while (mExhausted.size() > 0)
+	{
+		Effect* effect = mExhausted.front();
+		mExhausted.pop();
+
+		pool->returnObject(effect);
+	}
 }

@@ -4,7 +4,7 @@
 #include "AIPathMap.h"
 
 
-AIPathing::AIPathing(AIPathMap* map) : mMap(map) { }
+AIPathing::AIPathing(const AIPathMap* map) : mMap(map) { }
 
 std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition)
 {
@@ -23,7 +23,7 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 
 	Grid<Index> cameFrom(mMap->yCount(), mMap->xCount(), Index(-1,-1));
 	Grid<int> cost(mMap->yCount(), mMap->xCount(), 0);
-	Grid<int>& globalCostMap = mMap->costMap();
+	const Grid<int>& globalCostMap = mMap->costMap();
 
 
 #if _DEBUG
@@ -50,7 +50,7 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 				Index nextIndex = mMap->index(nextTile);
 				Index currentIndex = mMap->index(currentTile);
 
-				int newCost = cost[currentIndex] + globalCostMap[nextIndex]; // replace 1 with the floor type
+				int newCost = cost[currentIndex] + globalCostMap.get(nextIndex); // replace 1 with the floor type
 
 				if (mMap->inBounds(nextIndex) &&
 					(cameFrom.get(nextIndex).isNegative() || newCost < cost[nextIndex]))
@@ -130,7 +130,7 @@ VectorF AIPathing::position(Index tileIndex) const
 // TEMP
 const PathTile* AIPathing::tile(Index tileIndex) const
 {
-	return &(*mMap)[tileIndex];
+	return &mMap->get(tileIndex);
 }
 
 

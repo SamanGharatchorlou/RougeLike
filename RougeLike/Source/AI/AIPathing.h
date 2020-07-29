@@ -11,7 +11,7 @@ using Path = std::stack<Index>;
 class AIPathing
 {
 public:
-	AIPathing(AIPathMap* map);
+	AIPathing(const AIPathMap* map);
 
 	Path findPath(VectorF start, VectorF end);
 
@@ -43,7 +43,7 @@ private:
 
 
 private:
-	AIPathMap* mMap;
+	const AIPathMap* mMap;
 };
 
 

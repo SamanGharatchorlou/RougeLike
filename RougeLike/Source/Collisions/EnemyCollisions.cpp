@@ -33,6 +33,6 @@ bool EnemyCollisions::isEmpty()
 	int countA = mCollisionManager->defenderCount(CollisionManager::PlayerWeapon_Hit_Enemy);
 	int countB = mCollisionManager->defenderCount(CollisionManager::Player_Hit_Enemy);
 
-	return (bool)(countA + countB);
+	return countA + countB == 0;
 }
 #endif

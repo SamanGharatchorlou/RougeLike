@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AbilityTypes/Ability.h"
-
+#include "Input/Button.h"
 
 class AbilityManager;
 class InputManager;
@@ -14,10 +14,12 @@ class AbilityActivator
 public:
 	void init(Environment* environment) { mEnvironment = environment; }
 
-	bool selected(Ability* ability, const InputManager* input);
-	bool released(Ability* ability, const InputManager* input);
+	bool canSelect(Ability* ability) const;
 
-	bool activate(Ability* ability, const InputManager* input);
+	bool selected(Ability* ability, Button::State buttonState) const;
+	bool released(Ability* ability, Button::State buttonState) const;
+
+	bool activate(Ability* ability, Button::State buttonState, const InputManager* input);
 
 	void activateAreaAttack(Ability* ability);
 

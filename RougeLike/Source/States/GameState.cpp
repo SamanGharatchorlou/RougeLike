@@ -55,23 +55,23 @@ void GameState::init()
 
 	//mCollectables.spawnRandomItem(Collectables::MeleeWeapon);
 
-	Collectable* Armor = new AbilityCollectable("Armor");
-	mCollectables.spawn(Armor, 15);
+	//Collectable* Armor = new AbilityCollectable("Armor");
+	//mCollectables.spawn(Armor, 15);
 
-	Collectable* Blink = new AbilityCollectable("Blink");
-	mCollectables.spawn(Blink, 20);
+	//Collectable* Blink = new AbilityCollectable("Blink");
+	//mCollectables.spawn(Blink, 20);
 
-	Collectable* Spikes = new AbilityCollectable("Spikes");
-	mCollectables.spawn(Spikes, 10);
+	//Collectable* Spikes = new AbilityCollectable("Spikes");
+	//mCollectables.spawn(Spikes, 10);
 
-	Collectable* Heal = new AbilityCollectable("Heal");
-	mCollectables.spawn(Heal, 12);
+	//Collectable* Heal = new AbilityCollectable("Heal");
+	//mCollectables.spawn(Heal, 12);
 
-	Collectable* weapon = new WeaponCollectable("Mace");
-	mCollectables.spawn(weapon, 12);
+	//Collectable* weapon = new WeaponCollectable("Mace");
+	//mCollectables.spawn(weapon, 12);
 
-	Collectable* smash = new AbilityCollectable("Smash");
-	mCollectables.spawn(smash, 10);
+	//Collectable* smash = new AbilityCollectable("Smash");
+	//mCollectables.spawn(smash, 10);
 
 	//Collectable* charge = new AbilityCollectable("Charge");
 	//mCollectables.spawn(charge, 15);
@@ -90,7 +90,7 @@ void GameState::handleInput()
 		mGameController->getStateMachine()->addState(new PauseState(mGameData, mGameController));
 	}
 
-	mGameData->environment->handleInput();
+	mGameData->environment->handleInput(mGameData->inputManager);
 }
 
 

@@ -20,13 +20,8 @@ Ability* createNewAbility(const std::string& name, TextureManager* textureManage
 	XMLParser parser;
 	parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, name));
 
-	//xmlNode propertyNode = parser.rootNode()->first_node("Properties");
-	//ValueMap values = parser.valueMap(propertyNode);
-
 	ValueBag values;
 	values.readData(parser, "Properties");
-
-
 
 	Ability* ability = nullptr;
 
@@ -49,7 +44,7 @@ Ability* createNewAbility(const std::string& name, TextureManager* textureManage
 	else if (name == "Smash")
 	{
 		// Create hammer
-		Texture* texture = nullptr; // textureManager->getTexture(values.get("HammerTexture"), FileManager::Image_Weapons);
+		Texture* texture = textureManager->getTexture("Mjolnir", FileManager::Image_Weapons);
 		VectorF size = realiseSize(texture->originalDimentions, values.get("HammerMaxSize"));
 		ability = new SmashAbility(texture, size);
 	}
@@ -70,7 +65,6 @@ Ability* createNewAbility(const std::string& name, TextureManager* textureManage
 		RangedAbility* rangedAbility = dynamic_cast<RangedAbility*>(ability);
 		if (rangedAbility)
 		{
-			rangedAbility->fillRangedAbilityValues(values);
 			setRangeCircle(rangedAbility, textureManager);
 		}
 	}

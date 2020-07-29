@@ -7,7 +7,6 @@
 		<MaxSize>100</MaxSize>
 		<Cooldown>1</Cooldown>
 
-		<HammerTexture>Mjolnir</HammerTexture>
 		<HammerMaxSize>50</HammerMaxSize>
 		<HammerFallSpeed>750</HammerFallSpeed>
 

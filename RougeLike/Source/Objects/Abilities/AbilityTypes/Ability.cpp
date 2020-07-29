@@ -44,8 +44,9 @@ void Ability::exit()
 
 
 // --- Range ---
-void RangedAbility::fillRangedAbilityValues(const ValueBag& values)
+void RangedAbility::fillAbilityValues(const ValueBag& values)
 {
+	Ability::fillAbilityValues(values);
 	mRange = values.get("Range");
 }
 

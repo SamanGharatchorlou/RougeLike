@@ -18,15 +18,11 @@ class Screen;
 
 class AbilityManager
 {
-	friend class AbilityHotKeys;
-	friend class AbilityActivator;
-
 public:
-	AbilityManager(TextureManager* textures, Actor* parent, Screen* screen);
+	AbilityManager(TextureManager* textures, Actor* caster, Screen* screen);
 
 	void init(Environment* environment);
 
-	bool shouldActivate(Ability* ability, const InputManager* input);
 
 	void handleInput(const InputManager* input);
 	void slowUpdate(float dt);
@@ -61,9 +57,7 @@ private:
 	LocalDispatcher mEvents;
 
 	AbilityActivator mActivator;
-	//AbilityHotKeys mHotKeys;
-	//HotKeys<AbilityType> mHotKeyMgr;
+	AbilityHotKeys mHotKeys;
 
 	std::vector<Ability*> mAbilities;
-	//std::unordered_map<AbilityType, Ability*> mAbilityMap;
 };
