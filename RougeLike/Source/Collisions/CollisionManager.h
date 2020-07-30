@@ -33,6 +33,7 @@ public:
 	void addCollisionTracker(Tracker id); // TODO: make private?
 
 	void addAttackers(Tracker id, std::vector<Collider*> attackers);
+	void addDefender(Tracker id, Collider* defender);
 	void addDefenders(Tracker id, std::vector<Collider*> defenders);
 
 	void removeDefender(Tracker id, const Collider* defender);

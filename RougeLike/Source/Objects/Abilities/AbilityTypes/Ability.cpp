@@ -35,6 +35,11 @@ void Ability::init(Animator animator, Actor* caster)
 	mRect.SetSize(realiseSize(animator.frameSize(), mMaxDimention));
 }
 
+void Ability::setAnimations(Animator animator)
+{
+	mAnimator = animator;
+	mRect.SetSize(realiseSize(animator.frameSize(), mMaxDimention));
+}
 
 void Ability::exit()
 {

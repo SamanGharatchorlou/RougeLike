@@ -26,8 +26,6 @@ ActorManager::ActorManager(GameData* gameData) :
 void ActorManager::load(const XMLParser& parser, const Map* map)
 {
 	mEnemies.load();
-
-	spawnEnemies(parser, map);
 }
 
 void ActorManager::init(Environment* environment)

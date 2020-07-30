@@ -2,6 +2,7 @@
 
 class Map;
 
+// TODO: change this to only a function?
 class Spawner
 {
 public:

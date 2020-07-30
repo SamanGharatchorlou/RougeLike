@@ -3,7 +3,6 @@
 class Environment;
 class ActorManager;
 class UIManager;
-class Collectables;
 class Texture;
 
 enum class RenderLayer
@@ -12,7 +11,6 @@ enum class RenderLayer
 	Floor,
 	LowerTiles,
 	Actors,
-	Items,
 	UpperTiles,
 	UI,
 	Highest
@@ -34,9 +32,7 @@ public:
 	RenderManager();
 
 	void Set(Environment* environment) { mEnvironment = environment; }
-	void Set(ActorManager* actors) { mActors = actors; }
 	void Set(UIManager* UI) { mUIManager = UI; }
-	void Set(Collectables* collectables) { mCollectables = collectables; }
 
 	void render();
 
@@ -49,9 +45,7 @@ private:
 
 private:
 	Environment* mEnvironment;
-	ActorManager* mActors;
 	UIManager* mUIManager;
-	Collectables* mCollectables;
 
 	std::vector<RenderPack> mRenderPackets;
 };

@@ -29,6 +29,11 @@ inline void operator >>(AbilityType a, std::string& str)
 		str = "Heal";
 }
 
+inline void operator <<(AbilityType& a, const std::string& str)
+{
+	if (str == "Heal")
+		a = AbilityType::Heal;
+}
 
 class Ability
 {
@@ -58,6 +63,7 @@ public:
 
 	virtual void fillAbilityValues(const ValueBag& values);	
 	virtual void init(Animator animator, Actor* caster);
+	void setAnimations(Animator animator);
 
 	virtual void fillValues(const ValueBag& values) { };
 	virtual void fastUpdate(float dt) = 0;
@@ -68,6 +74,7 @@ public:
 	virtual TargetType targetType() const = 0;
 	virtual AbilityType type() const { return AbilityType::None; } // = 0;
 
+	void setCaster(Actor* caster) { mCaster = caster; }
 	Actor* caster() const { return mCaster; }
 
 	void setName(const std::string& name) { mName = name; }
@@ -82,8 +89,10 @@ public:
 
 	Cooldown& cooldown() { return mCooldown; }
 
+	virtual bool isRanged() const { return false; }
+
 protected:
-	std::string mName;
+	std::string mName; // TODO do i need this?
 
 	State mState;
 	Animator mAnimator;
@@ -110,9 +119,10 @@ public:
 	RectF effectArea() const { return mRect; }
 	Collider collider();
 
+	virtual bool isRanged() const { return true; }
 
 protected:
-	Map* mMap;
+	Map* mMap; // remove?
 
 	float mRange;
 	Texture* mRangeCircle;

@@ -3,7 +3,7 @@
 
 #include "Graphics/Texture.h"
 
-#include "Actors/Player/Player.h"
+#include "Actors/Player/PlayerManager.h"
 
 
 
@@ -38,14 +38,14 @@ void Collectable::render(RectF cameraRect) const
 
 
 // --- Weapon pickup --- //
-void WeaponCollectable::activate(Player* Player)
+void WeaponCollectable::activate(PlayerManager* Player)
 {
-	//Player->selectWeapon(mName);
+	Player->selectWeapon(mID);
 }
 
 
 // --- Ability pickup --- //
-void AbilityCollectable::activate(Player* Player)
+void AbilityCollectable::activate(PlayerManager* Player)
 {
 	Player->addAbility(mID);
 }

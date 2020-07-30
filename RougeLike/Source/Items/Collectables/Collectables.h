@@ -1,31 +1,40 @@
 #pragma once
 
+#include "CollectableSpawner.h"
+#include "CollectableBuilder.h"
+
 struct GameData;
-class Texture;
 class Collectable;
+class CollisionManager;
+class Map;
+class PlayerManager;
 
 class Collectables
 {
 public:
 	Collectables(GameData* gameData);
 
+	void setCollector(PlayerManager* collector);
+
+	void spawn(const XMLParser& parser, const Map* map);
+
+	void load();
+
 	void slowUpdate(float dt);
 	void render();
 
-	void spawn(Collectable* collectable, int xPosition);
+
+private:
+	//void oscillate(Collectable* collectable, float dt);
 
 
 private:
-	//std::vector<std::string> itemNames(ItemType type);
+	PlayerManager* mCollector;
+	CollisionManager* mCollisions;
 
-	ValueMap getConfigInfo(Collectable* collectable) const;
-	Texture* findIcon(Collectable* collectable) const;
-
-
-private:
-	GameData* mGameData;
-
-	Timer<float> timer;
+	//Timer<float> timer;
+	CollectableSpawner mSpawner;
+	CollectableBuilder mBuilder;
 
 	std::vector<Collectable*> mCollectables;
 };

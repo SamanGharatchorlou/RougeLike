@@ -62,11 +62,11 @@ private:
 
 	AIController mAIController;
 
-	EnemyCollisions mCollisions;	
 	EnemySpawner mSpawner;
 	EnemyBuilder mBuilder;
-
-	std::vector<Enemy*> mActiveEnemies;
+	EnemyCollisions mCollisions;
 
 	LocalDispatcher mEvents;
+
+	std::vector<Enemy*> mActiveEnemies;
 };

@@ -25,8 +25,11 @@ void PlayerManager::init(Environment* environment)
 	mEnvironment = environment;
 	mPlayer.set(environment);
 	mAbilities.init(environment);
+}
 
-	mAbilities.add("Heal");
+void PlayerManager::addAbility(const std::string& ability)
+{
+	mAbilities.addAbility(ability);
 }
 
 void PlayerManager::setPosition(VectorF position)

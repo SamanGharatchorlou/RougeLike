@@ -7,46 +7,58 @@
 #include "Game/GameData.h"
 #include "Collisions/CollisionManager.h"
 
-#include "Items/Spawner.h"
-#include "Map/Environment.h"
-#include "Graphics/TextureManager.h"
-
-#include "Actors/ActorManager.h"
-#include "Actors/Player/Player.h"
-
 #if _DEBUG
 #include "Debug/DebugDraw.h"
 #endif
 
 
-Collectables::Collectables(GameData* gameData) : mGameData(gameData) 
-{ 
-	timer.start();
+Collectables::Collectables(GameData* gameData) : mCollisions(gameData->collisionManager), mBuilder(gameData->textureManager)
+{ }
+
+
+void Collectables::spawn(const XMLParser& parser, const Map* map)
+{
+	std::queue<CollectableSpawner::SpawnData> dataQueue = mSpawner.getSpawnList(parser, map);
+
+	while (dataQueue.size() > 0)
+	{
+		CollectableSpawner::SpawnData data = dataQueue.front();
+		dataQueue.pop();
+
+		Collectable* collectable = mBuilder.build(data);
+		mCollectables.push_back(collectable);
+		mCollisions->addDefender(CollisionManager::Player_Hit_Collectable, collectable->collider());
+	}
+}
+
+
+void Collectables::setCollector(PlayerManager* collector)
+{
+	mCollector = collector;
+}
+
+
+void Collectables::load()
+{
+	mBuilder.loadPool();
 }
 
 
 void Collectables::slowUpdate(float dt)
 {
-	float theta = timer.getSeconds() * 2.0f;
-	float xOscillation = std::sin(theta);
-	float yOscillation = std::cos(theta * 2.0f);
-	VectorF oscillationVector = VectorF(xOscillation, yOscillation) * 100.0f;
-
 	std::vector<Collectable*>::iterator iter;
 	for (iter = mCollectables.begin(); iter != mCollectables.end(); )
 	{
 		Collectable* collectable = *iter;
 
-		collectable->move(oscillationVector * dt);
-
 		if (collectable->pickedUp())
 		{
-			//collectable->activate(mGameData->actors->player());
+			collectable->activate(mCollector);
 
-			// Destroy the collectable from game
 			iter = mCollectables.erase(iter);
-			mGameData->collisionManager->removeDefender(CollisionManager::Player_Hit_Collectable, collectable->collider());
-			delete collectable;
+			mCollisions->removeDefender(CollisionManager::Player_Hit_Collectable, collectable->collider());
+
+			mBuilder.returnCollectable(collectable);
 		}
 		else
 		{
@@ -74,64 +86,3 @@ void Collectables::render()
 	}
 }
 
-
-void Collectables::spawn(Collectable* collectable, int xPosition)
-{
-	//Spawner itemSpawner;
-	//VectorF position = itemSpawner.findSpawnPoint(mGameData->environment->primaryMap(), xPosition);
-
-	//collectable->setIcon(findIcon(collectable));
-	//collectable->setPosition(position);
-	//mCollectables.push_back(collectable);
-
-	//std::vector<Collider*> collider{ collectable->collider() };
-	//mGameData->collisionManager->addDefenders(CollisionManager::Player_Hit_Collectable, collider);
-}
-
-
-//void Collectables::spawnRandomItem(ItemType itemType)
-//{
-//	for (int i = 0; i < 5; i++)
-//	{
-//		Spawner itemSpawner;
-//		int randomXPosition = 10; // randomNumberBetween(10, 95);
-//		VectorF position = itemSpawner.findSpawnPoint(mGameData->environment->primaryMap(), randomXPosition);
-//
-//		std::vector<std::string> itemNameList = itemNames(itemType);
-//		const std::string weaponName = itemNameList[randomNumberBetween(0, itemNameList.size())];
-//
-//		WeaponCollectable* weaponPickup = new WeaponCollectable(weaponName, mGameData->textureManager->getTexture(weaponName, FileManager::Image_Weapons));
-//		spawn(weaponPickup, position);
-//	}
-//}
-
-/// --- Private Functions ---///
-//std::vector<std::string> Collectables::itemNames(ItemType type)
-//{
-//	switch (type)
-//	{
-//	case ItemType::MeleeWeapon:
-//		return FileManager::Get()->fileNamesInFolder(FileManager::Config_MeleeWeapons);
-//	default:
-//		DebugPrint(Log, "Unrecognised ItemType %d, cannot get item name list for item spawn\n", type);
-//		break;
-//	}
-//}
-
-Texture* Collectables::findIcon(Collectable* collectable) const
-{
-	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs_Objects, collectable->name()));
-	std::string iconName = parser.firstRootNodeValue("Icon");
-	Texture* icon = mGameData->textureManager->getTexture(iconName, FileManager::Image_UI);
-	ASSERT(Warning, icon != nullptr, "Collectable '%s' info has no valid icon name\n", collectable->name().c_str());
-
-	return icon;
-}
-
-ValueMap Collectables::getConfigInfo(Collectable* collectable) const
-{
-	XMLParser parser;
-	std::string filePath = FileManager::Get()->findFile(FileManager::Configs_Objects, collectable->name());
-	parser.parseXML(filePath);
-	return parser.valueMap(parser.rootNode()->first_node("Properties"));
-}

@@ -52,12 +52,8 @@ private:
 	ActorManager mActors;
 	LevelManager mLevelManager;
 	EffectPool mEffectPool;
-
-	//EnemySpawner mEnemySpawner;
 	
-
 	Collectables mCollectables;
-	CollectablesPool mCollectablesPool;
 
 	Vector2D<int> mMapSize;
 };

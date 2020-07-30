@@ -28,7 +28,6 @@
 GameState::GameState(GameData* gameData, GameController* gameController) : 
 	mGameData(gameData)
 	, mGameController(gameController)
-	, mCollectables(gameData)
 {
 	// random seed
 	srand((unsigned int)time(NULL));
@@ -110,8 +109,6 @@ void GameState::slowUpdate(float dt)
 
 	mGameData->scoreManager->slowUpdate();
 
-	mCollectables.slowUpdate(dt);
-
 	Camera::Get()->slowUpdate(dt);
 
 	//// End current level, close old level exit, open new level entrance
@@ -182,7 +179,6 @@ void GameState::initRendering()
 	mGameData->renderManager->Set(mGameData->environment);
 	//mGameData->renderManager->Set(mGameData->actors);
 	mGameData->renderManager->Set(mGameData->uiManager);
-	mGameData->renderManager->Set(&mCollectables);
 }
 
 

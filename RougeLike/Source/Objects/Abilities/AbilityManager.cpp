@@ -13,6 +13,7 @@
 
 // TEMP
 #include "AbilityCreator.h"
+#include "AbilityBuilder.h"
 
 
 AbilityManager::AbilityManager(TextureManager* textures, Actor* caster, Screen* screen) :
@@ -144,39 +145,32 @@ bool AbilityManager::inSelectionMode() const
 }
 
 
-void AbilityManager::add(const std::string& name)
+void AbilityManager::addAbility(const std::string& name)
 {
-	Ability* ability = createNewAbility(name, mTextures);
-	XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Abilities, ability->name()));
+	AbilityType type = AbilityType::None;
+	type << name;
 
-	AnimationReader reader(mTextures, parser);
-	Animator animator;
-
-	if (reader.initAnimator(animator))
+	if (type != AbilityType::None)
 	{
-		ability->init(animator, mCaster);
-		addAbility(ability);
+		AbilityBuilder builder;
+		Ability* ability = builder.build(name, mTextures);
+		ability->setCaster(mCaster);
+
+		AbilityType type = ability->type();
+		setState(ability, Ability::Idle);
+
+		mHotKeys.addHotKey(type, mTextures);
+		mAbilities.push_back(ability);
 	}
 	else
-		DebugPrint(Warning, "Animator setup failed for '%s' ability\n", ability->name().c_str());
-
+	{
+		DebugPrint(Log, "No ability type with the name '%s'. No ability was added.\n", name.c_str());
+	}
 }
 
 
-void AbilityManager::addAbility(Ability* ability)
-{
-	AbilityType type = ability->type();
-	setState(ability, Ability::Idle);
-
-	mHotKeys.addHotKey(type, mTextures);
-	mAbilities.push_back(ability);
-}
-
-
-// TODO: do i need to add these restrictions?
 void AbilityManager::setState(Ability* ability, Ability::State state)
 {
-
 	ability->setState(state);
 
 	if(state == Ability::Selected)

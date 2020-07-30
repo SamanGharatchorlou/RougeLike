@@ -30,6 +30,7 @@ void Environment::restart()
 void Environment::init()
 {
 	mActors.init(this);
+	mCollectables.setCollector(mActors.player());
 }
 
 
@@ -54,10 +55,12 @@ void Environment::load()
 	DebugPrint(Log, "\n Loading Characters\n");
 
 	mActors.load(parser, mLevelManager.primaryMap());
+	mActors.spawnEnemies(parser, mLevelManager.primaryMap());
 
-	DebugPrint(Log, "\n Loading Collectables pool\n");
+	DebugPrint(Log, "\n Loading Collectables\n");
 
-	mCollectablesPool.load();
+	mCollectables.load();
+	mCollectables.spawn(parser, mLevelManager.primaryMap());
 
 	DebugPrint(Log, "\n--- Environment Load Complete---\n\n");
 }
@@ -86,6 +89,9 @@ void Environment::nextLevel()
 
 	// spawn new enemies
 	mActors.spawnEnemies(parser, mLevelManager.primaryMap());
+
+	// spawn collectables
+	mCollectables.spawn(parser, mLevelManager.primaryMap());
 }
 
 void Environment::handleInput(const InputManager* input)
@@ -108,12 +114,14 @@ void Environment::slowUpdate(float dt)
 {
 	mLevelManager.slowUpdate(dt);
 	mActors.slowUpdate(dt);
+	mCollectables.slowUpdate(dt);
 }
 
 
 void Environment::renderBottomLayer()
 {
 	mLevelManager.renderLowDepth();
+	mCollectables.render();
 	mActors.render();
 }
 

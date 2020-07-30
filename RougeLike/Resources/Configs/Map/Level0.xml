@@ -26,7 +26,7 @@
 	</Exit>
 
 	<Collectables>
-			<Ability x="10" id="Heal"></Ability>
+			<Ability xPosition="10" id="Heal"></Ability>
 	</Collectables>
 
 	<Spawning>

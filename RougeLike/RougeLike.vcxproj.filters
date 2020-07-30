@@ -131,10 +131,12 @@
     <ClCompile Include="Source\Collisions\EnemyCollisions.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyPool.cpp" />
     <ClCompile Include="Source\Items\Collectables\CollectablesPool.cpp" />
-    <ClCompile Include="Source\Objects\Spawning\CollectableSpawner.cpp" />
     <ClCompile Include="Source\Actors\Enemies\AIController.cpp" />
     <ClCompile Include="Source\System\Files\XMLNode.cpp" />
     <ClCompile Include="Source\Actors\Enemies\Spawning\EnemyBuilder.cpp" />
+    <ClCompile Include="Source\Items\Collectables\CollectableSpawner.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityBuilder.cpp" />
+    <ClCompile Include="Source\Items\Collectables\CollectableBuilder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -290,10 +292,12 @@
     <ClInclude Include="Source\Utilities\ObjectPool.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\EffectTypes.h" />
     <ClInclude Include="Source\Items\Collectables\CollectablesPool.h" />
-    <ClInclude Include="Source\Objects\Spawning\CollectableSpawner.h" />
     <ClInclude Include="Source\Actors\Enemies\AIController.h" />
     <ClInclude Include="Source\System\Files\XMLNode.h" />
     <ClInclude Include="Source\Actors\Enemies\Spawning\EnemyBuilder.h" />
+    <ClInclude Include="Source\Items\Collectables\CollectableSpawner.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityBuilder.h" />
+    <ClInclude Include="Source\Items\Collectables\CollectableBuilder.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

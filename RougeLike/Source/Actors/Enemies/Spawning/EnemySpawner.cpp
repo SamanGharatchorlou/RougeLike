@@ -29,7 +29,7 @@ std::vector<SpawnData> EnemySpawner::getspawnList(const XMLParser& parser, const
 			Type spawnType = stringToType(spawnNode->name());
 			Attributes attributes = parser.attributes(spawnNode);
 
-			std::vector<SpawnData> list = spawnEnemies(map, spawnType, attributes);
+			std::vector<SpawnData> list = generateSpawnData(map, spawnType, attributes);
 			spawnList.reserve(spawnList.size() + list.size());
 			spawnList.insert(spawnList.end(), list.begin(), list.end());
 
@@ -41,7 +41,7 @@ std::vector<SpawnData> EnemySpawner::getspawnList(const XMLParser& parser, const
 }
 
 
-std::vector<SpawnData> EnemySpawner::spawnEnemies(const Map* map, Type spawnType, const Attributes& attributes)
+std::vector<SpawnData> EnemySpawner::generateSpawnData(const Map* map, Type spawnType, const Attributes& attributes)
 {
 	if (spawnType == Type::Patrol)
 		 return spawnPatrollers(map, attributes);
@@ -60,35 +60,6 @@ EnemySpawner::Type EnemySpawner::stringToType(const std::string& spawnType)
 		return Type::None;
 	}
 }
-
-
-//void EnemySpawner::spawnLevel(Map* map, int level)
-//{
-//	switch (level)
-//	{
-//	case 1:
-//	{
-//		level1(map);
-//		break;
-//	}
-//	case 2:
-//	{
-//		level2(map);
-//		break;
-//	}
-//	case 3:
-//	{
-//		level3(map);
-//		break;
-//	}
-//	case 4:
-//	{
-//
-//	}
-//	default:
-//		break;
-//	}
-//}
 
 
 void EnemySpawner::spawnPatrollers(const Map* map, int xIncrement, EnemyType type)
@@ -177,35 +148,3 @@ Shape EnemySpawner::pickRandomShape()
 		return Shape();
 	}
 }
-
-
-
-//// Level spawning functions
-//void EnemySpawner::level1(Map* map)
-//{
-//	spawnPatrollers(map, 5, EnemyType::Devil);
-//
-//	//spawnShape(map, 30, pickRandomShape(), EnemyType::Imp);
-//	//spawnShape(map, 60, pickRandomShape(), EnemyType::Angel);
-//}
-//
-//
-//void EnemySpawner::level2(Map* map)
-//{
-//	spawnPatrollers(map, 7, EnemyType::Imp);
-//
-//	spawnShape(map, 20, pickRandomShape(), EnemyType::Imp);
-//	spawnShape(map, 50, pickRandomShape(), EnemyType::Angel);
-//	spawnShape(map, 75, pickRandomShape(), EnemyType::Imp);
-//}
-//
-//
-//void EnemySpawner::level3(Map* map)
-//{
-//	spawnPatrollers(map, 10, EnemyType::Angel);
-//
-//	spawnShape(map, 20, pickRandomShape(), EnemyType::Imp);
-//	spawnShape(map, 50, pickRandomShape(), EnemyType::Angel);
-//	spawnShape(map, 60, pickRandomShape(), EnemyType::Imp);
-//	spawnShape(map, 80, pickRandomShape(), EnemyType::Angel);
-//}

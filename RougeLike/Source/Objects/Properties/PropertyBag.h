@@ -10,6 +10,7 @@ class XMLDataBag
 public:
 	void readData(const XMLParser& parser, const std::string& nodeName);
 
+	virtual bool isEmpty() = 0;
 
 protected:
 	virtual StringMap readValues(xmlNode node) const;
@@ -21,6 +22,7 @@ class ValueBag : public XMLDataBag
 {
 public:
 	float get(const std::string& value) const;
+	bool isEmpty() override { return mData.size() == 0; }
 
 protected:
 	void fillData(const StringMap& stringMap) override;
@@ -29,8 +31,8 @@ private:
 	ValueMap mData;
 };
 
-
-class PropertyBag
+// TODO: use polymorphism below
+class PropertyBag // : public XMLDataBag
 {
 public:
 	PropertyBag() : mConfigFile("") { }
@@ -45,6 +47,7 @@ public:
 	float value(const std::string& name) const;
 
 	bool contains(const std::string& name) const;
+	//bool isEmpty() override { return mProperties.size() == 0; }
 
 
 protected:
@@ -54,6 +57,6 @@ protected:
 	Property* getNewProperty(const std::string& name);
 
 protected:
-	std::string mConfigFile;
+	std::string mConfigFile; // TODO: can remove?
 	PropertyMap mProperties;
 };

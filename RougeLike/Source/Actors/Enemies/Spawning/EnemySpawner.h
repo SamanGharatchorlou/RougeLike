@@ -44,7 +44,7 @@ public:
 
 
 private:
-	std::vector<SpawnData> spawnEnemies(const Map* map, Type spawnType, const Attributes& attributes);
+	std::vector<SpawnData> generateSpawnData(const Map* map, Type spawnType, const Attributes& attributes);
 	std::vector<SpawnData> spawnPatrollers(const Map* map, const Attributes& attributes);
 
 	Type stringToType(const std::string& spawnType);

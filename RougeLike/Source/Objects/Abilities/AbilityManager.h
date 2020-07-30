@@ -28,7 +28,7 @@ public:
 	void slowUpdate(float dt);
 	void render();
 
-	void add(const std::string& name);
+	void addAbility(const std::string& name);
 	void setState(Ability* ability, Ability::State state);
 
 	bool inSelectionMode() const;
@@ -40,8 +40,6 @@ public:
 
 
 private:
-	void addAbility(Ability* ability);
-
 	void sendSetTextColourEvent(Ability* abiliy, Colour colour);
 
 	void handleStates(Ability* ability, float dt);

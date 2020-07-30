@@ -35,6 +35,7 @@
     <ClCompile Include="Source\Game\LoadingBar.cpp" />
     <ClCompile Include="Source\Game\LoadingManager.cpp" />
     <ClCompile Include="Source\Input\Button.cpp" />
+    <ClCompile Include="Source\Items\Collectables\CollectableBuilder.cpp" />
     <ClCompile Include="Source\Items\Collectables\CollectablesPool.cpp" />
     <ClCompile Include="Source\Map\LevelManager.cpp" />
     <ClCompile Include="Source\Map\MapBuilding\DecorTilePopulator.cpp" />
@@ -44,6 +45,7 @@
     <ClCompile Include="Source\Map\MapBuilding\RenderTilePopulator.cpp" />
     <ClCompile Include="Source\Map\TileTypes.cpp" />
     <ClCompile Include="Source\Map\TrapManager.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityBuilder.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\Ability.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityActivator.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHotKeys.cpp" />
@@ -78,7 +80,7 @@
     <ClCompile Include="Source\Objects\Effects\EffectPool.cpp" />
     <ClCompile Include="Source\Collisions\WeaponCollisionManager.cpp" />
     <ClCompile Include="Source\Objects\Properties\PropertyBag.cpp" />
-    <ClCompile Include="Source\Objects\Spawning\CollectableSpawner.cpp" />
+    <ClCompile Include="Source\Items\Collectables\CollectableSpawner.cpp" />
     <ClCompile Include="Source\System\Files\XMLNode.cpp" />
     <ClCompile Include="Source\UI\Elements\UISlider.cpp" />
     <ClCompile Include="Source\UI\Screens\SettingsScreen.cpp" />
@@ -176,6 +178,7 @@
     <ClInclude Include="Source\Events\LocalObserver.h" />
     <ClInclude Include="Source\Game\LoadingBar.h" />
     <ClInclude Include="Source\Game\LoadingManager.h" />
+    <ClInclude Include="Source\Items\Collectables\CollectableBuilder.h" />
     <ClInclude Include="Source\Items\Collectables\CollectablesPool.h" />
     <ClInclude Include="Source\Map\LevelManager.h" />
     <ClInclude Include="Source\Map\MapBuilding\DecorTilePopulator.h" />
@@ -185,6 +188,7 @@
     <ClInclude Include="Source\Map\MapBuilding\RenderTilePopulator.h" />
     <ClInclude Include="Source\Map\TileTypes.h" />
     <ClInclude Include="Source\Map\TrapManager.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityBuilder.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\Ability.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityActivator.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityManager.h" />
@@ -224,7 +228,7 @@
     <ClInclude Include="Source\Actors\Enemies\Spawning\EnemySpawner.h" />
     <ClInclude Include="Source\Collisions\CollisionManager.h" />
     <ClInclude Include="Source\Objects\Properties\PropertyBag.h" />
-    <ClInclude Include="Source\Objects\Spawning\CollectableSpawner.h" />
+    <ClInclude Include="Source\Items\Collectables\CollectableSpawner.h" />
     <ClInclude Include="Source\System\Files\XMLNode.h" />
     <ClInclude Include="Source\UI\Elements\UISlider.h" />
     <ClInclude Include="Source\UI\Screens\ScreenHeaders.h" />

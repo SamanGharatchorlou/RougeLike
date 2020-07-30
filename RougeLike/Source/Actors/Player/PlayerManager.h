@@ -35,7 +35,7 @@ public:
 	void setPosition(VectorF position);
 	void selectCharacter(const std::string& characterConfig, TextureManager* textureManager);
 	void selectWeapon(const std::string& weaponName);
-
+	void addAbility(const std::string& ability);
 
 private:
 	Environment* mEnvironment;

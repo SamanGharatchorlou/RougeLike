@@ -1,7 +1,6 @@
 #pragma once
 
 #include "State.h"
-#include "Items/Collectables/Collectables.h"
 
 class GameController;
 struct GameData;
@@ -35,6 +34,4 @@ private:
 private:
 	GameController* mGameController;
 	GameData* mGameData;
-
-	Collectables mCollectables;
 };

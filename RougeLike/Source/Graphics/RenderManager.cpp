@@ -3,14 +3,11 @@
 
 #include "Map/Environment.h"
 #include "UI/UIManager.h"
-#include "Actors/ActorManager.h"
-#include "Items/Collectables/Collectables.h"
-
 #include "Graphics/Texture.h"
 
 
 RenderManager::RenderManager() 
-	: mEnvironment(nullptr), mActors(nullptr), mUIManager(nullptr), mCollectables(nullptr) { }
+	: mEnvironment(nullptr), mUIManager(nullptr) { }
 
 
 void RenderManager::render()
@@ -20,10 +17,6 @@ void RenderManager::render()
 	mEnvironment->renderBottomLayer();
 
 	renderPackets(RenderLayer::LowerTiles);
-
-	mCollectables->render();
-
-	renderPackets(RenderLayer::Items);
 
 	mEnvironment->renderTopLayer();
 

@@ -4,7 +4,7 @@
 
 
 class Texture;
-class Player;
+class PlayerManager;
 class Ability;
 
 enum class CollectableType
@@ -35,7 +35,7 @@ public:
 	Collectable();
 	virtual ~Collectable() { };
 
-	virtual void activate(Player* Player) = 0;
+	virtual void activate(PlayerManager* Player) = 0;
 
 	void render(RectF cameraRect) const;
 
@@ -71,7 +71,7 @@ protected:
 class WeaponCollectable : public Collectable
 {
 public:
-	void activate(Player* Player) override;
+	void activate(PlayerManager* Player) override;
 
 	CollectableType type() const override { return CollectableType::MeleeWeapon; }
 };
@@ -80,7 +80,7 @@ public:
 class AbilityCollectable : public Collectable
 {
 public:
-	void activate(Player* Player) override;
+	void activate(PlayerManager* Player) override;
 
 	CollectableType type() const override { return CollectableType::Ability; }
 };

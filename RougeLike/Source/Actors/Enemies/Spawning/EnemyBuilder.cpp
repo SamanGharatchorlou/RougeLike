@@ -24,7 +24,9 @@ Enemy* EnemyBuilder::buildEnemy(const SpawnData& data, Environment* environment,
 	fillEnvironmentData(enemy, environment, aiPathMap);
 	fillSpawnData(enemy, data);
 
+#if !IGNORED_BY_ENEMIES
 	enemy->setTarget(environment->actors()->player()->get());
+#endif
 
 	return enemy;
 }

@@ -2,13 +2,11 @@
 #include "Actors/Enemies/EnemyManager.h"
 
 #include "Game/GameData.h"
-#include "Collisions/CollisionManager.h"
 #include "Map/Environment.h"
 #include "Game/Camera.h"
-#include "Actors/ActorManager.h"
-#include "Actors/Player/Player.h"
 
-#include "Types/Devil.h"
+#include "Enemy.h"
+
 
 // State specific updates
 #include "Actors/Enemies/EnemyStates/EnemyAttack.h"
@@ -33,11 +31,13 @@ void EnemyManager::clear()
 	mAIController.clearMap();
 }
 
+
 void EnemyManager::load()
 {
 	mAIController.loadAIPathMap(mEnvironment->primaryMap());
 	mBuilder.loadSpawnPool();
 }
+
 
 void EnemyManager::init(Environment* environment)
 {
@@ -73,7 +73,6 @@ void EnemyManager::slowUpdate(float dt)
 	mAIController.updatePaths(mActiveEnemies);
 	mCollisions.updateAttackingColliders(attackingColliders());
 }
-
 
 
 void EnemyManager::spawn(const XMLParser& parser, const Map* map)
@@ -162,10 +161,6 @@ void EnemyManager::spawnEnemy(const SpawnData spawnData)
 #endif
 
 	Enemy* enemy = mBuilder.buildEnemy(spawnData, mEnvironment, mAIController.pathMap());
-
-#if !IGNORED_BY_ENEMIES
-	enemy->setTarget(mGameData->actors->player());
-#endif
 
 	mCollisions.add(enemy->collider());
 	mActiveEnemies.push_back(enemy);
