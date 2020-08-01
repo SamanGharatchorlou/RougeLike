@@ -15,7 +15,7 @@
 #include "Objects/Abilities/AbilityTypes/ChargeAbility.h"
 
 
-Ability* AbilityBuilder::build(const std::string& id, TextureManager* textures)
+Ability* AbilityBuilder::build(const std::string& id)
 {
 	Ability* ability = createNewAbility(id);
 
@@ -23,17 +23,17 @@ Ability* AbilityBuilder::build(const std::string& id, TextureManager* textures)
 	parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, id));
 
 	setValues(ability, id, parser);
-	setRangedValues(ability, textures);
-	initAnimations(ability, parser, textures);
+	setRangedValues(ability);
+	initAnimations(ability, parser);
 
 	return ability;
 }
 
 
-void AbilityBuilder::initAnimations(Ability* ability, const XMLParser& parser, TextureManager* textures)
+void AbilityBuilder::initAnimations(Ability* ability, const XMLParser& parser)
 {
 	Animator animator;
-	AnimationReader reader(textures, parser);
+	AnimationReader reader(mTextures, parser);
 
 	if (reader.initAnimator(animator))
 		ability->setAnimations(animator);
@@ -74,51 +74,19 @@ Ability* AbilityBuilder::createNewAbility(const std::string& id)
 		break;
 	}
 
-	//if (id == "Heal")
-	//{
-	//	ability = new HealAbility;
-	//}
-	//else if (id == "Spikes")
-	//{
-	//	ability = new SpikeAbility;
-	//}
-	//else if (id == "Blink")
-	//{
-	//	ability = new BlinkAbility;
-	//}
-	//else if (id == "Armor")
-	//{
-	//	ability = new ArmorAbility;
-	//}
-	//else if (id == "Smash")
-	//{
-	//	//// Create hammer
-	//	//Texture* texture = textureManager->getTexture("Mjolnir", FileManager::Image_Weapons);
-	//	//VectorF size = realiseSize(texture->originalDimentions, values.get("HammerMaxSize"));
-	//	//ability = new SmashAbility(texture, size);
-	//	DebugPrint(Log, "Unimplemented '%s' ability\n", id.c_str());
-	//}
-	//else if (id == "Charge")
-	//{
-	//	ability = new ChargeAbility;
-	//}
-
-	if (!ability)
-		DebugPrint(Warning, "No new ability could be created wth the name '%s'\n", id.c_str());
-
 	return ability;
 }
 
 
 
-void AbilityBuilder::setRangedValues(Ability* ability, TextureManager* textures)
+void AbilityBuilder::setRangedValues(Ability* ability)
 {
 	if (ability->isRanged())
 	{
 		RangedAbility* rangedAbility = static_cast<RangedAbility*>(ability);
 		if (rangedAbility)
 		{
-			Texture* rangeCircle = textures->getTexture("RangeCircle", FileManager::Image_UI);
+			Texture* rangeCircle = mTextures->getTexture("RangeCircle", FileManager::Image_UI);
 			rangedAbility->setRangeCircle(rangeCircle);
 		}
 	}

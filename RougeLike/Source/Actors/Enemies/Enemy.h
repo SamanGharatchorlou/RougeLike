@@ -5,6 +5,7 @@
 #include "EnemyStates/EnemyState.h"
 #include "Types/EnemyTypes.h"
 
+#include "AI/AIPathing.h"
 
 
 struct GameData;
@@ -34,7 +35,7 @@ public:
 
 	virtual const EnemyType type() const = 0;
 
-	void spawn(EnemyState::Type state, VectorF position);
+	void spawn(EnemyState::Type state, VectorF position, const AIPathMap* map);
 
 	// State handling
 	const StateMachine<EnemyState>*	getStateMachine() const { return &mStateMachine; }
@@ -47,8 +48,8 @@ public:
 	void addIdleState(float waitTime);
 	 
 	// Map
-	void setMap(const AIPathMap* map) { mMap = map; }
-	const AIPathMap* getPathMap() { return mMap; }
+	//void setMap(const AIPathMap* map) { mMap = map; }
+	const AIPathing& getPathMap() const { return mAIPathing; }
 	const Map* getEnvironmentMap() const;
 
 	// Collisions
@@ -74,7 +75,8 @@ protected:
 
 
 protected:
-	const AIPathMap* mMap;
+	//const AIPathMap* mMap;
+	AIPathing mAIPathing;
 
 	StateMachine<EnemyState> mStateMachine;
 

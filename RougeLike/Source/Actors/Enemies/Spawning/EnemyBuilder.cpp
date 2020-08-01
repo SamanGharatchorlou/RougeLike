@@ -4,7 +4,7 @@
 #include "Map/Environment.h"
 #include "Actors/Enemies/Enemy.h"
 #include "Actors/Enemies/EnemyPool.h"
-
+//#include "AI/AIPathMap.h"
 
 void EnemyBuilder::loadSpawnPool()
 {
@@ -21,9 +21,8 @@ Enemy* EnemyBuilder::buildEnemy(const SpawnData& data, Environment* environment,
 	Enemy* enemy = getBlankEnemy(data);
 
 	fillStaticTypeData(enemy, parser, environment->effectPool());
-	fillEnvironmentData(enemy, environment, aiPathMap);
-	fillSpawnData(enemy, data);
-
+	fillSpawnData(enemy, data, aiPathMap);
+	enemy->set(environment);
 #if !IGNORED_BY_ENEMIES
 	enemy->setTarget(environment->actors()->player()->get());
 #endif
@@ -48,16 +47,9 @@ void EnemyBuilder::fillStaticTypeData(Enemy* enemy, const XMLParser& parser, Eff
 }
 
 
-void EnemyBuilder::fillEnvironmentData(Enemy* enemy, Environment* environment, const AIPathMap* aiPathMap)
+void EnemyBuilder::fillSpawnData(Enemy* enemy, const SpawnData& data, const AIPathMap* aiPathMap)
 {
-	enemy->set(environment);
-	enemy->setMap(aiPathMap);
-}
-
-
-void EnemyBuilder::fillSpawnData(Enemy* enemy, const SpawnData& data)
-{
-	enemy->spawn(data.state, data.position);
+	enemy->spawn(data.state, data.position, aiPathMap);
 }
 
 

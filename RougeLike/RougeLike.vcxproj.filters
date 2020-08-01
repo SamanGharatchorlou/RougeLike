@@ -64,7 +64,6 @@
     <ClCompile Include="Source\Map\Environment.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Shape.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Square.cpp" />
-    <ClCompile Include="Source\Utilities\Shapes\Circle.cpp.cpp" />
     <ClCompile Include="Source\Audio\SoundController.cpp" />
     <ClCompile Include="Source\Collisions\CollisionManager.cpp" />
     <ClCompile Include="Source\Objects\Attributes\Level.cpp" />
@@ -137,6 +136,7 @@
     <ClCompile Include="Source\Items\Collectables\CollectableSpawner.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityBuilder.cpp" />
     <ClCompile Include="Source\Items\Collectables\CollectableBuilder.cpp" />
+    <ClCompile Include="Source\Utilities\Shapes\Circle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />

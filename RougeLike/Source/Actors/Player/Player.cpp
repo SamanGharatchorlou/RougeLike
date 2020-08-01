@@ -2,12 +2,10 @@
 #include "Player.h"
 
 #include "Game/Camera.h"
-#include "Game/Cursor.h"
 #include "Audio/AudioManager.h"
 
 #include "Map/Map.h"
 #include "Weapons/Melee/MeleeWeapon.h"
-
 
 #if _DEBUG
 #include "Debug/DebugDraw.h"
@@ -23,12 +21,6 @@ Player::Player() :
 void Player::setCharacter(XMLParser& parser, TextureManager* textureManager)
 {
 	Actor::setCharacter(parser, textureManager);
-}
-
-
-void Player::addAbility(const std::string& name)
-{
-	//mAbilities.add(name);
 }
 
 

@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "AbilityManager.h"
 
-#include "Game/GameData.h"
 #include "Input/InputManager.h"
 #include "Graphics/Texture.h"
 #include "Graphics/TextureManager.h"
@@ -17,7 +16,7 @@
 
 
 AbilityManager::AbilityManager(TextureManager* textures, Actor* caster, Screen* screen) :
-	mCaster(caster), mTextures(textures), mHotKeys(screen)
+	mBuilder(textures), mHotKeys(textures, screen)
 { }
 
 
@@ -145,21 +144,20 @@ bool AbilityManager::inSelectionMode() const
 }
 
 
-void AbilityManager::addAbility(const std::string& name)
+void AbilityManager::addAbility(const std::string& name, Actor* caster)
 {
 	AbilityType type = AbilityType::None;
 	type << name;
 
 	if (type != AbilityType::None)
 	{
-		AbilityBuilder builder;
-		Ability* ability = builder.build(name, mTextures);
-		ability->setCaster(mCaster);
+		Ability* ability = mBuilder.build(name);
+		ability->setCaster(caster);
 
 		AbilityType type = ability->type();
 		setState(ability, Ability::Idle);
 
-		mHotKeys.addHotKey(type, mTextures);
+		mHotKeys.addHotKey(type);
 		mAbilities.push_back(ability);
 	}
 	else

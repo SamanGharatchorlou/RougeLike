@@ -11,9 +11,13 @@ using Path = std::stack<Index>;
 class AIPathing
 {
 public:
+	AIPathing() : mMap(nullptr) { }
 	AIPathing(const AIPathMap* map);
 
-	Path findPath(VectorF start, VectorF end);
+	void init(const AIPathMap* map) { mMap = map; }
+	void clear() { mMap = nullptr; }
+
+	Path findPath(VectorF start, VectorF end) const;
 
 	Index index(VectorF position) const;
 	VectorF position(Index tileIndex) const;
@@ -27,11 +31,11 @@ public:
 #endif
 
 private:
-	Path getPath(Index start, Index end, Grid<Index>& pathing);
+	Path getPath(Index start, Index end, Grid<Index>& pathing) const;
 
 	Index nearestFloorTile(Index index) const;
 
-	inline int heuristic(Index from, Index to);
+	inline int heuristic(Index from, Index to) const;
 	
 	struct GreaterThanByCost
 	{
@@ -47,7 +51,7 @@ private:
 };
 
 
-inline int AIPathing::heuristic(Index from, Index to)
+inline int AIPathing::heuristic(Index from, Index to) const
 {
 	return std::abs(from.x - to.x) + std::abs(from.y - to.y);
 }

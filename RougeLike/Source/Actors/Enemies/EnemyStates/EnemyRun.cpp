@@ -5,9 +5,7 @@
 #include "Map/Map.h"
 
 
-EnemyRun::EnemyRun(Enemy* enemy) : 
-	EnemyState(enemy), 
-	mAIPathing(enemy->getPathMap()) { }
+EnemyRun::EnemyRun(Enemy* enemy) : EnemyState(enemy) { }
 
 
 void EnemyRun::init()
@@ -20,7 +18,7 @@ void EnemyRun::init()
 void EnemyRun::fastUpdate(float dt)
 {
 	if(mPath.size() > 0)
-		mEnemy->accellerateTowards(mAIPathing.position(mPath.top()));
+		mEnemy->accellerateTowards(mEnemy->getPathMap().position(mPath.top()));
 }
 
 
@@ -38,7 +36,7 @@ void EnemyRun::slowUpdate(float dt)
 			}
 			else // Keep chasing!
 			{
-				VectorF targetPosition = mAIPathing.position(mPath.top());
+				VectorF targetPosition = mEnemy->getPathMap().position(mPath.top());
 				if (distanceSquared(mEnemy->position(), targetPosition) < 5.0f)
 				{
 					mPath.pop();
@@ -85,7 +83,7 @@ void EnemyRun::resume()
 // Generate a new path
 void EnemyRun::updatePath()
 {
-	mPath = mAIPathing.findPath(mEnemy->position(), mEnemy->target()->rect().BotCenter());
+	mPath = mEnemy->getPathMap().findPath(mEnemy->position(), mEnemy->target()->rect().BotCenter());
 
 	// No valid path was found, wait a bit then try again 
 	if (mPath.size() == 0)

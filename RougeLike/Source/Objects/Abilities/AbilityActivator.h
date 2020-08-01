@@ -1,12 +1,14 @@
 #pragma once
 
-#include "AbilityTypes/Ability.h"
 #include "Input/Button.h"
 
-class AbilityManager;
 class InputManager;
 class Map;
 class Environment;
+class Ability;
+class TargetSelfAbility;
+class TargetActorAbility;
+class TargetPositionAbility;
 
 
 class AbilityActivator

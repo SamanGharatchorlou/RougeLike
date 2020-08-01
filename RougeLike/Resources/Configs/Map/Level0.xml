@@ -31,7 +31,6 @@
 
 	<Spawning>
 		<Patrol type="Devil" xIncrement="20"></Patrol>
-		<Shape type="Devil" xPosition="30"></Shape>
-		<Shape type="Devil" xPosition="60"></Shape>
+		<Shape type="Devil" xPosition="30" shape="Circle" points="7"></Shape>
 	</Spawning>
 </Level>

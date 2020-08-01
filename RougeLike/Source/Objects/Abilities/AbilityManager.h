@@ -3,11 +3,10 @@
 #include "Events/LocalDispatcher.h"
 #include "AbilityActivator.h"
 #include "AbilityHotKeys.h"
+#include "AbilityBuilder.h"
 #include "AbilityTypes/Ability.h"
 
 
-struct GameData;
-class GameScreen;
 class Actor;
 class TextureManager;
 class InputManager;
@@ -28,7 +27,7 @@ public:
 	void slowUpdate(float dt);
 	void render();
 
-	void addAbility(const std::string& name);
+	void addAbility(const std::string& name, Actor* caster);
 	void setState(Ability* ability, Ability::State state);
 
 	bool inSelectionMode() const;
@@ -47,13 +46,11 @@ private:
 
 
 private:
-	Actor* mCaster;
-
 	Environment* mEnvironment;
-	TextureManager* mTextures;
 
 	LocalDispatcher mEvents;
-
+	
+	AbilityBuilder mBuilder;
 	AbilityActivator mActivator;
 	AbilityHotKeys mHotKeys;
 

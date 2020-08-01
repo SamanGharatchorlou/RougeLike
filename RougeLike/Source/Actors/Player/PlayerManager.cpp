@@ -29,7 +29,7 @@ void PlayerManager::init(Environment* environment)
 
 void PlayerManager::addAbility(const std::string& ability)
 {
-	mAbilities.addAbility(ability);
+	mAbilities.addAbility(ability, &mPlayer);
 }
 
 void PlayerManager::setPosition(VectorF position)

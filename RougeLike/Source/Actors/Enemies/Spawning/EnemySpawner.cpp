@@ -15,7 +15,7 @@ void EnemySpawner::wipeEnemies()
 	//mEnemies->clearAllEnemies();
 }
 
-std::vector<SpawnData> EnemySpawner::getspawnList(const XMLParser& parser, const Map* map)
+std::vector<SpawnData> EnemySpawner::getspawnList(const XMLParser& parser, const Map* map) const
 {
 	std::vector<SpawnData> spawnList;
 
@@ -41,92 +41,97 @@ std::vector<SpawnData> EnemySpawner::getspawnList(const XMLParser& parser, const
 }
 
 
-std::vector<SpawnData> EnemySpawner::generateSpawnData(const Map* map, Type spawnType, const Attributes& attributes)
+std::vector<SpawnData> EnemySpawner::generateSpawnData(const Map* map, Type spawnType, const Attributes& attributes) const
 {
 	if (spawnType == Type::Patrol)
-		 return spawnPatrollers(map, attributes);
+		return spawnPatrollers(map, attributes);
+	else if (spawnType == Type::Shape)
+		return spawnShape(map, attributes);
 }
 
 
-EnemySpawner::Type EnemySpawner::stringToType(const std::string& spawnType)
-{
-	if (spawnType == "Patrol")
-		return Type::Patrol;
-	else if (spawnType == "Shape")
-		return Type::Shape;
-	else
-	{
-		DebugPrint(Warning, "Spawn type string '%s' not recognised, no spawn type set\n", spawnType.c_str());
-		return Type::None;
-	}
-}
-
-
-void EnemySpawner::spawnPatrollers(const Map* map, int xIncrement, EnemyType type)
-{
-	for (unsigned int xPoint = xIncrement; xPoint < 100 - xIncrement; xPoint += xIncrement)
-	{
-		VectorF position = findSpawnPoint(map, xPoint);
-		//mEnemies->spawn(type, EnemyState::Patrol, position);
-	}
-}
-
-std::vector<SpawnData> EnemySpawner::spawnPatrollers(const Map* map, const Attributes& attributes)
+std::vector<SpawnData> EnemySpawner::spawnPatrollers(const Map* map, const Attributes& attributes) const
 {
 	EnemyType enemyType = stringToEnemyType(attributes.getString("type"));
 	int xIncrement = attributes.getInt("xIncrement");
 
-	std::vector<SpawnData> spawnList;
+	PointList pointList;
 	for (unsigned int xPoint = 5; xPoint <= 95; xPoint += xIncrement)
 	{
 		VectorF position = findSpawnPoint(map, xPoint);
-		spawnList.push_back(SpawnData(enemyType, EnemyState::Patrol, position));
+		pointList.push_back(position);
+	}
+
+	std::vector<SpawnData> spawnList = buildSpawnList(pointList, EnemyState::Patrol, enemyType);
+	return spawnList;
+}
+
+
+std::vector<SpawnData> EnemySpawner::spawnShape(const Map* map, const Attributes& attributes) const
+{
+	EnemyType enemyType = stringToEnemyType(attributes.getString("type"));
+	int xPosition = attributes.getInt("xPosition");
+
+	PointList points;
+
+	if (attributes.getString("shape") == "Circle")
+	{
+		int radius = map->tile(Index(0, 0))->rect().Width();
+		int pointCount = attributes.getInt("points");
+		
+		Circle circle(VectorF(), radius, pointCount);
+		findValidShape(circle, map, xPosition);
+		points = circle.points();
+	}
+
+	std::vector<SpawnData> spawnList = buildSpawnList(points, EnemyState::Idle, enemyType);
+	return spawnList;
+}
+
+
+void EnemySpawner::findValidShape(Shape& shape, const Map* map, int xPosition) const
+{
+	bool validShapePosition = false;
+
+	while (!validShapePosition)
+	{
+		VectorF position = findSpawnPoint(map, xPosition);
+		shape.setPosition(position);
+
+		validShapePosition = isValid(shape, map);
+	}
+}
+
+
+bool EnemySpawner::isValid(const Shape& shape, const Map* map) const
+{
+	PointList points = shape.points();
+
+	for (int i = 0; i < points.size(); i++)
+	{
+		if (!map->isValidPosition(points[i]))
+			return false;
+	}
+
+	return true;
+}
+
+
+std::vector<SpawnData> EnemySpawner::buildSpawnList(const PointList& points, EnemyState::Type state, EnemyType type) const
+{
+	std::vector<SpawnData> spawnList;
+
+	for (int i = 0; i < points.size(); i++)
+	{
+		SpawnData data(type, EnemyState::Idle, points[i]);
+		spawnList.push_back(data);
 	}
 
 	return spawnList;
 }
 
 
-void EnemySpawner::spawnShape(const Map* map, int xPoint, Shape shape, EnemyType type)
-{
-	PointList points = shape.points();
-
-	VectorF topLeftPosition = findSpawnPoint(map, xPoint);
-
-	int sanityCounter = 0;
-	for (int i = 0; i < points.size(); i++)
-	{
-		VectorF shapePosition = topLeftPosition + points[i];
-
-		Index index = map->index(shapePosition);
-
-		// If any point is invalid, start again at another point
-		//if (!map->floorCollisionTile(index))
-		//{
-		//	i = 0;
-		//	topLeftPosition = findSpawnPoint(map, xPoint);
-		//	sanityCounter++;
-		//}
-
-		// Just in case no spawn point can be found, prevent infinite loop
-		if (sanityCounter > 50)
-		{
-			DebugPrint(Log, "No valid spawn shape (point count: %d) could be spawned at xPoint %d, No enemies were spawned\n", points.size(), xPoint);
-			spawnShape(map, xPoint + 1, shape, type);
-			return;
-		}
-			
-	}
-
-	for (int i = 0; i < points.size(); i++)
-	{
-		//mEnemies->spawn(type, EnemyState::Idle, topLeftPosition + points[i]);
-	}
-}
-
-
-
-Shape EnemySpawner::pickRandomShape()
+Shape EnemySpawner::pickRandomShape() const
 {
 	int randomNumber = randomNumberBetween(0, 2);
 
@@ -146,5 +151,19 @@ Shape EnemySpawner::pickRandomShape()
 	{
 		DebugPrint(Log, "picking this random shape number %d not connected to a shape. Returning empty shape.\n");
 		return Shape();
+	}
+}
+
+
+EnemySpawner::Type EnemySpawner::stringToType(const std::string& spawnType) const
+{
+	if (spawnType == "Patrol")
+		return Type::Patrol;
+	else if (spawnType == "Shape")
+		return Type::Shape;
+	else
+	{
+		DebugPrint(Warning, "Spawn type string '%s' not recognised, no spawn type set\n", spawnType.c_str());
+		return Type::None;
 	}
 }

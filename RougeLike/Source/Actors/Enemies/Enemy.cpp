@@ -19,7 +19,7 @@
 
 Enemy::Enemy() :
 	mStateMachine(new EnemyNullState),
-	mMap(nullptr),
+	//mMap(nullptr),
 	mCurrentIndex(Vector2D<int>(-1,-1))
 {
 	physics()->setFlip(static_cast<SDL_RendererFlip>(randomNumberBetween(0, 2)));
@@ -47,7 +47,7 @@ void Enemy::slowUpdate(float dt)
 	mStateMachine.processStateChanges();
 	mStateMachine.getActiveState().slowUpdate(dt);
 
-	Index index = mMap->index(position());
+	Index index = mAIPathing.index(position());
 	if (mCurrentIndex != index)
 	{
 		UpdateAICostMapEvent* event = new UpdateAICostMapEvent;
@@ -91,7 +91,8 @@ void Enemy::clear()
 	mStateMachine.clearStates();
 	mEvents.clear();
 
-	mMap = nullptr;
+	//mMap = nullptr;
+	mAIPathing.clear();
 
 	Actor::reset();
 }
@@ -113,8 +114,10 @@ void Enemy::resolveCollisions()
 }
 
 
-void Enemy::spawn(EnemyState::Type state, VectorF position)
+void Enemy::spawn(EnemyState::Type state, VectorF position, const AIPathMap* map)
 {
+	mAIPathing.init(map);
+
 	mPhysics.setPosition(position);
 
 	addState(state);

@@ -84,7 +84,7 @@
     <ClCompile Include="Source\System\Files\XMLNode.cpp" />
     <ClCompile Include="Source\UI\Elements\UISlider.cpp" />
     <ClCompile Include="Source\UI\Screens\SettingsScreen.cpp" />
-    <ClCompile Include="Source\Utilities\Shapes\Circle.cpp.cpp" />
+    <ClCompile Include="Source\Utilities\Shapes\Circle.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Shape.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Square.cpp" />
     <ClCompile Include="Source\Game\CameraShake.cpp" />

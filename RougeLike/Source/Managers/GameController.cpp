@@ -120,13 +120,13 @@ void GameController::load()
 {
 	LoadingManager::Get()->init();
 
-	SDL_Thread* threadID = SDL_CreateThread(renderLoadingBar, "LoadingBar", nullptr);
+	//SDL_Thread* threadID = SDL_CreateThread(renderLoadingBar, "LoadingBar", nullptr);
 
 	LoadingManager::Get()->CountToBeLoadedFiles();
 
 	mGameData.load();
 
-	SDL_WaitThread(threadID, nullptr);
+	//SDL_WaitThread(threadID, nullptr);
 }
 
 

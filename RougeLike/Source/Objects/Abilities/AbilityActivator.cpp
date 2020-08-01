@@ -1,19 +1,14 @@
 #include "pch.h"
 #include "AbilityActivator.h"
 
-#include "Game/GameData.h"
+#include "AbilityTypes/Ability.h"
+
 #include "Input/InputManager.h"
 #include "Map/Environment.h"
 
 #include "Actors/Actor.h"
 #include "Actors/ActorManager.h"
-
 #include "Collisions/Collider.h"
-#include "Input/InputManager.h"
-#include "Game/Cursor.h"
-
-#include "AbilityManager.h"
-
 
 
 bool AbilityActivator::canSelect(Ability* ability) const

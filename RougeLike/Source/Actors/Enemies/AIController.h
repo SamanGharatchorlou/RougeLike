@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "AI/AIPathMap.h"
 
 #if _DEBUG
@@ -20,8 +19,6 @@ public:
 	void loadAIPathMap(const Map* map);
 
 	void updatePaths(std::vector<Enemy*>& enemies);
-
-	// AI pathing
 	void updateAIPathCostMap(std::vector<Enemy*>& enemies);
 	void addPathUpdateRequest() { pathUpdateRequests++; }
 

@@ -17,9 +17,8 @@ public:
 	PlayerCollisions() { };
 
 	void init(Player* player, CollisionManager* collisionManager);
-	void resolveWalls(Map* map, float dt);
 
-	
+	void resolveWalls(Map* map, float dt);
 	void resolveTraps(Map* map, EffectPool* effects);
 	void resolveWeapons(EffectPool* effects);
 	void resolveBody();
@@ -37,7 +36,6 @@ public:
 
 private:
 	void addCollidersToTrackers();
-	void updateWeaponColliders();
 	void resolveTrapCollisions(Map* map, EffectPool* effects);
 
 

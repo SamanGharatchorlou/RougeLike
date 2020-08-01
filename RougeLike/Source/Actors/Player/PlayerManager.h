@@ -2,13 +2,10 @@
 
 
 #include "Player.h"
-
+#include "Objects/Abilities/AbilityManager.h"
 #include "Collisions/PlayerCollisions.h"
 #include "Weapons/WeaponStash.h"
 #include "Events/LocalDispatcher.h"
-
-#include "Objects/Abilities/AbilityManager.h"
-
 
 struct GameData;
 class Environment;
@@ -42,8 +39,6 @@ private:
 
 	Player mPlayer;
 	AbilityManager mAbilities;
-
-	// Player stuff
 	PlayerCollisions mPlayerCollisions;
 	WeaponStash weaponStash;
 

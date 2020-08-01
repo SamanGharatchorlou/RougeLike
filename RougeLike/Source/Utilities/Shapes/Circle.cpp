@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Circle.h"
 
-Circle::Circle(VectorF center, float radius, int pointCount)
+Circle::Circle(VectorF center, float radius, int pointCount) : mCenter(center)
 {
 	ASSERT(Warning, pointCount > 5, "A circle needs at least 6 points to be a circle, this one has %d\n", pointCount);
 
@@ -17,4 +17,15 @@ Circle::Circle(VectorF center, float radius, int pointCount)
 		mPoints.push_back(point);
 		arcRotation += arc;
 	}
+}
+
+
+void Circle::setPosition(VectorF position)
+{
+	for (int i = 0; i < mPoints.size(); i++)
+	{
+		mPoints[i] = mPoints[i] - mCenter + position;
+	}
+
+	mCenter = position;
 }

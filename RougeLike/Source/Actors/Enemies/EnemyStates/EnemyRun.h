@@ -27,10 +27,11 @@ public:
 	void updatePath();
 	Index nextTileIndex();
 
+
 private:
 	bool inChaseRange() const;
 
+
 private:
-	AIPathing mAIPathing;
 	Path mPath;
 };

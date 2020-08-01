@@ -6,7 +6,7 @@
 
 AIPathing::AIPathing(const AIPathMap* map) : mMap(map) { }
 
-std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition)
+std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition) const
 {
 	Index startingIndex = mMap->index(startPosition);
 	Index endIndex = mMap->index(endPosition);
@@ -98,7 +98,7 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 }
 
 
-Path AIPathing::getPath(Index start, Index finish, Grid<Index>& pathing)
+Path AIPathing::getPath(Index start, Index finish, Grid<Index>& pathing) const
 {
 	Path path;
 	path.push(finish);

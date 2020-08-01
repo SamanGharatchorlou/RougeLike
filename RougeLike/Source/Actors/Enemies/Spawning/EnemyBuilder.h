@@ -21,8 +21,7 @@ public:
 private:
 	Enemy* getBlankEnemy(const SpawnData& data);
 	void fillStaticTypeData(Enemy* enemy, const XMLParser& parser, EffectPool* effects);
-	void fillEnvironmentData(Enemy* enemy, Environment* environment, const AIPathMap* aiPathMap);
-	void fillSpawnData(Enemy* enemy, const SpawnData& data);
+	void fillSpawnData(Enemy* enemy, const SpawnData& data, const AIPathMap* aiPathMap);
 
 
 private:

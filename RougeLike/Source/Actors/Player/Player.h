@@ -1,10 +1,7 @@
 #pragma once
 
 #include "Actors/Actor.h"
-//#include "Objects/Abilities/AbilityManager.h"
 
-
-struct GameData;
 class MeleeWeapon;
 class AudioManager;
 class TextureManager;
@@ -52,10 +49,7 @@ private:
 	void processHit();
 
 
-
-
 private:
-	//AbilityManager mAbilities;
 
 	Vector2D<int> tileIndex;
 
