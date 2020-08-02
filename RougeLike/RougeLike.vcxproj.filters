@@ -137,6 +137,11 @@
     <ClCompile Include="Source\Objects\Abilities\AbilityBuilder.cpp" />
     <ClCompile Include="Source\Items\Collectables\CollectableBuilder.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Circle.cpp" />
+    <ClCompile Include="Source\Debug\MemoryTracker.cpp" />
+    <ClCompile Include="Source\Game\GameSetup.cpp" />
+    <ClCompile Include="Source\Debug\FrameRateController.cpp" />
+    <ClCompile Include="Source\Debug\MemTrack.cpp" />
+    <ClCompile Include="Source\Utilities\BasicString.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -229,7 +234,6 @@
     <ClInclude Include="Source\Objects\Abilities\AbilityManager.h" />
     <ClInclude Include="Source\Collisions\WallCollisionTracker.h" />
     <ClInclude Include="Source\UI\Elements\UISlider.h" />
-    <ClInclude Include="Source\Events\LocalObserver.h" />
     <ClInclude Include="Source\Events\LocalDispatcher.h" />
     <ClInclude Include="Source\Animations\AnimationReader.h" />
     <ClInclude Include="Source\Objects\Attributes\Armor.h" />
@@ -298,6 +302,11 @@
     <ClInclude Include="Source\Items\Collectables\CollectableSpawner.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityBuilder.h" />
     <ClInclude Include="Source\Items\Collectables\CollectableBuilder.h" />
+    <ClInclude Include="Source\Debug\MemoryTracker.h" />
+    <ClInclude Include="Source\Game\GameSetup.h" />
+    <ClInclude Include="Source\Debug\FrameRateController.h" />
+    <ClInclude Include="Source\Debug\MemTrack.h" />
+    <ClInclude Include="Source\Utilities\BasicString.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

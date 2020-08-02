@@ -32,6 +32,10 @@
     <ClCompile Include="Source\Collisions\EnemyCollisions.cpp" />
     <ClCompile Include="Source\Collisions\PlayerCollisions.cpp" />
     <ClCompile Include="Source\Collisions\WallCollisionTracker.cpp" />
+    <ClCompile Include="Source\Debug\MemoryTracker.cpp" />
+    <ClCompile Include="Source\Debug\FrameRateController.cpp" />
+    <ClCompile Include="Source\Debug\MemTrack.cpp" />
+    <ClCompile Include="Source\Game\GameSetup.cpp" />
     <ClCompile Include="Source\Game\LoadingBar.cpp" />
     <ClCompile Include="Source\Game\LoadingManager.cpp" />
     <ClCompile Include="Source\Input\Button.cpp" />
@@ -84,6 +88,7 @@
     <ClCompile Include="Source\System\Files\XMLNode.cpp" />
     <ClCompile Include="Source\UI\Elements\UISlider.cpp" />
     <ClCompile Include="Source\UI\Screens\SettingsScreen.cpp" />
+    <ClCompile Include="Source\Utilities\BasicString.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Circle.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Shape.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Square.cpp" />
@@ -174,8 +179,11 @@
     <ClInclude Include="Source\Collisions\EnemyCollisions.h" />
     <ClInclude Include="Source\Collisions\PlayerCollisions.h" />
     <ClInclude Include="Source\Collisions\WallCollisionTracker.h" />
+    <ClInclude Include="Source\Debug\MemoryTracker.h" />
+    <ClInclude Include="Source\Debug\FrameRateController.h" />
+    <ClInclude Include="Source\Debug\MemTrack.h" />
     <ClInclude Include="Source\Events\LocalDispatcher.h" />
-    <ClInclude Include="Source\Events\LocalObserver.h" />
+    <ClInclude Include="Source\Game\GameSetup.h" />
     <ClInclude Include="Source\Game\LoadingBar.h" />
     <ClInclude Include="Source\Game\LoadingManager.h" />
     <ClInclude Include="Source\Items\Collectables\CollectableBuilder.h" />
@@ -233,6 +241,7 @@
     <ClInclude Include="Source\UI\Elements\UISlider.h" />
     <ClInclude Include="Source\UI\Screens\ScreenHeaders.h" />
     <ClInclude Include="Source\UI\Screens\SettingsScreen.h" />
+    <ClInclude Include="Source\Utilities\BasicString.h" />
     <ClInclude Include="Source\Utilities\ObjectPool.h" />
     <ClInclude Include="Source\Utilities\Shapes\Circle.h" />
     <ClInclude Include="Source\Utilities\Shapes\Shape.h" />

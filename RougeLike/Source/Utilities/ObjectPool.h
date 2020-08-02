@@ -7,6 +7,7 @@ class ObjectPool
 {
 public:
 	ObjectPool() { }
+	virtual ~ObjectPool() { freeAll(); }
 
 	virtual void load() = 0;
 	void freeAll();

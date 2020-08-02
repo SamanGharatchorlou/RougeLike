@@ -14,3 +14,20 @@ Attributes XMLNode::attributes() const
 
 	return attributes;
 }
+
+
+StringMap XMLNode::stringMap() const
+{
+	StringMap stringMap;
+
+	xmlNode childNode = node->first_node();
+
+	while (childNode != nullptr)
+	{
+		stringMap[childNode->name()] = childNode->value();
+		childNode = childNode->next_sibling();
+	}
+
+	ASSERT(Warning, stringMap.size() != 0, "Node %s has no value\n", node->name());
+	return stringMap;
+}

@@ -22,6 +22,7 @@ public:
 	rapidxml::xml_document<>& getXML() { return xmlFile; }
 
 	xmlNode rootNode() const;
+	XMLNode root() const;
 
 	std::string nodeValue(xmlNode node, const std::string& label) const;
 

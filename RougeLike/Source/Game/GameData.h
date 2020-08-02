@@ -9,11 +9,11 @@ class UIManager;
 class Environment;
 class ScoreManager;
 class CollisionManager;
-//class EffectPool;
 
 
 struct GameData
 {
+	void setWindow(Window* newWindow);
 	void load();
 	void setupObservers();
 	void free();
@@ -29,6 +29,4 @@ struct GameData
 	CollisionManager* collisionManager = nullptr;
 
 	Environment* environment = nullptr;
-
-	//EffectPool* effectPool = nullptr;
 };

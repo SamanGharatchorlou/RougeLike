@@ -12,12 +12,9 @@ public:
 
 	void free() { SDL_DestroyRenderer(mRenderer); }
 
-
-
-	Renderer* create(SDL_Renderer* renderer) 
+	void create(SDL_Renderer* renderer) 
 	{ 
 		mRenderer = renderer; 
-		return this;
 	}
 
 	SDL_Renderer* sdlRenderer() const { return mRenderer; }

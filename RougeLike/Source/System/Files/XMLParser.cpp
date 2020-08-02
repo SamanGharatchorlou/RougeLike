@@ -31,8 +31,6 @@ Attributes XMLParser::attributes(xmlNode node) const
 
 StringMap XMLParser::stringMap(xmlNode node) const
 {
-	if (node == nullptr)
-		printf("pause");
 	ASSERT(Warning, node != nullptr, "Attempting to get values for non-existant node\n");
 	StringMap stringMap;
 
@@ -83,6 +81,11 @@ std::string XMLParser::firstRootNodeValue(const std::string& label) const
 xmlNode XMLParser::rootNode() const
 {
 	return xmlFile.first_node();
+}
+
+XMLNode XMLParser::root() const
+{
+	return XMLNode(xmlFile.first_node());
 }
 
 

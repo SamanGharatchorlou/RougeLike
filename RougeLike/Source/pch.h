@@ -41,11 +41,14 @@ namespace fs = std::experimental::filesystem;
 
 // --- Custom ---
 
+// NEW operator override
+#include "Debug/MemTrack.h"
+
 // Include these first as they are be required in some of the below includes
 #include "Debug/Logging.h"
-#include "System/Files/Attributes.h"
 
 // Utilities / helper classes
+//#include "Utilities/BasicString.h"
 #include "Utilities/Vector2D.h"
 #include "Utilities/Rect.h"
 #include "Utilities/Helpers.h"
@@ -56,6 +59,8 @@ namespace fs = std::experimental::filesystem;
 // File accessors
 using ValueMap = std::unordered_map<std::string, float>;
 using StringMap = std::unordered_map<std::string, std::string>;
+
+#include "System/Files/Attributes.h"
 #include "System/Files/XMLParser.h"
 #include "System/Files/FileManager.h"
 

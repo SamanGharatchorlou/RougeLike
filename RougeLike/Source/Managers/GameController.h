@@ -11,8 +11,10 @@
 class GameController
 {
 public:
-	GameController(const char* gameTitle);
-	~GameController();
+	GameController();
+	~GameController() { }
+
+	void free();
 
 	void init() { };
 	void load();
@@ -23,7 +25,12 @@ public:
 	
 	void restartGame();
 
-	int threadFunction(void* data);
+private:
+	void stateChanges();
+	void handleInput(SDL_Event& event);
+	void updateLoops(float dt);
+	void render();
+
 
 private:
 	GameData mGameData;

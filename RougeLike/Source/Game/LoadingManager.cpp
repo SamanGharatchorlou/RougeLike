@@ -16,23 +16,23 @@ void LoadingManager::init()
 {
 	VectorF screen = VectorF(1024.0f, 768.0f);
 
-	UIElement::Data data;
+	//UIElement::Data data;
 
-	UIElement::Data* data2 = new UIElement::Data;
+	//UIElement::Data* data2 = new UIElement::Data;
 
-	class myData
-	{
-		std::string id;
-		RectF rect;
-		const UIElement* parent = nullptr;
-		bool show = true;
-	};
+	//class myData
+	//{
+	//	std::string id;
+	//	RectF rect;
+	//	const UIElement* parent = nullptr;
+	//	bool show = true;
+	//};
 
-	myData myDatapack;
+	//myData myDatapack;
 
-	myData* myPtr = new myData;
+	//myData* myPtr = new myData;
 
-	delete myPtr;
+	//delete myPtr;
 
 	// Set text
 	UITextBox::Data textData;

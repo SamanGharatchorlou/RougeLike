@@ -77,10 +77,6 @@ void MapTileDecoder::setTextures(Grid<MapTile>& data)
 			MapTile& tile = data[Index(x, y)];
 			RenderTile type = tile.renderType();
 
-			//if (tile.has(RenderTile::Water_Middle) ||
-			if (tile.has(CollisionTile::Water))
-				printf("we have water (%d,%d)\n", x,y);
-
 			tile.setTexture(tileTextures[type]);
 
 		}

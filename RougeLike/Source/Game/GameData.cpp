@@ -11,12 +11,15 @@
 #include "Managers/ScoreManager.h"
 #include "Collisions/CollisionManager.h"
 #include "Actors/ActorManager.h"
-//#include "Objects/Effects/EffectPool.h"
-#include "Actors/Enemies/EnemyManager.h"
 
 #include "Map/Environment.h"
 #include "Game/Camera.h"
 
+
+void GameData::setWindow(Window* newWindow)
+{
+	window = newWindow;
+}
 
 
 void GameData::load()
