@@ -39,7 +39,7 @@ void AbilityHotKeys::addHotKey(AbilityType ability)
 
 UIBox* AbilityHotKeys::createIcon(AbilityType item, int keyNumber)
 {
-	std::string id;
+	BasicString id;
 	item >> id;
 
 	Texture* icon = mTextures->getTexture(id + "Icon", FileManager::Image_UI);
@@ -70,7 +70,7 @@ UITextBox* AbilityHotKeys::createIconText(UIBox* icon, int count)
 	int number = count + 1;
 	char buffer[5];
 	_itoa_s(number, buffer, 10);
-	textData.text = std::string(buffer);
+	textData.text = BasicString(buffer);
 
 	UITextBox* text = new UITextBox(textData);
 	text->autoSizeRectToText();

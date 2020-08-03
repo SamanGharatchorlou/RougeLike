@@ -24,8 +24,8 @@ public:
 
 	void equipt(const WeaponData* data) override;
 
-	const std::string& hitSoundLabel() override;
-	const std::string& missSoundLabel() override;
+	const BasicString& hitSoundLabel() override;
+	const BasicString& missSoundLabel() override;
 
 	bool didHit() const override;
 	bool containsCollider(Collider* collider) const;

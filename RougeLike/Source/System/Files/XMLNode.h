@@ -21,8 +21,8 @@ public:
 	XMLNode first() const { return XMLNode(node->first_node()); }
 	XMLNode next() const { return XMLNode(node->next_sibling()); }
 
-	const std::string name() const { return std::string(node->name()); }
-	const std::string value() const { return std::string(node->value()); }
+	const BasicString name() const { return BasicString(node->name()); }
+	const BasicString value() const { return BasicString(node->value()); }
 
 	bool isEmpty() const { return node == nullptr; }
 

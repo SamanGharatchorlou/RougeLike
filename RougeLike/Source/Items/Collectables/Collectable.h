@@ -22,7 +22,7 @@ inline CollectableType operator +(CollectableType a, T b)
 	return static_cast<CollectableType>(sum);
 }
 
-inline void operator <<(CollectableType& a, const std::string& str)
+inline void operator <<(CollectableType& a, const BasicString& str)
 {
 	if (str == "Ability")
 		a = CollectableType::Ability;
@@ -39,10 +39,10 @@ public:
 
 	void render(RectF cameraRect) const;
 
-	void set(const std::string& id);
+	void set(const BasicString& id);
 	void setIcon(Texture* icon);
 
-	const std::string& name() const { return mID; }
+	const BasicString& name() const { return mID; }
 
 	RectF rect() const { return mRect; }
 	void setPosition(VectorF position) { mRect.SetCenter(position); }
@@ -58,7 +58,7 @@ public:
 #endif
 
 protected:
-	std::string mID;
+	BasicString mID;
 
 	Texture* mIcon;
 

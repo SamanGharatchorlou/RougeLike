@@ -2,7 +2,7 @@
 #include "EnemyTypes.h"
 
 // TODO: replace with << operator
-EnemyType stringToEnemyType(const std::string& type)
+EnemyType stringToEnemyType(const BasicString& type)
 {
 	if (type == "Devil")
 		return EnemyType::Devil;

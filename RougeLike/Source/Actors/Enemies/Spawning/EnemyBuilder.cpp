@@ -14,7 +14,7 @@ void EnemyBuilder::loadSpawnPool()
 // TODO: accept a list of data, no need to build a new parser each time (for the same type)
 Enemy* EnemyBuilder::buildEnemy(const SpawnData& data, Environment* environment, const AIPathMap* aiPathMap)
 {
-	std::string enemyType;
+	BasicString enemyType;
 	data.type >> enemyType;
 
 	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs_Objects, enemyType));
@@ -33,7 +33,7 @@ Enemy* EnemyBuilder::buildEnemy(const SpawnData& data, Environment* environment,
 
 Enemy* EnemyBuilder::getBlankEnemy(const SpawnData& data)
 {
-	std::string enemyType;
+	BasicString enemyType;
 	data.type >> enemyType;
 
 	return mPool.getObject(data.type);

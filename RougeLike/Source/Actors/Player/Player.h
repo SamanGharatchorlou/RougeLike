@@ -30,7 +30,7 @@ public:
 	void setCharacter(XMLParser& parser, TextureManager* textureManager);
 	void setWeapon(MeleeWeapon* weapon);
 
-	void addAbility(const std::string& name);
+	//void addAbility(const BasicString& name);
 
 	void overrideControl(bool removeControl);
 	bool userHasControl() { return !mControlOverride; }

@@ -6,11 +6,10 @@
 Sound::~Sound()
 {
 	Mix_FreeChunk(mChunk);
-	mChunk = nullptr;
 }
 
 
-bool Sound::load(const std::string& filePath)
+bool Sound::load(const BasicString& filePath)
 {
 	mChunk = Mix_LoadWAV(filePath.c_str());
 
@@ -36,11 +35,10 @@ void Sound::play(int channel)
 Music::~Music()
 {
 	Mix_FreeMusic(mMusic);
-	mMusic = nullptr;
 }
 
 
-bool Music::load(const std::string& filePath)
+bool Music::load(const BasicString& filePath)
 {
 	mMusic = Mix_LoadMUS(filePath.c_str());
 
@@ -86,10 +84,21 @@ void Music::stop(int channel)
 
 
 // --- Audio Group --- //
-bool AudioGroup::load(const std::string& directoryPath)
+AudioGroup::~AudioGroup()
 {
-	std::string groupName = FileManager::Get()->getItemName(directoryPath);
-	std::vector<std::string> audioFilePaths = FileManager::Get()->fullPathsInFolder(directoryPath);
+	for (int i = 0; i < group.size(); i++)
+	{
+		Audio* audio = group[i];
+		delete audio;
+	}
+}
+
+
+
+bool AudioGroup::load(const BasicString& directoryPath)
+{
+	BasicString groupName = FileManager::Get()->getItemName( directoryPath);
+	std::vector<BasicString> audioFilePaths = FileManager::Get()->fullPathsInFolder(directoryPath);
 
 	for (int i = 0; i < audioFilePaths.size(); i++)
 	{

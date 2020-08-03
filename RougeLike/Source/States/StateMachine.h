@@ -9,7 +9,7 @@ public:
 	StateMachine(T* nullState);
 	~StateMachine();
 
-	void clearStates();
+	void shallowClear(); // leaves the base null state
 
 	void addState(T* state);
 	void popState();
@@ -39,13 +39,20 @@ StateMachine<T>::StateMachine(T* nullState)
 template<class T>
 StateMachine<T>::~StateMachine()
 {
-	clearStates();
+	while (states.size() > 0)
+	{
+		states.top()->exit();
+
+		delete states.top();
+		states.pop();
+	}
+
 	DebugPrint(Log, "StateMachine destroyed\n");
 }
 
 
 template<class T>
-void StateMachine<T>::clearStates()
+void StateMachine<T>::shallowClear()
 {
 	// Keep the NULL state at index 0
 	while (states.size() > 1)

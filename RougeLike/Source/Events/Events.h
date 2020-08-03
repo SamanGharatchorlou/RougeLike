@@ -87,9 +87,9 @@ struct RenderEvent : public EventData
 
 struct SetTextColourEvent : public EventData
 {
-	SetTextColourEvent(const std::string& id, SDL_Color colour) : mId(id), mColour(colour) { eventType = Event::SetTextColour; }
+	SetTextColourEvent(const BasicString& id, SDL_Color colour) : mId(id), mColour(colour) { eventType = Event::SetTextColour; }
 	SDL_Color mColour;
-	const std::string mId;
+	const BasicString mId;
 };
 
 
@@ -120,11 +120,11 @@ struct EnemyDeadEvent : public EventData
 
 struct SetUIBarEvent : public EventData
 {
-	SetUIBarEvent(const std::string bar, const std::string barContainer, const float percentage) : mBar(bar), mBarContainer(barContainer), mPercentage(percentage) { }
+	SetUIBarEvent(const BasicString bar, const BasicString barContainer, const float percentage) : mBar(bar), mBarContainer(barContainer), mPercentage(percentage) { }
 	~SetUIBarEvent() { };
 
-	const std::string mBar;
-	const std::string mBarContainer;
+	const BasicString mBar;
+	const BasicString mBarContainer;
 	const float mPercentage;
 };
 
@@ -154,10 +154,10 @@ struct IncrementLevelEvent : public EventData
 
 struct UpdateTextBoxEvent : public EventData
 {
-	UpdateTextBoxEvent(const std::string& id, int value) : mId(id), mValue(value) { eventType = Event::UpdateTextBox; }
+	UpdateTextBoxEvent(const BasicString& id, int value) : mId(id), mValue(value) { eventType = Event::UpdateTextBox; }
 	~UpdateTextBoxEvent() { }
 
-	const std::string mId;
+	const BasicString mId;
 	const int mValue;
 };
 
@@ -187,19 +187,19 @@ struct UpdateAICostMapEvent : public EventData
 
 struct EditUIRectEvent : public EventData
 {
-	EditUIRectEvent(const std::string& id, VectorF change) : mId(id), mChange(change) { };
+	EditUIRectEvent(const BasicString& id, VectorF change) : mId(id), mChange(change) { };
 	~EditUIRectEvent() { };
 
-	const std::string mId;
+	const BasicString mId;
 	const VectorF mChange;
 };
 
 struct SetUIRectEvent : public EventData
 {
-	SetUIRectEvent(const std::string& id, RectF rect) : mId(id), mRect(rect) { eventType = Event::SetUIRect; }
+	SetUIRectEvent(const BasicString& id, RectF rect) : mId(id), mRect(rect) { eventType = Event::SetUIRect; }
 	~SetUIRectEvent() { }
 
-	const std::string mId;
+	const BasicString mId;
 	const RectF mRect;
 };
 

@@ -14,7 +14,7 @@ void HealEffect::init()
 
 void HealEffect::fill(ValueMap& valueMap)
 {
-	std::string health = "Health";
+	BasicString health = "Health";
 	if (valueMap.count(health))
 		mHeal = Health(valueMap[health]);
 	else

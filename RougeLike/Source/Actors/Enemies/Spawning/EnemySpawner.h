@@ -40,7 +40,7 @@ private:
 	std::vector<SpawnData> spawnPatrollers(const Map* map, const Attributes& attributes) const;
 	std::vector<SpawnData> spawnShape(const Map* map, const Attributes& attributes) const;
 
-	Type stringToType(const std::string& spawnType) const;
+	Type stringToType(const BasicString& spawnType) const;
 
 	std::vector<SpawnData> buildSpawnList(const PointList& points, EnemyState::Type state, EnemyType type) const;
 	void findValidShape(Shape& shape, const Map* map, int xPosition) const;

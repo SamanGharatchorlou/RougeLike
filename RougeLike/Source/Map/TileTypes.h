@@ -83,7 +83,7 @@ enum class DecorType : Uint32
 
 
 using DecorMap = std::map<DecorType, Attributes>;
-DecorType stringToType(const std::string& decorString);
+DecorType stringToType(const BasicString& decorString);
 
 
 

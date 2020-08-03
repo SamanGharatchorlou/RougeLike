@@ -39,7 +39,7 @@ void DamageEffect::clearData()
 
 void DamageEffect::fill(ValueMap& valueMap)
 {
-	std::string damage = "Damage";
+	BasicString damage = "Damage";
 	if (valueMap.count(damage))
 		mDamage = Damage(valueMap[damage]);
 	else

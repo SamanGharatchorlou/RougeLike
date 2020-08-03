@@ -27,7 +27,7 @@ void PlayerManager::init(Environment* environment)
 	mAbilities.init(environment);
 }
 
-void PlayerManager::addAbility(const std::string& ability)
+void PlayerManager::addAbility(const BasicString& ability)
 {
 	mAbilities.addAbility(ability, &mPlayer);
 }
@@ -106,14 +106,14 @@ void PlayerManager::exit()
 	mPlayer.reset();
 }
 
-void PlayerManager::selectCharacter(const std::string& characterConfig, TextureManager* textureManager)
+void PlayerManager::selectCharacter(const BasicString& characterConfig, TextureManager* textureManager)
 { 
 	XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Player, characterConfig));
 	mPlayer.setCharacter(parser, textureManager);
 }
 
 
-void PlayerManager::selectWeapon(const std::string& weaponName)
+void PlayerManager::selectWeapon(const BasicString& weaponName)
 {
 	Weapon* weapon = weaponStash.getWeapon(weaponName);
 	mPlayer.setWeapon(static_cast<MeleeWeapon*>(weapon));

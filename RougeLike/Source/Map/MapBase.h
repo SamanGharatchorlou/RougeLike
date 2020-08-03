@@ -11,6 +11,8 @@ public:
 	MapBase() { }
 	MapBase(Vector2D<int> size) : mData(size, K()) { }
 	MapBase(Vector2D<int> size, K value) : mData(size, value) { }
+	virtual ~MapBase() { }
+
 
 	K& operator [] (Index index) { return mData[index.y][index.x]; }
 	const K& get(Index index) const { return mData.get(index); }

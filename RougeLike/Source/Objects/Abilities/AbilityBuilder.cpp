@@ -15,7 +15,7 @@
 #include "Objects/Abilities/AbilityTypes/ChargeAbility.h"
 
 
-Ability* AbilityBuilder::build(const std::string& id)
+Ability* AbilityBuilder::build(const BasicString& id)
 {
 	Ability* ability = createNewAbility(id);
 
@@ -42,7 +42,7 @@ void AbilityBuilder::initAnimations(Ability* ability, const XMLParser& parser)
 }
 
 
-void AbilityBuilder::setValues(Ability* ability, const std::string& id, const XMLParser& parser)
+void AbilityBuilder::setValues(Ability* ability, const BasicString& id, const XMLParser& parser)
 {
 	ValueBag values;
 	values.readData(parser, "Properties");
@@ -56,7 +56,7 @@ void AbilityBuilder::setValues(Ability* ability, const std::string& id, const XM
 }
 
 
-Ability* AbilityBuilder::createNewAbility(const std::string& id)
+Ability* AbilityBuilder::createNewAbility(const BasicString& id)
 {
 	Ability* ability = nullptr;
 	AbilityType type = AbilityType::None;

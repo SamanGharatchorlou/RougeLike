@@ -23,7 +23,7 @@ public:
 
 
 private:
-	void updateBoxTexture(std::string buttonId, std::string boxId);
+	void updateBoxTexture(BasicString buttonId, BasicString boxId);
 
 
 private:

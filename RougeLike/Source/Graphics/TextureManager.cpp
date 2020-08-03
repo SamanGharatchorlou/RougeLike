@@ -19,7 +19,7 @@ TextureManager::~TextureManager()
 	{
 		TextureMap textureMap = mTextures[i].second;
 
-		std::unordered_map<std::string, Texture*>::iterator iter = textureMap.begin();
+		std::unordered_map<BasicString, Texture*>::iterator iter = textureMap.begin();
 		for (; iter != textureMap.end(); iter++)
 		{
 			delete iter->second;
@@ -39,7 +39,7 @@ void TextureManager::init()
 
 	// Folders to be loaded
 	std::vector<FileManager::Folder> folders;
-	std::vector<std::string> folderPaths = fm->foldersInFolder(FileManager::Images);
+	std::vector<BasicString> folderPaths = fm->foldersInFolder(FileManager::Images);
 	for (int i = 0; i < folderPaths.size(); i++)
 	{
 		FileManager::Folder folder = fm->getFolderIndex(folderPaths[i]);
@@ -51,7 +51,14 @@ void TextureManager::init()
 
 	for (int i = 0; i < folders.size(); i++)
 	{
-		DebugPrint(Log, "\n Loading all textures within the folder '%s'\n", fm->generatePath(folders[i]).c_str());
+#if _DEBUG
+		BasicString folderPath = fm->generatePath(folders[i]);
+		BasicString rootPath = fm->generatePath(FileManager::Root);
+		int start = rootPath.length();
+		int length = folderPath.length() - start;
+		folderPath = folderPath.substr(start, length);
+		DebugPrint(Log, "\nLoading all textures within the folder '%s'\n", folderPath.c_str());
+#endif
 		fails += loadAllTexturesIn(folders[i]);
 	}
 
@@ -66,8 +73,8 @@ int TextureManager::loadAllTexturesIn(FileManager::Folder folder)
 	TextureMap textureMap;
 	FolderTextureMap folderMap(folder, textureMap);
 
-	std::vector<std::string> imagePaths = FileManager::Get()->allFilesInFolder(folder);
-	for (const std::string& path : imagePaths)
+	std::vector<BasicString> imagePaths = FileManager::Get()->allFilesInFolder(folder);
+	for (const BasicString& path : imagePaths)
 	{
 		fails += !loadTexture(folderMap, path);
 	}
@@ -77,28 +84,25 @@ int TextureManager::loadAllTexturesIn(FileManager::Folder folder)
 }
 
 
-bool TextureManager::loadTexture(FolderTextureMap& folderMap, const std::string& filePath)
+bool TextureManager::loadTexture(FolderTextureMap& folderMap, const BasicString& filePath)
 {
 	bool success = true;
 	Texture *texture = new Texture;
+	FileManager* fm = FileManager::Get();
 
 	Renderer::Get()->Open();
 	if (texture->loadFromFile(filePath))
 	{
-		std::string label = FileManager::Get()->getItemName(filePath);
-		std::string folderPath = FileManager::Get()->generatePath(folderMap.first);
-		std::string relativePath = filePath.substr(folderPath.size());
-
+		BasicString label = fm->getItemName(filePath);
 		folderMap.second[label] = texture;
 
 		// Add to has loaded files
 		LoadingManager::Get()->successfullyLoaded(filePath);
-
-		DebugPrint(Log, "Success: loaded texture '%s' at '%s'\n", label.c_str(), relativePath.c_str());
+		DebugPrint(Log, "Success: loaded texture '%s'\n", label.c_str());
 	}
 	else
 	{
-		std::string label = FileManager::Get()->getItemName(filePath);
+		BasicString label = fm->getItemName(filePath);
 		DebugPrint(Log, "Failure: texture NOT loaded '%s' at '%s'\n", label.c_str(), filePath.c_str());
 		success = false;
 	}
@@ -108,13 +112,14 @@ bool TextureManager::loadTexture(FolderTextureMap& folderMap, const std::string&
 }
 
 
-const std::string& TextureManager::getTextureName(const Texture* texture) const
+// TODO: replace with copy
+const BasicString& TextureManager::getTextureName(const Texture* texture) const
 {
 	for (int i = 0; i < mTextures.size(); i++)
 	{
 		const TextureMap& textureMap = mTextures[i].second;
 
-		std::unordered_map<std::string, Texture*>::const_iterator iter = textureMap.begin();
+		std::unordered_map<BasicString, Texture*>::const_iterator iter = textureMap.begin();
 		for (; iter != textureMap.end(); iter++)
 		{
 			if (iter->second == texture)
@@ -125,12 +130,12 @@ const std::string& TextureManager::getTextureName(const Texture* texture) const
 	}
 
 	ASSERT(Error, false, "No texture was found within any texture map\n");
-	return std::string("");
+	return BasicString("");
 }
 
 
 
-Texture* TextureManager::getTexture(const std::string& label, const FileManager::Folder folder) const
+Texture* TextureManager::getTexture(const BasicString& label, const FileManager::Folder folder) const
 {
 	TextureMap textureMap = findTextureMap(folder);
 
@@ -148,7 +153,7 @@ Texture* TextureManager::getTexture(const std::string& label, const FileManager:
 }
 
 
-Texture* TextureManager::getTexture(const std::string& label) const
+Texture* TextureManager::getTexture(const BasicString& label) const
 {
 	for (int i = 0; i < mTextures.size(); i++)
 	{

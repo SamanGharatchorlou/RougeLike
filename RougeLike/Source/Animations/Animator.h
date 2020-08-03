@@ -20,7 +20,7 @@ enum class Action
 	Count
 };
 
-Action stringToAction(const std::string& action);
+Action stringToAction(const BasicString& action);
 
 
 struct AnimationData

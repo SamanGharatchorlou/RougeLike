@@ -37,7 +37,7 @@ CollectableSpawner::SpawnData CollectableSpawner::generateSpawnData(const XMLNod
 	int xIncrement = attributes.getInt("xPosition");
 	VectorF position = findSpawnPoint(map, xIncrement);
 
-	std::string id = attributes.getString("id");
+	BasicString id = attributes.getString("id");
 
 	return SpawnData(type, position, id);
 }

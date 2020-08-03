@@ -32,7 +32,6 @@
     <ClCompile Include="Source\Collisions\EnemyCollisions.cpp" />
     <ClCompile Include="Source\Collisions\PlayerCollisions.cpp" />
     <ClCompile Include="Source\Collisions\WallCollisionTracker.cpp" />
-    <ClCompile Include="Source\Debug\MemoryTracker.cpp" />
     <ClCompile Include="Source\Debug\FrameRateController.cpp" />
     <ClCompile Include="Source\Debug\MemTrack.cpp" />
     <ClCompile Include="Source\Game\GameSetup.cpp" />
@@ -85,6 +84,7 @@
     <ClCompile Include="Source\Collisions\WeaponCollisionManager.cpp" />
     <ClCompile Include="Source\Objects\Properties\PropertyBag.cpp" />
     <ClCompile Include="Source\Items\Collectables\CollectableSpawner.cpp" />
+    <ClCompile Include="Source\System\Files\Attributes.cpp" />
     <ClCompile Include="Source\System\Files\XMLNode.cpp" />
     <ClCompile Include="Source\UI\Elements\UISlider.cpp" />
     <ClCompile Include="Source\UI\Screens\SettingsScreen.cpp" />
@@ -179,7 +179,7 @@
     <ClInclude Include="Source\Collisions\EnemyCollisions.h" />
     <ClInclude Include="Source\Collisions\PlayerCollisions.h" />
     <ClInclude Include="Source\Collisions\WallCollisionTracker.h" />
-    <ClInclude Include="Source\Debug\MemoryTracker.h" />
+    <ClInclude Include="Source\Debug\DebugSettings.h" />
     <ClInclude Include="Source\Debug\FrameRateController.h" />
     <ClInclude Include="Source\Debug\MemTrack.h" />
     <ClInclude Include="Source\Events\LocalDispatcher.h" />

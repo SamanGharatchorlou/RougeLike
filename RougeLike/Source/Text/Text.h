@@ -6,13 +6,13 @@ class Text
 {
 public:
 	Text() { }
-	Text(const std::string& text, const std::string& font, int ptSize, SDL_Color colour);
-	void init(const std::string& text, const std::string& font, int ptSize, SDL_Color colour);
+	Text(const BasicString& text, const BasicString& font, int ptSize, SDL_Color colour);
+	void init(const BasicString& text, const BasicString& font, int ptSize, SDL_Color colour);
 
-	void setText(const std::string& text);
+	void setText(const BasicString& text);
 	void setColour(SDL_Color colour);
 
-	void displaySubText(int startIndex, int endIndex);
+	//void displaySubText(int startIndex, int endIndex);
 
 	int fontSize() const { return mFont.ptSize(); }
 	void setFontSize(int fontSize) { mFont.resize(fontSize); }
@@ -29,7 +29,7 @@ public:
 
 
 private:
-	std::string mText;
+	BasicString mText;
 	Font mFont;
 
 	VectorF mAlignmentOffset;

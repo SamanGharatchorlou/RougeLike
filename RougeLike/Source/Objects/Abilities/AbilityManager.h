@@ -27,12 +27,12 @@ public:
 	void slowUpdate(float dt);
 	void render();
 
-	void addAbility(const std::string& name, Actor* caster);
+	void addAbility(const BasicString& name, Actor* caster);
 	void setState(Ability* ability, Ability::State state);
 
 	bool inSelectionMode() const;
 
-	Ability* get(const std::string& name) const;
+	Ability* get(const BasicString& name) const;
 
 	bool hasEvent() const { return mEvents.hasEvent(); }
 	EventPacket popEvent() { return mEvents.pop(); }

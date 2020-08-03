@@ -2,15 +2,16 @@
 
 #include "Objects/Properties/Property.h"
 
-using PropertyMap = std::unordered_map<std::string, Property*>;
+using PropertyMap = std::unordered_map<BasicString, Property*>;
 
 
-class XMLDataBag
+class DataBag
 {
 public:
-	void readData(const XMLParser& parser, const std::string& nodeName);
+	void readData(const XMLParser& parser, const BasicString& nodeName);
+	virtual ~DataBag() { };
 
-	virtual bool isEmpty() = 0;
+	virtual bool isEmpty() const = 0;
 
 protected:
 	virtual StringMap readValues(xmlNode node) const;
@@ -18,11 +19,13 @@ protected:
 };
 
 
-class ValueBag : public XMLDataBag
+class ValueBag : public DataBag
 {
 public:
-	float get(const std::string& value) const;
-	bool isEmpty() override { return mData.size() == 0; }
+	~ValueBag() { };
+
+	float get(const BasicString& value) const;
+	bool isEmpty() const override { return mData.size() == 0; }
 
 protected:
 	void fillData(const StringMap& stringMap) override;
@@ -31,32 +34,24 @@ private:
 	ValueMap mData;
 };
 
+
 // TODO: use polymorphism below
-class PropertyBag // : public XMLDataBag
+class PropertyBag : public DataBag
 {
 public:
-	PropertyBag() : mConfigFile("") { }
-	virtual ~PropertyBag() { }
+	virtual ~PropertyBag();
 
-	virtual void readProperties(const XMLParser& parser);
-	virtual void readProperties(const std::string& config);
-	
-	void resetProperties();
+	Property* get(const BasicString& name) const;
+	float value(const BasicString& name) const;
 
-	Property* get(const std::string& name) const;
-	float value(const std::string& name) const;
-
-	bool contains(const std::string& name) const;
-	//bool isEmpty() override { return mProperties.size() == 0; }
+	bool contains(const BasicString& name) const;
+	bool isEmpty() const override { return mData.size() == 0; }
 
 
 protected:
-	virtual ValueMap readValues(xmlNode node);
-	virtual void fillProperties(ValueMap& valueMap);
-
-	Property* getNewProperty(const std::string& name);
+	void fillData(const StringMap& stringMap) override;
+	Property* getNewProperty(const BasicString& name) const;
 
 protected:
-	std::string mConfigFile; // TODO: can remove?
-	PropertyMap mProperties;
+	PropertyMap mData;
 };

@@ -109,7 +109,7 @@ public:
 	}
 
 #ifdef _DEBUG
-	std::string  infoString()
+	BasicString  infoString()
 	{
 		char infoString[500];
 		char info[500] = "// ------- rect info string ------- \n\
@@ -117,7 +117,7 @@ public:
 							width, height (%.f, %.f) \n\n";
 
 		sprintf_s(infoString, info, x1, y1, Width(), Height());
-		return std::string(infoString);
+		return BasicString(infoString);
 	}
 #endif
 

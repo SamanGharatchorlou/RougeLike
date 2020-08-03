@@ -18,7 +18,7 @@ public:
 	Texture();
 	~Texture();
 
-	bool loadFromFile(const std::string& filePath);
+	bool loadFromFile(const BasicString& filePath);
 
 	void render(const Rect<int> rect) const;
 	void render(const RectF rect) const;

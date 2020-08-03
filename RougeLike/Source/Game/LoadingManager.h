@@ -17,8 +17,8 @@ public:
 
 	void directoriesToLoad(std::vector<FileManager::Folder> folders);
 
-	void addFileToLoad(const std::string& filePath);
-	void successfullyLoaded(const std::string& filePath);
+	void addFileToLoad(const BasicString& filePath);
+	void successfullyLoaded(const BasicString& filePath);
 	float loadedPercentage();
 
 	bool end() const { return (mTotalFileSizes > 0) && (mLoadedFileSizes == mTotalFileSizes); }

@@ -144,7 +144,7 @@ bool AbilityManager::inSelectionMode() const
 }
 
 
-void AbilityManager::addAbility(const std::string& name, Actor* caster)
+void AbilityManager::addAbility(const BasicString& name, Actor* caster)
 {
 	AbilityType type = AbilityType::None;
 	type << name;
@@ -182,7 +182,7 @@ void AbilityManager::setState(Ability* ability, Ability::State state)
 }
 
 
-Ability* AbilityManager::get(const std::string& name) const
+Ability* AbilityManager::get(const BasicString& name) const
 {
 	for (int i = 0; i < mAbilities.size(); i++)
 	{
@@ -201,7 +201,7 @@ Ability* AbilityManager::get(const std::string& name) const
 // --- Private Functions --- //
 void AbilityManager::sendSetTextColourEvent(Ability* ability, Colour colour)
 {
-	std::string id = ability->name() + "IconText";
+	BasicString id = ability->name() + "IconText";
 	SetTextColourEvent* event = new SetTextColourEvent(id, SDLColour(colour));
 	EventPacket eventPacket(event);
 	mEvents.push(eventPacket);

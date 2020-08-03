@@ -12,7 +12,7 @@ AudioManager::AudioManager()
 
 AudioManager::~AudioManager()
 {
-	for (std::pair<std::string, Audio*> audio : mAudioBank)
+	for (std::pair<BasicString, Audio*> audio : mAudioBank)
 	{
 		delete audio.second;
 		audio.second = nullptr;
@@ -47,7 +47,7 @@ void AudioManager::slowUpdate()
 
 
 
-Audio* AudioManager::getAudio(const std::string& label) const
+Audio* AudioManager::getAudio(const BasicString& label) const
 {
 	auto search = mAudioBank.find(label);
 
@@ -96,7 +96,7 @@ float AudioManager::musicVolume() const
 }
 
 
-void AudioManager::playSound(const std::string& label, void* sourceId)
+void AudioManager::playSound(const BasicString& label, void* sourceId)
 {
 	Audio* audio = getAudio(label);
 
@@ -104,7 +104,7 @@ void AudioManager::playSound(const std::string& label, void* sourceId)
 		mSoundController.playSound(audio, sourceId);
 }
 
-void AudioManager::playMusic(const std::string& label)
+void AudioManager::playMusic(const BasicString& label)
 {
 	Audio* audio = getAudio(label);
 
@@ -112,7 +112,7 @@ void AudioManager::playMusic(const std::string& label)
 		mSoundController.playMusic(audio);
 }
 
-void AudioManager::stop(const std::string& label, void* sourceId)
+void AudioManager::stop(const BasicString& label, void* sourceId)
 {
 	Audio* audio = getAudio(label);
 
@@ -120,7 +120,7 @@ void AudioManager::stop(const std::string& label, void* sourceId)
 		mSoundController.stopSound(audio, sourceId);
 }
 
-void AudioManager::pause(const std::string& label, void* sourceId)
+void AudioManager::pause(const BasicString& label, void* sourceId)
 {
 	Audio* audio = getAudio(label);
 
@@ -128,7 +128,7 @@ void AudioManager::pause(const std::string& label, void* sourceId)
 		mSoundController.pauseSound(audio, sourceId);
 }
 
-void AudioManager::resume(const std::string& label, void* sourceId)
+void AudioManager::resume(const BasicString& label, void* sourceId)
 {
 	Audio* audio = getAudio(label);
 
@@ -136,7 +136,7 @@ void AudioManager::resume(const std::string& label, void* sourceId)
 		mSoundController.resumeSound(audio, sourceId);
 }
 
-bool AudioManager::isPlaying(const std::string& label, void* sourceId)
+bool AudioManager::isPlaying(const BasicString& label, void* sourceId)
 {
 	Audio* audio = getAudio(label);
 
@@ -155,12 +155,13 @@ bool AudioManager::isPlaying(const std::string& label, void* sourceId)
 int AudioManager::loadAllMusic(FileManager::Folder folder)
 {
 	int fails = 0;
-	std::vector<std::string> paths = FileManager::Get()->allFilesInFolder(folder);
+	std::vector<BasicString> paths = FileManager::Get()->allFilesInFolder(folder);
+	const FileManager* fm = FileManager::Get();
 
-	for (const std::string& path : paths)
+	for (const BasicString& path : paths)
 	{
 		Audio *audio = new Music;
-		fails += !loadAudio(audio, FileManager::Get()->getItemName(path), path);
+		fails += !loadAudio(audio, fm->getItemName(path), path);
 	}
 
 	return fails;
@@ -170,12 +171,13 @@ int AudioManager::loadAllMusic(FileManager::Folder folder)
 int AudioManager::loadAllSound(FileManager::Folder folder)
 {
 	int fails = 0;
-	std::vector<std::string> paths = FileManager::Get()->allFilesInFolder(folder);
+	std::vector<BasicString> paths = FileManager::Get()->allFilesInFolder(folder);
+	const FileManager* fm = FileManager::Get();
 
-	for (const std::string& path : paths)
+	for (const BasicString& path : paths)
 	{
 		Audio *audio = new Sound;
-		fails += !loadAudio(audio, FileManager::Get()->getItemName(path), path);
+		fails += !loadAudio(audio, fm->getItemName(path), path);
 	}
 
 	return fails;
@@ -185,19 +187,20 @@ int AudioManager::loadAllSound(FileManager::Folder folder)
 int AudioManager::loadAllSoundGroups(FileManager::Folder folder)
 {
 	int fails = 0;
-	std::vector<std::string> folderPaths = FileManager::Get()->foldersInFolder(folder);
+	std::vector<BasicString> folderPaths = FileManager::Get()->foldersInFolder(folder);
+	const FileManager* fm = FileManager::Get();
 
-	for (const std::string& folderPath : folderPaths)
+	for (const BasicString& folderPath : folderPaths)
 	{
 		Audio* soundGroup =  new AudioGroup;
-		fails += !loadAudio(soundGroup, FileManager::Get()->getItemName(folderPath), folderPath);
+		fails += !loadAudio(soundGroup,	fm->getItemName(folderPath), folderPath);
 	}
 
 	return fails;
 }
 
 
-bool AudioManager::loadAudio(Audio* audio, const std::string& name, const std::string& filePath)
+bool AudioManager::loadAudio(Audio* audio, const BasicString& name, const BasicString& filePath)
 {
 	bool success = true;
 	if (audio->load(filePath))
@@ -206,7 +209,7 @@ bool AudioManager::loadAudio(Audio* audio, const std::string& name, const std::s
 		LoadingManager::Get()->successfullyLoaded(filePath);
 
 		mAudioBank[name] = audio;
-		DebugPrint(Log, "Successfully loaded audio '%s' at %s\n", name.c_str(), filePath.c_str());
+		DebugPrint(Log, "Successfully loaded audio '%s'\n", name.c_str());
 	}
 	else
 	{

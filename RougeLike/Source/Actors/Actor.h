@@ -36,9 +36,9 @@ public:
 	void reset();
 
 	// PropertyBag
-	Property* getProperty(const std::string& property) const;
-	float getPropertyValue(const std::string& property) const;
-	bool hasProperty(const std::string& property) const;
+	Property* getProperty(const BasicString& property) const;
+	float getPropertyValue(const BasicString& property) const;
+	bool hasProperty(const BasicString& property) const;
 
 	// Collider
 	EffectCollider* collider() { return &mCollider; }

@@ -3,7 +3,6 @@
 
 #include "System/Window.h"
 
-
 GameSetup::GameSetup() : title(""), audioChannels(0) { }
 
 
@@ -16,6 +15,7 @@ Window* GameSetup::initSDL()
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == 0)
 	{
 		window = createWindow();
+
 		if (window)
 		{
 			bool success = initRenderer(window);
@@ -103,9 +103,9 @@ void GameSetup::readSettings()
 	XMLNode settingsNode = XMLNode(root->first_node("Game"));
 	StringMap settingsMap = settingsNode.stringMap();
 
-	title = settingsMap["Title"].c_str();
-	int width = std::stoi(settingsMap["Width"]);
-	int height = std::stoi(settingsMap["Height"]);
+	title = settingsMap["Title"];
+	int width = atoi(settingsMap["Width"].c_str());
+	int height = atoi(settingsMap["Height"].c_str());
 	screenSize = VectorF(width, height);
-	audioChannels = std::stoi(settingsMap["AudioChannels"]);
+	audioChannels = atoi(settingsMap["AudioChannels"].c_str());
 }

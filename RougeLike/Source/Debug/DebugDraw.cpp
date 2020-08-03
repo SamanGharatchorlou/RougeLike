@@ -1,8 +1,8 @@
 #pragma once
 #include "pch.h"
 #include "DebugDraw.h"
-#include "Game/Camera.h"
 
+#include "Game/Camera.h"
 #include "UI/Elements/UITextBox.h"
 
 void debugDrawLine(VectorF pointA, VectorF pointB, RenderColour colour)
@@ -60,7 +60,7 @@ void debugDrawRects(std::vector<RectF> rects, RenderColour colour)
 	}
 }
 
-void debugRenderText(const std::string text, int ptSize, VectorF position, RenderColour colour, const std::string& alignment)
+void debugRenderText(const BasicString text, int ptSize, VectorF position, RenderColour colour, const BasicString& alignment)
 {
 	UITextBox::Data textData;
 	textData.aligment = alignment;

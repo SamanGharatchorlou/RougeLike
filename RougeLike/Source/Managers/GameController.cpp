@@ -18,6 +18,7 @@
 #include "UI/UIManager.h"
 
 
+
 GameController::GameController() : quit(false), mGameStateMachine(new NullState)
 {
 	GameSetup setup;
@@ -72,7 +73,7 @@ void GameController::run()
 
 void GameController::free()
 {
-	mGameStateMachine.clearStates();
+	mGameStateMachine.shallowClear();
 	mGameData.free();
 
 	// delete globals
@@ -121,7 +122,7 @@ void GameController::handleInput(SDL_Event& event)
 
 #if DEBUG_CURSOR // show mouse position in screen title
 	VectorF pos = mGameData.inputManager->cursorPosition();
-	std::stringstream ss;
+	std::Stringstream ss;
 	ss << "X: " << pos.x << " Y: " << pos.y;
 	mGameData.window->setTitle(ss.str().c_str());
 #endif

@@ -4,37 +4,37 @@
 
 #include "XMLNode.h"
 
-
 class XMLParser
 {
 public:
 	XMLParser() { };
-	XMLParser(const std::string& file) { parseXML(file); }
+	XMLParser(const BasicString& file) { parseXML(file); }
 
 	~XMLParser()
 	{
+
 		delete file;
 		file = nullptr;
 	}
 
-	void parseXML(const std::string& filePath);
+	void parseXML(const BasicString& filePath);
 
 	rapidxml::xml_document<>& getXML() { return xmlFile; }
 
 	xmlNode rootNode() const;
 	XMLNode root() const;
 
-	std::string nodeValue(xmlNode node, const std::string& label) const;
+	BasicString nodeValue(xmlNode node, const BasicString& label) const;
 
 	Attributes attributes(xmlNode root) const;
 
 	StringMap stringMap(xmlNode node) const;
 	ValueMap valueMap(xmlNode node) const;
 
-	std::string firstRootNodeValue(const std::string& label) const;
+	BasicString firstRootNodeValue(const BasicString& label) const;
 
 #if _DEBUG
-	std::string path;
+	BasicString path;
 #endif
 
 private:

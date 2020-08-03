@@ -10,10 +10,10 @@ bool AnimationReader::initAnimator(Animator& animator)
 {
 	xmlNode animationNode = mParser.rootNode()->first_node("AnimationInfo");
 
-	float frameTime = std::stof(mParser.nodeValue(animationNode, "FrameTime"));
+	float frameTime = atof(mParser.nodeValue(animationNode, "FrameTime").c_str());
 	animator.setFrameTime(frameTime);
 
-	std::string id = mParser.nodeValue(animationNode, "ID");
+	BasicString id = mParser.nodeValue(animationNode, "ID");
 
 	xmlNode animations = animationNode->first_node("Animations");
 	xmlNode node = animations->first_node();
@@ -37,9 +37,9 @@ AnimationData AnimationReader::readData(xmlNode node)
 	xmlNode animationNode = mParser.rootNode()->first_node("AnimationInfo");
 
 	// Texture
-	std::string id = mParser.nodeValue(animationNode, "ID");
-	std::string action = node->name();
-	std::string fileName = id + "_" + action;
+	BasicString id = mParser.nodeValue(animationNode, "ID");
+	BasicString action = node->name();
+	BasicString fileName = id + "_" + action;
 	Texture* texture = tm->getTexture(fileName, FileManager::Image_Animations);
 	data.texture = texture;
 

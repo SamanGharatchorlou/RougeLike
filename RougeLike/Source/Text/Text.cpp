@@ -2,9 +2,9 @@
 #include "Text.h"
 
 
-Text::Text(const std::string& text, const std::string& font, int ptSize, SDL_Color colour)
+Text::Text(const BasicString& text, const BasicString& font, int ptSize, SDL_Color colour)
 {
-	std::string path = FileManager::Get()->findFile(FileManager::Font, font);
+	BasicString path = FileManager::Get()->findFile(FileManager::Font, font);
 	mFont.loadFromFile(path, ptSize);
 
 	mFont.setColour(colour);
@@ -12,9 +12,9 @@ Text::Text(const std::string& text, const std::string& font, int ptSize, SDL_Col
 }
 
 
-void Text::init(const std::string& text, const std::string& font, int ptSize, SDL_Color colour)
+void Text::init(const BasicString& text, const BasicString& font, int ptSize, SDL_Color colour)
 {
-	std::string path = FileManager::Get()->findFile(FileManager::Font, font);
+	BasicString path = FileManager::Get()->findFile(FileManager::Font, font);
 	mFont.loadFromFile(path, ptSize);
 
 	mFont.setColour(colour);
@@ -28,17 +28,17 @@ void Text::setColour(SDL_Color colour)
 }
 
 
-void Text::setText(const std::string& text) 
+void Text::setText(const BasicString& text) 
 { 
 	mText = text;
 	mFont.setText(mText); 
 }
 
 
-void Text::displaySubText(int startIndex, int endIndex)
-{
-	mFont.setText(mText.substr(startIndex, endIndex - startIndex));
-}
+//void Text::displaySubText(int startIndex, int endIndex)
+//{
+//	mFont.setText(mText.substr(startIndex, endIndex - startIndex));
+//}
 
 
 void Text::render(VectorF position)

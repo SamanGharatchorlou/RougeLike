@@ -8,13 +8,13 @@ public:
 	Font() : mTexture(nullptr), mFont(nullptr) { }
 	~Font();
 
-	bool loadFromFile(const std::string& font, int ptSize);
+	bool loadFromFile(const BasicString& filePath, int ptSize);
 
 	void render(const VectorF position) const;
 
 	//Creates image from font string
 	void setColour(SDL_Color textColor) { colour = textColor; }
-	void setText(const std::string& textureText);
+	void setText(const BasicString& textureText);
 
 	void resize(int ptSize);
 
@@ -24,13 +24,13 @@ public:
 
 	TTF_Font* get() { return mFont; }
 
-	const std::string name() const { return mFontName; }
+	const BasicString name() const { return mFontName; }
 
 private:
 	Renderer* mRenderer;
 	SDL_Texture* mTexture;
 
-	std::string mFontName;
+	BasicString mFontName;
 	TTF_Font* mFont;
 
 	SDL_Color colour;

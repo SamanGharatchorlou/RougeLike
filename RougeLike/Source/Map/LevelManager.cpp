@@ -10,6 +10,16 @@
 #include "Game/Camera.h"
 
 
+LevelManager::LevelManager(TextureManager* textureManger) : mTextureManager(textureManger), mLevel(0) { }
+
+LevelManager::~LevelManager()
+{
+	delete mMaps.entrance;
+	delete mMaps.primaryMap;
+	delete mMaps.exit;
+}
+
+
 void LevelManager::load(const XMLParser& parser)
 {
 	createNewMaps();
@@ -155,7 +165,7 @@ VectorF LevelManager::getOffset(const Map* map) const
 void LevelManager::readConfigData(Vector2D<int>& mapIndexSize, VectorF& tileSize, float& scale)
 {
 	XMLParser parser;
-	std::string path = FileManager::Get()->findFile(FileManager::Config_Map, "Map");
+	BasicString path = FileManager::Get()->findFile(FileManager::Config_Map, "Map");
 	parser.parseXML(path);
 
 	xmlNode rootNode = parser.rootNode();
@@ -185,7 +195,7 @@ void LevelManager::readConfigData(Vector2D<int>& mapIndexSize, VectorF& tileSize
 }
 
 
-void LevelManager::readMapData(const std::string& section, Map* map, const XMLParser& parser)
+void LevelManager::readMapData(const BasicString& section, Map* map, const XMLParser& parser)
 {
 	xmlNode rootNode = parser.rootNode();
 	xmlNode sectionNode = rootNode->first_node(section.c_str());

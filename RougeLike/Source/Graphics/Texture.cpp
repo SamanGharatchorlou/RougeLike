@@ -13,7 +13,7 @@ Texture::~Texture()
 }
 
 
-bool Texture::loadFromFile(const std::string& filePath)
+bool Texture::loadFromFile(const BasicString& filePath)
 {
 	// remove any existing texture
 	if (texture)

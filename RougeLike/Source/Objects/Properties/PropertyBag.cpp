@@ -7,9 +7,9 @@
 #include "Objects/Attributes/Armor.h"
 
 
-// ------------------------
+// ---------- DataBag --------------
 
-void XMLDataBag::readData(const XMLParser& parser, const std::string& nodeName)
+void DataBag::readData(const XMLParser& parser, const BasicString& nodeName)
 {
 	xmlNode propertyNode = parser.rootNode()->first_node(nodeName.c_str());
 	if (propertyNode)
@@ -25,17 +25,14 @@ void XMLDataBag::readData(const XMLParser& parser, const std::string& nodeName)
 
 
 // Pull raw config data from file into code
-StringMap XMLDataBag::readValues(xmlNode node) const
+StringMap DataBag::readValues(xmlNode node) const
 {
 	StringMap stringMap;
 	xmlNode valueNode = node->first_node();
 
 	while (valueNode != nullptr)
 	{
-		std::string name = valueNode->name();
-		std::string value = valueNode->value();
-		stringMap[name] = value;
-
+		stringMap[valueNode->name()] = valueNode->value();
 		valueNode = valueNode->next_sibling();
 	}
 
@@ -43,21 +40,19 @@ StringMap XMLDataBag::readValues(xmlNode node) const
 }
 
 
-// ------------------------
-
+// ---------- ValueBag --------------
 
 void ValueBag::fillData(const StringMap& stringMap)
 {
 	for (StringMap::const_iterator iter = stringMap.begin(); iter != stringMap.end(); iter++)
 	{
-		std::string name = iter->first;
-		float value = std::stof(iter->second);
+		BasicString name = iter->first;
+		float value = atof(iter->second.c_str());
 		mData[name] = value;
 	}
 }
 
-
-float ValueBag::get(const std::string& value) const
+float ValueBag::get(const BasicString& value) const
 {
 	if (mData.count(value))
 	{
@@ -71,32 +66,23 @@ float ValueBag::get(const std::string& value) const
 }
 
 
-// ------------------------
+// ---------- PropertyBag --------------
 
-
-void PropertyBag::readProperties(const std::string& config)
+PropertyBag::~PropertyBag()
 {
-	mConfigFile = config;
-	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs_Objects, config));
-
-	xmlNode propertyNode = parser.rootNode()->first_node("Properties");
-	ValueMap map = readValues(propertyNode);
-	fillProperties(map);
-}
-
-void PropertyBag::readProperties(const XMLParser& parser)
-{
-	xmlNode propertyNode = parser.rootNode()->first_node("Properties");
-	ValueMap map = readValues(propertyNode);
-	fillProperties(map);
+	for (PropertyMap::iterator iter = mData.begin(); iter != mData.end(); iter++)
+	{
+		Property* property = iter->second;
+		delete property;
+	}
 }
 
 
-Property* PropertyBag::get(const std::string& name) const
+Property* PropertyBag::get(const BasicString& name) const
 {
-	PropertyMap::const_iterator iter = mProperties.find(name);
+	PropertyMap::const_iterator iter = mData.find(name);
 
-	if (iter != mProperties.end())
+	if (iter != mData.end())
 	{
 		return iter->second;
 	}
@@ -107,64 +93,34 @@ Property* PropertyBag::get(const std::string& name) const
 	}
 }
 
-float PropertyBag::value(const std::string& name) const
+float PropertyBag::value(const BasicString& name) const
 {
 	Property* property = get(name);
 	return property ? property->value() : NULL;
 }
 
 
-void PropertyBag::resetProperties()
+bool PropertyBag::contains(const BasicString& name) const
 {
-	mProperties.clear();
-	readProperties(mConfigFile);
+	return mData.count(name) > 0 ? true : false;
 }
 
 
-bool PropertyBag::contains(const std::string& name) const
+void PropertyBag::fillData(const StringMap& stringMap)
 {
-	return mProperties.count(name) > 0 ? true : false;
-}
-
-
-// --- Private Functions --- //
-
-
-// Pull raw config data from file into code
-ValueMap PropertyBag::readValues(xmlNode node)
-{
-	ValueMap valueMap;
-	xmlNode valueNode = node->first_node();
-
-	while (valueNode != nullptr)
+	for (StringMap::const_iterator iter = stringMap.begin(); iter != stringMap.end(); iter++)
 	{
-		std::string name = valueNode->name();
-		float nodeValue = std::stof(valueNode->value());
-
-		valueMap[name] = nodeValue;
-
-		valueNode = valueNode->next_sibling();
-	}
-
-	return valueMap;
-}
-
-
-void PropertyBag::fillProperties(ValueMap& valueMap)
-{
-	for (ValueMap::iterator iter = valueMap.begin(); iter != valueMap.end(); iter++)
-	{
-		std::string name = iter->first;
-		float value = iter->second;
+		BasicString name = iter->first;
+		float value = atof(iter->second.c_str());
 
 		Property* property = getNewProperty(name);
 		property->init(value);
-		mProperties[name] = property;
+		mData[name] = property;
 	}
 }
 
 
-Property* PropertyBag::getNewProperty(const std::string& name)
+Property* PropertyBag::getNewProperty(const BasicString& name) const
 {
 	Property* property = nullptr;
 

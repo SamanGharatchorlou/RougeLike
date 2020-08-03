@@ -18,9 +18,9 @@ public:
 	MeleeWeapon* getMeleeWeapon() const { return meleeWeapon; }
 	//RangedWeapon* getRangedWeapon() const { return rangedWeapon; }
 
-	WeaponData* getData(const std::string& weaponName);
+	WeaponData* getData(const BasicString& weaponName);
 
-	Weapon* getWeapon(const std::string& weaponName);
+	Weapon* getWeapon(const BasicString& weaponName);
 
 private:
 	void fillBasicWeaponData(XMLParser& parser, WeaponData* data);
@@ -29,7 +29,7 @@ private:
 
 
 private:
-	std::unordered_map<std::string, WeaponData*> data;
+	std::unordered_map<BasicString, WeaponData*> data;
 
 	MeleeWeapon* meleeWeapon;
 	//RangedWeapon* rangedWeapon;

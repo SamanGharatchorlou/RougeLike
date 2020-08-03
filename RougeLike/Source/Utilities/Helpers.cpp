@@ -2,22 +2,22 @@
 #include "Helpers.h"
 
 
-std::vector<int> parseCSVtoInt(const std::string& csv)
-{
-	std::vector<int> vect;
-
-	std::stringstream ss(csv);
-
-	for (int i = 0; ss >> i;)
-	{
-		vect.push_back(i);
-
-		if (ss.peek() == ',' || ss.peek() == ' ')
-			ss.ignore();
-	}
-
-	return vect;
-}
+//std::vector<int> parseCSVtoInt(const BasicString& csv)
+//{
+//	std::vector<int> vect;
+//
+//	BasicStringstream ss(csv);
+//
+//	for (int i = 0; ss >> i;)
+//	{
+//		vect.push_back(i);
+//
+//		if (ss.peek() == ',' || ss.peek() == ' ')
+//			ss.ignore();
+//	}
+//
+//	return vect;
+//}
 
 
 // x' = x cos - y sin

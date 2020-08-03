@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "TileTypes.h"
 
-DecorType stringToType(const std::string& decorString)
+DecorType stringToType(const BasicString& decorString)
 {
 	if (decorString == "Column")
 		return DecorType::Column;

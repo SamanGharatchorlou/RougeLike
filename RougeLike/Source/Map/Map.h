@@ -12,6 +12,7 @@ class Map : public MapBase<MapTile>
 {
 public:
 	Map(Vector2D<int> mapIndexSize, VectorF tileSize);
+	~Map() { };
 
 	// Update
 	void slowUpdate(float dt);

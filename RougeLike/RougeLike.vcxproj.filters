@@ -40,7 +40,6 @@
     <ClCompile Include="Source\Collisions\CollisionTracker.cpp" />
     <ClCompile Include="Source\Game\GameData.cpp" />
     <ClCompile Include="Source\Events\Observer.cpp" />
-    <ClCompile Include="Source\Debug\DebugDraw.cpp" />
     <ClCompile Include="Source\Debug\Logging.cpp" />
     <ClCompile Include="Source\Utilities\Helpers.cpp" />
     <ClCompile Include="Source\Items\Collectables\Collectable.cpp" />
@@ -137,11 +136,12 @@
     <ClCompile Include="Source\Objects\Abilities\AbilityBuilder.cpp" />
     <ClCompile Include="Source\Items\Collectables\CollectableBuilder.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Circle.cpp" />
-    <ClCompile Include="Source\Debug\MemoryTracker.cpp" />
     <ClCompile Include="Source\Game\GameSetup.cpp" />
     <ClCompile Include="Source\Debug\FrameRateController.cpp" />
     <ClCompile Include="Source\Debug\MemTrack.cpp" />
     <ClCompile Include="Source\Utilities\BasicString.cpp" />
+    <ClCompile Include="Source\System\Files\Attributes.cpp" />
+    <ClCompile Include="Source\Debug\DebugDraw.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -188,7 +188,6 @@
     <ClInclude Include="Source\UI\Screens\UILayer.h" />
     <ClInclude Include="Source\Collisions\CollisionTracker.h" />
     <ClInclude Include="Source\Input\Button.h" />
-    <ClInclude Include="Source\Debug\DebugDraw.h" />
     <ClInclude Include="Source\Debug\Logging.h" />
     <ClInclude Include="Source\Utilities\Grid.h" />
     <ClInclude Include="Source\Utilities\Helpers.h" />
@@ -302,11 +301,12 @@
     <ClInclude Include="Source\Items\Collectables\CollectableSpawner.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityBuilder.h" />
     <ClInclude Include="Source\Items\Collectables\CollectableBuilder.h" />
-    <ClInclude Include="Source\Debug\MemoryTracker.h" />
     <ClInclude Include="Source\Game\GameSetup.h" />
     <ClInclude Include="Source\Debug\FrameRateController.h" />
     <ClInclude Include="Source\Debug\MemTrack.h" />
     <ClInclude Include="Source\Utilities\BasicString.h" />
+    <ClInclude Include="Source\Debug\DebugDraw.h" />
+    <ClInclude Include="Source\Debug\DebugSettings.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

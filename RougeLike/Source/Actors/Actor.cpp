@@ -20,8 +20,7 @@ Actor::Actor() : mVisibility(true) { }
 
 void Actor::setCharacter(const XMLParser& parser, TextureManager* textureManager)
 {
-	// Properties
-	mPropertyBag.readProperties(parser);
+	mPropertyBag.readData(parser, "Properties");
 
 	// Animations
 	AnimationReader reader(textureManager, parser);
@@ -30,7 +29,7 @@ void Actor::setCharacter(const XMLParser& parser, TextureManager* textureManager
 
 	// Physics 
 	VectorF baseSize = mAnimator.frameSize();
-	float maxDimention = std::stof(parser.firstRootNodeValue("MaxSize")); // added new calculations to animator, can i remove the realise size bit and just set the rect to (maxDim, maxDim). it should auto size.
+	float maxDimention = atof(parser.firstRootNodeValue("MaxSize").c_str()); // added new calculations to animator, can i remove the realise size bit and just set the rect to (maxDim, maxDim). it should auto size.
 	VectorF size = realiseSize(baseSize, maxDimention);
 	mPhysics.rectRef().SetSize(size);
 	mPhysics.init(getPropertyValue("Force"), getPropertyValue("MaxVelocity"));
@@ -88,19 +87,19 @@ void Actor::reset()
 }
 
 
-float Actor::getPropertyValue(const std::string& property) const 
+float Actor::getPropertyValue(const BasicString& property) const 
 { 
 	return mPropertyBag.value(property); 
 }
 
 
-Property* Actor::getProperty(const std::string& property) const
+Property* Actor::getProperty(const BasicString& property) const
 {
 	return mPropertyBag.get(property);
 }
 
 
-bool Actor::hasProperty(const std::string& property) const
+bool Actor::hasProperty(const BasicString& property) const
 {
 	return mPropertyBag.contains(property);
 }

@@ -9,9 +9,9 @@ class UITextBox : public UIBox
 public:
 	struct Data : public UIBox::Data
 	{
-		std::string aligment;
-		std::string text;
-		std::string font;
+		BasicString aligment;
+		BasicString text;
+		BasicString font;
 		int ptSize;
 		SDL_Color colour;
 	};
@@ -28,7 +28,7 @@ public:
 	UITextBox(Data& data);
 	~UITextBox() { }
 
-	void setText(const std::string& text) { mText.setText(text); }
+	void setText(const BasicString& text) { mText.setText(text); }
 
 	void setColour(SDL_Color colour) { mText.setColour(colour); }
 

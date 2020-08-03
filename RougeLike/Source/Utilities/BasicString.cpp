@@ -6,17 +6,68 @@
 
 BasicString::BasicString(const char* string)
 {
-	mCap = strlen(string) + 1;
-	mBuffer = new char[mCap];
-	assign(string);
-	printf("new call\n");
+	if (string)
+	{
+		mLength = strlen(string);
+		mCap = mLength + 1;
+		mBuffer = new char[mCap];
+
+		assignTerminated(string);
+	}
+	else
+	{
+		mBuffer = nullptr;
+		mLength = 0;
+		mCap = 0;
+	}
+
 }
 
 BasicString::BasicString(const BasicString& string) : BasicString(string.c_str()) { }
 
+
+void myMemCpy(void *dest, const void *src, size_t n)
+{
+	// Typecast src and dest addresses to (char *) 
+	char *csrc = (char *)src;
+	char *cdest = (char *)dest;
+
+	// Copy contents of src[] to dest[] 
+	for (int i = 0; i < n; i++)
+		cdest[i] = csrc[i];
+}
+
+BasicString::BasicString(const char* string, unsigned int length)
+{
+	mLength = length;
+	mCap = length + 1;
+	mBuffer = new char[mCap];
+	mBuffer[mLength] = '\0';
+	memcpy(mBuffer, string, length);
+}
+
 BasicString::~BasicString()
 {
 	delete[] mBuffer;
+	mLength = 0;
+	mCap = 0;
+	mBuffer = nullptr;
+}
+
+void BasicString::set(const char* string, unsigned int length)
+{
+	assign(string, length);
+	mBuffer[length + 1] = '\0';
+	mLength = length;
+}
+
+
+// TODO: verify this works
+BasicString BasicString::substr(int start, int length) const
+{
+	const char* backEndString = &mBuffer[start];
+	BasicString subbedStr(backEndString, length);
+	return subbedStr;
 }
 
 
@@ -44,15 +95,20 @@ void BasicString::clear()
 
 
 // --- Private Functions --- //
-void BasicString::assign(const char* string)
+void BasicString::assignTerminated(const char* string)
 {
-	mLength = strlen(string);
-	memcpy(mBuffer, string, mLength + 1);
+	unsigned int length = strlen(string);
+	memcpy(mBuffer, string, length + 1);
+}
+
+void BasicString::assign(const char* string, unsigned int length)
+{
+	memcpy(mBuffer, string, length);
 }
 
 
 
-void BasicString::newBufferSize(int size)
+void BasicString::newBufferSize(unsigned int size)
 {
 	mCap = size + 1;
 
@@ -73,19 +129,29 @@ void BasicString::increaseBufferSize(int size)
 }
 
 
-
 // Operator overloads
 BasicString& BasicString::operator = (const char* string)
 {
-	if (strlen(string) >= mCap)
-	{
-		int newLength = strlen(string);
-		newBufferSize(newLength);
-	}
+	unsigned int length = strlen(string);
+	if (length >= mCap)
+		newBufferSize(length);
 
-	assign(string);
+	assignTerminated(string);
+	mLength = length;
 	return *this;
 }
+
+BasicString& BasicString::operator = (const BasicString& basicString)
+{
+	unsigned int length = basicString.length();
+	if (length >= mCap)
+		newBufferSize(length);
+
+	assignTerminated(basicString.c_str());
+	mLength = length;
+	return *this;
+}
+
 
 
 bool operator == (const BasicString& basicString, const char* string)
@@ -104,5 +170,7 @@ BasicString operator + (BasicString basicString, const char* string)
 }
 BasicString operator + (BasicString basicStringA, const BasicString& basicStringB)
 {
-	return basicStringA.concat(basicStringA.c_str());
+	return basicStringA.concat(basicStringB.c_str());
 }
+
+

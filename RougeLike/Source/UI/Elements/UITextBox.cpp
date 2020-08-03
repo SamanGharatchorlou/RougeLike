@@ -14,7 +14,7 @@ UITextBox::UITextBox(Data& data) : UIBox(data)
 	else
 		mAlignment = Alignment::None;
 
-	const std::string& font = data.font == "" ? "default" : data.font;
+	const BasicString& font = data.font == "" ? "default" : data.font;
 	mText.init(data.text, font, data.ptSize, data.colour);
 
 	align();

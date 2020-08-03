@@ -20,8 +20,8 @@ public:
 	virtual void render() = 0;
 
 	virtual bool canPlayHitSound() { return mCanPlayHitSound; }
-	virtual const std::string& hitSoundLabel() = 0;
-	virtual const std::string& missSoundLabel() = 0;
+	virtual const BasicString& hitSoundLabel() = 0;
+	virtual const BasicString& missSoundLabel() = 0;
 
 	bool isAttacking() const { return mAttacking; }
 	virtual bool didHit() const = 0;
@@ -54,8 +54,8 @@ protected:
 	bool mOverrideCursorControl;
 	
 	bool mCanPlayHitSound;
-	const std::string* mAudioToPlay;
-	const std::string* mAudioToStop;
+	const BasicString* mAudioToPlay;
+	const BasicString* mAudioToStop;
 
 	Cooldown mCooldown;
 };

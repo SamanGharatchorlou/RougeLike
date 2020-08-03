@@ -16,7 +16,7 @@ Collectable::Collectable() : mIcon(nullptr)
 #endif
 };
 
-void Collectable::set(const std::string& id)
+void Collectable::set(const BasicString& id)
 {
 	mID = id;
 }

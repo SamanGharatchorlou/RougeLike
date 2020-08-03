@@ -7,7 +7,7 @@
 #include "UI/Screens/UILayer.h"
 
 
-const ScreenAttributes ScreenDecoder::getScreenAttributes(const std::string& config)
+const ScreenAttributes ScreenDecoder::getScreenAttributes(const BasicString& config)
 {
 	xmlParser.parseXML(config);
 
@@ -39,7 +39,7 @@ const ScreenAttributes ScreenDecoder::getScreenAttributes(const std::string& con
 				Attributes textAttributes = xmlParser.attributes(childNode->first_node());
 
 				// text to be displayed
-				std::string text = childNode->first_node()->value();
+				BasicString text = childNode->first_node()->value();
 				textAttributes.add("text", text);
 
 				itemAttributes.merge(textAttributes);
@@ -69,6 +69,7 @@ Layers ScreenDecoder::buildUIScreenLayers(const ScreenAttributes& screenAttribut
 
 		for (Attributes attributes : layerAttribute)
 		{
+			BasicString myType(attributes.getString("type"));
 			const char* type = attributes.getString("type").c_str();
 
 			// Element
@@ -247,7 +248,7 @@ void ScreenDecoder::fillBoxData(UIBox::Data& data, const Attributes& attributes)
 	// Texture
 	if (attributes.contains("texture"))
 	{
-		std::string textureLabel = attributes.getString("texture");
+		BasicString textureLabel = attributes.getString("texture");
 		data.texture = tm->getTexture(textureLabel);
 	}
 	else
@@ -287,7 +288,7 @@ void ScreenDecoder::fillButtonData(UIButton::Data& data, const Attributes& attri
 	// Button may have up to 3 textures defaul, hovering, active
 	if (attributes.contains("textureSelected"))
 	{
-		std::string textureLabel = attributes.getString("textureSelected");
+		BasicString textureLabel = attributes.getString("textureSelected");
 		data.selectedTexture = tm->getTexture(textureLabel, FileManager::Image_UI);
 	}
 	else
@@ -297,7 +298,7 @@ void ScreenDecoder::fillButtonData(UIButton::Data& data, const Attributes& attri
 
 	if (attributes.contains("textureHovering"))
 	{
-		std::string textureLabel = attributes.getString("textureHovering");
+		BasicString textureLabel = attributes.getString("textureHovering");
 		data.hoveringTexture = tm->getTexture(textureLabel, FileManager::Image_UI);
 	}
 	else
@@ -350,7 +351,7 @@ void ScreenDecoder::setRect(UIElement* element)
 }
 
 
-UIElement* ScreenDecoder::findElement(Layers layers, const std::string& id)
+UIElement* ScreenDecoder::findElement(Layers layers, const BasicString& id)
 {
 	for (const UILayer* layer : layers)
 	{

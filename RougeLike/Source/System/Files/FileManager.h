@@ -1,6 +1,5 @@
 #pragma once
 
-
 class FileManager
 {
 public:
@@ -41,35 +40,37 @@ public:
 public:
 	static FileManager* Get();
 
-	std::string generatePath(const Folder folder) const;
+	BasicString generatePath(const Folder folder) const;
 
-	std::string findFolder(const Folder folder, const std::string& name) const;
-	std::string findFile(const Folder folder, const std::string& name) const;
+	BasicString findFile(const Folder folder, const BasicString& name) const;
 
-	std::vector<std::string> fullPathsInFolder(const Folder folder) const;
-	std::vector<std::string> fullPathsInFolder(const std::string& directory) const;
-	std::vector<std::string> fileNamesInFolder(const Folder folder) const;
+	std::vector<BasicString> fullPathsInFolder(const Folder folder) const;
+	std::vector<BasicString> fullPathsInFolder(const BasicString& directory) const;
+	std::vector<BasicString> fileNamesInFolder(const Folder folder) const;
 
-	int fileCount(const std::string& directoryPath) const;
+	BasicString getItemName(const BasicString& filePath) const;
+	BasicString getItemName(const fs::path& filePath) const;
 
-	std::string getItemName(const std::string& filePath) const;
+	std::vector<BasicString> allFilesInFolder(const Folder folder) const;
+	std::vector<BasicString> allFilesInFolder(const fs::path& directory) const;
+	std::vector<BasicString> foldersInFolder(const Folder folder) const;
 
-	std::vector<std::string> allFilesInFolder(const Folder folder) const;
-	std::vector<std::string> allFilesInFolder(const fs::path& directory) const;
-	std::vector<std::string> foldersInFolder(const Folder folder) const;
-
-	Folder getFolderIndex(const std::string& directory);
+	Folder getFolderIndex(const BasicString& directory);
 
 
 private:
-	void addFilesToList(std::vector<std::string>& fileList, const fs::path& directoryPath) const;
+	fs::path fsPath(const Folder folder) const;
 
-	void outFolderPath(std::string& outValue, const std::string& directoryPath, const std::string& name) const;
-	void outFilePath(std::string& outValue, const std::string& directoryPath, const std::string& name) const;
+	void addFilesToList(std::vector<BasicString>& fileList, const fs::path& directoryPath) const;
+
+	void outFolderPath(BasicString& outValue, const fs::path& directoryPath, const BasicString& name) const;
+	void outFilePath(BasicString& outValue, const fs::path& directoryPath, const BasicString& name) const;
 
 private:
 	FileManager();
 	~FileManager() {};
 
-	std::string folderPaths[Count];
+	std::unordered_map<Folder, BasicString> folderPaths;
 };
+
+BasicString pathToString(const fs::path& path);

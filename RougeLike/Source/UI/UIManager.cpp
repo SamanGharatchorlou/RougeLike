@@ -89,10 +89,10 @@ void UIManager::init()
 	ScreenAttributes attributes;
 	std::vector<UILayer*> screenLayers;
 
-	std::string screenPath = FileManager::Get()->generatePath(FileManager::Config_UI);
-	std::vector<std::string> screenNames = FileManager::Get()->fileNamesInFolder(FileManager::Config_UI);
+	BasicString screenPath = FileManager::Get()->generatePath(FileManager::Config_UI);
+	std::vector<BasicString> screenNames = FileManager::Get()->fileNamesInFolder(FileManager::Config_UI);
 
-	for (const std::string& screenName : screenNames)
+	for (const BasicString& screenName : screenNames)
 	{
 		attributes = screenDecoder.getScreenAttributes(screenPath + screenName + ".xml");
 		screenLayers = screenDecoder.buildUIScreenLayers(attributes);
@@ -192,8 +192,8 @@ void UIManager::refresh(Screen::Type screenType)
 		{
 			ScreenDecoder screenDecoder(mGameData->textureManager);
 
-			std::string screenPath = FileManager::Get()->generatePath(FileManager::Config_UI);
-			std::string screenName = typeToString(screenType);
+			BasicString screenPath = FileManager::Get()->generatePath(FileManager::Config_UI);
+			BasicString screenName = typeToString(screenType);
 
 			ScreenAttributes attributes = screenDecoder.getScreenAttributes(screenPath + screenName + ".xml");
 			std::vector<UILayer*> screenLayers = screenDecoder.buildUIScreenLayers(attributes);
@@ -204,7 +204,7 @@ void UIManager::refresh(Screen::Type screenType)
 }
 
 
-std::string UIManager::typeToString(Screen::Type screenType)
+BasicString UIManager::typeToString(Screen::Type screenType)
 {
 	if (screenType == Screen::Game)
 	{
@@ -226,7 +226,7 @@ std::string UIManager::typeToString(Screen::Type screenType)
 }
 
 
-UIElement* UIManager::findElement(const std::string& id)
+UIElement* UIManager::findElement(const BasicString& id)
 {
 	for (UILayer* layer : activeScreen->layers())
 	{
@@ -242,7 +242,7 @@ UIElement* UIManager::findElement(const std::string& id)
 }
 
 
-UIButton* UIManager::findButton(const std::string& id)
+UIButton* UIManager::findButton(const BasicString& id)
 {
 	for (UILayer* layer : activeScreen->layers())
 	{
@@ -288,7 +288,8 @@ void UIManager::updateTextBox(UpdateTextBoxEvent& eventData)
 	if (element != nullptr && element->type() == UIElement::Type::TextBox)
 	{
 		UITextBox* text = static_cast<UITextBox*>(element);
-		std::string score = std::to_string(eventData.mValue);
+		char character = (char)(eventData.mValue);
+		BasicString score =  &character;
 
 		text->setText(score);
 	}

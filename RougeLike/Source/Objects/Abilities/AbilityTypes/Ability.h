@@ -23,13 +23,13 @@ enum class AbilityType
 };
 
 
-inline void operator >>(AbilityType a, std::string& str)
+inline void operator >>(AbilityType a, BasicString& str)
 {
 	if (a == AbilityType::Heal)
 		str = "Heal";
 }
 
-inline void operator <<(AbilityType& a, const std::string& str)
+inline void operator <<(AbilityType& a, const BasicString& str)
 {
 	if (str == "Heal")
 		a = AbilityType::Heal;
@@ -77,8 +77,8 @@ public:
 	void setCaster(Actor* caster) { mCaster = caster; }
 	Actor* caster() const { return mCaster; }
 
-	void setName(const std::string& name) { mName = name; }
-	std::string name() const { return mName; }
+	void setName(const BasicString& name) { mName = name; }
+	BasicString name() const { return mName; }
 
 	void setState(State state)	{ mState = state; }
 	State state() const			{ return mState; }
@@ -92,7 +92,7 @@ public:
 	virtual bool isRanged() const { return false; }
 
 protected:
-	std::string mName; // TODO do i need this?
+	BasicString mName; // TODO do i need this?
 
 	State mState;
 	Animator mAnimator;

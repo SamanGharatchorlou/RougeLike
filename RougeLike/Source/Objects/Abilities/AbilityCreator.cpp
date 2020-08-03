@@ -15,7 +15,7 @@
 #include "Objects/Abilities/AbilityTypes/ChargeAbility.h"
 
 
-Ability* createNewAbility(const std::string& name, TextureManager* textureManager)
+Ability* createNewAbility(const BasicString& name, TextureManager* textureManager)
 {
 	XMLParser parser;
 	parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, name));

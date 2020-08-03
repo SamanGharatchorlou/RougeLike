@@ -13,16 +13,16 @@ public:
 	void exit() override { };
 	void update(float dt) override;
 
-	const std::string& selectedCharacter() const { return mSelectedCharacter; }
-	const std::string& selectedWeapon() const { return mSelectedWeapon; }
+	const BasicString& selectedCharacter() const { return mSelectedCharacter; }
+	const BasicString& selectedWeapon() const { return mSelectedWeapon; }
 
 	bool enterGame() const { return mEnterGame; }
 
 	Type type() override { return Type::CharacterSelection; }
 
 private:
-	std::string mSelectedCharacter;
-	std::string mSelectedWeapon;
+	BasicString mSelectedCharacter;
+	BasicString mSelectedWeapon;
 
 	bool mEnterGame;
 };

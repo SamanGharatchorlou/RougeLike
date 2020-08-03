@@ -10,10 +10,10 @@ class CollectableSpawner : public Spawner
 public:
 	struct SpawnData
 	{
-		SpawnData(CollectableType collectableType, VectorF pos, const std::string& name) : type(collectableType), position(pos), id(name) { }
+		SpawnData(CollectableType collectableType, VectorF pos, const BasicString& name) : type(collectableType), position(pos), id(name) { }
 		CollectableType type;
 		VectorF position;
-		const std::string id;
+		const BasicString id;
 	};
 
 public:

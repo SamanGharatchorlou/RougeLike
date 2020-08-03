@@ -15,53 +15,52 @@ FileManager* FileManager::Get()
 
 FileManager::FileManager()
 {
-	folderPaths[None] = std::string(".");
-	folderPaths[Root] = std::string(fs::current_path().string() + "\\Resources\\");
+	folderPaths[None] = ".";
+	folderPaths[Root] = pathToString(fs::current_path()) + "\\Resources\\";
 
-	folderPaths[PreLoadFiles] = std::string(folderPaths[Root] + "PreLoadFiles\\");
+	folderPaths[PreLoadFiles] = folderPaths[Root] + "PreLoadFiles\\";
 
 	// Images
-	folderPaths[Images] = std::string(folderPaths[Root] + "Images\\");
-	folderPaths[Image_UI] = std::string(folderPaths[Images] + "UI\\");
-	folderPaths[Image_Maps] = std::string(folderPaths[Images] + "Maps\\");
-	folderPaths[Image_Weapons] = std::string(folderPaths[Images] + "Weapons\\");
-	folderPaths[Image_Animations] = std::string(folderPaths[Images] + "Animations\\");
+	folderPaths[Images] = folderPaths[Root] + "Images\\";
+	folderPaths[Image_UI] = folderPaths[Images] + "UI\\";
+	folderPaths[Image_Maps] = folderPaths[Images] + "Maps\\";
+	folderPaths[Image_Weapons] = folderPaths[Images] + "Weapons\\";
+	folderPaths[Image_Animations] = folderPaths[Images] + "Animations\\";
 
 	// Audio
-	folderPaths[Audio] = std::string(folderPaths[Root] + "Audio\\");
-	folderPaths[Audio_Music] = std::string(folderPaths[Audio] + "Music\\");
-	folderPaths[Audio_Sound] = std::string(folderPaths[Audio] + "Sound\\");
-	folderPaths[Audio_SoundGroups] = std::string(folderPaths[Audio] + "SoundGroups\\");
+	folderPaths[Audio] = folderPaths[Root] + "Audio\\";
+	folderPaths[Audio_Music] = folderPaths[Audio] + "Music\\";
+	folderPaths[Audio_Sound] = folderPaths[Audio] + "Sound\\";
+	folderPaths[Audio_SoundGroups] = folderPaths[Audio] + "SoundGroups\\";
 
 	// Font
-	folderPaths[Font] = std::string(folderPaths[Root] + "Font\\");
+	folderPaths[Font] = folderPaths[Root] + "Font\\";
 
 	// Configs
-	folderPaths[Configs] = std::string(folderPaths[Root] + "Configs\\");
-	folderPaths[Configs_Objects] = std::string(folderPaths[Configs] + "Objects\\");
+	folderPaths[Configs] = folderPaths[Root] + "Configs\\";
+	folderPaths[Configs_Objects] = folderPaths[Configs] + "Objects\\";
 
-	folderPaths[Config_UI] = std::string(folderPaths[Configs] + "UIMenus\\");
-	folderPaths[Config_Map] = std::string(folderPaths[Configs] + "Map\\");
-	folderPaths[Config_Enemies] = std::string(folderPaths[Configs_Objects] + "Enemies\\");
-	folderPaths[Config_Player] = std::string(folderPaths[Configs_Objects] + "Player\\");
-	folderPaths[Config_Abilities] = std::string(folderPaths[Configs_Objects] + "Abilities\\");
+	folderPaths[Config_UI] = folderPaths[Configs] + "UIMenus\\";
+	folderPaths[Config_Map] = folderPaths[Configs] + "Map\\";
+	folderPaths[Config_Enemies] = folderPaths[Configs_Objects] + "Enemies\\";
+	folderPaths[Config_Player] = folderPaths[Configs_Objects] + "Player\\";
+	folderPaths[Config_Abilities] = folderPaths[Configs_Objects] + "Abilities\\";
 
-	folderPaths[Config_Weapons] = std::string(folderPaths[Configs_Objects] + "Weapons\\");
-	folderPaths[Config_MeleeWeapons] = std::string(folderPaths[Configs_Objects] + "Weapons\\Melee\\");
-
+	folderPaths[Config_Weapons] = folderPaths[Configs_Objects] + "Weapons\\";
+	folderPaths[Config_MeleeWeapons] = folderPaths[Configs_Objects] + "Weapons\\Melee\\";
 
 	for (int i = 0; i < Folder::Count; i++)
 	{
-		ASSERT(Warning, !folderPaths[i].empty(), "The enum %d in the folderPath map has not been defined\n", i);
+		ASSERT(Warning, !folderPaths[(Folder)i].empty(), "The enum %d in the folderPath map has not been defined\n", i);
 	}
 }
 
 
-FileManager::Folder FileManager::getFolderIndex(const std::string& directory)
+FileManager::Folder FileManager::getFolderIndex(const BasicString& directory)
 {
 	for (int i = 0; i < Folder::Count; i++)
 	{
-		if (directory + "\\" == folderPaths[i])
+		if (directory + "\\" == folderPaths[(Folder)i].c_str())
 			return static_cast<Folder>(i);
 	}
 
@@ -70,13 +69,13 @@ FileManager::Folder FileManager::getFolderIndex(const std::string& directory)
 }
 
 
-std::string FileManager::generatePath(const Folder folder) const
+BasicString FileManager::generatePath(const Folder folder) const
 {
-	std::string buffer;
+	BasicString buffer;
 
 	if (folder < Folder::Count)
 	{
-		buffer = folderPaths[folder];
+		buffer = folderPaths.at(folder).c_str();
 	}
 	else
 	{
@@ -87,51 +86,39 @@ std::string FileManager::generatePath(const Folder folder) const
 	return buffer;
 }
 
-
-
-
-std::string FileManager::findFolder(const Folder folder, const std::string& name) const
+fs::path FileManager::fsPath(const Folder folder) const
 {
-	std::string outPath = "";
+	BasicString buffer;
 
-	for (const auto& path : fs::directory_iterator(generatePath(folder)))
+	if (folder < Folder::Count)
 	{
-		if (fs::is_directory(path))
-		{
-			if (getItemName(path.path().string()) == name)
-			{
-				return path.path().string();
-			}
-			else
-			{
-				outFolderPath(outPath, path.path().string(), name);
-
-				if (!outPath.empty())
-					return outPath;
-			}
-		}
+		buffer = folderPaths.at(folder).c_str();
+	}
+	else
+	{
+		DebugPrint(Warning, "No folder found with folder enum %d\n", folder);
+		buffer.clear();
 	}
 
-	DebugPrint(Warning, "No folder named '%s' was found in the folder '%s'\n", name.c_str(), generatePath(folder).c_str());
-	return std::string("No folder found");
+	return fs::path(buffer.c_str());
 }
 
 
-
-std::string FileManager::findFile(const Folder folder, const std::string& name) const
+BasicString FileManager::findFile(const Folder folder, const BasicString& name) const
 {
-	std::string outPath = "";
+	BasicString outPath = "";
 
-	for (const auto& path : fs::directory_iterator(generatePath(folder)))
+	for (const auto& directoryPath : fs::directory_iterator(fsPath(folder)))
 	{
-		std::string item = getItemName(path.path().string());
-		if (!fs::is_directory(path) && getItemName(path.path().string()) == name)
+		BasicString item = getItemName(directoryPath.path());
+		if (!fs::is_directory(directoryPath) && getItemName(directoryPath.path()) == name)
 		{
-			outPath = path.path().string();
+			BasicString myStr = pathToString(directoryPath.path());
+			outPath = myStr; //pathToString(directoryPath.path());
 		}
-		else if (fs::is_directory(path))
+		else if (fs::is_directory(directoryPath))
 		{
-			outFilePath(outPath, path.path().string(), name);
+			outFilePath(outPath, directoryPath.path(), name);
 		}
 
 		if (!outPath.empty())
@@ -143,55 +130,41 @@ std::string FileManager::findFile(const Folder folder, const std::string& name) 
 }
 
 
-std::string FileManager::getItemName(const std::string& filePath) const
+BasicString FileManager::getItemName(const BasicString& filePath) const
 {
 	char fileName[50];
-
 	errno_t error = _splitpath_s(filePath.c_str(), NULL, 0, NULL, 0, fileName, 50, NULL, 0);
-
-	return std::string(fileName);
+	return BasicString(fileName);
 }
 
 
-int FileManager::fileCount(const std::string& directoryPath) const
+BasicString FileManager::getItemName(const fs::path& filePath) const
 {
-	int directoryFileCount = 0;
-
-	fs::path dirPath = fs::path(directoryPath);
-	if (!fs::is_directory(dirPath))
-	{
-		DebugPrint(Warning, "Item at path '%s' is not a directoy, file count = 0.\n", directoryPath.c_str());
-		return directoryFileCount;
-	}
-
-	for (const auto& filePath : fs::directory_iterator(dirPath))
-	{
-		directoryFileCount++;
-	}
-
-	return directoryFileCount;
+	char fileName[50];
+	errno_t error = _splitpath_s(pathToString(filePath).c_str(), NULL, 0, NULL, 0, fileName, 50, NULL, 0);
+	return BasicString(fileName);
 }
 
 
-std::vector<std::string> FileManager::fullPathsInFolder(const Folder folder) const
+std::vector<BasicString> FileManager::fullPathsInFolder(const Folder folder) const
 {
-	std::vector<std::string> fileNameList;
+	std::vector<BasicString> fileNameList;
 
-	for (const auto& fullFilePath : fs::directory_iterator(generatePath(folder)))
+	for (const auto& fullFilePath : fs::directory_iterator(fsPath(folder)))
 	{
-		fileNameList.push_back(fullFilePath.path().string());
+		fileNameList.push_back(pathToString(fullFilePath.path()));
 	}
 
 	return fileNameList;
 }
 
-std::vector<std::string> FileManager::fullPathsInFolder(const std::string& directoryPath) const
+std::vector<BasicString> FileManager::fullPathsInFolder(const BasicString& directoryPath) const
 {
-	std::vector<std::string> fileNameList;
+	std::vector<BasicString> fileNameList;
 
-	for (const auto& fullFilePath : fs::directory_iterator(directoryPath))
+	for (const auto& fullFilePath : fs::directory_iterator(directoryPath.c_str()))
 	{
-		fileNameList.push_back(fullFilePath.path().string());
+		fileNameList.push_back(pathToString(fullFilePath.path()));
 	}
 
 	return fileNameList;
@@ -199,59 +172,59 @@ std::vector<std::string> FileManager::fullPathsInFolder(const std::string& direc
 
 
 // TODO: will also get folder names?
-std::vector<std::string> FileManager::fileNamesInFolder(const Folder folder) const
+std::vector<BasicString> FileManager::fileNamesInFolder(const Folder folder) const
 {
-	std::vector<std::string> fileNameList;
+	std::vector<BasicString> fileNameList;
 
-	for (const auto& fullFilePath : fs::directory_iterator(generatePath(folder)))
+	for (const auto& fullFilePath : fs::directory_iterator(fsPath(folder)))
 	{
-		fileNameList.push_back(getItemName(fullFilePath.path().string()));
+		fileNameList.push_back(getItemName(fullFilePath.path()));
 	}
 
 	return fileNameList;
 }
 
 
-std::vector<std::string> FileManager::allFilesInFolder(const Folder folder) const
+std::vector<BasicString> FileManager::allFilesInFolder(const Folder folder) const
 {
-	std::vector<std::string> fileNameList;
+	std::vector<BasicString> fileNameList;
 
-	for (const auto& path : fs::directory_iterator(generatePath(folder)))
+	for (const auto& path : fs::directory_iterator(fsPath(folder)))
 	{
 		if (fs::is_directory(path))
 			addFilesToList(fileNameList, path.path());
 		else
-			fileNameList.push_back(path.path().string());
+			fileNameList.push_back(pathToString(path.path()));
 	}
 
 	return fileNameList;
 }
 
-std::vector<std::string> FileManager::allFilesInFolder(const fs::path& directoryPath) const
+std::vector<BasicString> FileManager::allFilesInFolder(const fs::path& directoryPath) const
 {
-	std::vector<std::string> fileNameList;
+	std::vector<BasicString> fileNameList;
 
 	for (const auto& path : fs::directory_iterator(directoryPath))
 	{
 		if (fs::is_directory(path))
 			addFilesToList(fileNameList, path.path());
 		else
-			fileNameList.push_back(path.path().string());
+			fileNameList.push_back(pathToString(path.path()));
 	}
 
 	return fileNameList;
 }
 
 
-std::vector<std::string> FileManager::foldersInFolder(const Folder folder) const
+std::vector<BasicString> FileManager::foldersInFolder(const Folder folder) const
 {
-	std::vector<std::string> folderPathsList;
+	std::vector<BasicString> folderPathsList;
 
-	for (const auto& path : fs::directory_iterator(generatePath(folder)))
+	for (const auto& path : fs::directory_iterator(fsPath(folder)))
 	{
 		if (fs::is_directory(path))
 		{
-			folderPathsList.push_back(path.path().string());
+			folderPathsList.push_back(pathToString(path.path()));
 		}
 	}
 
@@ -260,30 +233,28 @@ std::vector<std::string> FileManager::foldersInFolder(const Folder folder) const
 
 
 // --- Private Functions --- //
-void FileManager::addFilesToList(std::vector<std::string>& fileList, const fs::path& directoryPath) const
+void FileManager::addFilesToList(std::vector<BasicString>& fileList, const fs::path& directoryPath) const
 {
 	for (const auto& path : fs::directory_iterator(directoryPath))
 	{
 		if (fs::is_directory(path))
 			addFilesToList(fileList, path);
 		else
-			fileList.push_back(path.path().string());
+			fileList.push_back(pathToString(path.path()));
 	}
 }
 
-
-
-void FileManager::outFilePath(std::string& outValue, const std::string& directoryPath, const std::string& name) const
+void FileManager::outFilePath(BasicString& outValue, const fs::path& directoryPath, const BasicString& name) const
 {
-	for (const auto& path : fs::directory_iterator(directoryPath))
+	for (const auto& dirPath : fs::directory_iterator(directoryPath))
 	{
-		if (!fs::is_directory(path) && getItemName(path.path().string()) == name)
+		if (!fs::is_directory(dirPath) && getItemName(dirPath.path()) == name)
 		{
-			outValue = path.path().string();
+			outValue = pathToString(dirPath.path());
 		}
-		else if (fs::is_directory(path))
+		else if (fs::is_directory(dirPath))
 		{
-			outFilePath(outValue, path.path().string(), name);
+			outFilePath(outValue, dirPath.path(), name);
 		}
 
 		// End recursion
@@ -292,15 +263,16 @@ void FileManager::outFilePath(std::string& outValue, const std::string& director
 	}
 }
 
-void FileManager::outFolderPath(std::string& outValue, const std::string& directoryPath, const std::string& name) const
+
+void FileManager::outFolderPath(BasicString& outValue, const fs::path& directoryPath, const BasicString& name) const
 {
 	for (const auto& path : fs::directory_iterator(directoryPath))
 	{
 		if (fs::is_directory(path))
 		{
-			if (getItemName(path.path().string()) == name)
+			if (getItemName(path.path()) == name)
 			{
-				outValue = path.path().string();
+				outValue = pathToString(path.path());
 			}
 			else if (fs::is_directory(path))
 			{
@@ -312,4 +284,10 @@ void FileManager::outFolderPath(std::string& outValue, const std::string& direct
 		if (!outValue.empty())
 			return;
 	}
+}
+
+
+BasicString pathToString(const fs::path& path)
+{
+	return BasicString(path.string().c_str());
 }

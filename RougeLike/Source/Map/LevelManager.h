@@ -8,7 +8,8 @@ class TextureManager;
 class LevelManager
 {
 public:
-	LevelManager(TextureManager* textureManger) : mTextureManager(textureManger), mLevel(0) { }
+	LevelManager(TextureManager* textureManger);
+	~LevelManager();
 
 	void load(const XMLParser& parser);
 
@@ -38,7 +39,7 @@ private:
 	void swapEntranceExit();
 
 	// Reading map data
-	void readMapData(const std::string& section, Map* map, const XMLParser& parser);
+	void readMapData(const BasicString& section, Map* map, const XMLParser& parser);
 	DecorMap readDecorData(const XMLNode& root) const;
 	void readConfigData(Vector2D<int>& mapIndexSize, VectorF& tileSize, float& scale);
 
@@ -49,6 +50,7 @@ private:
 private:
 	struct Maps
 	{
+		Maps() : entrance(nullptr), primaryMap(nullptr), exit(nullptr) { }
 		Map* entrance;
 		Map* primaryMap;
 		Map* exit;

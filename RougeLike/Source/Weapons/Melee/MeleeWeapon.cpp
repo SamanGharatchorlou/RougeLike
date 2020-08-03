@@ -202,12 +202,12 @@ const float MeleeWeapon::knockbackDistance() const
 
 
 // Audio
-const std::string& MeleeWeapon::hitSoundLabel() 
+const BasicString& MeleeWeapon::hitSoundLabel() 
 { 
 	mCanPlayHitSound = false;
 	return mMeleeData->audioHit;
 };
-const std::string& MeleeWeapon::missSoundLabel() { return mMeleeData->audioMiss; };
+const BasicString& MeleeWeapon::missSoundLabel() { return mMeleeData->audioMiss; };
 
 
 /// --- Private Functions --- ///

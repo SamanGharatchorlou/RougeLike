@@ -31,12 +31,12 @@ public:
 
 	void handleEvent(EventData& data) override;
 	
-	UIElement* findElement(const std::string& id);
-	UIButton* findButton(const std::string& id);
+	UIElement* findElement(const BasicString& id);
+	UIButton* findButton(const BasicString& id);
 
 	Screen* screen(Screen::Type type);
 	Screen* getActiveScreen() { return activeScreen; }
-	std::string typeToString(Screen::Type screenType);
+	BasicString typeToString(Screen::Type screenType);
 
 	bool isUsingUI() const;
 
@@ -68,6 +68,6 @@ private:
 #if UI_EDITOR
 private:
 	void debugEditUI();
-	std::string elementId;
+	BasicString elementId;
 #endif
 };

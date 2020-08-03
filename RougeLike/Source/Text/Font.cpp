@@ -13,28 +13,23 @@ Font::~Font()
 }
 
 
-bool Font::loadFromFile(const std::string& font, int ptSize)
+bool Font::loadFromFile(const BasicString& filePath, int ptSize)
 {
-	//Loading success flag
-	bool success = true;
-
 	mRenderer = Renderer::Get();
 
 	//Open the font
-	mFont = TTF_OpenFont(font.c_str(), ptSize);
-	if (mFont == nullptr)
+	mFont = TTF_OpenFont(filePath.c_str(), ptSize);
+	if (mFont != nullptr)
 	{
-		DebugPrint(Warning, "Failed to load font at '%s'! SDL_ttf Error: %s\n", font.c_str(), TTF_GetError());
-		success = false;
+		mFontName = FileManager::Get()->getItemName(fs::path(filePath.c_str()));
+		mPtSize = ptSize;
+		return true;
 	}
-
-
-	// save a copy of the font name
-	mFontName = FileManager::Get()->getItemName(std::string(font));
-
-	mPtSize = ptSize;
-
-	return success;
+	else
+	{
+		DebugPrint(Warning, "Failed to load font at '%s'! SDL_ttf Error: %s\n", filePath.c_str(), TTF_GetError());
+		return false;
+	}
 }
 
 
@@ -48,7 +43,7 @@ void Font::resize(int ptSize)
 }
 
 
-void Font::setText(const std::string& text)
+void Font::setText(const BasicString& text)
 {
 	if (mFont != nullptr && !text.empty())
 	{
@@ -56,7 +51,6 @@ void Font::setText(const std::string& text)
 		SDL_Surface* textSurface = TTF_RenderText_Solid(mFont, text.c_str(), colour);
 
 		// For size of the text: int textSize = textSurface->h * textSurface->pitch;
-
 		if (!textSurface)
 		{
 			DebugPrint(Warning, "Unable to render text surface for text: %s! SDL_ttf Error: %s\n", text.c_str(), TTF_GetError());

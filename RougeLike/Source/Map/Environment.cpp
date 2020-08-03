@@ -40,8 +40,8 @@ void Environment::load()
 
 	DebugPrint(Log, "\n Loading Maps\n");
 
-	std::string fileName = "Level0";
-	std::string path = FileManager::Get()->findFile(FileManager::Config_Map, fileName);
+	BasicString fileName = "Level0";
+	BasicString path = FileManager::Get()->findFile(FileManager::Config_Map, fileName);
 	XMLParser parser(path);
 
 	mLevelManager.load(parser);
@@ -76,8 +76,10 @@ void Environment::nextLevel()
 
 	mLevelManager.incrementLevel();
 
-	std::string fileName = "Level" + std::to_string(mLevelManager.level());
-	std::string path = FileManager::Get()->findFile(FileManager::Config_Map, fileName);
+	char character = (char)mLevelManager.level();
+
+	BasicString fileName = "Level" + BasicString(&character);
+	BasicString path = FileManager::Get()->findFile(FileManager::Config_Map, fileName);
 	XMLParser parser(path);
 
 	mLevelManager.buildLevel(parser);

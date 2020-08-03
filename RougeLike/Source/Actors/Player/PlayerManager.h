@@ -30,9 +30,9 @@ public:
 	LocalDispatcher& events() { return mEvents; }
 
 	void setPosition(VectorF position);
-	void selectCharacter(const std::string& characterConfig, TextureManager* textureManager);
-	void selectWeapon(const std::string& weaponName);
-	void addAbility(const std::string& ability);
+	void selectCharacter(const BasicString& characterConfig, TextureManager* textureManager);
+	void selectWeapon(const BasicString& weaponName);
+	void addAbility(const BasicString& ability);
 
 private:
 	Environment* mEnvironment;

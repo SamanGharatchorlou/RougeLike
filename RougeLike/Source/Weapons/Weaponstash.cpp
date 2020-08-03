@@ -7,7 +7,6 @@
 #include "Graphics/TextureManager.h"
 
 
-
 WeaponStash::WeaponStash()
 {
 	data["empty"] = new WeaponData;
@@ -25,9 +24,9 @@ WeaponStash::~WeaponStash()
 
 void WeaponStash::init(TextureManager* tm)
 {
-	std::vector<std::string> filePaths = FileManager::Get()->allFilesInFolder(FileManager::Config_Weapons);
+	std::vector<BasicString> filePaths = FileManager::Get()->allFilesInFolder(FileManager::Config_Weapons);
 
-	for (const std::string& filePath : filePaths)
+	for (const BasicString& filePath : filePaths)
 	{
 		XMLParser parser;
 		parser.parseXML(filePath);
@@ -37,7 +36,7 @@ void WeaponStash::init(TextureManager* tm)
 			MeleeWeaponData* weaponData = new MeleeWeaponData;
 
 			// Texture
-			std::string weaponName = parser.firstRootNodeValue("Texture");
+			BasicString weaponName = parser.firstRootNodeValue("Texture");
 			weaponData->texture = tm->getTexture(weaponName, FileManager::Image_Weapons);
 
 			fillBasicWeaponData(parser, weaponData);
@@ -67,7 +66,7 @@ void WeaponStash::fillBasicWeaponData(XMLParser& parser, WeaponData* data)
 	data->audioMiss = audio["Miss"];
 
 	// Size and offset
-	data->maxDimention = std::stof(parser.firstRootNodeValue("MaxSize"));
+	data->maxDimention = atof(parser.firstRootNodeValue("MaxSize").c_str());
 
 	Attributes attributes = parser.attributes(parser.rootNode()->first_node("Offset"));
 	int x = attributes.getInt("x");
@@ -91,7 +90,7 @@ void WeaponStash::fillMeleeWeaponData(XMLParser& parser, MeleeWeaponData* data)
 }
 
 
-WeaponData* WeaponStash::getData(const std::string& weaponName)
+WeaponData* WeaponStash::getData(const BasicString& weaponName)
 {
 #if _DEBUG
 	if(data.count(weaponName) == 0)
@@ -101,7 +100,7 @@ WeaponData* WeaponStash::getData(const std::string& weaponName)
 }
 
 
-Weapon* WeaponStash::getWeapon(const std::string& weaponName)
+Weapon* WeaponStash::getWeapon(const BasicString& weaponName)
 {
 	WeaponData* data = getData(weaponName);
 

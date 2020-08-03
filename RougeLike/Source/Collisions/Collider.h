@@ -29,8 +29,8 @@ public:
 	Collider* getOtherCollider() { return mOtherCollider; }
 
 #if _DEBUG
-	void setName(const std::string& name) { mName = name; }
-	std::string name() const { return mName; }
+	void setName(const BasicString& name) { mName = name; }
+	BasicString name() const { return mName; }
 #endif
 
 protected:
@@ -43,6 +43,6 @@ protected:
 	bool mGotHit;
 
 #if _DEBUG
-	std::string mName;
+	BasicString mName;
 #endif
 };

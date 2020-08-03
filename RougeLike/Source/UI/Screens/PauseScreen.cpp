@@ -72,7 +72,7 @@ void PauseScreen::update(float dt)
 
 
 // Change the box texture when the button is pressed
-void PauseScreen::updateBoxTexture(std::string buttonId, std::string boxId)
+void PauseScreen::updateBoxTexture(BasicString buttonId, BasicString boxId)
 {
 	UIButton* button = mGameData->uiManager->findButton(buttonId);
 

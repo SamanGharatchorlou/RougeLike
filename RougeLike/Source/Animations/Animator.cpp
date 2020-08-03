@@ -4,7 +4,7 @@
 #include "Graphics/Texture.h"
 
 
-Action stringToAction(const std::string& action)
+Action stringToAction(const BasicString& action)
 {
 	if (action == "Idle")
 		return Action::Idle;	

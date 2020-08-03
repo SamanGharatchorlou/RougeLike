@@ -17,7 +17,7 @@ public:
 
 	struct Data
 	{
-		std::string id;
+		BasicString id;
 		RectF rect;
 		const UIElement* parent = nullptr;
 		bool show = true;
@@ -29,7 +29,7 @@ public:
 
 	virtual ~UIElement() { };
 
-	const std::string& id() const { return mId; }
+	const BasicString& id() const { return mId; }
 
 	void setRect(RectF rect);
 	RectF rect() const { return mRect; }
@@ -49,7 +49,7 @@ public:
 	bool isVisible() const { return mShow; }
 
 protected:
-	std::string mId;
+	BasicString mId;
 
 	RectF mRect;
 

@@ -12,17 +12,17 @@ public:
 	void init();
 	void slowUpdate();
 
-	Audio* getAudio(const std::string& label) const;
+	Audio* getAudio(const BasicString& label) const;
 
 	// Playback
-	void playMusic(const std::string& label);
-	void playSound(const std::string& label, void* sourceId);
+	void playMusic(const BasicString& label);
+	void playSound(const BasicString& label, void* sourceId);
 
-	void pause(const std::string& label, void* sourceId);
-	void resume(const std::string& label, void* sourceId);
-	void stop(const std::string& label, void* sourceId);
+	void pause(const BasicString& label, void* sourceId);
+	void resume(const BasicString& label, void* sourceId);
+	void stop(const BasicString& label, void* sourceId);
 
-	bool isPlaying(const std::string& label, void* sourced);
+	bool isPlaying(const BasicString& label, void* sourced);
 
 	// volume
 	void setSoundVolume(float volume);
@@ -40,10 +40,10 @@ private:
 	int loadAllSound(FileManager::Folder folder);
 	int loadAllSoundGroups(FileManager::Folder folder);
 
-	bool loadAudio(Audio* audio, const std::string& name, const std::string& filePath);
+	bool loadAudio(Audio* audio, const BasicString& name, const BasicString& filePath);
 
 private:
 	SoundController mSoundController;
 
-	std::unordered_map<std::string, Audio*> mAudioBank;
+	std::unordered_map<BasicString, Audio*> mAudioBank;
 };

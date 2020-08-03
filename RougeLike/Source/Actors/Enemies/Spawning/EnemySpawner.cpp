@@ -155,7 +155,7 @@ Shape EnemySpawner::pickRandomShape() const
 }
 
 
-EnemySpawner::Type EnemySpawner::stringToType(const std::string& spawnType) const
+EnemySpawner::Type EnemySpawner::stringToType(const BasicString& spawnType) const
 {
 	if (spawnType == "Patrol")
 		return Type::Patrol;

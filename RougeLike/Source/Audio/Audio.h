@@ -6,7 +6,7 @@ class Audio
 {
 public:
 	virtual ~Audio() { };
-	virtual bool load(const std::string& filePath) = 0;
+	virtual bool load(const BasicString& filePath) = 0;
 
 	virtual void play(int channel) = 0;
 	virtual void pause(int channel) { };
@@ -21,12 +21,11 @@ public:
 	Sound() : mChunk(nullptr) { }
 	~Sound();
 
-	bool load(const std::string& filePath) override;
+	bool load(const BasicString& filePath) override;
 
 	void play(int channel) override;
 
 private:
-
 	Mix_Chunk *mChunk;
 };
 
@@ -38,7 +37,7 @@ public:
 	Music() : mMusic(nullptr) { }
 	~Music();
 
-	bool load(const std::string& filePath) override;
+	bool load(const BasicString& filePath) override;
 
 	void play(int channel) override;
 	void pause(int channel) override;
@@ -54,8 +53,9 @@ class AudioGroup : public Audio
 {
 public:
 	AudioGroup() { }
+	~AudioGroup();
 
-	bool load(const std::string& directoryPath) override;
+	bool load(const BasicString& directoryPath) override;
 
 	void play(int channel) override;
 

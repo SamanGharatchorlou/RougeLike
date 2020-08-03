@@ -88,7 +88,7 @@ const Map* Enemy::getEnvironmentMap() const
 void Enemy::clear()
 {
 	// Clear statemachine states (except null state at i = 0)
-	mStateMachine.clearStates();
+	mStateMachine.shallowClear();
 	mEvents.clear();
 
 	//mMap = nullptr;

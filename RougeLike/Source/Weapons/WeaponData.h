@@ -23,8 +23,8 @@ struct WeaponData
 	float maxDimention = 0.0f;
 	VectorF offset;
 
-	std::string audioMiss;
-	std::string audioHit;
+	BasicString audioMiss;
+	BasicString audioHit;
 };
 
 

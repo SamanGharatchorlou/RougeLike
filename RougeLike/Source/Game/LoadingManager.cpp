@@ -16,24 +16,6 @@ void LoadingManager::init()
 {
 	VectorF screen = VectorF(1024.0f, 768.0f);
 
-	//UIElement::Data data;
-
-	//UIElement::Data* data2 = new UIElement::Data;
-
-	//class myData
-	//{
-	//	std::string id;
-	//	RectF rect;
-	//	const UIElement* parent = nullptr;
-	//	bool show = true;
-	//};
-
-	//myData myDatapack;
-
-	//myData* myPtr = new myData;
-
-	//delete myPtr;
-
 	// Set text
 	UITextBox::Data textData;
 	textData.aligment = "";
@@ -53,11 +35,11 @@ void LoadingManager::init()
 	mLoadingText->autoSizeFont();
 
 	// Set textures
-	std::string loadingBar = FileManager::Get()->findFile(FileManager::PreLoadFiles, "BlueBar");
+	BasicString loadingBar = FileManager::Get()->findFile(FileManager::PreLoadFiles, "BlueBar");
 	Texture* loadingBarTexture = new Texture;
 	loadingBarTexture->loadFromFile(loadingBar);
 
-	std::string loadingBarContainer = FileManager::Get()->findFile(FileManager::PreLoadFiles, "BlackBar");
+	BasicString loadingBarContainer = FileManager::Get()->findFile(FileManager::PreLoadFiles, "BlackBar");
 	Texture* loadingBarContainerTexture = new Texture;
 	loadingBarContainerTexture->loadFromFile(loadingBarContainer);
 
@@ -74,7 +56,7 @@ void LoadingManager::init()
 	mLoadingBar.setPercentage(0.0f);
 
 	// Background
-	std::string splashScreen = FileManager::Get()->findFile(FileManager::PreLoadFiles, "SplashScreen");
+	BasicString splashScreen = FileManager::Get()->findFile(FileManager::PreLoadFiles, "SplashScreen");
 	mBackground = new Texture;
 	mBackground->loadFromFile(splashScreen);
 }
@@ -116,7 +98,7 @@ void LoadingManager::directoriesToLoad(std::vector<FileManager::Folder> folders)
 {
 	for (FileManager::Folder folder : folders)
 	{
-		std::vector<std::string> filePaths = FileManager::Get()->allFilesInFolder(folder);
+		std::vector<BasicString> filePaths = FileManager::Get()->allFilesInFolder(folder);
 
 		for (int i = 0; i < filePaths.size(); i++)
 		{
@@ -125,9 +107,9 @@ void LoadingManager::directoriesToLoad(std::vector<FileManager::Folder> folders)
 	}
 }
 
-void LoadingManager::addFileToLoad(const std::string& filePath)
+void LoadingManager::addFileToLoad(const BasicString& filePath)
 {
-	fs::path fileSystemPath(filePath);
+	fs::path fileSystemPath(filePath.c_str());
 	if (fs::exists(fileSystemPath))
 	{
 		mTotalFileSizes += fs::file_size(fileSystemPath);
@@ -139,17 +121,17 @@ void LoadingManager::addFileToLoad(const std::string& filePath)
 }
 
 
-void LoadingManager::successfullyLoaded(const std::string& filePath)
+void LoadingManager::successfullyLoaded(const BasicString& filePath)
 {
-	fs::path fileSystemPath(filePath);
+	fs::path fileSystemPath(filePath.c_str());
 	if (fs::exists(fileSystemPath))
 	{
 		if (fs::is_directory(fileSystemPath))
 		{
-			std::vector<std::string> files = FileManager::Get()->allFilesInFolder(fileSystemPath);
+			std::vector<BasicString> files = FileManager::Get()->allFilesInFolder(fileSystemPath);
 
-			for(const std::string& file : files)
-				mLoadedFileSizes += fs::file_size(fs::path(file));
+			for(const BasicString& file : files)
+				mLoadedFileSizes += fs::file_size(fs::path(file.c_str()));
 		}
 		else
 			mLoadedFileSizes += fs::file_size(fileSystemPath);

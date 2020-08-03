@@ -23,7 +23,7 @@ public:
 	ScreenDecoder(TextureManager* texManager) : tm(texManager) { }
 	~ScreenDecoder() { }
 
-	const ScreenAttributes getScreenAttributes(const std::string& config);
+	const ScreenAttributes getScreenAttributes(const BasicString& config);
 	Layers buildUIScreenLayers(const ScreenAttributes& attributes);
 
 private:
@@ -37,7 +37,7 @@ private:
 	void fillTextBoxData	(UITextBox::Data& data,		const Attributes& attributes) const;
 	void fillButtonData		(UIButton::Data& data,		const Attributes& attributes) const;
 
-	UIElement* findElement(Layers layers, const std::string& id);
+	UIElement* findElement(Layers layers, const BasicString& id);
 
 private:
 	TextureManager* tm;

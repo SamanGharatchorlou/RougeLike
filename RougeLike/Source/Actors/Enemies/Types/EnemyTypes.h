@@ -11,10 +11,10 @@ enum class EnemyType
 
 
 
-inline void operator >>(EnemyType a, std::string& str)
+inline void operator >>(EnemyType a, BasicString& str)
 {
 	if (a == EnemyType::Devil)
 		str = "Devil";
 }
 
-EnemyType stringToEnemyType(const std::string& type);
+EnemyType stringToEnemyType(const BasicString& type);

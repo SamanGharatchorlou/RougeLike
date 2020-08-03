@@ -24,14 +24,14 @@ inline EffectType operator +(EffectType a, T b)
 	return static_cast<EffectType>(sum);
 }
 
-inline void operator >>(EffectType a, std::string& str)
+inline void operator >>(EffectType a, BasicString& str)
 {
 	if (a == EffectType::Damage)
 		str = "Damage";
 }
 
 
-inline void operator <<(EffectType& a, const std::string& str)
+inline void operator <<(EffectType& a, const BasicString& str)
 {
 	if (str == "Damage")
 		a = EffectType::Damage;
