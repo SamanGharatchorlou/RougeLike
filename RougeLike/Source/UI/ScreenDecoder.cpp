@@ -56,7 +56,101 @@ const ScreenAttributes ScreenDecoder::getScreenAttributes(const BasicString& con
 	}
 
 	return screenAttributes;
+
+	/*
+
+
+	//ScreenAttributes screenAttributes;
+
+	//xmlParser = XMLParser(config);
+	////XMLParser parser(config);
+	//XMLNode screenNode = parser.root();
+	//XMLNode layerNode = screenNode.first("layer");
+
+	while (!layerNode.isEmpty())
+	{
+		LayerAttributes layerAttibutes;
+
+		XMLNode childNode = layerNode.first();
+
+		// UI component
+		while (childNode != nullptr)
+		{
+			Attributes itemAttributes = xmlParser.attributes(childNode);
+			itemAttributes.add("type", childNode->name());
+
+			// Text component
+			XMLNode node = childNode->first_node();
+			if (childNode->first_node())
+			{
+				Attributes textAttributes = xmlParser.attributes(childNode->first_node());
+
+				// text to be displayed
+				BasicString text = childNode->first_node()->value();
+				textAttributes.add("text", text);
+
+				itemAttributes.merge(textAttributes);
+			}
+
+			layerAttibutes.push_back(itemAttributes);
+
+			childNode = childNode->next_sibling();
+		}
+
+		screenAttributes.push_back(layerAttibutes);
+
+		layerNode = layerNode->next_sibling();
+	}
+
+	return screenAttributes;
+
+	*/
 }
+
+
+//LayerAttributes ScreenReader::readLayer(const XMLNode node) const
+//{
+//
+//}
+//
+//
+//Attributes ScreenReader::readItemNode(const XMLNode itemNode) const
+//{
+//	Attributes itemAttributes = itemNode.attributes();
+//	itemAttributes.add("type", itemNode.name());
+//
+//	if (isTextNode(itemNode))
+//	{
+//		Attributes textAttributes = readtextNode(itemNode);
+//		itemAttributes.merge(textAttributes);
+//	}
+//
+//	return itemAttributes;
+//}
+//
+//
+//Attributes ScreenReader::readtextNode(const XMLNode itemNode) const
+//{
+//	Attributes textAttributes;
+//	XMLNode textNode = itemNode.first();
+//	if (textNode)
+//	{
+//		textAttributes = textNode.attributes();
+//
+//		// text to be displayed
+//		BasicString text = textNode.value();
+//		textAttributes.add("text", text);
+//
+//		textAttributes.merge(textAttributes);
+//	}
+//
+//	return textAttributes;
+//}
+//
+//bool ScreenReader::isTextNode(const XMLNode itemNode) const
+//{
+//	return itemNode.name() == "TextBox" && !itemNode.first().isEmpty();
+//}
 
 
 Layers ScreenDecoder::buildUIScreenLayers(const ScreenAttributes& screenAttributes)
@@ -249,7 +343,7 @@ void ScreenDecoder::fillBoxData(UIBox::Data& data, const Attributes& attributes)
 	if (attributes.contains("texture"))
 	{
 		BasicString textureLabel = attributes.getString("texture");
-		data.texture = tm->getTexture(textureLabel);
+		data.texture = tm->getTexture(textureLabel, FileManager::Image_UI);
 	}
 	else
 		data.texture = nullptr;

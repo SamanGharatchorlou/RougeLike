@@ -11,8 +11,6 @@ typedef std::vector<UILayer*> Layers;
 typedef std::vector<Attributes> LayerAttributes;
 typedef std::vector<std::vector<Attributes>> ScreenAttributes;
 
-
-
 /*
 Decodes an XML formatted file into a UI built into layers, boxes, buttons, text etc.
 Note: The layers must be in order with the top layer first/at the top of the file
@@ -25,6 +23,10 @@ public:
 
 	const ScreenAttributes getScreenAttributes(const BasicString& config);
 	Layers buildUIScreenLayers(const ScreenAttributes& attributes);
+
+
+
+
 
 private:
 	Elements setParents(Layers layers, const ScreenAttributes& screenAttributes);
@@ -43,3 +45,20 @@ private:
 	TextureManager* tm;
 	XMLParser xmlParser;
 };
+
+
+//class ScreenReader
+//{
+//public:
+//	void read(const BasicString& screen);
+//
+//	LayerAttributes readLayer(const XMLNode node) const;
+//
+//	Attributes readItemNode(const XMLNode itemNode) const;
+//	Attributes readtextNode(const XMLNode itemNode) const;
+//
+//	bool isTextNode(const XMLNode itemNode) const;
+//
+//private:
+//
+//};

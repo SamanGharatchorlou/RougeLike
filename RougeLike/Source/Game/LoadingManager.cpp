@@ -12,63 +12,32 @@ LoadingManager* LoadingManager::Get()
 	return &sInstance;
 }
 
+
+void LoadingManager::free()
+{
+	delete mBackground;
+	mBackground = nullptr;
+
+	delete mLoadingText;
+	mLoadingText = nullptr;
+
+	mLoadingBar.free();
+}
+
 void LoadingManager::init()
 {
 	VectorF screen = VectorF(1024.0f, 768.0f);
 
-	// Set text
-	UITextBox::Data textData;
-	textData.aligment = "";
-	textData.font = "";
-	textData.ptSize = 0;
-	textData.colour = SDL_Color{ 0, 0, 255 };
-	textData.texture = nullptr;
-	textData.text = "Loading...";
-
-	VectorF textPosition = VectorF(screen.x / 2.0f, screen.y / 1.35f);
-	VectorF textSize = VectorF(240, 100);
-	RectF textRect(VectorF(), textSize);
-	textRect.SetCenter(textPosition);
-	textData.rect = textRect;
-
-	mLoadingText = new UITextBox(textData);
-	mLoadingText->autoSizeFont();
-
-	// Set textures
-	BasicString loadingBar = FileManager::Get()->findFile(FileManager::PreLoadFiles, "BlueBar");
-	Texture* loadingBarTexture = new Texture;
-	loadingBarTexture->loadFromFile(loadingBar);
-
-	BasicString loadingBarContainer = FileManager::Get()->findFile(FileManager::PreLoadFiles, "BlackBar");
-	Texture* loadingBarContainerTexture = new Texture;
-	loadingBarContainerTexture->loadFromFile(loadingBarContainer);
-
-	mLoadingBar.setTextures(loadingBarTexture, loadingBarContainerTexture);
-
-	// Set rect
-	VectorF barPosition = VectorF(screen.x / 2.0f, screen.y / 1.2f);
-	VectorF barSize = VectorF(800.0f, 75.0f);
-	
-	RectF rect(VectorF(), barSize);
-	rect.SetCenter(barPosition);
-
-	mLoadingBar.setRect(rect);
-	mLoadingBar.setPercentage(0.0f);
-
-	// Background
-	BasicString splashScreen = FileManager::Get()->findFile(FileManager::PreLoadFiles, "SplashScreen");
-	mBackground = new Texture;
-	mBackground->loadFromFile(splashScreen);
+	initTextBox(screen);
+	setLoadingBarTextures();
+	setLoadingBarRect(screen);
+	setBackgroundTexture();
 }
 
 void LoadingManager::CountToBeLoadedFiles()
 {
 	std::vector<FileManager::Folder> folders;
-
-	// Textures
 	folders.push_back(FileManager::Images);
-
-	// Audio
 	folders.push_back(FileManager::Audio);
 
 	LoadingManager::Get()->directoriesToLoad(folders);
@@ -149,3 +118,57 @@ float LoadingManager::loadedPercentage()
 	return (float)mLoadedFileSizes / (float)mTotalFileSizes;
 }
 
+
+// --- Private Functions --- //
+void LoadingManager::initTextBox(VectorF screenSize)
+{
+	// Set text
+	UITextBox::Data textData;
+	textData.aligment = "";
+	textData.font = "";
+	textData.ptSize = 0;
+	textData.colour = SDL_Color{ 0, 0, 255 };
+	textData.texture = nullptr;
+	textData.text = "Loading...";
+
+	VectorF textPosition = VectorF(screenSize.x / 2.0f, screenSize.y / 1.35f);
+	VectorF textSize = VectorF(240, 100);
+	RectF textRect(VectorF(), textSize);
+	textRect.SetCenter(textPosition);
+	textData.rect = textRect;
+
+	mLoadingText = new UITextBox(textData);
+	mLoadingText->autoSizeFont();
+}
+
+void LoadingManager::setLoadingBarTextures()
+{
+	// Set textures
+	BasicString loadingBar = FileManager::Get()->findFile(FileManager::PreLoadFiles, "BlueBar");
+	Texture* loadingBarTexture = new Texture;
+	loadingBarTexture->loadFromFile(loadingBar);
+
+	BasicString loadingBarContainer = FileManager::Get()->findFile(FileManager::PreLoadFiles, "BlackBar");
+	Texture* loadingBarContainerTexture = new Texture;
+	loadingBarContainerTexture->loadFromFile(loadingBarContainer);
+
+	mLoadingBar.setTextures(loadingBarTexture, loadingBarContainerTexture);
+}
+
+void LoadingManager::setLoadingBarRect(VectorF screenSize)
+{
+	VectorF barPosition = VectorF(screenSize.x / 2.0f, screenSize.y / 1.2f);
+	VectorF barSize = VectorF(800.0f, 75.0f);
+
+	RectF rect(VectorF(), barSize);
+	rect.SetCenter(barPosition);
+
+	mLoadingBar.setRect(rect);
+}
+
+void LoadingManager::setBackgroundTexture()
+{
+	BasicString splashScreen = FileManager::Get()->findFile(FileManager::PreLoadFiles, "SplashScreen");
+	mBackground = new Texture;
+	mBackground->loadFromFile(splashScreen);
+}

@@ -64,11 +64,11 @@ void SmashAbility::activateOn(Actor* actor, EffectPool* effectPool)
 
 void SmashAbility::render()
 {
-	if (mState == Selected)
+	if (mState == AbilityState::Selected)
 	{
 		renderRangeCircle();
 	}
-	else if (mState == Running)
+	else if (mState == AbilityState::Running)
 	{
 		RectF rect = Camera::Get()->toCameraCoords(mRect);
 		mAnimator.render(rect);

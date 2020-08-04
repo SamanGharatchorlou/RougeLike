@@ -37,6 +37,7 @@
     <ClCompile Include="Source\Game\GameSetup.cpp" />
     <ClCompile Include="Source\Game\LoadingBar.cpp" />
     <ClCompile Include="Source\Game\LoadingManager.cpp" />
+    <ClCompile Include="Source\Graphics\TextureMap.cpp" />
     <ClCompile Include="Source\Input\Button.cpp" />
     <ClCompile Include="Source\Items\Collectables\CollectableBuilder.cpp" />
     <ClCompile Include="Source\Items\Collectables\CollectablesPool.cpp" />
@@ -49,11 +50,12 @@
     <ClCompile Include="Source\Map\TileTypes.cpp" />
     <ClCompile Include="Source\Map\TrapManager.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityBuilder.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\Ability.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityClasses\Ability.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityClasses\RangedAbility.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityClasses\TargetAbilities.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityActivator.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHotKeys.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityManager.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\AbilityCreator.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\ArmorAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\BlinkAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\ChargeAbility.cpp" />
@@ -186,6 +188,7 @@
     <ClInclude Include="Source\Game\GameSetup.h" />
     <ClInclude Include="Source\Game\LoadingBar.h" />
     <ClInclude Include="Source\Game\LoadingManager.h" />
+    <ClInclude Include="Source\Graphics\TextureMap.h" />
     <ClInclude Include="Source\Items\Collectables\CollectableBuilder.h" />
     <ClInclude Include="Source\Items\Collectables\CollectablesPool.h" />
     <ClInclude Include="Source\Map\LevelManager.h" />
@@ -197,11 +200,13 @@
     <ClInclude Include="Source\Map\TileTypes.h" />
     <ClInclude Include="Source\Map\TrapManager.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityBuilder.h" />
-    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\Ability.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityClasses\Ability.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityClasses\AbilityStates.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityClasses\RangedAbility.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityClasses\TargetAbilities.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityActivator.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityManager.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityHotKeys.h" />
-    <ClInclude Include="Source\Objects\Abilities\AbilityCreator.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\ArmorAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\BilnkAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\ChargeAbility.h" />

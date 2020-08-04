@@ -29,15 +29,19 @@ GameController::GameController() : quit(false), mGameStateMachine(new NullState)
 
 void GameController::load()
 {
-	LoadingManager::Get()->init();
+	LoadingManager* loader = LoadingManager::Get();
 
-	//SDL_Thread* threadID = SDL_CreateThread(renderLoadingBar, "LoadingBar", nullptr);
+	loader->init();
 
-	LoadingManager::Get()->CountToBeLoadedFiles();
+	SDL_Thread* threadID = SDL_CreateThread(renderLoadingBar, "LoadingBar", nullptr);
+
+	loader->CountToBeLoadedFiles();
 
 	mGameData.load();
 
-	//SDL_WaitThread(threadID, nullptr);
+	SDL_WaitThread(threadID, nullptr);
+
+	loader->free();
 }
 
 

@@ -19,7 +19,8 @@ void CharacterSelectionScreen::enter()
 {
 	UIBox* character = static_cast<UIBox*>(mGameData->uiManager->findElement("Character"));
 
-	mSelectedCharacter = mGameData->textureManager->getTextureName(character->texture());
+	BasicString str = mGameData->textureManager->getTextureName(character->texture());
+	mSelectedCharacter.move(str);// = str;//.copy(*str);
 
 	Texture* texture = mGameData->textureManager->getTexture(mSelectedCharacter + "Icon", FileManager::Image_UI);
 	character->setTexture(texture);
@@ -37,7 +38,8 @@ void CharacterSelectionScreen::update(float dt)
 			UIBox* weapon = static_cast<UIBox*>(mGameData->uiManager->findElement("Weapon"));
 			const Texture* weaponTexture = weapon->texture();
 
-			mSelectedWeapon = mGameData->textureManager->getTextureName(weaponTexture);
+			BasicString str = mGameData->textureManager->getTextureName(weaponTexture);
+			mSelectedWeapon = str; //.copy(*str);
 			mEnterGame = true;
 		}
 

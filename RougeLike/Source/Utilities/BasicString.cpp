@@ -20,22 +20,10 @@ BasicString::BasicString(const char* string)
 		mLength = 0;
 		mCap = 0;
 	}
-
 }
 
 BasicString::BasicString(const BasicString& string) : BasicString(string.c_str()) { }
 
-
-void myMemCpy(void *dest, const void *src, size_t n)
-{
-	// Typecast src and dest addresses to (char *) 
-	char *csrc = (char *)src;
-	char *cdest = (char *)dest;
-
-	// Copy contents of src[] to dest[] 
-	for (int i = 0; i < n; i++)
-		cdest[i] = csrc[i];
-}
 
 BasicString::BasicString(const char* string, unsigned int length)
 {
@@ -49,20 +37,29 @@ BasicString::BasicString(const char* string, unsigned int length)
 BasicString::~BasicString()
 {
 	delete[] mBuffer;
+	eliminate();
+}
+
+void BasicString::eliminate()
+{
 	mLength = 0;
 	mCap = 0;
 	mBuffer = nullptr;
 }
 
-void BasicString::set(const char* string, unsigned int length)
+
+void BasicString::move(BasicString& string)
 {
-	assign(string, length);
-	mBuffer[length + 1] = '\0';
-	mLength = length;
+	delete[] mBuffer;
+	mBuffer = string.buffer();
+	mLength = strlen(mBuffer);
+	mCap = mLength + 1;
+
+	// remove the strings reference
+	string.eliminate();
 }
 
 
-// TODO: verify this works
 BasicString BasicString::substr(int start, int length) const
 {
 	const char* backEndString = &mBuffer[start];
@@ -97,22 +94,17 @@ void BasicString::clear()
 // --- Private Functions --- //
 void BasicString::assignTerminated(const char* string)
 {
-	unsigned int length = strlen(string);
-	memcpy(mBuffer, string, length + 1);
+	mLength = strlen(string);
+	memcpy(mBuffer, string, mLength + 1);
 }
-
-void BasicString::assign(const char* string, unsigned int length)
-{
-	memcpy(mBuffer, string, length);
-}
-
 
 
 void BasicString::newBufferSize(unsigned int size)
 {
-	mCap = size + 1;
-
 	delete[] mBuffer;
+	eliminate();
+
+	mCap = size + 1;
 	mBuffer = new char[mCap];
 }
 
@@ -137,7 +129,6 @@ BasicString& BasicString::operator = (const char* string)
 		newBufferSize(length);
 
 	assignTerminated(string);
-	mLength = length;
 	return *this;
 }
 
@@ -148,7 +139,6 @@ BasicString& BasicString::operator = (const BasicString& basicString)
 		newBufferSize(length);
 
 	assignTerminated(basicString.c_str());
-	mLength = length;
 	return *this;
 }
 
@@ -156,11 +146,11 @@ BasicString& BasicString::operator = (const BasicString& basicString)
 
 bool operator == (const BasicString& basicString, const char* string)
 {
-	return strncmp(basicString.c_str(), string, basicString.length()) == 0;
+	return strncmp(basicString.c_str(), string, basicString.length() + 1) == 0;
 }
 bool operator == (const BasicString& basicStringA, const BasicString& basicStringB)
 {
-	return strncmp(basicStringA.c_str(), basicStringB.c_str(), basicStringA.length()) == 0;
+	return strncmp(basicStringA.c_str(), basicStringB.c_str(), basicStringA.length() + 1) == 0;
 }
 
 

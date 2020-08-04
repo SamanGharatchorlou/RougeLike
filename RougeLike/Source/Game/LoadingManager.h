@@ -11,6 +11,7 @@ class LoadingManager
 {
 public:
 	static LoadingManager* Get();
+	void free();
 
 	void init();
 	void CountToBeLoadedFiles();
@@ -25,14 +26,22 @@ public:
 
 	void render();
 
+
 private:
-	LoadingManager() : mTotalFileSizes(0), mLoadedFileSizes(0) { }
+	void initTextBox(VectorF screenSize);
+	void setLoadingBarTextures();
+	void setLoadingBarRect(VectorF screenSize);
+	void setBackgroundTexture();
+
+
+private:
+	LoadingManager() : mBackground(nullptr), mLoadingText(nullptr), mTotalFileSizes(0), mLoadedFileSizes(0) { }
 	~LoadingManager() { }
 
 	uintmax_t mTotalFileSizes;
 	uintmax_t mLoadedFileSizes;
 
-	UITextBox* mLoadingText;
 	LoadingBar mLoadingBar;
 	Texture* mBackground;
+	UITextBox* mLoadingText;
 };

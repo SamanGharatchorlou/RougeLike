@@ -21,8 +21,10 @@ Collectable* CollectablesPool::createNewObject(CollectableType type) const
 		break;
 	case CollectableType::MeleeWeapon:
 		collectable = new WeaponCollectable;
+		break;
 	case CollectableType::Ability:
 		collectable = new AbilityCollectable;
+		break;
 	case CollectableType::None:
 	case CollectableType::Count:
 	default:

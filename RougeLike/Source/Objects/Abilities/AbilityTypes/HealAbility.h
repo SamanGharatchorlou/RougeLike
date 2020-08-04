@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Ability.h"
+#include "Objects/Abilities/AbilityClasses/TargetAbilities.h"
 #include "Objects/Attributes/Health.h"
 
 

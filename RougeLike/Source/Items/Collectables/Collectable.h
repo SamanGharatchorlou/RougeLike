@@ -26,6 +26,13 @@ inline void operator <<(CollectableType& a, const BasicString& str)
 {
 	if (str == "Ability")
 		a = CollectableType::Ability;
+	else
+	{
+		a = CollectableType::None;
+		DebugPrint(Log, "CollectableType '<<' has not been defined for string '%s'\n", str.c_str());
+	}
+		
+
 }
 
 
@@ -71,6 +78,7 @@ protected:
 class WeaponCollectable : public Collectable
 {
 public:
+	~WeaponCollectable() { printf("delete weapom\n"); }
 	void activate(PlayerManager* Player) override;
 
 	CollectableType type() const override { return CollectableType::MeleeWeapon; }
@@ -81,6 +89,7 @@ class AbilityCollectable : public Collectable
 {
 public:
 	void activate(PlayerManager* Player) override;
+	~AbilityCollectable() { printf("delete ability\n"); }
 
 	CollectableType type() const override { return CollectableType::Ability; }
 };

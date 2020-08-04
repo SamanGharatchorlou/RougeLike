@@ -77,7 +77,7 @@ void ChargeAbility::slowUpdate(float dt)
 
 void ChargeAbility::render()
 {
-	if (mState == Selected)
+	if (mState == AbilityState::Selected)
 	{
 		renderRangeCircle();
 	}

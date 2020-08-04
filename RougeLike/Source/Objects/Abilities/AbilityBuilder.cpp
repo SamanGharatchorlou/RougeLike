@@ -3,9 +3,9 @@
 
 #include "Graphics/TextureManager.h"
 #include "Animations/AnimationReader.h"
+#include "Objects/Properties/PropertyBag.h"
 
 // Abilities
-#include "Objects/Abilities/AbilityTypes/Ability.h"
 #include "Objects/Abilities/AbilityTypes/SlowAbility.h"
 #include "Objects/Abilities/AbilityTypes/HealAbility.h"
 #include "Objects/Abilities/AbilityTypes/SpikeAbility.h"
@@ -77,7 +77,36 @@ Ability* AbilityBuilder::createNewAbility(const BasicString& id)
 	return ability;
 }
 
+/*
+	if (name == "Heal")
+	{
+		ability = new HealAbility;
+	}
+	else if (name == "Spikes")
+	{
+		ability = new SpikeAbility;
+	}
+	else if (name == "Blink")
+	{
+		ability = new BlinkAbility;
+	}
+	else if (name == "Armor")
+	{
+		ability = new ArmorAbility;
+	}
+	else if (name == "Smash")
+	{
+		// Create hammer
+		Texture* texture = textureManager->getTexture("Mjolnir", FileManager::Image_Weapons);
+		VectorF size = realiseSize(texture->originalDimentions, values.get("HammerMaxSize"));
+		ability = new SmashAbility(texture, size);
+	}
+	else if (name == "Charge")
+	{
+		ability = new ChargeAbility;
+	}
 
+*/
 
 void AbilityBuilder::setRangedValues(Ability* ability)
 {

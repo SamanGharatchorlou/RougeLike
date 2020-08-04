@@ -15,6 +15,7 @@ public:
 
 	BasicString substr(int start, int length) const;
 
+	void move(BasicString& string);
 
 	int length() const { return mLength; }
 	bool empty() const { return mLength == 0; }
@@ -22,6 +23,9 @@ public:
 	BasicString& concat(const char* string);
 
 	void clear();
+	void eliminate(); // Warning: does not delete buffer, but sets to nullptr
+
+	char*& buffer() { return mBuffer; }
 
 
 	BasicString& operator = (const char* string);
@@ -34,17 +38,13 @@ private:
 	void increaseBufferSize(int size);
 	
 	void assignTerminated(const char* string);
-	void assign(const char* string, unsigned int length);
 
-	void set(const char* string, unsigned int length);
 
 private:
 	char* mBuffer;
 	int mLength;
 	int mCap;
 };
-
-void myMemCpy(void *dest, const void *src, size_t n);
 
 
 BasicString operator + (BasicString basicString, const char* string);

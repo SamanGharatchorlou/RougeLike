@@ -45,3 +45,5 @@ private:
 	Timer<float> capTimer;
 #endif
 };
+
+static int renderLoadingBar(void *ptr);

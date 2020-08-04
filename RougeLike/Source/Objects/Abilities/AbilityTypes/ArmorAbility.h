@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Ability.h"
+#include "Objects/Abilities/AbilityClasses/TargetAbilities.h"
 #include "Objects/Attributes/Armor.h"
 
 class ArmorAbility : public TargetSelfAbility
@@ -15,7 +15,7 @@ public:
 	void fastUpdate(float dt) override { }
 	void slowUpdate(float dt) override;
 
-	TargetType targetType() const override { return TargetType::Self; }
+	AbilityTarget targetType() const override { return AbilityTarget::Self; }
 
 
 protected:

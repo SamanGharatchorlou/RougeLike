@@ -89,8 +89,6 @@
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\ChargeAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\BlinkAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\ArmorAbility.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\AbilityCreator.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\Ability.cpp" />
     <ClCompile Include="Source\Map\MapDebugging.cpp" />
     <ClCompile Include="Source\Map\TrapManager.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\BlinkEffect.cpp" />
@@ -142,6 +140,10 @@
     <ClCompile Include="Source\Utilities\BasicString.cpp" />
     <ClCompile Include="Source\System\Files\Attributes.cpp" />
     <ClCompile Include="Source\Debug\DebugDraw.cpp" />
+    <ClCompile Include="Source\Graphics\TextureMap.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityClasses\TargetAbilities.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityClasses\Ability.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityClasses\RangedAbility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -250,8 +252,6 @@
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\ChargeAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\BilnkAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\ArmorAbility.h" />
-    <ClInclude Include="Source\Objects\Abilities\AbilityCreator.h" />
-    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\Ability.h" />
     <ClInclude Include="Source\Objects\Abilities\Cooldown.h" />
     <ClInclude Include="Source\Map\MapDebugging.h" />
     <ClInclude Include="Source\Utilities\UniqueQueue.h" />
@@ -307,6 +307,11 @@
     <ClInclude Include="Source\Utilities\BasicString.h" />
     <ClInclude Include="Source\Debug\DebugDraw.h" />
     <ClInclude Include="Source\Debug\DebugSettings.h" />
+    <ClInclude Include="Source\Graphics\TextureMap.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityClasses\AbilityStates.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityClasses\TargetAbilities.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityClasses\Ability.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityClasses\RangedAbility.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

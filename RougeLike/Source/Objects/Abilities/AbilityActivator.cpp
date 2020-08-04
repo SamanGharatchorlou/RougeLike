@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "AbilityActivator.h"
 
-#include "AbilityTypes/Ability.h"
+#include "AbilityClasses/TargetAbilities.h"
 
 #include "Input/InputManager.h"
 #include "Map/Environment.h"
@@ -13,7 +13,7 @@
 
 bool AbilityActivator::canSelect(Ability* ability) const
 {
-	if (ability->state() == Ability::Idle)
+	if (ability->state() == AbilityState::Idle)
 	{
 		return true;
 	}
@@ -48,12 +48,12 @@ bool AbilityActivator::activate(Ability* ability, Button::State buttonState, con
 {
 	bool didActivate = false;
 
-	if (ability->state() == Ability::Selected)
+	if (ability->state() == AbilityState::Selected)
 	{
 		switch (ability->targetType())
 		{
 			// Player casts on self
-		case Ability::TargetType::Self:
+		case AbilityTarget::Self:
 		{
 			if (buttonState == Button::State::Released)
 			{
@@ -63,7 +63,7 @@ bool AbilityActivator::activate(Ability* ability, Button::State buttonState, con
 			break;
 		}
 		// Activate on first enemy selected
-		case Ability::TargetType::Actor:
+		case AbilityTarget::Actor:
 		{
 			if (input->isCursorReleased(Cursor::Left))
 			{
@@ -73,8 +73,8 @@ bool AbilityActivator::activate(Ability* ability, Button::State buttonState, con
 			break;
 		}
 		// Select any floor tile
-		case Ability::TargetType::Position:
-		case Ability::TargetType::AttackArea:
+		case AbilityTarget::Position:
+		case AbilityTarget::AttackArea:
 		{
 			if (input->isCursorReleased(Cursor::Left))
 			{

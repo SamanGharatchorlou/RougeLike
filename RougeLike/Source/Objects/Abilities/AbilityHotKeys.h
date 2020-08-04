@@ -1,6 +1,6 @@
 #pragma once
 
-#include "AbilityTypes/Ability.h"
+#include "AbilityClasses/AbilityStates.h"
 #include "Input/Button.h"
 
 class TextureManager;

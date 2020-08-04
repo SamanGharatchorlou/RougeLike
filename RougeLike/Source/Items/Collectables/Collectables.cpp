@@ -12,8 +12,16 @@
 #endif
 
 
-Collectables::Collectables(GameData* gameData) : mCollisions(gameData->collisionManager), mBuilder(gameData->textureManager)
-{ }
+Collectables::Collectables(GameData* gameData) : mCollisions(gameData->collisionManager), mBuilder(gameData->textureManager) { }
+
+Collectables::~Collectables()
+{
+	for (int i = 0; i < mCollectables.size(); i++)
+	{
+		mBuilder.returnCollectable(mCollectables[i]);
+		mCollectables[i] = nullptr;
+	}
+}
 
 
 void Collectables::spawn(const XMLParser& parser, const Map* map)

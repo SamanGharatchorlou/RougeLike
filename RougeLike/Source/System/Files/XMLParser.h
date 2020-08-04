@@ -10,12 +10,7 @@ public:
 	XMLParser() { };
 	XMLParser(const BasicString& file) { parseXML(file); }
 
-	~XMLParser()
-	{
-
-		delete file;
-		file = nullptr;
-	}
+	~XMLParser();
 
 	void parseXML(const BasicString& filePath);
 

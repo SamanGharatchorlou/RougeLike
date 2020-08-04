@@ -13,6 +13,7 @@ class Collectables
 {
 public:
 	Collectables(GameData* gameData);
+	~Collectables();
 
 	void setCollector(PlayerManager* collector);
 
@@ -25,14 +26,9 @@ public:
 
 
 private:
-	//void oscillate(Collectable* collectable, float dt);
-
-
-private:
 	PlayerManager* mCollector;
 	CollisionManager* mCollisions;
 
-	//Timer<float> timer;
 	CollectableSpawner mSpawner;
 	CollectableBuilder mBuilder;
 

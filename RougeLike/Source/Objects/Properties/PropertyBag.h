@@ -52,6 +52,7 @@ protected:
 	void fillData(const StringMap& stringMap) override;
 	Property* getNewProperty(const BasicString& name) const;
 
+
 protected:
 	PropertyMap mData;
 };

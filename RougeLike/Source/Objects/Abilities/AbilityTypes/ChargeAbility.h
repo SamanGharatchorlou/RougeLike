@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Ability.h"
+
+#include "Objects/Abilities/AbilityClasses/TargetAbilities.h"
 #include <unordered_set>
 
 class ChargeAbility : public TargePositionAttackAbility

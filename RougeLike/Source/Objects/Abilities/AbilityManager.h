@@ -1,17 +1,15 @@
 #pragma once
 
-#include "Events/LocalDispatcher.h"
+#include "AbilityClasses/AbilityStates.h"
 #include "AbilityActivator.h"
 #include "AbilityHotKeys.h"
 #include "AbilityBuilder.h"
-#include "AbilityTypes/Ability.h"
+#include "Events/LocalDispatcher.h"
 
 
 class Actor;
 class TextureManager;
 class InputManager;
-class EffectPool;
-class Environment;
 class Screen;
 
 
@@ -19,6 +17,7 @@ class AbilityManager
 {
 public:
 	AbilityManager(TextureManager* textures, Actor* caster, Screen* screen);
+	~AbilityManager();
 
 	void init(Environment* environment);
 
@@ -28,7 +27,7 @@ public:
 	void render();
 
 	void addAbility(const BasicString& name, Actor* caster);
-	void setState(Ability* ability, Ability::State state);
+	void setState(Ability* ability, AbilityState state);
 
 	bool inSelectionMode() const;
 

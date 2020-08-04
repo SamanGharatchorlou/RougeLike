@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Ability.h"
+
+#include "Objects/Abilities/AbilityClasses/TargetAbilities.h"
 
 
 class SpikeAbility : public TargePositionAttackAbility

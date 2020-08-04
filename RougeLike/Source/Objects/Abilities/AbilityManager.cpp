@@ -1,23 +1,22 @@
 #include "pch.h"
 #include "AbilityManager.h"
 
-#include "Input/InputManager.h"
-#include "Graphics/Texture.h"
-#include "Graphics/TextureManager.h"
-
-#include "Actors/Actor.h"
-#include "Actors/ActorManager.h"
-
-#include "Animations/AnimationReader.h"
-
-// TEMP
-#include "AbilityCreator.h"
-#include "AbilityBuilder.h"
-
+#include "AbilityClasses/Ability.h"
 
 AbilityManager::AbilityManager(TextureManager* textures, Actor* caster, Screen* screen) :
 	mBuilder(textures), mHotKeys(textures, screen)
 { }
+
+
+
+AbilityManager::~AbilityManager()
+{
+	for (int i = 0; i < mAbilities.size(); i++)
+	{
+		Ability* ability = mAbilities[i];
+		delete ability;
+	}
+}
 
 
 void AbilityManager::init(Environment* environment)
@@ -36,17 +35,17 @@ void AbilityManager::handleInput(const InputManager* input)
 
 		if (mActivator.canSelect(ability) && mActivator.selected(ability, buttonState))
 		{
-			setState(ability, Ability::Selected);
+			setState(ability, AbilityState::Selected);
 		}
 
 		if (mActivator.activate(ability, buttonState, input))
 		{
-			setState(ability, Ability::Activate);
+			setState(ability, AbilityState::Activate);
 		}
 
-		if (ability->state() == Ability::Selected && mActivator.released(ability, buttonState))
+		if (ability->state() == AbilityState::Selected && mActivator.released(ability, buttonState))
 		{
-			setState(ability, Ability::Idle);
+			setState(ability, AbilityState::Idle);
 		}
 	}
 }
@@ -56,35 +55,35 @@ void AbilityManager::handleStates(Ability* ability, float dt)
 {
 	switch (ability->state())
 	{
-	case Ability::Activate:
+	case AbilityState::Activate:
 	{
 		if (!ability->cooldown().hasStarted())
 		{
 			ability->cooldown().begin();
-			setState(ability, Ability::Running);
+			setState(ability, AbilityState::Running);
 		}
 		break;
 	}
-	case Ability::Running:
+	case AbilityState::Running:
 	{
 		ability->fastUpdate(dt);
 		ability->slowUpdate(dt);
 
 		if (ability->cooldown().hasCompleted())
 		{
-			setState(ability, Ability::Finished);
+			setState(ability, AbilityState::Finished);
 		}
 
 		break;
 	}
-	case Ability::Finished:
+	case AbilityState::Finished:
 	{
 		ability->exit();
-		setState(ability, Ability::Idle);
+		setState(ability, AbilityState::Idle);
 		break;
 	}
-	case Ability::Idle:
-	case Ability::Selected:
+	case AbilityState::Idle:
+	case AbilityState::Selected:
 	default:
 		break;
 	}
@@ -103,9 +102,9 @@ void AbilityManager::slowUpdate(float dt)
 
 void AbilityManager::handleEvents(Ability* ability)
 {
-	while (ability->hasEvent())
+	while (ability->events().hasEvent())
 	{
-		EventPacket event = ability->popEvent();
+		EventPacket event = ability->events().pop();
 
 		if (event.data->eventType == Event::ActivateAbilityOn)
 		{
@@ -134,7 +133,7 @@ bool AbilityManager::inSelectionMode() const
 {
 	for (int i = 0; i < mAbilities.size(); i++)
 	{
-		if (mAbilities[i]->state() == Ability::Selected)
+		if (mAbilities[i]->state() == AbilityState::Selected)
 		{
 			return true;
 		}
@@ -155,7 +154,7 @@ void AbilityManager::addAbility(const BasicString& name, Actor* caster)
 		ability->setCaster(caster);
 
 		AbilityType type = ability->type();
-		setState(ability, Ability::Idle);
+		setState(ability, AbilityState::Idle);
 
 		mHotKeys.addHotKey(type);
 		mAbilities.push_back(ability);
@@ -167,17 +166,17 @@ void AbilityManager::addAbility(const BasicString& name, Actor* caster)
 }
 
 
-void AbilityManager::setState(Ability* ability, Ability::State state)
+void AbilityManager::setState(Ability* ability, AbilityState state)
 {
 	ability->setState(state);
 
-	if(state == Ability::Selected)
+	if(state == AbilityState::Selected)
 		sendSetTextColourEvent(ability, Colour::Green);
 
-	else if (state == Ability::Running)
+	else if (state == AbilityState::Running)
 		sendSetTextColourEvent(ability, Colour::Red);
 
-	else if (state == Ability::Idle)
+	else if (state == AbilityState::Idle)
 		sendSetTextColourEvent(ability, Colour::White);
 }
 

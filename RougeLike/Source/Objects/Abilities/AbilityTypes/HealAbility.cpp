@@ -55,6 +55,6 @@ void HealAbility::updateUI()
 	{
 		Health* hp = static_cast<Health*>(mCaster->getProperty("Health"));
 		SetHealthBarEvent* hpPtr = new SetHealthBarEvent(*hp);
-		pushEvent(EventPacket(hpPtr));
+		mEvents.push(EventPacket(hpPtr));
 	}
 }
