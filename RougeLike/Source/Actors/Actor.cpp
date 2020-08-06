@@ -15,12 +15,20 @@
 #include "Objects/Effects/EffectTypes/Effect.h"
 
 
+// TEMP
+#include "Objects/Properties/EffectBag.h"
+
+
 Actor::Actor() : mVisibility(true) { }
 
 
-void Actor::setCharacter(const XMLParser& parser, TextureManager* textureManager)
+void Actor::setCharacter(const XMLParser& parser, const TextureManager* textureManager)
 {
 	mPropertyBag.readData(parser, "Properties");
+
+	EffectBag bag;
+	XMLNode effects = parser.root().first("Effects");
+	bag.readEffects(effects);
 
 	// Animations
 	AnimationReader reader(textureManager, parser);
@@ -46,6 +54,13 @@ void Actor::setCharacter(const XMLParser& parser, TextureManager* textureManager
 }
 
 
+void Actor::set(Environment* environment) 
+{ 
+	mEnvironment = environment;
+	mEffects.init(environment->effectPool());
+}
+
+
 void Actor::updatePhysicsStats()
 {
 	mPhysics.init(getPropertyValue("Force"), getPropertyValue("MaxVelocity"));
@@ -65,7 +80,6 @@ void Actor::slowUpdate(float dt)
 	mAnimator.slowUpdate(dt);
 
 	mEffects.slowUpdate(dt);
-	mEffects.returnExhaustedEffects(mEnvironment->effectPool());
 }
 
 
@@ -82,7 +96,7 @@ void Actor::reset()
 {
 	mPhysics.reset();
 	mAnimator.clear();
-	mEffects.clear();
+	//mEffects.clear();
 	//mPropertyBag.resetProperties(); // TODO: need to clear properties?
 }
 
@@ -108,7 +122,7 @@ bool Actor::hasProperty(const BasicString& property) const
 void Actor::addEffect(Effect* effect)
 {
 	effect->setReceiver(this);
-	mEffects.addEffect(effect);
+	mEffects.addReceivedEffect(effect);
 }
 
 void Actor::handleEffects(EffectCollider* effectCollider)

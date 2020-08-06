@@ -7,18 +7,9 @@ class Texture;
 class UIBox : public UIElement
 {
 public:
-	struct Data : public UIElement::Data
-	{
-		Texture* texture;
-#if _DEBUG
-		bool drawRect = false;
-#endif
-	};
-
-public:
-	UIBox() : mTexture(nullptr) { }
-	UIBox(Data& data);
-	~UIBox() { }
+	UIBox();
+	UIBox(const Attributes& attributes);
+	virtual ~UIBox() { }
 
 	void setTexture(Texture* texture) { mTexture = texture; }
 	const Texture* texture() const { return mTexture; }

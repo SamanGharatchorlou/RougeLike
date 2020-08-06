@@ -6,14 +6,12 @@
 Devil::Devil() { }
 
 
-void Devil::init(TextureManager* textureManager, EffectPool* effects)
+void Devil::init(TextureManager* textureManager)
 {
 	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs_Objects, "Devil"));
 
 	setCharacter(parser, textureManager);
 
-
-	ValueBag effectValues;
-	effectValues.readData(parser, "Effects");
-
+	//ValueBag effectValues;
+	//effectValues.readData(parser, "Effects");
 }

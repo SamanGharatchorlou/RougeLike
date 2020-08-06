@@ -11,7 +11,7 @@
 
 void DataBag::readData(const XMLParser& parser, const BasicString& nodeName)
 {
-	xmlNode propertyNode = parser.rootNode()->first_node(nodeName.c_str());
+	XMLNode propertyNode = parser.root().first(nodeName);
 	if (propertyNode)
 	{
 		StringMap map = readValues(propertyNode);
@@ -25,15 +25,15 @@ void DataBag::readData(const XMLParser& parser, const BasicString& nodeName)
 
 
 // Pull raw config data from file into code
-StringMap DataBag::readValues(xmlNode node) const
+StringMap DataBag::readValues(XMLNode node) const
 {
 	StringMap stringMap;
-	xmlNode valueNode = node->first_node();
+	XMLNode valueNode = node.first();
 
-	while (valueNode != nullptr)
+	while (valueNode)
 	{
-		stringMap[valueNode->name()] = valueNode->value();
-		valueNode = valueNode->next_sibling();
+		stringMap[valueNode.name()] = valueNode.value();
+		valueNode = valueNode.next();
 	}
 
 	return stringMap;
@@ -41,6 +41,12 @@ StringMap DataBag::readValues(xmlNode node) const
 
 
 // ---------- ValueBag --------------
+ValueBag::ValueBag(XMLNode node)
+{
+	StringMap data = readValues(node);
+	fillData(data);
+}
+
 
 void ValueBag::fillData(const StringMap& stringMap)
 {

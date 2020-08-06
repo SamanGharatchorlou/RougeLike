@@ -1,13 +1,12 @@
 #pragma once
 
 #include "Weapons/Weapon.h"
+#include "Weapons/WeaponData.h"
 
-#if _DEBUG
-#include "Debug/DebugDraw.h"
-#endif
 
 struct MeleeWeaponData;
 class EffectCollider;
+class Collider;
 
 
 class MeleeWeapon : public Weapon
@@ -32,15 +31,9 @@ public:
 
 	void updateAimDirection(VectorF cursorPosition) override;
 
-	// Stats
-	// TODO: can remove some of these? just pull from the data?
-	const MeleeWeaponData* getData() const { return mMeleeData; }
+	VectorF& offset() override;
 	const float getAngle() const { return getRotation(mDirection); }
-	const float maxSwingAngle() const;
-	const float swingSpeed() const { return mSwingSpeed; }
-	const float knockbackDistance() const;
-
-	const std::vector<Collider*> getColliders() override;
+	const std::vector<Collider*> getColliders() const override;
 	const std::vector<RectF> getRects() const { return mBlockRects; }
 
 	void flipSide() { mSwingDirection *= -1; }
@@ -57,14 +50,13 @@ private:
 
 
 private:
-	const MeleeWeaponData* mMeleeData;
+	MeleeWeaponData mData;
 
 	std::vector<RectF> mBlockRects;
 	std::vector<EffectCollider*> mBlockColliders;
 
 	int mSwingDirection;
 	float mRotationSum;
-	float mSwingSpeed;
 
 	VectorF mAboutPoint;
 

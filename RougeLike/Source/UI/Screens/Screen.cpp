@@ -1,46 +1,89 @@
 #include "pch.h"
 #include "Screen.h"
 
-#include "Game/GameData.h"
+#include "UI/Elements/UIElement.h"
+#include "UI/Elements/UIButton.h"
+
 #include "Input/InputManager.h"
 
-#include "UILayer.h"
-
-
-Screen::Screen(GameData* gameData) : mGameData(gameData) { }
-
-
-void Screen::set(std::vector<UILayer*> layers)
-{
-	mLayers = layers;
-}
-
-
-void Screen::add(std::vector<UILayer*> layers)
-{
-	for (int i = 0; i < layers.size(); i++)
-	{
-		mLayers.push_back(layers[i]);
-	}
-}
 
 Screen::~Screen()
 {
-	for (UILayer* layer: mLayers)
-	{
-		delete layer;
-	}
+	Elements elements = mScreenLayers.elementList();
 
-	mLayers.clear();
+	for (UIElement*& element : elements)
+	{
+		delete element;
+		element = nullptr;
+	}
+}
+
+
+
+void Screen::add(ScreenLayers& layers)
+{
+	for (int i = 0; i < layers.size(); i++)
+	{
+		mScreenLayers.add(layers.layer(i));
+	}
+}
+
+
+void Screen::updateButtons(const InputManager* input)
+{
+	Elements elements = mScreenLayers.elementList();
+	for (UIElement* element : elements)
+	{
+		if (element->type() == UIElement::Type::Button)
+		{
+			UIButton* button = static_cast<UIButton*>(element);
+
+			if (button->isPointInBounds(input->cursorPosition()))
+			{
+				button->setState(UIButton::State::Hovering);
+				button->setPressed(input->isCursorPressed(Cursor::Left));
+				button->setHeld(input->isCursorHeld(Cursor::Left));
+				button->setReleased(input->isCursorReleased(Cursor::Left));
+			}
+			else
+			{
+				button->reset();
+			}
+		}
+	}
 }
 
 
 void Screen::render()
 {
-	ASSERT(Warning, mLayers.size() > 0, "Screen must have at least 1 layer\n");
-
-	for (unsigned int i = 0; i < mLayers.size(); i++)
+	for (const ScreenLayer& layer : mScreenLayers.layers())
 	{
-		mLayers[i]->render();
-	}	
+		for (UIElement* element : layer)
+		{
+			element->render();
+		}
+	}
+}
+
+
+
+UIElement* Screen::find(const BasicString& id)
+{
+	return mScreenLayers.find(id);
+}
+
+UIButton* Screen::findButton(const BasicString& id)
+{
+	UIElement* element = mScreenLayers.find(id);
+
+	if (element->type() == UIElement::Type::Button)
+	{
+		UIButton* button = static_cast<UIButton*>(element);
+		return button;
+	}
+	else
+	{
+		DebugPrint(Log, "Attemping to use findButton on a none button element, ID: '%s'\n", id.c_str());
+		return nullptr;
+	}
 }

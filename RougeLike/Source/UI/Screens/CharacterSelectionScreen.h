@@ -2,16 +2,17 @@
 
 #include "Screen.h"
 
-struct GameData;
 
 class CharacterSelectionScreen : public Screen
 {
 public:
-	CharacterSelectionScreen(GameData* gameData);
+	CharacterSelectionScreen(const TextureManager* textures);
 
 	void enter() override;
-	void exit() override { };
+
+	void handleInput(const InputManager* input) { };
 	void update(float dt) override;
+	void exit() override { };
 
 	const BasicString& selectedCharacter() const { return mSelectedCharacter; }
 	const BasicString& selectedWeapon() const { return mSelectedWeapon; }
@@ -20,9 +21,17 @@ public:
 
 	Type type() override { return Type::CharacterSelection; }
 
+
+private:
+	void selectWeapon();
+
+
 private:
 	BasicString mSelectedCharacter;
 	BasicString mSelectedWeapon;
 
 	bool mEnterGame;
+
+	UIButton* mPlayButton;
+	//UIBox* mButtonBackground;
 };

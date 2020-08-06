@@ -30,7 +30,7 @@ public:
 	LocalDispatcher& events() { return mEvents; }
 
 	void setPosition(VectorF position);
-	void selectCharacter(const BasicString& characterConfig, TextureManager* textureManager);
+	void selectCharacter(const BasicString& characterConfig, const TextureManager* textureManager);
 	void selectWeapon(const BasicString& weaponName);
 	void addAbility(const BasicString& ability);
 
@@ -40,7 +40,7 @@ private:
 	Player mPlayer;
 	AbilityManager mAbilities;
 	PlayerCollisions mPlayerCollisions;
-	WeaponStash weaponStash;
+	WeaponStash mWeaponStash;
 
 	LocalDispatcher mEvents;
 };

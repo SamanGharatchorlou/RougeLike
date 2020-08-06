@@ -6,14 +6,8 @@
 #include "Game/Camera.h"
 
 #include "Enemy.h"
-
-
-// State specific updates
 #include "Actors/Enemies/EnemyStates/EnemyAttack.h"
 
-#if DRAW_AI_PATH_COSTMAP
-#include "UI/Elements/UITextBox.h"
-#endif
 
 
 EnemyManager::EnemyManager(GameData* gameData) : mCollisions(gameData->collisionManager), mBuilder(gameData->textureManager) { }
@@ -104,14 +98,32 @@ void EnemyManager::render()
 
 void EnemyManager::clearAllEnemies()
 {
-	std::vector<Enemy*>::iterator iter = mActiveEnemies.begin();
-
-	while (mActiveEnemies.size() > 0)
+	if (mActiveEnemies.size() > 0)
 	{
-		clearAndRemove(iter);
+		std::vector<Enemy*>::iterator iter = mActiveEnemies.begin();
+
+		while (mActiveEnemies.size() > 0)
+		{
+			clearAndRemove(iter);
+		}
 	}
 
 	ASSERT(Warning, mCollisions.isEmpty(), "Enemy colliders are left in the collision trackers when they shouldn't be!\n");
+}
+
+
+
+std::vector<Actor*> EnemyManager::getActiveEnemies() const
+{ 
+	std::vector<Actor*> actors;
+	actors.reserve(mActiveEnemies.size());
+
+	for (int i = 0; i < mActiveEnemies.size(); i++)
+	{
+		actors.push_back(mActiveEnemies[i]);
+	}
+
+	return actors;
 }
 
 

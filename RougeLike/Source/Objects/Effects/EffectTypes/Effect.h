@@ -2,6 +2,7 @@
 
 class Actor;
 class Map;
+class ValueBag;
 
 #include "EffectTypes.h"
 
@@ -17,6 +18,7 @@ public:
 	
 	virtual void clearData() { };
 	virtual void fill(ValueMap& valueMap) { } // = 0;
+	virtual void fill(const ValueBag& values) { } // = 0;
 
 	virtual void init() = 0;
 	virtual void fastUpdate(float dt) = 0;

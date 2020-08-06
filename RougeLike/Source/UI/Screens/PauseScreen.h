@@ -7,28 +7,29 @@ struct GameData;
 class PauseScreen : public Screen
 {
 public:
-	PauseScreen(GameData* gameData);
+	PauseScreen(const TextureManager* textures);
 
-	void update(float dt) override;
-	
 	void enter() override;
+	void handleInput(const InputManager* input) { }
+	void update(float dt) override;
 	void exit() override;
 
-	bool quitGame() const { return mQuitGame; }
-	bool resumeGame() const { return mResumeGame; }
-	bool restartGame() const { return mRestartGame; }
-	bool openSettings() const { return mOpenSettings; }
+	bool quitGame() const { return mStates.at("QuitButton"); }
+	bool resumeGame() const { return mStates.at("ResumeButton"); }
+	bool restartGame() const { return mStates.at("RestartButton"); }
+	bool openSettings() const { return mStates.at("SettingsButton"); }
 
 	Type type() override { return Type::Pause; }
 
 
 private:
+	void resetButtonStates();
 	void updateBoxTexture(BasicString buttonId, BasicString boxId);
+	void setButtonsAndStates();
 
+	void addButtonAndState(const BasicString& label);
 
 private:
-	bool mResumeGame;
-	bool mQuitGame;
-	bool mRestartGame;
-	bool mOpenSettings;
+	std::unordered_map<BasicString, UIButton*> mButtons;
+	std::unordered_map<BasicString, bool> mStates;
 };

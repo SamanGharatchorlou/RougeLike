@@ -17,6 +17,7 @@ public:
 
 	Attributes attributes() const;
 	StringMap stringMap() const;
+	ValueMap valueMap() const;
 
 	XMLNode first() const { return XMLNode(node->first_node()); }
 	XMLNode first(const BasicString& label) const { return XMLNode(node->first_node(label.c_str())); }

@@ -8,10 +8,8 @@
 
 
 struct GameData;
-class EffectPool;
 class Environment;
 class InputManager;
-class RenderManager;
 class TextureManager;
 
 class ActorManager : public Observer, public Dispatcher
@@ -42,9 +40,7 @@ public:
 
 private:
 	TextureManager* mTextures;
-	RenderManager* mRendering;
 
 	PlayerManager mPlayer;
-
 	EnemyManager mEnemies;
 };

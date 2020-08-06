@@ -8,59 +8,49 @@
 #include "UI/Elements/UIButton.h"
 
 
-CharacterSelectionScreen::CharacterSelectionScreen(GameData* gameData) :
-	Screen(gameData), 
-	mEnterGame(false)
-{
+CharacterSelectionScreen::CharacterSelectionScreen(const TextureManager* textures) : Screen(textures), mEnterGame(false), mPlayButton(nullptr) { }
 
-}
 
 void CharacterSelectionScreen::enter()
 {
-	UIBox* character = static_cast<UIBox*>(mGameData->uiManager->findElement("Character"));
+	UIBox* character = static_cast<UIBox*>(find("Character"));
+	mSelectedCharacter = mTextures->getTextureName(character->texture());
 
-	BasicString str = mGameData->textureManager->getTextureName(character->texture());
-	mSelectedCharacter.move(str);// = str;//.copy(*str);
-
-	Texture* texture = mGameData->textureManager->getTexture(mSelectedCharacter + "Icon", FileManager::Image_UI);
+	Texture* texture = mTextures->getTexture(mSelectedCharacter + "Icon", FileManager::Image_UI);
 	character->setTexture(texture);
+
+	mPlayButton = findButton("PlayButton");
 }
 
 
 void CharacterSelectionScreen::update(float dt)
 {
-	UIButton* button = mGameData->uiManager->findButton("PlayButton");
-
-	if (button)
+	if (mPlayButton->isReleased())
 	{
-		if (button->isReleased())
-		{
-			UIBox* weapon = static_cast<UIBox*>(mGameData->uiManager->findElement("Weapon"));
-			const Texture* weaponTexture = weapon->texture();
-
-			BasicString str = mGameData->textureManager->getTextureName(weaponTexture);
-			mSelectedWeapon = str; //.copy(*str);
-			mEnterGame = true;
-		}
-
-		UIBox* boxComponent = static_cast<UIBox*>(mGameData->uiManager->findElement("CharacterNamePanel"));
-
-		if (boxComponent)
-		{
-			Texture* texture;
-
-			if (button->isHeld())
-			{
-				texture = mGameData->textureManager->getTexture("Big button Pressed", FileManager::Image_UI);
-			}
-			else
-			{
-				texture = mGameData->textureManager->getTexture("Big button Released", FileManager::Image_UI);
-			}
-
-			boxComponent->setTexture(texture);
-		}
+		selectWeapon();
+		mEnterGame = true;
 	}
+
+	//Button::State playButtonState = mPlayButton->
+
+	//if (mPlayButton->isPressed())
+	//{
+	//	UIBox* boxComponent = static_cast<UIBox*>(find("CharacterNamePanel"));
+	//	if (boxComponent)
+	//	{
+	//		BasicString textureId = mPlayButton->isHeld() ? "Big button Pressed" : "Big button Released";
+	//		Texture* texture = mTextures->getTexture(textureId, FileManager::Image_UI);
+	//		boxComponent->setTexture(texture);
+	//		printf("setting");
+	//	}
+	//}
 }
 
 
+void CharacterSelectionScreen::selectWeapon()
+{
+	UIBox* weapon = static_cast<UIBox*>(find("Weapon"));
+	const Texture* weaponTexture = weapon->texture();
+
+	mSelectedWeapon = mTextures->getTextureName(weaponTexture);
+}

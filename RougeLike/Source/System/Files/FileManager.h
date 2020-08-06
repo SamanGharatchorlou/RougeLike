@@ -20,7 +20,7 @@ public:
 
 		Configs,
 		Configs_Objects,
-		Config_UI,
+		Config_Menus,
 		Config_Map,
 		Config_Enemies,
 		Config_Player,
@@ -39,6 +39,7 @@ public:
 
 public:
 	static FileManager* Get();
+	void free();
 
 	BasicString generatePath(const Folder folder) const;
 

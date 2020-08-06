@@ -2,6 +2,8 @@
 
 #include "Actors/Actor.h"
 
+class Weapon;
+class WeaponData;
 class MeleeWeapon;
 class AudioManager;
 class TextureManager;
@@ -15,6 +17,7 @@ public:
 	Player();
 	~Player() { };
 
+	void setWeaponType(Weapon* weapon);
 	void handleInput(const InputManager* input);
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
@@ -27,10 +30,8 @@ public:
 
 	MeleeWeapon*	weapon();
 
-	void setCharacter(XMLParser& parser, TextureManager* textureManager);
-	void setWeapon(MeleeWeapon* weapon);
-
-	//void addAbility(const BasicString& name);
+	void setCharacter(const XMLParser& parser, const TextureManager* textureManager);
+	void selectWeapon(WeaponData* weapon);
 
 	void overrideControl(bool removeControl);
 	bool userHasControl() { return !mControlOverride; }
@@ -53,7 +54,7 @@ private:
 
 	Vector2D<int> tileIndex;
 
-	MeleeWeapon* mWeapon;
+	Weapon* mWeapon;
 
 	bool mControlOverride;
 	bool mBodyCollisions;

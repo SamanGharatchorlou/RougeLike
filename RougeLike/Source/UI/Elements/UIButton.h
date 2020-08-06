@@ -9,12 +9,6 @@ class Texture;
 class UIButton : public UIBox
 {
 public:
-	struct Data : public UIBox::Data
-	{
-		Texture* selectedTexture;
-		Texture* hoveringTexture;
-	};
-
 	enum State
 	{
 		None,
@@ -25,8 +19,10 @@ public:
 
 
 public:
-	UIButton(Data& data);
+	UIButton(const Attributes& attributes);
 	~UIButton() { }
+
+	void setTextures(Texture* defaultTexture, Texture* selected, Texture* hovering);
 
 	void reset();
 

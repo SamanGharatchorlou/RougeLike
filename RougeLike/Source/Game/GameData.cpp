@@ -41,8 +41,9 @@ void GameData::load()
 	audioManager->init();
 
 	// UI
-	uiManager = new UIManager(this);
-	uiManager->init();
+	uiManager = new UIManager;
+	uiManager->setupScreens(textureManager);
+	uiManager->initCursor(inputManager->getCursor());
 
 	// Rendering
 	renderManager = new RenderManager;
@@ -54,16 +55,10 @@ void GameData::load()
 	collisionManager = new CollisionManager;
 	collisionManager->init();
 
-	//// Effect Pool, must be before actors
-	//effectPool = new EffectPool(this);
-
 	// Map Level
 	environment = new Environment(this);
 	environment->init();
 	environment->load();
-
-	// Actors
-	//actors = new ActorManager(this);
 
 	// Must be done AFTER everything has been new'd
 	setupObservers();
@@ -83,6 +78,7 @@ void GameData::setupObservers()
 	environment->actors()->addObserver(uiManager);
 	environment->actors()->addObserver(Camera::Get()->getShake());
 	environment->actors()->addObserver(scoreManager);
+	environment->actors()->addObserver(renderManager);
 }
 
 

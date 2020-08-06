@@ -10,11 +10,11 @@
 
 // temp
 #include "Objects/Effects/EffectTypes/Effect.h"
+#include "Objects/Effects/EffectManager.h"
 
-struct GameData;
+
 class Property;
 class Map;
-class EffectPool;
 class Environment;
 class TextureManager;
 
@@ -25,9 +25,9 @@ public:
 	Actor();
 	virtual ~Actor() { };
 
-	void set(Environment* environment) { mEnvironment = environment; }
+	void set(Environment* environment);
 
-	void setCharacter(const XMLParser& parser, TextureManager* textureManager);
+	void setCharacter(const XMLParser& parser, const TextureManager* textureManager);
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
 	void render();
@@ -48,6 +48,7 @@ public:
 	LocalDispatcher& events() { return mEvents; }
 	Animator&	animator() { return mAnimator; }
 	Physics*	physics() { return &mPhysics; }
+	EffectManager& effects() { return mEffects; }
 	const Physics* physics() const { return &mPhysics; }
 	void updatePhysicsStats();
 
@@ -69,7 +70,7 @@ protected:
 protected:
 	Environment* mEnvironment;
 
-	EffectHandler mEffects;
+	EffectManager mEffects;
 
 	PropertyBag mPropertyBag;
 

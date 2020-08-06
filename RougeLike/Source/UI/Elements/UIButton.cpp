@@ -2,12 +2,16 @@
 #include "UIButton.h"
 
 
-UIButton::UIButton(Data& data) :
-	UIBox(data),
-	mDefault(data.texture), mSelected(data.selectedTexture), mHovered(data.hoveringTexture),
-	mState(State::None)
+UIButton::UIButton(const Attributes& attributes) :
+	UIBox(attributes), mState(State::None),
+	mDefault(nullptr), mSelected(nullptr), mHovered(nullptr) { }
+
+
+void UIButton::setTextures(Texture* defaultTexture, Texture* selected, Texture* hovering)
 {
-	ASSERT(Error, data.texture != nullptr, "UIButton must have a default texture assigned\n");
+	mDefault = defaultTexture;
+	mSelected = selected;
+	mHovered = hovering;
 }
 
 

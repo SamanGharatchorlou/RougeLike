@@ -21,7 +21,6 @@ StringMap XMLNode::stringMap() const
 	StringMap stringMap;
 
 	xmlNode childNode = node->first_node();
-
 	while (childNode != nullptr)
 	{
 		stringMap[childNode->name()] = childNode->value();
@@ -30,4 +29,19 @@ StringMap XMLNode::stringMap() const
 
 	ASSERT(Warning, stringMap.size() != 0, "Node %s has no value\n", node->name());
 	return stringMap;
+}
+
+ValueMap XMLNode::valueMap() const
+{
+	ValueMap valueMap;
+
+	xmlNode childNode = node->first_node();
+	while (childNode != nullptr)
+	{
+		valueMap[childNode->name()] = atof(childNode->value());
+		childNode = childNode->next_sibling();
+	}
+
+	ASSERT(Warning, valueMap.size() != 0, "Node %s has no value\n", node->name());
+	return valueMap;
 }

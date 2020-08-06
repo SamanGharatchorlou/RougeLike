@@ -34,6 +34,20 @@ BasicString::BasicString(const char* string, unsigned int length)
 	memcpy(mBuffer, string, length);
 }
 
+BasicString::BasicString(float number)
+{
+	char tempBuffer[20];
+	sprintf_s(tempBuffer, "%f", number);
+
+	mLength = strlen(tempBuffer);
+	mCap = mLength + 1;
+
+	mBuffer = new char[mCap];
+	memcpy(mBuffer, tempBuffer, mCap);
+}
+
+
+
 BasicString::~BasicString()
 {
 	delete[] mBuffer;
@@ -48,16 +62,16 @@ void BasicString::eliminate()
 }
 
 
-void BasicString::move(BasicString& string)
-{
-	delete[] mBuffer;
-	mBuffer = string.buffer();
-	mLength = strlen(mBuffer);
-	mCap = mLength + 1;
-
-	// remove the strings reference
-	string.eliminate();
-}
+//void BasicString::move(BasicString& string)
+//{
+//	delete[] mBuffer;
+//	mBuffer = string.buffer();
+//	mLength = strlen(mBuffer);
+//	mCap = mLength + 1;
+//
+//	// remove the strings reference
+//	string.eliminate();
+//}
 
 
 BasicString BasicString::substr(int start, int length) const
@@ -143,7 +157,7 @@ BasicString& BasicString::operator = (const BasicString& basicString)
 }
 
 
-
+// TODO: is basicStringA is null then this breaks...
 bool operator == (const BasicString& basicString, const char* string)
 {
 	return strncmp(basicString.c_str(), string, basicString.length() + 1) == 0;

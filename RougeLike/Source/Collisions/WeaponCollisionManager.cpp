@@ -28,7 +28,10 @@ void WeaponCollisionManager::processWeaponEffects(EffectPool* effects)
 		for (int i = 0; i < weaponColliders.size(); i++)
 		{
 			if (!weaponColliders[i]->hasEffects())
-				addWeaponEffects(weaponColliders[i], effects);
+			{
+				addWeaponEffects(weaponColliders[i]);
+			}
+				
 
 
 			// this will trigger as soon as I attack, only if I didHit()?
@@ -56,23 +59,31 @@ void WeaponCollisionManager::updateWeaponEffect(EffectCollider* weaponCollider)
 
 
 // top up weapon effects, ensure its always full
-void WeaponCollisionManager::addWeaponEffects(EffectCollider* weaponCollider, EffectPool* effects)
+void WeaponCollisionManager::addWeaponEffects(EffectCollider* weaponCollider)
 {
-	const MeleeWeaponData* data = mPlayer->weapon()->getData();
+	std::queue<Effect*> effects = mPlayer->effects().getAttackingEffects();
 
-	Effect* dmgEffect = effects->getObject(EffectType::Damage);
-	DamageEffect* damageEffect = static_cast<DamageEffect*>(dmgEffect);
-	damageEffect->set(data->damage);
-	weaponCollider->addEffect(damageEffect);
+	while (effects.size() > 0)
+	{
+		Effect* effect = effects.front();
+		effects.pop();
 
-	Effect* displaceEffect = effects->getObject(EffectType::Displacement);
-	DisplacementEffect* displacementEffect = static_cast<DisplacementEffect*>(displaceEffect);
+		weaponCollider->addEffect(effect);
+	}
 
-	VectorF source; // to be updated
-	float force = data->knockbackForce;
-	float distance = data->knockbackDistance;
-	displacementEffect->set(source, force, distance);
-	weaponCollider->addEffect(displacementEffect);
+	//Effect* dmgEffect = effects->getObject(EffectType::Damage);
+	//DamageEffect* damageEffect = static_cast<DamageEffect*>(dmgEffect);
+	//damageEffect->set(data->damage);
+	//weaponCollider->addEffect(damageEffect);
+
+	//Effect* displaceEffect = effects->getObject(EffectType::Displacement);
+	//DisplacementEffect* displacementEffect = static_cast<DisplacementEffect*>(displaceEffect);
+
+	//VectorF source; // to be updated
+	//float force = data->knockbackForce;
+	//float distance = data->knockbackDistance;
+	//displacementEffect->set(source, force, distance);
+	//weaponCollider->addEffect(displacementEffect);
 }
 
 void WeaponCollisionManager::clearExcludedList()

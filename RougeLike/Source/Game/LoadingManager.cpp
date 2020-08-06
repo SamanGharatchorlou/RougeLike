@@ -122,22 +122,25 @@ float LoadingManager::loadedPercentage()
 // --- Private Functions --- //
 void LoadingManager::initTextBox(VectorF screenSize)
 {
-	// Set text
-	UITextBox::Data textData;
-	textData.aligment = "";
-	textData.font = "";
-	textData.ptSize = 0;
-	textData.colour = SDL_Color{ 0, 0, 255 };
-	textData.texture = nullptr;
-	textData.text = "Loading...";
-
 	VectorF textPosition = VectorF(screenSize.x / 2.0f, screenSize.y / 1.35f);
 	VectorF textSize = VectorF(240, 100);
 	RectF textRect(VectorF(), textSize);
 	textRect.SetCenter(textPosition);
-	textData.rect = textRect;
 
-	mLoadingText = new UITextBox(textData);
+	Attributes textAttributes;
+	textAttributes.add("id", "loadingbar");
+	textAttributes.add("text", "Loading...");
+	textAttributes.add("r", "0");
+	textAttributes.add("g", "0");
+	textAttributes.add("b", "255");
+	textAttributes.add("x", textRect.TopLeft().x);
+	textAttributes.add("y", textRect.TopLeft().y);
+	textAttributes.add("width", textRect.Width());
+	textAttributes.add("height", textRect.Height());
+
+	mLoadingText = new UITextBox(textAttributes);
+
+	mLoadingText->setRect(textRect);
 	mLoadingText->autoSizeFont();
 }
 

@@ -41,3 +41,19 @@ void RenderManager::renderPackets(RenderLayer layer)
 		}
 	}
 }
+
+
+void RenderManager::handleEvent(EventData& data)
+{
+	switch (data.eventType)
+	{
+		case Event::Render:
+		{
+			RenderEvent eventData = static_cast<RenderEvent&>(data);
+
+			RenderPack renderPacket(eventData.mTexture, eventData.mRect, static_cast<RenderLayer>(eventData.mRenderLayer));
+			AddRenderPacket(renderPacket);
+			break;
+		}
+	}
+}

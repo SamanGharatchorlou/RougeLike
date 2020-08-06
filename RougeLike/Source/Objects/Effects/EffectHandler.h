@@ -15,12 +15,8 @@ public:
 	void render();
 
 	void clear();
-
-
-
 	
 	void returnExhaustedEffects(EffectPool* pool);
-
 
 
 private:

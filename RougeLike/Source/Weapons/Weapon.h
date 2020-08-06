@@ -1,16 +1,15 @@
 #pragma once
 
-#include "Objects/Abilities/Cooldown.h"
 
 struct WeaponData;
-class Collider;
 class Effect;
+class Collider;
 
 
 class Weapon
 {
 public:
-	Weapon() : mOverrideCursorControl(false), mAttacking(false) { }
+	Weapon() : mOverrideCursorControl(false), mAttacking(false), mCanPlayHitSound(true) { }
 	virtual ~Weapon() { };
 
 	virtual void attack() = 0;
@@ -19,26 +18,27 @@ public:
 	virtual void slowUpdate(float dt) = 0;
 	virtual void render() = 0;
 
-	virtual bool canPlayHitSound() { return mCanPlayHitSound; }
+	virtual bool canPlayHitSound() const { return mCanPlayHitSound; }
 	virtual const BasicString& hitSoundLabel() = 0;
 	virtual const BasicString& missSoundLabel() = 0;
 
 	bool isAttacking() const { return mAttacking; }
 	virtual bool didHit() const = 0;
 
-	virtual RectF rect() const { return mRect.Translate(mOffset); }
+	virtual RectF rect() { return mRect.Translate(offset()); }
 	virtual void setPosition(VectorF position) { mRect.SetBotCenter(position); }
 	
-	virtual void leftFlip() { mOffset.x = std::abs(mOffset.x) * -1.0f; }
-	virtual void rightFlip() { mOffset.x = std::abs(mOffset.x); }
+	virtual void leftFlip() { offset().x = std::abs(offset().x) * -1.0f; }
+	virtual void rightFlip() { offset().x = std::abs(offset().x); }
 
-
-	virtual void setOffset(VectorF offset) { mOffset = offset; }
+	virtual VectorF& offset() = 0;
+	virtual void setOffset(VectorF newOffset) { offset() = newOffset; }
 	virtual void updateAimDirection(VectorF cursorPosition) = 0;
 
 	virtual void equipt(const WeaponData* data) = 0;
 
-	virtual const std::vector<Collider*> getColliders() = 0;
+	virtual bool containsCollider(Collider* collider) const = 0;
+	virtual const std::vector<Collider*> getColliders() const = 0;
 	virtual const std::vector<RectF> getRects() const = 0;
 
 	void overrideCursorControl(bool overrideControl) { mOverrideCursorControl = overrideControl; }
@@ -46,7 +46,6 @@ public:
 
 protected:
 	RectF mRect;
-	VectorF mOffset;
 
 	VectorF mDirection;
 
@@ -56,6 +55,4 @@ protected:
 	bool mCanPlayHitSound;
 	const BasicString* mAudioToPlay;
 	const BasicString* mAudioToStop;
-
-	Cooldown mCooldown;
 };

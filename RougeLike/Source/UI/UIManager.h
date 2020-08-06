@@ -4,70 +4,43 @@
 #include "Events/Observer.h"
 #include "Events/Dispatcher.h"
 
-#if _DEBUG
-#include "Debug/DebugDraw.h"
-#endif
+#include "Debug/UIEditor.h"+
 
-struct GameData;
-class Texture;
+class TextureManager;
+class InputManager;
 class Cursor;
-class UIElement;
-class UIButton;
 
-class UIManager : public Observer, public Dispatcher
+class UIManager : public Observer
 {
 public:
-	UIManager(GameData* gameData);
+	UIManager();
 	~UIManager();
 
-	void clearScreens();
-	void refresh(Screen::Type screenType);
+	void setupScreens(const TextureManager* textures);
+	void initCursor(Cursor* cursor);
+
 	void selectScreen(Screen::Type screenType);
 
-	void init();
-	void handleInput();
+	void handleInput(const InputManager* input);
 	void update(float dt);
 	void render();
 
 	void handleEvent(EventData& data) override;
 	
-	UIElement* findElement(const BasicString& id);
-	UIButton* findButton(const BasicString& id);
-
 	Screen* screen(Screen::Type type);
-	Screen* getActiveScreen() { return activeScreen; }
-	BasicString typeToString(Screen::Type screenType);
+	Screen* getActiveScreen() { return mActiveScreen; }
 
-	bool isUsingUI() const;
+	//bool isUsingUI() const;
 
 	void setCursorTexture(Texture* texture);
 
 
 private:
-	// Event handling functions
-	void updateTextBox(UpdateTextBoxEvent& eventData);
-	void setUIbar(SetUIBarEvent& eventData);
-	void setHealth(SetHealthBarEvent& eventData);	
-	void setArmor(SetArmorBarEvent& eventData);
-	void moveElement(EditUIRectEvent& eventData);
-	void setElementSize(EditUIRectEvent& eventData);
-	void setRect(SetUIRectEvent& eventData);
-	void setTextColour(SetTextColourEvent& eventData);
-	//void setMusicVolume(SetVolumeEvent& eventData);
-	//void setGameVolume(SetVolumeEvent& eventData);
-
-
-private:
-	GameData* mGameData;
 	Cursor* mCursor;
-
-	Screen* activeScreen;
-	std::vector<Screen*> screens;
-
+	Screen* mActiveScreen;
+	std::vector<Screen*> mScreens;
 
 #if UI_EDITOR
-private:
-	void debugEditUI();
-	BasicString elementId;
+	UIEditor mEditor;
 #endif
 };

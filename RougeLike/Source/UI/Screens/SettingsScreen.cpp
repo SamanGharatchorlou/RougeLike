@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "SettingsScreen.h"
 
-#include "Game/GameData.h"
 #include "Input/InputManager.h"
 #include "UI/UIManager.h"
 #include "UI/Elements/UIButton.h"
@@ -9,7 +8,8 @@
 #include "Audio/AudioManager.h"
 
 
-SettingsScreen::SettingsScreen(GameData* gameData) : Screen(gameData) 
+
+SettingsScreen::SettingsScreen(const TextureManager* textures) : Screen(textures)
 {
 	mSliders.push_back(UISlider());
 	mSliders.push_back(UISlider());
@@ -18,52 +18,56 @@ SettingsScreen::SettingsScreen(GameData* gameData) : Screen(gameData)
 
 void SettingsScreen::enter()
 {
-	UIButton* musicSlider = mGameData->uiManager->findButton("MusicSlider");
-	UIElement* musicBar = mGameData->uiManager->findElement("MusicBarGreen");
-	UIElement* musicContainer = mGameData->uiManager->findElement("MusicBarEmpty");
-	mSliders[Music].setComponents(musicSlider, musicBar, musicContainer);
-	mSliders[Music].setValue(mGameData->audioManager->musicVolume());
+	UIButton* musicSlider = findButton("MusicSlider");
+	UIElement* musicBar = find("MusicBarGreen");
+	UIElement* musicContainer = find("MusicBarEmpty");
 
-	UIButton* soundSlider = mGameData->uiManager->findButton("SoundSlider");
-	UIElement* soundBar = mGameData->uiManager->findElement("SoundBarGreen");
-	UIElement* soundContainer = mGameData->uiManager->findElement("SoundBarEmpty");
+	mSliders[Music].setComponents(musicSlider, musicBar, musicContainer);
+	//mSliders[Music].setValue(mGameData->audioManager->musicVolume());
+
+	UIButton* soundSlider = findButton("SoundSlider");
+	UIElement* soundBar = find("SoundBarGreen");
+	UIElement* soundContainer = find("SoundBarEmpty");
+
 	mSliders[Sound].setComponents(soundSlider, soundBar, soundContainer);
-	mSliders[Sound].setValue(mGameData->audioManager->soundVolume());
+	//mSliders[Sound].setValue(mGameData->audioManager->soundVolume());
 }
 
-
-void SettingsScreen::update(float dt)
+void SettingsScreen::handleInput(const InputManager* input)
 {
-	for(int i = 0; i < Setting::Count; i++)
+	for (int i = 0; i < Setting::Count; i++)
 	{
 		// Activate slider
 		if (mSliders[i].isPressed())
 		{
 			mSliders[i].setActive(true);
-			mSliders[i].setCursorOffset(mGameData->inputManager->cursorPosition().x);
+			mSliders[i].setCursorOffset(input->cursorPosition().x);
 		}
 
 		// SetSlider position
 		if (mSliders[i].isActive())
 		{
-			mSliders[i].setPosition(mGameData->inputManager->cursorPosition().x);
+			mSliders[i].setPosition(input->cursorPosition().x);
 
-			if (i == Music)
-				mGameData->audioManager->setMusicVolume(mSliders[i].value());
-			else if (i == Sound)
-				mGameData->audioManager->setSoundVolume(mSliders[i].value());
+			//if (i == Music)
+			//	mGameData->audioManager->setMusicVolume(mSliders[i].value());
+			//else if (i == Sound)
+			//	mGameData->audioManager->setSoundVolume(mSliders[i].value());
 		}
 
 		// Deactivate slider
-		if (mGameData->inputManager->isCursorReleased(Cursor::Left))
+		if (input->isCursorReleased(Cursor::Left))
 		{
 			mSliders[i].setActive(false);
 		}
 	}
+}
 
 
+void SettingsScreen::update(float dt)
+{
 	// TODO: create button on/off functionality
-	UIButton* muteButton = mGameData->uiManager->findButton("MuteTick");
+	UIButton* muteButton = findButton("MuteTick");
 	if (!muteButton->isActive())
 	{
 		muteButton->setVisibility(false);
@@ -78,10 +82,11 @@ void SettingsScreen::update(float dt)
 		}
 	}
 
-	UIButton* closeButton = mGameData->uiManager->findButton("CloseButton");
+	UIButton* closeButton = findButton("CloseButton");
 	if (closeButton->isReleased())
 	{
-		mGameData->uiManager->selectScreen(Screen::Pause);
+		DebugPrint(Log, "Unimplemented\n");
+		//mGameData->uiManager->selectScreen(Screen::Pause);
 	}
 }
 

@@ -1,25 +1,23 @@
 #include "pch.h"
 #include "MeleeWeapon.h"
 
-#include "Objects/Properties/PropertyBag.h"
-#include "Weapons/WeaponData.h"
-
-#include "Game/Cursor.h"
 #include "Game/Camera.h"
 #include "Graphics/Texture.h"
 
+#include "Weapons/WeaponData.h"
 #include "Collisions/EffectCollider.h"
 
+#if _DEBUG
+#include "Debug/DebugDraw.h"
+#endif
 
-MeleeWeapon::MeleeWeapon() : 
-	mMeleeData(nullptr),
-	mSwingDirection(-1), 
-	mSwingSpeed(0.0f), 
+
+MeleeWeapon::MeleeWeapon() :
+	mSwingDirection(-1),
 	mRotationSum(0.0)
 {
 	// 4 blocks seems to be a good number of blocks
 	unsigned int blocks = 4;
-
 	for (unsigned int i = 0; i < blocks; i++)
 	{
 		mBlockRects.push_back(RectF());
@@ -46,31 +44,26 @@ MeleeWeapon::~MeleeWeapon()
 }
 
 
-
-
+VectorF& MeleeWeapon::offset() { return mData.offset; }
 
 void MeleeWeapon::equipt(const WeaponData* data)
 {
-	mMeleeData = static_cast<const MeleeWeaponData*>(data);
-
-	mSwingSpeed = mMeleeData->swingSpeed;
-	mOffset = mMeleeData->offset;
+	mData.copy(data);
 
 	// Set size
-	VectorF baseSize = mMeleeData->texture->originalDimentions;
-	VectorF size = realiseSize(baseSize, mMeleeData->maxDimention);
+	VectorF baseSize = mData.texture->originalDimentions;
+	VectorF size = realiseSize(baseSize, mData.maxDimention);
 	mRect.SetSize(size);
 
 	mAboutPoint = VectorF(rect().Width() / 2.0f, rect().Height() * 0.85f);
 
-	mCooldown = mMeleeData->cooldown;
-	mCooldown.begin();
+	mData.cooldown.begin();
 }
 
 
 void MeleeWeapon::attack()
 {
-	if (mCooldown.hasCompleted())
+	if (mData.cooldown.hasCompleted())
 	{
 		mAttacking = true;
 		overrideCursorControl(true);
@@ -83,16 +76,13 @@ void MeleeWeapon::fastUpdate(float dt)
 {
 	if (mAttacking)
 	{
-		if (mRotationSum > maxSwingAngle())
-		{
+		if (mRotationSum > mData.swingAngle)
 			endAttack();
-		}
 		else
-		{
 			continueAttack(dt);
-		}
 	}
 }
+
 
 
 bool MeleeWeapon::didHit() const
@@ -100,9 +90,7 @@ bool MeleeWeapon::didHit() const
 	for (const Collider* collider : mBlockColliders)
 	{
 		if (collider->didHit())
-		{
 			return true;
-		}
 	}
 
 	return false;
@@ -111,11 +99,17 @@ bool MeleeWeapon::didHit() const
 
 bool MeleeWeapon::containsCollider(Collider* collider) const
 {
-	for (const Collider* blockCollider : mBlockColliders)
+	for (int i = 0; i < mBlockColliders.size(); i++)
 	{
-		if (collider == blockCollider)
+		if (collider == mBlockColliders[i])
 			return true;
 	}
+
+	//for (const Collider* blockCollider : mBlockColliders)
+	//{
+	//	if (collider == blockCollider)
+	//		return true;
+	//}
 
 	return false;
 }
@@ -127,7 +121,7 @@ void MeleeWeapon::updateAimDirection(VectorF cursorPosition)
 	// Follow cursor
 	if (!mOverrideCursorControl)
 	{
-		float offsetAngle = (mMeleeData->swingArc / 2.0f) * mSwingDirection;
+		float offsetAngle = (mData.swingAngle / 2.0f) * mSwingDirection;
 
 		// Camera to cursor vector
 		VectorF botPoint = rect().TopLeft() + mAboutPoint;
@@ -143,7 +137,7 @@ void MeleeWeapon::updateAimDirection(VectorF cursorPosition)
 void MeleeWeapon::render()
 {
 	SDL_RendererFlip flip = (getRotation(mDirection) >= 0.0f && getRotation(mDirection) < 180.0f) ? SDL_FLIP_HORIZONTAL: SDL_FLIP_NONE;
-	mMeleeData->texture->render(Camera::Get()->toCameraCoords(rect()), getRotation(mDirection), mAboutPoint, flip);
+	mData.texture->render(Camera::Get()->toCameraCoords(rect()), getRotation(mDirection), mAboutPoint, flip);
 
 #if DRAW_PLAYER_RECTS
 	// About point
@@ -157,7 +151,7 @@ void MeleeWeapon::render()
 }
 
 
-const std::vector<Collider*> MeleeWeapon::getColliders()
+const std::vector<Collider*> MeleeWeapon::getColliders() const
 {
 	std::vector<Collider*> colliders;
 
@@ -190,24 +184,13 @@ bool MeleeWeapon::hasEffects() const
 }
 
 
-const float MeleeWeapon::maxSwingAngle() const
-{ 
-	return mMeleeData->swingArc;
-}
-
-const float MeleeWeapon::knockbackDistance() const
-{
-	return mMeleeData->knockbackDistance;
-}
-
-
 // Audio
+const BasicString& MeleeWeapon::missSoundLabel() { return mData.audioMiss(); };
 const BasicString& MeleeWeapon::hitSoundLabel() 
 { 
 	mCanPlayHitSound = false;
-	return mMeleeData->audioHit;
+	return mData.audioHit();
 };
-const BasicString& MeleeWeapon::missSoundLabel() { return mMeleeData->audioMiss; };
 
 
 /// --- Private Functions --- ///
@@ -244,11 +227,11 @@ void MeleeWeapon::updateWeaponBlocks()
 
 void MeleeWeapon::continueAttack(float dt)
 {
-	float theta = mSwingSpeed * dt;
+	float theta = mData.swingSpeed * dt;
 	mRotationSum += theta;
 
-	if (mRotationSum > maxSwingAngle())
-		theta = maxSwingAngle() - mRotationSum;
+	if (mRotationSum > mData.swingAngle)
+		theta = mData.swingAngle - mRotationSum;
 
 	mDirection = rotateVector(mDirection, theta * -mSwingDirection);
 }
@@ -263,5 +246,5 @@ void MeleeWeapon::endAttack()
 	overrideCursorControl(false);
 	mCanPlayHitSound = false;
 
-	mCooldown.begin();
+	mData.cooldown.begin();
 }

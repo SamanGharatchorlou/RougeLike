@@ -12,7 +12,6 @@ public:
 	PreGameState(GameData* gameData, GameController* gameController);
 	~PreGameState() { }
 
-	// mandatory functions must be defined
 	void init() override;
 	void slowUpdate(float dt) override;
 	void fastUpdate(float dt) override { };
@@ -22,10 +21,6 @@ public:
 
 	void resume() { };
 
-	void beginGame();
-
-private:
-	void initCollisionTrackers();
 
 private:
 	GameController* mGameController;

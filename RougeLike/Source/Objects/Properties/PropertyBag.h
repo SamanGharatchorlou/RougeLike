@@ -8,13 +8,14 @@ using PropertyMap = std::unordered_map<BasicString, Property*>;
 class DataBag
 {
 public:
-	void readData(const XMLParser& parser, const BasicString& nodeName);
+	virtual void readData(const XMLParser& parser, const BasicString& nodeName);
 	virtual ~DataBag() { };
 
 	virtual bool isEmpty() const = 0;
 
 protected:
-	virtual StringMap readValues(xmlNode node) const;
+	virtual StringMap readValues(XMLNode node) const;
+
 	virtual void fillData(const StringMap& stringMap) = 0;
 };
 
@@ -22,10 +23,13 @@ protected:
 class ValueBag : public DataBag
 {
 public:
+	ValueBag() { };
+	ValueBag(XMLNode node);
 	~ValueBag() { };
 
 	float get(const BasicString& value) const;
 	bool isEmpty() const override { return mData.size() == 0; }
+
 
 protected:
 	void fillData(const StringMap& stringMap) override;
@@ -35,7 +39,6 @@ private:
 };
 
 
-// TODO: use polymorphism below
 class PropertyBag : public DataBag
 {
 public:
@@ -56,3 +59,5 @@ protected:
 protected:
 	PropertyMap mData;
 };
+
+

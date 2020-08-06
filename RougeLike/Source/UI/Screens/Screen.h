@@ -1,10 +1,12 @@
 #pragma once
 
-struct GameData;
-class UILayer;
+#include "ScreenTypes.h"
 
-typedef std::vector<Attributes> LayerAttributes;
-typedef std::vector<LayerAttributes> ScreenAttributes;
+class UIButton;
+class UIElement;
+
+class InputManager;
+class TextureManager;
 
 
 class Screen
@@ -12,6 +14,7 @@ class Screen
 public:
 	enum Type
 	{
+		None,
 		CharacterSelection,
 		Game,
 		Pause,
@@ -20,23 +23,42 @@ public:
 
 
 public:
-	Screen(GameData* gameData);
-	~Screen();
+	Screen() : mTextures(nullptr) { }
+	Screen(const TextureManager* textures) : mTextures(textures) { };
+	virtual ~Screen();
 
-	void set(std::vector<UILayer*> layers);
-	void add(std::vector<UILayer*> layers);
+	void add(ScreenLayers& layers);
 
-	std::vector<UILayer*> layers() const { return mLayers; }
+	ScreenLayers& layers() { return mScreenLayers; }
 
-	virtual void update(float dt) = 0;
+	void updateButtons(const InputManager* input);
+
 	virtual void enter() = 0;
+	virtual void handleInput(const InputManager* input) = 0;
+	virtual void update(float dt) = 0;
 	virtual void exit() = 0;
 	virtual void render();
 
 	virtual Type type() = 0;
 
+	UIElement* find(const BasicString& id);
+	UIButton* findButton(const BasicString& id);
+
 
 protected:
-	GameData* mGameData;
-	std::vector<UILayer*> mLayers;
+	const TextureManager* mTextures;
+	ScreenLayers mScreenLayers;
+};
+
+
+
+class NullScreen : public Screen
+{
+public:
+	void enter() { }
+	void handleInput(const InputManager* input) { }
+	void update(float dt) { }
+	void exit() { }
+	void render() { }
+	Type type() { return Type::None; }
 };

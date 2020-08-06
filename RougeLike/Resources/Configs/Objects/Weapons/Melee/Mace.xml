@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Melee>
 
-	<Texture>Mace</Texture>
+	<Icon>Mace</Icon>
 
 	<Properties>
-		<Damage>60</Damage>
+		<Texture>Mace</Texture>
+		<MaxSize>70</MaxSize>
+		<OffsetX>8</OffsetX>
+		<OffsetY>23</OffsetY>
+
 		<Cooldown>50</Cooldown>
 		<SwingSpeed>700</SwingSpeed>
-		<SwingAngle>250</SwingAngle>		
-		<KnockbackForce>500</KnockbackForce>
-		<KnockbackDistance>50</KnockbackDistance>
+		<SwingAngle>250</SwingAngle>
 	</Properties>
 
-	<Icon>Mace</Icon>
-	<MaxSize>70</MaxSize>
-	<Offset x = "8" y = "23"></Offset>
+	<Effects>
+		<Damage>
+			<Damage>60</Damage>
+		</Damage>
+		<Displacement>
+			<KnockbackForce>500</KnockbackForce>
+			<KnockbackDistance>50</KnockbackDistance>
+		</Displacement>
+	</Effects>
 
 	<Audio>
 		<Hit>HammerHit</Hit>

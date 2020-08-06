@@ -24,4 +24,8 @@
 		<DEBUG_CURSOR>0</DEBUG_CURSOR>
 	</Debug>
 
+<!-- add some editor settings here e.g. movment speed, hold speed, delay etc -->
+	<UI_EDITOR>
+	</UI_EDITOR>
+
 </Settings>

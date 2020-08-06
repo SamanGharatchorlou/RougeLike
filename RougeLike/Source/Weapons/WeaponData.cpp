@@ -1,0 +1,64 @@
+#include "pch.h"
+#include "WeaponData.h"
+
+
+
+/* 
+ERROR
+Why do i need this function???
+Copying the contents of this function into the constructor for WeaponData causes a linker error
+But calling it from another function does not...?
+
+SOLUTION
+Do not call pure virtual functions from constructors/destructors the object may not have been
+created yet so cannot call its derived members version of the function.
+*/
+void WeaponData::fillData(const WeaponRawData& data)
+{
+	Attributes properties;
+	properties.set(data.properties);
+	fillProperties(properties);
+
+	fillEffects(data.effects);
+	fillAudio(data.audio);
+
+	texture = data.texture;
+}
+
+void WeaponData::copy(const WeaponData* data)
+{
+	texture = data->texture;
+	cooldown = data->cooldown;
+	maxDimention = data->maxDimention;
+	offset = data->offset;
+	audio = data->audio;
+	effects = data->effects;
+}
+
+
+void MeleeWeaponData::copy(const WeaponData* data)
+{
+	WeaponData::copy(data);
+	
+	const MeleeWeaponData* meleeData = static_cast<const MeleeWeaponData*>(data);
+	swingAngle = meleeData->swingAngle;
+	swingSpeed = meleeData->swingSpeed;
+}
+
+
+void MeleeWeaponData::fillProperties(const Attributes& properties)
+{
+	// Cooldown
+	cooldown = Cooldown(properties.getFloat("Cooldown") / 100.0f);
+
+	// Size and offset	
+	maxDimention = properties.getFloat("MaxSize");
+
+	int x = properties.getInt("OffsetX");
+	int y = properties.getInt("OffsetY");
+	offset = VectorF(x, y);
+
+	swingSpeed = properties.getFloat("SwingSpeed");
+	swingAngle = properties.getFloat("SwingAngle");
+}
+

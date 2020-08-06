@@ -15,7 +15,7 @@ public:
 	void slowUpdate(float dt) override;
 	void fastUpdate(float dt) override;
 	void render() override;
-	void exit() override { };
+	void exit() override;
 	void resume() override;
 
 	const Type type() const { return Type::Attack; }
@@ -24,7 +24,7 @@ public:
 
 
 private:
-	//void addEffects();
+	void addEffects();
 	void updateEffects();
 
 	void updateHasAttackedStatus();

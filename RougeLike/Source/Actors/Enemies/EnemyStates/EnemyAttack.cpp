@@ -22,7 +22,9 @@ void EnemyAttack::init()
 	mStartPosition = mEnemy->position();
 	mAttackPosition = mEnemy->target()->position();
 	mEnemy->physics()->facePoint(mAttackPosition);
-	//addEffects();
+
+	if(!mEnemy->collider()->hasEffects())
+		addEffects();
 }
 
 
@@ -109,23 +111,33 @@ void EnemyAttack::resume()
 }
 
 
-//void EnemyAttack::addEffects()
-//{
-//	Effect* dmgEffect = mEnemy->getEffectFromPool(EffectType::Damage);
-//	DamageEffect* damageEffect = static_cast<DamageEffect*>(dmgEffect);
-//	damageEffect->set(mEnemy->getPropertyValue("Damage"));
-//
-//	Effect* displaceEffect = mEnemy->getEffectFromPool(EffectType::Displacement);
-//	DisplacementEffect* displacementEffect = static_cast<DisplacementEffect*>(displaceEffect);
-//
-//	VectorF source; // to be updated
-//	float force = mEnemy->getPropertyValue("KnockbackForce");
-//	float distance = mEnemy->getPropertyValue("KnockbackDistance");
-//	displacementEffect->set(source, force, distance);
-//
-//	mEnemy->collider()->addEffect(damageEffect);
-//	mEnemy->collider()->addEffect(displacementEffect);
-//}
+void EnemyAttack::addEffects()
+{
+	std::queue<Effect*> effects = mEnemy->effects().getAttackingEffects();
+
+	while (effects.size() > 0)
+	{
+		Effect* effect = effects.back();
+		effects.pop();
+
+		mEnemy->collider()->addEffect(effect);
+	}
+
+	//Effect* dmgEffect = mEnemy->getEffectFromPool(EffectType::Damage);
+	//DamageEffect* damageEffect = static_cast<DamageEffect*>(dmgEffect);
+	//damageEffect->set(mEnemy->getPropertyValue("Damage"));
+
+	//Effect* displaceEffect = mEnemy->getEffectFromPool(EffectType::Displacement);
+	//DisplacementEffect* displacementEffect = static_cast<DisplacementEffect*>(displaceEffect);
+
+	//VectorF source; // to be updated
+	//float force = mEnemy->getPropertyValue("KnockbackForce");
+	//float distance = mEnemy->getPropertyValue("KnockbackDistance");
+	//displacementEffect->set(source, force, distance);
+
+	//mEnemy->collider()->addEffect(damageEffect);
+	//mEnemy->collider()->addEffect(displacementEffect);
+}
 
 
 void EnemyAttack::updateEffects()
@@ -144,4 +156,10 @@ void EnemyAttack::updateEffects()
 
 		collider->addEffect(effect);
 	}
+}
+
+
+void EnemyAttack::exit()
+{
+
 }

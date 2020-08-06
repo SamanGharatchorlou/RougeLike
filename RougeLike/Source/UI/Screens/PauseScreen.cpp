@@ -8,77 +8,45 @@
 #include "UI/Elements/UIButton.h"
 
 
-PauseScreen::PauseScreen(GameData* gameData) :
-	Screen(gameData) 
-{
-	enter();
-}
+PauseScreen::PauseScreen(const TextureManager* textures) : Screen(textures) { }
 
 
 void PauseScreen::enter()
 {
-	mRestartGame = false;
-	mQuitGame = false;
-	mRestartGame = false;
-	mOpenSettings = false;
+	mButtons.clear();
+	mStates.clear();
+	setButtonsAndStates();
 }
 
 
 void PauseScreen::update(float dt)
 {
+	std::unordered_map<BasicString, UIButton*>::iterator iter;
+	for (iter = mButtons.begin(); iter != mButtons.end(); iter++)
+	{
+		UIButton* button = iter->second;
+		if (button->isReleased())
+		{
+			mStates[iter->first] = true;
+		}
+	}
+
 	updateBoxTexture("ResumeButton", "ResumePanel");
 	updateBoxTexture("SettingsButton", "SettingsPanel");
 	updateBoxTexture("RestartButton", "RestartPanel");
 	updateBoxTexture("QuitButton", "QuitPanel");
-
-	UIButton* resumeButton = mGameData->uiManager->findButton("ResumeButton");
-	if (resumeButton)
-	{
-		if (resumeButton->isReleased())
-		{
-			mResumeGame = true;
-		}
-	}
-
-	UIButton* settingsButton = mGameData->uiManager->findButton("SettingsButton");
-	if (settingsButton)
-	{
-		if (settingsButton->isReleased())
-		{
-			mOpenSettings = true;
-		}
-	}
-
-	UIButton* restartButton = mGameData->uiManager->findButton("RestartButton");
-	if (restartButton)
-	{
-		if (restartButton->isReleased())
-		{
-			mRestartGame = true;
-		}
-	}
-
-	UIButton* quitButton = mGameData->uiManager->findButton("QuitButton");
-	if (quitButton)
-	{
-		if (quitButton->isReleased())
-		{
-			mQuitGame = true;
-		}
-	}
-
-
 }
 
 
+// TODO: replace input parameters with the button and elements rather than strings
 // Change the box texture when the button is pressed
 void PauseScreen::updateBoxTexture(BasicString buttonId, BasicString boxId)
 {
-	UIButton* button = mGameData->uiManager->findButton(buttonId);
-
+	UIButton* button = findButton(buttonId);
+	
 	if (button)
 	{
-		UIBox* boxComponent = static_cast<UIBox*>(mGameData->uiManager->findElement(boxId));
+		UIBox* boxComponent = static_cast<UIBox*>(find(boxId));
 
 		if (boxComponent)
 		{
@@ -86,11 +54,11 @@ void PauseScreen::updateBoxTexture(BasicString buttonId, BasicString boxId)
 
 			if (button->isHeld())
 			{
-				texture = mGameData->textureManager->getTexture("Big button Pressed", FileManager::Image_UI);
+				texture = mTextures->getTexture("Big button Pressed", FileManager::Image_UI);
 			}
 			else
 			{
-				texture = mGameData->textureManager->getTexture("Big button Released", FileManager::Image_UI);
+				texture = mTextures->getTexture("Big button Released", FileManager::Image_UI);
 			}
 
 			boxComponent->setTexture(texture);
@@ -101,10 +69,31 @@ void PauseScreen::updateBoxTexture(BasicString buttonId, BasicString boxId)
 
 void PauseScreen::exit()
 {
-	mResumeGame = false;
-	mQuitGame = false;
-	mRestartGame = false;
-	mOpenSettings = false;
+	resetButtonStates();
 }
 
 
+void PauseScreen::setButtonsAndStates()
+{
+	addButtonAndState("ResumeButton");
+	addButtonAndState("SettingsButton");
+	addButtonAndState("RestartButton");
+	addButtonAndState("QuitButton");
+}
+
+
+void PauseScreen::resetButtonStates()
+{
+	std::unordered_map<BasicString, bool>::iterator iter;
+	for (iter = mStates.begin(); iter != mStates.end(); iter++)
+	{
+		iter->second = false;
+	}
+}
+
+
+void PauseScreen::addButtonAndState(const BasicString& label)
+{
+	mButtons[label] = findButton(label);
+	mStates[label] = false;
+}

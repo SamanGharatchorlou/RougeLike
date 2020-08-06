@@ -22,7 +22,7 @@ public:
 	Enemy();
 	~Enemy() { }
 
-	virtual void init(TextureManager* textureManager, EffectPool* effects) = 0;
+	virtual void init(TextureManager* textureManager) = 0;
 
 	// Core
 	void slowUpdate(float dt);

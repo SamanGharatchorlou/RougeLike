@@ -9,17 +9,9 @@
 #include "Game/Camera.h"
 #include "Map/Environment.h"
 
-#include "Player/PlayerManager.h"
-#include "Player/Player.h"
-#include "Weapons/Melee/MeleeWeapon.h"
-#include "Objects/Attributes/StatManager.h"
-
-#include "Enemies/Enemy.h"
-#include "Enemies/EnemyManager.h"
-
 
 ActorManager::ActorManager(GameData* gameData) : 
-	mRendering(gameData->renderManager), mTextures(gameData->textureManager), mPlayer(gameData), mEnemies(gameData) { }
+	mTextures(gameData->textureManager), mPlayer(gameData), mEnemies(gameData) { }
 
 
 
@@ -74,17 +66,7 @@ void ActorManager::spawnEnemies(const XMLParser& parser, const Map* map)
 
 std::vector<Actor*> ActorManager::getAllEnemies()
 {
-	std::vector<Actor*> actorList;
-
-	std::vector<Enemy*> enemyList = mEnemies.getActiveEnemies();
-	actorList.reserve(enemyList.size());
-
-	for (int i = 0; i < enemyList.size(); i++)
-	{
-		actorList.push_back(enemyList[i]);
-	}
-
-	return actorList;
+	return mEnemies.getActiveEnemies();
 }
 
 
@@ -99,6 +81,7 @@ void ActorManager::handleEvent(EventData& data)
 	//	mCollisions->removeDefender(CollisionManager::PlayerWeapon_Hit_Enemy, eventData.mEnemy->collider());
 	//	break;
 	//}
+		// TODO: profile how frequently this is run, get a number of calls per time
 	case Event::UpdateAIPathMap:
 	{
 		mEnemies.requestEnemyPathUpdates();
@@ -109,22 +92,11 @@ void ActorManager::handleEvent(EventData& data)
 		mEnemies.updateAIPathCostMap();
 		break;
 	}
-	case Event::Render:
-	{
-		RenderEvent eventData = static_cast<RenderEvent&>(data);
-
-		RenderPack renderPacket(eventData.mTexture, eventData.mRect, static_cast<RenderLayer>(eventData.mRenderLayer));
-		mRendering->AddRenderPacket(renderPacket);
-		break;
-	}
 	default:
 		break;
 	}
-
 }
 
-
-// player stuff
 
 void ActorManager::exit()
 {
@@ -132,7 +104,7 @@ void ActorManager::exit()
 	mPlayer.exit();
 }
 
-/// --- Private Functions --- ///
+// --- Private Functions --- //
 
 void ActorManager::sendEvent(EventPacket eventPacket)
 {

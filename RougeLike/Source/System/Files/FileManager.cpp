@@ -40,7 +40,7 @@ FileManager::FileManager()
 	folderPaths[Configs] = folderPaths[Root] + "Configs\\";
 	folderPaths[Configs_Objects] = folderPaths[Configs] + "Objects\\";
 
-	folderPaths[Config_UI] = folderPaths[Configs] + "UIMenus\\";
+	folderPaths[Config_Menus] = folderPaths[Configs] + "UIMenus\\";
 	folderPaths[Config_Map] = folderPaths[Configs] + "Map\\";
 	folderPaths[Config_Enemies] = folderPaths[Configs_Objects] + "Enemies\\";
 	folderPaths[Config_Player] = folderPaths[Configs_Objects] + "Player\\";
@@ -53,6 +53,11 @@ FileManager::FileManager()
 	{
 		ASSERT(Warning, !folderPaths[(Folder)i].empty(), "The enum %d in the folderPath map has not been defined\n", i);
 	}
+}
+
+void FileManager::free()
+{
+	folderPaths.clear();
 }
 
 

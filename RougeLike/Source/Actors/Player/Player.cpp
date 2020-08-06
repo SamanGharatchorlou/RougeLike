@@ -5,6 +5,7 @@
 #include "Audio/AudioManager.h"
 
 #include "Map/Map.h"
+#include "Weapons/Weapon.h"
 #include "Weapons/Melee/MeleeWeapon.h"
 
 #if _DEBUG
@@ -18,7 +19,8 @@ Player::Player() :
 	mControlOverride(false)
 { }
 
-void Player::setCharacter(XMLParser& parser, TextureManager* textureManager)
+
+void Player::setCharacter(const XMLParser& parser, const TextureManager* textureManager)
 {
 	Actor::setCharacter(parser, textureManager);
 }
@@ -28,6 +30,7 @@ void Player::handleInput(const InputManager* input)
 {
 	mPhysics.handleInput(input);
 }
+
 
 void Player::updateCursorPosition(VectorF cursorPosition)
 {
@@ -50,7 +53,6 @@ void Player::updateCursorPosition(VectorF cursorPosition)
 
 void Player::fastUpdate(float dt)
 {
-	// Movement, animations, weapon updates
 	Actor::fastUpdate(dt);
 
 	mWeapon->setPosition(rect().Center());
@@ -60,18 +62,10 @@ void Player::fastUpdate(float dt)
 
 void Player::slowUpdate(float dt)
 {
-	// Actor
 	Actor::slowUpdate(dt);
 
-	// Weapon
 	mWeapon->slowUpdate(dt);
 
-	// Abilities
-	//mAbilities.slowUpdate(dt);
-	//if (mAbilities.hasEvent())
-	//	pushEvent(mAbilities.popEvent());
-
-	// Character
 	Action action = mPhysics.isMoving() ? Action::Run : Action::Idle;
 	mAnimator.selectAnimation(action);
 
@@ -87,15 +81,21 @@ void Player::reset()
 }
 
 
-void Player::setWeapon(MeleeWeapon* weapon)
+void Player::setWeaponType(Weapon* weapon) 
+{ 
+	mWeapon = weapon; 
+}
+
+
+void Player::selectWeapon(WeaponData* weaponData)
 {
-	mWeapon = weapon;
+	mWeapon->equipt(weaponData);
 }
 
 
 MeleeWeapon* Player::weapon()
 {
-	return mWeapon;
+	return static_cast<MeleeWeapon*>(mWeapon);
 }
 
 
@@ -106,8 +106,6 @@ void Player::render()
 	debugDrawRect(mCollider.scaledRect(), RenderColour(RenderColour::Blue));
 	debugDrawRects(mWeapon->getRects(), RenderColour(RenderColour::Yellow));
 #endif
-
-	//mAbilities.render();
 
 	if (mVisibility)
 	{

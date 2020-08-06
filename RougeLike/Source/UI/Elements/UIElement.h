@@ -1,6 +1,5 @@
 #pragma once
-#include <string>
-#include "Utilities/Rect.h"
+
 
 /* Base element for all UI components */
 class UIElement
@@ -15,18 +14,9 @@ public:
 		Button
 	};
 
-	struct Data
-	{
-		BasicString id;
-		RectF rect;
-		const UIElement* parent = nullptr;
-		bool show = true;
-	};
-
 public:
-	UIElement() : mParent(nullptr) { }
-	UIElement(Data& data);
-
+	UIElement() : mParent(nullptr), mShow(false) { }
+	UIElement(const Attributes& attributes);
 	virtual ~UIElement() { };
 
 	const BasicString& id() const { return mId; }
@@ -50,11 +40,9 @@ public:
 
 protected:
 	BasicString mId;
-
 	RectF mRect;
 
 	const UIElement* mParent;
-
 	std::vector<UIElement*> mChildren;
 
 	bool mShow;

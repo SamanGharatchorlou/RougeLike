@@ -8,13 +8,10 @@
 
 #include "AIController.h"
 
-#if _DEBUG
-#include "Debug/DebugDraw.h"
-#endif
-
 
 struct GameData;
 class Environment;
+class Actor;
 class Enemy;
 class Collider;
 
@@ -44,8 +41,7 @@ public:
 	// Spawning
 	void spawn(const XMLParser& parser, const Map* map);
 
-
-	std::vector<Enemy*> getActiveEnemies() const { return mActiveEnemies; }
+	std::vector<Actor*> getActiveEnemies() const;
 	std::vector<Collider*> attackingColliders() const;
 
 	unsigned int size() const { return mActiveEnemies.size(); }

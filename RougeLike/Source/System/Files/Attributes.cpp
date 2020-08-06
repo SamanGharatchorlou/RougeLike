@@ -1,6 +1,12 @@
 #include "pch.h"
 #include "Attributes.h"
 
+void Attributes::set(StringMap stringMap)
+{
+	attributes = stringMap;
+}
+
+
 void Attributes::merge(Attributes otherAttributes)
 {
 	attributes.insert(otherAttributes.getMap().begin(), otherAttributes.getMap().end());

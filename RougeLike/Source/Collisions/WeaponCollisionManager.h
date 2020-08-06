@@ -21,7 +21,7 @@ public:
 
 private:
 	void updateWeaponEffect(EffectCollider* weaponCollider);
-	void addWeaponEffects(EffectCollider* weaponCollider, EffectPool* effects);
+	void addWeaponEffects(EffectCollider* weaponCollider);
 
 public:
 	Player* mPlayer;

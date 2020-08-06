@@ -7,13 +7,22 @@
 #include "Debug/DebugDraw.h"
 #endif
 
-
-UIBox::UIBox(Data& data) : UIElement(data), mTexture(data.texture)
+UIBox::UIBox() : mTexture(nullptr) 
 {
 #if _DEBUG
-	mDrawRect = data.drawRect;
+	mDrawRect = false;
 #endif
+}
 
+
+UIBox::UIBox(const Attributes& attributes) : UIElement(attributes)
+{
+#if _DEBUG
+	if (attributes.contains("debugDraw"))
+		mDrawRect = true;
+	else
+		mDrawRect = false;
+#endif
 }
 
 

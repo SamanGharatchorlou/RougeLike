@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Events/Observer.h"
+
 class Environment;
 class ActorManager;
 class UIManager;
@@ -26,7 +28,7 @@ struct RenderPack
 };
 
 
-class RenderManager
+class RenderManager : public Observer
 {
 public:
 	RenderManager();
@@ -37,6 +39,8 @@ public:
 	void render();
 
 	void AddRenderPacket(RenderPack renderPacket) { mRenderPackets.push_back(renderPacket); }
+
+	void handleEvent(EventData& data) override;
 
 
 private:

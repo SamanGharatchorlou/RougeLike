@@ -11,12 +11,16 @@
 #include "Weapons/Melee/MeleeWeapon.h"
 
 
+// TEMP
+#include "Objects/Properties/EffectBag.h"
+
+
 PlayerManager::PlayerManager(GameData* gameData) :
 	mEnvironment(gameData->environment), 
 	mAbilities(gameData->textureManager, &mPlayer, gameData->uiManager->screen(Screen::Game))
 {
 	mPlayerCollisions.init(&mPlayer, gameData->collisionManager);
-	weaponStash.init(gameData->textureManager);
+	mWeaponStash.load(gameData->textureManager);
 }
 
 
@@ -106,17 +110,25 @@ void PlayerManager::exit()
 	mPlayer.reset();
 }
 
-void PlayerManager::selectCharacter(const BasicString& characterConfig, TextureManager* textureManager)
+void PlayerManager::selectCharacter(const BasicString& characterConfig, const TextureManager* textureManager)
 { 
 	XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Player, characterConfig));
 	mPlayer.setCharacter(parser, textureManager);
+
+	EffectBag bag;
+	XMLNode effects = parser.root().first("Effects");
+	bag.readEffects(effects);
+
+	BasicString weapontype = parser.root().first("WeaponType").value();
+	mPlayer.setWeaponType(mWeaponStash.getWeapon(weapontype));
 }
 
 
 void PlayerManager::selectWeapon(const BasicString& weaponName)
 {
-	Weapon* weapon = weaponStash.getWeapon(weaponName);
-	mPlayer.setWeapon(static_cast<MeleeWeapon*>(weapon));
+	WeaponData* weaponData = mWeaponStash.getData(weaponName);
+	mPlayer.selectWeapon(weaponData);
+	mPlayer.effects().setEffectBag(weaponData->effects);
 
 	mPlayerCollisions.refreshWeaponColliders();
 }

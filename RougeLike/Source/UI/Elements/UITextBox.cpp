@@ -2,23 +2,14 @@
 #include "UITextBox.h"
 
 
-// UI Text Box
-UITextBox::UITextBox(Data& data) : UIBox(data)
+UITextBox::UITextBox(const Attributes& attributes) : UIBox(attributes)
 {
-	if (data.aligment == "Center")
-		mAlignment = Alignment::Center;
-	else if (data.aligment == "Left")
-		mAlignment = Alignment::Left;
-	else if (data.aligment == "Right")
-		mAlignment = Alignment::Right;
-	else
-		mAlignment = Alignment::None;
+	initText(attributes);
 
-	const BasicString& font = data.font == "" ? "default" : data.font;
-	mText.init(data.text, font, data.ptSize, data.colour);
-
-	align();
+	BasicString aligment = attributes.contains("align") ? attributes.getString("align") : "";
+	setAlignment(aligment);
 }
+
 
 void UITextBox::render()
 {
@@ -32,6 +23,7 @@ void UITextBox::autoSizeFont()
 	VectorF newSize = mText.autoSize(mRect.Size());
 }
 
+
 void UITextBox::align()
 {
 	if (mAlignment == Alignment::Center)
@@ -42,10 +34,49 @@ void UITextBox::align()
 		float xOffset = (rectWidth - textWidth) / 2;
 		mText.setOffset(VectorF(xOffset, 0.0f));
 	}
+	else if (mAlignment == Alignment::Left || mAlignment == Alignment::Right)
+	{
+		DebugPrint(Log, "Unimplemented\n");
+	}
 }
+
 
 void UITextBox::autoSizeRectToText()
 {
 	mRect.SetSize(mText.size());
 	align();
+}
+
+
+
+
+// -- Private Functions -- //
+
+void UITextBox::setAlignment(const BasicString& alignment)
+{
+	if (alignment == "Center")
+		mAlignment = Alignment::Center;
+	else if (alignment == "Left")
+		mAlignment = Alignment::Left;
+	else if (alignment == "Right")
+		mAlignment = Alignment::Right;
+	else
+		mAlignment = Alignment::None;
+
+	align();
+}
+
+
+void UITextBox::initText(const Attributes& attributes)
+{
+	BasicString text = attributes.getString("text");
+	BasicString font = attributes.contains("font") ? attributes.getString("font") : "default";
+	int ptSize = attributes.contains("ptSize") ? attributes.getInt("ptSize") : 0;
+	SDL_Color colour = {
+		(Uint8)attributes.getInt("r"),
+		(Uint8)attributes.getInt("g"),
+		(Uint8)attributes.getInt("b")
+	};
+
+	mText.init(text, font, ptSize, colour);
 }

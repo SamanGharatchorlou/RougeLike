@@ -6,7 +6,7 @@ class Attributes
 public:
 	StringMap& getMap() { return attributes; }
 
-
+	void set(StringMap stringMap);
 	void merge(Attributes otherAttributes);
 
 

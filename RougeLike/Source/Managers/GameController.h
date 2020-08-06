@@ -31,6 +31,7 @@ private:
 	void updateLoops(float dt);
 	void render();
 
+	void endGame();
 
 private:
 	GameData mGameData;

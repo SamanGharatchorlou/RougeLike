@@ -46,6 +46,6 @@ BasicString TextureMap::find(const Texture* texture) const
 
 Texture* TextureMap::find(const BasicString& id) const 
 { 
-	StringTextureMap::const_iterator iter = mData.find(id);
+ 	StringTextureMap::const_iterator iter = mData.find(id);
 	return iter != mData.end() ? iter->second : nullptr;
 }

@@ -19,7 +19,6 @@
 
 Enemy::Enemy() :
 	mStateMachine(new EnemyNullState),
-	//mMap(nullptr),
 	mCurrentIndex(Vector2D<int>(-1,-1))
 {
 	physics()->setFlip(static_cast<SDL_RendererFlip>(randomNumberBetween(0, 2)));

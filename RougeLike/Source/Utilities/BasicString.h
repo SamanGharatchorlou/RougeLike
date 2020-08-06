@@ -8,6 +8,7 @@ public:
 	BasicString(const char* string);
 	BasicString(const BasicString& string);
 	BasicString(const char* string, unsigned int length);
+	BasicString(float number);
 
 	~BasicString();
 
@@ -15,7 +16,7 @@ public:
 
 	BasicString substr(int start, int length) const;
 
-	void move(BasicString& string);
+	//void move(BasicString& string);
 
 	int length() const { return mLength; }
 	bool empty() const { return mLength == 0; }

@@ -1,0 +1,30 @@
+#pragma once
+
+#include "EffectHandler.h"
+#include "Objects/Properties/EffectBag.h"
+
+class EffectPool;
+class Effect;
+
+class EffectManager
+{
+public:
+	void init(EffectPool* pool) { mPool = pool; }
+
+	void fillEffectBag(XMLNode effectNode);
+	void setEffectBag(EffectBag effectBag) { mBag = effectBag; }
+
+	void slowUpdate(float dt);
+	void fastUpdate(float dt);
+	void render();
+
+	void addReceivedEffect(Effect* effect);
+	std::queue<Effect*> getAttackingEffects();
+
+
+private:
+	EffectPool* mPool;
+
+	EffectHandler mHandler;
+	EffectBag mBag;
+};

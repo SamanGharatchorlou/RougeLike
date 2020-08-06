@@ -7,15 +7,6 @@
 class UITextBox : public UIBox
 {
 public:
-	struct Data : public UIBox::Data
-	{
-		BasicString aligment;
-		BasicString text;
-		BasicString font;
-		int ptSize;
-		SDL_Color colour;
-	};
-
 	enum Alignment
 	{
 		None,
@@ -25,8 +16,8 @@ public:
 	};
 
 public:
-	UITextBox(Data& data);
-	~UITextBox() { }
+	UITextBox(const Attributes& attributes);
+	virtual ~UITextBox() { }
 
 	void setText(const BasicString& text) { mText.setText(text); }
 
@@ -45,6 +36,11 @@ public:
 	virtual bool isButton() const { return false; }
 	virtual bool hasText() const { return true; }
 	virtual Type type() const { return Type::TextBox; }
+
+
+private:
+	void initText(const Attributes& attributes);
+	void setAlignment(const BasicString& alignment);
 
 
 private:

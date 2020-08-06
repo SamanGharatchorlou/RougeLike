@@ -45,6 +45,8 @@ namespace fs = std::experimental::filesystem;
 #include "Debug/DebugSettings.h"
 #if MEMORY_TRACKING
 #include "Debug/MemTrack.h"
+#else
+#define PRINT_MEMORY 0
 #endif
 
 // Include these first as they are be required in some of the below includes

@@ -71,16 +71,22 @@ void GameController::run()
 		frameTimer.update();
 	}
 
-	DebugPrint(Log, "Quitting Game\n");
+	endGame();
+	DebugPrint(Log, "Game Ended\n");
+}
+
+void GameController::endGame()
+{
+	mGameStateMachine.~StateMachine();
 }
 
 
 void GameController::free()
 {
-	mGameStateMachine.shallowClear();
 	mGameData.free();
 
 	// delete globals
+	FileManager::Get()->free();
 	Renderer::Get()->free();
 
 	// quit SDL subsystems
@@ -95,17 +101,19 @@ void GameController::free()
 // then restart it all again
 void GameController::restartGame()
 {
-	// Remove all states
-	while (mGameStateMachine.size() > 1)
-	{
-		mGameStateMachine.popState();
-		mGameStateMachine.processStateChanges();
-	}
+	DebugPrint(Log, "Unimplemented\n");
 
-	mGameData.uiManager->clearScreens();
-	mGameData.uiManager->init();
+	//// Remove all states
+	//while (mGameStateMachine.size() > 1)
+	//{
+	//	mGameStateMachine.popState();
+	//	mGameStateMachine.processStateChanges();
+	//}
 
-	mGameStateMachine.addState(new GameState(&mGameData, this));
+	//mGameData.uiManager->clearScreens();
+	//mGameData.uiManager->init();
+
+	//mGameStateMachine.addState(new GameState(&mGameData, this));
 }
 
 
@@ -121,7 +129,7 @@ void GameController::handleInput(SDL_Event& event)
 		mGameData.inputManager->processInputEvent(event);
 	}
 
-	mGameData.uiManager->handleInput();
+	mGameData.uiManager->handleInput(mGameData.inputManager);
 	mGameStateMachine.getActiveState().handleInput();
 
 #if DEBUG_CURSOR // show mouse position in screen title

@@ -11,15 +11,12 @@ void XMLParser::parseXML(const BasicString& filePath)
 
 #if _DEBUG
 	path = filePath;
-	printf("created '%s'\n", path.c_str());
 #endif
 }
 
 XMLParser::~XMLParser()
 {
-	printf("deleted '%s'\n", path.c_str());
 	delete file;
-
 }
 
 

@@ -16,11 +16,11 @@ class SettingsScreen : public Screen
 	};
 
 public:
-	SettingsScreen(GameData* gameData);
-
-	void update(float dt) override;
+	SettingsScreen(const TextureManager* textures);
 
 	void enter() override;
+	void handleInput(const InputManager* input) override;
+	void update(float dt) override;
 	void exit() override { };
 
 	Type type() override { return Type::Settings; }
@@ -29,5 +29,6 @@ public:
 	void setSoundVolume(float volume);
 
 private:
+	// TODO change to map
 	std::vector<UISlider> mSliders;
 };
