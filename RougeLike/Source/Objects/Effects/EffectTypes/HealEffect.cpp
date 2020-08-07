@@ -6,7 +6,7 @@
 
 void HealEffect::init()
 {
-	Health* health = static_cast<Health*>(mReceiver->getProperty("Health"));
+	Health* health = static_cast<Health*>(mReceiver->getAttribute(AttributeType::Health));
 	health->increase(mHeal);
 	endEffect();
 }

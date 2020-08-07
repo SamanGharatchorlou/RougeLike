@@ -80,7 +80,8 @@ void EffectHandler::addQueuedEffects()
 		Effect* effect = mEffectsToAdd.front();
 		mEffectsToAdd.pop();
 
-		addEffect(effect);
+		effect->init();
+		mEffects.push_back(effect);
 	}
 }
 

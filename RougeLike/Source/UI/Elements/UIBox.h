@@ -11,6 +11,8 @@ public:
 	UIBox(const Attributes& attributes);
 	virtual ~UIBox() { }
 
+	void fill(const Attributes& attributes);
+
 	void setTexture(Texture* texture) { mTexture = texture; }
 	const Texture* texture() const { return mTexture; }
 

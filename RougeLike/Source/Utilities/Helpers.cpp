@@ -2,24 +2,6 @@
 #include "Helpers.h"
 
 
-//std::vector<int> parseCSVtoInt(const BasicString& csv)
-//{
-//	std::vector<int> vect;
-//
-//	BasicStringstream ss(csv);
-//
-//	for (int i = 0; ss >> i;)
-//	{
-//		vect.push_back(i);
-//
-//		if (ss.peek() == ',' || ss.peek() == ' ')
-//			ss.ignore();
-//	}
-//
-//	return vect;
-//}
-
-
 // x' = x cos - y sin
 // y' = x sin + y cos
 VectorF rotateVector(VectorF vector, float dTheta)
@@ -129,4 +111,3 @@ SDL_Colour SDLColour(Colour colour)
 
 	return SDL_Color{ r, g, b };
 }
-

@@ -45,7 +45,7 @@ void ArmorAbility::updateUI()
 
 	if (mCaster)
 	{
-		Armor* armor = static_cast<Armor*>(mCaster->getProperty("Armor"));
+		Armor* armor = static_cast<Armor*>(mCaster->getAttribute(AttributeType::Armor));
 		SetArmorBarEvent* armorPtr = new SetArmorBarEvent(*armor);
 		mEvents.push(EventPacket(armorPtr));
 	}

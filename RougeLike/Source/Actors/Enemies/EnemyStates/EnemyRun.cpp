@@ -102,12 +102,12 @@ bool EnemyRun::inAttackRange() const
 	VectorF position = mEnemy->rect().Center();
 	VectorF nearestTargetSide = closestRectSide(position, mEnemy->target()->scaledRect());
 
-	return distanceSquared(position, nearestTargetSide) < (mEnemy->getPropertyValue("TackleDistance") * 0.8f);
+	return distance(position, nearestTargetSide) < (mEnemy->getAttributeValue(AttributeType::TackleDistance) * 0.8f);
 }
 
 
 // --- Private Functions ---
 bool EnemyRun::inChaseRange() const
 {
-	return distanceSquared(mEnemy->target()->position(), mEnemy->position()) < mEnemy->getPropertyValue("ChaseRange");
+	return distance(mEnemy->target()->position(), mEnemy->position()) < mEnemy->getAttributeValue(AttributeType::ChaseRange);
 }

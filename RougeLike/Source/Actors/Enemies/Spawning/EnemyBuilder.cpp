@@ -43,7 +43,7 @@ Enemy* EnemyBuilder::getBlankEnemy(const SpawnData& data)
 void EnemyBuilder::fillStaticTypeData(Enemy* enemy, const XMLParser& parser, EffectPool* effects)
 {
 	enemy->setCharacter(parser, mTextures);
-	enemy->readEffects(parser, effects);
+	//enemy->readEffects(parser, effects);
 }
 
 

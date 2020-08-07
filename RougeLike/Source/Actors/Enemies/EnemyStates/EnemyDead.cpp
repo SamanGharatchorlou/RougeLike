@@ -16,8 +16,8 @@ void EnemyDead::init()
 	mEnemy->animator().selectAnimation(Action::Dead);
 
 	// Let everyone know its died
-	const float score = mEnemy->getPropertyValue("Score");
-	const float exp = mEnemy->getPropertyValue("Experience");
+	const float score = mEnemy->getAttributeValue(AttributeType::Score);
+	const float exp = mEnemy->getAttributeValue(AttributeType::Experience);
 
 	EnemyDeadEvent* dataPtr = new EnemyDeadEvent(mEnemy, score, exp);
 	mEnemy->events().push(EventPacket(dataPtr));

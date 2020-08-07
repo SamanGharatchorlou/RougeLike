@@ -13,25 +13,13 @@
 		<Experience>2000</Experience>
 
 		<!-- Attack -->
-		<Damage>10</Damage>
 		<AttackSpeed>1</AttackSpeed>
-		<TackleDistance>2000</TackleDistance>
+		<TackleDistance>50</TackleDistance>
 		<TackleMovementSpeed>200</TackleMovementSpeed>
 
 		<!-- Patrol -->
-		<SightRange>50000</SightRange>
-		<ChaseRange>300000</ChaseRange>
-
-		<!-- Hit -->
-		<HurtTime>0.25</HurtTime>
-		
-		<!-- Alert -->
-		<AttentionTime>0.5</AttentionTime>
-
-		<!-- Effects -->
-		<Damage>20</Damage>
-		<KnockbackForce>100</KnockbackForce>
-		<KnockbackDistance>20</KnockbackDistance>
+		<SightRange>400</SightRange>
+		<ChaseRange>200</ChaseRange>
 	</Properties>
 
 	<Effects>

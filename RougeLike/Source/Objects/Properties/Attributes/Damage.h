@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Objects/Properties/Property.h"
+#include "Objects/Properties/Attributes/Attribute.h"
 
-class Damage : public Property
+class Damage : public Attribute
 {
 public:
 	Damage() : attackDamage(0) { }

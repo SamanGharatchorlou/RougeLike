@@ -3,10 +3,11 @@
 class Actor;
 class Map;
 class ValueBag;
-class Property;
+class PropertyBag;
+class Attribute;
 
 #include "EffectTypes.h"
-
+#include "Objects/Properties/Property.h"
 
 class Effect
 {
@@ -20,8 +21,7 @@ public:
 	virtual void clearData() { };
 	void clearBaseData() { mReceiver = nullptr; mShouldExit = false; }
 
-	//virtual void fill(ValueMap& valueMap) { } // = 0;
-	virtual void fill(const ValueBag& valueBag) { } // = 0;
+	virtual void fill(const PropertyBag& valueBag) { } // = 0;
 
 	virtual void init() = 0;
 	virtual void fastUpdate(float dt) = 0;
@@ -43,5 +43,6 @@ protected:
 
 bool canMove(const Actor* actor, VectorF velocity, float dt);
 bool isValidFloor(const Map* map, VectorF point);
-void setValue(const BasicString& label, float& value, const ValueBag& valueBag);
-void setValue(const BasicString& label, Property& value, const ValueBag& valueBag);
+
+void setProperty(PropertyType type, float& value, const PropertyBag& propertyBag);
+void setProperty(PropertyType type, Attribute& value, const PropertyBag& propertyBag);

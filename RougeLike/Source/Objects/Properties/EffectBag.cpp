@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "EffectBag.h"
 
-
 void EffectBag::readEffects(XMLNode parentEffectNode)
 {
 	if (parentEffectNode)
@@ -9,7 +8,7 @@ void EffectBag::readEffects(XMLNode parentEffectNode)
 		XMLNode effectNode = parentEffectNode.first();
 		while (effectNode)
 		{
-			ValueBag effectValues(effectNode);
+			PropertyBag effectValues(effectNode);
 
 			BasicString effect = effectNode.name();
 			EffectType type = EffectType::None;

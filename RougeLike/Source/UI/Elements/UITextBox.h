@@ -4,6 +4,19 @@
 #include "Text/Text.h"
 
 
+struct UITextBoxData
+{
+	BasicString alignment = "";
+	BasicString font = "";
+	int ptSize = 0;
+	SDL_Color colour;
+	Texture* texture = nullptr;
+	RectF rect;
+	BasicString text;
+};
+
+
+
 class UITextBox : public UIBox
 {
 public:
@@ -17,6 +30,7 @@ public:
 
 public:
 	UITextBox(const Attributes& attributes);
+	UITextBox(const UITextBoxData data);
 	virtual ~UITextBox() { }
 
 	void setText(const BasicString& text) { mText.setText(text); }

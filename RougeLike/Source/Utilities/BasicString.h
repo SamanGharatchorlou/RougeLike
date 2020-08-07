@@ -9,14 +9,13 @@ public:
 	BasicString(const BasicString& string);
 	BasicString(const char* string, unsigned int length);
 	BasicString(float number);
+	BasicString(float number, int precision);
 
 	~BasicString();
 
 	const char* c_str() const { return mBuffer; }
 
 	BasicString substr(int start, int length) const;
-
-	//void move(BasicString& string);
 
 	int length() const { return mLength; }
 	bool empty() const { return mLength == 0; }

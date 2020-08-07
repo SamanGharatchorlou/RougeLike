@@ -25,6 +25,11 @@ UIBox::UIBox(const Attributes& attributes) : UIElement(attributes)
 #endif
 }
 
+void UIBox::fill(const Attributes& attributes)
+{
+	UIElement::fill(attributes);
+}
+
 
 void UIBox::render()
 {

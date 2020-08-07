@@ -2,6 +2,7 @@
 #include "PlayerCollisions.h"
 
 #include "Objects/Effects/EffectPool.h"
+#include "Objects/Effects/EffectTypes/Effect.h"
 
 #include "Actors/Player/Player.h"
 #include "Weapons/Melee/MeleeWeapon.h"
@@ -103,10 +104,10 @@ void PlayerCollisions::resolveTrapCollisions(Map* map, EffectPool* effects)
 
 		ValueMap valueMap;
 		valueMap["Damage"] = trapDamage.value();
-		ValueBag valueBag(valueMap);
+		PropertyBag properties(valueMap);
 
 		Effect* effect = effects->getObject(EffectType::Damage);
-		effect->fill(valueBag);
+		effect->fill(properties);
 		mPlayer->addEffect(effect);
 	}
 }

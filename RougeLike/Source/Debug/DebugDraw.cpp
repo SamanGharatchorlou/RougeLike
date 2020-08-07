@@ -62,15 +62,15 @@ void debugDrawRects(std::vector<RectF> rects, RenderColour colour)
 
 void debugRenderText(const BasicString text, int ptSize, VectorF position, RenderColour colour, const BasicString& alignment)
 {
-	//UITextBox::Data textData;
-	//textData.aligment = alignment;
-	//textData.font = "";
-	//textData.ptSize = ptSize;
-	//textData.colour = SDL_Color{ colour.r, colour.g, colour.b };
-	//textData.texture = nullptr;
-	//textData.rect = RectF(Camera::Get()->toCameraCoords(position), VectorF(0.0f,0.0f));
-	//textData.text = text;
+	UITextBoxData textData;
+	textData.alignment = alignment;
+	textData.font = "default";
+	textData.ptSize = ptSize;
+	textData.colour = SDL_Color{ colour.r, colour.g, colour.b };
+	textData.texture = nullptr;
+	textData.rect = RectF(Camera::Get()->toCameraCoords(position), VectorF(0.0f,0.0f));
+	textData.text = text;
 
-	//UITextBox textBox(textData);
-	//textBox.render();
+	UITextBox textBox(textData);
+	textBox.render();
 }

@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Effect.h"
-#include "Objects/Properties/PropertyTypes/Health.h"
+#include "Objects/Properties/Attributes/Health.h"
+
 
 class HealEffect : public Effect
 {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Effect.h"
-#include "Objects/Properties/PropertyTypes/Armor.h"
+#include "Objects/Properties/Attributes/Armor.h"
 
 
 class ArmorEffect : public Effect

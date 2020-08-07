@@ -24,7 +24,7 @@ Actor::Actor() : mVisibility(true) { }
 
 void Actor::setCharacter(const XMLParser& parser, const TextureManager* textureManager)
 {
-	mPropertyBag.readData(parser, "Properties");
+	mAttributeBag.readData(parser, "Properties");
 	mEffects.fillEffectBag(parser.root().first("Effects"));
 
 	// Animations
@@ -37,7 +37,7 @@ void Actor::setCharacter(const XMLParser& parser, const TextureManager* textureM
 	float maxDimention = atof(parser.firstRootNodeValue("MaxSize").c_str()); // added new calculations to animator, can i remove the realise size bit and just set the rect to (maxDim, maxDim). it should auto size.
 	VectorF size = realiseSize(baseSize, maxDimention);
 	mPhysics.rectRef().SetSize(size);
-	mPhysics.init(getPropertyValue("Force"), getPropertyValue("MaxVelocity"));
+	updatePhysicsStats();
 
 	// Collider
 	Attributes attributes = parser.attributes(parser.rootNode()->first_node("ColliderScale"));
@@ -60,7 +60,7 @@ void Actor::set(Environment* environment)
 
 void Actor::updatePhysicsStats()
 {
-	mPhysics.init(getPropertyValue("Force"), getPropertyValue("MaxVelocity"));
+	mPhysics.init(getAttributeValue(AttributeType::Force), getAttributeValue(AttributeType::MaxVelocity));
 }
 
 
@@ -98,21 +98,21 @@ void Actor::reset()
 }
 
 
-float Actor::getPropertyValue(const BasicString& property) const 
+float Actor::getAttributeValue(AttributeType type) const
 { 
-	return mPropertyBag.value(property); 
+	return mAttributeBag.value(type);
 }
 
 
-Property* Actor::getProperty(const BasicString& property) const
+Attribute* Actor::getAttribute(AttributeType type) const
 {
-	return mPropertyBag.get(property);
+	return mAttributeBag.get(type);
 }
 
 
-bool Actor::hasProperty(const BasicString& property) const
+bool Actor::hasAttribute(AttributeType type) const
 {
-	return mPropertyBag.contains(property);
+	return mAttributeBag.contains(type);
 }
 
 

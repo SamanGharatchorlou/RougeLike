@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Enemy.h"
 
-#include "Game/GameData.h"
 #include "Graphics/Texture.h"
 #include "Collisions/EffectCollider.h"
 #include "EnemyStates/EnemyStateHeaders.h"
@@ -54,7 +53,7 @@ void Enemy::slowUpdate(float dt)
 		mCurrentIndex = index;
 	}
 
-	Health* health = static_cast<Health*>(getProperty("Health"));
+	Health* health = static_cast<Health*>(getAttribute(AttributeType::Health));
 	if (health->isDead())
 		addState(EnemyState::Dead);
 }
@@ -75,6 +74,13 @@ void Enemy::renderCharacter()
 #endif	
 	
 	Actor::render();
+
+#if LABEL_ENEMY_STATES
+	mDebugger.labelState(mStateMachine.getActiveState().type(), rect());
+#endif
+#if DRAW_PLAYER_ENEMY_DISTANCE
+	mDebugger.drawPlayerDistance(mEnvironment, this);
+#endif
 }
 
 const Map* Enemy::getEnvironmentMap() const
@@ -174,31 +180,4 @@ EnemyState::Type Enemy::state() const
 		DebugPrint(Warning, "Enemy state machine has no state, size = 0\n");
 		return EnemyState::None;
 	}
-}
-
-
-
-void Enemy::readEffects(const XMLParser& parser, EffectPool* effects)
-{
-	ValueBag effectBag;
-	xmlNode rootNode = parser.rootNode();
-	xmlNode effectRootNode = rootNode->first_node("Effects");
-	xmlNode effectNode = effectRootNode->first_node();
-
-	//while (effectNode)
-	//{
-	//	effectBag.readData(parser, "Effects");
-
-	//	EffectType type = EffectType::None;
-	//	type << effectNode->name();
-
-	//	if (type != EffectType::None)
-	//	{
-	//		Effect* effect = effects->getObject(type);
-	//		effect->fill(map);
-	//		mAttackEffects.push_back(effects->getObject(type));
-	//	}
-
-	//	effectNode = effectNode->next_sibling();
-	//}
 }

@@ -1,11 +1,10 @@
 #pragma once
 
+#include "Objects/Properties/Attributes/Attribute.h"
 #include "Damage.h"
-#include "Objects/Properties/Property.h"
-#include "Utilities/Helpers.h"
 
 
-class Health : public Property
+class Health : public Attribute
 {
 public:
 	Health() : hp(0), maxHp(0) { }

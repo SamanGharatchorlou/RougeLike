@@ -30,7 +30,7 @@
 	</Collectables>
 
 	<Spawning>
-		<Patrol type="Devil" xIncrement="20"></Patrol>
+		<!--<Patrol type="Devil" xIncrement="20"></Patrol>-->
 		<Shape type="Devil" xPosition="30" shape="Circle" points="7"></Shape>
 	</Spawning>
 </Level>

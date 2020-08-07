@@ -53,7 +53,7 @@ void HealAbility::updateUI()
 
 	if (mCaster)
 	{
-		Health* hp = static_cast<Health*>(mCaster->getProperty("Health"));
+		Health* hp = static_cast<Health*>(mCaster->getAttribute(AttributeType::Health));
 		SetHealthBarEvent* hpPtr = new SetHealthBarEvent(*hp);
 		mEvents.push(EventPacket(hpPtr));
 	}

@@ -10,6 +10,20 @@ UITextBox::UITextBox(const Attributes& attributes) : UIBox(attributes)
 	setAlignment(aligment);
 }
 
+UITextBox::UITextBox(const UITextBoxData data)
+{
+	Attributes attributes;
+	attributes.add("x", data.rect.TopLeft().x);
+	attributes.add("y", data.rect.TopLeft().y);
+	attributes.add("width", data.rect.Width());
+	attributes.add("height", data.rect.Height());
+	UIElement::fill(attributes);
+
+
+	mText.init(data.text, data.font, data.ptSize, data.colour);
+	setAlignment(data.alignment);
+}
+
 
 void UITextBox::render()
 {

@@ -3,17 +3,10 @@
 #include "Physics.h"
 #include "Animations/Animator.h"
 #include "Collisions/EffectCollider.h"
-#include "Objects/Effects/EffectHandler.h"
-#include "Events/LocalDispatcher.h"
-
-#include "Objects/Properties/PropertyBag.h"
-
-// temp
-#include "Objects/Effects/EffectTypes/Effect.h"
 #include "Objects/Effects/EffectManager.h"
+#include "Events/LocalDispatcher.h"
+#include "Objects/Bags/AttributeBag.h"
 
-
-class Property;
 class Map;
 class Environment;
 class TextureManager;
@@ -32,13 +25,13 @@ public:
 	void slowUpdate(float dt);
 	void render();
 
-	virtual void setVisibility(bool visibility) { mVisibility = visibility; }
+	void setVisibility(bool visibility) { mVisibility = visibility; }
 	void reset();
 
-	// PropertyBag
-	Property* getProperty(const BasicString& property) const;
-	float getPropertyValue(const BasicString& property) const;
-	bool hasProperty(const BasicString& property) const;
+	// Attributes
+	Attribute* getAttribute(AttributeType type) const;
+	float getAttributeValue(AttributeType type) const;
+	bool hasAttribute(AttributeType type) const;
 
 	// Collider
 	EffectCollider* collider() { return &mCollider; }
@@ -72,7 +65,7 @@ protected:
 
 	EffectManager mEffects;
 
-	PropertyBag mPropertyBag;
+	AttributeBag mAttributeBag;
 
 	Physics mPhysics;
 	EffectCollider mCollider;

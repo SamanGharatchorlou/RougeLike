@@ -30,18 +30,13 @@ void EnemyAttack::init()
 
 void EnemyAttack::fastUpdate(float dt)
 {
+	VectorF direction = mStartPosition - mEnemy->position();
+	VectorF velocity = direction.normalise() * mEnemy->getAttributeValue(AttributeType::TackleMovementSpeed);
+
 	if (mHasAttacked)
-	{
-		VectorF direction = mStartPosition - mEnemy->position();
-		VectorF velocity = direction.normalise() * mEnemy->getPropertyValue("TackleMovementSpeed") / 1.5f;
-		mEnemy->move(velocity, dt);
-	}
-	else
-	{
-		VectorF direction = mAttackPosition - mEnemy->position();
-		VectorF velocity = direction.normalise() * mEnemy->getPropertyValue("TackleMovementSpeed");
-		mEnemy->move(velocity, dt);
-	}
+		velocity /= 1.5f;
+
+	mEnemy->move(velocity, dt);
 }
 
 
@@ -83,14 +78,14 @@ void EnemyAttack::updateHasAttackedStatus()
 	if (!mHasAttacked)
 	{
 		// Maximum attack distance
-		float distanceTravelled = distanceSquared(mStartPosition, mEnemy->position());
-		if (distanceTravelled >= mEnemy->getPropertyValue("TackleDistance"))
+		float distanceTravelled = distance(mStartPosition, mEnemy->position());
+		if (distanceTravelled >= mEnemy->getAttributeValue(AttributeType::TackleDistance))
 			mHasAttacked = true;
 
 		if (hitCounter >= 5)
 			mHasAttacked = true;
 
-		if (distanceSquared(mAttackPosition, mEnemy->position()) < 5.0f)
+		if (distance(mAttackPosition, mEnemy->position()) < 5.0f)
 			mHasAttacked = true;
 	}
 }
@@ -98,7 +93,8 @@ void EnemyAttack::updateHasAttackedStatus()
 
 bool EnemyAttack::attackComplete() const
 {
-	return distanceSquared(mStartPosition, mEnemy->position()) < 5.0f ? mHasAttacked : false;
+	float smallDistance = 5.0f;
+	return distance(mStartPosition, mEnemy->position()) < smallDistance ? mHasAttacked : false;
 }
 
 
@@ -122,21 +118,6 @@ void EnemyAttack::addEffects()
 
 		mEnemy->collider()->addEffect(effect);
 	}
-
-	//Effect* dmgEffect = mEnemy->getEffectFromPool(EffectType::Damage);
-	//DamageEffect* damageEffect = static_cast<DamageEffect*>(dmgEffect);
-	//damageEffect->set(mEnemy->getPropertyValue("Damage"));
-
-	//Effect* displaceEffect = mEnemy->getEffectFromPool(EffectType::Displacement);
-	//DisplacementEffect* displacementEffect = static_cast<DisplacementEffect*>(displaceEffect);
-
-	//VectorF source; // to be updated
-	//float force = mEnemy->getPropertyValue("KnockbackForce");
-	//float distance = mEnemy->getPropertyValue("KnockbackDistance");
-	//displacementEffect->set(source, force, distance);
-
-	//mEnemy->collider()->addEffect(damageEffect);
-	//mEnemy->collider()->addEffect(displacementEffect);
 }
 
 

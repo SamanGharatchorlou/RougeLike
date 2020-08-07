@@ -28,11 +28,12 @@ void EffectManager::addReceivedEffect(Effect* effect)
 	mHandler.addEffect(effect);
 }
 
+
 std::queue<Effect*> EffectManager::getAttackingEffects()
 {
 	std::queue<Effect*> effects;
 
-	std::unordered_map<EffectType, ValueBag>::const_iterator iter;
+	std::unordered_map<EffectType, PropertyBag>::const_iterator iter;
 	for (iter = mBag.effects().begin(); iter != mBag.effects().end(); iter++)
 	{
 		Effect* effect = mPool->getObject(iter->first);

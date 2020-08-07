@@ -147,11 +147,11 @@ void Player::processHit()
 void Player::updateUI()
 {
 	// Update UI
-	Health* hp = static_cast<Health*>(getProperty("Health"));
+	Health* hp = static_cast<Health*>(getAttribute(AttributeType::Health));
 	SetHealthBarEvent* hpPtr = new SetHealthBarEvent(*hp);
 	mEvents.push(EventPacket(hpPtr));
 
-	Armor* armor = static_cast<Armor*>(getProperty("Armor"));
+	Armor* armor = static_cast<Armor*>(getAttribute(AttributeType::Armor));
 	SetArmorBarEvent* armorPtr = new SetArmorBarEvent(*armor);
 	mEvents.push(EventPacket(armorPtr));
 }

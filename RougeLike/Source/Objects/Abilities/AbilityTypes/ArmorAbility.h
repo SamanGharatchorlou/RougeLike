@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Objects/Abilities/AbilityClasses/TargetAbilities.h"
-#include "Objects/Properties/PropertyTypes/Armor.h"
+#include "Objects/Properties/Attributes/Armor.h"
 
 class ArmorAbility : public TargetSelfAbility
 {

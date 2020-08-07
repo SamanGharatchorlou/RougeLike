@@ -19,6 +19,8 @@ public:
 	UIElement(const Attributes& attributes);
 	virtual ~UIElement() { };
 
+	void fill(const Attributes& attributes);
+
 	const BasicString& id() const { return mId; }
 
 	void setRect(RectF rect);

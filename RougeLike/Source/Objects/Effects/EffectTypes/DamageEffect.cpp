@@ -4,27 +4,28 @@
 #include "Actors/Actor.h"
 #include "Objects/Properties/PropertyBag.h"
 
-#include "Objects/Properties/PropertyTypes/Armor.h"
-#include "Objects/Properties/PropertyTypes/Health.h"
+#include "Objects/Properties/Attributes/Armor.h"
+#include "Objects/Properties/Attributes/Health.h"
+
 
 void DamageEffect::init()
 {
-	if (mReceiver->hasProperty("Armor"))
+	if (mReceiver->hasAttribute(AttributeType::Armor))
 	{
-		Armor* armor = static_cast<Armor*>(mReceiver->getProperty("Armor"));
+		Armor* armor = static_cast<Armor*>(mReceiver->getAttribute(AttributeType::Armor));
 		if (armor->hasArmor())
 		{
 			armor->reduce(mDamage);
 		}
 		else
 		{
-			Health* hp = static_cast<Health*>(mReceiver->getProperty("Health"));
+			Health* hp = static_cast<Health*>(mReceiver->getAttribute(AttributeType::Health));
             hp->reduce(mDamage);
 		}
 	}
 	else
 	{
-		Health* hp = static_cast<Health*>(mReceiver->getProperty("Health"));
+		Health* hp = static_cast<Health*>(mReceiver->getAttribute(AttributeType::Health));
 		hp->reduce(mDamage);
 	}
 
@@ -33,10 +34,11 @@ void DamageEffect::init()
 }
 
 
-void DamageEffect::fill(const ValueBag& valueBag)
+void DamageEffect::fill(const PropertyBag& valueBag)
 {
-	setValue("Damage", mDamage, valueBag);
+	setProperty(PropertyType::Damage, mDamage, valueBag);
 }
+
 
 void DamageEffect::exit()
 {

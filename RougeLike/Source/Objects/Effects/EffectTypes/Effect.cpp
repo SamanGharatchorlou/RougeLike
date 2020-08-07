@@ -26,18 +26,20 @@ bool isValidFloor(const Map* map, VectorF point)
 }
 
 
-void setValue(const BasicString& label, float& value, const ValueBag& valueBag)
+
+void setProperty(PropertyType type, float& value, const PropertyBag& propertyBag)
 {
-	if (valueBag.contains(label))
-		value = valueBag.get(label);
+	if (propertyBag.contains(type))
+		value = propertyBag.get(type);
 	else
-		DebugPrint(Log, "No value labeled '%s' was found in the valueBag, cannot set value. Check the XML config\n", label.c_str());
+		DebugPrint(Log, "No property labeled '%s' was found in the PropertyBag. Check the XML config\n", type.string().c_str());
 }
 
-void setValue(const BasicString& label, Property& value, const ValueBag& valueBag)
+
+void setProperty(PropertyType type, Attribute& value, const PropertyBag& propertyBag)
 {
-	if (valueBag.contains(label))
-		value.setValue(valueBag.get(label));
+	if (propertyBag.contains(type))
+		value.setValue(propertyBag.get(type));
 	else
-		DebugPrint(Log, "No value labeled '%s' was found in the valueBag, cannot set value. Check the XML config\n", label.c_str());
+		DebugPrint(Log, "No property labeled '%s' was found in the PropertyBag. Check the XML config\n", type.string().c_str());
 }

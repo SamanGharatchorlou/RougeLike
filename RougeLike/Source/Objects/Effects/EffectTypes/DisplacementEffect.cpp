@@ -7,10 +7,10 @@
 DisplacementEffect::DisplacementEffect() : mDistance(0.0f), mForce(0.0f), mDistanceTravelled(0.0f) { }
 
 
-void DisplacementEffect::fill(const ValueBag& valueBag)
+void DisplacementEffect::fill(const PropertyBag& propertyBag)
 {
-	setValue("KnockbackForce", mForce, valueBag);
-	setValue("KnockbackDistance", mDistance, valueBag);
+	setProperty(PropertyType::KnockbackForce, mForce, propertyBag);
+	setProperty(PropertyType::KnockbackDistance, mDistance, propertyBag);
 }
 
 

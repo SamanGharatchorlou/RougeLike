@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Effect.h"
-#include "Objects/Properties/PropertyTypes/Damage.h"
+#include "Objects/Properties/Attributes/Damage.h"
 
 
 class DamageEffect : public Effect
@@ -10,7 +10,7 @@ public:
 	DamageEffect() { }
 	DamageEffect(Damage damage) : mDamage(damage) { };
 
-	void fill(const ValueBag& valueBag) override;
+	void fill(const PropertyBag& valueBag) override;
 	void set(Damage damage) { mDamage = damage; }
 
 	void init() override;

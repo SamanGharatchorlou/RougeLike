@@ -78,7 +78,7 @@ bool EnemyPatrol::canSeeAttackTarget() const
 		VectorF position = mEnemy->position();
 		VectorF target = mEnemy->target()->position();
 
-		return distanceSquared(target, position) < mEnemy->getPropertyValue("SightRange");
+		return distance(target, position) < mEnemy->getAttributeValue(AttributeType::SightRange);
 	}
 	else
 		return false;

@@ -7,6 +7,10 @@
 
 #include "AI/AIPathing.h"
 
+#if _DEBUG
+#include "EnemyDebugger.h"
+#endif
+
 
 struct GameData;
 class AIPathMap;
@@ -64,15 +68,6 @@ public:
 	void			accellerateTowards(VectorF position);
 	void			move(VectorF velocity, float dt) { mPhysics.move(velocity, dt); }
 
-	// Effects
-	//void addAttackingEffect(Effect* effect) { mAttackEffects.push_front(effect); }
-
-
-	void readEffects(const XMLParser& parser, EffectPool* effects);
-
-protected:
-	// TODO: change all parser parameters to const
-
 
 protected:
 	//const AIPathMap* mMap;
@@ -85,4 +80,8 @@ protected:
 	Index mCurrentIndex;
 
 	std::deque<Effect*> mAttackEffects;
+
+#if _DEBUG
+	EnemyDebugger mDebugger;
+#endif
 };

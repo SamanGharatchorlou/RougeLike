@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Utilities/Helpers.h"
-#include "Objects/Properties/Property.h"
+
+#include "Objects/Properties/Attributes/Attribute.h"
 #include "Damage.h"
 
 
-class Armor : public Property
+class Armor : public Attribute
 {
 public:
 	Armor() : mArmor(0), mMaxArmor(0) { }

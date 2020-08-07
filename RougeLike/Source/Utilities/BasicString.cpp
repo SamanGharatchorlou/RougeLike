@@ -37,7 +37,25 @@ BasicString::BasicString(const char* string, unsigned int length)
 BasicString::BasicString(float number)
 {
 	char tempBuffer[20];
-	sprintf_s(tempBuffer, "%f", number);
+	sprintf_s(tempBuffer, "%.f", number);
+
+	mLength = strlen(tempBuffer);
+	mCap = mLength + 1;
+
+	mBuffer = new char[mCap];
+	memcpy(mBuffer, tempBuffer, mCap);
+}
+
+
+BasicString::BasicString(float number, int precision)
+{
+	char tempBuffer[20];
+
+	char formatBuffer[5] = "%.";
+	_itoa(precision, formatBuffer + 2, 10);
+	strcat(formatBuffer, "f\0");
+
+	sprintf_s(tempBuffer, formatBuffer, number);
 
 	mLength = strlen(tempBuffer);
 	mCap = mLength + 1;
@@ -60,18 +78,6 @@ void BasicString::eliminate()
 	mCap = 0;
 	mBuffer = nullptr;
 }
-
-
-//void BasicString::move(BasicString& string)
-//{
-//	delete[] mBuffer;
-//	mBuffer = string.buffer();
-//	mLength = strlen(mBuffer);
-//	mCap = mLength + 1;
-//
-//	// remove the strings reference
-//	string.eliminate();
-//}
 
 
 BasicString BasicString::substr(int start, int length) const

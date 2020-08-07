@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Objects/Properties/Property.h"
+#include "Objects/Properties/Attributes/Attribute.h"
 
 
-class Level : public Property
+class Level : public Attribute
 {
 public:
 	Level() : level(1), currentExp(0), totalExp(0), levelledUp(false) { }
