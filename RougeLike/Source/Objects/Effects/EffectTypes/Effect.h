@@ -3,6 +3,7 @@
 class Actor;
 class Map;
 class ValueBag;
+class Property;
 
 #include "EffectTypes.h"
 
@@ -17,8 +18,10 @@ public:
 	void setReceiver(Actor* receiver) { mReceiver = receiver; }
 	
 	virtual void clearData() { };
-	virtual void fill(ValueMap& valueMap) { } // = 0;
-	virtual void fill(const ValueBag& values) { } // = 0;
+	void clearBaseData() { mReceiver = nullptr; mShouldExit = false; }
+
+	//virtual void fill(ValueMap& valueMap) { } // = 0;
+	virtual void fill(const ValueBag& valueBag) { } // = 0;
 
 	virtual void init() = 0;
 	virtual void fastUpdate(float dt) = 0;
@@ -33,10 +36,6 @@ public:
 
 
 protected:
-	void clearBaseData() { mReceiver = nullptr; mShouldExit = false; }
-
-
-protected:
 	Actor* mReceiver;
 	bool mShouldExit;
 };
@@ -44,3 +43,5 @@ protected:
 
 bool canMove(const Actor* actor, VectorF velocity, float dt);
 bool isValidFloor(const Map* map, VectorF point);
+void setValue(const BasicString& label, float& value, const ValueBag& valueBag);
+void setValue(const BasicString& label, Property& value, const ValueBag& valueBag);

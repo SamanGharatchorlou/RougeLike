@@ -8,18 +8,8 @@
 // TODO: split this us so everything is delayed added
 void EffectHandler::addEffect(Effect* effect)
 {
-	if (!mDelayedAdd)
-	{
-		effect->init();
-		mEffects.push_back(effect);
-	}
-	else
-	{
-		mEffectsToAdd.push(effect);
-	}
+	mEffectsToAdd.push(effect);
 }
-
-
 
 
 void EffectHandler::fastUpdate(float dt)
@@ -33,8 +23,6 @@ void EffectHandler::fastUpdate(float dt)
 
 void EffectHandler::slowUpdate(float dt)
 {
-	mDelayedAdd = true;
-
 	for (std::vector<Effect*>::iterator iter = mEffects.begin(); iter != mEffects.end();)
 	{
 		Effect* effect = *iter;
@@ -42,28 +30,12 @@ void EffectHandler::slowUpdate(float dt)
 		effect->slowUpdate(dt);
 
 		if (effect->shouldExit())
-		{
-			effect->exit();
-			iter = mEffects.erase(iter);
-
-			mExhausted.push(effect);
-		}
+			endEffect(iter);
 		else
-		{
 			iter++;
-		}
 	}
 
-	mDelayedAdd = false;
-
-	// Effects added to mEffects during the for loop can invalidate the iterator
-	while (mEffectsToAdd.size() > 0)
-	{
-		Effect* effect = mEffectsToAdd.front();
-		mEffectsToAdd.pop();
-
-		addEffect(effect);
-	}
+	addQueuedEffects();
 }
 
 
@@ -78,16 +50,13 @@ void EffectHandler::render()
 
 void EffectHandler::clear()
 {
-	// DO NOT NEW OR DELETE EFFECT, POOL HANDLES THIS STUFF
-	//for (std::vector<Effect*>::iterator iter = mEffects.begin(); iter != mEffects.end();)
-	//{
-	//	Effect* effect = *iter;
+	for (int i = 0; i < mEffects.size(); i++)
+	{
+		Effect* effect = mEffects[i];
+		mExhausted.push(effect);
+	}
 
-	//	effect->exit();
-
-	//	delete effect;
-	//	iter = mEffects.erase(iter);
-	//}
+	mEffects.clear();
 }
 
 
@@ -100,4 +69,30 @@ void EffectHandler::returnExhaustedEffects(EffectPool* pool)
 
 		pool->returnObject(effect);
 	}
+}
+
+
+// -- Private Functions -- //
+void EffectHandler::addQueuedEffects()
+{
+	while (mEffectsToAdd.size() > 0)
+	{
+		Effect* effect = mEffectsToAdd.front();
+		mEffectsToAdd.pop();
+
+		addEffect(effect);
+	}
+}
+
+
+
+void EffectHandler::endEffect(std::vector<Effect*>::iterator& iter)
+{
+	Effect* effect = *iter;
+
+	effect->clearBaseData();
+	effect->exit();
+
+	iter = mEffects.erase(iter);
+	mExhausted.push(effect);
 }

@@ -35,22 +35,14 @@
 	</Properties>
 
 	<Effects>
-				<!-- Damage -->
 		<Damage>
-			<Damage>100</Damage>
+			<Damage>10</Damage>
 		</Damage>
-		<!-- Damage -->
-		<Damage>100</Damage>
 
-		<!-- Displacement -->
 		<Displacement>
-			<KnockbackForce>750</KnockbackForce>
-			<KnockbackDistance>100</KnockbackDistance>
+			<KnockbackForce>100</KnockbackForce>
+			<KnockbackDistance>20</KnockbackDistance>
 		</Displacement>
-
-		<!-- Displacement -->
-		<KnockbackForce>750</KnockbackForce>
-		<KnockbackDistance>100</KnockbackDistance>
 	</Effects>
 
 	<MaxSize>60</MaxSize>

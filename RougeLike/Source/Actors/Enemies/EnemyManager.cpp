@@ -50,6 +50,8 @@ void EnemyManager::fastUpdate(float dt)
 
 void EnemyManager::slowUpdate(float dt)
 {
+	int a = 1;
+
 	for (std::vector<Enemy*>::iterator iter = mActiveEnemies.begin(); iter != mActiveEnemies.end(); iter++)
 	{
 		Enemy* enemy = *iter;
@@ -60,9 +62,10 @@ void EnemyManager::slowUpdate(float dt)
 		// Handle enemy messages
 		while (enemy->events().hasEvent())
 			mEvents.push(enemy->events().pop());
-
-		clearDead();
 	}
+
+
+	clearDead();
 
 	mAIController.updatePaths(mActiveEnemies);
 	mCollisions.updateAttackingColliders(attackingColliders());
@@ -153,27 +156,14 @@ std::vector<Collider*> EnemyManager::attackingColliders() const
 
 // --- Private Functions --- //
 
-void EnemyManager::clearAndRemove(std::vector<Enemy*>::iterator& iter)
-{
-	Enemy* enemy = *iter;
-	enemy->clear();
-
-	mCollisions.remove(enemy->collider());
-	mBuilder.returnEnemy(enemy);
-
-	iter = mActiveEnemies.erase(iter);
-}
-
-
 void EnemyManager::spawnEnemy(const SpawnData spawnData)
 {
 #if LIMIT_ENEMY_SPAWNS
-	if (mActiveEnemies.size() >= LIMIT_ENEMY_SPAWNS - 1)
+	if (mActiveEnemies.size() >= MAX_SPAWN_COUNT)
 		return;
 #endif
 
 	Enemy* enemy = mBuilder.buildEnemy(spawnData, mEnvironment, mAIController.pathMap());
-
 	mCollisions.add(enemy->collider());
 	mActiveEnemies.push_back(enemy);
 }
@@ -191,4 +181,15 @@ void EnemyManager::clearDead()
 				break;
 		}
 	}
+}
+
+void EnemyManager::clearAndRemove(std::vector<Enemy*>::iterator& iter)
+{
+	Enemy* enemy = *iter;
+	enemy->clear();
+
+	mCollisions.remove(enemy->collider());
+	mBuilder.returnEnemy(enemy);
+
+	iter = mActiveEnemies.erase(iter);
 }

@@ -18,13 +18,15 @@ public:
 	
 	void returnExhaustedEffects(EffectPool* pool);
 
+private:
+	void addQueuedEffects();
+	void endEffect(std::vector<Effect*>::iterator& iter);
+
 
 private:
-	std::vector<Effect*> mEffects; // turn this into a linked list?
-
-	bool mDelayedAdd;
 	std::queue<Effect*> mEffectsToAdd;
-
 	std::queue<Effect*> mExhausted;
+
+	std::vector<Effect*> mEffects; // turn this into a linked list?
 };
 

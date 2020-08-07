@@ -2,10 +2,16 @@
 #include "DisplacementEffect.h"
 
 #include "Actors/Actor.h"
-#include "Map/Map.h"
 
 
 DisplacementEffect::DisplacementEffect() : mDistance(0.0f), mForce(0.0f), mDistanceTravelled(0.0f) { }
+
+
+void DisplacementEffect::fill(const ValueBag& valueBag)
+{
+	setValue("KnockbackForce", mForce, valueBag);
+	setValue("KnockbackDistance", mDistance, valueBag);
+}
 
 
 void DisplacementEffect::set(VectorF source, float force, float distance)
@@ -35,39 +41,11 @@ void DisplacementEffect::fastUpdate(float dt)
 }
 
 
-void DisplacementEffect::clearData()
+void DisplacementEffect::exit()
 {
-	clearBaseData();
-
 	mSource = VectorF();
 	mDistance = 0.0f;
 	mForce = 0.0f;
 	mDistanceTravelled = 0.0f;
 }
 
-
-// --- Private Functions --- //
-//bool DisplacementEffect::canMove(VectorF velocity, float dt) const
-//{
-//	Index index;
-//	const Map* map = mReceiver->currentMap();
-//	RectF rect = mReceiver->scaledRect().Translate(velocity * dt);
-//
-//	index = map->index(rect.TopLeft());
-//	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
-//		return false;
-//
-//	index = map->index(rect.TopRight());
-//	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
-//		return false;
-//
-//	index = map->index(rect.BotRight());
-//	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
-//		return false;
-//
-//	index = map->index(rect.BotLeft());
-//	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
-//		return false;
-//
-//	return true;
-//}

@@ -66,7 +66,7 @@ void UIEventHandler::updateTextBox(Screen* activeScreen, UpdateTextBoxEvent& eve
 	{
 		UITextBox* text = static_cast<UITextBox*>(element);
 		char character = (char)(eventData.mValue);
-		BasicString score = &character;
+		BasicString score(eventData.mValue);// = &character;
 
 		text->setText(score);
 	}

@@ -3,8 +3,8 @@
 #include <string>
 #include "Utilities/Rect.h"
 
-#include "Objects/Attributes/Health.h"
-#include "Objects/Attributes/Armor.h"
+#include "Objects/Properties/PropertyTypes/Health.h"
+#include "Objects/Properties/PropertyTypes/Armor.h"
 
 class Enemy;
 class TargePositionAttackAbility;

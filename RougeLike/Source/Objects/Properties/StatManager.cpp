@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "StatManager.h"
 
-#include "Level.h"
-
 
 //void StatManager::init(PropertyBag* propertyBag)
 //{

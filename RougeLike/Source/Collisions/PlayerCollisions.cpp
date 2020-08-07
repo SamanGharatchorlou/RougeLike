@@ -99,12 +99,14 @@ void PlayerCollisions::resolveTrapCollisions(Map* map, EffectPool* effects)
 {
 	if (map->traps().didCollide(mPlayer->position()))
 	{
-		ValueMap valueMap;
 		Damage trapDamage = map->traps().damage();
+
+		ValueMap valueMap;
 		valueMap["Damage"] = trapDamage.value();
+		ValueBag valueBag(valueMap);
 
 		Effect* effect = effects->getObject(EffectType::Damage);
-		effect->fill(valueMap);
+		effect->fill(valueBag);
 		mPlayer->addEffect(effect);
 	}
 }

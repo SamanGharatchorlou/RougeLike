@@ -9,22 +9,17 @@ public:
 	DisplacementEffect();
 	virtual ~DisplacementEffect() { }
 
+	void fill(const ValueBag& valueBag) override;
 	void set(VectorF source, float force, float distance);
 	void update(VectorF source) { mSource = source; }
-	
-	void clearData() override;
 
 	virtual void init() override { };
 	virtual void fastUpdate(float dt) override;
 	virtual void slowUpdate(float dt) override { };
-	virtual void exit() { }
+	virtual void exit();
 	void render() override { };
 
 	EffectType type() const override { return EffectType::Displacement; }
-
-
-protected:
-	//virtual bool canMove(VectorF velocity, float dt) const;
 
 
 protected:
@@ -35,3 +30,4 @@ protected:
 
 	float mDistanceTravelled;
 };
+ 

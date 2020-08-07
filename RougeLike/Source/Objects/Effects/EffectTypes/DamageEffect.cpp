@@ -4,6 +4,8 @@
 #include "Actors/Actor.h"
 #include "Objects/Properties/PropertyBag.h"
 
+#include "Objects/Properties/PropertyTypes/Armor.h"
+#include "Objects/Properties/PropertyTypes/Health.h"
 
 void DamageEffect::init()
 {
@@ -17,7 +19,7 @@ void DamageEffect::init()
 		else
 		{
 			Health* hp = static_cast<Health*>(mReceiver->getProperty("Health"));
-			hp->reduce(mDamage);
+            hp->reduce(mDamage);
 		}
 	}
 	else
@@ -31,17 +33,12 @@ void DamageEffect::init()
 }
 
 
-void DamageEffect::clearData()
+void DamageEffect::fill(const ValueBag& valueBag)
 {
-	clearBaseData();
-	mDamage = Damage(0.0f);
+	setValue("Damage", mDamage, valueBag);
 }
 
-void DamageEffect::fill(ValueMap& valueMap)
+void DamageEffect::exit()
 {
-	BasicString damage = "Damage";
-	if (valueMap.count(damage))
-		mDamage = Damage(valueMap[damage]);
-	else
-		DebugPrint(Warning, "Value map has no %s effect node\n", damage.c_str());
+	mDamage = Damage(0.0f);
 }

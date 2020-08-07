@@ -25,10 +25,7 @@ Actor::Actor() : mVisibility(true) { }
 void Actor::setCharacter(const XMLParser& parser, const TextureManager* textureManager)
 {
 	mPropertyBag.readData(parser, "Properties");
-
-	EffectBag bag;
-	XMLNode effects = parser.root().first("Effects");
-	bag.readEffects(effects);
+	mEffects.fillEffectBag(parser.root().first("Effects"));
 
 	// Animations
 	AnimationReader reader(textureManager, parser);

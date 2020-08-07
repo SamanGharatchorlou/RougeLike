@@ -67,7 +67,7 @@
     <ClCompile Include="Source\Actors\ActorManager.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyState.cpp" />
     <ClCompile Include="Source\Actors\Enemies\Types\Devil.cpp" />
-    <ClCompile Include="Source\Objects\Attributes\Level.cpp" />
+    <ClCompile Include="Source\Objects\Properties\PropertyTypes\Level.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectManager.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\BlinkEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\DamageEffect.cpp" />
@@ -75,7 +75,7 @@
     <ClCompile Include="Source\Objects\Effects\EffectTypes\Effect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\HealEffect.cpp" />
     <ClCompile Include="Source\Actors\Physics.cpp" />
-    <ClCompile Include="Source\Objects\Attributes\StatManager.cpp" />
+    <ClCompile Include="Source\Objects\Properties\StatManager.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectHandler.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyManager.cpp" />
     <ClCompile Include="Source\Actors\Enemies\Enemy.cpp" />
@@ -227,9 +227,9 @@
     <ClInclude Include="Source\Actors\Actor.h" />
     <ClInclude Include="Source\Actors\ActorManager.h" />
     <ClInclude Include="Source\Actors\Enemies\Types\Devil.h" />
-    <ClInclude Include="Source\Objects\Attributes\Armor.h" />
-    <ClInclude Include="Source\Objects\Attributes\Damage.h" />
-    <ClInclude Include="Source\Objects\Attributes\Level.h" />
+    <ClInclude Include="Source\Objects\Properties\PropertyTypes\Armor.h" />
+    <ClInclude Include="Source\Objects\Properties\PropertyTypes\Damage.h" />
+    <ClInclude Include="Source\Objects\Properties\PropertyTypes\Level.h" />
     <ClInclude Include="Source\Objects\Effects\EffectManager.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\BlinkEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\DamageEffect.h" />
@@ -241,7 +241,8 @@
     <ClInclude Include="Source\Collisions\WeaponCollisionManager.h" />
     <ClInclude Include="Source\Objects\Properties\EffectBag.h" />
     <ClInclude Include="Source\Objects\Properties\Property.h" />
-    <ClInclude Include="Source\Objects\Attributes\StatManager.h" />
+    <ClInclude Include="Source\Objects\Properties\PropertyTypes\PropertyEnums.h" />
+    <ClInclude Include="Source\Objects\Properties\StatManager.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\Effect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectHandler.h" />
     <ClInclude Include="Source\Actors\Enemies\Enemy.h" />
@@ -295,7 +296,7 @@
     <ClInclude Include="Source\Weapons\WeaponData.h" />
     <ClInclude Include="Source\Weapons\WeaponStash.h" />
     <ClInclude Include="Source\Collisions\Collider.h" />
-    <ClInclude Include="Source\Objects\Attributes\Health.h" />
+    <ClInclude Include="Source\Objects\Properties\PropertyTypes\Health.h" />
     <ClInclude Include="Source\Audio\Audio.h" />
     <ClInclude Include="Source\Audio\AudioManager.h" />
     <ClInclude Include="Source\Collisions\CollisionTracker.h" />

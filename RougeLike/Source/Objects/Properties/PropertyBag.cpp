@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "PropertyBag.h"
 
-#include "Objects/Attributes/Level.h"
-#include "Objects/Attributes/Health.h"
-#include "Objects/Attributes/Damage.h"
-#include "Objects/Attributes/Armor.h"
+#include "Objects/Properties/PropertyTypes/Level.h"
+#include "Objects/Properties/PropertyTypes/Health.h"
+#include "Objects/Properties/PropertyTypes/Damage.h"
+#include "Objects/Properties/PropertyTypes/Armor.h"
 
 
 // ---------- DataBag --------------
@@ -103,12 +103,6 @@ float PropertyBag::value(const BasicString& name) const
 {
 	Property* property = get(name);
 	return property ? property->value() : NULL;
-}
-
-
-bool PropertyBag::contains(const BasicString& name) const
-{
-	return mData.count(name) > 0 ? true : false;
 }
 
 

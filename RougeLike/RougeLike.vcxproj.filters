@@ -65,8 +65,6 @@
     <ClCompile Include="Source\Utilities\Shapes\Square.cpp" />
     <ClCompile Include="Source\Audio\SoundController.cpp" />
     <ClCompile Include="Source\Collisions\CollisionManager.cpp" />
-    <ClCompile Include="Source\Objects\Attributes\Level.cpp" />
-    <ClCompile Include="Source\Objects\Attributes\StatManager.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectHandler.cpp" />
     <ClCompile Include="Source\Input\Button.cpp" />
     <ClCompile Include="Source\UI\Screens\SettingsScreen.cpp" />
@@ -152,6 +150,8 @@
     <ClCompile Include="Source\Objects\Properties\EffectBag.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectManager.cpp" />
     <ClCompile Include="Source\Weapons\WeaponData.cpp" />
+    <ClCompile Include="Source\Objects\Properties\PropertyTypes\Level.cpp" />
+    <ClCompile Include="Source\Objects\Properties\StatManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -231,10 +231,6 @@
     <ClInclude Include="Source\Utilities\Shapes\Circle.h" />
     <ClInclude Include="Source\Audio\SoundController.h" />
     <ClInclude Include="Source\Collisions\CollisionManager.h" />
-    <ClInclude Include="Source\Objects\Attributes\Damage.h" />
-    <ClInclude Include="Source\Objects\Attributes\Health.h" />
-    <ClInclude Include="Source\Objects\Attributes\Level.h" />
-    <ClInclude Include="Source\Objects\Attributes\StatManager.h" />
     <ClInclude Include="Source\Objects\Effects\EffectHandler.h" />
     <ClInclude Include="Source\UI\Screens\SettingsScreen.h" />
     <ClInclude Include="Source\UI\Screens\ScreenHeaders.h" />
@@ -245,7 +241,6 @@
     <ClInclude Include="Source\UI\Elements\UISlider.h" />
     <ClInclude Include="Source\Events\LocalDispatcher.h" />
     <ClInclude Include="Source\Animations\AnimationReader.h" />
-    <ClInclude Include="Source\Objects\Attributes\Armor.h" />
     <ClInclude Include="Source\Game\LoadingManager.h" />
     <ClInclude Include="Source\Game\LoadingBar.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityHotKeys.h" />
@@ -327,6 +322,12 @@
     <ClInclude Include="Source\UI\UIEventHandler.h" />
     <ClInclude Include="Source\Objects\Properties\EffectBag.h" />
     <ClInclude Include="Source\Objects\Effects\EffectManager.h" />
+    <ClInclude Include="Source\Objects\Properties\PropertyTypes\Armor.h" />
+    <ClInclude Include="Source\Objects\Properties\PropertyTypes\Damage.h" />
+    <ClInclude Include="Source\Objects\Properties\PropertyTypes\Health.h" />
+    <ClInclude Include="Source\Objects\Properties\PropertyTypes\Level.h" />
+    <ClInclude Include="Source\Objects\Properties\StatManager.h" />
+    <ClInclude Include="Source\Objects\Properties\PropertyTypes\PropertyEnums.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

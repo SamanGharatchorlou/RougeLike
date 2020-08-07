@@ -24,3 +24,20 @@ bool isValidFloor(const Map* map, VectorF point)
 {
 	return map->isValidPosition(point) && map->tile(point)->is(CollisionTile::Floor);
 }
+
+
+void setValue(const BasicString& label, float& value, const ValueBag& valueBag)
+{
+	if (valueBag.contains(label))
+		value = valueBag.get(label);
+	else
+		DebugPrint(Log, "No value labeled '%s' was found in the valueBag, cannot set value. Check the XML config\n", label.c_str());
+}
+
+void setValue(const BasicString& label, Property& value, const ValueBag& valueBag)
+{
+	if (valueBag.contains(label))
+		value.setValue(valueBag.get(label));
+	else
+		DebugPrint(Log, "No value labeled '%s' was found in the valueBag, cannot set value. Check the XML config\n", label.c_str());
+}

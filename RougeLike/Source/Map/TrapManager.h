@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Collisions/EffectCollider.h"
-#include "Objects/Attributes/Damage.h"
+#include "Objects/Properties/PropertyTypes/Damage.h"
 
 
 class CollisionTracker;

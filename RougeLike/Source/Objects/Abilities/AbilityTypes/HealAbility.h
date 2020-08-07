@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Objects/Abilities/AbilityClasses/TargetAbilities.h"
-#include "Objects/Attributes/Health.h"
+#include "Objects/Properties/PropertyTypes/Health.h"
 
 
 class HealAbility : public TargetSelfAbility

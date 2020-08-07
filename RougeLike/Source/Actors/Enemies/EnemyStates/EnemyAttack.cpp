@@ -117,7 +117,7 @@ void EnemyAttack::addEffects()
 
 	while (effects.size() > 0)
 	{
-		Effect* effect = effects.back();
+		Effect* effect = effects.front();
 		effects.pop();
 
 		mEnemy->collider()->addEffect(effect);
