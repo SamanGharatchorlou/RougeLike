@@ -12,14 +12,11 @@ void EnemyWait::init()
 
 void EnemyWait::slowUpdate(float dt)
 {
-	//mEnemy->resolveCollisions();
-	// todo need to process damage?
+	mEnemy->resolveCollisions();
 
 	if (timer.getSeconds() > mWaitTime)
 		mEnemy->popState();
 }
-
-
 
 
 void EnemyWait::render()

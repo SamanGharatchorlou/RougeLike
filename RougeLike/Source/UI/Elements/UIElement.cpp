@@ -7,6 +7,8 @@ UIElement::UIElement(const StringMap& attributes)
 	fill(attributes);
 }
 
+UIElement::UIElement(Data& data) : mId(data.id), mParent(data.parent), mRect(data.rect), mShow(data.show) { }
+
 
 void UIElement::fill(const StringMap& attributes)
 {

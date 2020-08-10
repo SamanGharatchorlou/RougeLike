@@ -72,15 +72,12 @@ void EnemyManager::slowUpdate(float dt)
 }
 
 
-void EnemyManager::spawn(const XMLNode spawnNode, const Map* map)
+void EnemyManager::spawn(const XMLNode levelSpawnNode, const Map* map)
 {
-	std::vector<SpawnData> spawnData = mSpawner.getspawnList(spawnNode, map);
-
-	for (int i = 0; i < spawnData.size(); i++)
-	{
-		spawnEnemy(spawnData[i]);
-	}
+	std::vector<SpawnData> spawnData = mSpawner.getspawnList(levelSpawnNode, map);
+	spawnEnemies(spawnData);
 }
+
 
 
 void EnemyManager::render()
@@ -156,14 +153,29 @@ std::vector<Collider*> EnemyManager::attackingColliders() const
 
 // --- Private Functions --- //
 
-void EnemyManager::spawnEnemy(const SpawnData spawnData)
+void EnemyManager::spawnEnemies(const std::vector<SpawnData>& spawnData)
 {
+	std::vector<Enemy*> enemies = mBuilder.buildEnemies(spawnData, mAIController.pathMap());
+
+	for (int i = 0; i < enemies.size(); i++)
+	{
 #if LIMIT_ENEMY_SPAWNS
-	if (mActiveEnemies.size() >= MAX_SPAWN_COUNT)
-		return;
+		if (mActiveEnemies.size() >= MAX_SPAWN_COUNT)
+			mBuilder.returnEnemy(enemies[i]);
+		else
+#endif
+			addActiveEnemy(enemies[i]);
+	}
+}
+
+
+void EnemyManager::addActiveEnemy(Enemy* enemy)
+{
+	enemy->set(mEnvironment);
+#if !IGNORED_BY_ENEMIES
+	enemy->setTarget(mEnvironment->actors()->player()->get());
 #endif
 
-	Enemy* enemy = mBuilder.buildEnemy(spawnData, mEnvironment, mAIController.pathMap());
 	mCollisions.add(enemy->collider());
 	mActiveEnemies.push_back(enemy);
 }
@@ -182,6 +194,7 @@ void EnemyManager::clearDead()
 		}
 	}
 }
+
 
 void EnemyManager::clearAndRemove(std::vector<Enemy*>::iterator& iter)
 {

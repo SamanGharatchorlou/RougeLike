@@ -10,6 +10,7 @@ class EffectManager
 {
 public:
 	void init(EffectPool* pool) { mPool = pool; }
+	void clear();
 
 	void fillEffectBag(XMLNode effectNode);
 	void setEffectBag(EffectBag effectBag) { mBag = effectBag; }
@@ -20,6 +21,8 @@ public:
 
 	void addReceivedEffect(Effect* effect);
 	std::queue<Effect*> getAttackingEffects();
+
+	void returnEffect(Effect* effect);
 
 
 private:

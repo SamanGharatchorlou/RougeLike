@@ -24,10 +24,6 @@ MeleeWeapon::MeleeWeapon() :
 		mBlockColliders.push_back(new EffectCollider);
 
 		mBlockColliders[i]->init(&mBlockRects[i]);
-
-#if _DEBUG
-		mBlockColliders[i]->setName("weapon");
-#endif
 	}
 }
 

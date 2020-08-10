@@ -30,7 +30,7 @@
 	</Collectables>
 
 	<Enemies>
-		<!--<Patrol type="Devil" xIncrement="20"></Patrol>-->
 		<Shape type="Devil" xPosition="30" shape="Circle" points="7"></Shape>
+		<Patrol type="Devil" xIncrement="20"></Patrol>
 	</Enemies>
 </Level>

@@ -50,3 +50,14 @@ void EffectManager::render()
 {
 	mHandler.render();
 }
+
+void EffectManager::clear()
+{
+	mBag.empty();
+	mHandler.clear(mPool);
+}
+
+void EffectManager::returnEffect(Effect* effect)
+{
+	mPool->returnObject(effect);
+}

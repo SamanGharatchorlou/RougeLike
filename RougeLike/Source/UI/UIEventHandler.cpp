@@ -22,16 +22,12 @@ void UIEventHandler::handleEvent(Screen* activeScreen, EventData& data)
 		setUIbar(activeScreen, static_cast<SetUIBarEvent&>(data));
 		break;
 	}
-	case Event::SetHealth:
+	case Event::SetTextColour:
 	{
-		setHealth(activeScreen, static_cast<SetHealthBarEvent&>(data));
+		setTextColour(activeScreen, static_cast<SetTextColourEvent&>(data));
 		break;
 	}
-	case Event::SetArmor:
-	{
-		setArmor(activeScreen, static_cast<SetArmorBarEvent&>(data));
-		break;
-	}
+#if UI_EDITOR
 	case Event::MoveUIElement:
 	{
 		moveElement(activeScreen, static_cast<EditUIRectEvent&>(data));
@@ -42,16 +38,7 @@ void UIEventHandler::handleEvent(Screen* activeScreen, EventData& data)
 		setElementSize(activeScreen, static_cast<EditUIRectEvent&>(data));
 		break;
 	}
-	case Event::SetUIRect:
-	{
-		setRect(activeScreen, static_cast<SetUIRectEvent&>(data));
-		break;
-	}
-	case Event::SetTextColour:
-	{
-		setTextColour(activeScreen, static_cast<SetTextColourEvent&>(data));
-		break;
-	}
+#endif
 	default:
 		break;
 	}
@@ -66,7 +53,7 @@ void UIEventHandler::updateTextBox(Screen* activeScreen, UpdateTextBoxEvent& eve
 	{
 		UITextBox* text = static_cast<UITextBox*>(element);
 		char character = (char)(eventData.mValue);
-		BasicString score(eventData.mValue);// = &character;
+		BasicString score(eventData.mValue);
 
 		text->setText(score);
 	}
@@ -94,46 +81,19 @@ void UIEventHandler::setUIbar(Screen* activeScreen, SetUIBarEvent& eventData)
 }
 
 
-void UIEventHandler::setHealth(Screen* activeScreen, SetHealthBarEvent& eventData)
+void UIEventHandler::setTextColour(Screen* activeScreen, SetTextColourEvent& eventData)
 {
-	UIElement* redHealth = activeScreen->find("HealthBar");
-	UIElement* blackHealth = activeScreen->find("BlackHealthBar");
+	UIElement* element = activeScreen->find(eventData.mId);
 
-	if (redHealth != nullptr && redHealth->type() == UIElement::Type::Box &&
-		blackHealth != nullptr && blackHealth->type() == UIElement::Type::Box)
+	if (element != nullptr && element->type() == UIElement::Type::TextBox)
 	{
-		UIBox* redHealthBar = static_cast<UIBox*>(redHealth);
-		UIBox* blackHealthBar = static_cast<UIBox*>(blackHealth);
-
-		RectF hpRect = redHealthBar->rect();
-		RectF maxHpRect = blackHealthBar->rect();
-
-		hpRect.SetWidth(maxHpRect.Width() * eventData.health.getPercentage());
-
-		redHealthBar->setRect(hpRect);
+		UITextBox* textBox = static_cast<UITextBox*>(element);
+		textBox->setColour(eventData.mColour);
 	}
 }
 
-void UIEventHandler::setArmor(Screen* activeScreen, SetArmorBarEvent& eventData)
-{
-	UIElement* armorBar = activeScreen->find("ArmorBar");
-	UIElement* blackbar = activeScreen->find("BlackArmorBar");
 
-	if (armorBar != nullptr && armorBar->type() == UIElement::Type::Box &&
-		blackbar != nullptr && blackbar->type() == UIElement::Type::Box)
-	{
-		UIBox* armorBarBox = static_cast<UIBox*>(armorBar);
-		UIBox* blackBarBox = static_cast<UIBox*>(blackbar);
-
-		RectF armorRect = armorBarBox->rect();
-		RectF maxArmorRect = blackBarBox->rect();
-
-		armorRect.SetWidth(maxArmorRect.Width() * eventData.mArmor.getPercentage());
-
-		armorBarBox->setRect(armorRect);
-	}
-}
-
+#if UI_EDITOR
 void UIEventHandler::moveElement(Screen* activeScreen, EditUIRectEvent& eventData)
 {
 	UIElement* element = activeScreen->find(eventData.mId);
@@ -161,24 +121,4 @@ void UIEventHandler::setElementSize(Screen* activeScreen, EditUIRectEvent& event
 	}
 
 }
-
-void UIEventHandler::setRect(Screen* activeScreen, SetUIRectEvent& eventData)
-{
-	UIElement* element = activeScreen->find(eventData.mId);
-
-	if (element != nullptr)
-	{
-		element->setRect(eventData.mRect);
-	}
-}
-
-void UIEventHandler::setTextColour(Screen* activeScreen, SetTextColourEvent& eventData)
-{
-	UIElement* element = activeScreen->find(eventData.mId);
-
-	if (element != nullptr && element->type() == UIElement::Type::TextBox)
-	{
-		UITextBox* textBox = static_cast<UITextBox*>(element);
-		textBox->setColour(eventData.mColour);
-	}
-}
+#endif

@@ -26,7 +26,9 @@ void ArmorAbility::activate(EffectPool* pool)
 	mAnimator.startAnimation(Action::Active);
 
 	applyEffects(pool);
-	updateUI();
+	
+	// TODO: move this somewhere else
+	//updateUI();
 }
 
 
@@ -45,8 +47,12 @@ void ArmorAbility::updateUI()
 
 	if (mCaster)
 	{
+		//Armor* armor = static_cast<Armor*>(mCaster->getAttribute(AttributeType::Armor));
+		//SetArmorBarEvent* armorPtr = new SetArmorBarEvent(*armor);
+		//mEvents.push(EventPacket(armorPtr));
+
 		Armor* armor = static_cast<Armor*>(mCaster->getAttribute(AttributeType::Armor));
-		SetArmorBarEvent* armorPtr = new SetArmorBarEvent(*armor);
-		mEvents.push(EventPacket(armorPtr));
+		SetUIBarEvent* armorBat = new SetUIBarEvent("ArmorBar", "BlackArmorBar", armor->getPercentage());
+		mEvents.push(EventPacket(armorBat));
 	}
 }

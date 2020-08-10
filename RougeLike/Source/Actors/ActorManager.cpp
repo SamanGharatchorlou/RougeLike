@@ -74,13 +74,6 @@ void ActorManager::handleEvent(EventData& data)
 {
 	switch (data.eventType)
 	{
-	//case Event::EnemyDead:
-	//{	
-	//	EnemyDeadEvent eventData = static_cast<EnemyDeadEvent&>(data);
-	//	//mPlayer->statManager().gainExp(eventData.mExp);
-	//	mCollisions->removeDefender(CollisionManager::PlayerWeapon_Hit_Enemy, eventData.mEnemy->collider());
-	//	break;
-	//}
 		// TODO: profile how frequently this is run, get a number of calls per time
 	case Event::UpdateAIPathMap:
 	{

@@ -67,17 +67,17 @@ void PlayerManager::fastUpdate(float dt)
 	Map* playerMap = mEnvironment->map(mPlayer.position());
 	mPlayerCollisions.resolveWalls(playerMap, dt);
 	mPlayerCollisions.resolveWeapons(mEnvironment->effectPool());
-
+	mPlayerCollisions.resolveTraps(playerMap, mEnvironment->effectPool());
 }
 
 void PlayerManager::slowUpdate(float dt)
 {
 	// TODO: move any of these into fast update?
-	Map* playerMap = mEnvironment->map(mPlayer.position());
-	mPlayerCollisions.resolveTraps(playerMap, mEnvironment->effectPool());
-	mPlayerCollisions.resolveBody();
+	mPlayerCollisions.enableBodyCollisions(mPlayer.hasBodyCollisions());
 
 	mPlayer.slowUpdate(dt);
+
+	Map* playerMap = mEnvironment->map(mPlayer.position());
 	mPlayer.updateCurrentTile(playerMap);
 
 	//if (mPlayer->weapon()->isAttacking())

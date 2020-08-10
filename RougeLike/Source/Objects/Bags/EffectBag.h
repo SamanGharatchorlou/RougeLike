@@ -9,6 +9,7 @@ class EffectBag
 {
 public:
 	void readEffects(XMLNode parerntEffectNode);
+	void empty();
 
 	const std::unordered_map<EffectType, PropertyBag>& effects() { return mEffects; }
 

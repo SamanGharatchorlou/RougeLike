@@ -10,23 +10,16 @@
 #include "Map/Map.h"
 
 
-void EnemySpawner::wipeEnemies()
-{
-	//mEnemies->clearAllEnemies();
-}
-
 std::vector<SpawnData> EnemySpawner::getspawnList(const XMLNode spawnNode, const Map* map) const
 {
 	std::vector<SpawnData> spawnList;
 
 	XMLNode node = spawnNode.child();
-
 	while (node)
 	{
 		Type spawnType = stringToType(node.name());
 		StringMap attributes = node.nodeAttributes();
 
-		// TODO: replace this loop by merging the string maps instead of the vector, then generate a list
 		std::vector<SpawnData> list = generateSpawnData(map, spawnType, attributes);
 		spawnList.reserve(spawnList.size() + list.size());
 		spawnList.insert(spawnList.end(), list.begin(), list.end());
@@ -49,7 +42,9 @@ std::vector<SpawnData> EnemySpawner::generateSpawnData(const Map* map, Type spaw
 
 std::vector<SpawnData> EnemySpawner::spawnPatrollers(const Map* map, const StringMap& attributes) const
 {
-	EnemyType enemyType = stringToEnemyType(attributes.at("type"));
+	EnemyType enemyType = EnemyType::None;
+	enemyType << attributes.at("type");
+
 	int xIncrement = attributes.getInt("xIncrement");
 
 	PointList pointList;
@@ -66,11 +61,12 @@ std::vector<SpawnData> EnemySpawner::spawnPatrollers(const Map* map, const Strin
 
 std::vector<SpawnData> EnemySpawner::spawnShape(const Map* map, const StringMap& attributes) const
 {
-	EnemyType enemyType = stringToEnemyType(attributes.at("type"));
+	EnemyType enemyType = EnemyType::None;
+	enemyType << attributes.at("type");
+
 	int xPosition = attributes.getInt("xPosition");
 
 	PointList points;
-
 	if (attributes.at("shape") == "Circle")
 	{
 		int radius = map->tile(Index(0, 0))->rect().Width();
@@ -152,6 +148,7 @@ Shape EnemySpawner::pickRandomShape() const
 }
 
 
+// TODO: replace with << and/or >>
 EnemySpawner::Type EnemySpawner::stringToType(const BasicString& spawnType) const
 {
 	if (spawnType == "Patrol")

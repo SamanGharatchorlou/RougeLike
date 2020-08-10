@@ -32,7 +32,6 @@ public:
 public:
 	EnemySpawner() { }
 
-	void wipeEnemies();
 	std::vector<SpawnData> getspawnList(const XMLNode spawnNode, const Map* map) const;
 
 

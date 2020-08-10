@@ -21,17 +21,19 @@ public:
 	void resolveWalls(Map* map, float dt);
 	void resolveTraps(Map* map, EffectPool* effects);
 	void resolveWeapons(EffectPool* effects);
-	void resolveBody();
 
+	void enableBodyCollisions(bool enable);
 
 	void refreshWeaponColliders();
-
 	void clearExcludedColliders(CollisionManager::Tracker tracker);
-	void enableCollisions(CollisionManager::Tracker tracker, bool isEnabled);
 
 
 	Player* player() { return mPlayer; }
 	CollisionManager* collisionManager() { return cManager; }
+
+
+private:
+	void enableCollisions(CollisionManager::Tracker tracker, bool isEnabled);
 
 
 private:

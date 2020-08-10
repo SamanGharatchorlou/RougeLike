@@ -12,6 +12,7 @@ class AttributeBag : public DataBag
 {
 public:
 	virtual ~AttributeBag();
+	void empty() { mData.clear(); }
 
 	Attribute* get(AttributeType attribute) const;
 	float value(AttributeType attribute) const;

@@ -2,6 +2,14 @@
 #include "UITextBox.h"
 
 
+UITextBox::UITextBox(Data& data) : UIBox(data)
+{
+	data.font = (data.font == "") ? "default" : data.font;
+	mText.init(data.text, data.font, data.ptSize, data.colour);
+	setAlignment(data.alignment);
+}
+
+
 UITextBox::UITextBox(const StringMap& attributes) : UIBox(attributes)
 {
 	initText(attributes);
@@ -10,19 +18,20 @@ UITextBox::UITextBox(const StringMap& attributes) : UIBox(attributes)
 	setAlignment(aligment);
 }
 
-UITextBox::UITextBox(const UITextBoxData data)
-{
-	StringMap attributes;
-	attributes.add("x", data.rect.TopLeft().x);
-	attributes.add("y", data.rect.TopLeft().y);
-	attributes.add("width", data.rect.Width());
-	attributes.add("height", data.rect.Height());
-	UIElement::fill(attributes);
 
-
-	mText.init(data.text, data.font, data.ptSize, data.colour);
-	setAlignment(data.alignment);
-}
+//UITextBox::UITextBox(const UITextBoxData data)
+//{
+//	StringMap attributes;
+//	attributes.add("x", data.rect.TopLeft().x);
+//	attributes.add("y", data.rect.TopLeft().y);
+//	attributes.add("width", data.rect.Width());
+//	attributes.add("height", data.rect.Height());
+//	UIElement::fill(attributes);
+//
+//
+//	mText.init(data.text, data.font, data.ptSize, data.colour);
+//	setAlignment(data.alignment);
+//}
 
 
 void UITextBox::render()

@@ -15,8 +15,7 @@ public:
 	}
 	void push(const EventPacket event) { mEvents.push(event); }
 	bool hasEvent() const { return mEvents.size() > 0; }
-
-	// TODO memory leak? 
+ 
 	void clear() { while (hasEvent()) pop(); }
 
 

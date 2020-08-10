@@ -49,12 +49,12 @@ void HealAbility::applyEffects(EffectPool* pool)
 
 void HealAbility::updateUI()
 {
-	Player* player = dynamic_cast<Player*>(mCaster);
+	//Player* player = dynamic_cast<Player*>(mCaster);
 
-	if (mCaster)
-	{
-		Health* hp = static_cast<Health*>(mCaster->getAttribute(AttributeType::Health));
-		SetHealthBarEvent* hpPtr = new SetHealthBarEvent(*hp);
-		mEvents.push(EventPacket(hpPtr));
-	}
+	//if (mCaster)
+	//{
+	//	Health* hp = static_cast<Health*>(mCaster->getAttribute(AttributeType::Health));
+	//	SetHealthBarEvent* hpPtr = new SetHealthBarEvent(*hp);
+	//	mEvents.push(EventPacket(hpPtr));
+	//}
 }

@@ -7,6 +7,15 @@
 #include "Debug/DebugDraw.h"
 #endif
 
+
+UIBox::UIBox(Data& data) : UIElement(data), mTexture(data.texture)
+{
+#if _DEBUG
+	mDrawRect = data.drawRect;
+#endif
+}
+
+
 UIBox::UIBox() : mTexture(nullptr) 
 {
 #if _DEBUG

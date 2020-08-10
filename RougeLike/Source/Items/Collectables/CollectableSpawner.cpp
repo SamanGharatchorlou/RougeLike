@@ -7,7 +7,7 @@ std::queue<CollectableSpawner::SpawnData> CollectableSpawner::getSpawnList(const
 {
 	std::queue<SpawnData> spawnData;
 
-	XMLNode collectablesNode = node.child("Collectables");
+	XMLNode collectablesNode = node.child();
 	while (collectablesNode)
 	{
 		SpawnData data = generateSpawnData(collectablesNode, map);

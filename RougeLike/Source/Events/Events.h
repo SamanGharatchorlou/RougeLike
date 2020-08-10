@@ -10,13 +10,11 @@ class Enemy;
 class TargePositionAttackAbility;
 class Texture;
 
-// TODO: do i still use all of these?
+
 enum class Event
 {
 	None,
 
-	SetHealth,
-	SetArmor,
 	EnemyDead,
 	EnemyHit,
 
@@ -26,12 +24,8 @@ enum class Event
 	SetMusicVolume,
 
 	UpdateLoadingBar,
-
 	UpdateTextBox,
-	MoveUIElement,
-	ChangeUIElementSize,
 	SetTextColour,
-	SetUIRect,
 	SetUIBar,
 
 	Trauma,
@@ -40,15 +34,21 @@ enum class Event
 	UpdateAICostMap,
 
 	ActivateAbilityOn,
-	WeaponSelected,
 
-	Render
+	Render,
+
+#if UI_EDITOR
+	MoveUIElement,
+	ChangeUIElementSize,
+#endif
 };
 
 
 struct EventData
 {
-	virtual ~EventData() = 0;
+	EventData() { }
+	EventData(Event type) : eventType(type) {}
+	virtual ~EventData() { }
 
 	void setEventType(Event event) { eventType = event; }
 	Event eventType = Event::None;
@@ -69,16 +69,11 @@ struct EventPacket
 	EventData* data;
 };
 
-struct WeaponSelectedEvent : public EventData
-{
-	WeaponSelectedEvent() { eventType = Event::WeaponSelected; }
-	~WeaponSelectedEvent() { }
-};
-
 
 struct RenderEvent : public EventData
 {
-	RenderEvent(Texture* texture, RectF rect, int renderLayer) : mTexture(texture), mRect(rect), mRenderLayer(renderLayer) { eventType = Event::Render; }
+	RenderEvent(Texture* texture, RectF rect, int renderLayer) : EventData(Event::Render), mTexture(texture), mRect(rect), mRenderLayer(renderLayer) { }
+
 	Texture* mTexture;
 	RectF mRect;
 	int mRenderLayer;
@@ -87,7 +82,8 @@ struct RenderEvent : public EventData
 
 struct SetTextColourEvent : public EventData
 {
-	SetTextColourEvent(const BasicString& id, SDL_Color colour) : mId(id), mColour(colour) { eventType = Event::SetTextColour; }
+	SetTextColourEvent(const BasicString& id, SDL_Color colour) : EventData(Event::SetTextColour), mId(id), mColour(colour) { }
+
 	SDL_Color mColour;
 	const BasicString mId;
 };
@@ -95,23 +91,22 @@ struct SetTextColourEvent : public EventData
 
 struct ActivateAreaAttack : public EventData
 {
-	ActivateAreaAttack(const TargePositionAttackAbility* ability) : mAbility(ability) { eventType = Event::ActivateAbilityOn; }
-	~ActivateAreaAttack() { }
+	ActivateAreaAttack(const TargePositionAttackAbility* ability) : EventData(Event::ActivateAbilityOn), mAbility(ability) { }
+
 	const TargePositionAttackAbility* mAbility;
 };
 
 
 struct UpdateLoadingBarEvent : public EventData
 {
-	UpdateLoadingBarEvent() { eventType = Event::UpdateLoadingBar; }
-	~UpdateLoadingBarEvent() { }
+	UpdateLoadingBarEvent() : EventData(Event::UpdateLoadingBar) { }
 };
 
 
 struct EnemyDeadEvent : public EventData
 {
-	EnemyDeadEvent(const Enemy* enemy, const float score, const float exp) : mEnemy(enemy), mScore(score), mExp(exp) { eventType = Event::EnemyDead; }
-	~EnemyDeadEvent() { }
+	EnemyDeadEvent(const Enemy* enemy, const float score, const float exp) : EventData(Event::EnemyDead), mEnemy(enemy), mScore(score), mExp(exp) { }
+
 	const Enemy* mEnemy;
 	const float mScore;
 	const float mExp;
@@ -120,8 +115,8 @@ struct EnemyDeadEvent : public EventData
 
 struct SetUIBarEvent : public EventData
 {
-	SetUIBarEvent(const BasicString bar, const BasicString barContainer, const float percentage) : mBar(bar), mBarContainer(barContainer), mPercentage(percentage) { }
-	~SetUIBarEvent() { };
+	SetUIBarEvent(const BasicString bar, const BasicString barContainer, const float percentage) : EventData(Event::SetUIBar),
+		mBar(bar), mBarContainer(barContainer), mPercentage(percentage) { }
 
 	const BasicString mBar;
 	const BasicString mBarContainer;
@@ -129,33 +124,15 @@ struct SetUIBarEvent : public EventData
 };
 
 
-struct SetHealthBarEvent : public EventData
-{
-	SetHealthBarEvent(Health hp) : health(hp) { eventType = Event::SetHealth; }
-	~SetHealthBarEvent() { }
-	const Health health;
-};
-
-
-struct SetArmorBarEvent : public EventData
-{
-	SetArmorBarEvent(Armor armor) : mArmor(armor) { eventType = Event::SetArmor; }
-	~SetArmorBarEvent() { }
-	const Armor mArmor;
-};
-
-
 struct IncrementLevelEvent : public EventData
 {
-	IncrementLevelEvent() { eventType = Event::IncrementMapLevel; };
-	~IncrementLevelEvent() { }
+	IncrementLevelEvent() : EventData(Event::IncrementMapLevel) { };
 };
 
 
 struct UpdateTextBoxEvent : public EventData
 {
-	UpdateTextBoxEvent(const BasicString& id, int value) : mId(id), mValue(value) { eventType = Event::UpdateTextBox; }
-	~UpdateTextBoxEvent() { }
+	UpdateTextBoxEvent(const BasicString& id, int value) : EventData(Event::UpdateTextBox), mId(id), mValue(value) { }
 
 	const BasicString mId;
 	const int mValue;
@@ -164,8 +141,7 @@ struct UpdateTextBoxEvent : public EventData
 
 struct TraumaEvent : public EventData
 {
-	TraumaEvent(int trauma) : mTrauma(trauma) { eventType = Event::Trauma; }
-	~TraumaEvent() { }
+	TraumaEvent(int trauma) : EventData(Event::Trauma), mTrauma(trauma) { }
 
 	const int mTrauma;
 };
@@ -173,18 +149,26 @@ struct TraumaEvent : public EventData
 
 struct UpdateAIPathMapEvent : public EventData
 {
-	UpdateAIPathMapEvent() { eventType = Event::UpdateAIPathMap; };
-	~UpdateAIPathMapEvent() { }
+	UpdateAIPathMapEvent() : EventData(Event::UpdateAIPathMap) { };
 };
 
 
 struct UpdateAICostMapEvent : public EventData
 {
-	UpdateAICostMapEvent() { eventType = Event::UpdateAICostMap; };
-	~UpdateAICostMapEvent() { }
+	UpdateAICostMapEvent() : EventData(Event::UpdateAICostMap) { };
 };
 
 
+struct SetVolumeEvent : public EventData
+{
+	SetVolumeEvent(float volume) : mVolume(volume) { } 
+
+	const float mVolume;
+};
+
+
+
+#if UI_EDITOR
 struct EditUIRectEvent : public EventData
 {
 	EditUIRectEvent(const BasicString& id, VectorF change) : mId(id), mChange(change) { };
@@ -193,19 +177,4 @@ struct EditUIRectEvent : public EventData
 	const BasicString mId;
 	const VectorF mChange;
 };
-
-struct SetUIRectEvent : public EventData
-{
-	SetUIRectEvent(const BasicString& id, RectF rect) : mId(id), mRect(rect) { eventType = Event::SetUIRect; }
-	~SetUIRectEvent() { }
-
-	const BasicString mId;
-	const RectF mRect;
-};
-
-struct SetVolumeEvent : public EventData
-{
-	SetVolumeEvent(float volume) : mVolume(volume) { } 
-
-	const float mVolume;
-};
+#endif

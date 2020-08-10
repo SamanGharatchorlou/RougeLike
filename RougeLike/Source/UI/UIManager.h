@@ -4,7 +4,7 @@
 #include "Events/Observer.h"
 #include "Events/Dispatcher.h"
 
-#include "Debug/UIEditor.h"+
+#include "Debug/UIEditor.h"
 
 class TextureManager;
 class InputManager;

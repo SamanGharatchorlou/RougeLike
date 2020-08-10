@@ -29,8 +29,4 @@ private:
 	bool isValidPosition(VectorF position) const;
 
 	Grid<int> mCostMap;
-
-	// TODO: do i still need these?
-	std::vector<Index> occupiedTiles;
-	std::vector<Index> toBeOccupiedTiles;
 };

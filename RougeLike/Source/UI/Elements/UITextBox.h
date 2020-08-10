@@ -4,16 +4,16 @@
 #include "Text/Text.h"
 
 
-struct UITextBoxData
-{
-	BasicString alignment = "";
-	BasicString font = "";
-	int ptSize = 0;
-	SDL_Color colour;
-	Texture* texture = nullptr;
-	RectF rect;
-	BasicString text;
-};
+//struct UITextBoxData
+//{
+//	BasicString alignment = "";
+//	BasicString font = "";
+//	int ptSize = 0;
+//	SDL_Color colour;
+//	Texture* texture = nullptr;
+//	RectF rect;
+//	BasicString text;
+//};
 
 
 
@@ -28,9 +28,18 @@ public:
 		Center
 	};
 
+	struct Data : public UIBox::Data
+	{
+		BasicString alignment = "Center";
+		BasicString text = "";
+		BasicString font = "";
+		int ptSize = 0;
+		SDL_Color colour{ 0, 0, 0 };
+	};
+
 public:
+	UITextBox(Data& data);
 	UITextBox(const StringMap& attributes);
-	UITextBox(const UITextBoxData data);
 	virtual ~UITextBox() { }
 
 	void setText(const BasicString& text) { mText.setText(text); }

@@ -15,14 +15,16 @@ public:
 
 	void loadSpawnPool();
 
-	Enemy* buildEnemy(const SpawnData& data, Environment* environment, const AIPathMap* aiPathMap);
+	std::vector<Enemy*> buildEnemies(const std::vector<SpawnData>& data, const AIPathMap* aiPathMap);
+	Enemy* buildEnemy(const SpawnData& data, const XMLNode enemyNode, const AIPathMap* aiPathMap);
 	void returnEnemy(Enemy* enemy);
 
 private:
-	Enemy* getBlankEnemy(const SpawnData& data);
-	void fillActorData(Enemy* enemy, const XMLNode node, EffectPool* effects);
-	void fillSpawnData(Enemy* enemy, const SpawnData& data, const AIPathMap* aiPathMap);
+	Enemy* getBlankEnemy(EnemyType type);
+	void fillActorData(Enemy* enemy, const XMLNode node) const;
+	void fillSpawnData(Enemy* enemy, const SpawnData& data, const AIPathMap* aiPathMap) const;
 
+	void setupParserMap(std::unordered_map<EnemyType, XMLParser>& parserMap, const std::vector<SpawnData>& dataList) const;
 
 private:
 	TextureManager* mTextures;

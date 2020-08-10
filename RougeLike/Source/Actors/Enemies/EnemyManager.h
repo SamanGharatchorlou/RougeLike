@@ -39,7 +39,7 @@ public:
 	LocalDispatcher& events() { return mEvents; }
 
 	// Spawning
-	void spawn(const XMLNode spawnNode, const Map* map);
+	void spawn(const XMLNode levelSpawnNode, const Map* map);
 
 	std::vector<Actor*> getActiveEnemies() const;
 	std::vector<Collider*> attackingColliders() const;
@@ -48,8 +48,10 @@ public:
 
 
 private:
+	void addActiveEnemy(Enemy* enemy);
+	void spawnEnemies(const std::vector<SpawnData>& spawnData);
+
 	void clearDead();
-	void spawnEnemy(const SpawnData spawnData);
 	void clearAndRemove(std::vector<Enemy*>::iterator& iter);
 
 

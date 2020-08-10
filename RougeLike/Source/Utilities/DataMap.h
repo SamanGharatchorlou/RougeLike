@@ -120,7 +120,7 @@ float DataMap<T>::getFloat(const BasicString& label) const
 #if _DEBUG
 	checkValue(label);
 #endif
-	return atof(data.at(label).c_str());
+	return (float)atof(data.at(label).c_str());
 }
 
 

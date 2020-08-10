@@ -36,10 +36,8 @@
     <ClCompile Include="Source\UI\Screens\GameScreen.cpp" />
     <ClCompile Include="Source\UI\Screens\PauseScreen.cpp" />
     <ClCompile Include="Source\UI\Screens\Screen.cpp" />
-    <ClCompile Include="Source\UI\Screens\UILayer.cpp" />
     <ClCompile Include="Source\Collisions\CollisionTracker.cpp" />
     <ClCompile Include="Source\Game\GameData.cpp" />
-    <ClCompile Include="Source\Events\Observer.cpp" />
     <ClCompile Include="Source\Debug\Logging.cpp" />
     <ClCompile Include="Source\Utilities\Helpers.cpp" />
     <ClCompile Include="Source\Items\Collectables\Collectable.cpp" />
@@ -119,7 +117,6 @@
     <ClCompile Include="Source\Map\LevelManager.cpp" />
     <ClCompile Include="Source\Map\TileTypes.cpp" />
     <ClCompile Include="Source\Map\MapBuilding\MapDecorator.cpp" />
-    <ClCompile Include="Source\Actors\Enemies\Types\EnemyTypes.cpp" />
     <ClCompile Include="Source\Actors\Player\PlayerManager.cpp" />
     <ClCompile Include="Source\Collisions\EnemyCollisions.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyPool.cpp" />
@@ -201,7 +198,6 @@
     <ClInclude Include="Source\UI\Screens\PauseScreen.h" />
     <ClInclude Include="Source\UI\Screens\Screen.h" />
     <ClInclude Include="Source\UI\Elements\UIElement.h" />
-    <ClInclude Include="Source\UI\Screens\UILayer.h" />
     <ClInclude Include="Source\Collisions\CollisionTracker.h" />
     <ClInclude Include="Source\Input\Button.h" />
     <ClInclude Include="Source\Debug\Logging.h" />

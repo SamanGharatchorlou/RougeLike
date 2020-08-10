@@ -23,7 +23,6 @@
     <ClCompile Include="Source\Actors\Enemies\EnemyDebugger.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyPool.cpp" />
     <ClCompile Include="Source\Actors\Enemies\Spawning\EnemyBuilder.cpp" />
-    <ClCompile Include="Source\Actors\Enemies\Types\EnemyTypes.cpp" />
     <ClCompile Include="Source\Actors\Player\PlayerManager.cpp" />
     <ClCompile Include="Source\AI\AIPathing.cpp" />
     <ClCompile Include="Source\AI\AIPathMap.cpp" />
@@ -134,7 +133,6 @@
     <ClCompile Include="Source\Collisions\CollisionTracker.cpp" />
     <ClCompile Include="Source\Collisions\DamageCollider.cpp" />
     <ClCompile Include="Source\Events\Dispatcher.cpp" />
-    <ClCompile Include="Source\Events\Observer.cpp" />
     <ClCompile Include="Source\Game\GameData.cpp" />
     <ClCompile Include="Source\Text\Font.cpp" />
     <ClCompile Include="Source\Graphics\Renderer.cpp" />
@@ -173,7 +171,6 @@
     <ClCompile Include="Source\UI\Elements\UIButton.cpp" />
     <ClCompile Include="Source\UI\ScreenDecoder.cpp" />
     <ClCompile Include="Source\UI\Screens\Screen.cpp" />
-    <ClCompile Include="Source\UI\Screens\UILayer.cpp" />
     <ClCompile Include="Source\UI\UIManager.cpp" />
     <ClCompile Include="Source\System\Files\StatReader.cpp" />
     <ClCompile Include="Source\System\Files\FileManager.cpp" />
@@ -351,7 +348,6 @@
     <ClInclude Include="Source\UI\Elements\UIButton.h" />
     <ClInclude Include="Source\UI\ScreenDecoder.h" />
     <ClInclude Include="Source\UI\Screens\Screen.h" />
-    <ClInclude Include="Source\UI\Screens\UILayer.h" />
     <ClInclude Include="Source\UI\UIManager.h" />
     <ClInclude Include="Source\System\Files\StatReader.h" />
     <ClInclude Include="Source\System\Files\FileManager.h" />

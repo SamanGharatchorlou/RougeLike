@@ -14,7 +14,7 @@ public:
 	void slowUpdate(float dt);
 	void render();
 
-	void clear();
+	void clear(EffectPool* pool);
 	
 	void returnExhaustedEffects(EffectPool* pool);
 
@@ -27,6 +27,6 @@ private:
 	std::queue<Effect*> mEffectsToAdd;
 	std::queue<Effect*> mExhausted;
 
-	std::vector<Effect*> mEffects; // turn this into a linked list?
+	std::vector<Effect*> mEffects;
 };
 

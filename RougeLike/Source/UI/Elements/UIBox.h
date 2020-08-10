@@ -7,7 +7,18 @@ class Texture;
 class UIBox : public UIElement
 {
 public:
+	struct Data : public UIElement::Data
+	{
+		Texture* texture = nullptr;
+#if _DEBUG
+		bool drawRect = false;
+#endif
+	};
+
+
+public:
 	UIBox();
+	UIBox(Data& data);
 	UIBox(const StringMap& attributes);
 	virtual ~UIBox() { }
 

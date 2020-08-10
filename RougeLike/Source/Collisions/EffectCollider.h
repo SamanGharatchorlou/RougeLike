@@ -21,6 +21,4 @@ public:
 private:
 	std::queue<Effect*> mEffects;
 	bool mRequiresUpdate;
-
-
 };

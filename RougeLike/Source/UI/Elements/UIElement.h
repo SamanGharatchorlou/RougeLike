@@ -14,9 +14,18 @@ public:
 		Button
 	};
 
+	struct Data
+	{
+		BasicString id = "";
+		RectF rect;
+		const UIElement* parent = nullptr;
+		bool show = true;
+	};
+
 public:
 	UIElement() : mParent(nullptr), mShow(false) { }
 	UIElement(const StringMap& attributes);
+	UIElement(Data& data);
 	virtual ~UIElement() { };
 
 	void fill(const StringMap& attributes);

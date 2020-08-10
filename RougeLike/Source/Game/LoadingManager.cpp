@@ -127,20 +127,14 @@ void LoadingManager::initTextBox(VectorF screenSize)
 	RectF textRect(VectorF(), textSize);
 	textRect.SetCenter(textPosition);
 
-	// TODO: Change back to using textbox data
-	StringMap textAttributes;
-	textAttributes.add("id", "loadingbar");
-	textAttributes.add("text", "Loading...");
-	textAttributes.add("r", "0");
-	textAttributes.add("g", "0");
-	textAttributes.add("b", "255");
-	textAttributes.add("x", textRect.TopLeft().x);
-	textAttributes.add("y", textRect.TopLeft().y);
-	textAttributes.add("width", textRect.Width());
-	textAttributes.add("height", textRect.Height());
+	// Set text
+	UITextBox::Data textData;
+	textData.ptSize = 0;
+	textData.colour = SDL_Color{ 0, 0, 255 };
+	textData.texture = nullptr;
+	textData.text = "Loading...";
 
-	mLoadingText = new UITextBox(textAttributes);
-
+	mLoadingText = new UITextBox(textData);
 	mLoadingText->setRect(textRect);
 	mLoadingText->autoSizeFont();
 }

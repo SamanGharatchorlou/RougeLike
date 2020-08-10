@@ -19,13 +19,23 @@ Screen::~Screen()
 }
 
 
+void Screen::add(const ScreenLayer& layer)
+{
+	mScreenLayers.add(layer);
+}
 
-void Screen::add(ScreenLayers& layers)
+void Screen::add(const ScreenLayers& layers)
 {
 	for (int i = 0; i < layers.size(); i++)
 	{
 		mScreenLayers.add(layers.layer(i));
 	}
+}
+
+
+ScreenLayer* Screen::layer(const BasicString& id)
+{
+	return mScreenLayers.layer(id);
 }
 
 
@@ -58,7 +68,7 @@ void Screen::render()
 {
 	for (const ScreenLayer& layer : mScreenLayers.layers())
 	{
-		for (UIElement* element : layer)
+		for (UIElement* element : layer.elements)
 		{
 			element->render();
 		}

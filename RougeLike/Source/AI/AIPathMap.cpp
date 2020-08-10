@@ -20,8 +20,6 @@ void AIPathMap::build(const Map* map, int xSplit, int ySplit)
 	mData.set(size, PathTile());
 
 	mCostMap.set(size, 1);
-	occupiedTiles.clear();
-	toBeOccupiedTiles.clear();
 
 	// Split each tile by xsplit and ysplit
 	for (unsigned int y = 0; y < map->yCount(); y++)
@@ -38,7 +36,6 @@ void AIPathMap::build(const Map* map, int xSplit, int ySplit)
 
 				const MapTile& mapTile = tileMap.get(Index(x, y));
 
-				// splt every x into 2
 				for (int xShift = 0; xShift < xSplit; xShift++)
 				{
 					int xIndex = xPathMap + xShift;

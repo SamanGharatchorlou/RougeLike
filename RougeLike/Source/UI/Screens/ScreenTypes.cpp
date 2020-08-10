@@ -11,7 +11,7 @@ Elements ScreenLayers::elementList() const
 
 	for (const ScreenLayer& screenLayer : mLayers)
 	{
-		elements.insert(elements.end(), screenLayer.begin(), screenLayer.end());
+		elements.insert(elements.end(), screenLayer.elements.begin(), screenLayer.elements.end());
 	}
 
 	return elements;
@@ -33,5 +33,19 @@ UIElement* ScreenLayers::find(const BasicString& id)
 	}
 
 	DebugPrint(Warning, "No element with the id %s was found from the provided screen\n", id.c_str());
+	return nullptr;
+}
+
+
+
+ScreenLayer* ScreenLayers::layer(const BasicString& id)
+{
+	for (int i = 0; i < mLayers.size(); i++)
+	{
+		if (mLayers[i].id == id)
+			return &mLayers[i];
+	}
+
+	DebugPrint(Warning, "No layer with the id '%s' exists, returning layer at index 0\n");
 	return nullptr;
 }

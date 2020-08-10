@@ -26,7 +26,7 @@ public:
 	void render();
 
 	void setVisibility(bool visibility) { mVisibility = visibility; }
-	void reset();
+	void clear();
 
 	// StringMap
 	Attribute* getAttribute(AttributeType type) const;

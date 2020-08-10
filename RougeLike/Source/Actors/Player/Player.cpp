@@ -8,7 +8,7 @@
 #include "Weapons/Weapon.h"
 #include "Weapons/Melee/MeleeWeapon.h"
 
-#if _DEBUG
+#if DRAW_PLAYER_RECTS
 #include "Debug/DebugDraw.h"
 #endif
 
@@ -77,7 +77,7 @@ void Player::slowUpdate(float dt)
 void Player::reset()
 {
 	tileIndex.zero();
-	Actor::reset();
+	Actor::clear();
 }
 
 
@@ -143,14 +143,13 @@ void Player::processHit()
 
 void Player::updateUI()
 {
-	// Update UI
 	Health* hp = static_cast<Health*>(getAttribute(AttributeType::Health));
-	SetHealthBarEvent* hpPtr = new SetHealthBarEvent(*hp);
-	mEvents.push(EventPacket(hpPtr));
+	SetUIBarEvent* healthBar = new SetUIBarEvent("HealthBar", "BlackHealthBar", hp->getPercentage());
+	mEvents.push(EventPacket(healthBar));
 
 	Armor* armor = static_cast<Armor*>(getAttribute(AttributeType::Armor));
-	SetArmorBarEvent* armorPtr = new SetArmorBarEvent(*armor);
-	mEvents.push(EventPacket(armorPtr));
+	SetUIBarEvent* armorBar = new SetUIBarEvent("ArmorBar", "BlackArmorBar", armor->getPercentage());
+	mEvents.push(EventPacket(armorBar));
 }
 
 

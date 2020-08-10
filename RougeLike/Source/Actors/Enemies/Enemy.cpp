@@ -99,7 +99,7 @@ void Enemy::clear()
 	//mMap = nullptr;
 	mAIPathing.clear();
 
-	Actor::reset();
+	Actor::clear();
 }
 
 

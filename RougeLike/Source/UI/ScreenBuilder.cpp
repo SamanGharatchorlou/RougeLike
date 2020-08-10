@@ -16,7 +16,6 @@
 
 Screen* ScreenBuilder::buildNewScreen(const BasicString& config)
 {
-	printf("build new screen\n");
 	const ScreenReader reader;
 	ScreenAttributes attributes = reader.readScreen(config);
 	ScreenLayers screenLayers = buildUIScreen(attributes);
@@ -79,12 +78,12 @@ ScreenLayers ScreenBuilder::buildScreenLayers(const ScreenAttributes& screenAttr
 
 ScreenLayer ScreenBuilder::buildLayer(const LayerAttributes& layerAttributes) const
 {
-	ScreenLayer layer;
+	ScreenLayer layer("");
 	
 	for (const StringMap& attributes : layerAttributes)
 	{
 		UIElement* element = buildElement(attributes);
-		layer.push_back(element);
+		layer.elements.push_back(element);
 	}
 
 	return layer;

@@ -32,8 +32,6 @@ void WeaponCollisionManager::processWeaponEffects(EffectPool* effects)
 				addWeaponEffects(weaponColliders[i]);
 			}
 				
-
-
 			// this will trigger as soon as I attack, only if I didHit()?
 			updateWeaponEffect(weaponColliders[i]);
 		}
@@ -70,21 +68,8 @@ void WeaponCollisionManager::addWeaponEffects(EffectCollider* weaponCollider)
 
 		weaponCollider->addEffect(effect);
 	}
-
-	//Effect* dmgEffect = effects->getObject(EffectType::Damage);
-	//DamageEffect* damageEffect = static_cast<DamageEffect*>(dmgEffect);
-	//damageEffect->set(data->damage);
-	//weaponCollider->addEffect(damageEffect);
-
-	//Effect* displaceEffect = effects->getObject(EffectType::Displacement);
-	//DisplacementEffect* displacementEffect = static_cast<DisplacementEffect*>(displaceEffect);
-
-	//VectorF source; // to be updated
-	//float force = data->knockbackForce;
-	//float distance = data->knockbackDistance;
-	//displacementEffect->set(source, force, distance);
-	//weaponCollider->addEffect(displacementEffect);
 }
+
 
 void WeaponCollisionManager::clearExcludedList()
 {
@@ -103,7 +88,6 @@ void WeaponCollisionManager::addCollidersToExcludedList()
 			Collider* hitByCollider = collider->getOtherCollider();
 			if (mPlayer->weapon()->containsCollider(hitByCollider))
 			{
-				// TODO: does this ever trigger, does the comparison correctly work?
 				mTracker->addExcludedDefender(collider);
 			}
 		}

@@ -18,16 +18,6 @@ public:
 
 	XMLNode rootNode() const;
 	XMLNode rootChild(const BasicString& label) const;
-	//XMLNode root() const;
-
-	//BasicString nodeValue(xmlNode node, const BasicString& label) const;
-
-	//StringMap attributes(xmlNode root) const;
-
-	//StringMap stringMap(xmlNode node) const;
-	//ValueMap valueMap(xmlNode node) const;
-
-	//BasicString firstRootNodeValue(const BasicString& label) const;
 
 #if _DEBUG
 	BasicString path;
@@ -37,4 +27,3 @@ private:
 	rapidxml::file<>* file;
 	rapidxml::xml_document<> xmlFile;
 };
-

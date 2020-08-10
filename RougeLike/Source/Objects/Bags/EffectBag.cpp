@@ -20,3 +20,8 @@ void EffectBag::readEffects(XMLNode parentEffectNode)
 		}
 	}
 }
+
+void EffectBag::empty()
+{
+	mEffects.clear();
+}

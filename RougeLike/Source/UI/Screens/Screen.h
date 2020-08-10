@@ -27,9 +27,11 @@ public:
 	Screen(const TextureManager* textures) : mTextures(textures) { };
 	virtual ~Screen();
 
-	void add(ScreenLayers& layers);
+	void add(const ScreenLayer& layer);
+	void add(const ScreenLayers& layers);
 
 	ScreenLayers& layers() { return mScreenLayers; }
+	ScreenLayer* layer(const BasicString& id);
 
 	void updateButtons(const InputManager* input);
 

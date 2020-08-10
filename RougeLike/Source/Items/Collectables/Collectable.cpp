@@ -10,10 +10,6 @@
 Collectable::Collectable() : mIcon(nullptr) 
 {
 	mCollider.init(&mRect);
-
-#if _DEBUG
-	mCollider.setName("Collectable");
-#endif
 };
 
 void Collectable::set(const BasicString& id)

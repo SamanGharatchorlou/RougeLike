@@ -56,10 +56,10 @@ void PlayerCollisions::resolveWeapons(EffectPool* effects)
 	}
 }
 
-void PlayerCollisions::resolveBody()
+void PlayerCollisions::enableBodyCollisions(bool enable)
 {
 	// TODO: not set this every frame... feels dirty
-	enableCollisions(CollisionManager::Player_Hit_Enemy, mPlayer->hasBodyCollisions());
+	enableCollisions(CollisionManager::Player_Hit_Enemy, enable);
 }
 
 

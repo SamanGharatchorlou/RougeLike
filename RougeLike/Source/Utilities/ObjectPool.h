@@ -28,8 +28,7 @@ protected:
 template<class K, typename T>
 void ObjectPool<K, T>::addNewObjects(T type, int count)
 {
-	// TODO: what if mPool it already contains a queue of type T
-	std::queue<K*> queue;
+	std::queue<K*> queue = mPool[type];
 
 	for (int i = 0; i < count; i++)
 	{

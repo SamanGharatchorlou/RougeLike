@@ -28,10 +28,6 @@ public:
 	const Collider* getOtherCollider() const { return mOtherCollider; }
 	Collider* getOtherCollider() { return mOtherCollider; }
 
-#if _DEBUG
-	void setName(const BasicString& name) { mName = name; }
-	BasicString name() const { return mName; }
-#endif
 
 protected:
 	const RectF* mRect;
@@ -41,8 +37,4 @@ protected:
 
 	bool mDidHit;
 	bool mGotHit;
-
-#if _DEBUG
-	BasicString mName;
-#endif
 };

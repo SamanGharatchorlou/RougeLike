@@ -48,15 +48,23 @@ void EffectHandler::render()
 }
 
 
-void EffectHandler::clear()
+void EffectHandler::clear(EffectPool* pool)
 {
 	for (int i = 0; i < mEffects.size(); i++)
 	{
 		Effect* effect = mEffects[i];
 		mExhausted.push(effect);
 	}
-
 	mEffects.clear();
+
+	while(mEffectsToAdd.size() > 0)
+	{
+		Effect* effect = mEffectsToAdd.front();
+		mEffectsToAdd.pop();
+		mExhausted.push(effect);
+	}
+
+	returnExhaustedEffects(pool);
 }
 
 

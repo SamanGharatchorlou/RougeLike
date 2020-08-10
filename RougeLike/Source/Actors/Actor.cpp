@@ -38,10 +38,6 @@ void Actor::setCharacter(const XMLNode actorNode, const TextureManager* textures
 	// Collider
 	VectorF colliderScale = getXYAttributes(actorNode.child("ColliderScale"));
 	mCollider.init(&mPhysics.rectRef(), colliderScale);
-
-#if _DEBUG // TODO remove this name bit from the collider??
-	//mCollider.setName(FileManager::Get()->getItemName(parser.path));
-#endif
 }
 
 
@@ -83,12 +79,20 @@ void Actor::render()
 }
 
 
-void Actor::reset()
+void Actor::clear()
 {
 	mPhysics.reset();
 	mAnimator.clear();
-	//mEffects.clear();
-	//mPropertyBag.resetProperties(); // TODO: need to clear properties?
+
+	while (mCollider.hasEffects())
+	{
+		mEffects.returnEffect(mCollider.popEffect());
+	}
+
+	mEffects.clear();
+	mAttributeBag.empty();
+
+	mEvents.clear();
 }
 
 
