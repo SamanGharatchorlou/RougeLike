@@ -5,64 +5,35 @@
 #include "Graphics/Texture.h"
 
 
-
-bool AnimationReader::initAnimator(Animator& animator)
+Animator AnimationReader::buildAnimator(XMLNode animationNode, const TextureManager* textures) const
 {
-	xmlNode animationNode = mParser.rootNode()->first_node("AnimationInfo");
+	Animator animator;
 
-	float frameTime = atof(mParser.nodeValue(animationNode, "FrameTime").c_str());
+	BasicString id = animationNode.child("ID").getString();
+
+	float frameTime = animationNode.child("FrameTime").getFloat();
 	animator.setFrameTime(frameTime);
 
-	BasicString id = mParser.nodeValue(animationNode, "ID");
+	XMLNode frameSizeNode = animationNode.child("FrameSize");
+	Vector2D<int> frameSize = getXYAttributes(frameSizeNode);
 
-	xmlNode animations = animationNode->first_node("Animations");
-	xmlNode node = animations->first_node();
+	XMLNode animations = animationNode.child("Animations");
+	XMLNode node = animations.child();
 
-	while (node != nullptr)
+	while (node)
 	{
-		AnimationData data = readData(node);
+		BasicString fileName = id + "_" + node.name();
+		Texture* texture = textures->getTexture(fileName, FileManager::Image_Animations);
 
+		int frames = node.getInt();
+
+		Action action = stringToAction(node.name());
+
+		AnimationData data(texture, frameSize, frames, action);
 		animator.addAnimation(data);
-		node = node->next_sibling();
+
+		node = node.next();
 	}
 
-	return (bool)animator.animationCount();
-}
-
-
-// -- Private Functions -- //
-AnimationData AnimationReader::readData(xmlNode node)
-{
-	AnimationData data;
-	xmlNode animationNode = mParser.rootNode()->first_node("AnimationInfo");
-
-	// Texture
-	BasicString id = mParser.nodeValue(animationNode, "ID");
-	BasicString action = node->name();
-	BasicString fileName = id + "_" + action;
-	Texture* texture = tm->getTexture(fileName, FileManager::Image_Animations);
-	data.texture = texture;
-
-	// Size
-	xmlNode frameSize = animationNode->first_node("FrameSize");
-	Vector2D<int> size = getXYAttributes(frameSize);
-	data.tileDimentions = size;
-
-	// Count
-	int count = std::stoi(node->value());
-	data.frameCount = count;
-
-	data.action = stringToAction(action);
-
-	return data;
-
-}
-
-
-Vector2D<int> AnimationReader::getXYAttributes(xmlNode node)
-{
-	Attributes attributes = mParser.attributes(node);
-	int x = attributes.getInt("x");
-	int y = attributes.getInt("y");
-	return Vector2D<int>(x, y);
+	return animator;
 }

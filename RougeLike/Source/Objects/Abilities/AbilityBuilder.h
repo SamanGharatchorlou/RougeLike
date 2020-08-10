@@ -13,9 +13,9 @@ public:
 
 private:
 	Ability* createNewAbility(const BasicString& id);
-	void setValues(Ability* ability, const BasicString& id, const XMLParser& parser);
+	void setValues(Ability* ability, const XMLNode propertiesNode);
 	void setRangedValues(Ability* ability);
-	void initAnimations(Ability* ability, const XMLParser& parser);
+	void initAnimations(Ability* ability, const XMLNode animationNode);
 
 private:
 	TextureManager* mTextures;

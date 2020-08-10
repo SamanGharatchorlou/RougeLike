@@ -2,7 +2,7 @@
 #include "UIButton.h"
 
 
-UIButton::UIButton(const Attributes& attributes) :
+UIButton::UIButton(const StringMap& attributes) :
 	UIBox(attributes), mState(State::None),
 	mDefault(nullptr), mSelected(nullptr), mHovered(nullptr) { }
 

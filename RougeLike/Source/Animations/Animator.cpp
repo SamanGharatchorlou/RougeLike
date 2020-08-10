@@ -31,7 +31,7 @@ Action stringToAction(const BasicString& action)
 
 
 // --- Animation --- //
-Animator::Animation::Animation(AnimationData& data) : 
+Animator::Animation::Animation(const AnimationData& data) : 
 	mTexture(data.texture), mTileDimentions(data.tileDimentions), 
 	mState(data.action), mFrameCount(data.frameCount),
 	mLoops(0) { }
@@ -118,7 +118,7 @@ int Animator::Animation::currentFrame() const
 Animator::Animator() : mActiveIndex(0), speedFactor(1.0f), mFrameTime(0.0f) { }
 
 
-void Animator::addAnimation(AnimationData& data)
+void Animator::addAnimation(const AnimationData& data)
 {
 	Animation animation(data);
 	mAnimations.push_back(animation);

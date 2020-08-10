@@ -64,12 +64,17 @@ namespace fs = std::experimental::filesystem;
 #include "Utilities/Grid.h"
 #include "Utilities/Timer.h"
 #include "Utilities/UniqueQueue.h"
+#include "Utilities/DataMap.h"
 
 // File accessors
-using ValueMap = std::unordered_map<BasicString, float>;
-using StringMap = std::unordered_map<BasicString, BasicString>;
 
-#include "System/Files/Attributes.h"
+using StringMap = DataMap<BasicString>;
+using FloatMap = DataMap<float>;
+
+//using ValueMap = std::unordered_map<BasicString, float>;
+//using StringMap = std::unordered_map<BasicString, BasicString>;
+
+//#include "System/Files/Attributes.h"
 #include "System/Files/XMLParser.h"
 #include "System/Files/FileManager.h"
 

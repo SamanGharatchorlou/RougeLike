@@ -2,7 +2,7 @@
 #include "UITextBox.h"
 
 
-UITextBox::UITextBox(const Attributes& attributes) : UIBox(attributes)
+UITextBox::UITextBox(const StringMap& attributes) : UIBox(attributes)
 {
 	initText(attributes);
 
@@ -12,7 +12,7 @@ UITextBox::UITextBox(const Attributes& attributes) : UIBox(attributes)
 
 UITextBox::UITextBox(const UITextBoxData data)
 {
-	Attributes attributes;
+	StringMap attributes;
 	attributes.add("x", data.rect.TopLeft().x);
 	attributes.add("y", data.rect.TopLeft().y);
 	attributes.add("width", data.rect.Width());
@@ -81,7 +81,7 @@ void UITextBox::setAlignment(const BasicString& alignment)
 }
 
 
-void UITextBox::initText(const Attributes& attributes)
+void UITextBox::initText(const StringMap& attributes)
 {
 	BasicString text = attributes.getString("text");
 	BasicString font = attributes.contains("font") ? attributes.getString("font") : "default";

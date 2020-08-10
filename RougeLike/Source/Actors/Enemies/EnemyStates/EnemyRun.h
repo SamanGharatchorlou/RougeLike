@@ -21,7 +21,6 @@ public:
 
 	const Type type() const { return Type::Run; }
 
-
 	bool inAttackRange() const;
 
 	void updatePath();

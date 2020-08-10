@@ -12,18 +12,13 @@ void HealEffect::init()
 }
 
 
-void HealEffect::fill(ValueMap& valueMap)
+void HealEffect::fill(PropertyBag& properties)
 {
-	BasicString health = "Health";
-	if (valueMap.count(health))
-		mHeal = Health(valueMap[health]);
-	else
-		DebugPrint(Warning, "Value map has no %s effect node\n", health.c_str());
+	mHeal = Health(properties.get(PropertyType::Health));
 }
 
 
 void HealEffect::exit()
 {
-	clearBaseData();
 	mHeal = Health(0.0f);
 }

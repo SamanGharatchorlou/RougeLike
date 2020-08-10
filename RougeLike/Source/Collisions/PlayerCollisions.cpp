@@ -102,7 +102,7 @@ void PlayerCollisions::resolveTrapCollisions(Map* map, EffectPool* effects)
 	{
 		Damage trapDamage = map->traps().damage();
 
-		ValueMap valueMap;
+		FloatMap valueMap;
 		valueMap["Damage"] = trapDamage.value();
 		PropertyBag properties(valueMap);
 

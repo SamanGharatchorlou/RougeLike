@@ -8,12 +8,12 @@
 
 	<Icon>HealIcon</Icon>
 
-	<AnimationInfo>
+	<Animator>
 		<ID>Heal</ID>
 		<FrameTime>0.05</FrameTime>
 		<FrameSize x = "536" y ="504"></FrameSize>
 		<Animations>
 			<Active>23</Active>
 		</Animations>
-	</AnimationInfo>
+	</Animator>
 </Ability>

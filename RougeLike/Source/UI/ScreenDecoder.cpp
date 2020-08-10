@@ -18,7 +18,7 @@
 //	{
 //		UILayer* layer = new UILayer;
 //
-//		for (Attributes attributes : layerAttribute)
+//		for (StringMap attributes : layerAttribute)
 //		{
 //			BasicString myType(attributes.getString("type"));
 //			const char* type = attributes.getString("type").c_str();
@@ -145,7 +145,7 @@
 //
 //		for (unsigned int elementIndex = 0; elementIndex < layerAttributes.size(); elementIndex++)
 //		{
-//			const Attributes& elementAttributes = layerAttributes[elementIndex];
+//			const StringMap& elementAttributes = layerAttributes[elementIndex];
 //
 //			if (elementAttributes.contains("parent"))
 //			{
@@ -170,7 +170,7 @@
 //
 //// --- Populate UI Element data packets --- //
 //
-//void ScreenDecoder::fillElementData(UIElement::Data& data, const Attributes& attributes) const
+//void ScreenDecoder::fillElementData(UIElement::Data& data, const StringMap& attributes) const
 //{
 //	// Allow these attributes not to be set, assuming they have a parent rect
 //	float x = attributes.contains("x") ? attributes.getFloat("x") : 12345.0f;
@@ -198,7 +198,7 @@
 //}
 //
 //
-//void ScreenDecoder::fillBoxData(UIBox::Data& data, const Attributes& attributes) const
+//void ScreenDecoder::fillBoxData(UIBox::Data& data, const StringMap& attributes) const
 //{
 //	fillElementData(data, attributes);
 //
@@ -218,7 +218,7 @@
 //}
 //
 //
-//void ScreenDecoder::fillTextBoxData(UITextBox::Data& data, const Attributes& attributes) const
+//void ScreenDecoder::fillTextBoxData(UITextBox::Data& data, const StringMap& attributes) const
 //{
 //	fillBoxData(data, attributes);
 //
@@ -237,7 +237,7 @@
 //}
 //
 //
-//void ScreenDecoder::fillButtonData(UIButton::Data& data, const Attributes& attributes) const
+//void ScreenDecoder::fillButtonData(UIButton::Data& data, const StringMap& attributes) const
 //{
 //	// Box component
 //	fillBoxData(data, attributes);

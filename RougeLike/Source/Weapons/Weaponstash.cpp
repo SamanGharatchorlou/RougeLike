@@ -32,7 +32,7 @@ void WeaponStash::load(TextureManager* tm)
 	{
 		XMLParser parser;
 		parser.parseXML(filePath);
-		XMLNode root = parser.root();
+		XMLNode root = parser.rootNode();
 
 		BasicString weaponName = files->getItemName(filePath);
 		WeaponRawData rawData = getRawData(root, tm);
@@ -71,33 +71,29 @@ Weapon* WeaponStash::getWeapon(const BasicString& weaponType) const
 
 // -- Private Functions -- //
 
-WeaponData* WeaponStash::createNewData(const XMLNode rootNode, const WeaponRawData& rawData) const
+WeaponData* WeaponStash::createNewData(const XMLNode weaponNode, const WeaponRawData& rawData) const
 {
 	WeaponData* data = nullptr;
-
-	BasicString name = rootNode.name();
-	if (rootNode.name() == "Melee")
-	{
+	if (weaponNode.name() == "Melee")
 		data = new MeleeWeaponData;
-	}
 
 	if (data)
 		data->fillData(rawData);
 	else
-		DebugPrint(Warning, "Weapon type '%s' not recognise, cannot create data\n", rootNode.name().c_str());
+		DebugPrint(Warning, "Weapon type '%s' not recognise, cannot create data\n", weaponNode.name().c_str());
 
 	return data;
 }
 
 
-WeaponRawData WeaponStash::getRawData(const XMLNode rootNode, const TextureManager* textures) const
+WeaponRawData WeaponStash::getRawData(const XMLNode weaponNode, const TextureManager* textures) const
 {
 	WeaponRawData data;
-	data.properties = rootNode.first("Properties").stringMap();
-	data.audio = rootNode.first("Audio").stringMap();
+	data.properties = weaponNode.child("Properties").stringMap();
+	data.audio = weaponNode.child("Audio").stringMap();
 
 	EffectBag effectBag;
-	effectBag.readEffects(rootNode.first("Effects"));
+	effectBag.readEffects(weaponNode.child("Effects"));
 	data.effects = effectBag;
 
 	// Texture

@@ -9,10 +9,10 @@ public:
 	void addDecor(DecorMap decorMap, Grid<MapTile>& data);
 
 private:
-	void addColumns(Grid<MapTile>& data, const Attributes& attributes);
-	void addWaterFeatures(Grid<MapTile>& data, const Attributes& attributes);
-	void addTorches(Grid<MapTile>& data, const Attributes& attributes);
-	void addSpikes(Grid<MapTile>& data, const Attributes& attributes);
+	void addColumns(Grid<MapTile>& data, const StringMap& attributes);
+	void addWaterFeatures(Grid<MapTile>& data, const StringMap& attributes);
+	void addTorches(Grid<MapTile>& data, const StringMap& attributes);
+	void addSpikes(Grid<MapTile>& data, const StringMap& attributes);
 
 	bool doesTypeContain(DecorType baseType, DecorType queryType) const;
 

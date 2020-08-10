@@ -14,12 +14,12 @@
 
 		<!-- Attack -->
 		<AttackSpeed>1</AttackSpeed>
-		<TackleDistance>50</TackleDistance>
+		<TackleDistance>80</TackleDistance>
 		<TackleMovementSpeed>200</TackleMovementSpeed>
 
 		<!-- Patrol -->
-		<SightRange>400</SightRange>
-		<ChaseRange>200</ChaseRange>
+		<SightRange>300</SightRange>
+		<ChaseRange>400</ChaseRange>
 	</Properties>
 
 	<Effects>
@@ -36,7 +36,7 @@
 	<MaxSize>60</MaxSize>
 	<ColliderScale x = "0.32" y = "0.57"></ColliderScale>
 
-	<AnimationInfo>
+	<Animator>
 		<ID>Devil</ID>
 		<FrameTime>0.05</FrameTime>
 		<FrameSize x = "900" y ="900"></FrameSize>
@@ -49,6 +49,6 @@
 			<Dead>15</Dead>
 			<Alert>6</Alert>
 		</Animations>
-	</AnimationInfo>
+	</Animator>
 
 </Stats>

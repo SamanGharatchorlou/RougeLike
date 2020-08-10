@@ -17,7 +17,7 @@ public:
 	};
 
 public:
-	std::queue<SpawnData> getSpawnList(const XMLParser& parser, const Map* map);
+	std::queue<SpawnData> getSpawnList(const XMLNode node, const Map* map) const;
 
-	SpawnData generateSpawnData(const XMLNode& node, const Map* map);
+	SpawnData generateSpawnData(const XMLNode node, const Map* map) const;
 };

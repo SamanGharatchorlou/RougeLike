@@ -25,10 +25,13 @@ Action stringToAction(const BasicString& action);
 
 struct AnimationData
 {
-	Texture* texture = nullptr;
+	AnimationData(Texture* animTexture, Vector2D<int> tileDim, int frames, Action animAction) :
+		texture(animTexture), tileDimentions(tileDim), frameCount(frames), action(animAction) { }
+
+	Texture* texture;
 	Vector2D<int> tileDimentions;
-	int frameCount = 0;
-	Action action = Action::None;
+	int frameCount;
+	Action action;
 };
 
 
@@ -40,7 +43,7 @@ public:
 		friend Animator;
 
 	public:
-		Animation(AnimationData& data);
+		Animation(const AnimationData& data);
 
 		void reset();
 
@@ -71,7 +74,7 @@ public:
 	Animator();
 
 	void setFrameTime(float frameTime) { mFrameTime = frameTime; }
-	void addAnimation(AnimationData& data);
+	void addAnimation(const AnimationData& data);
 
 	void slowUpdate(float dt);
 	void render(RectF rect, SDL_RendererFlip flip = SDL_FLIP_NONE) const;

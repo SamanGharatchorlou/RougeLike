@@ -128,7 +128,7 @@ void LoadingManager::initTextBox(VectorF screenSize)
 	textRect.SetCenter(textPosition);
 
 	// TODO: Change back to using textbox data
-	Attributes textAttributes;
+	StringMap textAttributes;
 	textAttributes.add("id", "loadingbar");
 	textAttributes.add("text", "Loading...");
 	textAttributes.add("r", "0");

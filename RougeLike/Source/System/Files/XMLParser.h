@@ -4,29 +4,30 @@
 
 #include "XMLNode.h"
 
+
 class XMLParser
 {
 public:
 	XMLParser() { };
 	XMLParser(const BasicString& file) { parseXML(file); }
-
 	~XMLParser();
 
 	void parseXML(const BasicString& filePath);
 
 	rapidxml::xml_document<>& getXML() { return xmlFile; }
 
-	xmlNode rootNode() const;
-	XMLNode root() const;
+	XMLNode rootNode() const;
+	XMLNode rootChild(const BasicString& label) const;
+	//XMLNode root() const;
 
-	BasicString nodeValue(xmlNode node, const BasicString& label) const;
+	//BasicString nodeValue(xmlNode node, const BasicString& label) const;
 
-	Attributes attributes(xmlNode root) const;
+	//StringMap attributes(xmlNode root) const;
 
-	StringMap stringMap(xmlNode node) const;
-	ValueMap valueMap(xmlNode node) const;
+	//StringMap stringMap(xmlNode node) const;
+	//ValueMap valueMap(xmlNode node) const;
 
-	BasicString firstRootNodeValue(const BasicString& label) const;
+	//BasicString firstRootNodeValue(const BasicString& label) const;
 
 #if _DEBUG
 	BasicString path;

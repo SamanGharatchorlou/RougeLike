@@ -36,7 +36,7 @@ void MapDecorator::addDecor(DecorMap decorMap, Grid<MapTile>& data)
 
 
 // Water
-void MapDecorator::addWaterFeatures(Grid<MapTile>& data, const Attributes& attributes)
+void MapDecorator::addWaterFeatures(Grid<MapTile>& data, const StringMap& attributes)
 {
 	int width = attributes.getInt("width");
 	int height = attributes.getInt("height");
@@ -74,7 +74,7 @@ void MapDecorator::addWaterFeatures(Grid<MapTile>& data, const Attributes& attri
 
 
 // Columns
-void MapDecorator::addColumns(Grid<MapTile>& data, const Attributes& attributes)
+void MapDecorator::addColumns(Grid<MapTile>& data, const StringMap& attributes)
 {
 	int spacing = attributes.getInt("spacing");
 
@@ -110,7 +110,7 @@ void MapDecorator::addColumns(Grid<MapTile>& data, const Attributes& attributes)
 
 
 // Torches
-void MapDecorator::addTorches(Grid<MapTile>& data, const Attributes& attributes)
+void MapDecorator::addTorches(Grid<MapTile>& data, const StringMap& attributes)
 {
 	DecorType torchType = stringToType(attributes.getString("type"));
 	int spacing = attributes.getInt("spacing");
@@ -134,7 +134,7 @@ void MapDecorator::addTorches(Grid<MapTile>& data, const Attributes& attributes)
 
 
 // Spikes
-void MapDecorator::addSpikes(Grid<MapTile>& data, const Attributes& attributes)
+void MapDecorator::addSpikes(Grid<MapTile>& data, const StringMap& attributes)
 {
 	int rate = attributes.getInt("rate");
 	for (int x = 0; x < data.xCount(); x++)

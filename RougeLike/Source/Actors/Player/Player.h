@@ -30,7 +30,7 @@ public:
 
 	MeleeWeapon*	weapon();
 
-	void setCharacter(const XMLParser& parser, const TextureManager* textureManager);
+	void setCharacter(const XMLNode playerNode, const TextureManager* textureManager);
 	void selectWeapon(WeaponData* weapon);
 
 	void overrideControl(bool removeControl);

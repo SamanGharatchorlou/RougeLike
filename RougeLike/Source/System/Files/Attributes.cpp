@@ -1,42 +1,42 @@
 #include "pch.h"
-#include "Attributes.h"
+//#include "StringMap.h"
 
-void Attributes::set(StringMap stringMap)
+/*
+void StringMap::set(StringMap stringMap)
 {
 	attributes = stringMap;
 }
 
 
-void Attributes::merge(Attributes otherAttributes)
+void StringMap::merge(StringMap otherAttributes)
 {
 	attributes.insert(otherAttributes.getMap().begin(), otherAttributes.getMap().end());
 }
 
 
-void Attributes::add(const BasicString& name, BasicString value)
+void StringMap::add(const BasicString& name, BasicString value)
 {
 	attributes[name] = value;
 }
 
 
-bool Attributes::contains(const BasicString& name) const
+bool StringMap::contains(const BasicString& name) const
 {
 	return (bool)attributes.count(name);
 }
 
 
-const BasicString& Attributes::getString(const BasicString& name) const
+const BasicString& StringMap::getString(const BasicString& name) const
 {
 #if _DEBUG
 	if (!contains(name))
 		DebugPrint(Warning, "There is no attribute with the label: %s\n", name.c_str());
 #endif
-	//BasicString value = attributes[name];
 	return attributes.at(name);
 }
 
 
-const int Attributes::getInt(const BasicString& name) const
+const int StringMap::getInt(const BasicString& name) const
 {
 #if _DEBUG
 	if (!contains(name))
@@ -46,7 +46,7 @@ const int Attributes::getInt(const BasicString& name) const
 }
 
 
-const int Attributes::getBool(const BasicString& name) const
+const int StringMap::getBool(const BasicString& name) const
 {
 #if _DEBUG
 	if (!contains(name))
@@ -56,7 +56,7 @@ const int Attributes::getBool(const BasicString& name) const
 }
 
 
-const float Attributes::getFloat(const BasicString& name) const
+const float StringMap::getFloat(const BasicString& name) const
 {
 #if _DEBUG
 	if (!contains(name))
@@ -66,7 +66,7 @@ const float Attributes::getFloat(const BasicString& name) const
 }
 
 
-void Attributes::log() const
+void StringMap::log() const
 {
 	DebugPrint(Log, "\nLoading level atrributes...\n");
 	for (auto iter = attributes.begin(); iter != attributes.end(); iter++)
@@ -75,3 +75,4 @@ void Attributes::log() const
 	}
 	DebugPrint(Log, "\n");
 }
+*/

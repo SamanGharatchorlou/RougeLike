@@ -5,7 +5,7 @@ class UIElement;
 using Elements = std::vector<UIElement*>;
 using ScreenLayer = std::vector<UIElement*>;
 
-using LayerAttributes = std::vector<Attributes>;
+using LayerAttributes = std::vector<StringMap>;
 using ScreenAttributes = std::vector<LayerAttributes>;
 
 

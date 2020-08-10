@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include "Ability.h"
 #include "Collisions/Collider.h"
 
@@ -11,7 +12,7 @@ public:
 	RangedAbility() : mRange(0.0f), mRangeCircle(nullptr) { }
 	virtual ~RangedAbility() { }
 
-	void fillAbilityValues(const ValueBag& values) override;
+	void fillBaseValues(const PropertyBag& properties) override;
 	void setRangeCircle(Texture* rangeCircle) { mRangeCircle = rangeCircle; }
 
 	void renderRangeCircle();

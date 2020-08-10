@@ -1,17 +1,17 @@
 #include "pch.h"
 #include "ScreenReader.h"
 
-
+/*
+HI samoyed SAUSAGE 
+*/
 
 const ScreenAttributes ScreenReader::readScreen(const BasicString& screen) const
 {
 	ScreenAttributes screenAttributes;
 
 	XMLParser parser(screen);
-	XMLNode screenNode = parser.root();
-	XMLNode layerNode = screenNode.first("layer");
-
-	while (!layerNode.isEmpty())
+	XMLNode layerNode = parser.rootChild("Layer");
+	while (layerNode)
 	{
 		LayerAttributes layerAttributes = readLayer(layerNode);
 		screenAttributes.push_back(layerAttributes);
@@ -27,12 +27,10 @@ LayerAttributes ScreenReader::readLayer(const XMLNode layerNode) const
 {
 	LayerAttributes layerAttributes;
 
-	XMLNode itemNode = layerNode.first();
-
-	// UI component
-	while (!itemNode.isEmpty())
+	XMLNode itemNode = layerNode.child();
+	while (itemNode)
 	{
-		Attributes itemAttributes = readItemNode(itemNode);
+		StringMap itemAttributes = readItemNode(itemNode);
 		layerAttributes.push_back(itemAttributes);
 
 		itemNode = itemNode.next();
@@ -42,14 +40,14 @@ LayerAttributes ScreenReader::readLayer(const XMLNode layerNode) const
 }
 
 
-Attributes ScreenReader::readItemNode(const XMLNode itemNode) const
+StringMap ScreenReader::readItemNode(const XMLNode itemNode) const
 {
-	Attributes itemAttributes = itemNode.attributes();
+	StringMap itemAttributes = itemNode.nodeAttributes();
 	itemAttributes.add("type", itemNode.name());
 
 	if (isTextNode(itemNode))
 	{
-		Attributes textAttributes = readtextNode(itemNode);
+		StringMap textAttributes = readtextNode(itemNode);
 		itemAttributes.merge(textAttributes);
 	}
 
@@ -57,13 +55,13 @@ Attributes ScreenReader::readItemNode(const XMLNode itemNode) const
 }
 
 
-Attributes ScreenReader::readtextNode(const XMLNode itemNode) const
+StringMap ScreenReader::readtextNode(const XMLNode itemNode) const
 {
-	Attributes textAttributes;
-	XMLNode textNode = itemNode.first();
+	StringMap textAttributes;
+	XMLNode textNode = itemNode.child();
 	if (textNode)
 	{
-		textAttributes = textNode.attributes();
+		textAttributes = textNode.nodeAttributes();
 
 		// text to be displayed
 		BasicString text = textNode.value();
@@ -78,5 +76,5 @@ Attributes ScreenReader::readtextNode(const XMLNode itemNode) const
 
 bool ScreenReader::isTextNode(const XMLNode itemNode) const
 {
-	return itemNode.name() == "TextBox" && !itemNode.first().isEmpty();
+	return itemNode.name() == "TextBox" && itemNode.child();
 }

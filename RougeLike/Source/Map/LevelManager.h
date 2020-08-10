@@ -39,7 +39,7 @@ private:
 	void swapEntranceExit();
 
 	// Reading map data
-	void readMapData(const BasicString& section, Map* map, const XMLParser& parser);
+	void readMapData(const XMLNode sectionNode, Map* map);
 	DecorMap readDecorData(const XMLNode& root) const;
 	void readConfigData(Vector2D<int>& mapIndexSize, VectorF& tileSize, float& scale);
 

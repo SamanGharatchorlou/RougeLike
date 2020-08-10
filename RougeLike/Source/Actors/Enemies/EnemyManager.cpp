@@ -72,9 +72,9 @@ void EnemyManager::slowUpdate(float dt)
 }
 
 
-void EnemyManager::spawn(const XMLParser& parser, const Map* map)
+void EnemyManager::spawn(const XMLNode spawnNode, const Map* map)
 {
-	std::vector<SpawnData> spawnData = mSpawner.getspawnList(parser, map);
+	std::vector<SpawnData> spawnData = mSpawner.getspawnList(spawnNode, map);
 
 	for (int i = 0; i < spawnData.size(); i++)
 	{

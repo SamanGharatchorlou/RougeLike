@@ -8,10 +8,10 @@ class UIBox : public UIElement
 {
 public:
 	UIBox();
-	UIBox(const Attributes& attributes);
+	UIBox(const StringMap& attributes);
 	virtual ~UIBox() { }
 
-	void fill(const Attributes& attributes);
+	void fill(const StringMap& attributes);
 
 	void setTexture(Texture* texture) { mTexture = texture; }
 	const Texture* texture() const { return mTexture; }

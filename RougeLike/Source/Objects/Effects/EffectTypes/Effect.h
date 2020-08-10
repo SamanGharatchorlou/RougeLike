@@ -21,7 +21,7 @@ public:
 	virtual void clearData() { };
 	void clearBaseData() { mReceiver = nullptr; mShouldExit = false; }
 
-	virtual void fill(const PropertyBag& valueBag) { } // = 0;
+	virtual void fill(const PropertyBag& properties) { } // = 0;
 
 	virtual void init() = 0;
 	virtual void fastUpdate(float dt) = 0;

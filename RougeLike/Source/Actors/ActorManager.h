@@ -30,7 +30,7 @@ public:
 	PlayerManager* player() { return &mPlayer; }
 	EnemyManager* enemies() { return &mEnemies; }
 
-	void spawnEnemies(const XMLParser& parser, const Map* map);
+	void spawnEnemies(const XMLNode spawnNode, const Map* map);
 
 	std::vector<Actor*> getAllEnemies();
 

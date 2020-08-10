@@ -8,7 +8,7 @@ public:
 	{
 		None,
 
-		// Attributes
+		// StringMap
 		Damage,
 		Health,
 		Armor,
@@ -31,7 +31,10 @@ public:
 		AttackSpeed,
 		TackleMovementSpeed,
 
-
+		// Ability
+		MaxSize,
+		Cooldown,
+		Range,
 	};
 
 public:
@@ -68,7 +71,7 @@ static const std::unordered_map<BasicString, PropertyType::Type> PropertyLookUpT
 {
 	{ "None", PropertyType::None },
 
-	// Attributes
+	// StringMap
 	{ "Damage", PropertyType::Damage },
 	{ "Health", PropertyType::Health },
 	{ "Armor", PropertyType::Armor },
@@ -90,6 +93,10 @@ static const std::unordered_map<BasicString, PropertyType::Type> PropertyLookUpT
 	{ "ChaseRange", PropertyType::ChaseRange },
 	{ "AttackSpeed", PropertyType::AttackSpeed },
 	{ "TackleMovementSpeed", PropertyType::TackleMovementSpeed },
+
+	{ "MaxSize", PropertyType::MaxSize },
+	{ "Cooldown", PropertyType::Cooldown },
+	{ "Range", PropertyType::Range },
 };
 
 

@@ -27,19 +27,13 @@ Window* GameSetup::initSDL()
 				SDL_ShowCursor(false);
 			}
 			else
-			{
 				DebugPrint(Error, "Renderer could not be created! SDL Image Error: %s\n", IMG_GetError());
-			}
 		}
 		else
-		{
 			DebugPrint(Error, "Window could not be created! SDL Error: %s\n", SDL_GetError());
-		}
 	}
 	else
-	{
 		DebugPrint(Error, "SDL could not be initialised! SDL_Error: %s\n", SDL_GetError());
-	}
 
 	return window;
 }
@@ -99,13 +93,12 @@ void GameSetup::readSettings()
 {
 	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs, "GameSettings"));
 
-	xmlNode root = parser.rootNode();
-	XMLNode settingsNode = XMLNode(root->first_node("Game"));
-	StringMap settingsMap = settingsNode.stringMap();
+	XMLNode settingsNode = parser.rootChild("Game");
+	DataMap<BasicString> settingsMap = settingsNode.stringMap();
 
 	title = settingsMap["Title"];
-	int width = atoi(settingsMap["Width"].c_str());
-	int height = atoi(settingsMap["Height"].c_str());
+	int width = settingsMap.getFloat("Width");
+	int height = settingsMap.getFloat("Height");
 	screenSize = VectorF(width, height);
-	audioChannels = atoi(settingsMap["AudioChannels"].c_str());
+	audioChannels = settingsMap.getInt("AudioChannels");
 }

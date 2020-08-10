@@ -1,7 +1,7 @@
 #pragma once
 
 #include "EffectHandler.h"
-#include "Objects/Properties/EffectBag.h"
+#include "Objects/Bags/EffectBag.h"
 
 class EffectPool;
 class Effect;

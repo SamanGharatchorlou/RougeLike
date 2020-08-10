@@ -7,11 +7,6 @@
 #include "DecorTilePopulator.h"
 
 
-// temp
-#include "System/Files/FileManager.h"
-#include "Animations/AnimationReader.h"
-
-
 void MapTileDecoder::populateData(Grid<MapTile>& data)
 {
 	RenderTilePopulator renderTiles(mTextureManager);

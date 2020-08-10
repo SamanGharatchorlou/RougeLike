@@ -20,7 +20,7 @@ public:
 
 	void set(Environment* environment);
 
-	void setCharacter(const XMLParser& parser, const TextureManager* textureManager);
+	void setCharacter(const XMLNode node, const TextureManager* textureManager);
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
 	void render();
@@ -28,7 +28,7 @@ public:
 	void setVisibility(bool visibility) { mVisibility = visibility; }
 	void reset();
 
-	// Attributes
+	// StringMap
 	Attribute* getAttribute(AttributeType type) const;
 	float getAttributeValue(AttributeType type) const;
 	bool hasAttribute(AttributeType type) const;

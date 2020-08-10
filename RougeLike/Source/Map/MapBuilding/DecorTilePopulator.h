@@ -8,7 +8,7 @@ class TextureManager;
 class DecorTilePopulator
 {
 public:
-	DecorTilePopulator(TextureManager* textureManager) : mTextureManager(textureManager) { }
+	DecorTilePopulator(TextureManager* textureManager) : mTextures(textureManager) { }
 	void populate(Grid<MapTile>& data);
 
 private:
@@ -16,8 +16,10 @@ private:
 	void addWater(Grid<MapTile>& data);
 	void addAnimations(Grid<MapTile>& data);
 
+	Animator buildAnimation(const XMLParser& parser);
+
 private:
-	TextureManager* mTextureManager;
+	TextureManager* mTextures;
 };
 
 

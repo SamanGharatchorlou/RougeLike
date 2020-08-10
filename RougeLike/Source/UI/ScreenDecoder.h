@@ -8,11 +8,11 @@
 //
 //typedef std::vector<UIElement*> Elements;
 //typedef std::vector<UILayer*> Layers;
-//typedef std::vector<std::vector<Attributes>> ScreenAttributes;
+//typedef std::vector<std::vector<StringMap>> ScreenAttributes;
 //
 //// dont needd?
 //
-//typedef std::vector<Attributes> LayerAttributes;
+//typedef std::vector<StringMap> LayerAttributes;
 //
 ///*
 //Decodes an XML formatted file into a UI built into layers, boxes, buttons, text etc.
@@ -33,10 +33,10 @@
 //	void setRects(Layers layers);
 //	void setRect(UIElement* element);
 //
-//	void fillElementData	(UIElement::Data& data,		const Attributes& attributes) const;
-//	void fillBoxData		(UIBox::Data& data,			const Attributes& attributes) const;
-//	void fillTextBoxData	(UITextBox::Data& data,		const Attributes& attributes) const;
-//	void fillButtonData		(UIButton::Data& data,		const Attributes& attributes) const;
+//	void fillElementData	(UIElement::Data& data,		const StringMap& attributes) const;
+//	void fillBoxData		(UIBox::Data& data,			const StringMap& attributes) const;
+//	void fillTextBoxData	(UITextBox::Data& data,		const StringMap& attributes) const;
+//	void fillButtonData		(UIButton::Data& data,		const StringMap& attributes) const;
 //
 //	UIElement* findElement(Layers layers, const BasicString& id);
 //

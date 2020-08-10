@@ -68,7 +68,6 @@
     <ClCompile Include="Source\Objects\Effects\EffectHandler.cpp" />
     <ClCompile Include="Source\Input\Button.cpp" />
     <ClCompile Include="Source\UI\Screens\SettingsScreen.cpp" />
-    <ClCompile Include="Source\Objects\Properties\PropertyBag.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityManager.cpp" />
     <ClCompile Include="Source\Collisions\WallCollisionTracker.cpp" />
     <ClCompile Include="Source\UI\Elements\UISlider.cpp" />
@@ -147,7 +146,6 @@
     <ClCompile Include="Source\UI\Screens\ScreenTypes.cpp" />
     <ClCompile Include="Source\Debug\UIEditor.cpp" />
     <ClCompile Include="Source\UI\UIEventHandler.cpp" />
-    <ClCompile Include="Source\Objects\Properties\EffectBag.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectManager.cpp" />
     <ClCompile Include="Source\Weapons\WeaponData.cpp" />
     <ClCompile Include="Source\Objects\Properties\StatManager.cpp" />
@@ -155,6 +153,11 @@
     <ClCompile Include="Source\Objects\Bags\AttributeBag.cpp" />
     <ClCompile Include="Source\Objects\Properties\Property.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyDebugger.cpp" />
+    <ClCompile Include="Source\Utilities\DataMap.cpp" />
+    <ClCompile Include="Source\Objects\Bags\DataBag.cpp" />
+    <ClCompile Include="Source\Objects\Bags\ValueBag.cpp" />
+    <ClCompile Include="Source\Objects\Bags\PropertyBag.cpp" />
+    <ClCompile Include="Source\Objects\Bags\EffectBag.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -237,7 +240,6 @@
     <ClInclude Include="Source\Objects\Effects\EffectHandler.h" />
     <ClInclude Include="Source\UI\Screens\SettingsScreen.h" />
     <ClInclude Include="Source\UI\Screens\ScreenHeaders.h" />
-    <ClInclude Include="Source\Objects\Properties\PropertyBag.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityManager.h" />
     <ClInclude Include="Source\Collisions\WallCollisionTracker.h" />
     <ClInclude Include="Source\UI\Elements\UISlider.h" />
@@ -322,7 +324,6 @@
     <ClInclude Include="Source\UI\Screens\ScreenTypes.h" />
     <ClInclude Include="Source\Debug\UIEditor.h" />
     <ClInclude Include="Source\UI\UIEventHandler.h" />
-    <ClInclude Include="Source\Objects\Properties\EffectBag.h" />
     <ClInclude Include="Source\Objects\Effects\EffectManager.h" />
     <ClInclude Include="Source\Objects\Properties\StatManager.h" />
     <ClInclude Include="Source\Objects\Properties\Attributes\Armor.h" />
@@ -334,6 +335,10 @@
     <ClInclude Include="Source\Objects\Bags\DataBag.h" />
     <ClInclude Include="Source\Objects\Properties\Property.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyDebugger.h" />
+    <ClInclude Include="Source\Utilities\DataMap.h" />
+    <ClInclude Include="Source\Objects\Bags\ValueBag.h" />
+    <ClInclude Include="Source\Objects\Bags\PropertyBag.h" />
+    <ClInclude Include="Source\Objects\Bags\EffectBag.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

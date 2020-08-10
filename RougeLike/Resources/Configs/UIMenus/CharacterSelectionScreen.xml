@@ -2,23 +2,23 @@
 <screen>
 
 	<!-- Background -->
-	<layer>
+	<Layer>
 		<Box id = "Background" x = "0" y = "0" width = "1024" height = "768" texture = "bg"></Box>
-	</layer>
+	</Layer>
 
 
 	<!-- Large table -->
-	<layer>
+	<Layer>
 		<Box id = "MainPanel"  x = "148.000" y = "35" width = "728.800" height = "714.200" texture = "Main panel"></Box>
-	</layer>
+	</Layer>
 
-	<layer>
+	<Layer>
 		<Box id = "UpperPanelElement" parent = "MainPanel" x = "27.000" y = "26.000" width = "675.000" height = "55.000" texture = "Upper panel element"></Box>
 		<Box id = "MidPanelElement" parent = "MainPanel" x = "27.000" y = "83.000" width = "675.000" height = "437.000" texture = "Mid panel element"></Box>
 		<Box id = "LowerPanelElement" parent = "MainPanel" x = "27.000" y = "525.000" width = "675.000" height = "167.000" texture = "Lower panel element"></Box>
-	</layer>
+	</Layer>
 
-	<layer>
+	<Layer>
 		<Box id = "Title2" parent = "MainPanel" x = "1.000" y = "-21.000" width = "727.800" height = "69.000" texture = "Name element 02"></Box>
 		<Box id = "Title1" parent = "MainPanel" x = "54.000" y = "-16.030" width = "621.000" height = "53.000" texture = "Name element 01"></Box>
 		<TextBox id = "ScreenTitle" parent = "Title1" align = "Center" x = "0" y = "0" width = "621.000" height = "53.000" >
@@ -28,9 +28,9 @@
 		<Box id= "CharacterPanel" parent = "MainPanel"  x = "58.000" y = "221.000" width = "617.000" height = "284.000" texture = "panel"></Box>
 		<Box id= "Description" parent = "MainPanel"  x = "57.000" y = "549.000" width = "620.000" height = "133.000" texture = "Note"></Box>
 
-	</layer>
+	</Layer>
 
-	<layer>
+	<Layer>
 		<Box id = "CharacterNamePanel" parent = "MainPanel" x = "85.000" y = "103.000" width = "562.000" height = "105.000" texture = "Big button Released"></Box>
 		<Box id= "Character" parent = "MainPanel" x = "-2.000" y = "194.000" width = "345.000" height = "345.000" texture = "Soldier"></Box>
 
@@ -40,25 +40,15 @@
 			<text r = "0" g = "0" b = "0" >Basic Sword</text>
 		</TextBox>
 
-	</layer>
+	</Layer>
 
-	<layer>
+	<Layer>
 		<TextBox id = "CharacterName" parent = "CharacterNamePanel" align = "Center" x = "192.000" y = "10.000" width = "361.000" height = "53.000" >
 			<text r = "0" g = "0" b = "0" >Knight</text>
 		</TextBox>
 		
 		<Button id = "PlayButton" parent = "CharacterNamePanel" x = "22.000" y = "-10.000" width = "148.000" height = "105.000" texture = "Blank icon"></Button>
 		<Box id = "PlayIcon" parent = "CharacterNamePanel" x = "73.000" y = "10.000" width = "49.000" height = "52.000" texture = "New game icon"></Box>
-	</layer>
-
-
-
-		<!-- Top layer -->
-	<Layer>
-
-
-
-
 	</Layer>
 
 </screen>

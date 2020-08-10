@@ -17,7 +17,7 @@
 	<Icon>SoldierIcon</Icon>
 	<WeaponType>Melee</WeaponType>
 
-	<AnimationInfo>
+	<Animator>
 		<ID>Soldier</ID>
 		<FrameTime>0.04</FrameTime>
 		<FrameSize x = "900" y ="900"></FrameSize>
@@ -25,5 +25,5 @@
 			<Idle>16</Idle>
 			<Run>12</Run>
 		</Animations>
-	</AnimationInfo>
+	</Animator>
 </Data>

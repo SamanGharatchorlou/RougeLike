@@ -81,7 +81,7 @@ ScreenLayer ScreenBuilder::buildLayer(const LayerAttributes& layerAttributes) co
 {
 	ScreenLayer layer;
 	
-	for (const Attributes& attributes : layerAttributes)
+	for (const StringMap& attributes : layerAttributes)
 	{
 		UIElement* element = buildElement(attributes);
 		layer.push_back(element);
@@ -91,7 +91,7 @@ ScreenLayer ScreenBuilder::buildLayer(const LayerAttributes& layerAttributes) co
 }
 
 
-UIElement* ScreenBuilder::buildElement(const Attributes& attributes) const
+UIElement* ScreenBuilder::buildElement(const StringMap& attributes) const
 {
 	UIElement* element = nullptr;
 	BasicString type = attributes.getString("type");
@@ -196,7 +196,7 @@ Elements ScreenBuilder::setParents(ScreenLayers& layers, const ScreenAttributes&
 
 	for (const LayerAttributes& layerAttributes : screenAttributes)
 	{
-		for (const Attributes& attributes : layerAttributes)
+		for (const StringMap& attributes : layerAttributes)
 		{
 			if (attributes.contains("parent"))
 			{
@@ -225,7 +225,7 @@ Elements ScreenBuilder::setParents(ScreenLayers& layers, const ScreenAttributes&
 
 
 // --- Get Textures --- //
-ScreenBuilder::TexturePacket ScreenBuilder::getButtonTextures(const Attributes& attributes) const
+ScreenBuilder::TexturePacket ScreenBuilder::getButtonTextures(const StringMap& attributes) const
 {
 	TexturePacket textures;
 	textures.defaultTexture = getTexture(attributes);
@@ -248,7 +248,7 @@ ScreenBuilder::TexturePacket ScreenBuilder::getButtonTextures(const Attributes& 
 }
 
 
-Texture* ScreenBuilder::getTexture(const Attributes& attributes) const
+Texture* ScreenBuilder::getTexture(const StringMap& attributes) const
 {
 	Texture* texture = nullptr;
 

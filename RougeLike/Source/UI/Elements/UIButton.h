@@ -19,7 +19,7 @@ public:
 
 
 public:
-	UIButton(const Attributes& attributes);
+	UIButton(const StringMap& attributes);
 	~UIButton() { }
 
 	void setTextures(Texture* defaultTexture, Texture* selected, Texture* hovering);

@@ -15,13 +15,13 @@
 
 	<Icon>SmashIcon</Icon>
 
-	<AnimationInfo>
+	<Animator>
 		<ID>FloorBurst</ID>
 		<FrameTime>0.1</FrameTime>
 		<FrameSize x = "894" y ="426"></FrameSize>
 		<Animations>
 			<Active>6</Active>
 		</Animations>
-	</AnimationInfo>
+	</Animator>
 
 </Ability>

@@ -15,7 +15,7 @@ UIBox::UIBox() : mTexture(nullptr)
 }
 
 
-UIBox::UIBox(const Attributes& attributes) : UIElement(attributes)
+UIBox::UIBox(const StringMap& attributes) : UIElement(attributes)
 {
 #if _DEBUG
 	if (attributes.contains("debugDraw"))
@@ -25,7 +25,7 @@ UIBox::UIBox(const Attributes& attributes) : UIElement(attributes)
 #endif
 }
 
-void UIBox::fill(const Attributes& attributes)
+void UIBox::fill(const StringMap& attributes)
 {
 	UIElement::fill(attributes);
 }

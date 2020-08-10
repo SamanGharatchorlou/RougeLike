@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "Ability.h"
-#include "Objects/Properties/PropertyBag.h"
+#include "Objects/Bags/PropertyBag.h"
 
 
-void Ability::fillAbilityValues(const ValueBag& values)
+void Ability::fillBaseValues(const PropertyBag& properties)
 {
-	mMaxDimention = values.get("MaxSize");
-	mCooldown = Cooldown(values.get("Cooldown"));
+	mMaxDimention = properties.get(PropertyType::MaxSize);
+	mCooldown = Cooldown(properties.get(PropertyType::Cooldown));
 }
 
 

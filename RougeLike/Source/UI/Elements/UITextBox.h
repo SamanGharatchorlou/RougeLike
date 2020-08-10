@@ -29,7 +29,7 @@ public:
 	};
 
 public:
-	UITextBox(const Attributes& attributes);
+	UITextBox(const StringMap& attributes);
 	UITextBox(const UITextBoxData data);
 	virtual ~UITextBox() { }
 
@@ -53,7 +53,7 @@ public:
 
 
 private:
-	void initText(const Attributes& attributes);
+	void initText(const StringMap& attributes);
 	void setAlignment(const BasicString& alignment);
 
 

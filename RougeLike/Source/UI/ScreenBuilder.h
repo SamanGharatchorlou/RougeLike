@@ -21,7 +21,7 @@ private:
 	ScreenLayers buildUIScreen(const ScreenAttributes& screenAttributes);
 	ScreenLayers buildScreenLayers(const ScreenAttributes& screenAttributes);
 	ScreenLayer buildLayer(const LayerAttributes& attributes) const;
-	UIElement* buildElement(const Attributes& attributes) const;
+	UIElement* buildElement(const StringMap& attributes) const;
 	Elements setParents(ScreenLayers& layers, const ScreenAttributes& screenAttributes);
 
 	void setChildren(const ScreenLayers& screenLayers, Elements& parents);
@@ -38,8 +38,8 @@ private:
 		Texture* hovering;
 	};
 
-	Texture* getTexture(const Attributes& attributes) const;
-	TexturePacket getButtonTextures(const Attributes& attributes) const;
+	Texture* getTexture(const StringMap& attributes) const;
+	TexturePacket getButtonTextures(const StringMap& attributes) const;
 
 
 private:

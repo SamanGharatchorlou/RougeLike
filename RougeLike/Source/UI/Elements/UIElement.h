@@ -16,10 +16,10 @@ public:
 
 public:
 	UIElement() : mParent(nullptr), mShow(false) { }
-	UIElement(const Attributes& attributes);
+	UIElement(const StringMap& attributes);
 	virtual ~UIElement() { };
 
-	void fill(const Attributes& attributes);
+	void fill(const StringMap& attributes);
 
 	const BasicString& id() const { return mId; }
 

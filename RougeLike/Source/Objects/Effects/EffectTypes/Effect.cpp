@@ -29,17 +29,12 @@ bool isValidFloor(const Map* map, VectorF point)
 
 void setProperty(PropertyType type, float& value, const PropertyBag& propertyBag)
 {
-	if (propertyBag.contains(type))
-		value = propertyBag.get(type);
-	else
-		DebugPrint(Log, "No property labeled '%s' was found in the PropertyBag. Check the XML config\n", type.string().c_str());
+	value = propertyBag.get(type);
 }
 
 
 void setProperty(PropertyType type, Attribute& value, const PropertyBag& propertyBag)
 {
-	if (propertyBag.contains(type))
-		value.setValue(propertyBag.get(type));
-	else
-		DebugPrint(Log, "No property labeled '%s' was found in the PropertyBag. Check the XML config\n", type.string().c_str());
+	value.setValue(propertyBag.get(type));
 }
+

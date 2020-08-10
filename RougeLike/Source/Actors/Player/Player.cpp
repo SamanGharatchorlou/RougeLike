@@ -20,9 +20,9 @@ Player::Player() :
 { }
 
 
-void Player::setCharacter(const XMLParser& parser, const TextureManager* textureManager)
+void Player::setCharacter(const XMLNode playerNode, const TextureManager* textureManager)
 {
-	Actor::setCharacter(parser, textureManager);
+	Actor::setCharacter(playerNode, textureManager);
 }
 
 
@@ -132,9 +132,6 @@ void Player::processHit()
 	{
 		EffectCollider* effectCollider = static_cast<EffectCollider*>(mCollider.getOtherCollider());
 		handleEffects(effectCollider);
-
-		if (effectCollider->effectCount() == 0)
-			printf("zero effects?\n");
 
 		TraumaEvent* trauma = new TraumaEvent(40);
 		mEvents.push(EventPacket(trauma));

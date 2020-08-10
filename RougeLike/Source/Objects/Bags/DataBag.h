@@ -1,11 +1,10 @@
 #pragma once
 
-#include "pch.h"
 
 class DataBag
 {
 public:
-	virtual void readData(const XMLParser& parser, const BasicString& nodeName);
+	virtual void readData(const XMLNode node);
 	virtual ~DataBag() { };
 
 	virtual bool contains(const BasicString& name) const { return false; }

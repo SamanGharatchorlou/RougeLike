@@ -20,7 +20,7 @@ public:
 
 private:
 	Enemy* getBlankEnemy(const SpawnData& data);
-	void fillStaticTypeData(Enemy* enemy, const XMLParser& parser, EffectPool* effects);
+	void fillActorData(Enemy* enemy, const XMLNode node, EffectPool* effects);
 	void fillSpawnData(Enemy* enemy, const SpawnData& data, const AIPathMap* aiPathMap);
 
 

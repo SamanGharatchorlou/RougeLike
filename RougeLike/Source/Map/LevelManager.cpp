@@ -98,7 +98,6 @@ void LevelManager::createNewMaps()
 
 	mMaps.primaryMap = new Map(primaryMapSize, tileSize);
 
-
 	Vector2D<int> corridorMapSize;
 	corridorMapSize.x = (int)((Camera::Get()->size().x / mMaps.primaryMap->tileSize().x) * 1.5f); // TODO: replace with config data
 	corridorMapSize.y = primaryMapSize.y;
@@ -126,7 +125,8 @@ void LevelManager::buildPrimary(const XMLParser& parser)
 	MapGenerator generator;
 	generator.buildDungeon(map->getData());
 
-	readMapData("Primary", map, parser);
+	XMLNode primaryNode = parser.rootChild("Primary");
+	readMapData(primaryNode, map);
 
 	VectorF offset = getOffset(mMaps.entrance);
 	map->populateData(mTextureManager, offset);
@@ -141,7 +141,8 @@ void LevelManager::buildExit(const XMLParser& parser)
 	MapGenerator generator;
 	generator.buildCorridor(map->getData());
 
-	readMapData("Exit", map, parser);
+	XMLNode exitNode = parser.rootChild("Exit");
+	readMapData(exitNode, map);
 
 	VectorF offset = getOffset(mMaps.primaryMap);
 	map->populateData(mTextureManager, offset);
@@ -168,46 +169,40 @@ void LevelManager::readConfigData(Vector2D<int>& mapIndexSize, VectorF& tileSize
 	BasicString path = FileManager::Get()->findFile(FileManager::Config_Map, "Map");
 	parser.parseXML(path);
 
-	xmlNode rootNode = parser.rootNode();
-	xmlNode tileSetInfoNode = rootNode->first_node("TilesetInfo");
-	xmlNode node = nullptr;
-	Attributes attributes;
+	XMLNode tileSetInfoNode = parser.rootChild("TilesetInfo");
 
 	// Map size
-	node = tileSetInfoNode->first_node("TileCount");
-	attributes = parser.attributes(node);
+	XMLNode tileCountNode = tileSetInfoNode.child("TileCount");
+	DataMap<BasicString> tileCountData = tileCountNode.nodeAttributes();
 
-	int tileCountX = attributes.getInt("x");
-	int tileCountY = attributes.getInt("y");
+	int tileCountX = tileCountData.getInt("x");
+	int tileCountY = tileCountData.getInt("y");
 	mapIndexSize.set(tileCountX, tileCountY);
 
 	// Tile size
-	node = tileSetInfoNode->first_node("TileSize");
-	attributes = parser.attributes(node);
+	XMLNode tileSizeNode = tileSetInfoNode.child("TileSize");
+	DataMap<BasicString> tileSizeData = tileSizeNode.nodeAttributes();
 
-	float tileSizeX = attributes.getFloat("x");
-	float tileSizeY = attributes.getFloat("y");
+	float tileSizeX = tileSizeData.getFloat("x");
+	float tileSizeY = tileSizeData.getFloat("y");
 	tileSize.set(tileSizeX, tileSizeY);
 
 	// Scale
-	node = rootNode->first_node("Scale");
-	scale = std::stof(node->value());
+	XMLNode scaleNode = parser.rootChild("Scale");
+	scale = atof(scaleNode.value().c_str());
 }
 
 
-void LevelManager::readMapData(const BasicString& section, Map* map, const XMLParser& parser)
+void LevelManager::readMapData(const XMLNode sectionNode, Map* map)
 {
-	xmlNode rootNode = parser.rootNode();
-	xmlNode sectionNode = rootNode->first_node(section.c_str());
-
 	// Decorations
-	XMLNode decorNode = XMLNode(sectionNode->first_node("Decor"));
+	XMLNode decorNode = XMLNode(sectionNode.child("Decor"));
 	DecorMap decorations = readDecorData(decorNode);
 	MapDecorator decorator;
 	decorator.addDecor(decorations, map->getData());
 
 	// Traps
-	XMLNode trapNode = XMLNode(sectionNode->first_node("Traps"));
+	XMLNode trapNode = XMLNode(sectionNode.child("Traps"));
 	DecorMap trapInfo = readDecorData(trapNode);
 	setTrapInfo(map, trapInfo);
 }
@@ -218,13 +213,11 @@ DecorMap LevelManager::readDecorData(const XMLNode& root) const
 	DecorMap decorMap;
 	if (root)
 	{
-		XMLNode item = root.first();
-
+		XMLNode item = root.child();
 		while (!item.isEmpty())
-
 		{
 			DecorType type = stringToType(item.name());
-			Attributes attributes = item.attributes();
+			StringMap attributes = item.nodeAttributes();
 			decorMap[type] = attributes;
 
 			item = item.next();
@@ -239,7 +232,7 @@ void LevelManager::setTrapInfo(Map* map, DecorMap& trapInfo)
 {
 	if (trapInfo.count(DecorType::Spikes))
 	{
-		const Attributes attributes = trapInfo[DecorType::Spikes];
+		const StringMap attributes = trapInfo[DecorType::Spikes];
 		if (attributes.contains("triggerTime") && attributes.contains("recoveryTime"))
 		{
 			Damage damage = attributes.getFloat("damage");

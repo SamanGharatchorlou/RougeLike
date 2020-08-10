@@ -25,7 +25,7 @@ Collectable* CollectableBuilder::build(CollectableSpawner::SpawnData data)
 void CollectableBuilder::setIcon(Collectable* collectable, CollectableSpawner::SpawnData data)
 {
 	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs_Objects, data.id));
-	BasicString iconName = parser.firstRootNodeValue("Icon");
+	BasicString iconName = parser.rootChild("Icon").value();
 
 	Texture* icon = mTextures->getTexture(iconName, FileManager::Image_UI);
 

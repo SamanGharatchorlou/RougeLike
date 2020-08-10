@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Objects/Abilities/Cooldown.h"
-#include "Objects/Properties/EffectBag.h"
+#include "Objects/Bags/EffectBag.h"
 
 class Texture;
 
@@ -41,7 +41,7 @@ public:
 
 
 private:	
-	virtual void fillProperties(const Attributes& properties) = 0;
+	virtual void fillProperties(const StringMap& properties) = 0;
 	void fillEffects(EffectBag effectBag) { effects = effectBag; }
 	void fillAudio(StringMap audioData) { audio = audioData; }
 
@@ -61,5 +61,5 @@ public:
 
 
 private:
-	void fillProperties(const Attributes& properties) override;
+	void fillProperties(const StringMap& properties) override;
 };

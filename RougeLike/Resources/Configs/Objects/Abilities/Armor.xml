@@ -8,13 +8,13 @@
 
 	<Icon>ArmorIcon</Icon>
 
-	<AnimationInfo>
+	<Animator>
 		<ID>Armor</ID>
 		<FrameTime>0.05</FrameTime>
 		<FrameSize x = "72" y ="48"></FrameSize>
 		<Animations>
 			<Active>8</Active>
 		</Animations>
-	</AnimationInfo>
+	</Animator>
 
 </Ability>

@@ -24,9 +24,9 @@ Collectables::~Collectables()
 }
 
 
-void Collectables::spawn(const XMLParser& parser, const Map* map)
+void Collectables::spawn(const XMLNode collectablesNode, const Map* map)
 {
-	std::queue<CollectableSpawner::SpawnData> dataQueue = mSpawner.getSpawnList(parser, map);
+	std::queue<CollectableSpawner::SpawnData> dataQueue = mSpawner.getSpawnList(collectablesNode, map);
 
 	while (dataQueue.size() > 0)
 	{

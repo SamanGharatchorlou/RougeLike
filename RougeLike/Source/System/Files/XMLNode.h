@@ -1,8 +1,5 @@
 #pragma once
 
-typedef rapidxml::xml_node<>* xmlNode;
-typedef rapidxml::xml_attribute<>* xmlAttributes;
-
 
 class XMLNode
 {
@@ -12,15 +9,21 @@ public:
 		return node != nullptr;
 	}
 
+private:
+	using xmlNodePtr = rapidxml::xml_node<>*;
+	using xmlNodeAttributes = rapidxml::xml_attribute<>*;
+
+
 public:
-	explicit XMLNode(xmlNode xmlNode) : node(xmlNode) { }
+	explicit XMLNode(xmlNodePtr xmlNode) : node(xmlNode) { }
 
-	Attributes attributes() const;
-	StringMap stringMap() const;
-	ValueMap valueMap() const;
+	DataMap<BasicString> nodeAttributes() const;
+	DataMap<BasicString> stringMap() const;
+	DataMap<float> floatMap() const;
 
-	XMLNode first() const { return XMLNode(node->first_node()); }
-	XMLNode first(const BasicString& label) const { return XMLNode(node->first_node(label.c_str())); }
+
+	XMLNode child() const { return XMLNode(node->first_node()); }
+	XMLNode child(const BasicString& label) const { return XMLNode(node->first_node(label.c_str())); }
 
 	XMLNode next() const { return XMLNode(node->next_sibling()); }
 	XMLNode next(const BasicString& label) const { return XMLNode(node->next_sibling(label.c_str())); }
@@ -30,7 +33,13 @@ public:
 
 	bool isEmpty() const { return node == nullptr; }
 
+	float getFloat() const;
+	int getInt() const;
+	const BasicString getString() const { return BasicString(node->value()); }
 
 private:
-	xmlNode node;
+	xmlNodePtr node;
 };
+
+
+VectorF getXYAttributes(const XMLNode node);

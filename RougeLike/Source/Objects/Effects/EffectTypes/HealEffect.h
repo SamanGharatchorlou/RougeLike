@@ -11,7 +11,7 @@ public:
 	HealEffect(float heal) : mHeal(heal) { };
 
 	void set(Health health) { mHeal = health; }
-	void fill(ValueMap& valueMap);
+	void fill(PropertyBag& properties);
 
 	void init() override;
 	void fastUpdate(float dt) override { };

@@ -30,13 +30,18 @@ void EnemyAttack::init()
 
 void EnemyAttack::fastUpdate(float dt)
 {
-	VectorF direction = mStartPosition - mEnemy->position();
-	VectorF velocity = direction.normalise() * mEnemy->getAttributeValue(AttributeType::TackleMovementSpeed);
-
 	if (mHasAttacked)
-		velocity /= 1.5f;
-
-	mEnemy->move(velocity, dt);
+	{
+		VectorF direction = mStartPosition - mEnemy->position();
+		VectorF velocity = direction.normalise() * mEnemy->getAttributeValue(AttributeType::TackleMovementSpeed) / 1.5f;
+		mEnemy->move(velocity, dt);
+	}
+	else
+	{
+		VectorF direction = mAttackPosition - mEnemy->position();
+		VectorF velocity = direction.normalise() * mEnemy->getAttributeValue(AttributeType::TackleMovementSpeed);
+		mEnemy->move(velocity, dt);
+	}
 }
 
 

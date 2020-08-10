@@ -69,6 +69,8 @@
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyState.cpp" />
     <ClCompile Include="Source\Actors\Enemies\Types\Devil.cpp" />
     <ClCompile Include="Source\Objects\Bags\AttributeBag.cpp" />
+    <ClCompile Include="Source\Objects\Bags\DataBag.cpp" />
+    <ClCompile Include="Source\Objects\Bags\ValueBag.cpp" />
     <ClCompile Include="Source\Objects\Properties\Attributes\Level.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectManager.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\BlinkEffect.cpp" />
@@ -89,8 +91,8 @@
     <ClCompile Include="Source\Actors\Actor.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectPool.cpp" />
     <ClCompile Include="Source\Collisions\WeaponCollisionManager.cpp" />
-    <ClCompile Include="Source\Objects\Properties\EffectBag.cpp" />
-    <ClCompile Include="Source\Objects\Properties\PropertyBag.cpp" />
+    <ClCompile Include="Source\Objects\Bags\EffectBag.cpp" />
+    <ClCompile Include="Source\Objects\Bags\PropertyBag.cpp" />
     <ClCompile Include="Source\Items\Collectables\CollectableSpawner.cpp" />
     <ClCompile Include="Source\System\Files\Attributes.cpp" />
     <ClCompile Include="Source\System\Files\XMLNode.cpp" />
@@ -101,6 +103,7 @@
     <ClCompile Include="Source\UI\Screens\SettingsScreen.cpp" />
     <ClCompile Include="Source\UI\UIEventHandler.cpp" />
     <ClCompile Include="Source\Utilities\BasicString.cpp" />
+    <ClCompile Include="Source\Utilities\DataMap.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Circle.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Shape.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Square.cpp" />
@@ -233,6 +236,7 @@
     <ClInclude Include="Source\Actors\Enemies\Types\Devil.h" />
     <ClInclude Include="Source\Objects\Bags\AttributeBag.h" />
     <ClInclude Include="Source\Objects\Bags\DataBag.h" />
+    <ClInclude Include="Source\Objects\Bags\ValueBag.h" />
     <ClInclude Include="Source\Objects\Properties\Attributes\Armor.h" />
     <ClInclude Include="Source\Objects\Properties\Attributes\Damage.h" />
     <ClInclude Include="Source\Objects\Properties\Attributes\Level.h" />
@@ -245,7 +249,7 @@
     <ClInclude Include="Source\Objects\Effects\EffectTypes\HealEffect.h" />
     <ClInclude Include="Source\Actors\Physics.h" />
     <ClInclude Include="Source\Collisions\WeaponCollisionManager.h" />
-    <ClInclude Include="Source\Objects\Properties\EffectBag.h" />
+    <ClInclude Include="Source\Objects\Bags\EffectBag.h" />
     <ClInclude Include="Source\Objects\Properties\Attributes\Attribute.h" />
     <ClInclude Include="Source\Objects\Properties\Property.h" />
     <ClInclude Include="Source\Objects\Properties\StatManager.h" />
@@ -258,7 +262,7 @@
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyWait.h" />
     <ClInclude Include="Source\Actors\Enemies\Spawning\EnemySpawner.h" />
     <ClInclude Include="Source\Collisions\CollisionManager.h" />
-    <ClInclude Include="Source\Objects\Properties\PropertyBag.h" />
+    <ClInclude Include="Source\Objects\Bags\PropertyBag.h" />
     <ClInclude Include="Source\Items\Collectables\CollectableSpawner.h" />
     <ClInclude Include="Source\System\Files\XMLNode.h" />
     <ClInclude Include="Source\UI\Elements\UISlider.h" />
@@ -269,6 +273,7 @@
     <ClInclude Include="Source\UI\Screens\SettingsScreen.h" />
     <ClInclude Include="Source\UI\UIEventHandler.h" />
     <ClInclude Include="Source\Utilities\BasicString.h" />
+    <ClInclude Include="Source\Utilities\DataMap.h" />
     <ClInclude Include="Source\Utilities\ObjectPool.h" />
     <ClInclude Include="Source\Utilities\Shapes\Circle.h" />
     <ClInclude Include="Source\Utilities\Shapes\Shape.h" />

@@ -17,6 +17,8 @@ struct SpawnData
 };
 
 
+// TODO: make a spawner a template
+// things like getSpawnlist can be overriden?
 class EnemySpawner : public Spawner
 {
 public:
@@ -31,14 +33,14 @@ public:
 	EnemySpawner() { }
 
 	void wipeEnemies();
-	std::vector<SpawnData> getspawnList(const XMLParser& parser, const Map* map) const;
+	std::vector<SpawnData> getspawnList(const XMLNode spawnNode, const Map* map) const;
 
 
 private:
-	std::vector<SpawnData> generateSpawnData(const Map* map, Type spawnType, const Attributes& attributes) const;
+	std::vector<SpawnData> generateSpawnData(const Map* map, Type spawnType, const StringMap& attributes) const;
 
-	std::vector<SpawnData> spawnPatrollers(const Map* map, const Attributes& attributes) const;
-	std::vector<SpawnData> spawnShape(const Map* map, const Attributes& attributes) const;
+	std::vector<SpawnData> spawnPatrollers(const Map* map, const StringMap& attributes) const;
+	std::vector<SpawnData> spawnShape(const Map* map, const StringMap& attributes) const;
 
 	Type stringToType(const BasicString& spawnType) const;
 

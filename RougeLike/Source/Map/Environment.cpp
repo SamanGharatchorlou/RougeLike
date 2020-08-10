@@ -55,12 +55,15 @@ void Environment::load()
 	DebugPrint(Log, "\n Loading Characters\n");
 
 	mActors.load(parser, mLevelManager.primaryMap());
-	mActors.spawnEnemies(parser, mLevelManager.primaryMap());
+
+	XMLNode enemySpawnNode = parser.rootChild("Enemies");
+	mActors.spawnEnemies(enemySpawnNode, mLevelManager.primaryMap());
 
 	DebugPrint(Log, "\n Loading Collectables\n");
 
 	mCollectables.load();
-	mCollectables.spawn(parser, mLevelManager.primaryMap());
+	XMLNode collectablesSpawnNode = parser.rootChild("Collectables");
+	mCollectables.spawn(collectablesSpawnNode, mLevelManager.primaryMap());
 
 	DebugPrint(Log, "\n--- Environment Load Complete---\n\n");
 }
@@ -90,10 +93,12 @@ void Environment::nextLevel()
 	notify(event);
 
 	// spawn new enemies
-	mActors.spawnEnemies(parser, mLevelManager.primaryMap());
+	XMLNode enemySpawnNode = parser.rootChild("Enemies");
+	mActors.spawnEnemies(enemySpawnNode, mLevelManager.primaryMap());
 
 	// spawn collectables
-	mCollectables.spawn(parser, mLevelManager.primaryMap());
+	XMLNode collectablesSpawnNode = parser.rootChild("Collectables");
+	mCollectables.spawn(collectablesSpawnNode, mLevelManager.primaryMap());
 }
 
 void Environment::handleInput(const InputManager* input)

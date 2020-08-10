@@ -39,7 +39,7 @@ public:
 	LocalDispatcher& events() { return mEvents; }
 
 	// Spawning
-	void spawn(const XMLParser& parser, const Map* map);
+	void spawn(const XMLNode spawnNode, const Map* map);
 
 	std::vector<Actor*> getActiveEnemies() const;
 	std::vector<Collider*> attackingColliders() const;

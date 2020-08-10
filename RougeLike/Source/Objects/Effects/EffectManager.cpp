@@ -2,7 +2,7 @@
 #include "EffectManager.h"
 
 #include "Objects/Effects/EffectTypes/Effect.h"
-#include "Objects/Properties/EffectBag.h"
+#include "Objects/Bags/EffectBag.h"
 
 
 void EffectManager::fillEffectBag(XMLNode effectNode)

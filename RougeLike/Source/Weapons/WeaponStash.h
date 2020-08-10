@@ -21,8 +21,8 @@ public:
 
 
 private:
-	WeaponRawData getRawData(const XMLNode rootNode, const TextureManager* textures) const;
-	WeaponData* createNewData(const XMLNode rootNode, const WeaponRawData& rawData) const;
+	WeaponRawData getRawData(const XMLNode weaponNode, const TextureManager* textures) const;
+	WeaponData* createNewData(const XMLNode weaponNode, const WeaponRawData& rawData) const;
 
 private:
 	std::unordered_map<BasicString, WeaponData*> mData;

@@ -5,7 +5,7 @@ void EffectBag::readEffects(XMLNode parentEffectNode)
 {
 	if (parentEffectNode)
 	{
-		XMLNode effectNode = parentEffectNode.first();
+		XMLNode effectNode = parentEffectNode.child();
 		while (effectNode)
 		{
 			PropertyBag effectValues(effectNode);

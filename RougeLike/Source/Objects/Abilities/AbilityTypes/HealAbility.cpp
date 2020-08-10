@@ -8,10 +8,10 @@
 #include "Collisions/Collider.h"
 
 
-void HealAbility::fillValues(const ValueBag& values)
+void HealAbility::fillValues(const PropertyBag& properties)
 {
-	Ability::fillValues(values);
-	mHeal = Health(values.get("Heal"));
+	Ability::fillValues(properties);
+	mHeal = Health(properties.get(PropertyType::Health));
 }
 
 

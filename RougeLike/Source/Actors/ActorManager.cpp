@@ -58,9 +58,9 @@ void ActorManager::render()
 }
 
 
-void ActorManager::spawnEnemies(const XMLParser& parser, const Map* map)
+void ActorManager::spawnEnemies(const XMLNode spawnNode, const Map* map)
 {
-	mEnemies.spawn(parser, map);
+	mEnemies.spawn(spawnNode, map);
 }
 
 

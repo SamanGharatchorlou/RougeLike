@@ -2,13 +2,13 @@
 #include "UIElement.h"
 
 
-UIElement::UIElement(const Attributes& attributes) 
+UIElement::UIElement(const StringMap& attributes) 
 {
 	fill(attributes);
 }
 
 
-void UIElement::fill(const Attributes& attributes)
+void UIElement::fill(const StringMap& attributes)
 {
 	float x = attributes.getFloat("x");
 	float y = attributes.getFloat("y");

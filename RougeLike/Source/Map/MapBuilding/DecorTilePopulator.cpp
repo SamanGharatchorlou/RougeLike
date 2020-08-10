@@ -2,6 +2,7 @@
 #include "DecorTilePopulator.h"
 
 #include "Animations/AnimationReader.h"
+//#include "Animations/Animator.h"
 
 
 void DecorTilePopulator::populate(Grid<MapTile>& data)
@@ -24,15 +25,10 @@ void DecorTilePopulator::addWater(Grid<MapTile>& data)
 
 			if (data[index].is(CollisionTile::Water))
 			{
-				// very top row not considered to keep symmetry 
-				//index += Index(0, 1);
-
-				// width
 				int width = 0;
 				while (data[index + Index(width,0)].is(CollisionTile::Water))
 					width++;
 
-				// height
 				int height = 0;
 				while (data[index + Index(0,height)].is(CollisionTile::Water))
 					height++;
@@ -132,38 +128,40 @@ void DecorTilePopulator::addAnimations(Grid<MapTile>& data)
 	{
 		for (int y = 0; y < data.yCount(); y++)
 		{
-			Index index(x, y);
+			MapTile& tile = data[Index(x, y)];
 
-			if (data[index].has(DecorType::Torch_Handle))
+
+			if (tile.has(DecorType::Torch_Handle))
 			{
-				Animator animator;
-				AnimationReader reader(mTextureManager, tourchHandleParser);
-				if (reader.initAnimator(animator))
-				{
-					data[index].addAnimation(animator);
-				}
+				Animator animator = buildAnimation(tourchHandleParser);
+				tile.addAnimation(animator);
 			}
 
-			if (data[index].has(DecorType::Torch_Bowl))
+			if (tile.has(DecorType::Torch_Bowl))
 			{
-				Animator animator;
-				AnimationReader reader(mTextureManager, tourchBowlParser);
-				if (reader.initAnimator(animator))
-				{
-					data[index].addAnimation(animator);
-				}
+				Animator animator = buildAnimation(tourchBowlParser);
+				tile.addAnimation(animator);
 			}
 
-			if (data[index].has(DecorType::Spikes))
+			if (tile.has(DecorType::Spikes))
 			{
-				Animator animator;
-				AnimationReader reader(mTextureManager, spikeParser);
-				if (reader.initAnimator(animator))
-				{
-					data[index].addAnimation(animator);
-					data[index].animation(0).pause();
-				}
+				Animator animator = buildAnimation(spikeParser);
+				tile.addAnimation(animator);
+				tile.animation(0).pause();
 			}
 		}
 	}
 }
+
+
+
+
+Animator DecorTilePopulator::buildAnimation(const XMLParser& parser)
+{
+	AnimationReader reader;
+	XMLNode node = parser.rootChild("Animator");
+
+	return reader.buildAnimator(node, mTextures);
+}
+
+

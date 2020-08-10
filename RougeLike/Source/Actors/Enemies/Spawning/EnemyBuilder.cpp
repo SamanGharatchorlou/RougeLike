@@ -20,7 +20,7 @@ Enemy* EnemyBuilder::buildEnemy(const SpawnData& data, Environment* environment,
 	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs_Objects, enemyType));
 	Enemy* enemy = getBlankEnemy(data);
 
-	fillStaticTypeData(enemy, parser, environment->effectPool());
+	fillActorData(enemy, parser.rootNode(), environment->effectPool());
 	fillSpawnData(enemy, data, aiPathMap);
 	enemy->set(environment);
 #if !IGNORED_BY_ENEMIES
@@ -40,10 +40,9 @@ Enemy* EnemyBuilder::getBlankEnemy(const SpawnData& data)
 }
 
 
-void EnemyBuilder::fillStaticTypeData(Enemy* enemy, const XMLParser& parser, EffectPool* effects)
+void EnemyBuilder::fillActorData(Enemy* enemy, const XMLNode node, EffectPool* effects)
 {
-	enemy->setCharacter(parser, mTextures);
-	//enemy->readEffects(parser, effects);
+	enemy->setCharacter(node, mTextures);
 }
 
 

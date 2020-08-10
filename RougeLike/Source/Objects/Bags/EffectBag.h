@@ -4,8 +4,6 @@
 #include "Objects/Effects/EffectTypes/EffectTypes.h"
 #include "Objects/Effects/EffectPool.h"
 
-#include "Objects/Properties/PropertyBag.h"
-
 
 class EffectBag
 {

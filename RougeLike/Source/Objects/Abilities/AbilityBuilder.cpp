@@ -3,7 +3,7 @@
 
 #include "Graphics/TextureManager.h"
 #include "Animations/AnimationReader.h"
-#include "Objects/Properties/PropertyBag.h"
+#include "Objects/Bags/PropertyBag.h"
 
 // Abilities
 #include "Objects/Abilities/AbilityTypes/SlowAbility.h"
@@ -22,37 +22,31 @@ Ability* AbilityBuilder::build(const BasicString& id)
 	XMLParser parser;
 	parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, id));
 
-	setValues(ability, id, parser);
+	ability->setName(id);
+	setValues(ability, parser.rootChild("Properties"));
 	setRangedValues(ability);
-	initAnimations(ability, parser);
+	initAnimations(ability, parser.rootChild("Animator"));
 
 	return ability;
 }
 
 
-void AbilityBuilder::initAnimations(Ability* ability, const XMLParser& parser)
+void AbilityBuilder::initAnimations(Ability* ability, const XMLNode animationNode)
 {
-	Animator animator;
-	AnimationReader reader(mTextures, parser);
-
-	if (reader.initAnimator(animator))
-		ability->setAnimations(animator);
-	else
-		DebugPrint(Log, "Ability animator setup failed\n");
+	AnimationReader reader;
+	ability->setAnimations(reader.buildAnimator(animationNode, mTextures));
 }
 
 
-void AbilityBuilder::setValues(Ability* ability, const BasicString& id, const XMLParser& parser)
+void AbilityBuilder::setValues(Ability* ability, const XMLNode propertiesNode)
 {
-	ValueBag values;
-	values.readData(parser, "Properties");
+	PropertyBag properties(propertiesNode);
 
-	if (values.isEmpty())
-		DebugPrint(Log, "Ability '%s' has no property values\n", id.c_str());
+	if (properties.isEmpty())
+		DebugPrint(Log, "Ability '%s' has no property values\n", ability->name().c_str());
 
-	ability->fillAbilityValues(values);
-	ability->fillValues(values);
-	ability->setName(id);
+	ability->fillBaseValues(properties);
+	ability->fillValues(properties);
 }
 
 

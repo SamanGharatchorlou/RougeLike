@@ -3,23 +3,17 @@
 
 
 
-std::queue<CollectableSpawner::SpawnData> CollectableSpawner::getSpawnList(const XMLParser& parser, const Map* map)
+std::queue<CollectableSpawner::SpawnData> CollectableSpawner::getSpawnList(const XMLNode node, const Map* map) const
 {
 	std::queue<SpawnData> spawnData;
 
-	xmlNode rootNode = parser.rootNode();
-	xmlNode collectablesNode = rootNode->first_node("Collectables");
-
-	if (collectablesNode)
+	XMLNode collectablesNode = node.child("Collectables");
+	while (collectablesNode)
 	{
-		xmlNode collectableNode = collectablesNode->first_node();
-		while (collectableNode)
-		{
-			SpawnData data = generateSpawnData(XMLNode(collectableNode), map);
-			spawnData.push(data);
+		SpawnData data = generateSpawnData(collectablesNode, map);
+		spawnData.push(data);
 
-			collectableNode = collectableNode->next_sibling();
-		}
+		collectablesNode = collectablesNode.next();
 	}
 
 	return spawnData;
@@ -27,17 +21,17 @@ std::queue<CollectableSpawner::SpawnData> CollectableSpawner::getSpawnList(const
 
 
 
-CollectableSpawner::SpawnData CollectableSpawner::generateSpawnData(const XMLNode& node, const Map* map)
+CollectableSpawner::SpawnData CollectableSpawner::generateSpawnData(const XMLNode node, const Map* map) const
 {
 	CollectableType type = CollectableType::None;
 	type << node.name();
 
-	Attributes attributes = node.attributes();
+	StringMap attributes = node.nodeAttributes();
 
 	int xIncrement = attributes.getInt("xPosition");
 	VectorF position = findSpawnPoint(map, xIncrement);
 
-	BasicString id = attributes.getString("id");
+	BasicString id = attributes.at("id");
 
 	return SpawnData(type, position, id);
 }

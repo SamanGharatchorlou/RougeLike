@@ -2,7 +2,6 @@
 #include "DamageEffect.h"
 
 #include "Actors/Actor.h"
-#include "Objects/Properties/PropertyBag.h"
 
 #include "Objects/Properties/Attributes/Armor.h"
 #include "Objects/Properties/Attributes/Health.h"

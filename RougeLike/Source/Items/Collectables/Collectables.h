@@ -17,7 +17,7 @@ public:
 
 	void setCollector(PlayerManager* collector);
 
-	void spawn(const XMLParser& parser, const Map* map);
+	void spawn(const XMLNode collectablesNode, const Map* map);
 
 	void load();
 

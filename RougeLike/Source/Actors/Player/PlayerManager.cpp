@@ -7,12 +7,7 @@
 #include "Input/InputManager.h"
 #include "UI/UIManager.h"
 
-
 #include "Weapons/Melee/MeleeWeapon.h"
-
-
-// TEMP
-#include "Objects/Properties/EffectBag.h"
 
 
 PlayerManager::PlayerManager(GameData* gameData) :
@@ -113,13 +108,13 @@ void PlayerManager::exit()
 void PlayerManager::selectCharacter(const BasicString& characterConfig, const TextureManager* textureManager)
 { 
 	XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Player, characterConfig));
-	mPlayer.setCharacter(parser, textureManager);
+	mPlayer.setCharacter(parser.rootNode(), textureManager);
 
 	EffectBag bag;
-	XMLNode effects = parser.root().first("Effects");
+	XMLNode effects = parser.rootChild("Effects");
 	bag.readEffects(effects);
 
-	BasicString weapontype = parser.root().first("WeaponType").value();
+	BasicString weapontype = parser.rootChild("WeaponType").value();
 	mPlayer.setWeaponType(mWeaponStash.getWeapon(weapontype));
 }
 

@@ -1,13 +1,13 @@
 #pragma once
 
 // xml tile set/mapping attributes
-class Attributes
+class StringMap
 {
 public:
 	StringMap& getMap() { return attributes; }
 
 	void set(StringMap stringMap);
-	void merge(Attributes otherAttributes);
+	void merge(StringMap otherAttributes);
 
 
 	void add(const BasicString& name, BasicString value);

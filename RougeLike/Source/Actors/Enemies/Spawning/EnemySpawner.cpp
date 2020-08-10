@@ -15,33 +15,30 @@ void EnemySpawner::wipeEnemies()
 	//mEnemies->clearAllEnemies();
 }
 
-std::vector<SpawnData> EnemySpawner::getspawnList(const XMLParser& parser, const Map* map) const
+std::vector<SpawnData> EnemySpawner::getspawnList(const XMLNode spawnNode, const Map* map) const
 {
 	std::vector<SpawnData> spawnList;
 
-	xmlNode root = parser.rootNode();
-	xmlNode spawnerLevelNode = root->first_node("Spawning");
-	if (spawnerLevelNode)
+	XMLNode node = spawnNode.child();
+
+	while (node)
 	{
-		xmlNode spawnNode = spawnerLevelNode->first_node();
-		while (spawnNode)
-		{
-			Type spawnType = stringToType(spawnNode->name());
-			Attributes attributes = parser.attributes(spawnNode);
+		Type spawnType = stringToType(node.name());
+		StringMap attributes = node.nodeAttributes();
 
-			std::vector<SpawnData> list = generateSpawnData(map, spawnType, attributes);
-			spawnList.reserve(spawnList.size() + list.size());
-			spawnList.insert(spawnList.end(), list.begin(), list.end());
+		// TODO: replace this loop by merging the string maps instead of the vector, then generate a list
+		std::vector<SpawnData> list = generateSpawnData(map, spawnType, attributes);
+		spawnList.reserve(spawnList.size() + list.size());
+		spawnList.insert(spawnList.end(), list.begin(), list.end());
 
-			spawnNode = spawnNode->next_sibling();
-		}
+		node = node.next();
 	}
 
 	return spawnList;
 }
 
 
-std::vector<SpawnData> EnemySpawner::generateSpawnData(const Map* map, Type spawnType, const Attributes& attributes) const
+std::vector<SpawnData> EnemySpawner::generateSpawnData(const Map* map, Type spawnType, const StringMap& attributes) const
 {
 	if (spawnType == Type::Patrol)
 		return spawnPatrollers(map, attributes);
@@ -50,9 +47,9 @@ std::vector<SpawnData> EnemySpawner::generateSpawnData(const Map* map, Type spaw
 }
 
 
-std::vector<SpawnData> EnemySpawner::spawnPatrollers(const Map* map, const Attributes& attributes) const
+std::vector<SpawnData> EnemySpawner::spawnPatrollers(const Map* map, const StringMap& attributes) const
 {
-	EnemyType enemyType = stringToEnemyType(attributes.getString("type"));
+	EnemyType enemyType = stringToEnemyType(attributes.at("type"));
 	int xIncrement = attributes.getInt("xIncrement");
 
 	PointList pointList;
@@ -67,14 +64,14 @@ std::vector<SpawnData> EnemySpawner::spawnPatrollers(const Map* map, const Attri
 }
 
 
-std::vector<SpawnData> EnemySpawner::spawnShape(const Map* map, const Attributes& attributes) const
+std::vector<SpawnData> EnemySpawner::spawnShape(const Map* map, const StringMap& attributes) const
 {
-	EnemyType enemyType = stringToEnemyType(attributes.getString("type"));
+	EnemyType enemyType = stringToEnemyType(attributes.at("type"));
 	int xPosition = attributes.getInt("xPosition");
 
 	PointList points;
 
-	if (attributes.getString("shape") == "Circle")
+	if (attributes.at("shape") == "Circle")
 	{
 		int radius = map->tile(Index(0, 0))->rect().Width();
 		int pointCount = attributes.getInt("points");

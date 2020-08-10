@@ -15,38 +15,32 @@
 #include "Objects/Effects/EffectTypes/Effect.h"
 
 
-// TEMP
-#include "Objects/Properties/EffectBag.h"
-
-
 Actor::Actor() : mVisibility(true) { }
 
 
-void Actor::setCharacter(const XMLParser& parser, const TextureManager* textureManager)
+void Actor::setCharacter(const XMLNode actorNode, const TextureManager* textures)
 {
-	mAttributeBag.readData(parser, "Properties");
-	mEffects.fillEffectBag(parser.root().first("Effects"));
+	mAttributeBag.readData(actorNode.child("Properties"));
+	mEffects.fillEffectBag(actorNode.child("Effects"));
 
 	// Animations
-	AnimationReader reader(textureManager, parser);
-	reader.initAnimator(mAnimator);
+	AnimationReader reader;
+	mAnimator = reader.buildAnimator(actorNode.child("Animator"), textures);
 	mAnimator.start();
 
 	// Physics 
 	VectorF baseSize = mAnimator.frameSize();
-	float maxDimention = atof(parser.firstRootNodeValue("MaxSize").c_str()); // added new calculations to animator, can i remove the realise size bit and just set the rect to (maxDim, maxDim). it should auto size.
+	float maxDimention = actorNode.child("MaxSize").getFloat(); // added new calculations to animator, can i remove the realise size bit and just set the rect to (maxDim, maxDim). it should auto size.
 	VectorF size = realiseSize(baseSize, maxDimention);
 	mPhysics.rectRef().SetSize(size);
 	updatePhysicsStats();
 
 	// Collider
-	Attributes attributes = parser.attributes(parser.rootNode()->first_node("ColliderScale"));
-	float x = attributes.getFloat("x");
-	float y = attributes.getFloat("y");
-	mCollider.init(&mPhysics.rectRef(), VectorF(x, y));
+	VectorF colliderScale = getXYAttributes(actorNode.child("ColliderScale"));
+	mCollider.init(&mPhysics.rectRef(), colliderScale);
 
-#if _DEBUG
-	mCollider.setName(FileManager::Get()->getItemName(parser.path));
+#if _DEBUG // TODO remove this name bit from the collider??
+	//mCollider.setName(FileManager::Get()->getItemName(parser.path));
 #endif
 }
 

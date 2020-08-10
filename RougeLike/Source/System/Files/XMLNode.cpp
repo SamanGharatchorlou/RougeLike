@@ -2,12 +2,10 @@
 #include "XMLNode.h""
 
 
-Attributes XMLNode::attributes() const
+DataMap<BasicString> XMLNode::nodeAttributes() const
 {
-	ASSERT(Warning, node != nullptr, "Attempting to get attributes for non-existant node\n");
-	Attributes attributes;
-
-	for (xmlAttributes attr = node->first_attribute(); attr; attr = attr->next_attribute())
+	DataMap<BasicString> attributes;
+	for (xmlNodeAttributes attr = node->first_attribute(); attr; attr = attr->next_attribute())
 	{
 		attributes.add(attr->name(), attr->value());
 	}
@@ -16,32 +14,58 @@ Attributes XMLNode::attributes() const
 }
 
 
-StringMap XMLNode::stringMap() const
+DataMap<BasicString> XMLNode::stringMap() const
 {
-	StringMap stringMap;
+	DataMap<BasicString> stringDataMap;
 
-	xmlNode childNode = node->first_node();
+	xmlNodePtr childNode = node->first_node();
 	while (childNode != nullptr)
 	{
-		stringMap[childNode->name()] = childNode->value();
+		stringDataMap[childNode->name()] = childNode->value();
 		childNode = childNode->next_sibling();
 	}
 
-	ASSERT(Warning, stringMap.size() != 0, "Node %s has no value\n", node->name());
-	return stringMap;
+	if(stringDataMap.empty())
+		DebugPrint(Log, "Node %s has no child values\n", node->name());
+
+	return stringDataMap;
 }
 
-ValueMap XMLNode::valueMap() const
+DataMap<float> XMLNode::floatMap() const
 {
-	ValueMap valueMap;
+	DataMap<float> valueMap;
 
-	xmlNode childNode = node->first_node();
+	xmlNodePtr childNode = node->first_node();
 	while (childNode != nullptr)
 	{
 		valueMap[childNode->name()] = atof(childNode->value());
 		childNode = childNode->next_sibling();
 	}
 
-	ASSERT(Warning, valueMap.size() != 0, "Node %s has no value\n", node->name());
+	if (!valueMap.empty())
+		DebugPrint(Log, "Node %s has no child values\n", node->name());
+
 	return valueMap;
+}
+
+float XMLNode::getFloat() const
+{
+	return atof(node->value());
+}
+
+
+int XMLNode::getInt() const
+{
+	return atoi(node->value());
+}
+
+
+
+
+VectorF getXYAttributes(XMLNode node)
+{
+	StringMap attributes = node.nodeAttributes();
+	float x = attributes.getFloat("x");
+	float y = attributes.getFloat("y");
+	return VectorF(x, y);
 }

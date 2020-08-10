@@ -1,9 +1,6 @@
 #include "pch.h"
 #include "EffectPool.h"
 
-//#include "Game/GameData.h"
-//#include "Animations/AnimationReader.h"
-
 #include "EffectTypes/Effect.h"
 
 #include "EffectTypes/DamageEffect.h"

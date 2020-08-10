@@ -19,11 +19,11 @@ XMLParser::~XMLParser()
 	delete file;
 }
 
-
-Attributes XMLParser::attributes(xmlNode node) const
+/*
+StringMap XMLParser::attributes(xmlNode node) const
 {
 	ASSERT(Warning, node != nullptr, "Attempting to get attributes for non-existant node\n");
-	Attributes attributes;
+	StringMap attributes;
 
 	for (xmlAttributes attr = node->first_attribute(); attr; attr = attr->next_attribute())
 	{
@@ -76,20 +76,35 @@ BasicString XMLParser::firstRootNodeValue(const BasicString& label) const
 	ASSERT(Warning, node != nullptr, "The node '%s' does not exist, it must have a value\n", label.c_str());
 	return node->value();
 }
+*/
+
+//xmlNode XMLParser::rootNode() const
+//{
+//	return xmlFile.first_node();
+//}
 
 
-xmlNode XMLParser::rootNode() const
-{
-	return xmlFile.first_node();
-}
-
-XMLNode XMLParser::root() const
+XMLNode XMLParser::rootNode() const
 {
 	return XMLNode(xmlFile.first_node());
 }
 
 
-BasicString XMLParser::nodeValue(xmlNode node, const BasicString& label) const
-{		
-	return node->first_node(label.c_str())->value();
+XMLNode XMLParser::rootChild(const BasicString& label) const
+{
+#if _DEBUG
+	XMLNode child = rootNode().child(label);
+	if (child.isEmpty())
+		DebugPrint(Log, "Parser at path '%s' has no child node labeled '%s'\n", path.c_str(), label.c_str()); // TODO: does this need to be path.c_str()?
+	return child;
+#endif
+
+	return XMLNode(xmlFile.first_node()->first_node(label.c_str()));
 }
+
+
+
+//BasicString XMLParser::nodeValue(xmlNode node, const BasicString& label) const
+//{		
+//	return node->first_node(label.c_str())->value();
+//}

@@ -15,7 +15,7 @@ created yet so cannot call its derived members version of the function.
 */
 void WeaponData::fillData(const WeaponRawData& data)
 {
-	Attributes properties;
+	StringMap properties;
 	properties.set(data.properties);
 	fillProperties(properties);
 
@@ -46,7 +46,7 @@ void MeleeWeaponData::copy(const WeaponData* data)
 }
 
 
-void MeleeWeaponData::fillProperties(const Attributes& properties)
+void MeleeWeaponData::fillProperties(const StringMap& properties)
 {
 	// Cooldown
 	cooldown = Cooldown(properties.getFloat("Cooldown") / 100.0f);

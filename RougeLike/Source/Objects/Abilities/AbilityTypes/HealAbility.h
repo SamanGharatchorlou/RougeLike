@@ -9,7 +9,7 @@ class HealAbility : public TargetSelfAbility
 public:
 	HealAbility() { };
 
-	void fillValues(const ValueBag& values) override;
+	void fillValues(const PropertyBag& values) override;
 	
 	void activate(EffectPool* pool) override;
 
