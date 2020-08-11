@@ -1,19 +1,19 @@
 #pragma once
 
-
-#include "Items/Spawner.h"
 #include "Items/Collectables/Collectable.h"
 
+class Map;
 
-class CollectableSpawner : public Spawner
+class CollectableSpawner
 {
 public:
 	struct SpawnData
 	{
 		SpawnData(CollectableType collectableType, VectorF pos, const BasicString& name) : type(collectableType), position(pos), id(name) { }
+
+		const BasicString id;
 		CollectableType type;
 		VectorF position;
-		const BasicString id;
 	};
 
 public:

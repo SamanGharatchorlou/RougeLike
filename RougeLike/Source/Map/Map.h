@@ -43,6 +43,7 @@ public:
 	const Vector2D<int> index(const MapTile* tile) const;
 
 	Vector2D<int> yTileFloorRange(VectorF position) const;
+	const MapTile* randomFloorTile(int xPointPercentage) const;
 
 	bool isValidTile(RectF rect) const;
 	bool isValidPosition(VectorF position) const;

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Items/Spawner.h"
 #include "Actors/Enemies/Types/EnemyTypes.h"
 #include "Actors/Enemies/EnemyStates/EnemyState.h"
 #include "Utilities/Shapes/Shape.h"
 
+class Map;
 
 struct SpawnData
 {
@@ -17,9 +17,7 @@ struct SpawnData
 };
 
 
-// TODO: make a spawner a template
-// things like getSpawnlist can be overriden?
-class EnemySpawner : public Spawner
+class EnemySpawner
 {
 public:
 	enum class Type

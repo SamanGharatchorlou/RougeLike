@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Environment>
+	<TileSize x = "256" y ="256"></TileSize>
+	<Scale>0.5</Scale>
+</Map>

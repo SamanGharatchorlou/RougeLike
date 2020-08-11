@@ -71,17 +71,10 @@ void Environment::load()
 
 void Environment::nextLevel()
 {
-	// wipe enemies
-
-	// TODO: read the level xml parser here
-	// use this parser and pass it into every object that needs it for setup
-	// e.g. level mgr and spawners
-
+	// TODO: wipe enemies / add some exit level thing
 	mLevelManager.incrementLevel();
 
-	char character = (char)mLevelManager.level();
-
-	BasicString fileName = "Level" + BasicString(&character);
+	BasicString fileName = "Level" + BasicString(mLevelManager.level());
 	BasicString path = FileManager::Get()->findFile(FileManager::Config_Map, fileName);
 	XMLParser parser(path);
 

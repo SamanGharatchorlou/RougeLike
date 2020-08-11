@@ -112,7 +112,6 @@
     <ClCompile Include="Source\UI\Screens\CharacterSelectionScreen.cpp" />
     <ClCompile Include="Source\Utilities\Buffer.cpp" />
     <ClCompile Include="Source\Weapons\Melee\MeleeWeapon.cpp" />
-    <ClCompile Include="Source\Items\Spawner.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyAlert.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyAttack.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyDead.cpp" />
@@ -286,7 +285,6 @@
     <ClInclude Include="Source\Utilities\RingBuffer.h" />
     <ClInclude Include="Source\Utilities\UniqueQueue.h" />
     <ClInclude Include="Source\Weapons\Melee\MeleeWeapon.h" />
-    <ClInclude Include="Source\Items\Spawner.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyAlert.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyAttack.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyDead.h" />

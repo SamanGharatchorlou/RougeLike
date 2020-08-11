@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ArmorAbility.h"
 
-#include "Actors/Player/Player.h"
+#include "Actors/Actor.h"
 #include "Objects/Effects/EffectTypes/ArmorEffect.h"
 #include "Objects/Effects/EffectPool.h"
 
@@ -26,9 +26,7 @@ void ArmorAbility::activate(EffectPool* pool)
 	mAnimator.startAnimation(Action::Active);
 
 	applyEffects(pool);
-	
-	// TODO: move this somewhere else
-	//updateUI();
+	updateUI();
 }
 
 
@@ -43,16 +41,7 @@ void ArmorAbility::applyEffects(EffectPool* pool)
 
 void ArmorAbility::updateUI()
 {
-	Player* player = dynamic_cast<Player*>(mCaster);
-
-	if (mCaster)
-	{
-		//Armor* armor = static_cast<Armor*>(mCaster->getAttribute(AttributeType::Armor));
-		//SetArmorBarEvent* armorPtr = new SetArmorBarEvent(*armor);
-		//mEvents.push(EventPacket(armorPtr));
-
-		Armor* armor = static_cast<Armor*>(mCaster->getAttribute(AttributeType::Armor));
-		SetUIBarEvent* armorBat = new SetUIBarEvent("ArmorBar", "BlackArmorBar", armor->getPercentage());
-		mEvents.push(EventPacket(armorBat));
-	}
+	Armor* armor = static_cast<Armor*>(mCaster->getAttribute(AttributeType::Armor));
+	SetUIBarEvent* armorBar = new SetUIBarEvent("ArmorBar", "BlackArmorBar", armor->getPercentage());
+	mEvents.push(EventPacket(armorBar));
 }

@@ -35,7 +35,7 @@ public:
 	bool isCursorHeld(Cursor::ButtonType type) const;
 
 private:
-	void processMouseMovementEvent(SDL_Event& event);
+	void processMouseMovementEvent();
 	void processMouseButtonEvent(SDL_Event& event);
 	void processButtonEvent(SDL_Event& event);
 

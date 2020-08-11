@@ -33,13 +33,14 @@ public:
 private:
 	// Building maps
 	void createNewMaps();
-	void buildEntrance();
-	void buildPrimary(const XMLParser& parser);
-	void buildExit(const XMLParser& parser);
+
+	void buildPrimanyAndExit(const XMLParser& parser);
+	void buildMap(const XMLNode dataNode, Map* map, VectorF offset);
+
 	void swapEntranceExit();
 
 	// Reading map data
-	void readMapData(const XMLNode sectionNode, Map* map);
+	void fillData(const XMLNode sectionNode, Map* map);
 	DecorMap readDecorData(const XMLNode& root) const;
 	void readConfigData(Vector2D<int>& mapIndexSize, VectorF& tileSize, float& scale);
 
@@ -55,6 +56,7 @@ private:
 		Map* primaryMap;
 		Map* exit;
 	} mMaps;
+
 
 
 	TextureManager* mTextureManager;

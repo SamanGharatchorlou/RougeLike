@@ -44,7 +44,6 @@
     <ClCompile Include="Source\Items\Collectables\Collectables.cpp" />
     <ClCompile Include="Source\UI\Elements\UIElement.cpp" />
     <ClCompile Include="Source\Collisions\DamageCollider.cpp" />
-    <ClCompile Include="Source\Items\Spawner.cpp" />
     <ClCompile Include="Source\Weapons\Weapon.cpp" />
     <ClCompile Include="Source\Weapons\Weaponstash.cpp" />
     <ClCompile Include="Source\Weapons\Melee\MeleeWeapon.cpp" />
@@ -208,7 +207,6 @@
     <ClInclude Include="Source\Items\Collectables\Collectable.h" />
     <ClInclude Include="Source\Items\Collectables\Collectables.h" />
     <ClInclude Include="Source\Collisions\DamageCollider.h" />
-    <ClInclude Include="Source\Items\Spawner.h" />
     <ClInclude Include="Source\Weapons\Weapon.h" />
     <ClInclude Include="Source\Weapons\WeaponData.h" />
     <ClInclude Include="Source\Weapons\WeaponStash.h" />

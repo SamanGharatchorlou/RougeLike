@@ -9,86 +9,14 @@ void InputManager::init()
 
 void InputManager::processInputEvent(SDL_Event& event)
 {
-	// Mouse movement
 	if (event.type == SDL_MOUSEMOTION)
-	{
-		int x, y;
-		SDL_GetMouseState(&x, &y);
-
-		mCursor.setPosition((float)x, (float)y);
-		mCursor.setMotion(true);
-	}
-	// Buttons
+		processMouseMovementEvent();
 	else if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP)
-	{
-		SDL_MouseButtonEvent buttonEvent = event.button;
-
-		Cursor::ButtonType buttonType;
-		bool isHeld = false;
-		bool isPressed = false;
-		bool isReleased = false;
-
-		if (buttonEvent.button == Button::LeftClick)
-			buttonType = Cursor::Left;
-		else if (buttonEvent.button == Button::rightClick)
-			buttonType = Cursor::Right;
-		else
-			DebugPrint(Log, "Mouse button type %d not left or right\n", buttonEvent.button);
-
-		// Get input data
-		Button cursorButton = mCursor.getButton(buttonType);
-
-		if (!cursorButton.isHeld())
-			isPressed = (event.type == SDL_MOUSEBUTTONDOWN);
-
-		isHeld = (event.type == SDL_MOUSEBUTTONDOWN);
-		isReleased = (event.type == SDL_MOUSEBUTTONUP);
-
-		// Set input data
-		cursorButton.setHeld(isHeld);
-		cursorButton.setPressed(isPressed);
-		cursorButton.setReleased(isReleased);
-		mCursor.setButton(buttonType, cursorButton);
-	}
-
-	// Button events
-	else
-	{
-		for (Button& button : mButtons)
-		{
-			if (button.isKey(event.key.keysym.sym))
-			{
-				if (!button.isHeld())
-					button.setPressed(event.type == SDL_KEYDOWN);
-
-				button.setHeld(event.type == SDL_KEYDOWN);
-				button.setReleased(event.type == SDL_KEYUP);
-				break;
-			}
-		}
-	}
-}
-
-// TODO: why doesnt this work, input seems to be lost if the moust is moving
-/*
-{
-	resetInputEvents();
-
-	// Mouse movement
-	if (event.type == SDL_MOUSEMOTION)
-	{
-		processMouseMovementEvent(event);
-	}
-	// Buttons
-	if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP)
-	{
 		processMouseButtonEvent(event);
-	}
-	// Button events
-	processButtonEvent(event);
-
+	else
+		processButtonEvent(event);
 }
-*/
+
 
 const Button& InputManager::getButton(Button::Key key) const
 {
@@ -110,10 +38,44 @@ bool InputManager::isCursorReleased(Cursor::ButtonType button) const { return mC
 bool InputManager::isCursorHeld(Cursor::ButtonType button) const { return mCursor.isHeld(button); }
 
 
+// Must run before processInputEvent
+void InputManager::resetInputEvents()
+{
+	// Reset cursor states
+#if _DEBUG
+	if (((mCursor.isHeld(Cursor::Left) || mCursor.isPressed(Cursor::Left)) && mCursor.isReleased(Cursor::Left)) ||
+		((mCursor.isHeld(Cursor::Right) || mCursor.isPressed(Cursor::Right)) && mCursor.isReleased(Cursor::Right)))
+	{
+		DebugPrint(Warning, "Cursor is being pressed and released at the same time\n");
+	}
+#endif
+
+	mCursor.clearInputs();
+
+	// Reset button states
+	for (Button& button : mButtons)
+	{
+#if _DEBUG
+		if ((button.isHeld() || button.isPressed()) && button.isReleased())
+		{
+			DebugPrint(Warning, "Button key %d is being pressed and released at the same time\n", button.key());
+		}
+#endif
+
+		button.setPressed(false);
+		button.setReleased(false);
+
+		if (button.isHeld())
+			button.incrementHeldFrames();
+		else
+			button.setHeldFrames(0);
+	}
+}
+
 
 // --- Private Functions --- //
 
-void InputManager::processMouseMovementEvent(SDL_Event& event)
+void InputManager::processMouseMovementEvent()
 {
 	int x, y;
 	SDL_GetMouseState(&x, &y);
@@ -213,37 +175,3 @@ void InputManager::bindDefaultButtons()
 	mButtons.push_back(Button(Button::Key::Eight));
 }
 
-
-// Must run before processInputEvent
-void InputManager::resetInputEvents()
-{
-	// Reset cursor states
-#if _DEBUG
-	if (((mCursor.isHeld(Cursor::Left) || mCursor.isPressed(Cursor::Left)) && mCursor.isReleased(Cursor::Left)) ||
-		((mCursor.isHeld(Cursor::Right) || mCursor.isPressed(Cursor::Right)) && mCursor.isReleased(Cursor::Right)))
-	{
-		DebugPrint(Warning, "Cursor is being pressed and released at the same time\n");
-	}
-#endif
-
-	mCursor.clearInputs();
-
-	// Reset button states
-	for (Button& button : mButtons)
-	{
-#if _DEBUG
-		if ((button.isHeld() || button.isPressed()) && button.isReleased())
-		{
-			DebugPrint(Warning, "Button key %d is being pressed and released at the same time\n", button.key());
-		}
-#endif
-
-		button.setPressed(false);
-		button.setReleased(false);
-
-		if (button.isHeld())
-			button.incrementHeldFrames();
-		else
-			button.setHeldFrames(0);
-	}
-}

@@ -50,7 +50,7 @@ std::vector<SpawnData> EnemySpawner::spawnPatrollers(const Map* map, const Strin
 	PointList pointList;
 	for (unsigned int xPoint = 5; xPoint <= 95; xPoint += xIncrement)
 	{
-		VectorF position = findSpawnPoint(map, xPoint);
+		VectorF position = map->randomFloorTile(xPoint)->rect().Center();
 		pointList.push_back(position);
 	}
 
@@ -88,7 +88,7 @@ void EnemySpawner::findValidShape(Shape& shape, const Map* map, int xPosition) c
 
 	while (!validShapePosition)
 	{
-		VectorF position = findSpawnPoint(map, xPosition);
+		VectorF position = map->randomFloorTile(xPosition)->rect().Center();
 		shape.setPosition(position);
 
 		validShapePosition = isValid(shape, map);

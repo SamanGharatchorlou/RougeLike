@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "HealAbility.h"
 
-#include "Actors/Player/Player.h"
+#include "Actors/Actor.h"
 #include "Objects/Effects/EffectPool.h"
 #include "Objects/Effects/EffectTypes/HealEffect.h"
 
@@ -23,7 +23,6 @@ void HealAbility::slowUpdate(float dt)
 	// Completed one animation loop
 	if (mAnimator.loops() > 0)
 	{
-
 		mAnimator.stop();
 	}
 }
@@ -49,12 +48,7 @@ void HealAbility::applyEffects(EffectPool* pool)
 
 void HealAbility::updateUI()
 {
-	//Player* player = dynamic_cast<Player*>(mCaster);
-
-	//if (mCaster)
-	//{
-	//	Health* hp = static_cast<Health*>(mCaster->getAttribute(AttributeType::Health));
-	//	SetHealthBarEvent* hpPtr = new SetHealthBarEvent(*hp);
-	//	mEvents.push(EventPacket(hpPtr));
-	//}
+	Health* hp = static_cast<Health*>(mCaster->getAttribute(AttributeType::Health));
+	SetUIBarEvent* healthBar = new SetUIBarEvent("HealthBar", "BlackHealthBar", hp->getPercentage());
+	mEvents.push(EventPacket(healthBar));
 }

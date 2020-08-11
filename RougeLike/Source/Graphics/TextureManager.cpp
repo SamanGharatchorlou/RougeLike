@@ -115,8 +115,6 @@ bool TextureManager::loadTexture(TextureMap& textureMap, const BasicString& file
 }
 
 
-
-// TODO: replace with copy
 BasicString TextureManager::getTextureName(const Texture* texture) const
 {
 	std::unordered_map<FileManager::Folder, TextureMap>::const_iterator iter;

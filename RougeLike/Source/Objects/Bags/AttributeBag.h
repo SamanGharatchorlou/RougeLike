@@ -11,7 +11,9 @@ using AttributeMap = std::unordered_map<AttributeType, Attribute*>;
 class AttributeBag : public DataBag
 {
 public:
+	AttributeBag() { }
 	virtual ~AttributeBag();
+
 	void empty() { mData.clear(); }
 
 	Attribute* get(AttributeType attribute) const;

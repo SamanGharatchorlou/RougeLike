@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "CollectableSpawner.h"
-
+#include "Map/Map.h"
 
 
 std::queue<CollectableSpawner::SpawnData> CollectableSpawner::getSpawnList(const XMLNode node, const Map* map) const
@@ -29,7 +29,7 @@ CollectableSpawner::SpawnData CollectableSpawner::generateSpawnData(const XMLNod
 	StringMap attributes = node.nodeAttributes();
 
 	int xIncrement = attributes.getInt("xPosition");
-	VectorF position = findSpawnPoint(map, xIncrement);
+	VectorF position = map->randomFloorTile(xIncrement)->rect().Center();
 
 	BasicString id = attributes.at("id");
 

@@ -2,6 +2,8 @@
 
 <Level>
 	<Primary>
+		<TileCount x = "35" y = "25"></TileCount>
+
 		<Decor>
 			<Column spacing="3"></Column>
 			<Spikes rate="10"></Spikes>
@@ -15,6 +17,8 @@
 	</Primary>
 
 	<Exit>
+		<TileCount x = "35" y = "25"></TileCount>
+
 		<Decor>
 			<Torch type = "TorchBowl" spacing ="2"></Torch>
 			<Spikes rate="100"></Spikes>

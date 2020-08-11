@@ -24,18 +24,28 @@ void LevelManager::load(const XMLParser& parser)
 {
 	createNewMaps();
 
-	buildEntrance();
-	buildPrimary(parser);
-	buildExit(parser);
+	XMLNode entranceNode = parser.rootChild("Entrance");
+	buildMap(entranceNode, mMaps.entrance, VectorF(0,0));
+
+	buildPrimanyAndExit(parser);
 }
 
 
 void LevelManager::buildLevel(const XMLParser& parser)
 {
 	swapEntranceExit();
+	buildPrimanyAndExit(parser);
+}
 
-	buildPrimary(parser);
-	buildExit(parser);
+void LevelManager::buildPrimanyAndExit(const XMLParser& parser)
+{
+	XMLNode primaryNode = parser.rootChild("Primary");
+	VectorF primaryOffset = getOffset(mMaps.entrance);
+	buildMap(primaryNode, mMaps.primaryMap, primaryOffset);
+
+	XMLNode exitNode = parser.rootChild("Exit");
+	VectorF exitOffset = getOffset(mMaps.primaryMap);
+	buildMap(exitNode, mMaps.exit, exitOffset);
 }
 
 
@@ -107,44 +117,14 @@ void LevelManager::createNewMaps()
 }
 
 
-void LevelManager::buildEntrance()
+void LevelManager::buildMap(const XMLNode dataNode, Map* map, VectorF offset)
 {
-	Map* map = mMaps.entrance;
-	map->clearData();
-	MapGenerator generator;
-	generator.buildCorridor(map->getData());
-	map->populateData(mTextureManager, VectorF(0, 0));
-}
-
-
-void LevelManager::buildPrimary(const XMLParser& parser)
-{
-	Map* map = mMaps.primaryMap;
 	map->clearData();
 
 	MapGenerator generator;
 	generator.buildDungeon(map->getData());
 
-	XMLNode primaryNode = parser.rootChild("Primary");
-	readMapData(primaryNode, map);
-
-	VectorF offset = getOffset(mMaps.entrance);
-	map->populateData(mTextureManager, offset);
-}
-
-
-void LevelManager::buildExit(const XMLParser& parser)
-{
-	Map* map = mMaps.exit;
-	map->clearData();
-
-	MapGenerator generator;
-	generator.buildCorridor(map->getData());
-
-	XMLNode exitNode = parser.rootChild("Exit");
-	readMapData(exitNode, map);
-
-	VectorF offset = getOffset(mMaps.primaryMap);
+	fillData(dataNode, map);
 	map->populateData(mTextureManager, offset);
 }
 
@@ -166,18 +146,18 @@ VectorF LevelManager::getOffset(const Map* map) const
 void LevelManager::readConfigData(Vector2D<int>& mapIndexSize, VectorF& tileSize, float& scale)
 {
 	XMLParser parser;
-	BasicString path = FileManager::Get()->findFile(FileManager::Config_Map, "Map");
+	BasicString path = FileManager::Get()->findFile(FileManager::Config_Map, "Environment");
 	parser.parseXML(path);
 
-	XMLNode tileSetInfoNode = parser.rootChild("TilesetInfo");
+	XMLNode tileSetInfoNode = parser.rootChild("Environment");
 
-	// Map size
-	XMLNode tileCountNode = tileSetInfoNode.child("TileCount");
-	DataMap<BasicString> tileCountData = tileCountNode.nodeAttributes();
+	//// Map size
+	//XMLNode tileCountNode = tileSetInfoNode.child("TileCount");
+	//DataMap<BasicString> tileCountData = tileCountNode.nodeAttributes();
 
-	int tileCountX = tileCountData.getInt("x");
-	int tileCountY = tileCountData.getInt("y");
-	mapIndexSize.set(tileCountX, tileCountY);
+	//int tileCountX = tileCountData.getInt("x");
+	//int tileCountY = tileCountData.getInt("y");
+	//mapIndexSize.set(tileCountX, tileCountY);
 
 	// Tile size
 	XMLNode tileSizeNode = tileSetInfoNode.child("TileSize");
@@ -193,18 +173,21 @@ void LevelManager::readConfigData(Vector2D<int>& mapIndexSize, VectorF& tileSize
 }
 
 
-void LevelManager::readMapData(const XMLNode sectionNode, Map* map)
+void LevelManager::fillData(const XMLNode sectionNode, Map* map)
 {
-	// Decorations
-	XMLNode decorNode = XMLNode(sectionNode.child("Decor"));
-	DecorMap decorations = readDecorData(decorNode);
-	MapDecorator decorator;
-	decorator.addDecor(decorations, map->getData());
+	if (sectionNode)
+	{
+		// Decorations
+		XMLNode decorNode = XMLNode(sectionNode.child("Decor"));
+		DecorMap decorations = readDecorData(decorNode);
+		MapDecorator decorator;
+		decorator.addDecor(decorations, map->getData());
 
-	// Traps
-	XMLNode trapNode = XMLNode(sectionNode.child("Traps"));
-	DecorMap trapInfo = readDecorData(trapNode);
-	setTrapInfo(map, trapInfo);
+		// Traps
+		XMLNode trapNode = XMLNode(sectionNode.child("Traps"));
+		DecorMap trapInfo = readDecorData(trapNode);
+		setTrapInfo(map, trapInfo);
+	}
 }
 
 
