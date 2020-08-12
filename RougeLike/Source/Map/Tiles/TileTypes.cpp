@@ -14,7 +14,11 @@ DecorType stringToType(const BasicString& decorString)
 	else if (decorString == "TorchBowl")
 		return DecorType::Torch_Bowl;
 	else if (decorString == "Spikes")
-		return DecorType::Spikes;
+		return DecorType::Spikes;	
+	else if (decorString == "Trigger")
+		return DecorType::Trigger;
+	else if (decorString == "Grating")
+		return DecorType::Grating;
 	else
 	{
 		DebugPrint(Warning, "No decor tile has been set to the string '%s'\n", decorString.c_str());

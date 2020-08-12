@@ -8,7 +8,7 @@
 #include "Actors/Actor.h"
 #include "Graphics/Texture.h"
 #include "Animations/Animator.h"
-#include "Game/Camera.h"
+#include "Game/Camera/Camera.h"
 
 
 SmashAbility::SmashAbility(Texture* hammerTexture, VectorF hammerSize) 

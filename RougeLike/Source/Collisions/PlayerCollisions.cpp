@@ -38,8 +38,8 @@ void PlayerCollisions::resolveWalls(Map* map, float dt)
 
 void PlayerCollisions::resolveTraps(Map* map, EffectPool* effects)
 {
-	map->traps().triggerTrap(mPlayer->position());
-	resolveTrapCollisions(map, effects);
+	//map->traps().triggerTrap(mPlayer->position());
+	//resolveTrapCollisions(map, effects);
 }
 
 void PlayerCollisions::resolveWeapons(EffectPool* effects)
@@ -91,6 +91,8 @@ void PlayerCollisions::addCollidersToTrackers()
 {
 	std::vector<Collider*> playerCollider{ mPlayer->collider() };
 	cManager->addDefenders(CollisionManager::Enemy_Hit_Player, playerCollider);
+	cManager->addDefenders(CollisionManager::Trap_Hit_Player, playerCollider);
+	cManager->addAttackers(CollisionManager::Player_Trigger_Trap, playerCollider);
 	cManager->addAttackers(CollisionManager::Player_Hit_Collectable, playerCollider);
 	cManager->addAttackers(CollisionManager::Player_Hit_Enemy, playerCollider);
 }
@@ -98,16 +100,16 @@ void PlayerCollisions::addCollidersToTrackers()
 
 void PlayerCollisions::resolveTrapCollisions(Map* map, EffectPool* effects)
 {
-	if (map->traps().didCollide(mPlayer->position()))
-	{
-		Damage trapDamage = map->traps().damage();
+	//if (map->traps().didCollide(mPlayer->position()))
+	//{
+	//	Damage trapDamage = map->traps().damage();
 
-		FloatMap valueMap;
-		valueMap["Damage"] = trapDamage.value();
-		PropertyBag properties(valueMap);
+	//	// TODO: FIX
+	//	PropertyMap properties;
+	//	properties[PropertyType::Damage] = trapDamage.value();
 
-		Effect* effect = effects->getObject(EffectType::Damage);
-		effect->fill(properties);
-		mPlayer->addEffect(effect);
-	}
+	//	Effect* effect = effects->getObject(EffectType::Damage);
+	//	effect->fill(properties);
+	//	mPlayer->addEffect(effect);
+	//}
 }

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CharacterSelectionScreen.h"
 
-#include "Game/GameData.h"
+#include "Game/Data/GameData.h"
 #include "UI/UIManager.h"
 #include  "Graphics/TextureManager.h"
 

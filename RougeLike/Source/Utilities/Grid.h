@@ -1,8 +1,6 @@
 #pragma once
 
 #include "Utilities/Vector2D.h"
-using Index = Vector2D<int>;
-
 
 
 template<class T>

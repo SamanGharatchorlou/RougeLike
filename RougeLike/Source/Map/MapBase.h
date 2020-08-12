@@ -13,12 +13,13 @@ public:
 	MapBase(Vector2D<int> size, K value) : mData(size, value) { }
 	virtual ~MapBase() { }
 
-
 	K& operator [] (Index index) { return mData[index.y][index.x]; }
 	const K& get(Index index) const { return mData.get(index); }
 
 	const Grid<K>& getData() const { return mData; }
 	Grid<K>& getData() { return mData; }
+
+	void clear() { mData.clear(); }
 
 	unsigned int yCount() const { return mData.yCount(); }
 	unsigned int xCount() const { return mData.xCount(); }

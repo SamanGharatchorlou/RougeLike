@@ -3,9 +3,6 @@
 constexpr float pi = 3.14f;
 
 
-//std::vector<int> parseCSVtoInt(const BasicString& csv);
-
-
 template<typename T>
 T clamp(const T value, const T min, const T max)
 {
@@ -81,3 +78,7 @@ enum class Colour
 };
 
 SDL_Colour SDLColour(Colour colour);
+
+
+int toInt(const BasicString& string);
+float toFloat(const BasicString& string);

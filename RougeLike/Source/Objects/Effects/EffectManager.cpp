@@ -2,12 +2,13 @@
 #include "EffectManager.h"
 
 #include "Objects/Effects/EffectTypes/Effect.h"
-#include "Objects/Bags/EffectBag.h"
+#include "Utilities/Maps/EffectMap.h"
+#include "EffectPool.h"
 
 
 void EffectManager::fillEffectBag(XMLNode effectNode)
 {
-	mBag.readEffects(effectNode);
+	mBag.fill(effectNode);
 }
 
 
@@ -33,8 +34,7 @@ std::queue<Effect*> EffectManager::getAttackingEffects()
 {
 	std::queue<Effect*> effects;
 
-	std::unordered_map<EffectType, PropertyBag>::const_iterator iter;
-	for (iter = mBag.effects().begin(); iter != mBag.effects().end(); iter++)
+	for(EffectMap::iterator iter = mBag.begin(); iter != mBag.end(); iter++)
 	{
 		Effect* effect = mPool->getObject(iter->first);
 		effect->fill(iter->second);

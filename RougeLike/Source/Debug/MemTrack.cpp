@@ -1,4 +1,6 @@
 #include "pch.h"
+
+#if MEMORY_TRACKING
 /*
 Copyright (c) 2002, 2008 Curtis Bartley
 All rights reserved.
@@ -660,3 +662,4 @@ void printMemoryInfo()
 }
 /*END*/
 
+#endif

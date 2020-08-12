@@ -2,7 +2,6 @@
 
 #include "Screens/ScreenTypes.h"
 
-
 class ScreenReader
 {
 public:

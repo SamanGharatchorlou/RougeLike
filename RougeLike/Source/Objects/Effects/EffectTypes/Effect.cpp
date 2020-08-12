@@ -27,14 +27,14 @@ bool isValidFloor(const Map* map, VectorF point)
 
 
 
-void setProperty(PropertyType type, float& value, const PropertyBag& propertyBag)
+void setProperty(PropertyType type, float& value, const PropertyMap& PropertyMap)
 {
-	value = propertyBag.get(type);
+	value = PropertyMap.at(type);
 }
 
 
-void setProperty(PropertyType type, Attribute& value, const PropertyBag& propertyBag)
+void setProperty(PropertyType type, Attribute& value, const PropertyMap& PropertyMap)
 {
-	value.setValue(propertyBag.get(type));
+	value.setValue(PropertyMap.at(type));
 }
 

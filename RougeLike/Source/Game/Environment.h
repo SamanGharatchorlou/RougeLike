@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Events/Dispatcher.h"
-#include "LevelManager.h"
+#include "Map/LevelManager.h"
 #include "Actors/ActorManager.h"
 #include "Objects/Effects/EffectPool.h"
 #include "Items/Collectables/Collectables.h"
@@ -34,9 +34,10 @@ public:
 	void renderTopLayer();
 
 	Map* map(VectorF position) const { return mLevelManager.map(position); }
-	const Map* primaryMap() const { return mLevelManager.primaryMap(); }
+	Map* map(MapType type) const { return mLevelManager.map(type); }
+	//const Map* primaryMap() const { return mLevelManager.primaryMap(); }
 
-	VectorF size() const { return mLevelManager.size(); }
+	//VectorF size() const { return mLevelManager.size(); }
 	int mapLevel() const { return mLevelManager.level(); }
 
 	void setCameraBoundaries();

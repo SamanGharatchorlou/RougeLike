@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Map/MapTile.h"
+#include "Map/Tiles/MapTile.h"
 #include "Map/MapBase.h"
 
 class Map;

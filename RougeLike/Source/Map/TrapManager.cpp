@@ -2,97 +2,93 @@
 #include "TrapManager.h"
 
 #include "Map.h"
+#include "Traps/Trap.h"
+
+#include "Collisions/CollisionManager.h"
 
 
-void TrapManager::set(Damage damage, float triggerTime, float recoveryTime)
+void TrapManager::addTraps(Map* map, const DecorMap& info)
 {
-	mDamage = damage;
-	mTriggerTime = triggerTime;
-	mRecoveryTime = recoveryTime;
+	for (int y = 0; y < map->yCount(); y++)
+	{
+		for (int x = 0; x < map->xCount(); x++)
+		{
+			Index index(x, y);
+			MapTile* tile = map->tile(index);
+
+			if (tile->has(DecorType::Spikes))
+			{
+				SpikeTrap* trap = new SpikeTrap(tile);
+				trap->fillData(info);
+				mTraps.push_back(trap);
+
+				mCollisions->addDefender(CollisionManager::Player_Trigger_Trap, trap->collider());
+			}
+
+			//if (tile->has(DecorType::Grating))
+			//{
+			//	FireGratingTrap* trap = new FireGratingTrap(tile);
+			//	trap->fillData(info);
+			//	mTraps.push_back(trap);
+
+			//	mCollisions->addDefender(CollisionManager::Player_Trigger_Trap, trap->collider());
+			//}
+		}
+	}
 }
 
-void TrapManager::flushQueues()
-{
-	mUntriggeredTraps.clear();
-	mTriggeredTraps.clear();
-}
 
 void TrapManager::slowUpdate()
 {
-	updateTriggerTraps();
-	updateResetTraps();
+	setTraps();
+	triggerTraps();
+	resetTraps();
 }
 
-void TrapManager::triggerTrap(VectorF position)
+
+void TrapManager::setTraps()
 {
-	Index index = mMap->index(position);
-	MapTile* tile = mMap->tile(index);
-
-	// Add untriggered trap
-	if (tile->has(DecorType::Spikes))
+	for (std::vector<Trap*>::iterator iter = mTraps.begin(); iter != mTraps.end(); iter++)
 	{
-		Animator& animator = tile->animation(0);
-
-		if (animator.animation().currentFrame() == 0)
+		Trap* trap = *iter;
+		if (trap->gotHit())
 		{
-			Trap trap(index);
-			mUntriggeredTraps.push(trap);
+			mCollisions->removeDefender(CollisionManager::Player_Trigger_Trap, trap->collider());
+			trap->set();
+			trap->init(mEffects);
+			break;
 		}
 	}
 }
 
 
-bool TrapManager::didCollide(VectorF position)
+void TrapManager::triggerTraps()
 {
-	Index index = mMap->index(position);
-
-	for (std::deque<Trap>::iterator iter = mTriggeredTraps.begin(); iter != mTriggeredTraps.end(); iter++)
+	for (std::vector<Trap*>::iterator iter = mTraps.begin(); iter != mTraps.end(); iter++)
 	{
-		Trap& trap = *iter;
-		if (trap.is(index) && !trap.isExhausted())
+		Trap* trap = *iter;
+		if (trap->canTrigger())
 		{
-			trap.exhaust();
-			return true;
-		}
-	}
-
-	return false;
-}
-
-
-void TrapManager::updateTriggerTraps()
-{
-	if (mUntriggeredTraps.size() > 0 && mUntriggeredTraps.front().time() > mTriggerTime)
-	{
-		Index trapIndex = mUntriggeredTraps.front().index();
-		MapTile* tile = mMap->tile(trapIndex);
-		Animator& animator = tile->animation(0);
-
-		// TODO: this is being triggered everyframe, make it only once
-		if (animator.animation().currentFrame() == 0)
-		{
-			animator.getAnimation(0).nextFrame();
-
-			Trap& trap = mUntriggeredTraps.popFront();
-			trap.reset();
-
-			mTriggeredTraps.push_back(trap);
+			trap->trigger();
+			mCollisions->addAttacker(CollisionManager::Trap_Hit_Player, trap->collider());
+			break;
 		}
 	}
 }
 
-void TrapManager::updateResetTraps()
-{
-	if (mTriggeredTraps.size() > 0 && mTriggeredTraps.front().time() > mRecoveryTime)
-	{
-		Index trapIndex = mTriggeredTraps.front().index();
-		MapTile* tile = mMap->tile(trapIndex);
-		Animator& animator = tile->animation(0);
 
-		if (animator.animation().currentFrame() == 1)
+void TrapManager::resetTraps()
+{
+	for (std::vector<Trap*>::iterator iter = mTraps.begin(); iter != mTraps.end(); iter++)
+	{
+		Trap* trap = *iter;
+		if (trap->canReset())
 		{
-			animator.getAnimation(0).nextFrame();
-			mTriggeredTraps.pop_front();
+			trap->reset();
+
+			mCollisions->removeAttacker(CollisionManager::Trap_Hit_Player, trap->collider());
+			mCollisions->addDefender(CollisionManager::Player_Trigger_Trap, trap->collider());
+			break;
 		}
 	}
 }

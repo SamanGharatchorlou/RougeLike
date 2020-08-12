@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Objects/Abilities/Cooldown.h"
-#include "Objects/Bags/EffectBag.h"
+#include "Utilities/Maps/EffectMap.h"
 
 class Texture;
 
@@ -11,7 +11,7 @@ struct WeaponRawData
 	Texture* texture = nullptr;
 	StringMap properties;
 	StringMap audio;
-	EffectBag effects;
+	EffectMap effects;
 };
 
 
@@ -37,12 +37,12 @@ public:
 	VectorF offset;
 
 	StringMap audio;
-	EffectBag effects;
+	EffectMap effects;
 
 
 private:	
 	virtual void fillProperties(const StringMap& properties) = 0;
-	void fillEffects(EffectBag effectBag) { effects = effectBag; }
+	void fillEffects(EffectMap EffectMap) { effects = EffectMap; }
 	void fillAudio(StringMap audioData) { audio = audioData; }
 
 };

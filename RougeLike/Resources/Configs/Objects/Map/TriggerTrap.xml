@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Decor>
+	<Animator>
+		<ID>TriggerTrap</ID>
+		<FrameTime>0.25</FrameTime>
+		<FrameSize x = "256" y ="256"></FrameSize>
+		<Animations>
+			<Active>2</Active>
+		</Animations>
+	</Animator>
+</Decor>

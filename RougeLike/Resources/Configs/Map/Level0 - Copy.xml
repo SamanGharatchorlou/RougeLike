@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Level>
+	<Primary>
+		<TileCount x = "35" y = "25"></TileCount>
+
+		<Decor>
+			<Column spacing="3"></Column>
+			<Spikes rate="10"></Spikes>
+			<Water width="3" height="2" spacing="10"></Water>
+			<Torch type = "TorchBowl" spacing ="1"></Torch>
+		</Decor>
+
+		<Traps>
+			<Spikes damage = "10" triggerTime="0.15" recoveryTime="0.5"></Spikes>
+		</Traps>
+	</Primary>
+
+	<Exit>
+		<TileCount x = "15" y = "25"></TileCount>
+
+		<Decor>
+			<Torch type = "TorchBowl" spacing ="2"></Torch>
+			<Spikes rate="100"></Spikes>
+		</Decor>
+
+		<Traps>
+			<Spikes damage = "10" triggerTime="0.4" recoveryTime="1.0"></Spikes>
+		</Traps>
+	</Exit>
+
+	<Collectables>
+			<Ability xPosition="10" id="Heal"></Ability>
+	</Collectables>
+
+	<Enemies>
+		<Shape type="Devil" xPosition="30" shape="Circle" points="7"></Shape>
+		<Patrol type="Devil" xIncrement="20"></Patrol>
+	</Enemies>
+</Level>

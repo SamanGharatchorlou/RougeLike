@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Player.h"
 
-#include "Game/Camera.h"
+#include "Game/Camera/Camera.h"
 #include "Audio/AudioManager.h"
 
 #include "Map/Map.h"
@@ -133,8 +133,9 @@ void Player::processHit()
 		EffectCollider* effectCollider = static_cast<EffectCollider*>(mCollider.getOtherCollider());
 		handleEffects(effectCollider);
 
-		TraumaEvent* trauma = new TraumaEvent(40);
-		mEvents.push(EventPacket(trauma));
+		//printf("hit\n");
+		//TraumaEvent* trauma = new TraumaEvent(40);
+		//mEvents.push(EventPacket(trauma));
 	}
 
 	updateUI();

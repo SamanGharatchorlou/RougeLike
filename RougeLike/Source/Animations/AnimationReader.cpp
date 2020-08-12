@@ -9,13 +9,17 @@ Animator AnimationReader::buildAnimator(XMLNode animationNode, const TextureMana
 {
 	Animator animator;
 
-	BasicString id = animationNode.child("ID").getString();
+	BasicString id = animationNode.child("ID").value();
 
-	float frameTime = animationNode.child("FrameTime").getFloat();
+	float frameTime = toFloat(animationNode.child("FrameTime").value());
 	animator.setFrameTime(frameTime);
 
 	XMLNode frameSizeNode = animationNode.child("FrameSize");
-	Vector2D<int> frameSize = getXYAttributes(frameSizeNode);
+
+	StringMap attributes = animationNode.child("FrameSize").attributes();
+	int x = attributes.getInt("x");
+	int y = attributes.getInt("y");
+	Vector2D<int> frameSize(x, y);
 
 	XMLNode animations = animationNode.child("Animations");
 	XMLNode node = animations.child();
@@ -25,7 +29,7 @@ Animator AnimationReader::buildAnimator(XMLNode animationNode, const TextureMana
 		BasicString fileName = id + "_" + node.name();
 		Texture* texture = textures->getTexture(fileName, FileManager::Image_Animations);
 
-		int frames = node.getInt();
+		int frames = toInt(node.value());
 
 		Action action = stringToAction(node.name());
 

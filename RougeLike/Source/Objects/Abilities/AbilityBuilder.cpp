@@ -3,7 +3,6 @@
 
 #include "Graphics/TextureManager.h"
 #include "Animations/AnimationReader.h"
-#include "Objects/Bags/PropertyBag.h"
 
 // Abilities
 #include "Objects/Abilities/AbilityTypes/SlowAbility.h"
@@ -40,7 +39,7 @@ void AbilityBuilder::initAnimations(Ability* ability, const XMLNode animationNod
 
 void AbilityBuilder::setValues(Ability* ability, const XMLNode propertiesNode)
 {
-	PropertyBag properties(propertiesNode);
+	PropertyMap properties(propertiesNode);
 
 	if (properties.isEmpty())
 		DebugPrint(Log, "Ability '%s' has no property values\n", ability->name().c_str());

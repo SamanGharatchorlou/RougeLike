@@ -2,9 +2,9 @@
 #include "StatManager.h"
 
 
-//void StatManager::init(PropertyBag* propertyBag)
+//void StatManager::init(PropertyMap* PropertyMap)
 //{
-//	bag = propertyBag;
+//	bag = PropertyMap;
 //}
 //
 //

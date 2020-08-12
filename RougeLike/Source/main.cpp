@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Managers/GameController.h"
+#include "Game/GameController.h"
 
 
 int main(int argc, char* args[])

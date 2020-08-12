@@ -201,3 +201,4 @@ public:
 
 // typedefs
 typedef Vector2D<float>  VectorF;
+using Index = Vector2D<int>;

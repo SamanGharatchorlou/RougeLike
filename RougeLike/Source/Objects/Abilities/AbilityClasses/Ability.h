@@ -7,7 +7,7 @@
 
 
 class Actor;
-class PropertyBag;
+class PropertyMap;
 
 
 class Ability
@@ -16,11 +16,11 @@ public:
 	Ability() : mState(AbilityState::None), mCaster(nullptr), mMaxDimention(0.0f) { }
 	virtual ~Ability() { }
 
-	virtual void fillBaseValues(const PropertyBag& properties);
+	virtual void fillBaseValues(const PropertyMap& properties);
 	virtual void init(Animator animator, Actor* caster);
 	void setAnimations(Animator animator);
 
-	virtual void fillValues(const PropertyBag& properties) { }; // TODO:  = 0;
+	virtual void fillValues(const PropertyMap& properties) { }; // TODO:  = 0;
 	virtual void fastUpdate(float dt) = 0;
 	virtual void slowUpdate(float dt) = 0;
 	virtual void render() = 0;

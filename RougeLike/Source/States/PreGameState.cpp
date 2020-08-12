@@ -1,16 +1,17 @@
 #include "pch.h"
 #include "PreGameState.h"
 
+#include "Game/Data/GameData.h"
 #include "GameState.h"
 
-#include "Managers/GameController.h"
+#include "Game/GameController.h"
 
 #include "Input/InputManager.h"
 #include "UI/UIManager.h"
 #include "Graphics/TextureManager.h"
 #include "UI/Screens/CharacterselectionScreen.h"
 
-#include "Map/Environment.h"
+#include "Game/Environment.h"
 #include "Actors/ActorManager.h"
 #include "Actors/Player/PlayerManager.h"
 

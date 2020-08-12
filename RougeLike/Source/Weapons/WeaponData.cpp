@@ -15,10 +15,7 @@ created yet so cannot call its derived members version of the function.
 */
 void WeaponData::fillData(const WeaponRawData& data)
 {
-	StringMap properties;
-	properties.set(data.properties);
-	fillProperties(properties);
-
+	fillProperties(data.properties);
 	fillEffects(data.effects);
 	fillAudio(data.audio);
 

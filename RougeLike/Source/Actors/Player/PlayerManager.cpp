@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "PlayerManager.h"
 
-#include "Game/Camera.h"
-#include "Game/GameData.h"
-#include "Map/Environment.h"
+#include "Game/Camera/Camera.h"
+#include "Game/Data/GameData.h"
+#include "Game/Environment.h"
 #include "Input/InputManager.h"
 #include "UI/UIManager.h"
 
@@ -33,7 +33,6 @@ void PlayerManager::addAbility(const BasicString& ability)
 
 void PlayerManager::setPosition(VectorF position)
 {
-	VectorF playerPosition = VectorF(Camera::Get()->rect().Center().x, mEnvironment->size().y / 2.0f);
 	mPlayer.rectRef().SetLeftCenter(position);
 }
 
@@ -110,9 +109,9 @@ void PlayerManager::selectCharacter(const BasicString& characterConfig, const Te
 	XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Player, characterConfig));
 	mPlayer.setCharacter(parser.rootNode(), textureManager);
 
-	EffectBag bag;
+	EffectMap bag;
 	XMLNode effects = parser.rootChild("Effects");
-	bag.readEffects(effects);
+	bag.fill(effects);
 
 	BasicString weapontype = parser.rootChild("WeaponType").value();
 	mPlayer.setWeaponType(mWeaponStash.getWeapon(weapontype));

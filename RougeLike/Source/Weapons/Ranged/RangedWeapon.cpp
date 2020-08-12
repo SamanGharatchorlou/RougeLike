@@ -4,8 +4,8 @@
 #include "Projectile.h"
 #include "Weapons/WeaponData.h"
 
-#include "Game/GameData.h"
-#include "Game/Camera.h"
+#include "Game/Data/GameData.h"
+#include "Game/Camera/Camera.h"
 #include "Graphics/Texture.h"
 
 #include "Collisions/DamageCollider.h"

@@ -6,11 +6,11 @@
 #include "Graphics/TextureManager.h"
 #include "Objects/Effects/EffectPool.h"
 
-#include "Game/Camera.h"
+#include "Game/Camera/Camera.h"
 #include "Animations/AnimationReader.h"
 
 #include "Map/Map.h"
-#include "Map/Environment.h"
+#include "Game/Environment.h"
 
 #include "Objects/Effects/EffectTypes/Effect.h"
 
@@ -20,7 +20,7 @@ Actor::Actor() : mVisibility(true) { }
 
 void Actor::setCharacter(const XMLNode actorNode, const TextureManager* textures)
 {
-	mAttributeBag.readData(actorNode.child("Properties"));
+	mAttributeBag.fill(actorNode.child("Properties"));
 	mEffects.fillEffectBag(actorNode.child("Effects"));
 
 	// Animations
@@ -30,13 +30,16 @@ void Actor::setCharacter(const XMLNode actorNode, const TextureManager* textures
 
 	// Physics 
 	VectorF baseSize = mAnimator.frameSize();
-	float maxDimention = actorNode.child("MaxSize").getFloat(); // added new calculations to animator, can i remove the realise size bit and just set the rect to (maxDim, maxDim). it should auto size.
+	float maxDimention = toFloat(actorNode.child("MaxSize").value()); // added new calculations to animator, can i remove the realise size bit and just set the rect to (maxDim, maxDim). it should auto size.
 	VectorF size = realiseSize(baseSize, maxDimention);
 	mPhysics.rectRef().SetSize(size);
 	updatePhysicsStats();
 
 	// Collider
-	VectorF colliderScale = getXYAttributes(actorNode.child("ColliderScale"));
+	StringMap attributes = actorNode.child("ColliderScale").attributes();
+	float x = attributes.getFloat("x");
+	float y = attributes.getFloat("y");
+	VectorF colliderScale(x, y);
 	mCollider.init(&mPhysics.rectRef(), colliderScale);
 }
 
@@ -104,7 +107,7 @@ float Actor::getAttributeValue(AttributeType type) const
 
 Attribute* Actor::getAttribute(AttributeType type) const
 {
-	return mAttributeBag.get(type);
+	return mAttributeBag.at(type);
 }
 
 
@@ -125,6 +128,7 @@ void Actor::handleEffects(EffectCollider* effectCollider)
 	while (effectCollider->hasEffects())
 	{
 		addEffect(effectCollider->popEffect());
+		printf("take damage\n");
 	}
 }
 

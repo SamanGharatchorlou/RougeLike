@@ -1,16 +1,14 @@
 #include "pch.h"
 #include "DecorTilePopulator.h"
 
-#include "Animations/AnimationReader.h"
-//#include "Animations/Animator.h"
+#include "Map/Tiles/MapTile.h"
 
 
-void DecorTilePopulator::populate(Grid<MapTile>& data)
+void DecorTilePopulator::fillDecorInfo(Grid<MapTile>& data)
 {
 	addWater(data);
 	addColumns(data);
-
-	addAnimations(data);
+	addGrating(data);
 }
 
 
@@ -118,50 +116,20 @@ void DecorTilePopulator::addColumns(Grid<MapTile>& data)
 	}
 }
 
-void DecorTilePopulator::addAnimations(Grid<MapTile>& data)
+
+
+void DecorTilePopulator::addGrating(Grid<MapTile>& data)
 {
-	XMLParser tourchHandleParser(FileManager::Get()->findFile(FileManager::Configs_Objects, "TorchHandle"));
-	XMLParser tourchBowlParser(FileManager::Get()->findFile(FileManager::Configs_Objects, "TorchBowl"));
-	XMLParser spikeParser(FileManager::Get()->findFile(FileManager::Configs_Objects, "SpikeTrap"));
-
-	for (int x = 0; x < data.xCount(); x++)
+	for (int y = 0; y < data.yCount(); y++)
 	{
-		for (int y = 0; y < data.yCount(); y++)
+		for (int x = 0; x < data.xCount(); x++)
 		{
-			MapTile& tile = data[Index(x, y)];
+			Index index(x, y);
 
-
-			if (tile.has(DecorType::Torch_Handle))
+			if (data[index].has(DecorType::Grating) && data[index].is(CollisionTile::Floor))
 			{
-				Animator animator = buildAnimation(tourchHandleParser);
-				tile.addAnimation(animator);
-			}
-
-			if (tile.has(DecorType::Torch_Bowl))
-			{
-				Animator animator = buildAnimation(tourchBowlParser);
-				tile.addAnimation(animator);
-			}
-
-			if (tile.has(DecorType::Spikes))
-			{
-				Animator animator = buildAnimation(spikeParser);
-				tile.addAnimation(animator);
-				tile.animation(0).pause();
+				data[index].set(RenderTile::Floor_Grating);
 			}
 		}
 	}
 }
-
-
-
-
-Animator DecorTilePopulator::buildAnimation(const XMLParser& parser)
-{
-	AnimationReader reader;
-	XMLNode node = parser.rootChild("Animator");
-
-	return reader.buildAnimator(node, mTextures);
-}
-
-

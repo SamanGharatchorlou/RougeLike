@@ -2,12 +2,12 @@
 #include "PauseState.h"
 #include "GameState.h"
 
-#include "Managers/GameController.h"
+#include "Game/GameController.h"
 #include "Graphics/TextureManager.h"
 #include "Input/InputManager.h"
 #include "Graphics/RenderManager.h"
 
-#include "Game/Cursor.h"
+#include "Input/Cursor.h"
 
 #include "UI/UIManager.h"
 #include "UI/Screens/PauseScreen.h"

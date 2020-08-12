@@ -13,17 +13,12 @@
     <ClCompile Include="Source\Graphics\TileSet.cpp" />
     <ClCompile Include="Source\Graphics\RenderManager.cpp" />
     <ClCompile Include="Source\Collisions\Collider.cpp" />
-    <ClCompile Include="Source\Game\Camera.cpp" />
-    <ClCompile Include="Source\Game\Cursor.cpp" />
     <ClCompile Include="Source\pch.cpp" />
     <ClCompile Include="Source\UI\UIManager.cpp" />
     <ClCompile Include="Source\System\Window.cpp" />
     <ClCompile Include="Source\Map\Map.cpp" />
     <ClCompile Include="Source\System\Files\FileManager.cpp" />
     <ClCompile Include="Source\System\Files\XMLParser.cpp" />
-    <ClCompile Include="Source\Managers\GameController.cpp" />
-    <ClCompile Include="Source\Managers\GameController.cpp" />
-    <ClCompile Include="Source\Map\MapTile.cpp" />
     <ClCompile Include="Source\AI\AIPathing.cpp" />
     <ClCompile Include="Source\System\Files\StatReader.cpp" />
     <ClCompile Include="Source\Managers\ScoreManager.cpp" />
@@ -37,7 +32,6 @@
     <ClCompile Include="Source\UI\Screens\PauseScreen.cpp" />
     <ClCompile Include="Source\UI\Screens\Screen.cpp" />
     <ClCompile Include="Source\Collisions\CollisionTracker.cpp" />
-    <ClCompile Include="Source\Game\GameData.cpp" />
     <ClCompile Include="Source\Debug\Logging.cpp" />
     <ClCompile Include="Source\Utilities\Helpers.cpp" />
     <ClCompile Include="Source\Items\Collectables\Collectable.cpp" />
@@ -49,7 +43,6 @@
     <ClCompile Include="Source\Weapons\Melee\MeleeWeapon.cpp" />
     <ClCompile Include="Source\Weapons\Ranged\RangedWeapon.cpp" />
     <ClCompile Include="Source\Weapons\Ranged\Projectile.cpp" />
-    <ClCompile Include="Source\Game\CameraShake.cpp" />
     <ClCompile Include="Source\Weapons\Ranged\Quiver.cpp" />
     <ClCompile Include="Source\Utilities\Buffer.cpp" />
     <ClCompile Include="Source\Text\Font.cpp" />
@@ -57,7 +50,6 @@
     <ClCompile Include="Source\UI\Screens\CharacterSelectionScreen.cpp" />
     <ClCompile Include="Source\States\PreGameState.cpp" />
     <ClCompile Include="Source\AI\AIPathMap.cpp" />
-    <ClCompile Include="Source\Map\Environment.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Shape.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Square.cpp" />
     <ClCompile Include="Source\Audio\SoundController.cpp" />
@@ -69,8 +61,6 @@
     <ClCompile Include="Source\Collisions\WallCollisionTracker.cpp" />
     <ClCompile Include="Source\UI\Elements\UISlider.cpp" />
     <ClCompile Include="Source\Animations\AnimationReader.cpp" />
-    <ClCompile Include="Source\Game\LoadingManager.cpp" />
-    <ClCompile Include="Source\Game\LoadingBar.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHotKeys.cpp" />
     <ClCompile Include="Source\Collisions\EffectCollider.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectPool.cpp" />
@@ -83,7 +73,6 @@
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\ChargeAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\BlinkAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\ArmorAbility.cpp" />
-    <ClCompile Include="Source\Map\MapDebugging.cpp" />
     <ClCompile Include="Source\Map\TrapManager.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\BlinkEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\DamageEffect.cpp" />
@@ -94,7 +83,6 @@
     <ClCompile Include="Source\Map\MapBuilding\DecorTilePopulator.cpp" />
     <ClCompile Include="Source\Map\MapBuilding\MapGenerator.cpp" />
     <ClCompile Include="Source\Map\MapBuilding\RenderTilePopulator.cpp" />
-    <ClCompile Include="Source\Map\MapBuilding\MapTileDecoder.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyAlert.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyAttack.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyDead.cpp" />
@@ -114,7 +102,6 @@
     <ClCompile Include="Source\Actors\ActorManager.cpp" />
     <ClCompile Include="Source\Actors\Physics.cpp" />
     <ClCompile Include="Source\Map\LevelManager.cpp" />
-    <ClCompile Include="Source\Map\TileTypes.cpp" />
     <ClCompile Include="Source\Map\MapBuilding\MapDecorator.cpp" />
     <ClCompile Include="Source\Actors\Player\PlayerManager.cpp" />
     <ClCompile Include="Source\Collisions\EnemyCollisions.cpp" />
@@ -146,14 +133,29 @@
     <ClCompile Include="Source\Weapons\WeaponData.cpp" />
     <ClCompile Include="Source\Objects\Properties\StatManager.cpp" />
     <ClCompile Include="Source\Objects\Properties\Attributes\Level.cpp" />
-    <ClCompile Include="Source\Objects\Bags\AttributeBag.cpp" />
     <ClCompile Include="Source\Objects\Properties\Property.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyDebugger.cpp" />
-    <ClCompile Include="Source\Utilities\DataMap.cpp" />
-    <ClCompile Include="Source\Objects\Bags\DataBag.cpp" />
-    <ClCompile Include="Source\Objects\Bags\ValueBag.cpp" />
-    <ClCompile Include="Source\Objects\Bags\PropertyBag.cpp" />
-    <ClCompile Include="Source\Objects\Bags\EffectBag.cpp" />
+    <ClCompile Include="Source\Map\MapBuilding\MapBuilder.cpp" />
+    <ClCompile Include="Source\Utilities\Maps\StringMap.cpp" />
+    <ClCompile Include="Source\Utilities\Maps\AttributeMap.cpp" />
+    <ClCompile Include="Source\Utilities\Maps\EffectMap.cpp" />
+    <ClCompile Include="Source\Utilities\Maps\PropertyMap.cpp" />
+    <ClCompile Include="Source\Debug\MapDebugging.cpp" />
+    <ClCompile Include="Source\Map\Tiles\MapTile.cpp" />
+    <ClCompile Include="Source\Map\Tiles\TileTypes.cpp" />
+    <ClCompile Include="Source\Game\Environment.cpp" />
+    <ClCompile Include="Source\Game\GameController.cpp" />
+    <ClCompile Include="Source\Game\Camera\Camera.cpp" />
+    <ClCompile Include="Source\Game\Camera\CameraShake.cpp" />
+    <ClCompile Include="Source\Input\Cursor.cpp" />
+    <ClCompile Include="Source\Game\Data\LoadingBar.cpp" />
+    <ClCompile Include="Source\Game\Data\LoadingManager.cpp" />
+    <ClCompile Include="Source\Game\Data\GameData.cpp" />
+    <ClCompile Include="Source\Map\MapBuilding\AnimationTilePopulator.cpp" />
+    <ClCompile Include="Source\Map\MapBuilding\MapPopulator.cpp" />
+    <ClCompile Include="Source\Map\MapBuilding\MapSpecifications.cpp" />
+    <ClCompile Include="Source\Utilities\Maps\DecorMap.cpp" />
+    <ClCompile Include="Source\Map\Traps\Trap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -170,8 +172,6 @@
     <ClInclude Include="Source\Graphics\TileSet.h" />
     <ClInclude Include="Source\Graphics\RenderManager.h" />
     <ClInclude Include="Source\Collisions\Collider.h" />
-    <ClInclude Include="Source\Game\Camera.h" />
-    <ClInclude Include="Source\Game\Cursor.h" />
     <ClInclude Include="Source\pch.h" />
     <ClInclude Include="Source\UI\UIManager.h" />
     <ClInclude Include="Source\System\Window.h" />
@@ -179,10 +179,6 @@
     <ClInclude Include="Source\System\Files\FileManager.h" />
     <ClInclude Include="Source\System\Files\XMLParser.h" />
     <ClInclude Include="Source\System\Files\Attributes.h" />
-    <ClInclude Include="Source\Managers\GameController.h" />
-    <ClInclude Include="Source\Managers\GameController.h" />
-    <ClInclude Include="Source\Game\GameData.h" />
-    <ClInclude Include="Source\Map\MapTile.h" />
     <ClInclude Include="Source\AI\AIPathing.h" />
     <ClInclude Include="Source\System\Files\StatReader.h" />
     <ClInclude Include="Source\Managers\ScoreManager.h" />
@@ -213,7 +209,6 @@
     <ClInclude Include="Source\Weapons\Melee\MeleeWeapon.h" />
     <ClInclude Include="Source\Weapons\Ranged\RangedWeapon.h" />
     <ClInclude Include="Source\Weapons\Ranged\Projectile.h" />
-    <ClInclude Include="Source\Game\CameraShake.h" />
     <ClInclude Include="Source\Events\Events.h" />
     <ClInclude Include="Source\Weapons\Ranged\Quiver.h" />
     <ClInclude Include="Source\Utilities\RingBuffer.h" />
@@ -225,7 +220,6 @@
     <ClInclude Include="Source\States\PreGameState.h" />
     <ClInclude Include="Source\AI\AIPathMap.h" />
     <ClInclude Include="Source\Map\MapBase.h" />
-    <ClInclude Include="Source\Map\Environment.h" />
     <ClInclude Include="Source\Utilities\Shapes\Shape.h" />
     <ClInclude Include="Source\Utilities\Shapes\Square.h" />
     <ClInclude Include="Source\Utilities\Shapes\Circle.h" />
@@ -239,8 +233,6 @@
     <ClInclude Include="Source\UI\Elements\UISlider.h" />
     <ClInclude Include="Source\Events\LocalDispatcher.h" />
     <ClInclude Include="Source\Animations\AnimationReader.h" />
-    <ClInclude Include="Source\Game\LoadingManager.h" />
-    <ClInclude Include="Source\Game\LoadingBar.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityHotKeys.h" />
     <ClInclude Include="Source\Collisions\EffectCollider.h" />
     <ClInclude Include="Source\Objects\Effects\EffectPool.h" />
@@ -254,9 +246,7 @@
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\BilnkAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\ArmorAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\Cooldown.h" />
-    <ClInclude Include="Source\Map\MapDebugging.h" />
     <ClInclude Include="Source\Utilities\UniqueQueue.h" />
-    <ClInclude Include="Source\Map\TileTypes.h" />
     <ClInclude Include="Source\Map\TrapManager.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\BlinkEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\DamageEffect.h" />
@@ -267,7 +257,6 @@
     <ClInclude Include="Source\Map\MapBuilding\DecorTilePopulator.h" />
     <ClInclude Include="Source\Map\MapBuilding\MapGenerator.h" />
     <ClInclude Include="Source\Map\MapBuilding\RenderTilePopulator.h" />
-    <ClInclude Include="Source\Map\MapBuilding\MapTileDecoder.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyAlert.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyAttack.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyDead.h" />
@@ -325,14 +314,30 @@
     <ClInclude Include="Source\Objects\Properties\Attributes\Health.h" />
     <ClInclude Include="Source\Objects\Properties\Attributes\Level.h" />
     <ClInclude Include="Source\Objects\Properties\Attributes\Attribute.h" />
-    <ClInclude Include="Source\Objects\Bags\AttributeBag.h" />
-    <ClInclude Include="Source\Objects\Bags\DataBag.h" />
     <ClInclude Include="Source\Objects\Properties\Property.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyDebugger.h" />
-    <ClInclude Include="Source\Utilities\DataMap.h" />
-    <ClInclude Include="Source\Objects\Bags\ValueBag.h" />
-    <ClInclude Include="Source\Objects\Bags\PropertyBag.h" />
-    <ClInclude Include="Source\Objects\Bags\EffectBag.h" />
+    <ClInclude Include="Source\Map\MapBuilding\MapBuilder.h" />
+    <ClInclude Include="Source\Utilities\Maps\StringMap.h" />
+    <ClInclude Include="Source\Utilities\Maps\AttributeMap.h" />
+    <ClInclude Include="Source\Utilities\Maps\DataMap.h" />
+    <ClInclude Include="Source\Utilities\Maps\EffectMap.h" />
+    <ClInclude Include="Source\Utilities\Maps\PropertyMap.h" />
+    <ClInclude Include="Source\Debug\MapDebugging.h" />
+    <ClInclude Include="Source\Map\Tiles\MapTile.h" />
+    <ClInclude Include="Source\Map\Tiles\TileTypes.h" />
+    <ClInclude Include="Source\Game\Environment.h" />
+    <ClInclude Include="Source\Game\GameController.h" />
+    <ClInclude Include="Source\Game\Camera\CameraShake.h" />
+    <ClInclude Include="Source\Game\Camera\Camera.h" />
+    <ClInclude Include="Source\Input\Cursor.h" />
+    <ClInclude Include="Source\Game\Data\LoadingBar.h" />
+    <ClInclude Include="Source\Game\Data\LoadingManager.h" />
+    <ClInclude Include="Source\Game\Data\GameData.h" />
+    <ClInclude Include="Source\Map\MapBuilding\AnimationTilePopulator.h" />
+    <ClInclude Include="Source\Map\MapBuilding\MapPopulator.h" />
+    <ClInclude Include="Source\Map\MapBuilding\MapSpecifications.h" />
+    <ClInclude Include="Source\Utilities\Maps\DecorMap.h" />
+    <ClInclude Include="Source\Map\Traps\Trap.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

@@ -42,8 +42,8 @@ LayerAttributes ScreenReader::readLayer(const XMLNode layerNode) const
 
 StringMap ScreenReader::readItemNode(const XMLNode itemNode) const
 {
-	StringMap itemAttributes = itemNode.nodeAttributes();
-	itemAttributes.add("type", itemNode.name());
+	StringMap itemAttributes = itemNode.attributes();
+	itemAttributes["type"] = itemNode.name();
 
 	if (isTextNode(itemNode))
 	{
@@ -61,13 +61,11 @@ StringMap ScreenReader::readtextNode(const XMLNode itemNode) const
 	XMLNode textNode = itemNode.child();
 	if (textNode)
 	{
-		textAttributes = textNode.nodeAttributes();
+		textAttributes = textNode.attributes();
 
 		// text to be displayed
 		BasicString text = textNode.value();
-		textAttributes.add("text", text);
-
-		textAttributes.merge(textAttributes);
+		textAttributes["text"] = text;
 	}
 
 	return textAttributes;

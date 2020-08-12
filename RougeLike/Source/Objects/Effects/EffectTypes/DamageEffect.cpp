@@ -33,7 +33,7 @@ void DamageEffect::init()
 }
 
 
-void DamageEffect::fill(const PropertyBag& valueBag)
+void DamageEffect::fill(const PropertyMap& valueBag)
 {
 	setProperty(PropertyType::Damage, mDamage, valueBag);
 }

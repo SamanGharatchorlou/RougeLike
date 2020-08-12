@@ -3,7 +3,7 @@
 
 #include "PauseState.h"
 
-#include "Managers/GameController.h"
+#include "Game/GameController.h"
 #include "Graphics/TextureManager.h"
 #include "Audio/AudioManager.h"
 #include "Graphics/RenderManager.h"
@@ -14,9 +14,9 @@
 
 #include "Objects/Effects/EffectPool.h"
 
-#include "Map/Environment.h"
-#include "Game/Cursor.h"
-#include "Game/Camera.h"
+#include "Game/Environment.h"
+#include "Input/Cursor.h"
+#include "Game/Camera/Camera.h"
 
 #include "Actors/ActorManager.h"
 #include "Actors/Player/Player.h"
@@ -24,6 +24,7 @@
 
 // temp
 #include "Items/Collectables/Collectable.h"
+#include "Map/Map.h"
 
 GameState::GameState(GameData* gameData, GameController* gameController) : 
 	mGameData(gameData)
@@ -38,7 +39,11 @@ void GameState::init()
 {
 	//mGameData->environment->init();
 
-	VectorF playerPosition = VectorF(Camera::Get()->rect().Center().x, mGameData->environment->size().y / 2.0f);
+	//VectorF playerPosition = VectorF(Camera::Get()->rect().Center().x, mGameData->environment->size().y / 2.0f);
+
+	Map* map = mGameData->environment->map(VectorF(0, 0));
+	VectorF playerPosition = map->randomFloorTile(50)->rect().Center();
+
 	mGameData->environment->actors()->player()->setPosition(playerPosition);
 
 	initCamera();
@@ -163,7 +168,7 @@ void GameState::initCamera()
 {
 	Camera* camera = Camera::Get();
 
-	VectorF cameraPosition = VectorF(0.0f, mGameData->environment->size().y / 2.0f);
+	VectorF cameraPosition = VectorF(0.0f, 0.0f);
 	camera->setPosition(cameraPosition);
 
 	// TODO: fix these values

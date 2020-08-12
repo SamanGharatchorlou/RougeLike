@@ -3,7 +3,7 @@
 
 #include "Actors/Enemies/Enemy.h"
 
-#include "Game/Camera.h"
+#include "Game/Camera/Camera.h"
 #include "Graphics/Texture.h"
 
 

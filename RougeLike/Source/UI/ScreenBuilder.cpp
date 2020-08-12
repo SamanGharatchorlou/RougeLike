@@ -93,7 +93,7 @@ ScreenLayer ScreenBuilder::buildLayer(const LayerAttributes& layerAttributes) co
 UIElement* ScreenBuilder::buildElement(const StringMap& attributes) const
 {
 	UIElement* element = nullptr;
-	BasicString type = attributes.getString("type");
+	BasicString type = attributes.at("type");
 
 	if (type == "Element")
 	{
@@ -199,12 +199,12 @@ Elements ScreenBuilder::setParents(ScreenLayers& layers, const ScreenAttributes&
 		{
 			if (attributes.contains("parent"))
 			{
-				BasicString parentId = attributes.getString("parent");
+				BasicString parentId = attributes.at("parent");
 				UIElement* parent = layers.find(parentId);
 
 				if (parent != nullptr)
 				{
-					BasicString elementId = attributes.getString("id");
+					BasicString elementId = attributes.at("id");
 					UIElement* element = layers.find(elementId);
 
 					element->setParernt(parent);
@@ -212,7 +212,7 @@ Elements ScreenBuilder::setParents(ScreenLayers& layers, const ScreenAttributes&
 				}
 				else
 				{
-					DebugPrint(Log, "No parent was found with label: %s\n", attributes.getString("parent").c_str());
+					DebugPrint(Log, "No parent was found with label: %s\n", attributes.at("parent").c_str());
 				}
 			}
 		}
@@ -233,13 +233,13 @@ ScreenBuilder::TexturePacket ScreenBuilder::getButtonTextures(const StringMap& a
 
 	if (attributes.contains("textureSelected"))
 	{
-		BasicString textureLabel = attributes.getString("textureSelected");
+		BasicString textureLabel = attributes.at("textureSelected");
 		textures.selected = mTextures->getTexture(textureLabel, FileManager::Image_UI);
 	}
 
 	if (attributes.contains("textureHovering"))
 	{
-		BasicString textureLabel = attributes.getString("textureHovering");
+		BasicString textureLabel = attributes.at("textureHovering");
 		textures.hovering = mTextures->getTexture(textureLabel, FileManager::Image_UI);
 	}
 
@@ -253,7 +253,7 @@ Texture* ScreenBuilder::getTexture(const StringMap& attributes) const
 
 	if (attributes.contains("texture"))
 	{
-		BasicString textureLabel = attributes.getString("texture");
+		BasicString textureLabel = attributes.at("texture");
 		texture = mTextures->getTexture(textureLabel, FileManager::Image_UI);
 	}
 

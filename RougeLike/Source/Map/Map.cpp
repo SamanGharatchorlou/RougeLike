@@ -1,47 +1,20 @@
 #include "pch.h"
 #include"Map/Map.h"
 
-#include "Game/Camera.h"
-#include "Graphics/Texture.h"
-#include "Graphics/TextureManager.h"
-
-#include "Map/MapBuilding/MapGenerator.h"
-
-#include "MapBuilding/MapTileDecoder.h"
+#include "Game/Camera/Camera.h"
 
 #if _DEBUG
 #include "Debug/DebugDraw.h"
-#include "MapDebugging.h"
+#include "Debug/MapDebugging.h"
 #endif
 
 
-Map::Map(Vector2D<int> mapIndexSize, VectorF tileSize) : 
-	MapBase(mapIndexSize), mTrapManager(this), mTileSize(tileSize) { }
+Map::Map(Vector2D<int> mapIndexSize) : MapBase(mapIndexSize), mType(MapType::None) { }
 
 
-void Map::populateData(TextureManager* tm, VectorF offset)
+void Map::setSize(Vector2D<int> size)
 {
-	populateTileRects(offset);
-
-	MapTileDecoder decoder(tm);
-	decoder.populateData(mData);
-}
-
-
-void Map::close(TextureManager* tm)
-{
-	// Carve out path
-	for (int y = 0; y < yCount(); y++)
-	{
-		for (int x = 0; x < 2; x++)
-		{
-			Index index(x, y);
-			mData[index].set(RenderTile::Wall);
-		}
-	}
-
-	MapTileDecoder decoder(tm);
-	decoder.populateData(mData);
+	mData.set(size, MapTile());
 }
 
 
@@ -56,7 +29,6 @@ void Map::slowUpdate(float dt)
 		}
 	}
 
-	mTrapManager.slowUpdate();
 }
 
 
@@ -110,17 +82,31 @@ void Map::renderUpperLayer()
 #if RENDER_SURFACE_TYPES
 	renderSurfaceTypes(mData);
 #endif
+	int a = 4;
+#if MAP_BOUNDARIES
+	renderMapBoundaries(this);
+#endif
 }
 
 
 void Map::clearData()
 {
 	mData = Grid<MapTile>(Vector2D<int>(xCount(), yCount()), MapTile());
-	mTrapManager.flushQueues();
 }
 
 
 // --- Getters --- //
+VectorF Map::tileSize() const
+{
+	return getFirstRect().Size();
+}
+
+Vector2D<float> Map::size() const 
+{ 
+	VectorF tileCount = VectorF(xCount(), yCount());
+	return tileCount * tileSize();
+};
+
 const Index Map::index(VectorF position) const
 {
 	VectorF mapTopLeft = mData.get(Index(0, 0)).rect().TopLeft();
@@ -161,6 +147,17 @@ const RectF Map::getLastRect() const
 	return  mData.get(Index(xCount() - 1, 0)).rect();
 }
 
+const RectF Map::getBottomLastRect() const
+{
+	return  mData.get(Index(xCount() - 1, yCount() - 1)).rect();
+}
+
+VectorF Map::midPoint() const
+{
+	int xMid = xCount() / 2;
+	int yMid = yCount() / 2;
+	return tile(Index(xMid, yMid))->rect().Center();
+}
 
 
 Vector2D<int> Map::yTileFloorRange(VectorF position) const
@@ -206,8 +203,8 @@ const MapTile* Map::randomFloorTile(int xPointPercentage) const
 			floorIndexes.push_back(index);
 	}
 
-	// -1 -> we dont want to include the 'hidden' floor under the parralax walls
-	int randomIndex = randomNumberBetween(0, floorIndexes.size() - 1);
+	// TODO: -1 -> we dont want to include the 'hidden' floor under the parralax walls?
+	int randomIndex = randomNumberBetween(0, floorIndexes.size());
 	Index index(floorIndexes[randomIndex]);
 	return tile(index);
 }
@@ -236,21 +233,7 @@ bool Map::isValidPosition(VectorF position) const
 }
 
 
-/// --- Private Function --- ///
-void Map::populateTileRects(VectorF offset)
-{
-	for (int y = 0; y < mData.yCount(); y++)
-	{
-		for (int x = 0; x < mData.xCount(); x++)
-		{
-			VectorF position = VectorF(x * mTileSize.x, y * mTileSize.y);
-			RectF rect(position + offset, mTileSize);
-			mData[y][x].setRect(rect);
-		}
-	}
-}
-
-
+// --- Private Function --- //
 void Map::renderFloor()
 {
 	Camera* camera = Camera::Get();
@@ -264,30 +247,10 @@ void Map::renderFloor()
 
 			if (camera->inView(tileRect))
 			{
-
-				RenderTile type = tile.renderType();
-
-				// Split each floor tile into 4
-				//if (tile.has(RenderTile::Floor) || type >= RenderTile::Water_Middle)
 				if(tile.has(CollisionTile::Floor | CollisionTile::Water))
 				{
 					tileRect = camera->toCameraCoords(tileRect);
-
-					//if (tile.hasRenderType(MapTile::Floor_Small))
-					//{
-					//	// Split tile into 4 pieces
-					//	VectorF size = tileRect.Size() / 2.0f;
-					//	tileRect.SetSize(size);
-
-					//	tile.render(tileRect);
-					//	tile.render(tileRect.Translate(VectorF(tileRect.Size().x, 0.0f)));
-					//	tile.render(tileRect.Translate(VectorF(tileRect.Size().x, tileRect.Size().x)));
-					//	tile.render(tileRect.Translate(VectorF(0.0f, tileRect.Size().x)));
-					//}
-					//else
-					{
-						tile.render(tileRect);
-					}
+					tile.render(tileRect);
 				}
 			}
 		}

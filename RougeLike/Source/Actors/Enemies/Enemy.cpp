@@ -5,7 +5,7 @@
 #include "Collisions/EffectCollider.h"
 #include "EnemyStates/EnemyStateHeaders.h"
 
-#include "Map/Environment.h"
+#include "Game/Environment.h"
 #include "AI/AIPathMap.h"
 
 // TEMP
@@ -83,9 +83,10 @@ void Enemy::renderCharacter()
 #endif
 }
 
+// TODO: remove this access?
 const Map* Enemy::getEnvironmentMap() const
 {
-	return mEnvironment->primaryMap();
+	return mEnvironment->map(MapType::Dungeon);
 }
 
 

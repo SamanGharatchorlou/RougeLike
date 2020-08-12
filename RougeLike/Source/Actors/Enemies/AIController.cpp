@@ -7,7 +7,7 @@
 #include "Map/Map.h"
 
 #if DRAW_AI_PATH_COSTMAP
-#include "Game/Camera.h"
+#include "Game/Camera/Camera.h"
 #include "UI/Elements/UITextBox.h"
 #endif
 

@@ -5,7 +5,7 @@
 #include "Collisions/EffectCollider.h"
 #include "Objects/Effects/EffectManager.h"
 #include "Events/LocalDispatcher.h"
-#include "Objects/Bags/AttributeBag.h"
+#include "Utilities/Maps/AttributeMap.h"
 
 class Map;
 class Environment;
@@ -65,7 +65,7 @@ protected:
 
 	EffectManager mEffects;
 
-	AttributeBag mAttributeBag;
+	AttributeMap mAttributeBag;
 
 	Physics mPhysics;
 	EffectCollider mCollider;

@@ -17,9 +17,7 @@ private:
 public:
 	explicit XMLNode(xmlNodePtr xmlNode) : node(xmlNode) { }
 
-	DataMap<BasicString> nodeAttributes() const;
-	DataMap<BasicString> stringMap() const;
-	DataMap<float> floatMap() const;
+	StringMap attributes() const;
 
 
 	XMLNode child() const { return XMLNode(node->first_node()); }
@@ -33,13 +31,7 @@ public:
 
 	bool isEmpty() const { return node == nullptr; }
 
-	float getFloat() const;
-	int getInt() const;
-	const BasicString getString() const { return BasicString(node->value()); }
 
 private:
 	xmlNodePtr node;
 };
-
-
-VectorF getXYAttributes(const XMLNode node);

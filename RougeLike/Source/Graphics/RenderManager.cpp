@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Graphics/RenderManager.h"
 
-#include "Map/Environment.h"
+#include "Game/Environment.h"
 #include "UI/UIManager.h"
 #include "Graphics/Texture.h"
 

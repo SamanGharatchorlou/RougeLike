@@ -89,12 +89,12 @@ WeaponData* WeaponStash::createNewData(const XMLNode weaponNode, const WeaponRaw
 WeaponRawData WeaponStash::getRawData(const XMLNode weaponNode, const TextureManager* textures) const
 {
 	WeaponRawData data;
-	data.properties = weaponNode.child("Properties").stringMap();
-	data.audio = weaponNode.child("Audio").stringMap();
+	data.properties = StringMap(weaponNode.child("Properties"));
+	data.audio = StringMap(weaponNode.child("Audio"));
 
-	EffectBag effectBag;
-	effectBag.readEffects(weaponNode.child("Effects"));
-	data.effects = effectBag;
+	EffectMap EffectMap;
+	EffectMap.fill(weaponNode.child("Effects"));
+	data.effects = EffectMap;
 
 	// Texture
 	BasicString weaponName = data.properties["Texture"];

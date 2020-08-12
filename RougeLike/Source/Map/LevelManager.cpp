@@ -1,230 +1,159 @@
 #include "pch.h"
 #include "LevelManager.h"
 
-#include "TileTypes.h"
+#include "Tiles/TileTypes.h"
 #include "Map.h"
-
-#include "MapBuilding/MapGenerator.h"
-#include "MapBuilding/MapDecorator.h"
-
-#include "Game/Camera.h"
+#include "Game/Camera/Camera.h"
 
 
-LevelManager::LevelManager(TextureManager* textureManger) : mTextureManager(textureManger), mLevel(0) { }
 
-LevelManager::~LevelManager()
+
+void LevelManager::addMap(MapType type)
 {
-	delete mMaps.entrance;
-	delete mMaps.primaryMap;
-	delete mMaps.exit;
+	VectorF offset;
+	if (mMaps.size() > 0)
+		offset = getOffset(mMaps.back());
+
+	Map* map = mBuilder.buildMap(type, offset);
+	mMaps.push(map);
+	mTrapManager.addTraps(map, mBuilder.specs(map));
 }
+
+void LevelManager::addNextMap()
+{
+	VectorF offset = getOffset(mMaps.back());
+	MapType type = nextMapType(mMaps.back()->type());
+
+	Map* map = mBuilder.buildMap(type, offset);
+	mMaps.push(map);
+	mTrapManager.addTraps(map, mBuilder.specs(map));
+}
+
+void LevelManager::popFront()
+{
+	Map* map = mMaps.popFront();
+	mBuilder.returnMap(map);
+}
+
 
 
 void LevelManager::load(const XMLParser& parser)
 {
-	createNewMaps();
-
-	XMLNode entranceNode = parser.rootChild("Entrance");
-	buildMap(entranceNode, mMaps.entrance, VectorF(0,0));
-
-	buildPrimanyAndExit(parser);
+	addMap(MapType::Corridor);
+	addMap(MapType::Dungeon);
 }
 
 
-void LevelManager::buildLevel(const XMLParser& parser)
+Map* LevelManager::map(MapType type) const
 {
-	swapEntranceExit();
-	buildPrimanyAndExit(parser);
-}
+	UniqueQueue<Map*>::const_iterator iter;
+	for (iter = mMaps.begin(); iter != mMaps.end(); iter++)
+	{
+		Map* map = *iter;
 
-void LevelManager::buildPrimanyAndExit(const XMLParser& parser)
-{
-	XMLNode primaryNode = parser.rootChild("Primary");
-	VectorF primaryOffset = getOffset(mMaps.entrance);
-	buildMap(primaryNode, mMaps.primaryMap, primaryOffset);
+		if (type == map->type())
+			return map;
+	}
 
-	XMLNode exitNode = parser.rootChild("Exit");
-	VectorF exitOffset = getOffset(mMaps.primaryMap);
-	buildMap(exitNode, mMaps.exit, exitOffset);
+	return nullptr;
 }
 
 
 void LevelManager::slowUpdate(float dt)
 {
-	mMaps.entrance->slowUpdate(dt);
-	mMaps.primaryMap->slowUpdate(dt);
-	mMaps.exit->slowUpdate(dt);
+	UniqueQueue<Map*>::iterator iter;
+	for (iter = mMaps.begin(); iter != mMaps.end(); iter++)
+	{
+		Map* map = *iter;
+		map->slowUpdate(dt);
+	}
+
+	mTrapManager.slowUpdate();
+
+
+	Camera* camera = Camera::Get();
+	if (mapCount() == 1)
+	{
+		addNextMap();
+		//setCameraBoundaries(camera);
+	}
+
+
+	VectorF cameraCenter = camera->rect().Center();
+	float cameraLeft = camera->rect().LeftPoint();
+
+	if (first()->midPoint().x < cameraCenter.x &&
+		first()->getLastRect().RightPoint() < cameraLeft)
+	{
+		//popFront();
+		//closeLevel();
+		//setCameraBoundaries(camera);
+	}
+
+}
+
+void LevelManager::closeLevel()
+{
+	Map* map = mMaps.front();
+	mBuilder.close(map);
 }
 
 
 void LevelManager::renderLowDepth()
 {
-	mMaps.entrance->renderFloor();
-	mMaps.primaryMap->renderFloor();
-	mMaps.exit->renderFloor();
-
-	mMaps.entrance->renderLowerLayer();
-	mMaps.primaryMap->renderLowerLayer();
-	mMaps.exit->renderLowerLayer();
+	UniqueQueue<Map*>::iterator iter;
+	for (iter = mMaps.begin(); iter != mMaps.end(); iter++)
+	{
+		Map* map = *iter;
+		map->renderFloor();
+		map->renderLowerLayer();
+	}
 }
 
 
 void LevelManager::renderHeighDepth()
 {
-	mMaps.entrance->renderUpperLayer();
-	mMaps.primaryMap->renderUpperLayer();
-	mMaps.exit->renderUpperLayer();
-}
-
-
-VectorF LevelManager::size() const
-{
-	return mMaps.primaryMap->size();
+	UniqueQueue<Map*>::iterator iter;
+	for (iter = mMaps.begin(); iter != mMaps.end(); iter++)
+	{
+		Map* map = *iter;
+		map->renderUpperLayer();
+	}
 }
 
 
 Map* LevelManager::map(VectorF position) const
 {
-	if (position.x < mMaps.primaryMap->getFirstRect().LeftPoint())
-		return mMaps.entrance;
-	else if (position.x < mMaps.primaryMap->getLastRect().RightPoint())
-		return mMaps.primaryMap;
-	else
-		return mMaps.exit;
+	UniqueQueue<Map*>::const_iterator iter;
+	for (iter = mMaps.begin(); iter != mMaps.end(); iter++)
+	{
+		Map* map = *iter;
+
+		if (map->isValidPosition(position))
+			return map;
+	}
 }
 
 
 // --- Private Functions --- //
-
-// Building
-void LevelManager::createNewMaps()
-{
-	Vector2D<int> primaryMapSize;
-	VectorF tileSize;
-	float scale = -1.0f;
-	readConfigData(primaryMapSize, tileSize, scale);
-
-	tileSize *= scale;
-
-	mMaps.primaryMap = new Map(primaryMapSize, tileSize);
-
-	Vector2D<int> corridorMapSize;
-	corridorMapSize.x = (int)((Camera::Get()->size().x / mMaps.primaryMap->tileSize().x) * 1.5f); // TODO: replace with config data
-	corridorMapSize.y = primaryMapSize.y;
-
-	mMaps.entrance = new Map(corridorMapSize, tileSize);
-	mMaps.exit = new Map(corridorMapSize, tileSize);
-}
-
-
-void LevelManager::buildMap(const XMLNode dataNode, Map* map, VectorF offset)
-{
-	map->clearData();
-
-	MapGenerator generator;
-	generator.buildDungeon(map->getData());
-
-	fillData(dataNode, map);
-	map->populateData(mTextureManager, offset);
-}
-
-
-void LevelManager::swapEntranceExit()
-{
-	Map* oldEntrace = mMaps.entrance;
-	mMaps.entrance = mMaps.exit;
-	mMaps.exit = oldEntrace;
-}
-
-
 VectorF LevelManager::getOffset(const Map* map) const
 {
 	return VectorF(map->getLastRect().RightPoint(), 0.0f);
 }
 
-// Reading data
-void LevelManager::readConfigData(Vector2D<int>& mapIndexSize, VectorF& tileSize, float& scale)
+
+MapType LevelManager::nextMapType(MapType type)
 {
-	XMLParser parser;
-	BasicString path = FileManager::Get()->findFile(FileManager::Config_Map, "Environment");
-	parser.parseXML(path);
-
-	XMLNode tileSetInfoNode = parser.rootChild("Environment");
-
-	//// Map size
-	//XMLNode tileCountNode = tileSetInfoNode.child("TileCount");
-	//DataMap<BasicString> tileCountData = tileCountNode.nodeAttributes();
-
-	//int tileCountX = tileCountData.getInt("x");
-	//int tileCountY = tileCountData.getInt("y");
-	//mapIndexSize.set(tileCountX, tileCountY);
-
-	// Tile size
-	XMLNode tileSizeNode = tileSetInfoNode.child("TileSize");
-	DataMap<BasicString> tileSizeData = tileSizeNode.nodeAttributes();
-
-	float tileSizeX = tileSizeData.getFloat("x");
-	float tileSizeY = tileSizeData.getFloat("y");
-	tileSize.set(tileSizeX, tileSizeY);
-
-	// Scale
-	XMLNode scaleNode = parser.rootChild("Scale");
-	scale = atof(scaleNode.value().c_str());
+	int incrementedType = (int)type + 1;
+	MapType nextType = static_cast<MapType>(incrementedType);
+	return (nextType == MapType::End) ? nextMapType(MapType::None) : nextType;
 }
 
-
-void LevelManager::fillData(const XMLNode sectionNode, Map* map)
+void LevelManager::setCameraBoundaries(Camera* camera)
 {
-	if (sectionNode)
-	{
-		// Decorations
-		XMLNode decorNode = XMLNode(sectionNode.child("Decor"));
-		DecorMap decorations = readDecorData(decorNode);
-		MapDecorator decorator;
-		decorator.addDecor(decorations, map->getData());
+	VectorF topLeft = first()->getFirstRect().TopLeft();
+	VectorF bottomRight = last()->getBottomLastRect().BotRight();
 
-		// Traps
-		XMLNode trapNode = XMLNode(sectionNode.child("Traps"));
-		DecorMap trapInfo = readDecorData(trapNode);
-		setTrapInfo(map, trapInfo);
-	}
+	RectF boundaries(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
+	camera->setMapBoundaries(boundaries);
 }
-
-
-DecorMap LevelManager::readDecorData(const XMLNode& root) const
-{
-	DecorMap decorMap;
-	if (root)
-	{
-		XMLNode item = root.child();
-		while (!item.isEmpty())
-		{
-			DecorType type = stringToType(item.name());
-			StringMap attributes = item.nodeAttributes();
-			decorMap[type] = attributes;
-
-			item = item.next();
-		}
-	}
-
-	return decorMap;
-}
-
-
-void LevelManager::setTrapInfo(Map* map, DecorMap& trapInfo)
-{
-	if (trapInfo.count(DecorType::Spikes))
-	{
-		const StringMap attributes = trapInfo[DecorType::Spikes];
-		if (attributes.contains("triggerTime") && attributes.contains("recoveryTime"))
-		{
-			Damage damage = attributes.getFloat("damage");
-			float triggerTime = attributes.getFloat("triggerTime");
-			float recoveryTime = attributes.getFloat("recoveryTime");
-			map->traps().set(damage, triggerTime, recoveryTime);
-		}
-	}
-}
-
-
-

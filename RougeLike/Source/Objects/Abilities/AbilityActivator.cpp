@@ -4,7 +4,7 @@
 #include "AbilityClasses/TargetAbilities.h"
 
 #include "Input/InputManager.h"
-#include "Map/Environment.h"
+#include "Game/Environment.h"
 
 #include "Actors/Actor.h"
 #include "Actors/ActorManager.h"

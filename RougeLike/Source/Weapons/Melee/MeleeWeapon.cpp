@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "MeleeWeapon.h"
 
-#include "Game/Camera.h"
+#include "Game/Camera/Camera.h"
 #include "Graphics/Texture.h"
 
 #include "Weapons/WeaponData.h"

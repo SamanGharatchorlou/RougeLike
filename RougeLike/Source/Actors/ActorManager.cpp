@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "ActorManager.h"
 
-#include "Game/GameData.h"
+#include "Game/Data/GameData.h"
 #include "Graphics/RenderManager.h"
 #include "UI/UIManager.h"
 #include "Audio/AudioManager.h"
 
-#include "Game/Camera.h"
-#include "Map/Environment.h"
+#include "Game/Camera/Camera.h"
+#include "Game/Environment.h"
 
 
 ActorManager::ActorManager(GameData* gameData) : 
@@ -15,7 +15,7 @@ ActorManager::ActorManager(GameData* gameData) :
 
 
 
-void ActorManager::load(const XMLParser& parser, const Map* map)
+void ActorManager::load(const XMLParser& parser)
 {
 	mEnemies.load();
 }

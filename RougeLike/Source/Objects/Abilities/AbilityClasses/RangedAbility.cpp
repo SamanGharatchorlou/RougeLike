@@ -2,21 +2,20 @@
 
 #include "RangedAbility.h"
 
-#include "Game/Camera.h"
+#include "Game/Camera/Camera.h"
 #include "Map/Map.h"
 
 #include "Actors/Actor.h"
-#include "Objects/Bags/PropertyBag.h"
 
 #include "Graphics/Texture.h"
 #include "Graphics/RenderManager.h"
 
 
 // --- Range ---
-void RangedAbility::fillBaseValues(const PropertyBag& properties)
+void RangedAbility::fillBaseValues(const PropertyMap& properties)
 {
 	Ability::fillBaseValues(properties);
-	mRange = properties.get(PropertyType::Range);
+	mRange = properties.at(PropertyType::Range);
 }
 
 

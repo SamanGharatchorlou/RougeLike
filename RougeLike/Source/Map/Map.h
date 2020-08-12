@@ -1,18 +1,27 @@
 #pragma once
 
-#include "TrapManager.h"
 #include "Map/MapBase.h"
-#include "MapTile.h"
+#include "Tiles/MapTile.h"
 
-class TextureManager;
-class Texture;
+
+enum class MapType
+{
+	None,
+	Dungeon,
+	Corridor,
+	End
+};
 
 
 class Map : public MapBase<MapTile>
 {
 public:
-	Map(Vector2D<int> mapIndexSize, VectorF tileSize);
+	Map() : mType(MapType::None)  { }
+	Map(Vector2D<int> mapIndexSize);
 	~Map() { };
+
+	void setType(MapType type) { mType = type; }
+	MapType type() const { return mType; }
 
 	// Update
 	void slowUpdate(float dt);
@@ -22,17 +31,18 @@ public:
 	void renderLowerLayer();
 	void renderUpperLayer();
 
-	void populateData(TextureManager* tm, VectorF offset);
+	void setSize(Vector2D<int> size);
 	void clearData();
 
-	void close(TextureManager* tm);
-
 	// Getters
-	Vector2D<float> size() const { return VectorF(xCount(), yCount()) * tileSize(); };
-	const VectorF tileSize() const { return mTileSize; }
+	VectorF tileSize() const;
+	VectorF size() const;
 
 	const RectF getFirstRect() const;
 	const RectF getLastRect() const;
+	const RectF getBottomLastRect() const;
+
+	VectorF midPoint() const;
 
 	MapTile* tile(Index index) { return &mData[index]; };
 	const MapTile* tile(Index index) const { return &mData.get(index); };
@@ -48,14 +58,7 @@ public:
 	bool isValidTile(RectF rect) const;
 	bool isValidPosition(VectorF position) const;
 
-	TrapManager& traps() { return mTrapManager; }
-
 
 private:
-	void populateTileRects(VectorF offset);
-
-
-private:
-	TrapManager mTrapManager;
-	VectorF mTileSize;
+	MapType mType;
 };

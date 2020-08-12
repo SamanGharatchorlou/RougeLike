@@ -12,7 +12,7 @@ public:
 	RangedAbility() : mRange(0.0f), mRangeCircle(nullptr) { }
 	virtual ~RangedAbility() { }
 
-	void fillBaseValues(const PropertyBag& properties) override;
+	void fillBaseValues(const PropertyMap& properties) override;
 	void setRangeCircle(Texture* rangeCircle) { mRangeCircle = rangeCircle; }
 
 	void renderRangeCircle();

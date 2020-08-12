@@ -21,7 +21,7 @@ void UIElement::fill(const StringMap& attributes)
 	mRect = RectF(VectorF(x, y), VectorF(width, height));
 
 	if(attributes.contains("id"))
-		mId = attributes.getString("id");
+		mId = attributes.at("id");
 }
 
 

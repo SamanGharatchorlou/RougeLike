@@ -10,7 +10,8 @@ struct RenderColour
 		Green,
 		Yellow,
 		LightGrey,
-		Black
+		Black,
+		White
 	};
 
 	//RenderColour() { }
@@ -40,6 +41,9 @@ struct RenderColour
 			break;
 		case RenderColour::Black:
 			r = 0; g = 0; b = 0;
+			break;		
+		case RenderColour::White:
+			r = 255; g = 255; b = 255;
 			break;
 		default:
 			DebugPrint(Log, "Render colour has not been defined\n");

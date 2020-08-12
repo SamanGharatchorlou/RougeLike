@@ -3,8 +3,8 @@
 
 #include "Collectable.h"
 
-#include "Game/Camera.h"
-#include "Game/GameData.h"
+#include "Game/Camera/Camera.h"
+#include "Game/Data/GameData.h"
 #include "Collisions/CollisionManager.h"
 
 #if _DEBUG

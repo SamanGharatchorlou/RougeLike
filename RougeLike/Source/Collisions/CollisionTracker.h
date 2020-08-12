@@ -12,6 +12,7 @@ public:
 
 	void clearAttackers();
 	void clearDefenders();
+	void removeAttacker(const Collider* collider);
 	void removeDefender(const Collider* collider);
 
 	std::vector<Collider*> defenders() { return mDefenders; }
@@ -38,28 +39,3 @@ protected:
 	bool mCheckingCollisions = true;
 };
 
-
-
-//class ComplexCollisionTracker : public CollisionTracker
-//{
-//public:
-//
-//	//ComplexCollisionTracker() : mCheckingCollisions(true) { }
-//
-//	//virtual void checkCollisions() override;
-//
-//	//void setCheckingStatus(bool shouldCheckCollisions) { mCheckingCollisions = shouldCheckCollisions; }
-//
-//	//void addExcludedDefender(Collider* defender);
-//	//void clearExcludedDefenders();
-//
-//	//std::vector<Collider*> defenders() { return mDefenders; }
-//
-//	//int count() { return mExcludedDefenders.size(); }
-//
-//
-//private:
-//	std::unordered_set<Collider*> mExcludedDefenders;
-//
-//	bool mCheckingCollisions;
-//};

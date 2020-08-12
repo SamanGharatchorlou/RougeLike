@@ -1,70 +1,30 @@
 #pragma once
 
-#include "Collisions/EffectCollider.h"
-#include "Objects/Properties/Attributes/Damage.h"
-
-
-class CollisionTracker;
 class Map;
-
+class Trap;
+class DecorMap;
+class CollisionManager;
+class EffectPool;
 
 class TrapManager
 {
 public:
-	class Trap
-	{
-	public:
-		Trap(Index index) : mIndex(index), timer(TimerF::Start), exhausted(false) { }
+	TrapManager(CollisionManager* collisions, EffectPool* effects) : mCollisions(collisions), mEffects(effects) { };
 
-		inline bool operator == (Trap value)
-		{
-			return is(value.index());
-		}
-
-		Index index() const { return mIndex; }
-		bool is(Index index) const { return index == mIndex; }
-
-		bool isExhausted() const { return exhausted; }
-		void exhaust() { exhausted = true; }
-
-		float time() const { return timer.getSeconds(); }
-		void reset() { timer.restart(); }
-
-	private:
-		Index mIndex;
-		TimerF timer;
-		bool exhausted;
-	};
-
-
-public:
-	TrapManager(Map* map) : mMap(map), mTriggerTime(0.75f), mRecoveryTime(1.0f) { }
-	void set(Damage damage, float triggerTime, float recoveryTime);
-
-
-	void flushQueues();
+	void addTraps(Map* map, const DecorMap& info);
 
 	void slowUpdate();
 
-	void triggerTrap(VectorF position);
-
-	bool didCollide(VectorF position);
-
-	Damage damage() const { return mDamage; }
-
 	
 private:
-	void updateTriggerTraps();
-	void updateResetTraps();
+	void setTraps();
+	void triggerTraps();
+	void resetTraps();
 
 
 private:
-	Map* mMap;
-	UniqueQueue<Trap> mUntriggeredTraps;
-	std::deque<Trap> mTriggeredTraps;
+	CollisionManager* mCollisions;
+	EffectPool* mEffects;
 
-	float mTriggerTime;
-	float mRecoveryTime;
-
-	Damage mDamage;
+	std::vector<Trap*> mTraps;
 };

@@ -1,12 +1,13 @@
 #include "pch.h"
 #include "MapDecorator.h"
 
+#include "Map/Map.h"
 
 
-
-// -- Decorator -- //
-void MapDecorator::addDecor(DecorMap decorMap, Grid<MapTile>& data)
+void MapDecorator::addDecor(Map* map, const DecorMap& decorMap)
 {
+	Grid<MapTile>& data = map->getData();
+
 	for (DecorMap::const_iterator iter = decorMap.begin(); iter != decorMap.end(); iter++)
 	{
 		DecorType type = iter->first;
@@ -26,12 +27,53 @@ void MapDecorator::addDecor(DecorMap decorMap, Grid<MapTile>& data)
 			addTorches(data, iter->second);
 		}
 
-		if (doesTypeContain(type, DecorType::Spikes))
+		addTraps(map, iter);
+
+		if (doesTypeContain(type, DecorType::Grating))
 		{
-			addSpikes(data, iter->second);
+			addGrating(data, iter->second);
 		}
 	}
+}
 
+
+void MapDecorator::addGrating(Grid<MapTile>& data, const StringMap& attributes)
+{
+	for (int x = 0; x < data.xCount(); x++)
+	{
+		for (int y = 0; y < data.yCount(); y++)
+		{
+			Index index(x, y);
+			Index down = index + Index(0, 1);
+
+			if (data[index].is(CollisionTile::Floor))
+			{
+				data[down].add(DecorType::Grating);
+				if (data[index].is(DecorType::None))
+				{
+					data[index].add(DecorType::Grating);
+				}
+			}
+		}
+	}
+}
+
+
+void MapDecorator::addTraps(Map* map, DecorMap::const_iterator& attributes)
+{
+	Grid<MapTile>& data = map->getData();
+	DecorType type = attributes->first;
+
+
+	if (doesTypeContain(type, DecorType::Spikes))
+	{
+		addSpikes(data, attributes->second);
+	}
+
+	if (doesTypeContain(type, DecorType::Trigger))
+	{
+		addTiggers(data, attributes->second);
+	}
 }
 
 
@@ -112,7 +154,7 @@ void MapDecorator::addColumns(Grid<MapTile>& data, const StringMap& attributes)
 // Torches
 void MapDecorator::addTorches(Grid<MapTile>& data, const StringMap& attributes)
 {
-	DecorType torchType = stringToType(attributes.getString("type"));
+	DecorType torchType = stringToType(attributes.at("type"));
 	int spacing = attributes.getInt("spacing");
 
 	for (int x = 0; x < data.xCount(); x++)
@@ -156,6 +198,13 @@ void MapDecorator::addSpikes(Grid<MapTile>& data, const StringMap& attributes)
 	}
 }
 
+// Spikes
+void MapDecorator::addTiggers(Grid<MapTile>& data, const StringMap& attributes)
+{
+	Index index = attributes.getVector("x", "y");
+	data[index].set(DecorType::Trigger);
+}
+
 
 bool MapDecorator::canAddWater(const Grid<MapTile>& data, Index index, Vector2D<int> size) const
 {
@@ -196,8 +245,11 @@ bool MapDecorator::canAddWallDecor(const Grid<MapTile>& data, DecorType decor, I
 		Index wallIndex(i, index.y);
 		bool validIndex = isValid(wallIndex, data);
 
+		if (!isValid(wallIndex, data)) // Assume end of map is just another wall TODO: restrict this range? i.e. can only up to index +/-2 out of range
+			continue;
+
 		// needs to be a facing wall i.e. render::lower or something, although this works well for columns...by fluke
-		if (validIndex && data.get(wallIndex).is(CollisionTile::Wall)) 
+		if (data.get(wallIndex).is(CollisionTile::Wall)) 
 		{
 			bool alreadyContained = data.get(wallIndex).has(decor);
 			if (!alreadyContained)

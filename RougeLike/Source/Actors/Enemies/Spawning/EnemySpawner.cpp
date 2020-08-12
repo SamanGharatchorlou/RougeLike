@@ -18,7 +18,7 @@ std::vector<SpawnData> EnemySpawner::getspawnList(const XMLNode spawnNode, const
 	while (node)
 	{
 		Type spawnType = stringToType(node.name());
-		StringMap attributes = node.nodeAttributes();
+		StringMap attributes = node.attributes();
 
 		std::vector<SpawnData> list = generateSpawnData(map, spawnType, attributes);
 		spawnList.reserve(spawnList.size() + list.size());
@@ -45,7 +45,7 @@ std::vector<SpawnData> EnemySpawner::spawnPatrollers(const Map* map, const Strin
 	EnemyType enemyType = EnemyType::None;
 	enemyType << attributes.at("type");
 
-	int xIncrement = attributes.getInt("xIncrement");
+	int xIncrement = toInt(attributes.at("xIncrement"));
 
 	PointList pointList;
 	for (unsigned int xPoint = 5; xPoint <= 95; xPoint += xIncrement)
@@ -64,13 +64,13 @@ std::vector<SpawnData> EnemySpawner::spawnShape(const Map* map, const StringMap&
 	EnemyType enemyType = EnemyType::None;
 	enemyType << attributes.at("type");
 
-	int xPosition = attributes.getInt("xPosition");
+	int xPosition = toInt(attributes.at("xPosition"));
 
 	PointList points;
 	if (attributes.at("shape") == "Circle")
 	{
 		int radius = map->tile(Index(0, 0))->rect().Width();
-		int pointCount = attributes.getInt("points");
+		int pointCount = toInt(attributes.at("points"));
 		
 		Circle circle(VectorF(), radius, pointCount);
 		findValidShape(circle, map, xPosition);

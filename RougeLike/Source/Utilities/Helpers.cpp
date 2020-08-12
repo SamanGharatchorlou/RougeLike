@@ -111,3 +111,15 @@ SDL_Colour SDLColour(Colour colour)
 
 	return SDL_Color{ r, g, b };
 }
+
+
+
+int toInt(const BasicString& string)
+{
+	return atoi(string.c_str());
+}
+
+float toFloat(const BasicString& string)
+{
+	return atof(string.c_str());
+}

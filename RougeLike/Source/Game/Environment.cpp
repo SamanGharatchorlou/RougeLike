@@ -1,17 +1,19 @@
 #include "pch.h"
 #include "Environment.h"
 
-#include "Game/GameData.h"
-#include "Game/Camera.h"
+#include "Game/Data/GameData.h"
+#include "Game/Camera/Camera.h"
 #include "Input/InputManager.h"
-#include "MapBuilding/MapGenerator.h"
-#include "Map.h"
 
-#include "TrapManager.h"
+#include "Map/MapBuilding/MapGenerator.h"
+#include "Map/Map.h"
+#include "Map/TrapManager.h"
 
 
 Environment::Environment(GameData* gameData) : 
-	mLevelManager(gameData->textureManager), mActors(gameData), mCollectables(gameData)
+	mLevelManager(gameData->textureManager, gameData->collisionManager, &mEffectPool), 
+	mActors(gameData), 
+	mCollectables(gameData)
 {
 };
 
@@ -38,6 +40,10 @@ void Environment::load()
 {
 	DebugPrint(Log, "\n--- Loading Environment ---\n\n");
 
+	DebugPrint(Log, "\n Loading Effect pool\n");
+
+	mEffectPool.load();
+
 	DebugPrint(Log, "\n Loading Maps\n");
 
 	BasicString fileName = "Level0";
@@ -48,22 +54,18 @@ void Environment::load()
 
 	setCameraBoundaries();
 
-	DebugPrint(Log, "\n Loading Effect pool\n");
-
-	mEffectPool.load();
-
 	DebugPrint(Log, "\n Loading Characters\n");
 
-	mActors.load(parser, mLevelManager.primaryMap());
+	mActors.load(parser);
 
 	XMLNode enemySpawnNode = parser.rootChild("Enemies");
-	mActors.spawnEnemies(enemySpawnNode, mLevelManager.primaryMap());
+	mActors.spawnEnemies(enemySpawnNode, mLevelManager.map(MapType::Dungeon));
 
 	DebugPrint(Log, "\n Loading Collectables\n");
 
 	mCollectables.load();
 	XMLNode collectablesSpawnNode = parser.rootChild("Collectables");
-	mCollectables.spawn(collectablesSpawnNode, mLevelManager.primaryMap());
+	mCollectables.spawn(collectablesSpawnNode, mLevelManager.map(MapType::Dungeon));
 
 	DebugPrint(Log, "\n--- Environment Load Complete---\n\n");
 }
@@ -78,7 +80,7 @@ void Environment::nextLevel()
 	BasicString path = FileManager::Get()->findFile(FileManager::Config_Map, fileName);
 	XMLParser parser(path);
 
-	mLevelManager.buildLevel(parser);
+	//mLevelManager.buildLevel(parser);
 
 	setCameraBoundaries();
 
@@ -87,11 +89,11 @@ void Environment::nextLevel()
 
 	// spawn new enemies
 	XMLNode enemySpawnNode = parser.rootChild("Enemies");
-	mActors.spawnEnemies(enemySpawnNode, mLevelManager.primaryMap());
+	//mActors.spawnEnemies(enemySpawnNode, mLevelManager.primaryMap());
 
 	// spawn collectables
 	XMLNode collectablesSpawnNode = parser.rootChild("Collectables");
-	mCollectables.spawn(collectablesSpawnNode, mLevelManager.primaryMap());
+	//mCollectables.spawn(collectablesSpawnNode, mLevelManager.primaryMap());
 }
 
 void Environment::handleInput(const InputManager* input)
@@ -112,6 +114,8 @@ void Environment::fastUpdate(float dt)
 
 void Environment::slowUpdate(float dt)
 {
+
+
 	mLevelManager.slowUpdate(dt);
 	mActors.slowUpdate(dt);
 	mCollectables.slowUpdate(dt);
@@ -133,23 +137,23 @@ void Environment::renderTopLayer()
 
 void Environment::setCameraBoundaries()
 {
-	float xLeft = mLevelManager.entrance()->getFirstRect().LeftPoint();
-	float xRight = mLevelManager.exit()->getLastRect().RightPoint();
-	RectF boundaries(xLeft, 0.0f, xRight, mLevelManager.primaryMap()->size().y);
+	VectorF topLeft = mLevelManager.first()->getFirstRect().TopLeft();
+	VectorF bottomRight = mLevelManager.last()->getBottomLastRect().BotRight();
 
+	RectF boundaries(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
 	Camera::Get()->setMapBoundaries(boundaries);
 }
 
 
 bool Environment::canClosePreviousLevel(VectorF playerPosition) const
 {
-	float buffer = 100.0f;
-	float x = mLevelManager.primaryMap()->getLastRect().RightPoint() + buffer;
-	float y = playerPosition.y;
+	//float buffer = 100.0f;
+	//float x = mLevelManager.primaryMap()->getLastRect().RightPoint() + buffer;
+	//float y = playerPosition.y;
 
-	if (playerPosition.x > x)
-		return !Camera::Get()->inView(VectorF(x, y));
-	else
+	//if (playerPosition.x > x)
+	//	return !Camera::Get()->inView(VectorF(x, y));
+	//else
 		return false;
 }
 
@@ -158,11 +162,6 @@ bool Environment::canClosePreviousLevel(VectorF playerPosition) const
 // --- Private Functions --- //
 VectorF Environment::toWorldCoords(VectorF cameraCoords)
 {
-	float xOffset = mLevelManager.entrance()->getLastRect().RightPoint();
-
 	VectorF cameraPosition = Camera::Get()->rect().TopLeft();
-
-	float xDiff = cameraPosition.x - xOffset;
-
 	return cameraCoords + cameraPosition;
 }

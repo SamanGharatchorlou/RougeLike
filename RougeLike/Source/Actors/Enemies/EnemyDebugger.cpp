@@ -3,7 +3,7 @@
 
 #include "Debug/DebugDraw.h"
 
-#include "Map/Environment.h"
+#include "Game/Environment.h"
 #include "Actors/ActorManager.h"
 #include "Actors/Player/PlayerManager.h"
 

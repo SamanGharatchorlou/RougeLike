@@ -12,9 +12,9 @@ void HealEffect::init()
 }
 
 
-void HealEffect::fill(PropertyBag& properties)
+void HealEffect::fill(PropertyMap& properties)
 {
-	mHeal = Health(properties.get(PropertyType::Health));
+	mHeal = Health(properties.at(PropertyType::Health));
 }
 
 

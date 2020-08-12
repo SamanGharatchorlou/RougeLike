@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Button.h"
-#include "Game/Cursor.h"
+#include "Cursor.h"
 
 
 class InputManager

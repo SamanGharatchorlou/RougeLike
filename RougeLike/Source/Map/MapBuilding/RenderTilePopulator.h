@@ -1,15 +1,11 @@
 #pragma once
 
-#include "Map/MapTile.h"
-
-class TextureManager;
-
+class MapTile;
 
 class RenderTilePopulator
 {
 public:
-	RenderTilePopulator(TextureManager* textureManager) : mTextureManager(textureManager) { }
-	void populate(Grid<MapTile>& data);
+	void fillRenderInfo(Grid<MapTile>& data);
 
 private:
 	void topBottom(Grid<MapTile>& data);
@@ -17,9 +13,6 @@ private:
 	void corners(Grid<MapTile>& data);
 	void pointCorners(Grid<MapTile>& data);
 	void cleanRenderLabels(Grid<MapTile>& data);
-
-private:
-	TextureManager* mTextureManager;
 };
 
 

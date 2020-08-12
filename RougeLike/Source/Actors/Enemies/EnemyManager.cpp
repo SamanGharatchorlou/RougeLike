@@ -1,12 +1,15 @@
 #include "pch.h"
 #include "Actors/Enemies/EnemyManager.h"
 
-#include "Game/GameData.h"
-#include "Map/Environment.h"
-#include "Game/Camera.h"
+#include "Game/Data/GameData.h"
+#include "Game/Environment.h"
+#include "Game/Camera/Camera.h"
 
 #include "Enemy.h"
 #include "Actors/Enemies/EnemyStates/EnemyAttack.h"
+
+// temp
+#include "Map/Map.h"
 
 
 
@@ -28,7 +31,7 @@ void EnemyManager::clear()
 
 void EnemyManager::load()
 {
-	mAIController.loadAIPathMap(mEnvironment->primaryMap());
+	mAIController.loadAIPathMap(mEnvironment->map(MapType::Dungeon));
 	mBuilder.loadSpawnPool();
 }
 

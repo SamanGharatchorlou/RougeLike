@@ -1,5 +1,6 @@
 #pragma once
 
+#if MEMORY_TRACKING
 // LINK: http://www.almostinfinite.com/memtrack.html
 
 /*
@@ -91,3 +92,5 @@ Add define so I dont need to keep adding #if MEMORY_TRACKING
 #define PRINT_MEMORY printMemoryInfo()
 void printMemoryInfo();
 /*END*/
+
+#endif

@@ -28,7 +28,10 @@ enum class RenderTile : Uint64
 	Floor_Bottom_Right = Floor << 8,
 	Floor_Bottom_Left = Floor << 9,
 
-	Water = Floor << 10,
+	Floor_Grating = Floor << 10,
+	Floor_Grating_Top = Floor << 11,
+
+	Water = Floor << 12,
 
 	Water_Middle = Water << 1,
 	Water_Left = Water << 2,
@@ -78,11 +81,13 @@ enum class DecorType : Uint32
 	Torch = Column << 2,
 	Torch_Handle = Column << 3,
 	Torch_Bowl = Column << 4,
-	Spikes = Column << 5
+	Spikes = Column << 5,
+	Trigger = Column << 6,
+	Grating = Column << 7,
 };
 
 
-using DecorMap = std::map<DecorType, StringMap>;
+//using DecorMap = std::map<DecorType, StringMap>;
 DecorType stringToType(const BasicString& decorString);
 
 

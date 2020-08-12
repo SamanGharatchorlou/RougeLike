@@ -56,7 +56,7 @@ namespace fs = std::experimental::filesystem;
 // Include these first as they are be required in some of the below includes
 #include "Debug/Logging.h"
 
-// Utilities / helper classes
+// Containers
 #include "Utilities/BasicString.h"
 #include "Utilities/Vector2D.h"
 #include "Utilities/Rect.h"
@@ -64,17 +64,13 @@ namespace fs = std::experimental::filesystem;
 #include "Utilities/Grid.h"
 #include "Utilities/Timer.h"
 #include "Utilities/UniqueQueue.h"
-#include "Utilities/DataMap.h"
+
+#include "Utilities/Maps/DataMap.h"
+#include "Utilities/Maps/StringMap.h"
+#include "Utilities/Maps/PropertyMap.h"
+
 
 // File accessors
-
-using StringMap = DataMap<BasicString>;
-using FloatMap = DataMap<float>;
-
-//using ValueMap = std::unordered_map<BasicString, float>;
-//using StringMap = std::unordered_map<BasicString, BasicString>;
-
-//#include "System/Files/Attributes.h"
 #include "System/Files/XMLParser.h"
 #include "System/Files/FileManager.h"
 

@@ -2,7 +2,7 @@
 #include "AudioManager.h"
 #include "Audio.h"
 
-#include "Game/LoadingManager.h"
+#include "Game/Data/LoadingManager.h"
 
 AudioManager::AudioManager()
 {

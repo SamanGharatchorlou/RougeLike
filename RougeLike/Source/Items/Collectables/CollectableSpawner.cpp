@@ -26,7 +26,7 @@ CollectableSpawner::SpawnData CollectableSpawner::generateSpawnData(const XMLNod
 	CollectableType type = CollectableType::None;
 	type << node.name();
 
-	StringMap attributes = node.nodeAttributes();
+	StringMap attributes = node.attributes();
 
 	int xIncrement = attributes.getInt("xPosition");
 	VectorF position = map->randomFloorTile(xIncrement)->rect().Center();

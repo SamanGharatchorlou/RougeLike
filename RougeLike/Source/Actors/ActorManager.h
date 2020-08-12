@@ -19,7 +19,7 @@ public:
 	~ActorManager() { }
 
 	void init(Environment* environment);
-	void load(const XMLParser& parser, const Map* map);
+	void load(const XMLParser& parser);
 
 	void handleInput(const InputManager* input);
 	void fastUpdate(float dt);

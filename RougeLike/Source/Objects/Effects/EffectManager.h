@@ -1,7 +1,7 @@
 #pragma once
 
 #include "EffectHandler.h"
-#include "Objects/Bags/EffectBag.h"
+#include "Utilities/Maps/EffectMap.h"
 
 class EffectPool;
 class Effect;
@@ -13,7 +13,7 @@ public:
 	void clear();
 
 	void fillEffectBag(XMLNode effectNode);
-	void setEffectBag(EffectBag effectBag) { mBag = effectBag; }
+	void setEffectBag(EffectMap EffectMap) { mBag = EffectMap; }
 
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
@@ -29,5 +29,5 @@ private:
 	EffectPool* mPool;
 
 	EffectHandler mHandler;
-	EffectBag mBag;
+	EffectMap mBag;
 };

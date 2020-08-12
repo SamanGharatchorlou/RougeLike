@@ -2,7 +2,7 @@
 <Ability>
 	<Properties>
 		<MaxSize>125</MaxSize>
-		<Heal>50</Heal>
+		<Health>50</Health>
 		<Cooldown>5</Cooldown>
 	</Properties>
 

@@ -14,7 +14,7 @@ UITextBox::UITextBox(const StringMap& attributes) : UIBox(attributes)
 {
 	initText(attributes);
 
-	BasicString aligment = attributes.contains("align") ? attributes.getString("align") : "";
+	BasicString aligment = attributes.contains("align") ? attributes.at("align") : "";
 	setAlignment(aligment);
 }
 
@@ -92,8 +92,8 @@ void UITextBox::setAlignment(const BasicString& alignment)
 
 void UITextBox::initText(const StringMap& attributes)
 {
-	BasicString text = attributes.getString("text");
-	BasicString font = attributes.contains("font") ? attributes.getString("font") : "default";
+	BasicString text = attributes.at("text");
+	BasicString font = attributes.contains("font") ? attributes.at("font") : "default";
 	int ptSize = attributes.contains("ptSize") ? attributes.getInt("ptSize") : 0;
 	SDL_Color colour = {
 		(Uint8)attributes.getInt("r"),

@@ -92,13 +92,11 @@ bool GameSetup::initRenderer(Window* window)
 void GameSetup::readSettings()
 {
 	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs, "GameSettings"));
+	StringMap settings(parser.rootChild("Game"));
 
-	XMLNode settingsNode = parser.rootChild("Game");
-	DataMap<BasicString> settingsMap = settingsNode.stringMap();
-
-	title = settingsMap["Title"];
-	int width = settingsMap.getFloat("Width");
-	int height = settingsMap.getFloat("Height");
+	title = settings["Title"];
+	int width = settings.getInt("Width");
+	int height = settings.getInt("Height");
 	screenSize = VectorF(width, height);
-	audioChannels = settingsMap.getInt("AudioChannels");
+	audioChannels = settings.getInt("AudioChannels");
 }

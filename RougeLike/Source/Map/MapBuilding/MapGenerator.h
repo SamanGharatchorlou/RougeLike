@@ -1,6 +1,8 @@
 #pragma once
-#include "Map/MapTile.h"
-#include "Map/TileTypes.h"
+#include "Map/Tiles/MapTile.h"
+#include "Map/Tiles/TileTypes.h"
+
+
 
 class MapGenerator
 {

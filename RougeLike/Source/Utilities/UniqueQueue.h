@@ -7,7 +7,24 @@ template <class T>
 class UniqueQueue
 {
 public:
+	// Iterator
+	using iterator = typename std::deque<T>::iterator;
+	iterator begin() { return mQueue.begin(); }
+	iterator end() { return mQueue.end(); }
+
+	// Const Iterator	
+	using const_iterator = typename std::deque<T>::const_iterator;
+	const_iterator begin() const { return mQueue.begin(); }
+	const_iterator end() const { return mQueue.end(); }
+
+
+public:
 	T& front() { return mQueue.front(); }
+	const T& front() const { return mQueue.front(); }
+
+	T& back() { return mQueue.back(); }
+	const T& back() const { return mQueue.back(); }
+
 	T& popFront();
 
 	void clear() { mQueue.clear(); }

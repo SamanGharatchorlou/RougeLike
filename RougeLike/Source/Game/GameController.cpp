@@ -3,7 +3,7 @@
 
 #include <SDL_thread.h>
 
-#include "Game/LoadingManager.h"
+#include "Game/Data/LoadingManager.h"
 #include "Game/GameSetup.h"
 #include "Debug/FrameRateController.h"
 

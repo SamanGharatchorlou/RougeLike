@@ -12,8 +12,8 @@
 #include "Collisions/CollisionManager.h"
 #include "Actors/ActorManager.h"
 
-#include "Map/Environment.h"
-#include "Game/Camera.h"
+#include "Game/Environment.h"
+#include "Game/Camera/Camera.h"
 
 
 void GameData::setWindow(Window* newWindow)

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Game/GameData.h"
+#include "Game/Data/GameData.h"
 #include "States/State.h"
 #include "States/StateMachine.h"
 

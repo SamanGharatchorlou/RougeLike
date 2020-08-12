@@ -55,6 +55,16 @@ void CollisionManager::addCollisionTracker(Tracker id)
 	mTrackers[id] = tracker;
 }
 
+void CollisionManager::addAttacker(Tracker id, Collider* attacker)
+{
+	CollisionTracker* tracker = getTracker(id);
+
+	if (tracker)
+	{
+		std::vector<Collider*> collider{ attacker };
+		tracker->addAttackers(collider);
+	}
+}
 
 void CollisionManager::addAttackers(Tracker id, std::vector<Collider*> attackers)
 {
@@ -79,8 +89,8 @@ void CollisionManager::addDefender(Tracker id, Collider* defender)
 
 	if (tracker)
 	{
-		std::vector<Collider*> colliders { defender };
-		tracker->addDefenders(colliders);
+		std::vector<Collider*> collider { defender };
+		tracker->addDefenders(collider);
 	}
 }
 
@@ -91,6 +101,14 @@ void CollisionManager::removeDefender(Tracker id, const Collider* defender)
 
 	if(tracker)
 		tracker->removeDefender(defender);
+}
+
+void CollisionManager::removeAttacker(Tracker id, const Collider* attacker)
+{
+	CollisionTracker* tracker = getTracker(id);
+
+	if (tracker)
+		tracker->removeAttacker(attacker);
 }
 
 
@@ -136,6 +154,7 @@ void CollisionManager::init()
 }
 
 
+#if _DEBUG
 int CollisionManager::defenderCount(Tracker id)
 {
 	CollisionTracker* tracker = getTracker(id);
@@ -149,3 +168,4 @@ int CollisionManager::defenderCount(Tracker id)
 		return -1;
 	}
 }
+#endif

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "TextureManager.h"
-#include "Game/LoadingManager.h"
+#include "Game/Data/LoadingManager.h"
 
 #include "Texture.h"
 

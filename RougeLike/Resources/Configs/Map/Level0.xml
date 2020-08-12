@@ -3,30 +3,10 @@
 <Level>
 	<Primary>
 		<TileCount x = "35" y = "25"></TileCount>
-
-		<Decor>
-			<Column spacing="3"></Column>
-			<Spikes rate="10"></Spikes>
-			<Water width="3" height="2" spacing="10"></Water>
-			<Torch type = "TorchBowl" spacing ="1"></Torch>
-		</Decor>
-
-		<Traps>
-			<Spikes damage = "10" triggerTime="0.15" recoveryTime="0.5"></Spikes>
-		</Traps>
 	</Primary>
 
 	<Exit>
-		<TileCount x = "35" y = "25"></TileCount>
-
-		<Decor>
-			<Torch type = "TorchBowl" spacing ="2"></Torch>
-			<Spikes rate="100"></Spikes>
-		</Decor>
-
-		<Traps>
-			<Spikes damage = "10" triggerTime="0.4" recoveryTime="1.0"></Spikes>
-		</Traps>
+		<TileCount x = "15" y = "25"></TileCount>
 	</Exit>
 
 	<Collectables>

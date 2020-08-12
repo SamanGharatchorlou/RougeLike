@@ -3,4 +3,23 @@
 <Environment>
 	<TileSize x = "256" y ="256"></TileSize>
 	<Scale>0.5</Scale>
+	<CorridorSize x = "14" y = "25"></CorridorSize>
+	<DungeonSize x = "30" y = "25"></DungeonSize>
+
+	<Decor>
+		<Dungeon>
+			<Column spacing="3"></Column>
+			<Torch type = "TorchBowl" spacing ="3"></Torch>
+			<Spikes rate="10" damage = "10" triggerTime="1.5" recoveryTime="1.0"></Spikes>
+			<Water width="3" height="2" spacing="10"></Water>
+		</Dungeon>
+
+		<Corridor>
+			<Column spacing="3"></Column>
+			<Torch type = "TorchBowl" spacing ="3"></Torch>
+			<Spikes rate = "0" damage = "10" triggerTime="1.5" recoveryTime="1.0"></Spikes>
+			<Grating></Grating>
+			<Trigger x = "13" y = "12" triggerTime="0.25" recoveryTime="1000000">Grating</Trigger>
+		</Corridor>
+	</Decor>
 </Map>

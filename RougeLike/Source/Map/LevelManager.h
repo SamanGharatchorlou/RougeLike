@@ -1,15 +1,18 @@
 #pragma once
 
-#include "TileTypes.h"
+#include "MapBuilding/MapBuilder.h"
+#include "TrapManager.h"
 
 class Map;
 class TextureManager;
+class Camera;
+class CollisionManager;
+class EffectPool;
 
 class LevelManager
 {
 public:
-	LevelManager(TextureManager* textureManger);
-	~LevelManager();
+	LevelManager(TextureManager* textureManger, CollisionManager* collisions, EffectPool* effects) : mBuilder(textureManger), mTrapManager(collisions, effects), mLevel(0) { }
 
 	void load(const XMLParser& parser);
 
@@ -17,49 +20,33 @@ public:
 	void renderLowDepth();
 	void renderHeighDepth();
 
-	void buildLevel(const XMLParser& parser);
-
 	int level() const { return mLevel; }
 	void incrementLevel() { mLevel++; }
 
+	Map* map(MapType type) const;
 	Map* map(VectorF position) const;
-	const Map* entrance() const { return mMaps.entrance; }
-	const Map* primaryMap() const { return mMaps.primaryMap; }
-	const Map* exit() const { return mMaps.exit; }
 
-	VectorF size() const;
+	const Map* first() const { return mMaps.front(); }
+	const Map* last() const { return mMaps.back(); }
+
+	int mapCount() const { return mMaps.size(); }
+	void addNextMap();
+	void addMap(MapType type);
+	void popFront();
 
 
 private:
-	// Building maps
-	void createNewMaps();
-
-	void buildPrimanyAndExit(const XMLParser& parser);
-	void buildMap(const XMLNode dataNode, Map* map, VectorF offset);
-
-	void swapEntranceExit();
-
-	// Reading map data
-	void fillData(const XMLNode sectionNode, Map* map);
-	DecorMap readDecorData(const XMLNode& root) const;
-	void readConfigData(Vector2D<int>& mapIndexSize, VectorF& tileSize, float& scale);
-
-	void setTrapInfo(Map* map, DecorMap& trapInfo);
-
 	VectorF getOffset(const Map* map) const;
-	
+	MapType nextMapType(MapType type);
+
+	void setCameraBoundaries(Camera* camera);
+
+	void closeLevel();
+
 private:
-	struct Maps
-	{
-		Maps() : entrance(nullptr), primaryMap(nullptr), exit(nullptr) { }
-		Map* entrance;
-		Map* primaryMap;
-		Map* exit;
-	} mMaps;
+	MapBuilder mBuilder;
+	UniqueQueue<Map*> mMaps;
+	TrapManager mTrapManager;
 
-
-
-	TextureManager* mTextureManager;
 	int mLevel;
-
 };

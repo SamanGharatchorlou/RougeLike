@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "RenderTilePopulator.h"
 
+#include "Map/Tiles/MapTile.h"
 
 
-void RenderTilePopulator::populate(Grid<MapTile>& data)
+void RenderTilePopulator::fillRenderInfo(Grid<MapTile>& data)
 {
 	topBottom(data);
 	leftRight(data);

@@ -1,5 +1,7 @@
 #include "pch.h"
-#include "AttributeBag.h"
+#include "AttributeMap.h"
+
+#include "StringMap.h"
 
 #include "Objects/Properties/Attributes/Attribute.h"
 #include "Objects/Properties/Attributes/Armor.h"
@@ -8,40 +10,19 @@
 #include "Objects/Properties/Attributes/Damage.h"
 
 
-AttributeBag::~AttributeBag()
+AttributeMap::~AttributeMap()
 {
-	for (AttributeMap::iterator iter = mData.begin(); iter != mData.end(); iter++)
+	for (iterator iter = mData.begin(); iter != mData.end(); iter++)
 	{
 		Attribute* attribute = iter->second;
 		delete attribute;
 	}
 }
 
-
-Attribute* AttributeBag::get(AttributeType attribute) const
+void AttributeMap::fill(const XMLNode& node)
 {
-	AttributeMap::const_iterator iter = mData.find(attribute);
-	if (iter != mData.end())
-	{
-		return iter->second;
-	}
-	else
-	{
-		DebugPrint(Warning, "The attribute map does not contain the '%s' property, returning nullptr\n", attribute.string().c_str());
-		return nullptr;
-	}
-}
-
-float AttributeBag::value(AttributeType attribute) const
-{
-	Attribute* attributeObj = get(attribute);
-	return attributeObj ? attributeObj->value() : NULL;
-}
-
-
-void AttributeBag::fillData(const StringMap& stringMap)
-{
-	for (StringMap::const_iterator iter = stringMap.begin(); iter != stringMap.end(); iter++)
+	StringMap map(node);
+	for (StringMap::const_iterator iter = map.begin(); iter != map.end(); iter++)
 	{
 		BasicString name = iter->first;
 		float value = atof(iter->second.c_str());
@@ -53,7 +34,7 @@ void AttributeBag::fillData(const StringMap& stringMap)
 }
 
 
-Attribute* AttributeBag::getNewAttribute(AttributeType attributeType) const
+Attribute* AttributeMap::getNewAttribute(AttributeType attributeType) const
 {
 	Attribute* attribute = nullptr;
 
