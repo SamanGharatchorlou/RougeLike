@@ -25,14 +25,23 @@ void TrapManager::addTraps(Map* map, const DecorMap& info)
 				mCollisions->addDefender(CollisionManager::Player_Trigger_Trap, trap->collider());
 			}
 
-			//if (tile->has(DecorType::Grating))
-			//{
-			//	FireGratingTrap* trap = new FireGratingTrap(tile);
-			//	trap->fillData(info);
-			//	mTraps.push_back(trap);
+			if (tile->has(DecorType::Grating))
+			{
+				FireGratingTrap* trap = new FireGratingTrap(tile);
+				trap->fillData(info);
+				mTraps.push_back(trap);
 
-			//	mCollisions->addDefender(CollisionManager::Player_Trigger_Trap, trap->collider());
-			//}
+				mCollisions->addDefender(CollisionManager::Player_Trigger_Trap, trap->collider());
+			}
+
+			if (tile->has(DecorType::Trigger))
+			{
+				FireTrapTrigger* trap = new FireTrapTrigger(tile, mTraps);
+				trap->fillData(info);
+				mTraps.push_back(trap);
+
+				mCollisions->addDefender(CollisionManager::Player_Trigger_Trap, trap->collider());
+			}
 		}
 	}
 }
@@ -43,6 +52,15 @@ void TrapManager::slowUpdate()
 	setTraps();
 	triggerTraps();
 	resetTraps();
+	
+	// TODO: hacked in???
+	for (std::vector<Trap*>::iterator iter = mTraps.begin(); iter != mTraps.end(); iter++)
+	{
+		Trap* trap = *iter;
+
+		trap->update(mEffects);
+	}
+
 }
 
 

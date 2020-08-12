@@ -18,7 +18,7 @@ public:
 
 	void slowUpdate(float dt);
 	void renderLowDepth();
-	void renderHeighDepth();
+	void renderHighDepth();
 
 	int level() const { return mLevel; }
 	void incrementLevel() { mLevel++; }

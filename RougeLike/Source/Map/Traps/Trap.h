@@ -7,6 +7,13 @@ class Map;
 class MapTile;
 class EffectPool;
 
+enum class TrapType
+{
+	None,
+	Spike,
+
+};
+
 class Trap
 {
 public:
@@ -16,17 +23,21 @@ public:
 	virtual void fillData(const DecorMap& data) = 0;
 	virtual void init(EffectPool* effects) = 0;
 
+	virtual void update(EffectPool* pool) { } // TODO: hacked this in??
+
 	void set();
 	virtual void trigger() = 0;
 	virtual void reset() = 0;
 
-	bool canTrigger() const { return mTimer.getSeconds() > mTriggerTime && !exhausted; }
-	bool canReset() const { return mTimer.getSeconds() > mRecoveryTime && exhausted; }
+	virtual bool canTrigger() const { return mTimer.getSeconds() > mTriggerTime && !exhausted; }
+	virtual bool canReset() const { return mTimer.getSeconds() > mRecoveryTime && exhausted; }
 
-	bool didHit() { return mCollider.didHit(); }
-	bool gotHit() { return mCollider.gotHit(); }
+	virtual bool didHit() { return mCollider.didHit(); }
+	virtual bool gotHit() { return mCollider.gotHit(); }
 
 	EffectCollider* collider() { return &mCollider; }
+
+	const MapTile* tile() const { return mTile; }
 
 
 protected:
@@ -45,7 +56,7 @@ protected:
 class SpikeTrap : public Trap
 {
 public:
-	SpikeTrap(MapTile* tile) : Trap(tile){ }
+	SpikeTrap(MapTile* tile) : Trap(tile) { }
 
 	void fillData(const DecorMap& data) override;
 	void init(EffectPool* effects) override;
@@ -59,26 +70,36 @@ private:
 
 
 // TODO link the floor burst and damage effect to this!
-//class FireGratingTrap : public Trap
-//{
-//public:
-//	FireGratingTrap(MapTile* tile) : Trap(tile) { }
-//
-//	void fillData(const DecorMap& data) override;
-//	void init(EffectPool* effects) override;
-//
-//	void trigger() override;
-//	void reset() override;
-//
-//private:
-//	PropertyMap info;
-//};
-
-
-class SpikeTrapTrigger : public Trap
+class FireGratingTrap : public Trap
 {
 public:
-	SpikeTrapTrigger(MapTile* tile, Map* map) : Trap(tile), mMap(map) { }
+	FireGratingTrap(MapTile* tile) : Trap(tile), mActive(false), mLoops(0) { }
+
+	void fillData(const DecorMap& data) override;
+	void init(EffectPool* effects) override;
+
+	void update(EffectPool* pool);
+
+	void trigger() override;
+	void reset() override;
+
+	bool canTrigger() const override { return mActive && !exhausted; }
+	bool canReset() const override { return false; }
+	
+	void setActive(bool isActive) { mActive = isActive; }
+
+private:
+	PropertyMap info;
+	bool mActive;
+
+	int mLoops;
+};
+
+
+class FireTrapTrigger : public Trap
+{
+public:
+	FireTrapTrigger(MapTile* tile, std::vector<Trap*>& traps) : Trap(tile), mTraps(traps) { }
 
 	void fillData(const DecorMap& data) override;
 	void init(EffectPool* effects) override { }
@@ -86,6 +107,8 @@ public:
 	void trigger() override;
 	void reset() override;
 
+	bool canReset() const override { return false; }
+
 private:
-	Map* mMap;
+	std::vector<Trap*>& mTraps;
 };

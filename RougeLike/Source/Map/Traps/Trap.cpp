@@ -21,7 +21,7 @@ void Trap::set()
 }
 
 
-
+// Spike trap
 void SpikeTrap::fillData(const DecorMap& data)
 {
 	const StringMap& attributes = data.at(DecorType::Spikes);
@@ -61,13 +61,67 @@ void SpikeTrap::reset()
 	animator.getAnimation(0).nextFrame();
 
 	exhausted = false;
-
 	mTimer.stop();
 }
 
 
+// Fire grating
+void FireGratingTrap::fillData(const DecorMap& data)
+{
+	const StringMap& attributes = data.at(DecorType::Spikes);
 
-void SpikeTrapTrigger::fillData(const DecorMap& data)
+	info[PropertyType::Damage] = attributes.getFloat("damage");
+	mTriggerTime = attributes.getFloat("triggerTime");
+	mRecoveryTime = attributes.getFloat("recoveryTime");
+}
+
+void FireGratingTrap::init(EffectPool* effects)
+{
+	if (!mCollider.hasEffects())
+	{
+		Effect* effect = effects->getObject(EffectType::Damage);
+		effect->fill(info);
+		mCollider.addEffect(effect);
+	}
+}
+
+// replace this with the init function somehow??
+void FireGratingTrap::update(EffectPool* effects)
+{
+	Animator& animator = mTile->animation(0);
+	if (animator.loops() > mLoops)
+	{
+		mLoops = animator.loops();
+		init(effects);
+	}
+}
+
+
+void FireGratingTrap::trigger()
+{
+	if (mActive)
+	{
+		Animator& animator = mTile->animation(0);
+		animator.startAnimation(Action::Active);
+
+		exhausted = true;
+
+		mTimer.restart();
+		mCollider.reset();
+	}
+}
+
+void FireGratingTrap::reset()
+{
+	Animator& animator = mTile->animation(0);
+	//animator.stop();
+
+	exhausted = false;
+	mTimer.stop();
+}
+
+// Spik trap trigger
+void FireTrapTrigger::fillData(const DecorMap& data)
 {
 	const StringMap& attributes = data.at(DecorType::Trigger);
 
@@ -75,7 +129,7 @@ void SpikeTrapTrigger::fillData(const DecorMap& data)
 	mRecoveryTime = attributes.getFloat("recoveryTime");
 }
 
-void SpikeTrapTrigger::trigger()
+void FireTrapTrigger::trigger()
 {
 	Animator& animator = mTile->animation(0);
 	animator.getAnimation(0).nextFrame();
@@ -85,18 +139,14 @@ void SpikeTrapTrigger::trigger()
 	mTimer.restart();
 	mCollider.reset();
 
-
-	for (int y = 0; y < mMap->yCount(); y++)
+	for (int i = 0; i < mTraps.size(); i++)
 	{
-		for (int x = 0; x < mMap->xCount(); x++)
+		Trap* trap = mTraps[i];
+		if (trap->tile()->has(DecorType::Grating))
 		{
-			Index index(x, y);
-			MapTile* tile = mMap->tile(index);
-
-			if (tile->has(DecorType::Grating))
-			{
-
-			}
+			FireGratingTrap* fireTrap = static_cast<FireGratingTrap*>(trap);
+			fireTrap->setActive(true);
+			fireTrap->set();
 		}
 	}
 
@@ -104,7 +154,7 @@ void SpikeTrapTrigger::trigger()
 
 }
 
-void SpikeTrapTrigger::reset()
+void FireTrapTrigger::reset()
 {
 	mTimer.stop();
 }

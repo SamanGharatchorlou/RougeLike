@@ -77,6 +77,11 @@ void MapTile::slowUpdate(float dt)
 	for (int i = 0; i < mAnimations.size(); i++)
 	{
 		mAnimations[i].slowUpdate(dt);
+
+		if (has(DecorType::Grating))
+		{
+			mDeferredRendering = true;
+		}
 	}
 }
 
@@ -89,8 +94,25 @@ void MapTile::render(RectF rect)
 
 	for (int i = 0; i < mAnimations.size(); i++)
 	{
+		if (mDeferredRendering)
+			return;
+
 		if(has(DecorType::Torch))
 			rect.SetBotCenter(rect.Center());
+
+		mAnimations[i].render(rect);
+	}
+}
+
+
+void MapTile::deferredRender(RectF rect)
+{
+	for (int i = 0; i < mAnimations.size(); i++)
+	{
+		if (has(DecorType::Grating))
+		{
+			rect.SetBotCenter(rect.Center());
+		}
 
 		mAnimations[i].render(rect);
 	}

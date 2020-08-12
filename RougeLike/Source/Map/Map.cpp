@@ -17,6 +17,21 @@ void Map::setSize(Vector2D<int> size)
 	mData.set(size, MapTile());
 }
 
+void Map::buildDeferredRenderList()
+{
+	for (int y = 0; y < yCount(); y++)
+	{
+		for (int x = 0; x < xCount(); x++)
+		{
+			Index index(x, y);
+			MapTile* tile = &mData[index];
+
+			if (tile->deferRender())
+				mDeferredRendering.push_back(tile);
+		}
+	}
+}
+
 
 void Map::slowUpdate(float dt)
 {
@@ -25,7 +40,9 @@ void Map::slowUpdate(float dt)
 		for (int x = 0; x < xCount(); x++)
 		{
 			Index index(x, y);
-			mData[index].slowUpdate(dt);
+			MapTile* tile = &mData[index];
+
+			tile->slowUpdate(dt);
 		}
 	}
 
@@ -45,12 +62,7 @@ void Map::renderLowerLayer()
 			if(tile.is(CollisionTile::Floor))
 				break;
 
-			RectF tileRect = tile.rect();
-			if (camera->inView(tileRect))
-			{
-				tileRect = camera->toCameraCoords(tileRect);
-				tile.render(tileRect);
-			}
+			render(&tile, camera);
 		}
 	}
 }
@@ -70,12 +82,7 @@ void Map::renderUpperLayer()
 			if (tile.renderType() < RenderTile::Wall)
 				break;
 
-			RectF tileRect = tile.rect();
-			if (camera->inView(tileRect))
-			{
-				tileRect = camera->toCameraCoords(tileRect);
-				tile.render(tileRect);
-			}
+			render(&tile, camera);
 		}
 	}
 
@@ -86,6 +93,22 @@ void Map::renderUpperLayer()
 #if MAP_BOUNDARIES
 	renderMapBoundaries(this);
 #endif
+}
+
+void Map::deferredRender()
+{
+	Camera* camera = Camera::Get();
+
+	for (int i = 0; i < mDeferredRendering.size(); i++)
+	{
+		MapTile* tile = mDeferredRendering[i];	
+		RectF tileRect = tile->rect();
+		if (camera->inView(tileRect))
+		{
+			tileRect = camera->toCameraCoords(tileRect);
+			tile->deferredRender(tileRect);
+		}
+	}
 }
 
 
@@ -242,18 +265,23 @@ void Map::renderFloor()
 	{
 		for (unsigned int x = 0; x < xCount(); x++)
 		{
-			MapTile tile = mData[y][x];
-			RectF tileRect = tile.rect();
+			Index index(x, y);
+			MapTile tile = mData[index];
 
-			if (camera->inView(tileRect))
+			if (tile.has(CollisionTile::Floor | CollisionTile::Water))
 			{
-				if(tile.has(CollisionTile::Floor | CollisionTile::Water))
-				{
-					tileRect = camera->toCameraCoords(tileRect);
-					tile.render(tileRect);
-				}
+				render(&tile, camera);
 			}
 		}
 	}
 }
 
+void Map::render(MapTile* tile, Camera* camera)
+{
+	RectF tileRect = tile->rect();
+	if (camera->inView(tileRect))
+	{
+		tileRect = camera->toCameraCoords(tileRect);
+		tile->render(tileRect);
+	}
+}

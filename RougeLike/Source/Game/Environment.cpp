@@ -131,7 +131,7 @@ void Environment::renderBottomLayer()
 
 void Environment::renderTopLayer()
 {
-	mLevelManager.renderHeighDepth();
+	mLevelManager.renderHighDepth();
 }
 
 

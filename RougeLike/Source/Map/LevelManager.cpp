@@ -107,11 +107,12 @@ void LevelManager::renderLowDepth()
 		Map* map = *iter;
 		map->renderFloor();
 		map->renderLowerLayer();
+		map->deferredRender();
 	}
 }
 
 
-void LevelManager::renderHeighDepth()
+void LevelManager::renderHighDepth()
 {
 	UniqueQueue<Map*>::iterator iter;
 	for (iter = mMaps.begin(); iter != mMaps.end(); iter++)

@@ -38,6 +38,8 @@ Map* MapBuilder::buildMap(MapType type, VectorF offset)
 	populateMapData(map);
 	addTrapMechanics(map);
 
+	map->buildDeferredRenderList();
+
 	return map;
 }
 

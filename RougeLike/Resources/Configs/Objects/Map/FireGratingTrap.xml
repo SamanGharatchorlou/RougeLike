@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Decor>
+	<Animator>
+		<ID>FloorFireBurst</ID>
+		<FrameTime>0.1</FrameTime>
+		<FrameSize x = "798" y ="943"></FrameSize>
+		<Animations>
+			<Active>8</Active>
+		</Animations>
+	</Animator>
+</Decor>

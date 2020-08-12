@@ -47,12 +47,11 @@ protected:
 class MapTile : public PathTile
 {
 public:
-	MapTile() : mRenderType(RenderTile::None), mDecorType(DecorType::None), mTexture(nullptr) { }
+	MapTile() : mRenderType(RenderTile::None), mDecorType(DecorType::None), mTexture(nullptr), mDeferredRendering(false) { }
 
 	void slowUpdate(float dt);
 
 	void setTexture(Texture* texture) { mTexture = texture; }
-	void clear();
 
 	// Render type
 	const RenderTile renderType() const { return mRenderType; }
@@ -74,11 +73,16 @@ public:
 	bool is(DecorType type) const;
 	bool has(DecorType type) const;
 
-	void render(RectF rect);
-
+	// Animations
 	void addAnimation(Animator animation);
 	Animator& animation(int index) { return mAnimations[index]; }
 	const Animator& animation(int index) const { return mAnimations[index]; }
+
+	void render(RectF rect);
+
+	void setDeferredRendering(bool deferr) { mDeferredRendering = deferr; }
+	bool deferRender() const { return mDeferredRendering; }
+	void deferredRender(RectF rect);
 
 private:
 	Texture* mTexture;
@@ -86,6 +90,8 @@ private:
 
 	RenderTile mRenderType;
 	DecorType mDecorType;
+
+	bool mDeferredRendering;
 };
 
 

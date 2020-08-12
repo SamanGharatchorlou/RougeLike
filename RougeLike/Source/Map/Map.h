@@ -3,6 +3,8 @@
 #include "Map/MapBase.h"
 #include "Tiles/MapTile.h"
 
+class Camera;
+
 
 enum class MapType
 {
@@ -16,12 +18,14 @@ enum class MapType
 class Map : public MapBase<MapTile>
 {
 public:
-	Map() : mType(MapType::None)  { }
+	Map() : mType(MapType::None) { }
 	Map(Vector2D<int> mapIndexSize);
 	~Map() { };
 
 	void setType(MapType type) { mType = type; }
 	MapType type() const { return mType; }
+
+	void buildDeferredRenderList();
 
 	// Update
 	void slowUpdate(float dt);
@@ -30,6 +34,7 @@ public:
 	void renderFloor();
 	void renderLowerLayer();
 	void renderUpperLayer();
+	void deferredRender();
 
 	void setSize(Vector2D<int> size);
 	void clearData();
@@ -58,7 +63,13 @@ public:
 	bool isValidTile(RectF rect) const;
 	bool isValidPosition(VectorF position) const;
 
+private:
+
+	void render(MapTile* tile, Camera* camera);
+
 
 private:
 	MapType mType;
+
+	std::vector<MapTile*> mDeferredRendering;
 };

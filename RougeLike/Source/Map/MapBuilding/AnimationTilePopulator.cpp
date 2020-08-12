@@ -11,6 +11,7 @@ void AnimationTilePopulator::addAnimations(Grid<MapTile>& data, const TextureMan
 	XMLParser tourchBowlParser(FileManager::Get()->findFile(FileManager::Configs_Objects, "TorchBowl"));
 	XMLParser spikeParser(FileManager::Get()->findFile(FileManager::Configs_Objects, "SpikeTrap"));
 	XMLParser triggerParser(FileManager::Get()->findFile(FileManager::Configs_Objects, "TriggerTrap"));
+	XMLParser gratingParser(FileManager::Get()->findFile(FileManager::Configs_Objects, "FireGratingTrap"));
 
 	for (int x = 0; x < data.xCount(); x++)
 	{
@@ -46,6 +47,15 @@ void AnimationTilePopulator::addAnimations(Grid<MapTile>& data, const TextureMan
 				Animator animator = buildAnimation(node, textures);
 				tile.addAnimation(animator);
 				tile.animation(0).pause();
+			}
+
+			if (tile.has(DecorType::Grating))
+			{
+				XMLNode node = gratingParser.rootChild("Animator");
+				Animator animator = buildAnimation(node, textures);
+				tile.addAnimation(animator);
+				tile.setDeferredRendering(true);
+				tile.animation(0).stop();
 			}
 		}
 	}
