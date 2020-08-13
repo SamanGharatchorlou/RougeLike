@@ -106,6 +106,9 @@ void RenderTilePopulator::leftRight(Grid<MapTile>& data)
 		}
 	}
 }
+// Point corner error
+// For the first map the top right point corner cannot be set because it
+// never gets set as being the bottom half
 void RenderTilePopulator::pointCorners(Grid<MapTile>& data)
 {
 	for (int x = 0; x < data.xCount(); x++)

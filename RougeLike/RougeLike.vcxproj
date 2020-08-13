@@ -22,6 +22,10 @@
     <ClCompile Include="Source\Actors\Enemies\AIController.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyDebugger.cpp" />
     <ClCompile Include="Source\Map\TileInteractables\TileInteractable.cpp" />
+    <ClCompile Include="Source\Objects\Effects\EffectTypes\ArmorEffect.cpp" />
+    <ClCompile Include="Source\Objects\Effects\EffectTypes\KnockbackStunEffect.cpp" />
+    <ClCompile Include="Source\Objects\Effects\EffectTypes\SlowEffect.cpp" />
+    <ClCompile Include="Source\Objects\Effects\EffectTypes\StunEffect.cpp" />
     <ClCompile Include="Source\Objects\Pools\EnemyPool.cpp" />
     <ClCompile Include="Source\Actors\Enemies\Spawning\EnemyBuilder.cpp" />
     <ClCompile Include="Source\Actors\Player\PlayerManager.cpp" />
@@ -190,6 +194,10 @@
     <ClInclude Include="Source\Actors\Enemies\EnemyDebugger.h" />
     <ClInclude Include="Source\Map\TileInteractables\TileInteractable.h" />
     <ClInclude Include="Source\Map\TileInteractables\Trigger.h" />
+    <ClInclude Include="Source\Objects\Effects\EffectTypes\ArmorEffect.h" />
+    <ClInclude Include="Source\Objects\Effects\EffectTypes\KnockbackStunEffect.h" />
+    <ClInclude Include="Source\Objects\Effects\EffectTypes\SlowEffect.h" />
+    <ClInclude Include="Source\Objects\Effects\EffectTypes\StunEffect.h" />
     <ClInclude Include="Source\Objects\Pools\EnemyPool.h" />
     <ClInclude Include="Source\Actors\Enemies\Spawning\EnemyBuilder.h" />
     <ClInclude Include="Source\Actors\Player\PlayerManager.h" />

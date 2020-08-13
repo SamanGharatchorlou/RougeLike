@@ -28,7 +28,7 @@ void PlayerManager::init(Environment* environment)
 
 void PlayerManager::addAbility(const BasicString& ability)
 {
-	mAbilities.addAbility(ability, &mPlayer);
+	mAbilities.addAbility(ability);
 }
 
 void PlayerManager::setPosition(VectorF position)

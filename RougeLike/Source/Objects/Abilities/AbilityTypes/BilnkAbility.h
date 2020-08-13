@@ -9,13 +9,12 @@ class BlinkAbility: public TargetPositionAbility
 public:
 	BlinkAbility() { }
 
-	//void fillValues(ValueMap& values) override { };
-
 	void activateAt(VectorF position, EffectPool* pool) override;
 
 	void fastUpdate(float) override { }
 	void slowUpdate(float dt) override;
 
+	AbilityType type() const override { return AbilityType::Blink; }
 
 private:
 	void applyEffects(EffectPool* pool);

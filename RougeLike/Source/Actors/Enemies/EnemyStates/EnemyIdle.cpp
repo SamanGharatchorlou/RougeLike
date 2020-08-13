@@ -53,3 +53,8 @@ void EnemyIdle::render()
 {
 	mEnemy->renderCharacter();
 }
+
+void EnemyIdle::resume()
+{
+	mEnemy->animator().selectAnimation(Action::Idle);
+}

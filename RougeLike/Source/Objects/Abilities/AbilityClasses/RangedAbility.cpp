@@ -11,18 +11,12 @@
 #include "Graphics/RenderManager.h"
 
 
-// --- Range ---
-void RangedAbility::fillBaseValues(const PropertyMap& properties)
-{
-	Ability::fillBaseValues(properties);
-	mRange = properties.at(PropertyType::Range);
-}
-
-
 void RangedAbility::renderRangeCircle()
 {
 	VectorF position = Camera::Get()->toCameraCoords(mCaster->position());
-	VectorF size = VectorF(mRange, mRange) * 2.0f;
+
+	float range = mProperties[PropertyType::Range];
+	VectorF size = VectorF(range, range) * 2.0f;
 
 	RectF rect = RectF(VectorF(), size);
 	rect.SetCenter(position);
@@ -41,10 +35,11 @@ Collider RangedAbility::collider()
 }
 
 
-bool RangedAbility::isValidTarget(VectorF target, const Map* map)
+bool RangedAbility::isValidTarget(VectorF target, const Map* map) const 
 {
 	// Is it in range
-	if (distanceSquared(mCaster->position(), target) > mRange * mRange)
+	float range = mProperties.at(PropertyType::Range);
+	if (distanceSquared(mCaster->position(), target) > range * range)
 		return false;
 
 	// Is the target position a floor tile

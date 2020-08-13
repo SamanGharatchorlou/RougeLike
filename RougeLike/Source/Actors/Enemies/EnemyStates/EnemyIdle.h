@@ -15,6 +15,7 @@ public:
 	void slowUpdate(float) override;
 	void render() override;
 	void exit() override { }
+	void resume() override;
 
 	const Type type() const { return Type::Idle; }
 

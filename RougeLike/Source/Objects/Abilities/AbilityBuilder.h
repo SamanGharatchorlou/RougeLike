@@ -2,21 +2,22 @@
 
 class TextureManager;
 class Ability;
+class Actor;
+
 
 class AbilityBuilder
 {
 public:
-	AbilityBuilder(TextureManager* textures) : mTextures(textures) { }
+	AbilityBuilder(TextureManager* textures, Actor* caster) : mTextures(textures), mCaster(caster) { }
 
-	Ability* build(const BasicString& id);
+	Ability* build(const BasicString& id) const;
 
 
 private:
-	Ability* createNewAbility(const BasicString& id);
-	void setValues(Ability* ability, const XMLNode propertiesNode);
-	void setRangedValues(Ability* ability);
-	void initAnimations(Ability* ability, const XMLNode animationNode);
+	Ability* createNewAbility(const BasicString& id) const;
+	void setRangedValues(Ability* ability) const;
 
 private:
 	TextureManager* mTextures;
+	Actor* mCaster;
 };

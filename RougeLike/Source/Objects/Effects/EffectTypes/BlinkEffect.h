@@ -7,6 +7,7 @@ class BlinkEffect : public Effect
 public:
 	BlinkEffect() { };
 
+	void fill(const PropertyMap& valueBag) override;
 	void set(VectorF target) { mTarget = target; }
 
 	void init() override;

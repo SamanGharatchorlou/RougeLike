@@ -80,8 +80,8 @@ void EffectHandler::endEffect(std::vector<Effect*>::iterator& iter)
 {
 	Effect* effect = *iter;
 
-	effect->clearBaseData();
 	effect->exit();
+	effect->clearBaseData();
 
 	iter = mEffects.erase(iter);
 	mExhausted.push(effect);

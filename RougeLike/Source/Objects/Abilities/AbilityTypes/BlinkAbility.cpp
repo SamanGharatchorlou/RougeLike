@@ -5,14 +5,12 @@
 #include "Objects/Effects/EffectTypes/BlinkEffect.h"
 #include "Objects/Pools/EffectPool.h"
 
-#include "Animations/Animator.h"
-
 
 void BlinkAbility::activateAt(VectorF position, EffectPool* effectPool)
 {
 	mTargetPosition = position;
 
-	mRect.SetSize(realiseSize(mAnimator.frameSize(), mMaxDimention));
+	mRect.SetSize(realiseSize(mAnimator.frameSize(), mProperties[PropertyType::MaxSize]));
 	mRect.SetCenter(mTargetPosition);
 	mAnimator.startAnimation(Action::Active);
 
@@ -22,8 +20,8 @@ void BlinkAbility::activateAt(VectorF position, EffectPool* effectPool)
 
 void BlinkAbility::slowUpdate(float dt)
 {
-	if (mAnimator.loops() > 2)
-		mRect.SetSize(mRect.Size() * 0.99);
+	if (mAnimator.loops() > 1)
+		mRect.SetSize(mRect.Size() * 0.94);
 
 	mAnimator.slowUpdate(dt);
 	mRect.SetCenter(mTargetPosition);

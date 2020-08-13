@@ -44,7 +44,10 @@ void LevelManager::load(const XMLParser& parser)
 {
 	mTrapManager.load();
 
-	addMap(MapType::Corridor);
+	Map* map = mBuilder.buildFirst();
+	mMaps.push(map);
+	mTrapManager.addMap(map, mBuilder.specs(map));
+
 	addMap(MapType::Dungeon);
 }
 
@@ -75,28 +78,15 @@ void LevelManager::slowUpdate(float dt)
 
 	mTrapManager.slowUpdate();
 
-
 	Camera* camera = Camera::Get();
 	if (last()->midPoint().x < camera->rect().RightPoint())
 	{
 		addNextMap();
 		setCameraBoundaries(camera);
-		printf("add new map\n");
 	}
 
 
 	closeLevel();
-
-	//VectorF cameraCenter = camera->rect().Center();
-	//float cameraLeft = camera->rect().LeftPoint();
-
-	//if (last()->midPoint().x < cameraCenter.x &&
-	//	first()->getLastRect().RightPoint() < cameraLeft)
-	//{
-	//	popFront();
-	//	setCameraBoundaries(camera);
-	//}
-
 }
 
 void LevelManager::closeLevel()
@@ -108,9 +98,7 @@ void LevelManager::closeLevel()
 		if (camera->rect().LeftPoint() > last()->getFirstRect().LeftPoint())
 		{
 			popFront();
-			printf("remove map\n");		
 			popFront();
-			printf("remove map\n");
 			setCameraBoundaries(camera);
 		}
 	}

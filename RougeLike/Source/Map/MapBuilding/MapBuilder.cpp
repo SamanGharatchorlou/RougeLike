@@ -44,6 +44,34 @@ Map* MapBuilder::buildMap(MapType type, VectorF offset)
 }
 
 
+Map* MapBuilder::buildFirst()
+{
+	Map* map = mPool.popFront();
+
+	buildMapStructure(map, MapType::Corridor);
+
+	for (int y = 0; y < map->yCount(); y++)
+	{
+		for (int x = 0; x < 2; x++)
+		{
+			Index index(x, y);
+			map->tile(index)->set(CollisionTile::Wall);
+			map->tile(index)->set(RenderTile::Wall);
+		}
+	}
+
+
+	addMapDecor(map);
+	populateMapRects(map, VectorF(0,0));
+	populateMapData(map);
+	addTrapMechanics(map);
+
+	map->buildDeferredRenderList();
+
+	return map;
+}
+
+
 void MapBuilder::close(Map* map)
 {
 	// Carve out path

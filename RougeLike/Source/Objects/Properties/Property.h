@@ -18,9 +18,16 @@ public:
 		Force,
 		MaxVelocity,
 
+		xPosition,
+		yPosition,
+
 		// Effect values
 		KnockbackForce,
 		KnockbackDistance,
+
+		FallSpeed,
+
+		Texture1_MaxSize,
 
 		// Enemy
 		Score,
@@ -53,9 +60,6 @@ protected:
 
 
 
-
-
-
 class AttributeType : public PropertyType
 {
 public:
@@ -81,9 +85,14 @@ static const std::unordered_map<BasicString, PropertyType::Type> PropertyLookUpT
 	{ "Force", PropertyType::Force },
 	{ "MaxVelocity", PropertyType::MaxVelocity },
 
+	{ "yPosition", PropertyType::xPosition },
+	{ "xPosition", PropertyType::yPosition },
+
 	// Effect values
 	{ "KnockbackForce", PropertyType::KnockbackForce },
 	{ "KnockbackDistance", PropertyType::KnockbackDistance },
+	{ "FallSpeed", PropertyType::FallSpeed },
+	{ "Texture1_MaxSize", PropertyType::Texture1_MaxSize },
 
 	// Enemy
 	{ "Score", PropertyType::Score },

@@ -4,7 +4,7 @@
 #include "AbilityClasses/Ability.h"
 
 AbilityManager::AbilityManager(TextureManager* textures, Actor* caster, Screen* screen) :
-	mBuilder(textures), mHotKeys(textures, screen)
+	mBuilder(textures, caster), mHotKeys(textures, screen)
 { }
 
 
@@ -108,7 +108,7 @@ void AbilityManager::handleEvents(Ability* ability)
 
 		if (event.data->eventType == Event::ActivateAbilityOn)
 		{
-			//mActivator.activateAreaAttack(ability);
+			mActivator.activateAreaAttack(ability);
 			event.free();
 		}
 		else
@@ -143,7 +143,7 @@ bool AbilityManager::inSelectionMode() const
 }
 
 
-void AbilityManager::addAbility(const BasicString& name, Actor* caster)
+void AbilityManager::addAbility(const BasicString& name)
 {
 	AbilityType type = AbilityType::None;
 	type << name;
@@ -151,13 +151,18 @@ void AbilityManager::addAbility(const BasicString& name, Actor* caster)
 	if (type != AbilityType::None)
 	{
 		Ability* ability = mBuilder.build(name);
-		ability->setCaster(caster);
-
 		AbilityType type = ability->type();
+
+#if _DEBUG
+		if (type == AbilityType::None)
+			DebugPrint(Warning, "Ability '%s' has no type defined. Has its type() override function been defined?\n", name);
+#endif
+
 		setState(ability, AbilityState::Idle);
 
 		mHotKeys.addHotKey(type);
 		mAbilities.push_back(ability);
+		ability->enter();
 	}
 	else
 	{

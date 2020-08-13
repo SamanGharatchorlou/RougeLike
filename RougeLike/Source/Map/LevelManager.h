@@ -43,8 +43,6 @@ private:
 
 	void closeLevel();
 
-	bool done = false;
-
 private:
 	MapBuilder mBuilder;
 	UniqueQueue<Map*> mMaps;

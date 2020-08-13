@@ -13,14 +13,12 @@ class PropertyMap;
 class Ability
 {
 public:
-	Ability() : mState(AbilityState::None), mCaster(nullptr), mMaxDimention(0.0f) { }
+	Ability() : mState(AbilityState::None), mCaster(nullptr) { }
 	virtual ~Ability() { }
 
-	virtual void fillBaseValues(const PropertyMap& properties);
-	virtual void init(Animator animator, Actor* caster);
-	void setAnimations(Animator animator);
+	void init(const BasicString& name, Actor* caster, const PropertyMap& properties, Animator animator);
 
-	virtual void fillValues(const PropertyMap& properties) { }; // TODO:  = 0;
+	virtual void enter() { }
 	virtual void fastUpdate(float dt) = 0;
 	virtual void slowUpdate(float dt) = 0;
 	virtual void render() = 0;
@@ -29,10 +27,8 @@ public:
 	virtual AbilityTarget targetType() const = 0;
 	virtual AbilityType type() const { return AbilityType::None; } // TODO:  = 0;
 
-	void setCaster(Actor* caster) { mCaster = caster; }
 	Actor* caster() const { return mCaster; }
 
-	void setName(const BasicString& name) { mName = name; }
 	BasicString name() const { return mName; }
 
 	void setState(AbilityState state) { mState = state; }
@@ -55,5 +51,6 @@ protected:
 	Actor* mCaster;
 
 	RectF mRect;
-	float mMaxDimention;
+
+	PropertyMap mProperties;
 };

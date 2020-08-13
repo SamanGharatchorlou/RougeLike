@@ -2,17 +2,11 @@
 #include "HealAbility.h"
 
 #include "Actors/Actor.h"
+
+#include "Objects/Effects/EffectTypes/Effect.h"
 #include "Objects/Pools/EffectPool.h"
-#include "Objects/Effects/EffectTypes/HealEffect.h"
 
 #include "Collisions/Collider.h"
-
-
-void HealAbility::fillValues(const PropertyMap& properties)
-{
-	Ability::fillValues(properties);
-	mHeal = Health(properties.at(PropertyType::Health));
-}
 
 
 void HealAbility::slowUpdate(float dt)
@@ -40,12 +34,11 @@ void HealAbility::activate(EffectPool* pool)
 void HealAbility::applyEffects(EffectPool* pool)
 {
 	Effect* effect = pool->getObject(EffectType::Heal);
-	HealEffect* healEffect = static_cast<HealEffect*>(effect);
-	healEffect->set(mHeal);
+	effect->fill(mProperties);
 	mCaster->addEffect(effect);
 }
 
-
+// TODO: this happens too early due to the delayed add from the health effect
 void HealAbility::updateUI()
 {
 	Health* hp = static_cast<Health*>(mCaster->getAttribute(AttributeType::Health));

@@ -12,7 +12,7 @@ void HealEffect::init()
 }
 
 
-void HealEffect::fill(PropertyMap& properties)
+void HealEffect::fill(const PropertyMap& properties)
 {
 	mHeal = Health(properties.at(PropertyType::Health));
 }

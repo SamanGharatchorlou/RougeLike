@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "StunEffect.h"
 
-#include "Game/Camera.h"
+#include "Game/Camera/Camera.h"
 #include "Actors/Enemies/Enemy.h"
 
 

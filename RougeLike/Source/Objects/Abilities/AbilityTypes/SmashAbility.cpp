@@ -11,26 +11,22 @@
 #include "Game/Camera/Camera.h"
 
 
-SmashAbility::SmashAbility(Texture* hammerTexture, VectorF hammerSize) 
-	: mHammerTexture(hammerTexture), mFallSpeed(0.0f), mTime(0.0f)
+SmashAbility::SmashAbility(Texture* hammerTexture) : mHammerTexture(hammerTexture) { }
+
+
+void SmashAbility::enter()
 {
-	mHammerRect.SetSize(hammerSize);
-};
+	VectorF size = realiseSize(mHammerTexture->originalDimentions, mProperties[PropertyType::Texture1_MaxSize]);
+	mHammerRect.SetSize(size);
 
-
-//void SmashAbility::fillValues(ValueMap& values)
-//{
-//	mFallSpeed = values["HammerFallSpeed"];
-//	mDamage = Damage(values["Damage"]);
-//	mTime = values["StunTime"];
-//}
+}
 
 
 void SmashAbility::slowUpdate(float dt)
 {
 	mAnimator.slowUpdate(dt);
 
-	mHammerRect = mHammerRect.Translate(VectorF(0.0f, mFallSpeed * dt));
+	mHammerRect = mHammerRect.Translate(VectorF(0.0f, mProperties[PropertyType::FallSpeed] * dt));
 
 	if (hammerHitGround() && !mAnimator.isRunning())
 	{
@@ -95,12 +91,14 @@ void SmashAbility::applyEffects(Actor* actor, EffectPool* effectPool)
 	// The enemy state will change to wait (from the stun) before the got hit bool from the
 	// damage will change the state to hit. Hence the damage is taken but there is no hit state change
 	Effect* damage = effectPool->getObject(EffectType::Damage);
-	DamageEffect* damageEffect = static_cast<DamageEffect*>(damage);
-	damageEffect->set(mDamage);
-	actor->addEffect(damageEffect);
+	damage->fill(mProperties);
 
-	Effect* stun = effectPool->getObject(EffectType::Stun);
-	StunEffect* stunEffect = static_cast<StunEffect*>(stun);
-	stunEffect->set(mTime);
-	actor->addEffect(stunEffect);
+	actor->addEffect(damage);
+
+	//Effect* stun = effectPool->getObject(EffectType::Stun);
+	//stun->fill(mProperties);
+
+	//StunEffect* stunEffect = static_cast<StunEffect*>(stun);
+	//stunEffect->set(mTime);
+	//actor->addEffect(stunEffect);
 }

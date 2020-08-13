@@ -26,7 +26,7 @@ public:
 	void slowUpdate(float dt);
 	void render();
 
-	void addAbility(const BasicString& name, Actor* caster);
+	void addAbility(const BasicString& name);
 	void setState(Ability* ability, AbilityState state);
 
 	bool inSelectionMode() const;
@@ -49,7 +49,7 @@ private:
 
 	LocalDispatcher mEvents;
 	
-	AbilityBuilder mBuilder;
+	const AbilityBuilder mBuilder;
 	AbilityActivator mActivator;
 	AbilityHotKeys mHotKeys;
 

@@ -9,15 +9,14 @@ class Map;
 class RangedAbility : public Ability
 {
 public:
-	RangedAbility() : mRange(0.0f), mRangeCircle(nullptr) { }
+	RangedAbility() : mRangeCircle(nullptr) { }
 	virtual ~RangedAbility() { }
 
-	void fillBaseValues(const PropertyMap& properties) override;
 	void setRangeCircle(Texture* rangeCircle) { mRangeCircle = rangeCircle; }
 
 	void renderRangeCircle();
 
-	bool isValidTarget(VectorF target, const Map* map);
+	bool isValidTarget(VectorF target, const Map* map) const;
 
 	RectF effectArea() const { return mRect; }
 	Collider collider();
@@ -25,6 +24,5 @@ public:
 	virtual bool isRanged() const { return true; }
 
 protected:
-	float mRange;
 	Texture* mRangeCircle;
 };

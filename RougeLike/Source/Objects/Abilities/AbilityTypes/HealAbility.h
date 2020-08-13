@@ -9,7 +9,7 @@ class HealAbility : public TargetSelfAbility
 public:
 	HealAbility() { };
 
-	void fillValues(const PropertyMap& values) override;
+	//void set(const PropertyMap& values) override;
 	
 	void activate(EffectPool* pool) override;
 
@@ -24,5 +24,5 @@ protected:
 
 
 private:
-	Health mHeal;
+	//Health mHeal;
 };

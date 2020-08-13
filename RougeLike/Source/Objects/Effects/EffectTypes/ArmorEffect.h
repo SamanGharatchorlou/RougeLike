@@ -10,6 +10,8 @@ public:
 	ArmorEffect() { }
 
 	void set(Armor armor) { mArmor = armor; }
+
+	void fill(const PropertyMap& valueBag) override;
 	
 	void clearData() override;
 

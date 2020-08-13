@@ -21,18 +21,18 @@ public:
 	bool selected(Ability* ability, Button::State buttonState) const;
 	bool released(Ability* ability, Button::State buttonState) const;
 
-	bool activate(Ability* ability, Button::State buttonState, const InputManager* input);
+	bool activate(Ability* ability, Button::State buttonState, const InputManager* input) const;
 
-	void activateAreaAttack(Ability* ability);
+	void activateAreaAttack(Ability* ability) const;
 
 
 private:
 	VectorF cursorWorldPosition(VectorF cursorPosition) const;
 	const Map* map(VectorF position) const;
 
-	bool activateOnSelf(TargetSelfAbility* ability);
-	bool activateOnActor(TargetActorAbility* ability, const InputManager* input);
-	bool activateOnPosition(TargetPositionAbility* ability, const InputManager* input);
+	bool activateOnSelf(TargetSelfAbility* ability) const;
+	bool activateOnActor(TargetActorAbility* ability, const InputManager* input) const;
+	bool activateOnPosition(TargetPositionAbility* ability, const InputManager* input) const;
 	
 
 private:

@@ -7,8 +7,8 @@
 		<MaxSize>100</MaxSize>
 		<Cooldown>1</Cooldown>
 
-		<HammerMaxSize>50</HammerMaxSize>
-		<HammerFallSpeed>750</HammerFallSpeed>
+		<Texture1_MaxSize>50</Texture1_MaxSize>
+		<FallSpeed>750</FallSpeed>
 
 		<StunTime>5</StunTime>
 	</Properties>
@@ -23,5 +23,6 @@
 			<Active>6</Active>
 		</Animations>
 	</Animator>
+
 
 </Ability>

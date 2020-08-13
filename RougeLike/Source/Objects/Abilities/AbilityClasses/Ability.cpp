@@ -2,25 +2,15 @@
 #include "Ability.h"
 
 
-void Ability::fillBaseValues(const PropertyMap& properties)
+void Ability::init(const BasicString& name, Actor* caster, const PropertyMap& properties, Animator animator)
 {
-	mMaxDimention = properties.at(PropertyType::MaxSize);
-	mCooldown = Cooldown(properties.at(PropertyType::Cooldown));
-}
-
-
-void Ability::init(Animator animator, Actor* caster)
-{
+	mName = name;
 	mCaster = caster;
 	mAnimator = animator;
-	mRect.SetSize(realiseSize(animator.frameSize(), mMaxDimention));
-}
+	mProperties = properties;
 
-
-void Ability::setAnimations(Animator animator)
-{
-	mAnimator = animator;
-	mRect.SetSize(realiseSize(animator.frameSize(), mMaxDimention));
+	mRect.SetSize(realiseSize(animator.frameSize(), properties.at(PropertyType::MaxSize)));
+	mCooldown = Cooldown(properties.at(PropertyType::Cooldown));
 }
 
 

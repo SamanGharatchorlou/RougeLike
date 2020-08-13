@@ -44,7 +44,7 @@ bool AbilityActivator::released(Ability* ability, Button::State buttonState) con
 }
 
 
-bool AbilityActivator::activate(Ability* ability, Button::State buttonState, const InputManager* input)
+bool AbilityActivator::activate(Ability* ability, Button::State buttonState, const InputManager* input) const
 {
 	bool didActivate = false;
 
@@ -92,7 +92,7 @@ bool AbilityActivator::activate(Ability* ability, Button::State buttonState, con
 }
 
 
-void AbilityActivator::activateAreaAttack(Ability* ability)
+void AbilityActivator::activateAreaAttack(Ability* ability) const
 {
 	TargePositionAttackAbility* attackAbility = static_cast<TargePositionAttackAbility*>(ability);
 	Collider abilityCollider = attackAbility->collider();
@@ -109,15 +109,15 @@ void AbilityActivator::activateAreaAttack(Ability* ability)
 	}
 }
 
-
-bool AbilityActivator::activateOnSelf(TargetSelfAbility* ability)
+ 
+bool AbilityActivator::activateOnSelf(TargetSelfAbility* ability) const
 {
 	ability->activate(mEnvironment->effectPool());
 	return true;
 }
 
 
-bool AbilityActivator::activateOnActor(TargetActorAbility* ability, const InputManager* input)
+bool AbilityActivator::activateOnActor(TargetActorAbility* ability, const InputManager* input) const
 {
 	std::vector<Actor*> enemies = mEnvironment->actors()->getAllEnemies();
 	VectorF cursorPosition = cursorWorldPosition(input->cursorPosition());
@@ -135,7 +135,7 @@ bool AbilityActivator::activateOnActor(TargetActorAbility* ability, const InputM
 }
 
 
-bool AbilityActivator::activateOnPosition(TargetPositionAbility* ability, const InputManager* input)
+bool AbilityActivator::activateOnPosition(TargetPositionAbility* ability, const InputManager* input) const
 {
 	VectorF cursorPos = cursorWorldPosition(input->cursorPosition());
 

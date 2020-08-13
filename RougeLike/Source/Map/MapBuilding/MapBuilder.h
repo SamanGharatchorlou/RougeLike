@@ -12,6 +12,7 @@ class MapBuilder
 public:
 	MapBuilder(TextureManager* textures);
 
+	Map* buildFirst();
 	Map* buildMap(MapType type, VectorF offset);
 
 	void returnMap(Map* map);

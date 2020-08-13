@@ -6,9 +6,15 @@
 
 void ArmorEffect::init()
 {
-	Armor* armor = static_cast<Armor*>(mReceiver->getProperty("Armor"));
+	Armor* armor = static_cast<Armor*>(mReceiver->getAttribute(PropertyType::Armor));
 	armor->increase(mArmor);
 	endEffect();
+}
+
+
+void ArmorEffect::fill(const PropertyMap& valueBag)
+{
+	setProperty(PropertyType::Armor, mArmor, valueBag);
 }
 
 

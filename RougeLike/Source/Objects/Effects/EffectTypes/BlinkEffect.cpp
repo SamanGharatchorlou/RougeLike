@@ -16,6 +16,11 @@ void BlinkEffect::init()
 	player->overrideControl(true);
 }
 
+void BlinkEffect::fill(const PropertyMap& valueBag)
+{
+	setProperty(PropertyType::xPosition, mTarget.x, valueBag);
+}
+
 
 void BlinkEffect::slowUpdate(float dt)
 {

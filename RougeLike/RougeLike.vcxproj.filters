@@ -160,6 +160,10 @@
     <ClCompile Include="Source\Map\TileInteractables\SpikeTrap.cpp" />
     <ClCompile Include="Source\Map\TileInteractablesManager.cpp" />
     <ClCompile Include="Source\Map\TileInteractables\TileInteractable.cpp" />
+    <ClCompile Include="Source\Objects\Effects\EffectTypes\KnockbackStunEffect.cpp" />
+    <ClCompile Include="Source\Objects\Effects\EffectTypes\SlowEffect.cpp" />
+    <ClCompile Include="Source\Objects\Effects\EffectTypes\StunEffect.cpp" />
+    <ClCompile Include="Source\Objects\Effects\EffectTypes\ArmorEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -348,6 +352,10 @@
     <ClInclude Include="Source\Map\TileInteractablesManager.h" />
     <ClInclude Include="Source\Map\TileInteractables\TileInteractable.h" />
     <ClInclude Include="Source\Map\TileInteractables\Trigger.h" />
+    <ClInclude Include="Source\Objects\Effects\EffectTypes\StunEffect.h" />
+    <ClInclude Include="Source\Objects\Effects\EffectTypes\KnockbackStunEffect.h" />
+    <ClInclude Include="Source\Objects\Effects\EffectTypes\SlowEffect.h" />
+    <ClInclude Include="Source\Objects\Effects\EffectTypes\ArmorEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "AbilityBuilder.h"
 
+#include "Graphics/Texture.h"
 #include "Graphics/TextureManager.h"
 #include "Animations/AnimationReader.h"
 
@@ -14,42 +15,26 @@
 #include "Objects/Abilities/AbilityTypes/ChargeAbility.h"
 
 
-Ability* AbilityBuilder::build(const BasicString& id)
+Ability* AbilityBuilder::build(const BasicString& id) const
 {
 	Ability* ability = createNewAbility(id);
 
 	XMLParser parser;
 	parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, id));
 
-	ability->setName(id);
-	setValues(ability, parser.rootChild("Properties"));
+	AnimationReader reader;
+	Animator animator = reader.buildAnimator(parser.rootChild("Animator"), mTextures);
+
+	PropertyMap properties(parser.rootChild("Properties"));
+
+	ability->init(id, mCaster, properties, animator);
 	setRangedValues(ability);
-	initAnimations(ability, parser.rootChild("Animator"));
 
 	return ability;
 }
 
 
-void AbilityBuilder::initAnimations(Ability* ability, const XMLNode animationNode)
-{
-	AnimationReader reader;
-	ability->setAnimations(reader.buildAnimator(animationNode, mTextures));
-}
-
-
-void AbilityBuilder::setValues(Ability* ability, const XMLNode propertiesNode)
-{
-	PropertyMap properties(propertiesNode);
-
-	if (properties.isEmpty())
-		DebugPrint(Log, "Ability '%s' has no property values\n", ability->name().c_str());
-
-	ability->fillBaseValues(properties);
-	ability->fillValues(properties);
-}
-
-
-Ability* AbilityBuilder::createNewAbility(const BasicString& id)
+Ability* AbilityBuilder::createNewAbility(const BasicString& id) const
 {
 	Ability* ability = nullptr;
 	AbilityType type = AbilityType::None;
@@ -57,10 +42,25 @@ Ability* AbilityBuilder::createNewAbility(const BasicString& id)
 
 	switch (type)
 	{
-		break;
 	case AbilityType::Heal:
 		ability = new HealAbility;
 		break;
+
+	case AbilityType::Blink:
+		ability = new BlinkAbility;
+		break;
+
+	case AbilityType::Spikes:
+		ability = new SpikeAbility;
+		break;
+	case AbilityType::Smash:
+	{
+		// Create hammer
+		Texture* texture = mTextures->getTexture("Mjolnir", FileManager::Image_Weapons);
+		ability = new SmashAbility(texture);
+		break;
+	}
+
 	case AbilityType::None:
 	default:
 		DebugPrint(Log, "Ability type for '%s' has not been set, must be added to the AbilityType enum\n", id.c_str());
@@ -68,6 +68,20 @@ Ability* AbilityBuilder::createNewAbility(const BasicString& id)
 	}
 
 	return ability;
+}
+
+
+void AbilityBuilder::setRangedValues(Ability* ability) const
+{
+	if (ability->isRanged())
+	{
+		RangedAbility* rangedAbility = static_cast<RangedAbility*>(ability);
+		if (rangedAbility)
+		{
+			Texture* rangeCircle = mTextures->getTexture("RangeCircle", FileManager::Image_UI);
+			rangedAbility->setRangeCircle(rangeCircle);
+		}
+	}
 }
 
 /*
@@ -100,16 +114,3 @@ Ability* AbilityBuilder::createNewAbility(const BasicString& id)
 	}
 
 */
-
-void AbilityBuilder::setRangedValues(Ability* ability)
-{
-	if (ability->isRanged())
-	{
-		RangedAbility* rangedAbility = static_cast<RangedAbility*>(ability);
-		if (rangedAbility)
-		{
-			Texture* rangeCircle = mTextures->getTexture("RangeCircle", FileManager::Image_UI);
-			rangedAbility->setRangeCircle(rangeCircle);
-		}
-	}
-}
