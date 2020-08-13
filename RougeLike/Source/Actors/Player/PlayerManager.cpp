@@ -66,7 +66,6 @@ void PlayerManager::fastUpdate(float dt)
 	Map* playerMap = mEnvironment->map(mPlayer.position());
 	mPlayerCollisions.resolveWalls(playerMap, dt);
 	mPlayerCollisions.resolveWeapons(mEnvironment->effectPool());
-	mPlayerCollisions.resolveTraps(playerMap, mEnvironment->effectPool());
 }
 
 void PlayerManager::slowUpdate(float dt)

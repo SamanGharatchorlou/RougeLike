@@ -15,8 +15,8 @@ DecorType stringToType(const BasicString& decorString)
 		return DecorType::Torch_Bowl;
 	else if (decorString == "Spikes")
 		return DecorType::Spikes;	
-	else if (decorString == "Trigger")
-		return DecorType::Trigger;
+	else if (decorString == "GratingTrigger")
+		return DecorType::GratingTrigger;
 	else if (decorString == "Grating")
 		return DecorType::Grating;
 	else

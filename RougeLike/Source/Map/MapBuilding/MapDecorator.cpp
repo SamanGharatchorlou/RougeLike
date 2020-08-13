@@ -70,7 +70,7 @@ void MapDecorator::addTraps(Map* map, DecorMap::const_iterator& attributes)
 		addSpikes(data, attributes->second);
 	}
 
-	if (doesTypeContain(type, DecorType::Trigger))
+	if (doesTypeContain(type, DecorType::GratingTrigger))
 	{
 		addTiggers(data, attributes->second);
 	}
@@ -202,7 +202,7 @@ void MapDecorator::addSpikes(Grid<MapTile>& data, const StringMap& attributes)
 void MapDecorator::addTiggers(Grid<MapTile>& data, const StringMap& attributes)
 {
 	Index index = attributes.getVector("x", "y");
-	data[index].set(DecorType::Trigger);
+	data[index].set(DecorType::GratingTrigger);
 }
 
 

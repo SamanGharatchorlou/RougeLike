@@ -3,7 +3,7 @@
 
 #include "Objects/Effects/EffectTypes/Effect.h"
 #include "Utilities/Maps/EffectMap.h"
-#include "EffectPool.h"
+#include "Objects/Pools/EffectPool.h"
 
 
 void EffectManager::fillEffectBag(XMLNode effectNode)
@@ -15,7 +15,10 @@ void EffectManager::fillEffectBag(XMLNode effectNode)
 void EffectManager::slowUpdate(float dt)
 {
 	mHandler.slowUpdate(dt);
-	mHandler.returnExhaustedEffects(mPool);
+
+	Queue<Effect*>& exhaustedEffects = mHandler.exhaustedEffects();
+	while (exhaustedEffects.size() > 0)
+		returnEffect(exhaustedEffects.pop());
 }
 
 void EffectManager::fastUpdate(float dt)
@@ -55,9 +58,14 @@ void EffectManager::clear()
 {
 	mBag.empty();
 	mHandler.clear(mPool);
+
+	Queue<Effect*>& exhaustedEffects = mHandler.exhaustedEffects();
+	while (exhaustedEffects.size() > 0)
+		returnEffect(exhaustedEffects.pop());
 }
+
 
 void EffectManager::returnEffect(Effect* effect)
 {
-	mPool->returnObject(effect);
+	mPool->returnObject(effect, effect->type());
 }

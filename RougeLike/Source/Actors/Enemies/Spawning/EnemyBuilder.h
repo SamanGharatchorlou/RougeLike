@@ -1,7 +1,7 @@
 #pragma once
 
 #include "EnemySpawner.h"
-#include "Actors/Enemies/EnemyPool.h"
+#include "Objects/Pools/EnemyPool.h"
 
 class TextureManager;
 class EffectPool;

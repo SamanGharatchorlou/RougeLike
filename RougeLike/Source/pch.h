@@ -63,6 +63,7 @@ namespace fs = std::experimental::filesystem;
 #include "Utilities/Helpers.h"
 #include "Utilities/Grid.h"
 #include "Utilities/Timer.h"
+#include "Utilities/Queue.h"
 #include "Utilities/UniqueQueue.h"
 
 #include "Utilities/Maps/DataMap.h"

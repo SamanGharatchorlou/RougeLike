@@ -15,12 +15,20 @@ enum class CollectableType
 	Count
 };
 
-template<class T>
-inline CollectableType operator +(CollectableType a, T b)
+
+inline CollectableType operator +(CollectableType type, int number)
 {
-	int sum = static_cast<int>(a) + static_cast<int>(b);
+	int sum = static_cast<int>(type) + number;
+
+#if _DEBUG
+	if (sum > (int)CollectableType::Count)
+		DebugPrint(Warning, "adding %d to CollectableType %d is out of bounds", number, (int)type);
+#endif
+
 	return static_cast<CollectableType>(sum);
 }
+
+
 
 inline void operator <<(CollectableType& a, const BasicString& str)
 {

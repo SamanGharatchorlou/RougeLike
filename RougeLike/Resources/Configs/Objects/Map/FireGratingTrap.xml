@@ -2,7 +2,7 @@
 <Decor>
 	<Animator>
 		<ID>FloorFireBurst</ID>
-		<FrameTime>0.1</FrameTime>
+		<FrameTime>0.025</FrameTime>
 		<FrameSize x = "798" y ="943"></FrameSize>
 		<Animations>
 			<Active>8</Active>

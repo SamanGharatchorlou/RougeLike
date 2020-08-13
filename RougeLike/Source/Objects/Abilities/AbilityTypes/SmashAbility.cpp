@@ -3,7 +3,7 @@
 
 #include "Objects/Effects/EffectTypes/DamageEffect.h"
 #include "Objects/Effects/EffectTypes/StunEffect.h"
-#include "Objects/Effects/EffectPool.h"
+#include "Objects/Pools/EffectPool.h"
 
 #include "Actors/Actor.h"
 #include "Graphics/Texture.h"

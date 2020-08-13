@@ -3,9 +3,9 @@
 #include "Events/Dispatcher.h"
 #include "Map/LevelManager.h"
 #include "Actors/ActorManager.h"
-#include "Objects/Effects/EffectPool.h"
+#include "Objects/Pools/EffectPool.h"
 #include "Items/Collectables/Collectables.h"
-#include "Items/Collectables/CollectablesPool.h"
+
 
 class Map;
 class InputManager;

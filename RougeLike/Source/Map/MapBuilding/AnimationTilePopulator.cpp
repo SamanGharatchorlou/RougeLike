@@ -41,7 +41,7 @@ void AnimationTilePopulator::addAnimations(Grid<MapTile>& data, const TextureMan
 				tile.animation(0).pause();
 			}
 
-			if (tile.has(DecorType::Trigger))
+			if (tile.has(DecorType::GratingTrigger))
 			{
 				XMLNode node = triggerParser.rootChild("Animator");
 				Animator animator = buildAnimation(node, textures);

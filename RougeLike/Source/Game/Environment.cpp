@@ -7,7 +7,6 @@
 
 #include "Map/MapBuilding/MapGenerator.h"
 #include "Map/Map.h"
-#include "Map/TrapManager.h"
 
 
 Environment::Environment(GameData* gameData) : 
@@ -42,7 +41,12 @@ void Environment::load()
 
 	DebugPrint(Log, "\n Loading Effect pool\n");
 
-	mEffectPool.load();
+	std::vector<EffectType> types;
+	for (EffectType type = EffectType::None + 1; type < EffectType::Count; type = type + 1)
+	{
+		types.push_back(type);
+	}
+	mEffectPool.load(types, 25);
 
 	DebugPrint(Log, "\n Loading Maps\n");
 

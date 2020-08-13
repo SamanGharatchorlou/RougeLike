@@ -68,6 +68,7 @@ public:
 	bool has(CollisionTile type) const { return PathTile::has(type); }
 
 	// Decoration type
+	const DecorType decorType() const { return mDecorType; }
 	void set(DecorType type) { mDecorType = type; }
 	void add(DecorType type);
 	bool is(DecorType type) const;

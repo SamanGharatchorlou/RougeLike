@@ -1,15 +1,11 @@
 #include "pch.h"
 #include "PlayerCollisions.h"
 
-#include "Objects/Effects/EffectPool.h"
-#include "Objects/Effects/EffectTypes/Effect.h"
-
 #include "Actors/Player/Player.h"
 #include "Weapons/Melee/MeleeWeapon.h"
 #include "CollisionManager.h"
 
 #include "Map/Map.h"
-#include "Map/TrapManager.h"
 
 
 void PlayerCollisions::init(Player* player, CollisionManager* collisionManager)
@@ -36,11 +32,6 @@ void PlayerCollisions::resolveWalls(Map* map, float dt)
 	}
 }
 
-void PlayerCollisions::resolveTraps(Map* map, EffectPool* effects)
-{
-	//map->traps().triggerTrap(mPlayer->position());
-	//resolveTrapCollisions(map, effects);
-}
 
 void PlayerCollisions::resolveWeapons(EffectPool* effects)
 {
@@ -95,21 +86,4 @@ void PlayerCollisions::addCollidersToTrackers()
 	cManager->addAttackers(CollisionManager::Player_Trigger_Trap, playerCollider);
 	cManager->addAttackers(CollisionManager::Player_Hit_Collectable, playerCollider);
 	cManager->addAttackers(CollisionManager::Player_Hit_Enemy, playerCollider);
-}
-
-
-void PlayerCollisions::resolveTrapCollisions(Map* map, EffectPool* effects)
-{
-	//if (map->traps().didCollide(mPlayer->position()))
-	//{
-	//	Damage trapDamage = map->traps().damage();
-
-	//	// TODO: FIX
-	//	PropertyMap properties;
-	//	properties[PropertyType::Damage] = trapDamage.value();
-
-	//	Effect* effect = effects->getObject(EffectType::Damage);
-	//	effect->fill(properties);
-	//	mPlayer->addEffect(effect);
-	//}
 }

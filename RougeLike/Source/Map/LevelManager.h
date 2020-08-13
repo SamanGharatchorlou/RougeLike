@@ -1,7 +1,7 @@
 #pragma once
 
 #include "MapBuilding/MapBuilder.h"
-#include "TrapManager.h"
+#include "TileInteractablesManager.h"
 
 class Map;
 class TextureManager;
@@ -43,10 +43,12 @@ private:
 
 	void closeLevel();
 
+	bool done = false;
+
 private:
 	MapBuilder mBuilder;
 	UniqueQueue<Map*> mMaps;
-	TrapManager mTrapManager;
+	TileInteractableManager mTrapManager;
 
 	int mLevel;
 };

@@ -1,11 +1,9 @@
 #include "pch.h"
 #include "EffectHandler.h"
+
 #include "EffectTypes/Effect.h"
 
-#include "EffectPool.h"
 
-
-// TODO: split this us so everything is delayed added
 void EffectHandler::addEffect(Effect* effect)
 {
 	mEffectsToAdd.push(effect);
@@ -59,23 +57,8 @@ void EffectHandler::clear(EffectPool* pool)
 
 	while(mEffectsToAdd.size() > 0)
 	{
-		Effect* effect = mEffectsToAdd.front();
-		mEffectsToAdd.pop();
+		Effect* effect = mEffectsToAdd.pop();
 		mExhausted.push(effect);
-	}
-
-	returnExhaustedEffects(pool);
-}
-
-
-void EffectHandler::returnExhaustedEffects(EffectPool* pool)
-{
-	while (mExhausted.size() > 0)
-	{
-		Effect* effect = mExhausted.front();
-		mExhausted.pop();
-
-		pool->returnObject(effect);
 	}
 }
 
@@ -85,9 +68,7 @@ void EffectHandler::addQueuedEffects()
 {
 	while (mEffectsToAdd.size() > 0)
 	{
-		Effect* effect = mEffectsToAdd.front();
-		mEffectsToAdd.pop();
-
+		Effect* effect = mEffectsToAdd.pop();
 		effect->init();
 		mEffects.push_back(effect);
 	}

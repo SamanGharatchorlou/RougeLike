@@ -16,7 +16,7 @@ public:
 
 	void clear(EffectPool* pool);
 	
-	void returnExhaustedEffects(EffectPool* pool);
+	Queue<Effect*>& exhaustedEffects() { return mExhausted; }
 
 private:
 	void addQueuedEffects();
@@ -24,8 +24,8 @@ private:
 
 
 private:
-	std::queue<Effect*> mEffectsToAdd;
-	std::queue<Effect*> mExhausted;
+	Queue<Effect*> mEffectsToAdd;
+	Queue<Effect*> mExhausted;
 
 	std::vector<Effect*> mEffects;
 };

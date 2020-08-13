@@ -4,11 +4,22 @@
 enum class EnemyType
 {
 	None,
-	Imp,
-	Angel,
-	Devil
+	Devil,
+	Count
 };
 
+
+inline EnemyType operator +(EnemyType type, int number)
+{
+	int sum = static_cast<int>(type) + number;
+
+#if _DEBUG
+	if (sum > (int)EnemyType::Count)
+		DebugPrint(Warning, "adding %d to EnemyType %d is out of bounds", number, (int)type);
+#endif
+
+	return static_cast<EnemyType>(sum);
+}
 
 
 inline void operator >>(EnemyType type, BasicString& string)
@@ -19,8 +30,6 @@ inline void operator >>(EnemyType type, BasicString& string)
 		string = "Devil";
 		break;
 	case EnemyType::None:
-	case EnemyType::Imp:
-	case EnemyType::Angel:
 	default:
 		DebugPrint(Warning, "EnemyType to string conversion has not been defined\n");
 		break;

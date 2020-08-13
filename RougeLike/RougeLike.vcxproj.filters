@@ -63,7 +63,6 @@
     <ClCompile Include="Source\Animations\AnimationReader.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHotKeys.cpp" />
     <ClCompile Include="Source\Collisions\EffectCollider.cpp" />
-    <ClCompile Include="Source\Objects\Effects\EffectPool.cpp" />
     <ClCompile Include="Source\Collisions\PlayerCollisions.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityActivator.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\SpikeAbility.cpp" />
@@ -73,7 +72,6 @@
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\ChargeAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\BlinkAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\ArmorAbility.cpp" />
-    <ClCompile Include="Source\Map\TrapManager.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\BlinkEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\DamageEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\DisplacementEffect.cpp" />
@@ -105,8 +103,6 @@
     <ClCompile Include="Source\Map\MapBuilding\MapDecorator.cpp" />
     <ClCompile Include="Source\Actors\Player\PlayerManager.cpp" />
     <ClCompile Include="Source\Collisions\EnemyCollisions.cpp" />
-    <ClCompile Include="Source\Actors\Enemies\EnemyPool.cpp" />
-    <ClCompile Include="Source\Items\Collectables\CollectablesPool.cpp" />
     <ClCompile Include="Source\Actors\Enemies\AIController.cpp" />
     <ClCompile Include="Source\System\Files\XMLNode.cpp" />
     <ClCompile Include="Source\Actors\Enemies\Spawning\EnemyBuilder.cpp" />
@@ -155,7 +151,15 @@
     <ClCompile Include="Source\Map\MapBuilding\MapPopulator.cpp" />
     <ClCompile Include="Source\Map\MapBuilding\MapSpecifications.cpp" />
     <ClCompile Include="Source\Utilities\Maps\DecorMap.cpp" />
-    <ClCompile Include="Source\Map\Traps\Trap.cpp" />
+    <ClCompile Include="Source\Objects\Pools\EffectPool.cpp" />
+    <ClCompile Include="Source\Objects\Pools\EnemyPool.cpp" />
+    <ClCompile Include="Source\Objects\Pools\CollectablesPool.cpp" />
+    <ClCompile Include="Source\Objects\Pools\TrapPool.cpp" />
+    <ClCompile Include="Source\Map\TileInteractables\FireGratingTrap.cpp" />
+    <ClCompile Include="Source\Map\TileInteractables\FireGratingTrigger.cpp" />
+    <ClCompile Include="Source\Map\TileInteractables\SpikeTrap.cpp" />
+    <ClCompile Include="Source\Map\TileInteractablesManager.cpp" />
+    <ClCompile Include="Source\Map\TileInteractables\TileInteractable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -235,7 +239,6 @@
     <ClInclude Include="Source\Animations\AnimationReader.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityHotKeys.h" />
     <ClInclude Include="Source\Collisions\EffectCollider.h" />
-    <ClInclude Include="Source\Objects\Effects\EffectPool.h" />
     <ClInclude Include="Source\Collisions\PlayerCollisions.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityActivator.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\SpikeAbility.h" />
@@ -247,7 +250,6 @@
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\ArmorAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\Cooldown.h" />
     <ClInclude Include="Source\Utilities\UniqueQueue.h" />
-    <ClInclude Include="Source\Map\TrapManager.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\BlinkEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\DamageEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\DisplacementEffect.h" />
@@ -281,10 +283,8 @@
     <ClInclude Include="Source\Actors\Enemies\Types\EnemyTypes.h" />
     <ClInclude Include="Source\Actors\Player\PlayerManager.h" />
     <ClInclude Include="Source\Collisions\EnemyCollisions.h" />
-    <ClInclude Include="Source\Actors\Enemies\EnemyPool.h" />
     <ClInclude Include="Source\Utilities\ObjectPool.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\EffectTypes.h" />
-    <ClInclude Include="Source\Items\Collectables\CollectablesPool.h" />
     <ClInclude Include="Source\Actors\Enemies\AIController.h" />
     <ClInclude Include="Source\System\Files\XMLNode.h" />
     <ClInclude Include="Source\Actors\Enemies\Spawning\EnemyBuilder.h" />
@@ -337,7 +337,17 @@
     <ClInclude Include="Source\Map\MapBuilding\MapPopulator.h" />
     <ClInclude Include="Source\Map\MapBuilding\MapSpecifications.h" />
     <ClInclude Include="Source\Utilities\Maps\DecorMap.h" />
-    <ClInclude Include="Source\Map\Traps\Trap.h" />
+    <ClInclude Include="Source\Objects\Pools\EffectPool.h" />
+    <ClInclude Include="Source\Objects\Pools\EnemyPool.h" />
+    <ClInclude Include="Source\Objects\Pools\CollectablesPool.h" />
+    <ClInclude Include="Source\Objects\Pools\TrapPool.h" />
+    <ClInclude Include="Source\Map\TileInteractables\FireGratingTrap.h" />
+    <ClInclude Include="Source\Map\TileInteractables\FireGratingTrigger.h" />
+    <ClInclude Include="Source\Map\TileInteractables\SpikeTrap.h" />
+    <ClInclude Include="Source\Map\TileInteractables\Trap.h" />
+    <ClInclude Include="Source\Map\TileInteractablesManager.h" />
+    <ClInclude Include="Source\Map\TileInteractables\TileInteractable.h" />
+    <ClInclude Include="Source\Map\TileInteractables\Trigger.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

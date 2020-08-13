@@ -81,9 +81,15 @@ enum class DecorType : Uint32
 	Torch = Column << 2,
 	Torch_Handle = Column << 3,
 	Torch_Bowl = Column << 4,
-	Spikes = Column << 5,
-	Trigger = Column << 6,
-	Grating = Column << 7,
+
+	Traps = Column << 5,
+	Spikes = Traps << 1, // 64
+	Grating = Traps << 2, // 128
+
+	Triggers = Traps << 3, // 
+	GratingTrigger = Triggers << 1, // 512
+
+	END = Triggers << 2
 };
 
 
@@ -137,3 +143,7 @@ inline DecorType operator &(DecorType a, DecorType b)
 	return static_cast<DecorType>(static_cast<Uint32>(a) & static_cast<Uint32>(b));
 }
 
+inline DecorType operator << (DecorType type, int number)
+{
+	return static_cast<DecorType>(static_cast<Uint32>(type) << number);
+}

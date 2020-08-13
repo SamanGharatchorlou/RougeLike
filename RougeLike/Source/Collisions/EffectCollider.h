@@ -9,8 +9,8 @@ class Effect;
 class EffectCollider : public Collider
 {
 public:
-	EffectCollider() : mRequiresUpdate(true) { }
-	EffectCollider(RectF* rect, VectorF relativeColliderSize = VectorF(1.0f, 1.0f)) : Collider(rect, relativeColliderSize), mRequiresUpdate(true) { }
+	EffectCollider() { }
+	EffectCollider(RectF* rect, VectorF relativeColliderSize = VectorF(1.0f, 1.0f)) : Collider(rect, relativeColliderSize) { }
 
 	void addEffect(Effect* effect) { mEffects.push(effect); }
 	Effect* popEffect();
@@ -20,5 +20,4 @@ public:
 
 private:
 	std::queue<Effect*> mEffects;
-	bool mRequiresUpdate;
 };

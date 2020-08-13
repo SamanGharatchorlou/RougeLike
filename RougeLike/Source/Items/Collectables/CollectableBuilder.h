@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CollectableSpawner.h"
-#include "CollectablesPool.h"
+#include "Objects/Pools/CollectablesPool.h"
 
 class TextureManager;
 

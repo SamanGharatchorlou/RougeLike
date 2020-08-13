@@ -19,7 +19,6 @@ public:
 	void init(Player* player, CollisionManager* collisionManager);
 
 	void resolveWalls(Map* map, float dt);
-	void resolveTraps(Map* map, EffectPool* effects);
 	void resolveWeapons(EffectPool* effects);
 
 	void enableBodyCollisions(bool enable);
@@ -38,7 +37,6 @@ private:
 
 private:
 	void addCollidersToTrackers();
-	void resolveTrapCollisions(Map* map, EffectPool* effects);
 
 
 private:

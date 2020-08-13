@@ -4,7 +4,7 @@
 #include "Collisions/EffectCollider.h"
 #include "Graphics/Texture.h"
 #include "Graphics/TextureManager.h"
-#include "Objects/Effects/EffectPool.h"
+#include "Objects/Pools/EffectPool.h"
 
 #include "Game/Camera/Camera.h"
 #include "Animations/AnimationReader.h"

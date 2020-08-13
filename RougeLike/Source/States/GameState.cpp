@@ -12,7 +12,7 @@
 #include "Managers/ScoreManager.h"
 #include "Collisions/CollisionManager.h"
 
-#include "Objects/Effects/EffectPool.h"
+#include "Objects/Pools/EffectPool.h"
 
 #include "Game/Environment.h"
 #include "Input/Cursor.h"

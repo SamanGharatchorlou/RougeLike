@@ -6,7 +6,13 @@
 
 void CollectableBuilder::loadPool()
 {
-	mPool.load();
+	std::vector<CollectableType> types;
+	for (CollectableType type = CollectableType::None + 1; type < CollectableType::Count; type = type + 1)
+	{
+		types.push_back(type);
+	}
+
+	mPool.load(types, 5);
 }
 
 
@@ -38,5 +44,5 @@ void CollectableBuilder::setIcon(Collectable* collectable, CollectableSpawner::S
 
 void CollectableBuilder::returnCollectable(Collectable* collectable)
 {
-	mPool.returnObject(collectable);
+	mPool.returnObject(collectable, collectable->type());
 }

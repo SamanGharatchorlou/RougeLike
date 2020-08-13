@@ -9,13 +9,13 @@ public:
 	ObjectPool() { }
 	virtual ~ObjectPool() { freeAll(); }
 
-	virtual void load() = 0;
+	void load(std::vector<T>& types, int count);
 	void freeAll();
 
 	void addNewObjects(T type, int count);
 
 	K* getObject(T type);
-	virtual void returnObject(K* object) = 0;
+	void returnObject(K* object, T type);
 
 private:
 	virtual K* createNewObject(T type) const = 0;
@@ -23,6 +23,16 @@ private:
 protected:
 	std::unordered_map<T, std::queue<K*>> mPool;
 };
+
+
+template<class K, typename T>
+void ObjectPool<K, T>::load(std::vector<T>& types, int count)
+{
+	for (T type : types)
+	{
+		addNewObjects(type, count);
+	}
+}
 
 
 template<class K, typename T>
@@ -55,13 +65,20 @@ K* ObjectPool<K, T>::getObject(T type)
 		else
 		{
 			addNewObjects(type, 1);
-			DebugPrint(Warning, "No enough objects in the pool, size increased by 1\n");
+			DebugPrint(Warning, "Not enough objects in the pool, size increased by 1\n");
 			return getObject(type);
 		}
 	}
 
 	DebugPrint(Warning, "No objects of requested type have been setup in the pool, use addNewObjects() before\n");
 	return nullptr;
+}
+
+
+template<class K, typename T>
+void ObjectPool<K, T>::returnObject(K* object, T type)
+{
+	mPool[type].push(object);
 }
 
 

@@ -3,7 +3,7 @@
 
 #include "Actors/Actor.h"
 #include "Objects/Effects/EffectTypes/BlinkEffect.h"
-#include "Objects/Effects/EffectPool.h"
+#include "Objects/Pools/EffectPool.h"
 
 #include "Animations/Animator.h"
 

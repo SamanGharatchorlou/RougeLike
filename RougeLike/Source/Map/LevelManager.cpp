@@ -16,8 +16,9 @@ void LevelManager::addMap(MapType type)
 
 	Map* map = mBuilder.buildMap(type, offset);
 	mMaps.push(map);
-	mTrapManager.addTraps(map, mBuilder.specs(map));
+	mTrapManager.addMap(map, mBuilder.specs(map));
 }
+
 
 void LevelManager::addNextMap()
 {
@@ -26,19 +27,23 @@ void LevelManager::addNextMap()
 
 	Map* map = mBuilder.buildMap(type, offset);
 	mMaps.push(map);
-	mTrapManager.addTraps(map, mBuilder.specs(map));
+	mTrapManager.addMap(map, mBuilder.specs(map));
 }
+
 
 void LevelManager::popFront()
 {
+	mTrapManager.popFrontMap();
+		
 	Map* map = mMaps.popFront();
 	mBuilder.returnMap(map);
 }
 
 
-
 void LevelManager::load(const XMLParser& parser)
 {
+	mTrapManager.load();
+
 	addMap(MapType::Corridor);
 	addMap(MapType::Dungeon);
 }
@@ -72,30 +77,44 @@ void LevelManager::slowUpdate(float dt)
 
 
 	Camera* camera = Camera::Get();
-	if (mapCount() == 1)
+	if (last()->midPoint().x < camera->rect().RightPoint())
 	{
 		addNextMap();
-		//setCameraBoundaries(camera);
+		setCameraBoundaries(camera);
+		printf("add new map\n");
 	}
 
 
-	VectorF cameraCenter = camera->rect().Center();
-	float cameraLeft = camera->rect().LeftPoint();
+	closeLevel();
 
-	if (first()->midPoint().x < cameraCenter.x &&
-		first()->getLastRect().RightPoint() < cameraLeft)
-	{
-		//popFront();
-		//closeLevel();
-		//setCameraBoundaries(camera);
-	}
+	//VectorF cameraCenter = camera->rect().Center();
+	//float cameraLeft = camera->rect().LeftPoint();
+
+	//if (last()->midPoint().x < cameraCenter.x &&
+	//	first()->getLastRect().RightPoint() < cameraLeft)
+	//{
+	//	popFront();
+	//	setCameraBoundaries(camera);
+	//}
 
 }
 
 void LevelManager::closeLevel()
 {
-	Map* map = mMaps.front();
-	mBuilder.close(map);
+	Camera* camera = Camera::Get();
+
+	if (mMaps.size() == 4)
+	{
+		if (camera->rect().LeftPoint() > last()->getFirstRect().LeftPoint())
+		{
+			popFront();
+			printf("remove map\n");		
+			popFront();
+			printf("remove map\n");
+			setCameraBoundaries(camera);
+		}
+	}
+
 }
 
 

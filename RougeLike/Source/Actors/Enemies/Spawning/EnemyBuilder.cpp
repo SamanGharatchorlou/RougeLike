@@ -3,18 +3,24 @@
 
 #include "Game/Environment.h"
 #include "Actors/Enemies/Enemy.h"
-#include "Actors/Enemies/EnemyPool.h"
+#include "Objects/Pools/EnemyPool.h"
 
 
 void EnemyBuilder::loadSpawnPool()
 {
-	mPool.load();
+	std::vector<EnemyType> types;
+	for (EnemyType type = EnemyType::None + 1; type < EnemyType::Count; type = type + 1)
+	{
+		types.push_back(type);
+	}
+
+	mPool.load(types, 50);
 }
 
 
 void EnemyBuilder::returnEnemy(Enemy* enemy)
 {
-	mPool.returnObject(enemy);
+	mPool.returnObject(enemy, enemy->type());
 }
 
 

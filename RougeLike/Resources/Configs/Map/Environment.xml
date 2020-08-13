@@ -18,8 +18,8 @@
 			<Column spacing="3"></Column>
 			<Torch type = "TorchBowl" spacing ="3"></Torch>
 			<Spikes rate = "0" damage = "10" triggerTime="1.5" recoveryTime="1.0"></Spikes>
-			<Grating damage = "30" triggerTime="0.1" recoveryTime="-1"></Grating>
-			<Trigger x = "13" y = "12" triggerTime="0.25" recoveryTime="-1">Grating</Trigger>
+			<Grating damage = "40" triggerTime="0.1" recoveryTime="-1"></Grating>
+			<GratingTrigger x = "13" y = "12"></GratingTrigger>
 		</Corridor>
 	</Decor>
 </Map>

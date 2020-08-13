@@ -2,7 +2,7 @@
 #include "WeaponCollisionManager.h"
 
 #include "CollisionTracker.h"
-#include "Objects/Effects/EffectPool.h"
+#include "Objects/Pools/EffectPool.h"
 
 #include "Actors/Player/Player.h"
 #include "Weapons/Melee/MeleeWeapon.h"

@@ -21,7 +21,8 @@
   <ItemGroup>
     <ClCompile Include="Source\Actors\Enemies\AIController.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyDebugger.cpp" />
-    <ClCompile Include="Source\Actors\Enemies\EnemyPool.cpp" />
+    <ClCompile Include="Source\Map\TileInteractables\TileInteractable.cpp" />
+    <ClCompile Include="Source\Objects\Pools\EnemyPool.cpp" />
     <ClCompile Include="Source\Actors\Enemies\Spawning\EnemyBuilder.cpp" />
     <ClCompile Include="Source\Actors\Player\PlayerManager.cpp" />
     <ClCompile Include="Source\AI\AIPathing.cpp" />
@@ -41,7 +42,7 @@
     <ClCompile Include="Source\Graphics\TextureMap.cpp" />
     <ClCompile Include="Source\Input\Button.cpp" />
     <ClCompile Include="Source\Items\Collectables\CollectableBuilder.cpp" />
-    <ClCompile Include="Source\Items\Collectables\CollectablesPool.cpp" />
+    <ClCompile Include="Source\Objects\Pools\CollectablesPool.cpp" />
     <ClCompile Include="Source\Map\MapBuilding\AnimationTilePopulator.cpp" />
     <ClCompile Include="Source\Map\LevelManager.cpp" />
     <ClCompile Include="Source\Map\MapBuilding\DecorTilePopulator.cpp" />
@@ -52,8 +53,10 @@
     <ClCompile Include="Source\Map\MapBuilding\MapSpecifications.cpp" />
     <ClCompile Include="Source\Map\MapBuilding\RenderTilePopulator.cpp" />
     <ClCompile Include="Source\Map\Tiles\TileTypes.cpp" />
-    <ClCompile Include="Source\Map\TrapManager.cpp" />
-    <ClCompile Include="Source\Map\Traps\Trap.cpp" />
+    <ClCompile Include="Source\Map\TileInteractablesManager.cpp" />
+    <ClCompile Include="Source\Map\TileInteractables\FireGratingTrap.cpp" />
+    <ClCompile Include="Source\Map\TileInteractables\FireGratingTrigger.cpp" />
+    <ClCompile Include="Source\Map\TileInteractables\SpikeTrap.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityBuilder.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityClasses\Ability.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityClasses\RangedAbility.cpp" />
@@ -71,6 +74,7 @@
     <ClCompile Include="Source\Actors\ActorManager.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyState.cpp" />
     <ClCompile Include="Source\Actors\Enemies\Types\Devil.cpp" />
+    <ClCompile Include="Source\Objects\Pools\TrapPool.cpp" />
     <ClCompile Include="Source\Utilities\Maps\AttributeMap.cpp" />
     <ClCompile Include="Source\Utilities\Maps\DecorMap.cpp" />
     <ClCompile Include="Source\Utilities\Maps\StringMap.cpp" />
@@ -92,7 +96,7 @@
     <ClCompile Include="Source\Actors\Enemies\Spawning\EnemySpawner.cpp" />
     <ClCompile Include="Source\Collisions\CollisionManager.cpp" />
     <ClCompile Include="Source\Actors\Actor.cpp" />
-    <ClCompile Include="Source\Objects\Effects\EffectPool.cpp" />
+    <ClCompile Include="Source\Objects\Pools\EffectPool.cpp" />
     <ClCompile Include="Source\Collisions\WeaponCollisionManager.cpp" />
     <ClCompile Include="Source\Utilities\Maps\EffectMap.cpp" />
     <ClCompile Include="Source\Utilities\Maps\PropertyMap.cpp" />
@@ -184,7 +188,9 @@
   <ItemGroup>
     <ClInclude Include="Source\Actors\Enemies\AIController.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyDebugger.h" />
-    <ClInclude Include="Source\Actors\Enemies\EnemyPool.h" />
+    <ClInclude Include="Source\Map\TileInteractables\TileInteractable.h" />
+    <ClInclude Include="Source\Map\TileInteractables\Trigger.h" />
+    <ClInclude Include="Source\Objects\Pools\EnemyPool.h" />
     <ClInclude Include="Source\Actors\Enemies\Spawning\EnemyBuilder.h" />
     <ClInclude Include="Source\Actors\Player\PlayerManager.h" />
     <ClInclude Include="Source\AI\AIPathing.h" />
@@ -205,7 +211,7 @@
     <ClInclude Include="Source\Game\Data\LoadingManager.h" />
     <ClInclude Include="Source\Graphics\TextureMap.h" />
     <ClInclude Include="Source\Items\Collectables\CollectableBuilder.h" />
-    <ClInclude Include="Source\Items\Collectables\CollectablesPool.h" />
+    <ClInclude Include="Source\Objects\Pools\CollectablesPool.h" />
     <ClInclude Include="Source\Map\MapBuilding\AnimationTilePopulator.h" />
     <ClInclude Include="Source\Map\LevelManager.h" />
     <ClInclude Include="Source\Map\MapBuilding\DecorTilePopulator.h" />
@@ -216,8 +222,11 @@
     <ClInclude Include="Source\Map\MapBuilding\MapSpecifications.h" />
     <ClInclude Include="Source\Map\MapBuilding\RenderTilePopulator.h" />
     <ClInclude Include="Source\Map\Tiles\TileTypes.h" />
-    <ClInclude Include="Source\Map\TrapManager.h" />
-    <ClInclude Include="Source\Map\Traps\Trap.h" />
+    <ClInclude Include="Source\Map\TileInteractablesManager.h" />
+    <ClInclude Include="Source\Map\TileInteractables\FireGratingTrap.h" />
+    <ClInclude Include="Source\Map\TileInteractables\FireGratingTrigger.h" />
+    <ClInclude Include="Source\Map\TileInteractables\SpikeTrap.h" />
+    <ClInclude Include="Source\Map\TileInteractables\Trap.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityBuilder.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityClasses\Ability.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityClasses\AbilityStates.h" />
@@ -237,6 +246,7 @@
     <ClInclude Include="Source\Actors\Actor.h" />
     <ClInclude Include="Source\Actors\ActorManager.h" />
     <ClInclude Include="Source\Actors\Enemies\Types\Devil.h" />
+    <ClInclude Include="Source\Objects\Pools\TrapPool.h" />
     <ClInclude Include="Source\Utilities\Maps\AttributeMap.h" />
     <ClInclude Include="Source\Utilities\Maps\DataMap.h" />
     <ClInclude Include="Source\Utilities\Maps\DecorMap.h" />
@@ -248,7 +258,7 @@
     <ClInclude Include="Source\Objects\Effects\EffectTypes\BlinkEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\DamageEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\DisplacementEffect.h" />
-    <ClInclude Include="Source\Objects\Effects\EffectPool.h" />
+    <ClInclude Include="Source\Objects\Pools\EffectPool.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\EffectTypes.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\HealEffect.h" />
     <ClInclude Include="Source\Actors\Physics.h" />

@@ -3,7 +3,7 @@
 
 #include "Actors/Actor.h"
 #include "Objects/Effects/EffectTypes/ArmorEffect.h"
-#include "Objects/Effects/EffectPool.h"
+#include "Objects/Pools/EffectPool.h"
 
 
 //void ArmorAbility::fillValues(ValueMap& values)
