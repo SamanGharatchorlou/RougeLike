@@ -7,8 +7,6 @@ void EnemyWait::init()
 {
 	timer.restart();	
 	mEnemy->animator().selectAnimation(Action::Idle);
-
-	printf("wait init\n");
 }
 
 
@@ -28,8 +26,6 @@ void EnemyWait::render()
 
 void EnemyWait::resume()
 {
-
-	printf("wait resume\n");
 	timer.resume();
 }
 

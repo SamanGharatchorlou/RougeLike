@@ -18,9 +18,6 @@ BasicString PropertyType::string() const
 
 PropertyType::Type findPropertyType(const BasicString& string)
 {
-	if (string == "AttentionTime")
-		printf("a");
-
 #if _DEBUG
 	if (PropertyLookUpTable.count(string) == 0)
 	{

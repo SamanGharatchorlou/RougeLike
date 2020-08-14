@@ -64,7 +64,6 @@ void FrameRateController::capFrameRate()
 void FrameRateController::printfFrameRate()
 {
 	fpsSum += frameTimer.getMilliseconds();
-	//printf("%f\n", frameTimer.getMilliseconds());
 	fpsCounter++;
 
 	totalFrameTime += frameTimer.getMilliseconds();
