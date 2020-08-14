@@ -133,7 +133,6 @@ void Player::processHit()
 		EffectCollider* effectCollider = static_cast<EffectCollider*>(mCollider.getOtherCollider());
 		handleEffects(effectCollider);
 
-		//printf("hit\n");
 		//TraumaEvent* trauma = new TraumaEvent(40);
 		//mEvents.push(EventPacket(trauma));
 	}

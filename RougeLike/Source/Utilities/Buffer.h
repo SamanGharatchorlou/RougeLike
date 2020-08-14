@@ -29,8 +29,6 @@ T Buffer<T>::getAvailable()
 			T object = buffer[i];
 			buffer[i] = nullptr;
 
-			printf("index %d set to null\n", i);
-
 			return object;
 		}
 	}
