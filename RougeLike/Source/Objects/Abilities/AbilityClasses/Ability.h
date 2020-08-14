@@ -18,7 +18,6 @@ public:
 
 	void init(const BasicString& name, Actor* caster, const PropertyMap& properties, Animator animator);
 
-	virtual void enter() { }
 	virtual void fastUpdate(float dt) = 0;
 	virtual void slowUpdate(float dt) = 0;
 	virtual void render() = 0;

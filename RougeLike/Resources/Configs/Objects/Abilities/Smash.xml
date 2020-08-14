@@ -13,6 +13,11 @@
 		<StunTime>5</StunTime>
 	</Properties>
 
+	<Hammer>
+		<Texture>Mjolnir</Texture>
+		<MaxSize>50</MaxSize>
+	</Hammer>
+
 	<Icon>SmashIcon</Icon>
 
 	<Animator>

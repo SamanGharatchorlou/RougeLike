@@ -12,6 +12,7 @@ class StunEffect : public Effect
 public:
 	StunEffect(Animator animator) : mAnimator(animator), mMaxSize(0.0f), mTime(0.0f) { };
 
+	void fill(const PropertyMap& valueBag) override;
 	void set(float time) { mTime = time; }
 
 	void clearData() override;

@@ -11,15 +11,7 @@
 #include "Game/Camera/Camera.h"
 
 
-SmashAbility::SmashAbility(Texture* hammerTexture) : mHammerTexture(hammerTexture) { }
-
-
-void SmashAbility::enter()
-{
-	VectorF size = realiseSize(mHammerTexture->originalDimentions, mProperties[PropertyType::Texture1_MaxSize]);
-	mHammerRect.SetSize(size);
-
-}
+SmashAbility::SmashAbility(Texture* hammerTexture, RectF hammerRect) : mHammerTexture(hammerTexture), mHammerRect(hammerRect) { }
 
 
 void SmashAbility::slowUpdate(float dt)

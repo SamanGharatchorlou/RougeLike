@@ -10,6 +10,8 @@
 #include "Objects/Effects/EffectTypes/HealEffect.h"
 #include "Objects/Effects/EffectTypes/StunEffect.h"
 
+#include "Animations/AnimationReader.h"
+
 
 Effect* EffectPool::createNewObject(EffectType type) const
 {
@@ -29,8 +31,12 @@ Effect* EffectPool::createNewObject(EffectType type) const
 	case EffectType::Displacement:
 		effect = new DisplacementEffect;
 		break;
-	case EffectType::Armor:	
 	case EffectType::Stun:
+		XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Abilities, "Stun"));
+		Anim
+
+		break;
+	case EffectType::Armor:	
 	case EffectType::KnockbackStun:
 		DebugPrint(Log, "Effect of type %d is unimplemented\n", (int)type);
 		break;

@@ -10,9 +10,9 @@
 	</Exit>
 
 	<Collectables>
-			<Ability xPosition="8" id="Smash"></Ability>
+			<Ability xPosition="8" id="Blink"></Ability>
 			<Ability xPosition="12" id="Smash"></Ability>
-			<Ability xPosition="10" id="Spikes"></Ability>
+			<Ability xPosition="10" id="Blink"></Ability>
 			<Ability xPosition="15" id="Spikes"></Ability>
 	</Collectables>
 

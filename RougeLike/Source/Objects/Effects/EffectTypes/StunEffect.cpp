@@ -16,6 +16,11 @@ void StunEffect::clearData()
 }
 
 
+void StunEffect::fill(const PropertyMap& valueBag)
+{
+	setProperty(PropertyType::StunTime, mTime, valueBag);
+}
+
 void StunEffect::init()
 {
 	mAnimator.startAnimation(Action::Active);

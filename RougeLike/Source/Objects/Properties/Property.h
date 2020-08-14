@@ -26,8 +26,7 @@ public:
 		KnockbackDistance,
 
 		FallSpeed,
-
-		Texture1_MaxSize,
+		StunTime,
 
 		// Enemy
 		Score,
@@ -92,7 +91,7 @@ static const std::unordered_map<BasicString, PropertyType::Type> PropertyLookUpT
 	{ "KnockbackForce", PropertyType::KnockbackForce },
 	{ "KnockbackDistance", PropertyType::KnockbackDistance },
 	{ "FallSpeed", PropertyType::FallSpeed },
-	{ "Texture1_MaxSize", PropertyType::Texture1_MaxSize },
+	{ "StrunTime", PropertyType::StunTime},
 
 	// Enemy
 	{ "Score", PropertyType::Score },

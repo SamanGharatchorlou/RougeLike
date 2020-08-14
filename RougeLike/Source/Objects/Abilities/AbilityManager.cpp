@@ -162,7 +162,6 @@ void AbilityManager::addAbility(const BasicString& name)
 
 		mHotKeys.addHotKey(type);
 		mAbilities.push_back(ability);
-		ability->enter();
 	}
 	else
 	{

@@ -9,12 +9,11 @@ class Texture;
 class SmashAbility : public TargePositionAttackAbility
 {
 public:
-	SmashAbility(Texture* hammerTexture);
+	SmashAbility(Texture* hammerTexture, RectF hammerRect);
 
 	void activateAt(VectorF position, EffectPool* pool) override;
 	void activateOn(Actor* target, EffectPool* pool) override;
 
-	void enter();
 	void fastUpdate(float dt) override { }
 	void slowUpdate(float dt) override;
 	void render() override;

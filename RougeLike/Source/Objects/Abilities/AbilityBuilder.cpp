@@ -19,8 +19,7 @@ Ability* AbilityBuilder::build(const BasicString& id) const
 {
 	Ability* ability = createNewAbility(id);
 
-	XMLParser parser;
-	parser.parseXML(FileManager::Get()->findFile(FileManager::Config_Abilities, id));
+	XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Abilities, id));
 
 	AnimationReader reader;
 	Animator animator = reader.buildAnimator(parser.rootChild("Animator"), mTextures);
@@ -55,9 +54,15 @@ Ability* AbilityBuilder::createNewAbility(const BasicString& id) const
 		break;
 	case AbilityType::Smash:
 	{
-		// Create hammer
-		Texture* texture = mTextures->getTexture("Mjolnir", FileManager::Image_Weapons);
-		ability = new SmashAbility(texture);
+		XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Abilities, id));
+		XMLNode hammerDetailsNode = parser.rootChild("Hammer");
+		StringMap hammerDetails(hammerDetailsNode);
+
+		Texture* texture = mTextures->getTexture(hammerDetails.at("Texture"), FileManager::Image_Weapons);
+		VectorF size = realiseSize(texture->originalDimentions, hammerDetails.getFloat("MaxSize"));
+		RectF rect(VectorF(), size);
+
+		ability = new SmashAbility(texture, rect);
 		break;
 	}
 

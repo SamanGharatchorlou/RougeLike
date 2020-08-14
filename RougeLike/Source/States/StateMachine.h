@@ -46,8 +46,6 @@ StateMachine<T>::~StateMachine()
 		delete states.top();
 		states.pop();
 	}
-
-	DebugPrint(Log, "StateMachine destroyed\n");
 }
 
 
