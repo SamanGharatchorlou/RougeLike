@@ -33,7 +33,9 @@ void CollectableBuilder::setIcon(Collectable* collectable, CollectableSpawner::S
 	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs_Objects, data.id));
 	BasicString iconName = parser.rootChild("Icon").value();
 
-	Texture* icon = mTextures->getTexture(iconName, FileManager::Image_UI);
+
+	const TextureManager* textures = TextureManager::Get();
+	Texture* icon = textures->getTexture(iconName, FileManager::Image_UI);
 
 	if(!icon)
 		DebugPrint(Log, "Collectable '%s' info has no valid icon name\n", data.id.c_str());

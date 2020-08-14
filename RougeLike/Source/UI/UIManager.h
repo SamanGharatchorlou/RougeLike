@@ -4,9 +4,10 @@
 #include "Events/Observer.h"
 #include "Events/Dispatcher.h"
 
+#if UI_EDITOR
 #include "Debug/UIEditor.h"
+#endif
 
-class TextureManager;
 class InputManager;
 class Cursor;
 
@@ -16,7 +17,7 @@ public:
 	UIManager();
 	~UIManager();
 
-	void setupScreens(const TextureManager* textures);
+	void setupScreens();
 	void initCursor(Cursor* cursor);
 
 	void selectScreen(Screen::Type screenType);

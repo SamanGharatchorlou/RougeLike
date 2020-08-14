@@ -16,7 +16,7 @@ class SettingsScreen : public Screen
 	};
 
 public:
-	SettingsScreen(const TextureManager* textures);
+	SettingsScreen();
 
 	void enter() override;
 	void handleInput(const InputManager* input) override;

@@ -8,15 +8,16 @@
 #include "UI/Elements/UIButton.h"
 
 
-CharacterSelectionScreen::CharacterSelectionScreen(const TextureManager* textures) : Screen(textures), mEnterGame(false), mPlayButton(nullptr) { }
+CharacterSelectionScreen::CharacterSelectionScreen() : mEnterGame(false), mPlayButton(nullptr) { }
 
 
 void CharacterSelectionScreen::enter()
 {
+	const TextureManager* textures = TextureManager::Get();
 	UIBox* character = static_cast<UIBox*>(find("Character"));
-	mSelectedCharacter = mTextures->getTextureName(character->texture());
+	mSelectedCharacter = textures->getTextureName(character->texture());
 
-	Texture* texture = mTextures->getTexture(mSelectedCharacter + "Icon", FileManager::Image_UI);
+	Texture* texture = textures->getTexture(mSelectedCharacter + "Icon", FileManager::Image_UI);
 	character->setTexture(texture);
 
 	mPlayButton = findButton("PlayButton");
@@ -52,5 +53,6 @@ void CharacterSelectionScreen::selectWeapon()
 	UIBox* weapon = static_cast<UIBox*>(find("Weapon"));
 	const Texture* weaponTexture = weapon->texture();
 
-	mSelectedWeapon = mTextures->getTextureName(weaponTexture);
+	const TextureManager* textures = TextureManager::Get();
+	mSelectedWeapon = textures->getTextureName(weaponTexture);
 }

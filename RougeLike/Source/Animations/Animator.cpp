@@ -45,6 +45,44 @@ void Animator::Animation::reset()
 
 void Animator::Animation::render(RectF rect, SDL_RendererFlip flip) const
 {
+	RectF tileRect = subTileRect(rect);
+	RectF renderRect = autoSize(rect);
+
+	mTexture->renderSubTexture(renderRect, tileRect, flip);
+}
+
+
+void Animator::Animation::render(RectF rect, SDL_RendererFlip flip, Uint8 alpha) const
+{
+	RectF tileRect = subTileRect(rect);
+	// TODO: does this auto size work correctly and should I always use it?
+	//RectF renderRect = autoSize(rect);
+
+	mTexture->renderSubTexture(rect, tileRect, flip, alpha);
+}
+
+
+void Animator::Animation::render(RectF rect, double rotation, VectorF aboutPoint) const
+{
+	RectF tileRect = subTileRect(rect);
+	RectF renderRect = autoSize(rect);
+
+	mTexture->renderSubTexture(renderRect, tileRect, rotation, aboutPoint);
+}
+
+
+// Resize and reposition texture to keep fixed ratio and center within rect
+RectF Animator::Animation::autoSize(RectF rect) const
+{
+	VectorF size = mTileDimentions;
+	VectorF theSize = realiseSize(size, std::max(rect.Width(), rect.Height()));
+	VectorF offset = (rect.Size() - theSize) / 2.0f;
+	return RectF(rect.TopLeft() + offset, theSize);
+}
+
+
+RectF Animator::Animation::subTileRect(RectF rect) const
+{
 #if _DEBUG
 	Vector2D<int> requestSize = (mIndex + 1)*mTileDimentions;
 	Vector2D<int> objectSize = mTexture->originalDimentions;
@@ -55,32 +93,7 @@ void Animator::Animation::render(RectF rect, SDL_RendererFlip flip) const
 
 	VectorF size = mTileDimentions;
 	VectorF position = mTileDimentions * mIndex;
-	RectF tileRect(position, size);
-
-	// Resize and reposition texture to keep fixed ration and center within rect
-	VectorF theSize = realiseSize(size, std::max(rect.Width(), rect.Height()));
-	VectorF offset = (rect.Size() - theSize) / 2.0f;
-	RectF renderRect = RectF(rect.TopLeft() + offset, theSize);
-
-	mTexture->renderSubTexture(renderRect, tileRect, flip);
-}
-
-
-void Animator::Animation::render(RectF rect, SDL_RendererFlip flip, Uint8 alpha)
-{
-#if _DEBUG
-	Vector2D<int> requestSize = (mIndex + 1)*mTileDimentions;
-	Vector2D<int> objectSize = mTexture->originalDimentions;
-
-	if (requestSize.x > objectSize.x || requestSize.y > objectSize.y)
-		DebugPrint(Error, "Index(%d,%d) out of bounds\n", mIndex.x, mIndex.y);
-#endif
-
-	VectorF size = mTileDimentions; // keep as ints?
-	VectorF position = mTileDimentions * mIndex;
-	RectF tileRect(position, size);
-
-	mTexture->renderSubTexture(rect, tileRect, flip, alpha);
+	return RectF(position, size);
 }
 
 
@@ -130,10 +143,16 @@ void Animator::render(RectF rect, SDL_RendererFlip flip) const
 		mAnimations[mActiveIndex].render(rect, flip);
 }
 
-void Animator::render(RectF rect, SDL_RendererFlip flip, Uint8 alpha)
+void Animator::render(RectF rect, SDL_RendererFlip flip, Uint8 alpha) const
 {
 	if (timer.isStarted())
 		mAnimations[mActiveIndex].render(rect, flip, alpha);
+}
+
+void Animator::render(RectF rect, double rotation, VectorF aboutPoint) const
+{
+	if (timer.isStarted())
+		mAnimations[mActiveIndex].render(rect, rotation, aboutPoint);
 }
 
 

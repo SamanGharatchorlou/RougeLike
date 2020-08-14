@@ -2,10 +2,9 @@
 #include "AnimationReader.h"
 
 #include "Graphics/TextureManager.h"
-#include "Graphics/Texture.h"
 
 
-Animator AnimationReader::buildAnimator(XMLNode animationNode, const TextureManager* textures) const
+Animator AnimationReader::buildAnimator(XMLNode animationNode) const
 {
 	Animator animator;
 
@@ -23,6 +22,8 @@ Animator AnimationReader::buildAnimator(XMLNode animationNode, const TextureMana
 
 	XMLNode animations = animationNode.child("Animations");
 	XMLNode node = animations.child();
+
+	const TextureManager* textures = TextureManager::Get();
 
 	while (node)
 	{

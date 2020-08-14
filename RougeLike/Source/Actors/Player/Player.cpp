@@ -20,9 +20,9 @@ Player::Player() :
 { }
 
 
-void Player::setCharacter(const XMLNode playerNode, const TextureManager* textureManager)
+void Player::setCharacter(const XMLNode playerNode)
 {
-	Actor::setCharacter(playerNode, textureManager);
+	Actor::setCharacter(playerNode);
 }
 
 

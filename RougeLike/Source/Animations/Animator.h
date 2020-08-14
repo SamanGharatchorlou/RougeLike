@@ -48,7 +48,8 @@ public:
 		void reset();
 
 		void render(RectF rect, SDL_RendererFlip flip) const;
-		void render(RectF rect, SDL_RendererFlip flip, Uint8 alpha);
+		void render(RectF rect, SDL_RendererFlip flip, Uint8 alpha) const;
+		void render(RectF rect, double rotation, VectorF aboutPoint) const;
 
 		Texture* texture() const { return mTexture; }
 
@@ -56,6 +57,10 @@ public:
 		int currentFrame() const;
 		int frameCount() const { return mFrameCount; }
 
+
+	private:
+		RectF subTileRect(RectF rect) const;
+		RectF autoSize(RectF rect) const;
 
 	private:
 		Texture* mTexture;
@@ -78,7 +83,8 @@ public:
 
 	void slowUpdate(float dt);
 	void render(RectF rect, SDL_RendererFlip flip = SDL_FLIP_NONE) const;
-	void render(RectF rect, SDL_RendererFlip flip, Uint8 alpha);
+	void render(RectF rect, SDL_RendererFlip flip, Uint8 alpha) const;
+	void render(RectF rect, double rotation, VectorF aboutPoint) const;
 
 	void reset();
 	void clear();

@@ -1,14 +1,12 @@
 #pragma once
 
 #include "Objects/Abilities/AbilityClasses/TargetAbilities.h"
-#include "Objects/Properties/Attributes/Armor.h"
+
 
 class ArmorAbility : public TargetSelfAbility
 {
 public:
 	ArmorAbility() { };
-
-	//void fillValues(ValueMap& values) override;
 
 	void activate(EffectPool* pool) override;
 
@@ -22,7 +20,4 @@ protected:
 	void applyEffects(EffectPool* pool);
 	void updateUI();
 
-
-private:
-	Armor mArmor;
 };

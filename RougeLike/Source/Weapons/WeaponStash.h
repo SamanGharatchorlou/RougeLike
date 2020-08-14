@@ -2,7 +2,6 @@
 
 #include "WeaponData.h"
 
-class TextureManager;
 class Weapon;
 class MeleeWeapon;
 
@@ -12,7 +11,7 @@ public:
 	WeaponStash();
 	~WeaponStash();
 
-	void load(TextureManager* tm);
+	void load();
 
 	MeleeWeapon* getMeleeWeapon() const { return meleeWeapon; }
 	Weapon* getWeapon(const BasicString& weaponType) const;
@@ -21,7 +20,7 @@ public:
 
 
 private:
-	WeaponRawData getRawData(const XMLNode weaponNode, const TextureManager* textures) const;
+	WeaponRawData getRawData(const XMLNode weaponNode) const;
 	WeaponData* createNewData(const XMLNode weaponNode, const WeaponRawData& rawData) const;
 
 private:

@@ -3,13 +3,12 @@
 
 	<Properties>
 		<Damage>100</Damage>
-		<Range>250</Range>
+		<DamageReact>0</DamageReact>
+		<Range>500</Range>
 		<MaxSize>100</MaxSize>
 		<Cooldown>1</Cooldown>
 
-		<Texture1_MaxSize>50</Texture1_MaxSize>
 		<FallSpeed>750</FallSpeed>
-
 		<StunTime>5</StunTime>
 	</Properties>
 

@@ -2,8 +2,6 @@
 #include "Actor.h"
 
 #include "Collisions/EffectCollider.h"
-#include "Graphics/Texture.h"
-#include "Graphics/TextureManager.h"
 #include "Objects/Pools/EffectPool.h"
 
 #include "Game/Camera/Camera.h"
@@ -18,14 +16,14 @@
 Actor::Actor() : mVisibility(true) { }
 
 
-void Actor::setCharacter(const XMLNode actorNode, const TextureManager* textures)
+void Actor::setCharacter(const XMLNode actorNode)
 {
 	mAttributeBag.fill(actorNode.child("Properties"));
 	mEffects.fillEffectBag(actorNode.child("Effects"));
 
 	// Animations
 	AnimationReader reader;
-	mAnimator = reader.buildAnimator(actorNode.child("Animator"), textures);
+	mAnimator = reader.buildAnimator(actorNode.child("Animator"));
 	mAnimator.start();
 
 	// Physics 
@@ -128,7 +126,6 @@ void Actor::handleEffects(EffectCollider* effectCollider)
 	while (effectCollider->hasEffects())
 	{
 		addEffect(effectCollider->popEffect());
-		printf("take damage\n");
 	}
 }
 

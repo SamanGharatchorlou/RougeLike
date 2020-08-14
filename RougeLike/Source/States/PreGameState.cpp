@@ -26,7 +26,7 @@ void PreGameState::init()
 	UI->selectScreen(Screen::CharacterSelection);
 	mSelectionScreen = static_cast<CharacterSelectionScreen*>(UI->getActiveScreen());
 	
-	UI->setCursorTexture(mGameData->textureManager->getTexture("UICursor", FileManager::Image_UI));
+	UI->setCursorTexture(TextureManager::Get()->getTexture("UICursor", FileManager::Image_UI));
 }
 
 
@@ -40,7 +40,7 @@ void PreGameState::slowUpdate(float dt)
 	if (mSelectionScreen->enterGame())
 	{
 		PlayerManager* player = mGameData->environment->actors()->player();
-		player->selectCharacter(mSelectionScreen->selectedCharacter(), mGameData->textureManager);
+		player->selectCharacter(mSelectionScreen->selectedCharacter());
 		player->selectWeapon(mSelectionScreen->selectedWeapon());
 
 		mGameController->getStateMachine()->replaceState(new GameState(mGameData, mGameController));

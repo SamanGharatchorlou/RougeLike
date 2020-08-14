@@ -12,7 +12,7 @@
 #endif
 
 
-Collectables::Collectables(GameData* gameData) : mCollisions(gameData->collisionManager), mBuilder(gameData->textureManager) { }
+Collectables::Collectables(GameData* gameData) : mCollisions(gameData->collisionManager) { }
 
 Collectables::~Collectables()
 {

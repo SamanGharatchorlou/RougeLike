@@ -15,6 +15,7 @@ struct EnemyState : public State
 		Patrol,
 		Alert,
 		Hit,
+		Stun,
 		PreAttack,
 		Attack,
 		Dead,

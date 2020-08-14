@@ -1,26 +1,13 @@
 #include "pch.h"
 #include "ChargeAbility.h"
 
+#include "Objects/Effects/EffectTypes/Effect.h"
+#include "Objects/Effects/EffectTypes/KnockbackStunEffect.h"
 #include "Objects/Pools/EffectPool.h"
-#include "Objects/Effects/EffectTypes/DisplacementEffect.h"
 #include "Actors/Player/Player.h"
 
-#include "Map/Map.h"
+#include "Game/Camera/Camera.h"
 
-// TEMP
-#include "Debug/DebugDraw.h"
-
-
-//void ChargeAbility::fillValues(ValueMap& values)
-//{
-//	mChargeForce = values["ChargeForce"];
-//	mChargeDistance = values["ChargeDistance"];
-//
-//	// Knockback data
-//	mDamage = Damage(values["Damage"]);
-//	mKnockbackForce = values["KnockbackForce"];
-//	mKnockbackDistance = values["KnockbackDistance"];
-//}
 
 
 void ChargeAbility::activateAt(VectorF position, EffectPool* effectPool)
@@ -30,11 +17,10 @@ void ChargeAbility::activateAt(VectorF position, EffectPool* effectPool)
 	VectorF direction = (mCaster->position() - position).normalise();
 	mChargeSource = mCaster->position() + direction; // any random point in this particular direction
 
-	Player* player = static_cast<Player*>(mCaster);
-	player->enableBodyCollisions(true);
+	setCharging(true);
 
-	start = player->position();
-	end = start - ( direction * mChargeDistance);
+	mRect.SetSize(mCaster->rect().Size() * 1.5f);
+	mAnimator.startAnimation(Action::Active);
 }
 
 
@@ -44,36 +30,46 @@ void ChargeAbility::activateOn(Actor* target, EffectPool* effectPool)
 	{
 		applyEffects(target, effectPool);
 		mHitList.insert(target);
-		printf("applying effect onto actor\n");
 	}
 }
 
 
-
-
 void ChargeAbility::fastUpdate(float dt)
 {
-	VectorF direction = (mCaster->position() - mChargeSource).normalise();
-	VectorF velocity = direction * mChargeForce;
-	float movementStep = std::sqrt(velocity.magnitudeSquared());
-
-	if (mDistanceTravelled < mChargeDistance && canMove(mCaster, velocity, dt))
+	if (mIsCharging)
 	{
-		mCaster->physics()->move(velocity, dt);
-		mDistanceTravelled += movementStep * dt;
+		VectorF direction = (mCaster->position() - mChargeSource).normalise();
+		VectorF velocity = direction * mProperties.at(PropertyType::Force);
+		float movementStep = std::sqrt(velocity.magnitudeSquared());
+
+		if (mDistanceTravelled < mProperties.at(PropertyType::Distance) && canMove(mCaster, velocity, dt))
+		{
+			mCaster->physics()->move(velocity, dt);
+			mDistanceTravelled += movementStep * dt;
+		}
+		else
+		{
+			setCharging(false);
+			mAnimator.stop();
+		}
 	}
 }
 
 
 void ChargeAbility::slowUpdate(float dt)
 {
-	mRect = mCaster->collider()->scaledRect();
-
-	if (mCaster->collider()->didHit())
+	if (mIsCharging)
 	{
-		sendActivateOnRequest();
+		mAnimator.slowUpdate(dt);
+		mRect.SetCenter(mCaster->position());
+
+		if (mCaster->collider()->didHit())
+		{
+			sendActivateOnRequest();
+		}
 	}
 }
+
 
 void ChargeAbility::render()
 {
@@ -81,56 +77,51 @@ void ChargeAbility::render()
 	{
 		renderRangeCircle();
 	}
+	else if (mState == AbilityState::Running)
+	{
+		RectF rect = Camera::Get()->toCameraCoords(mRect);
 
-	// TODO: get the point on this line (the players charge line) which is clostest to the enemy position
-	// this will allow you to provide a better 'source' value for the displacement effect.
-	// maybe I can implement this on weapon attacks as well?
-	//debugDrawLine(start, end, RenderColour::Red);
+		VectorF direction = (mCaster->position() - mChargeSource).normalise();
+		double rotation = getRotation(direction) - 90;
+
+		VectorF aboutPoint = rect.Size() / 2.0f;
+
+		mAnimator.render(rect, rotation, aboutPoint);
+	}
 }
 
-
-void ChargeAbility::exit()
-{
-	Player* player = static_cast<Player*>(mCaster);
-	player->enableBodyCollisions(false);
-
-	mDistanceTravelled = 0.0f;
-	mHitList.clear();
-}
-
-
-//// --- Private Functions --- //
-//bool ChargeAbility::canMove(VectorF velocity, float dt) const
-//{
-//	Index index;
-//	const Map* map = mCaster->currentMap();
-//	RectF rect = mCaster->scaledRect().Translate(velocity * dt);
-//
-//	index = map->index(rect.TopLeft());
-//	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall )
-//		return false;
-//
-//	index = map->index(rect.TopRight());
-//	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
-//		return false;
-//
-//	index = map->index(rect.BotRight());
-//	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
-//		return false;
-//
-//	index = map->index(rect.BotLeft());
-//	if (!map->isValidIndex(index) || map->collisionType(index) == CollisionTile::Wall)
-//		return false;
-//
-//	return true;
-//}
 
 
 
 void ChargeAbility::applyEffects(Actor* actor, EffectPool* effectPool)
 {
-	//Effect* displacement = effectPool->getEffect(EffectType::Displacement);
-	//DisplacementEffect* displacementEffect = static_cast<DisplacementEffect*>(displacement);
-	//displacementEffect->set(mCaster->position(), mKnockbackForce, mKnockbackDistance);
-	//actor->addEffect(displacement);
+	Effect* damage = effectPool->getObject(EffectType::Damage);
+	damage->fill(mProperties);
+	actor->addEffect(damage);
+
+	Effect* displacement = effectPool->getObject(EffectType::KnockbackStun);
+	KnockbackStunEffect* displacementEffect = static_cast<KnockbackStunEffect*>(displacement);
+	displacementEffect->update(mChargeSource); // TODO: need more testing... charge source or mCaster->postion??
+	displacementEffect->fill(mProperties);
+	actor->addEffect(displacementEffect);
+}
+
+
+void ChargeAbility::exit()
+{
+	mChargeSource = VectorF();
+	mDistanceTravelled = 0.0f;
+	mHitList.clear();
+
+	Ability::exit();
+}
+
+
+void ChargeAbility::setCharging(bool isCharging)
+{
+	Player* player = static_cast<Player*>(mCaster);
+	player->enableBodyCollisions(isCharging);
+	player->setVisibility(!isCharging);
+	player->overrideControl(isCharging);
+	mIsCharging = isCharging;
 }

@@ -12,10 +12,10 @@
 
 PlayerManager::PlayerManager(GameData* gameData) :
 	mEnvironment(gameData->environment), 
-	mAbilities(gameData->textureManager, &mPlayer, gameData->uiManager->screen(Screen::Game))
+	mAbilities(&mPlayer, gameData->uiManager->screen(Screen::Game))
 {
 	mPlayerCollisions.init(&mPlayer, gameData->collisionManager);
-	mWeaponStash.load(gameData->textureManager);
+	mWeaponStash.load();
 }
 
 
@@ -103,10 +103,10 @@ void PlayerManager::exit()
 	mPlayer.reset();
 }
 
-void PlayerManager::selectCharacter(const BasicString& characterConfig, const TextureManager* textureManager)
+void PlayerManager::selectCharacter(const BasicString& characterConfig)
 { 
 	XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Player, characterConfig));
-	mPlayer.setCharacter(parser.rootNode(), textureManager);
+	mPlayer.setCharacter(parser.rootNode());
 
 	EffectMap bag;
 	XMLNode effects = parser.rootChild("Effects");

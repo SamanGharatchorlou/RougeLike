@@ -3,7 +3,6 @@
 #include "EnemySpawner.h"
 #include "Objects/Pools/EnemyPool.h"
 
-class TextureManager;
 class EffectPool;
 class Environment;
 class AIPathMap;
@@ -11,8 +10,6 @@ class AIPathMap;
 class EnemyBuilder
 {
 public:
-	EnemyBuilder(TextureManager* textures) : mTextures(textures) { }
-
 	void loadSpawnPool();
 
 	std::vector<Enemy*> buildEnemies(const std::vector<SpawnData>& data, const AIPathMap* aiPathMap);
@@ -27,6 +24,5 @@ private:
 	void setupParserMap(std::unordered_map<EnemyType, XMLParser>& parserMap, const std::vector<SpawnData>& dataList) const;
 
 private:
-	TextureManager* mTextures;
 	EnemyPool mPool;
 };

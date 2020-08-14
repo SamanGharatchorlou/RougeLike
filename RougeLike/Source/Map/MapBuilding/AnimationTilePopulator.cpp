@@ -5,7 +5,7 @@
 #include "Animations/AnimationReader.h"
 
 
-void AnimationTilePopulator::addAnimations(Grid<MapTile>& data, const TextureManager* textures)
+void AnimationTilePopulator::addAnimations(Grid<MapTile>& data)
 {
 	XMLParser tourchHandleParser(FileManager::Get()->findFile(FileManager::Configs_Objects, "TorchHandle"));
 	XMLParser tourchBowlParser(FileManager::Get()->findFile(FileManager::Configs_Objects, "TorchBowl"));
@@ -22,21 +22,21 @@ void AnimationTilePopulator::addAnimations(Grid<MapTile>& data, const TextureMan
 			if (tile.has(DecorType::Torch_Handle))
 			{
 				XMLNode node = tourchHandleParser.rootChild("Animator");
-				Animator animator = buildAnimation(node, textures);
+				Animator animator = buildAnimation(node);
 				tile.addAnimation(animator);
 			}
 
 			if (tile.has(DecorType::Torch_Bowl))
 			{
 				XMLNode node = tourchBowlParser.rootChild("Animator");
-				Animator animator = buildAnimation(node, textures);
+				Animator animator = buildAnimation(node);
 				tile.addAnimation(animator);
 			}
 
 			if (tile.has(DecorType::Spikes))
 			{
 				XMLNode node = spikeParser.rootChild("Animator");
-				Animator animator = buildAnimation(node, textures);
+				Animator animator = buildAnimation(node);
 				tile.addAnimation(animator);
 				tile.animation(0).pause();
 			}
@@ -44,7 +44,7 @@ void AnimationTilePopulator::addAnimations(Grid<MapTile>& data, const TextureMan
 			if (tile.has(DecorType::GratingTrigger))
 			{
 				XMLNode node = triggerParser.rootChild("Animator");
-				Animator animator = buildAnimation(node, textures);
+				Animator animator = buildAnimation(node);
 				tile.addAnimation(animator);
 				tile.animation(0).pause();
 			}
@@ -52,7 +52,7 @@ void AnimationTilePopulator::addAnimations(Grid<MapTile>& data, const TextureMan
 			if (tile.has(DecorType::Grating))
 			{
 				XMLNode node = gratingParser.rootChild("Animator");
-				Animator animator = buildAnimation(node, textures);
+				Animator animator = buildAnimation(node);
 				tile.addAnimation(animator);
 				tile.setDeferredRendering(true);
 				tile.animation(0).stop();
@@ -64,8 +64,8 @@ void AnimationTilePopulator::addAnimations(Grid<MapTile>& data, const TextureMan
 
 
 
-Animator AnimationTilePopulator::buildAnimation(const XMLNode& node, const TextureManager* textures)
+Animator AnimationTilePopulator::buildAnimation(const XMLNode& node)
 {
 	AnimationReader reader;
-	return reader.buildAnimator(node, textures);
+	return reader.buildAnimator(node);
 }

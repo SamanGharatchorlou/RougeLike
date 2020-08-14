@@ -8,10 +8,10 @@ class TextureManager
 {
 
 public:
-	TextureManager();
-	~TextureManager();
+	static TextureManager* Get();
 
-	void init();
+	void load();
+	void unload();
 
 	Texture* getTexture(const BasicString& label, const FileManager::Folder folders) const;
 
@@ -23,6 +23,11 @@ private:
 	int loadAllTexturesIn(FileManager::Folder folder);
 
 	const TextureMap& findTextureMap(const FileManager::Folder folder) const;
+
+
+private:
+	TextureManager();
+	~TextureManager();
 
 
 private:

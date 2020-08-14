@@ -23,7 +23,7 @@ WeaponStash::~WeaponStash()
 }
 
 
-void WeaponStash::load(TextureManager* tm)
+void WeaponStash::load()
 {
 	FileManager* files = FileManager::Get();
 	std::vector<BasicString> filePaths = files->allFilesInFolder(FileManager::Config_Weapons);
@@ -35,7 +35,7 @@ void WeaponStash::load(TextureManager* tm)
 		XMLNode root = parser.rootNode();
 
 		BasicString weaponName = files->getItemName(filePath);
-		WeaponRawData rawData = getRawData(root, tm);
+		WeaponRawData rawData = getRawData(root);
 		WeaponData* weaponData = createNewData(root, rawData);
 		if (weaponData)
 		{
@@ -86,7 +86,7 @@ WeaponData* WeaponStash::createNewData(const XMLNode weaponNode, const WeaponRaw
 }
 
 
-WeaponRawData WeaponStash::getRawData(const XMLNode weaponNode, const TextureManager* textures) const
+WeaponRawData WeaponStash::getRawData(const XMLNode weaponNode) const
 {
 	WeaponRawData data;
 	data.properties = StringMap(weaponNode.child("Properties"));
@@ -97,6 +97,7 @@ WeaponRawData WeaponStash::getRawData(const XMLNode weaponNode, const TextureMan
 	data.effects = EffectMap;
 
 	// Texture
+	const TextureManager* textures = TextureManager::Get();
 	BasicString weaponName = data.properties["Texture"];
 	data.texture = textures->getTexture(weaponName, FileManager::Image_Weapons);
 	

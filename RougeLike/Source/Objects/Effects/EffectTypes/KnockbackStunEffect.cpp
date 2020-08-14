@@ -2,13 +2,15 @@
 #include "KnockbackStunEffect.h"
 
 #include "Actors/Actor.h"
+#include "Actors/Enemies/Enemy.h"
 #include "StunEffect.h"
 
 
-void KnockbackStunEffect::clearData()
+
+void KnockbackStunEffect::fill(const PropertyMap& valueBag)
 {
-	mStunEffect = nullptr;
-	DisplacementEffect::clearData();
+	DisplacementEffect::fill(valueBag);
+	setProperty(PropertyType::StunTime, mStunTime, valueBag);
 }
 
 
@@ -19,7 +21,10 @@ void KnockbackStunEffect::slowUpdate(float dt)
 
 	if (!canMove(mReceiver, velocity, dt))
 	{
-		mReceiver->addEffect(mStunEffect);
+		Enemy* enemy = static_cast<Enemy*>(mReceiver);
+		if (enemy)
+			enemy->stun(mStunTime);
+
 		endEffect();
 	}
 }

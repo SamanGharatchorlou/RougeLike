@@ -10,8 +10,6 @@
 #include "Objects/Effects/EffectTypes/HealEffect.h"
 #include "Objects/Effects/EffectTypes/StunEffect.h"
 
-#include "Animations/AnimationReader.h"
-
 
 Effect* EffectPool::createNewObject(EffectType type) const
 {
@@ -22,23 +20,29 @@ Effect* EffectPool::createNewObject(EffectType type) const
 	case EffectType::Heal:
 		effect = new HealEffect;
 		break;
+
 	case EffectType::Blink:
 		effect = new BlinkEffect;
 		break;
+
 	case EffectType::Damage:
 		effect = new DamageEffect;
 		break;
+
 	case EffectType::Displacement:
 		effect = new DisplacementEffect;
 		break;
-	case EffectType::Stun:
-		XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Abilities, "Stun"));
-		Anim
 
+	case EffectType::Stun:
+		effect = new StunEffect;
 		break;
-	case EffectType::Armor:	
+
+	case EffectType::Armor:
+		effect = new ArmorEffect;
+		break;
+
 	case EffectType::KnockbackStun:
-		DebugPrint(Log, "Effect of type %d is unimplemented\n", (int)type);
+		effect = new KnockbackStunEffect;
 		break;
 	case EffectType::Count:
 	case EffectType::None:

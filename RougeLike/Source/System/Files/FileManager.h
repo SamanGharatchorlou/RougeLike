@@ -38,6 +38,7 @@ public:
 
 
 public:
+	// TODO: replace constructor code with init function
 	static FileManager* Get();
 	void free();
 
@@ -67,10 +68,13 @@ private:
 	void outFolderPath(BasicString& outValue, const fs::path& directoryPath, const BasicString& name) const;
 	void outFilePath(BasicString& outValue, const fs::path& directoryPath, const BasicString& name) const;
 
+
 private:
 	FileManager();
 	~FileManager() {};
 
+
+private:
 	std::unordered_map<Folder, BasicString> folderPaths;
 };
 

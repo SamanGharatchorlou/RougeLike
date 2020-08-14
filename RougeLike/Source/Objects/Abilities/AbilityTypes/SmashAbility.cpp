@@ -84,11 +84,11 @@ void SmashAbility::applyEffects(Actor* actor, EffectPool* effectPool)
 	// damage will change the state to hit. Hence the damage is taken but there is no hit state change
 	Effect* damage = effectPool->getObject(EffectType::Damage);
 	damage->fill(mProperties);
-
 	actor->addEffect(damage);
 
-	//Effect* stun = effectPool->getObject(EffectType::Stun);
-	//stun->fill(mProperties);
+	Effect* stun = effectPool->getObject(EffectType::Stun);
+	stun->fill(mProperties);
+	actor->addEffect(stun);
 
 	//StunEffect* stunEffect = static_cast<StunEffect*>(stun);
 	//stunEffect->set(mTime);

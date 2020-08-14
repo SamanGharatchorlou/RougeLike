@@ -11,8 +11,8 @@
 
 // Player
 #define DRAW_PLAYER_RECTS 0
-#define IGNORE_WALLS 0,
-#define IGNORED_BY_ENEMIES 1
+#define IGNORE_WALLS 0
+#define IGNORED_BY_ENEMIES 0
 
 // Collectables
 #define DRAW_COLLECTABLE_RECT 0
@@ -35,7 +35,7 @@
 #define DRAW_ENEMY_RECTS 0
 #define DRAW_ENEMY_TARGET_PATH 0
 
-#define LIMIT_ENEMY_SPAWNS 1
+#define LIMIT_ENEMY_SPAWNS 0
 #define MAX_SPAWN_COUNT 1
 
 // UI

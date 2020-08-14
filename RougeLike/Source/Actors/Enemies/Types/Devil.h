@@ -9,7 +9,7 @@ class Devil : public Enemy
 public:
 	Devil();
 
-	void init(TextureManager* textureManager) override;
+	void init() override;
 
 	const EnemyType type() const override { return EnemyType::Devil; }
 };

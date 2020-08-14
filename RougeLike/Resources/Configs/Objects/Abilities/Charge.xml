@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Ability>
 	<Properties>
-		<Range>90000</Range>
+		<Range>500</Range>
 		<MaxSize>125</MaxSize>
-		<Cooldown>5</Cooldown>
+		<Cooldown>1</Cooldown>
 
 		<Damage>50</Damage>
 
 		<KnockbackForce>750</KnockbackForce>
 		<KnockbackDistance>100</KnockbackDistance>
+		<StunTime>3</StunTime>
 
-		<ChargeForce>20</ChargeForce>
-		<ChargeDistance>200</ChargeDistance>
+		<Force>800</Force>
+		<Distance>250</Distance>
 	</Properties>
 
 	<Icon>ChargeIcon</Icon>
 
 	<Animator>
-		<ID>Spikes</ID>
+		<ID>Burst</ID>
 		<FrameTime>0.1</FrameTime>
-		<FrameSize x = "72" y ="26"></FrameSize>
+		<FrameSize x = "1021" y ="639"></FrameSize>
 		<Animations>
-			<Active>8</Active>
+			<Active>3</Active>
 		</Animations>
 	</Animator>
 </Ability>

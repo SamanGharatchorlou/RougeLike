@@ -4,7 +4,6 @@
 #include "TileInteractablesManager.h"
 
 class Map;
-class TextureManager;
 class Camera;
 class CollisionManager;
 class EffectPool;
@@ -12,7 +11,7 @@ class EffectPool;
 class LevelManager
 {
 public:
-	LevelManager(TextureManager* textureManger, CollisionManager* collisions, EffectPool* effects) : mBuilder(textureManger), mTrapManager(collisions, effects), mLevel(0) { }
+	LevelManager(CollisionManager* collisions, EffectPool* effects) : mTrapManager(collisions, effects), mLevel(0) { }
 
 	void load(const XMLParser& parser);
 

@@ -10,7 +10,6 @@
 struct GameData;
 class Environment;
 class InputManager;
-class TextureManager;
 
 class ActorManager : public Observer, public Dispatcher
 {
@@ -39,8 +38,6 @@ public:
 
 
 private:
-	TextureManager* mTextures;
-
 	PlayerManager mPlayer;
 	EnemyManager mEnemies;
 };

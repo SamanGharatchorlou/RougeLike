@@ -3,7 +3,6 @@
 #include "AbilityClasses/AbilityStates.h"
 #include "Input/Button.h"
 
-class TextureManager;
 class InputManager;
 class Screen;
 class GameScreen;
@@ -14,7 +13,7 @@ class UITextBox;
 class AbilityHotKeys
 {
 public:
-	AbilityHotKeys(TextureManager* textures, Screen* screen);
+	AbilityHotKeys(Screen* screen);
 
 	Button::State state(AbilityType ability, const InputManager* input);
 	void addHotKey(AbilityType ability);
@@ -26,7 +25,6 @@ private:
 
 
 private:
-	TextureManager* mTextures;
 	GameScreen* mGameScreen;
 	std::unordered_map<AbilityType, Button::Key> mHotKeyMap;
 };

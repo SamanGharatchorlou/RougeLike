@@ -13,7 +13,7 @@
 
 
 
-EnemyManager::EnemyManager(GameData* gameData) : mCollisions(gameData->collisionManager), mBuilder(gameData->textureManager) { }
+EnemyManager::EnemyManager(GameData* gameData) : mCollisions(gameData->collisionManager) { }
 
 
 EnemyManager::~EnemyManager()

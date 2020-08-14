@@ -9,7 +9,6 @@
 
 class Map;
 class Environment;
-class TextureManager;
 
 
 class Actor
@@ -20,7 +19,7 @@ public:
 
 	void set(Environment* environment);
 
-	void setCharacter(const XMLNode node, const TextureManager* textureManager);
+	void setCharacter(const XMLNode node);
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
 	void render();
@@ -53,7 +52,9 @@ public:
 	RectF		rect() const { return mPhysics.rect(); }
 	RectF		scaledRect() const;
 
+
 	void addEffect(Effect* effect);
+
 
 
 protected:

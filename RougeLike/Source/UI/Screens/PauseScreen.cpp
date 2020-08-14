@@ -8,9 +8,6 @@
 #include "UI/Elements/UIButton.h"
 
 
-PauseScreen::PauseScreen(const TextureManager* textures) : Screen(textures) { }
-
-
 void PauseScreen::enter()
 {
 	mButtons.clear();
@@ -42,6 +39,7 @@ void PauseScreen::update(float dt)
 // Change the box texture when the button is pressed
 void PauseScreen::updateBoxTexture(BasicString buttonId, BasicString boxId)
 {
+	const TextureManager* textures = TextureManager::Get();
 	UIButton* button = findButton(buttonId);
 	
 	if (button)
@@ -54,11 +52,11 @@ void PauseScreen::updateBoxTexture(BasicString buttonId, BasicString boxId)
 
 			if (button->isHeld())
 			{
-				texture = mTextures->getTexture("Big button Pressed", FileManager::Image_UI);
+				texture = textures->getTexture("Big button Pressed", FileManager::Image_UI);
 			}
 			else
 			{
-				texture = mTextures->getTexture("Big button Released", FileManager::Image_UI);
+				texture = textures->getTexture("Big button Released", FileManager::Image_UI);
 			}
 
 			boxComponent->setTexture(texture);

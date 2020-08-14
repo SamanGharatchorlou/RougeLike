@@ -6,7 +6,7 @@
 class CharacterSelectionScreen : public Screen
 {
 public:
-	CharacterSelectionScreen(const TextureManager* textures);
+	CharacterSelectionScreen();
 
 	void enter() override;
 

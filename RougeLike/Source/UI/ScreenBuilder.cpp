@@ -33,16 +33,16 @@ Screen* ScreenBuilder::createNewScreen(const BasicString& config)
 	BasicString screenName = FileManager::Get()->getItemName(config);
 
 	if (screenName == "GameScreen")
-		screen = new GameScreen(mTextures);
+		screen = new GameScreen;
 
 	else if (screenName == "PauseScreen")
-		screen = new PauseScreen(mTextures);
+		screen = new PauseScreen;
 
 	else if (screenName == "CharacterSelectionScreen")
-		screen = new CharacterSelectionScreen(mTextures);
+		screen = new CharacterSelectionScreen;
 
 	else if (screenName == "SettingsScreen")
-		screen = new SettingsScreen(mTextures);
+		screen = new SettingsScreen;
 
 	return screen;
 }
@@ -226,35 +226,38 @@ Elements ScreenBuilder::setParents(ScreenLayers& layers, const ScreenAttributes&
 // --- Get Textures --- //
 ScreenBuilder::TexturePacket ScreenBuilder::getButtonTextures(const StringMap& attributes) const
 {
-	TexturePacket textures;
-	textures.defaultTexture = getTexture(attributes);
-	textures.selected = textures.defaultTexture;
-	textures.hovering = textures.defaultTexture;
+	const TextureManager* textures = TextureManager::Get();
+
+	TexturePacket buttonTextures;
+	buttonTextures.defaultTexture = getTexture(attributes);
+	buttonTextures.selected = buttonTextures.defaultTexture;
+	buttonTextures.hovering = buttonTextures.defaultTexture;
 
 	if (attributes.contains("textureSelected"))
 	{
 		BasicString textureLabel = attributes.at("textureSelected");
-		textures.selected = mTextures->getTexture(textureLabel, FileManager::Image_UI);
+		buttonTextures.selected = textures->getTexture(textureLabel, FileManager::Image_UI);
 	}
 
 	if (attributes.contains("textureHovering"))
 	{
 		BasicString textureLabel = attributes.at("textureHovering");
-		textures.hovering = mTextures->getTexture(textureLabel, FileManager::Image_UI);
+		buttonTextures.hovering = textures->getTexture(textureLabel, FileManager::Image_UI);
 	}
 
-	return textures;
+	return buttonTextures;
 }
 
 
 Texture* ScreenBuilder::getTexture(const StringMap& attributes) const
 {
+	const TextureManager* textures = TextureManager::Get();
 	Texture* texture = nullptr;
 
 	if (attributes.contains("texture"))
 	{
 		BasicString textureLabel = attributes.at("texture");
-		texture = mTextures->getTexture(textureLabel, FileManager::Image_UI);
+		texture = textures->getTexture(textureLabel, FileManager::Image_UI);
 	}
 
 	return texture;

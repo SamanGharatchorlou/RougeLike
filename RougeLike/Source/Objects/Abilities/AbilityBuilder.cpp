@@ -22,7 +22,7 @@ Ability* AbilityBuilder::build(const BasicString& id) const
 	XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Abilities, id));
 
 	AnimationReader reader;
-	Animator animator = reader.buildAnimator(parser.rootChild("Animator"), mTextures);
+	Animator animator = reader.buildAnimator(parser.rootChild("Animator"));
 
 	PropertyMap properties(parser.rootChild("Properties"));
 
@@ -58,17 +58,22 @@ Ability* AbilityBuilder::createNewAbility(const BasicString& id) const
 		XMLNode hammerDetailsNode = parser.rootChild("Hammer");
 		StringMap hammerDetails(hammerDetailsNode);
 
-		Texture* texture = mTextures->getTexture(hammerDetails.at("Texture"), FileManager::Image_Weapons);
+		Texture* texture = TextureManager::Get()->getTexture(hammerDetails.at("Texture"), FileManager::Image_Weapons);
 		VectorF size = realiseSize(texture->originalDimentions, hammerDetails.getFloat("MaxSize"));
 		RectF rect(VectorF(), size);
 
 		ability = new SmashAbility(texture, rect);
 		break;
 	}
+	case AbilityType::Charge:
+	{
+		ability = new ChargeAbility;
+		break;
+	}
 
 	case AbilityType::None:
 	default:
-		DebugPrint(Log, "Ability type for '%s' has not been set, must be added to the AbilityType enum\n", id.c_str());
+		DebugPrint(Log, "Ability creation for type for '%s' has not been set, define in '%s'\n", id.c_str(), __FUNCTION__);
 		break;
 	}
 
@@ -83,7 +88,7 @@ void AbilityBuilder::setRangedValues(Ability* ability) const
 		RangedAbility* rangedAbility = static_cast<RangedAbility*>(ability);
 		if (rangedAbility)
 		{
-			Texture* rangeCircle = mTextures->getTexture("RangeCircle", FileManager::Image_UI);
+			Texture* rangeCircle = TextureManager::Get()->getTexture("RangeCircle", FileManager::Image_UI);
 			rangedAbility->setRangeCircle(rangeCircle);
 		}
 	}

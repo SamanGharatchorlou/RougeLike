@@ -143,17 +143,17 @@ void Enemy::replaceState(EnemyState::Type state)
 }
 
 
-void Enemy::addWaitState(float waitTime)
-{
-	if(state() != EnemyState::Dead)
-		mStateMachine.addState(new EnemyWait(this, waitTime));
-}
-
-
 void Enemy::addIdleState(float waitTime)
 {
 	if (state() != EnemyState::Dead)
 		mStateMachine.addState(new EnemyIdle(this, waitTime));
+}
+
+
+void Enemy::stun(float stunTime)
+{
+	if (state() != EnemyState::Dead)
+		mStateMachine.addState(new EnemyStun(this, stunTime));
 }
 
 

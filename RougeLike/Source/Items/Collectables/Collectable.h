@@ -86,7 +86,7 @@ protected:
 class WeaponCollectable : public Collectable
 {
 public:
-	~WeaponCollectable() { printf("delete weapom\n"); }
+	~WeaponCollectable() { }
 	void activate(PlayerManager* Player) override;
 
 	CollectableType type() const override { return CollectableType::MeleeWeapon; }
@@ -97,7 +97,7 @@ class AbilityCollectable : public Collectable
 {
 public:
 	void activate(PlayerManager* Player) override;
-	~AbilityCollectable() { printf("delete ability\n"); }
+	~AbilityCollectable() { }
 
 	CollectableType type() const override { return CollectableType::Ability; }
 };

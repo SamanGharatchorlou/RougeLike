@@ -4,7 +4,6 @@
 #include "Graphics/Texture.h"
 #include "UI/Elements/UITextBox.h"
 
-#include "UI/ScreenDecoder.h"
 
 LoadingManager* LoadingManager::Get()
 {

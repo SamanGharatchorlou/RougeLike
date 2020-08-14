@@ -62,9 +62,9 @@ void UIManager::selectScreen(Screen::Type screenType)
 }
 
 
-void UIManager::setupScreens(const TextureManager* textures)
+void UIManager::setupScreens()
 {
-	ScreenBuilder builder(textures);
+	ScreenBuilder builder;
 	std::vector<BasicString> configs = FileManager::Get()->allFilesInFolder(FileManager::Config_Menus);
 	for (const BasicString& config : configs)
 	{

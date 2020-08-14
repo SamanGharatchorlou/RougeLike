@@ -4,8 +4,8 @@
 Devil::Devil() { }
 
 
-void Devil::init(TextureManager* textureManager)
+void Devil::init()
 {
 	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs_Objects, "Devil"));
-	setCharacter(parser.rootNode(), textureManager);
+	setCharacter(parser.rootNode());
 }

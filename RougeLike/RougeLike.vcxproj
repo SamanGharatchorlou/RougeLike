@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Actors\Enemies\AIController.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyDebugger.cpp" />
+    <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyStun.cpp" />
     <ClCompile Include="Source\Map\TileInteractables\TileInteractable.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\ArmorEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\KnockbackStunEffect.cpp" />
@@ -179,7 +180,6 @@
     <ClCompile Include="Source\UI\Screens\GameScreen.cpp" />
     <ClCompile Include="Source\UI\Screens\PauseScreen.cpp" />
     <ClCompile Include="Source\UI\Elements\UIButton.cpp" />
-    <ClCompile Include="Source\UI\ScreenDecoder.cpp" />
     <ClCompile Include="Source\UI\Screens\Screen.cpp" />
     <ClCompile Include="Source\UI\UIManager.cpp" />
     <ClCompile Include="Source\System\Files\StatReader.cpp" />
@@ -192,6 +192,7 @@
   <ItemGroup>
     <ClInclude Include="Source\Actors\Enemies\AIController.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyDebugger.h" />
+    <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyStun.h" />
     <ClInclude Include="Source\Map\TileInteractables\TileInteractable.h" />
     <ClInclude Include="Source\Map\TileInteractables\Trigger.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\ArmorEffect.h" />
@@ -369,7 +370,6 @@
     <ClInclude Include="Source\UI\Screens\PauseScreen.h" />
     <ClInclude Include="Source\UI\Elements\UIBox.h" />
     <ClInclude Include="Source\UI\Elements\UIButton.h" />
-    <ClInclude Include="Source\UI\ScreenDecoder.h" />
     <ClInclude Include="Source\UI\Screens\Screen.h" />
     <ClInclude Include="Source\UI\UIManager.h" />
     <ClInclude Include="Source\System\Files\StatReader.h" />

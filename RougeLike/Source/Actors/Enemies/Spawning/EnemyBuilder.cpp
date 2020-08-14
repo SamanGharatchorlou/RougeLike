@@ -67,7 +67,7 @@ Enemy* EnemyBuilder::getBlankEnemy(EnemyType type)
 
 void EnemyBuilder::fillActorData(Enemy* enemy, const XMLNode node) const
 {
-	enemy->setCharacter(node, mTextures);
+	enemy->setCharacter(node);
 }
 
 

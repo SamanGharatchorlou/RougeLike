@@ -2,12 +2,11 @@
 
 #include "Screen.h"
 
-class UIElement;
 
 class GameScreen : public Screen
 {
 public:
-	GameScreen(const TextureManager* textures);
+	GameScreen();
 
 
 	void enter() override {}
@@ -17,7 +16,6 @@ public:
 
 	Type type() override { return Type::Game; }
 
-	void addElement(UIElement* element);
 
 private:
 	ScreenLayer* mAdditionalLayer;

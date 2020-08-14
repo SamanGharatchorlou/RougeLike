@@ -25,6 +25,7 @@ private:
 	bool hammerHitGround();
 	void applyEffects(Actor* actor, EffectPool* effectPool);
 
+
 private:
 	float mTime;
 

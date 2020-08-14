@@ -2,7 +2,6 @@
 
 #include "Screens/ScreenTypes.h"
 
-class TextureManager;
 class Texture;
 class UIElement;
 class Screen;
@@ -11,7 +10,6 @@ class Screen;
 class ScreenBuilder
 {
 public:
-	ScreenBuilder(const TextureManager* textures) : mTextures(textures) { }
 	Screen* buildNewScreen(const BasicString& config);
 
 
@@ -40,8 +38,4 @@ private:
 
 	Texture* getTexture(const StringMap& attributes) const;
 	TexturePacket getButtonTextures(const StringMap& attributes) const;
-
-
-private:
-	const TextureManager* mTextures;
 };

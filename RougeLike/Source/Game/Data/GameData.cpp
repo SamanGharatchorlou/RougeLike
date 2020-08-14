@@ -25,8 +25,7 @@ void GameData::setWindow(Window* newWindow)
 void GameData::load()
 {
 	// Texture Manager
-	textureManager = new TextureManager;
-	textureManager->init();
+	TextureManager::Get()->load();
 
 	// Set camera before UIManager
 	Camera::Get()->setViewport(window->size());
@@ -42,7 +41,7 @@ void GameData::load()
 
 	// UI
 	uiManager = new UIManager;
-	uiManager->setupScreens(textureManager);
+	uiManager->setupScreens();
 	uiManager->initCursor(inputManager->getCursor());
 
 	// Rendering
@@ -91,8 +90,10 @@ void GameData::free()
 	delete uiManager;
 
 	delete inputManager;
-	delete textureManager;
 	delete audioManager;
+
+	TextureManager::Get()->unload();
+
 	delete renderManager;
 
 	delete window;

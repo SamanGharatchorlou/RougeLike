@@ -8,8 +8,6 @@ class HealAbility : public TargetSelfAbility
 {
 public:
 	HealAbility() { };
-
-	//void set(const PropertyMap& values) override;
 	
 	void activate(EffectPool* pool) override;
 
@@ -18,11 +16,8 @@ public:
 
 	AbilityType type() const override { return AbilityType::Heal; }
 
+
 protected:
 	void applyEffects(EffectPool* pool);
 	void updateUI();
-
-
-private:
-	//Health mHeal;
 };

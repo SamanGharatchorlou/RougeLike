@@ -3,13 +3,9 @@
 #include "CollectableSpawner.h"
 #include "Objects/Pools/CollectablesPool.h"
 
-class TextureManager;
-
 class CollectableBuilder
 {
 public:
-	CollectableBuilder(TextureManager* textures) : mTextures(textures) { }
-
 	void loadPool();
 
 	Collectable* build(CollectableSpawner::SpawnData data);
@@ -21,7 +17,5 @@ private:
 
 
 protected:
-	TextureManager* mTextures;
-
 	CollectablesPool mPool;
 };

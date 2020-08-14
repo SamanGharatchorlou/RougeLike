@@ -6,12 +6,6 @@
 #include "Objects/Pools/EffectPool.h"
 
 
-//void ArmorAbility::fillValues(ValueMap& values)
-//{
-//	mArmor = Armor(values["Armor"]);
-//}
-
-
 void ArmorAbility::slowUpdate(float dt)
 {
 	mAnimator.slowUpdate(dt);
@@ -32,10 +26,9 @@ void ArmorAbility::activate(EffectPool* pool)
 
 void ArmorAbility::applyEffects(EffectPool* pool)
 {
-	//Effect* effect = pool->getObject(EffectType::Armor);
-	//ArmorEffect* armorEffect = static_cast<ArmorEffect*>(effect);
-	//armorEffect->set(mArmor);
-	//mCaster->addEffect(effect);
+	Effect* effect = pool->getObject(EffectType::Armor);
+	effect->fill(mProperties);
+	mCaster->addEffect(effect);
 }
 
 

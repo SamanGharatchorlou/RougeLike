@@ -19,7 +19,6 @@ void EnemyAlert::slowUpdate(float dt)
 	if (mEnemy->animator().loops() > 0)
 	{
 		mEnemy->replaceState(EnemyState::Run);
-		printf("run");
 	}
 }
 

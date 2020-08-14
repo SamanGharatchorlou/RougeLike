@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Effect>
+	<Animator>
+		<ID>Stun</ID>
+		<FrameTime>0.05</FrameTime>
+		<FrameSize x = "670" y ="392"></FrameSize>
+		<Animations>
+			<Active>16</Active>
+		</Animations>
+	</Animator>
+</Effect>

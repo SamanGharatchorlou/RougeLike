@@ -7,8 +7,6 @@ struct GameData;
 class PauseScreen : public Screen
 {
 public:
-	PauseScreen(const TextureManager* textures);
-
 	void enter() override;
 	void handleInput(const InputManager* input) { }
 	void update(float dt) override;

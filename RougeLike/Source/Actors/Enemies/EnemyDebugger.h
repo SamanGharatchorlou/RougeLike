@@ -38,6 +38,7 @@ const static std::unordered_map<EnemyState::Type, BasicString> enemyStateLookUpT
 	{ EnemyState::Hit, "Hit" },
 	{ EnemyState::Patrol, "Patrol" },
 	{ EnemyState::Alert, "Alert" },
+	{ EnemyState::Stun, "Stunned" },
 	{ EnemyState::PreAttack, "PreAttack" },
 	{ EnemyState::Attack, "Attack" },
 	{ EnemyState::Dead, "Dead" },

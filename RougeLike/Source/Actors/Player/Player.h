@@ -6,7 +6,6 @@ class Weapon;
 class WeaponData;
 class MeleeWeapon;
 class AudioManager;
-class TextureManager;
 
 
 class Player : public Actor
@@ -30,7 +29,7 @@ public:
 
 	MeleeWeapon*	weapon();
 
-	void setCharacter(const XMLNode playerNode, const TextureManager* textureManager);
+	void setCharacter(const XMLNode playerNode);
 	void selectWeapon(WeaponData* weapon);
 
 	void overrideControl(bool removeControl);

@@ -12,7 +12,7 @@
 #include "UI/Elements/UITextBox.h"
 
 
-AbilityHotKeys::AbilityHotKeys(TextureManager* textures, Screen* screen) :  mTextures(textures), mGameScreen(static_cast<GameScreen*>(screen)) { }
+AbilityHotKeys::AbilityHotKeys(Screen* screen) : mGameScreen(static_cast<GameScreen*>(screen)) { }
 
 
 Button::State AbilityHotKeys::state(AbilityType ability, const InputManager* input)
@@ -43,7 +43,9 @@ UIBox* AbilityHotKeys::createIcon(AbilityType item, int keyNumber)
 	BasicString id;
 	item >> id;
 
-	Texture* icon = mTextures->getTexture(id + "Icon", FileManager::Image_UI);
+	const TextureManager* textures = TextureManager::Get();
+	Texture* icon = textures->getTexture(id + "Icon", FileManager::Image_UI);
+
 	VectorF position(75.0f * (1 + keyNumber), 650);
 	VectorF size = realiseSize(icon->originalDimentions, 50);
 	RectF rect(position, size);

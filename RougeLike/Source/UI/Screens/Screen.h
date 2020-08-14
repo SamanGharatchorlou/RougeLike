@@ -6,8 +6,6 @@ class UIButton;
 class UIElement;
 
 class InputManager;
-class TextureManager;
-
 
 class Screen
 {
@@ -23,8 +21,6 @@ public:
 
 
 public:
-	Screen() : mTextures(nullptr) { }
-	Screen(const TextureManager* textures) : mTextures(textures) { };
 	virtual ~Screen();
 
 	void add(const ScreenLayer& layer);
@@ -48,7 +44,6 @@ public:
 
 
 protected:
-	const TextureManager* mTextures;
 	ScreenLayers mScreenLayers;
 };
 

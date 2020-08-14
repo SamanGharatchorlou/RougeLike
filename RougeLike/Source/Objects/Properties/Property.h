@@ -16,12 +16,14 @@ public:
 
 		// Physics
 		Force,
+		Distance,
 		MaxVelocity,
 
 		xPosition,
 		yPosition,
 
 		// Effect values
+		DamageReact,
 		KnockbackForce,
 		KnockbackDistance,
 
@@ -82,16 +84,18 @@ static const std::unordered_map<BasicString, PropertyType::Type> PropertyLookUpT
 
 	// Physics
 	{ "Force", PropertyType::Force },
+	{ "Distance", PropertyType::Distance },
 	{ "MaxVelocity", PropertyType::MaxVelocity },
 
 	{ "yPosition", PropertyType::xPosition },
 	{ "xPosition", PropertyType::yPosition },
 
 	// Effect values
+	{ "DamageReact", PropertyType::DamageReact },
 	{ "KnockbackForce", PropertyType::KnockbackForce },
 	{ "KnockbackDistance", PropertyType::KnockbackDistance },
 	{ "FallSpeed", PropertyType::FallSpeed },
-	{ "StrunTime", PropertyType::StunTime},
+	{ "StunTime", PropertyType::StunTime},
 
 	// Enemy
 	{ "Score", PropertyType::Score },

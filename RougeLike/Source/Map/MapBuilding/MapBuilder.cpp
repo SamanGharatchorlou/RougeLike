@@ -7,7 +7,7 @@
 #include "MapDecorator.h"
 
 
-MapBuilder::MapBuilder(TextureManager* textures) : mTextures(textures) 
+MapBuilder::MapBuilder()
 { 
 	int poolSize = 5;
 	for (int i = 0; i < poolSize; i++)
@@ -91,7 +91,7 @@ void MapBuilder::close(Map* map)
 void MapBuilder::populateMapData(Map* map)
 {
 	MapPopulator populator;
-	populator.populateData(map, mTextures);
+	populator.populateData(map);
 }
 
 

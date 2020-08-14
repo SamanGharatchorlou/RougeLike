@@ -10,8 +10,7 @@
 #include "Game/Environment.h"
 
 
-ActorManager::ActorManager(GameData* gameData) : 
-	mTextures(gameData->textureManager), mPlayer(gameData), mEnemies(gameData) { }
+ActorManager::ActorManager(GameData* gameData) : mPlayer(gameData), mEnemies(gameData) { }
 
 
 

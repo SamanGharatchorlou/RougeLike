@@ -101,12 +101,6 @@ bool MeleeWeapon::containsCollider(Collider* collider) const
 			return true;
 	}
 
-	//for (const Collider* blockCollider : mBlockColliders)
-	//{
-	//	if (collider == blockCollider)
-	//		return true;
-	//}
-
 	return false;
 }
 

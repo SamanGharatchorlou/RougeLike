@@ -13,6 +13,19 @@ TextureManager::TextureManager()
 
 TextureManager::~TextureManager()
 {
+	DebugPrint(Log, "Texture manager destroyed\n");
+}
+
+
+TextureManager* TextureManager::Get()
+{
+	static TextureManager sInstance;
+	return &sInstance;
+}
+
+
+void TextureManager::unload()
+{
 	std::unordered_map<FileManager::Folder, TextureMap>::iterator iter;
 	for (iter = mTextures.begin(); iter != mTextures.end(); iter++)
 	{
@@ -20,12 +33,12 @@ TextureManager::~TextureManager()
 		textureMap.free();
 	}
 
-	DebugPrint(Log, "Texture manager destroyed\n");
+	DebugPrint(Log, "Texture manager unloaded\n");
 }
 
 
 // load all textures here
-void TextureManager::init() 
+void TextureManager::load()
 {
 	FileManager* fm = FileManager::Get();
 

@@ -3,8 +3,8 @@
 
 #include "AbilityClasses/Ability.h"
 
-AbilityManager::AbilityManager(TextureManager* textures, Actor* caster, Screen* screen) :
-	mBuilder(textures, caster), mHotKeys(textures, screen)
+AbilityManager::AbilityManager(Actor* caster, Screen* screen) :
+	mBuilder(caster), mHotKeys(screen)
 { }
 
 

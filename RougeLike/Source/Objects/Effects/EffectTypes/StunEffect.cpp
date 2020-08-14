@@ -1,19 +1,7 @@
 #include "pch.h"
 #include "StunEffect.h"
 
-#include "Game/Camera/Camera.h"
 #include "Actors/Enemies/Enemy.h"
-
-
-
-void StunEffect::clearData()
-{
-	clearBaseData();
-
-	mMaxSize = 0.0f;
-	mTime = 0.0f;
-	mAnimator.reset();
-}
 
 
 void StunEffect::fill(const PropertyMap& valueBag)
@@ -23,33 +11,14 @@ void StunEffect::fill(const PropertyMap& valueBag)
 
 void StunEffect::init()
 {
-	mAnimator.startAnimation(Action::Active);
-
-	mMaxSize = mReceiver->rect().Width();
-
 	Enemy* enemy = static_cast<Enemy*>(mReceiver);
 	if (enemy)
-		enemy->addWaitState(mAnimator.frameCount() * mAnimator.frameTime() * 1.2f);
+		enemy->stun(mTime);
+
+	endEffect();
 }
 
-
-void StunEffect::slowUpdate(float dt)
+void StunEffect::exit()
 {
-	mAnimator.slowUpdate(dt);
-
-	if (mAnimator.loops() > 0)
-		endEffect();
+	mTime = 0.0f;
 }
-
-
-void StunEffect::render()
-{
-	VectorF size = realiseSize(mAnimator.frameSize(), mMaxSize);
-	RectF rect(VectorF(), size);
-
-	VectorF position = Camera::Get()->toCameraCoords(mReceiver->rect().TopCenter());
-	rect.SetBotCenter(position);
-
-	mAnimator.render(rect);
-}
-

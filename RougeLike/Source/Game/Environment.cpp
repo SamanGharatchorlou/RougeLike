@@ -10,7 +10,7 @@
 
 
 Environment::Environment(GameData* gameData) : 
-	mLevelManager(gameData->textureManager, gameData->collisionManager, &mEffectPool), 
+	mLevelManager(gameData->collisionManager, &mEffectPool), 
 	mActors(gameData), 
 	mCollectables(gameData)
 {

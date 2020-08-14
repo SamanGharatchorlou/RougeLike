@@ -27,7 +27,6 @@
     <ClCompile Include="Source\UI\Elements\UIBox.cpp" />
     <ClCompile Include="Source\UI\Elements\UITextBox.cpp" />
     <ClCompile Include="Source\Graphics\Renderer.cpp" />
-    <ClCompile Include="Source\UI\ScreenDecoder.cpp" />
     <ClCompile Include="Source\UI\Screens\GameScreen.cpp" />
     <ClCompile Include="Source\UI\Screens\PauseScreen.cpp" />
     <ClCompile Include="Source\UI\Screens\Screen.cpp" />
@@ -164,6 +163,7 @@
     <ClCompile Include="Source\Objects\Effects\EffectTypes\SlowEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\StunEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\ArmorEffect.cpp" />
+    <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyStun.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -196,7 +196,6 @@
     <ClInclude Include="Source\UI\Elements\UIButton.h" />
     <ClInclude Include="Source\UI\Elements\UITextBox.h" />
     <ClInclude Include="Source\Graphics\Renderer.h" />
-    <ClInclude Include="Source\UI\ScreenDecoder.h" />
     <ClInclude Include="Source\UI\Screens\GameScreen.h" />
     <ClInclude Include="Source\UI\Screens\PauseScreen.h" />
     <ClInclude Include="Source\UI\Screens\Screen.h" />
@@ -356,6 +355,7 @@
     <ClInclude Include="Source\Objects\Effects\EffectTypes\KnockbackStunEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\SlowEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\ArmorEffect.h" />
+    <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyStun.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

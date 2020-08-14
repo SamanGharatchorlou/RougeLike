@@ -20,7 +20,7 @@ PauseState::PauseState(GameData* gameData, GameController* gameController) :
 void PauseState::init() 
 {
 	mGameData->uiManager->selectScreen(Screen::Pause);
-	mGameData->uiManager->setCursorTexture(mGameData->textureManager->getTexture("UICursor", FileManager::Image_UI));
+	mGameData->uiManager->setCursorTexture(TextureManager::Get()->getTexture("UICursor", FileManager::Image_UI));
 
 	mPauseScreen = static_cast<PauseScreen*>(mGameData->uiManager->getActiveScreen());
 }

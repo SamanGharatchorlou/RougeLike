@@ -1,7 +1,6 @@
 #pragma once
 
 class Window;
-class TextureManager;
 class AudioManager;
 class InputManager;
 class RenderManager;
@@ -20,7 +19,6 @@ struct GameData
 
 	Window* window = nullptr;
 
-	TextureManager* textureManager = nullptr;
 	AudioManager* audioManager = nullptr;
 	InputManager* inputManager = nullptr;
 	RenderManager* renderManager = nullptr;

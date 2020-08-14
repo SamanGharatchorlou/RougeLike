@@ -104,6 +104,7 @@ void Texture::render(const RectF rect) const
 
 
 // Renders texture with the roation specified
+// NOTE: the about point is relative to the rect e.g. about the center would be rect.size()/2, not rect.center()
 void Texture::render(const RectF rect, double rotation, VectorF aboutPoint) const
 {
 	SDL_Rect renderQuad = { static_cast<int>(rect.x1 + 0.5f),
@@ -162,6 +163,7 @@ void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect) const
 
 
 // Renders part of the texture, e.g. a tile in a set with the roation specified
+// NOTE: the about point is relative to the rect e.g. about the center would be rect.size()/2, not rect.center()
 void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, double rotation, VectorF aboutPoint) const
 {
 	SDL_Rect renderQuad = { static_cast<int>(rect.x1 + 0.5f),

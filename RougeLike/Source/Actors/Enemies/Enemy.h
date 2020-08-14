@@ -17,7 +17,6 @@ class AIPathMap;
 class Map;
 class DamageCollider;
 class Environment;
-class TextureManager;
 
 
 class Enemy : public Actor
@@ -26,7 +25,7 @@ public:
 	Enemy();
 	~Enemy() { }
 
-	virtual void init(TextureManager* textureManager) = 0;
+	virtual void init() = 0;
 
 	// Core
 	void slowUpdate(float dt);
@@ -48,9 +47,9 @@ public:
 	void replaceState(EnemyState::Type state);
 	EnemyState::Type state() const;
 
-	void addWaitState(float waitTime);
 	void addIdleState(float waitTime);
-	 
+	void stun(float stunTime);
+
 	// Map
 	//void setMap(const AIPathMap* map) { mMap = map; }
 	const AIPathing& getPathMap() const { return mAIPathing; }

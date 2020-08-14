@@ -10,7 +10,7 @@
 
 
 // TODO: change the name of this class
-void MapPopulator::populateData(Map* map, const TextureManager* textures)
+void MapPopulator::populateData(Map* map)
 {
 	Grid<MapTile>& data = map->getData();
 
@@ -21,15 +21,17 @@ void MapPopulator::populateData(Map* map, const TextureManager* textures)
 	decorTiles.fillDecorInfo(data);
 
 	AnimationTilePopulator animationTiles;
-	animationTiles.addAnimations(data, textures);
+	animationTiles.addAnimations(data);
 
 	editCollisionInfo(data);
-	setTextures(data, textures);
+	setTextures(data);
 }
 
 
-void MapPopulator::setTextures(Grid<MapTile>& data, const TextureManager* textures)
+void MapPopulator::setTextures(Grid<MapTile>& data)
 {
+
+	const TextureManager* textures = TextureManager::Get();
 	std::unordered_map<RenderTile, Texture*> tileTextures;
 
 	tileTextures[RenderTile::Floor] = textures->getTexture("floor", FileManager::Image_Maps);

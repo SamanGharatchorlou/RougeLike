@@ -9,7 +9,7 @@
 
 
 
-SettingsScreen::SettingsScreen(const TextureManager* textures) : Screen(textures)
+SettingsScreen::SettingsScreen()
 {
 	mSliders.push_back(UISlider());
 	mSliders.push_back(UISlider());

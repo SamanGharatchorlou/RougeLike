@@ -38,7 +38,6 @@ void SpikeAbility::applyEffects(Actor* actor, EffectPool* effectPool)
 }
 
 
-
 void SpikeAbility::slowUpdate(float dt)
 {
 	mAnimator.slowUpdate(dt);

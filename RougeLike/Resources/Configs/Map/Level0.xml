@@ -10,14 +10,15 @@
 	</Exit>
 
 	<Collectables>
-			<Ability xPosition="8" id="Blink"></Ability>
-			<Ability xPosition="12" id="Smash"></Ability>
-			<Ability xPosition="10" id="Blink"></Ability>
+			<Ability xPosition="8" id="Charge"></Ability>
+			<Ability xPosition="12" id="Charge"></Ability>
+			<Ability xPosition="10" id="Charge"></Ability>
 			<Ability xPosition="15" id="Spikes"></Ability>
 	</Collectables>
 
 	<Enemies>
 		<Shape type="Devil" xPosition="30" shape="Circle" points="7"></Shape>
-		<Patrol type="Devil" xIncrement="20"></Patrol>
+		<Shape type="Devil" xPosition="65" shape="Circle" points="7"></Shape>
+		<Patrol type="Devil" xIncrement="3"></Patrol>
 	</Enemies>
 </Level>

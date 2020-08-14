@@ -1,6 +1,5 @@
 #pragma once
 
-class TextureManager;
 class Ability;
 class Actor;
 
@@ -8,7 +7,7 @@ class Actor;
 class AbilityBuilder
 {
 public:
-	AbilityBuilder(TextureManager* textures, Actor* caster) : mTextures(textures), mCaster(caster) { }
+	AbilityBuilder(Actor* caster) : mCaster(caster) { }
 
 	Ability* build(const BasicString& id) const;
 
@@ -18,6 +17,5 @@ private:
 	void setRangedValues(Ability* ability) const;
 
 private:
-	TextureManager* mTextures;
 	Actor* mCaster;
 };

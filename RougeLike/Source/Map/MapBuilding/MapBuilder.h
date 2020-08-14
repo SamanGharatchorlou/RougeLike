@@ -2,7 +2,6 @@
 
 #include "MapSpecifications.h"
 
-class TextureManager;
 class Map;
 enum class MapType;
 
@@ -10,7 +9,7 @@ enum class MapType;
 class MapBuilder
 {
 public:
-	MapBuilder(TextureManager* textures);
+	MapBuilder();
 
 	Map* buildFirst();
 	Map* buildMap(MapType type, VectorF offset);
@@ -29,8 +28,6 @@ private:
 	void addTrapMechanics(Map* map);
 
 private:
-	TextureManager* mTextures;
-
 	UniqueQueue<Map*> mPool;
 
 	MapSpecifications mSpecs;

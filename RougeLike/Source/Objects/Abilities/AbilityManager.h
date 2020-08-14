@@ -8,7 +8,6 @@
 
 
 class Actor;
-class TextureManager;
 class InputManager;
 class Screen;
 
@@ -16,7 +15,7 @@ class Screen;
 class AbilityManager
 {
 public:
-	AbilityManager(TextureManager* textures, Actor* caster, Screen* screen);
+	AbilityManager(Actor* caster, Screen* screen);
 	~AbilityManager();
 
 	void init(Environment* environment);
