@@ -26,6 +26,8 @@ public:
 	void updatePath();
 	Index nextTileIndex();
 
+	const Path& path() const { return mPath; }
+
 
 private:
 	bool inChaseRange() const;

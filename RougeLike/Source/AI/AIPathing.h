@@ -25,6 +25,8 @@ public:
 	// TEMP
 	const PathTile* tile(Index index) const;
 
+	const AIPathMap* pathMap() const { return mMap; }
+
 #if DRAW_AI_PATH
 	std::vector<PathTile> debugPath;
 	void draw();

@@ -17,8 +17,7 @@
 
 
 Enemy::Enemy() :
-	mStateMachine(new EnemyNullState),
-	mCurrentIndex(Vector2D<int>(-1,-1))
+	mStateMachine(new EnemyNullState)
 #if _DEBUG
 	, mDebugger(this)
 #endif

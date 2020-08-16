@@ -2,6 +2,7 @@
 
 #include "EnemyStates/EnemyState.h"
 #include "EnemyStates/EnemyStateHeaders.h"
+#include "Map/Tiles/MapTile.h"
 
 class Environment;
 class Enemy;
@@ -9,9 +10,20 @@ class Enemy;
 class EnemyDebugger
 {
 public:
-	void labelState(EnemyState::Type state, RectF enemyRect) const;
-	void drawPlayerDistance(Environment* environment, const Enemy* enemy) const;
+	EnemyDebugger(Enemy* enemy) : mEnemy(enemy) { }
 
+	void draw();
+
+
+private:
+	void labelState();
+	void drawPlayerDistance(Environment* environment, const Enemy* enemy);
+	void drawRects();
+	void drawPath();
+
+private:
+	Enemy* mEnemy;
+	std::vector<PathTile> mPath;
 };
 
 
