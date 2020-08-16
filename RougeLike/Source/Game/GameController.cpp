@@ -134,9 +134,8 @@ void GameController::handleInput(SDL_Event& event)
 
 #if DEBUG_CURSOR // show mouse position in screen title
 	VectorF pos = mGameData.inputManager->cursorPosition();
-	std::Stringstream ss;
-	ss << "X: " << pos.x << " Y: " << pos.y;
-	mGameData.window->setTitle(ss.str().c_str());
+	BasicString cursor = BasicString("X: ") + BasicString(pos.x) + BasicString(" Y: ") + BasicString(pos.y);
+	mGameData.window->setTitle(cursor.c_str());
 #endif
 }
 

@@ -39,9 +39,9 @@
 #define MAX_SPAWN_COUNT 1
 
 // UI
-#define DRAW_UI_RECTS 0
-#define UI_EDITOR 0
-#define DEBUG_CURSOR 0
+#define DRAW_UI_RECTS 1
+#define UI_EDITOR 1
+#define DEBUG_CURSOR 1
 
 #else
 #define MEMORY_TRACKING 0

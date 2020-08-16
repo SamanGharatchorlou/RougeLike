@@ -4,6 +4,7 @@
 #include "Game/Camera/Camera.h"
 
 #if _DEBUG
+#include "Debug/MapDebugging.h"
 #include "Debug/DebugDraw.h"
 #endif
 

@@ -28,10 +28,10 @@ void PauseScreen::update(float dt)
 		}
 	}
 
-	updateBoxTexture("ResumeButton", "ResumePanel");
-	updateBoxTexture("SettingsButton", "SettingsPanel");
-	updateBoxTexture("RestartButton", "RestartPanel");
-	updateBoxTexture("QuitButton", "QuitPanel");
+	//updateBoxTexture("ResumeButton", "ResumePanel");
+	//updateBoxTexture("SettingsButton", "SettingsPanel");
+	//updateBoxTexture("RestartButton", "RestartPanel");
+	//updateBoxTexture("QuitButton", "QuitPanel");
 }
 
 

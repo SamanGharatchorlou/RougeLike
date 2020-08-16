@@ -5,56 +5,36 @@
 	</Layer>
 
 	<Layer>
-		<Box id = "UpperPanelElement" parent = "MainPanel" x = "20.000" y = "26.000" width = "460.000" height = "55.000" texture = "Upper panel element"></Box>
-		<Box id = "MidPanelElement" parent = "MainPanel" x = "20.000" y = "85.000" width = "460.000" height = "437.000" texture = "Mid panel element"></Box>
-		<Box id = "LowerPanelElement" parent = "MainPanel" x = "20.000" y = "526.000" width = "460.000" height = "54.000" texture = "Lower panel element"></Box>
-	</Layer>
-
-	<Layer>
 
 		<!-- Resume game -->
-		<Box id = "ResumePanel" parent = "MidPanelElement" x = "17.000" y = "15.000" width = "426.000" height = "90.000" texture = "Big button Released"></Box>
-		<TextBox id = "ResumeText" parent = "ResumePanel" align = "Center" x = "145.000" y = "5.000" width = "274.000" height = "49.000" >
-			<text r = "0" g = "0" b = "0" >Resume</text>
+		<Button id = "ResumeButton" parent = "MainPanel" x = "60.000" y = "110.000" width = "380.000" height = "80.000" texture = "Default"></Button>
+		<TextBox id = "ResumeText" parent = "ResumeButton" align = "Center" x = "0" y = "10.000" width = "380.200" height = "55.000" >
+			<text r = "255" g = "255" b = "255" >Resume</text>
 		</TextBox>
-
-		<Button id = "ResumeButton" parent = "ResumePanel" x = "17.000" y = "-9.000" width = "111.000" height = "90.000" texture = "Blank icon"></Button>
-		<Box id = "ResumeIcon" parent = "ResumePanel" x = "46.000" y = "11.000" width = "53.000" height = "43.000" texture = "New game icon"></Box>
 
 		<!-- Settings -->
-		<Box id = "SettingsPanel" parent = "MidPanelElement" x = "17.000" y = "120.000" width = "426.000" height = "90.000" texture = "Big button Released"></Box>
-		<TextBox id = "SettingsText" parent = "SettingsPanel" align = "Center" x = "145.000" y = "5.000" width = "274.000" height = "49.000">
-			<text r = "0" g = "0" b = "0" >Settings</text>
+		<Button id = "SettingsButton" parent = "MainPanel" x = "60.000" y = "220.000" width = "380.000" height = "80.000" texture = "Default"></Button>
+		<TextBox id = "SettingsText" parent = "SettingsButton" align = "Center" x = "0.000" y = "10.000" width = "380.000" height = "55.000">
+			<text r = "255" g = "255" b = "255" >Settings</text>
 		</TextBox>
-
-		<Button id = "SettingsButton" parent = "SettingsPanel" x = "17.000" y = "-9.000" width = "111.000" height = "90.000" texture = "Blank icon"></Button>
-		<Box id = "SettingsIcon" parent = "SettingsPanel" x = "46.000" y = "11.000" width = "53.000" height = "43.000" texture = "Settings icon"></Box>
 
 		<!-- Restart -->
-		<Box id = "RestartPanel" parent = "MidPanelElement" x = "17.000" y = "225.000" width = "426.000" height = "90.000" texture = "Big button Released"></Box>
-		<TextBox id = "RestartText" parent = "RestartPanel" align = "Center" x = "145.000" y = "5.000" width = "274.000" height = "49.000" >
-			<text r = "0" g = "0" b = "0" >Restart</text>
+		<Button id = "RestartButton" parent = "MainPanel" x = "60.000" y = "330.000" width = "380.000" height = "80.000" texture = "Default"></Button>
+		<TextBox id = "RestartText" parent = "RestartButton" align = "Center" x = "0.000" y = "10.000" width = "380.000" height = "55.000" >
+			<text r = "255" g = "255" b = "255" >Restart</text>
 		</TextBox>
-
-		<Button id = "RestartButton" parent = "RestartPanel" x = "17.000" y = "-9.000" width = "111.000" height = "90.000" texture = "Blank icon"></Button>
-		<Box id = "RestartIcon" parent = "RestartPanel" x = "46.000" y = "11.000" width = "53.000" height = "43.000" texture = "Restart icon"></Box>
 
 		<!-- Quit -->
-		<Box id = "QuitPanel" parent = "MidPanelElement" x = "17.000" y = "330.000" width = "426.000" height = "90.000" texture = "Big button Released"></Box>
-		<TextBox id = "QuitText" parent = "QuitPanel" align = "Center" x = "145.000" y = "5.000" width = "274.000" height = "49.000" >
-			<text r = "0" g = "0" b = "0" >Quit</text>
+		<Button id = "QuitButton" parent = "MainPanel" x = "60.000" y = "440.000" width = "380.000" height = "80.000" texture = "Default"></Button>
+		<TextBox id = "QuitText" parent = "QuitButton" align = "Center" x = "0.000" y = "10.000" width = "380.000" height = "55.000" >
+			<text r = "255" g = "255" b = "255" >Quit</text>
 		</TextBox>
-
-		<Button id = "QuitButton" parent = "QuitPanel" x = "17.000" y = "-9.000" width = "111.000" height = "90.000" texture = "Blank icon"></Button>
-		<Box id = "QuitIcon" parent = "QuitPanel" x = "46.000" y = "11.000" width = "53.000" height = "43.000" texture = "Quit icon"></Box>
 
 	</Layer>
 
 	<Layer>
-		<Box id = "Title2" parent = "MainPanel" x = "0.000" y = "-18.000" width = "500.800" height = "57.000" texture = "Name element 02"></Box>
-		<Box id = "Title1" parent = "MainPanel" x = "36.000" y = "-14.030" width = "428.000" height = "45.000" texture = "Name element 01"></Box>
-		<TextBox id = "ScreenTitle" parent = "Title1" align = "Center" x = "0.000" y = "0.000" width = "428.000" height = "45.000" >
-			<text r = "0" g = "0" b = "0" >PAUSED</text>
+		<TextBox id = "ScreenTitle" parent = "MainPanel" align = "Center" x = "0.000" y = "11.500" width = "500.800" height = "56.500" >
+			<text r = "255" g = "255" b = "255" >PAUSED</text>
 		</TextBox>
 	</Layer>
 	

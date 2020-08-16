@@ -12,11 +12,13 @@
 		<Box id = "MainPanel"  x = "148.000" y = "35" width = "728.800" height = "714.200" texture = "Main panel"></Box>
 	</Layer>
 
+		<!--
 	<Layer>
 		<Box id = "UpperPanelElement" parent = "MainPanel" x = "27.000" y = "26.000" width = "675.000" height = "55.000" texture = "Upper panel element"></Box>
 		<Box id = "MidPanelElement" parent = "MainPanel" x = "27.000" y = "83.000" width = "675.000" height = "437.000" texture = "Mid panel element"></Box>
 		<Box id = "LowerPanelElement" parent = "MainPanel" x = "27.000" y = "525.000" width = "675.000" height = "167.000" texture = "Lower panel element"></Box>
 	</Layer>
+-->
 
 	<Layer>
 		<Box id = "Title2" parent = "MainPanel" x = "1.000" y = "-21.000" width = "727.800" height = "69.000" texture = "Name element 02"></Box>
@@ -47,7 +49,7 @@
 			<text r = "0" g = "0" b = "0" >Knight</text>
 		</TextBox>
 		
-		<Button id = "PlayButton" parent = "CharacterNamePanel" x = "22.000" y = "-10.000" width = "148.000" height = "105.000" texture = "Blank icon"></Button>
+		<Button id = "PlayButton" parent = "CharacterNamePanel" x = "22.000" y = "-10.000" width = "148.000" height = "105.000" texture = "Default"></Button>
 		<Box id = "PlayIcon" parent = "CharacterNamePanel" x = "73.000" y = "10.000" width = "49.000" height = "52.000" texture = "New game icon"></Box>
 	</Layer>
 

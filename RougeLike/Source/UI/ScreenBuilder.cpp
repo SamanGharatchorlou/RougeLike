@@ -226,25 +226,43 @@ Elements ScreenBuilder::setParents(ScreenLayers& layers, const ScreenAttributes&
 // --- Get Textures --- //
 ScreenBuilder::TexturePacket ScreenBuilder::getButtonTextures(const StringMap& attributes) const
 {
+	TexturePacket buttonTextures;
 	const TextureManager* textures = TextureManager::Get();
 
-	TexturePacket buttonTextures;
-	buttonTextures.defaultTexture = getTexture(attributes);
-	buttonTextures.selected = buttonTextures.defaultTexture;
-	buttonTextures.hovering = buttonTextures.defaultTexture;
-
-	if (attributes.contains("textureSelected"))
+	if (attributes.at("texture") == "Default")
 	{
-		BasicString textureLabel = attributes.at("textureSelected");
-		buttonTextures.selected = textures->getTexture(textureLabel, FileManager::Image_UI);
-	}
+		XMLParser button(FileManager::Get()->findFile(FileManager::Configs, "DefaultButton"));
+		XMLNode buttonNode = button.rootChild("Button");
+		StringMap map = buttonNode.attributes();
 
-	if (attributes.contains("textureHovering"))
+
+		BasicString texture = map.at("texture");
+		buttonTextures.defaultTexture = textures->getTexture(texture, FileManager::Image_UI);
+
+		BasicString textureSelected = map.at("textureSelected");
+		buttonTextures.selected = textures->getTexture(textureSelected, FileManager::Image_UI);
+
+		BasicString textureHovering = map.at("textureHovering");
+		buttonTextures.hovering = textures->getTexture(textureHovering, FileManager::Image_UI);
+	}
+	else
 	{
-		BasicString textureLabel = attributes.at("textureHovering");
-		buttonTextures.hovering = textures->getTexture(textureLabel, FileManager::Image_UI);
-	}
+		buttonTextures.defaultTexture = getTexture(attributes);
+		buttonTextures.selected = buttonTextures.defaultTexture;
+		buttonTextures.hovering = buttonTextures.defaultTexture;
 
+		if (attributes.contains("textureSelected"))
+		{
+			BasicString textureLabel = attributes.at("textureSelected");
+			buttonTextures.selected = textures->getTexture(textureLabel, FileManager::Image_UI);
+		}
+
+		if (attributes.contains("textureHovering"))
+		{
+			BasicString textureLabel = attributes.at("textureHovering");
+			buttonTextures.hovering = textures->getTexture(textureLabel, FileManager::Image_UI);
+		}
+	}
 	return buttonTextures;
 }
 

@@ -28,7 +28,7 @@ private:
 	Screen* mScreen;
 	BasicString mElementID;
 
-	float movementSpeed = 0.3f; // pixels moved per press
+	float movementSpeed = 2.3f; // pixels moved per press
 	int holdSpeed = 2; // larger is slower, using % for it
 	int holdDelay = 15;
 };

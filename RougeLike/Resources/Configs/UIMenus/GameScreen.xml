@@ -9,8 +9,8 @@
 
 		<!-- Player health bar -->
 		<Box id = "HealthIcon" x = "271.000" y = "66.000" width = "50.000" height = "50.000" texture = "HealthIcon"></Box>
-		<Box id = "BlackHealthBar" x = "322.065" y = "84.00" width = "380.000" height = "24.000" texture = "BlackBar"></Box>
-		<Box id = "HealthBar"   parent = "BlackHealthBar" x = "0" y = "0" width = "380.000" height = "24.000" texture = "RedBar"></Box>
+		<Box id = "BlackHealthBar" x = "322.065" y = "84.00" width = "380.000" height = "24.000" texture = "HealthBarContainer"></Box>
+		<Box id = "HealthBar"   parent = "BlackHealthBar" x = "0" y = "0" width = "380.000" height = "24.000" texture = "HealthBar"></Box>
 	</Layer>
 
 	<!-- Map level -->
