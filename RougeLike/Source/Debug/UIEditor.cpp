@@ -108,7 +108,7 @@ VectorF UIEditor::moveElement(const InputManager* input, Button::Key key, Vector
 
 BasicString UIEditor::selectElement(const InputManager* input)
 {
-	BasicString elementID;
+	BasicString elementID("");
 	Elements elementList = mScreen->layers().elementList();
 	for (UIElement* element : elementList)
 	{

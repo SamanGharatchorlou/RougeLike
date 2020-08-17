@@ -52,6 +52,18 @@ void UIBox::render()
 }
 
 
+void UIBox::render(RectF subRect)
+{
+	if (mTexture)
+		mTexture->renderSubTexture(mRect, subRect);
+
+#if _DEBUG
+	if (mDrawRect || DRAW_UI_RECTS)
+		debugDrawRectOutline(mRect, RenderColour::Blue);
+#endif
+}
+
+
 bool UIBox::isPointInBounds(VectorF point)
 {
 	bool xOverlaps = mRect.LeftPoint() < point.x && mRect.RightPoint() > point.x;

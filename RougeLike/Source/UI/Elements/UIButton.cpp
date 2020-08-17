@@ -1,17 +1,41 @@
 #include "pch.h"
 #include "UIButton.h"
 
+#include "Input/InputManager.h"
 
 UIButton::UIButton(const StringMap& attributes) :
 	UIBox(attributes), mState(State::None),
 	mDefault(nullptr), mSelected(nullptr), mHovered(nullptr) { }
 
 
+UIButton::UIButton(Data& buttonData) : UIBox(buttonData)
+{
+	setTextures(buttonData.defaultTexture, buttonData.selected, buttonData.hovered);
+}
+
+
 void UIButton::setTextures(Texture* defaultTexture, Texture* selected, Texture* hovering)
 {
 	mDefault = defaultTexture;
-	mSelected = selected;
-	mHovered = hovering;
+
+	mSelected = selected != nullptr ? selected : defaultTexture;
+	mHovered = hovering != nullptr ? hovering : defaultTexture;
+}
+
+
+void UIButton::handleInput(const InputManager* input)
+{
+	if (isPointInBounds(input->cursorPosition()))
+	{
+		setState(UIButton::State::Hovering);
+		setPressed(input->isCursorPressed(Cursor::Left));
+		setHeld(input->isCursorHeld(Cursor::Left));
+		setReleased(input->isCursorReleased(Cursor::Left));
+	}
+	else
+	{
+		reset();
+	}
 }
 
 

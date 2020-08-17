@@ -17,14 +17,24 @@ public:
 		Active
 	};
 
+	struct Data : public UIBox::Data
+	{
+		Texture* defaultTexture = nullptr;
+		Texture* selected = nullptr;
+		Texture* hovered = nullptr;
+	};
+
 
 public:
 	UIButton(const StringMap& attributes);
+	UIButton(Data& data);
 	~UIButton() { }
 
 	void setTextures(Texture* defaultTexture, Texture* selected, Texture* hovering);
 
 	void reset();
+
+	void handleInput(const InputManager* input) override;
 
 	void setState(State state);
 	void setHeld(bool isHeld);

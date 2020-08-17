@@ -61,7 +61,7 @@ void Animator::Animation::render(RectF rect, SDL_RendererFlip flip, Uint8 alpha)
 	mTexture->renderSubTexture(rect, tileRect, flip, alpha);
 }
 
-
+// NOTE: is the sub texture size correct??? the height seems off?
 void Animator::Animation::render(RectF rect, double rotation, VectorF aboutPoint) const
 {
 	RectF tileRect = subTileRect(rect);

@@ -1,30 +1,49 @@
 #pragma once
 
-class UIManager;
-class UIButton;
-class UIElement;
+#include "UIBox.h"
 
-class UISlider
+class UIButton;
+class InputManager;
+
+
+class UISlider : public UIBox
 {
 public:
-	UISlider();
-	void setComponents(UIButton* slider, UIElement* bar, UIElement* container);
+	UISlider(const StringMap& attributes);
+
+	void setComponents(Texture* container, UIButton* slider, UIBox* bar);
+
+
+	void handleInput(const InputManager* input) override;
 
 	void setCursorOffset(float cursorPosition);
 
-	void setPosition(float position);
-	void setValue(float value);
+	void setSliderPosition(float position);
+	void setSliderValue(float value);
+	
 
-	void setActive(bool active);
-	bool isActive() const;
-	bool isPressed() const;
+	float getValue() const;
 
-	float value() const;
+	virtual void render() override;
+
+	UIButton* handle() { return mSlider; }
+
+	virtual Type type() const { return Type::Slider; }
+
+
+private:
+	void updateBar();
+
+	void setBarRect(float value);
+	void setBarSubRect(float value);
+
 
 private:
 	UIButton* mSlider;
-	UIElement* mBar;
-	UIElement* mContainer;
+	UIBox* mBar;
+
+	RectF subRect;
 
 	float xCursorOffset;
 };
+

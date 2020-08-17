@@ -4,8 +4,6 @@
 #include "UI/Elements/UIElement.h"
 #include "UI/Elements/UIButton.h"
 
-#include "Input/InputManager.h"
-
 
 Screen::~Screen()
 {
@@ -38,28 +36,13 @@ ScreenLayer* Screen::layer(const BasicString& id)
 	return mScreenLayers.layer(id);
 }
 
-
+// TODO: change to handle input
 void Screen::updateButtons(const InputManager* input)
 {
 	Elements elements = mScreenLayers.elementList();
 	for (UIElement* element : elements)
 	{
-		if (element->type() == UIElement::Type::Button)
-		{
-			UIButton* button = static_cast<UIButton*>(element);
-
-			if (button->isPointInBounds(input->cursorPosition()))
-			{
-				button->setState(UIButton::State::Hovering);
-				button->setPressed(input->isCursorPressed(Cursor::Left));
-				button->setHeld(input->isCursorHeld(Cursor::Left));
-				button->setReleased(input->isCursorReleased(Cursor::Left));
-			}
-			else
-			{
-				button->reset();
-			}
-		}
+		element->handleInput(input);
 	}
 }
 

@@ -5,6 +5,7 @@
 #include "Elements/UIButton.h"
 #include "Elements/UIElement.h"
 #include "Elements/UITextBox.h"
+#include "Elements/UISlider.h"
 
 #include "Graphics/Texture.h"
 #include "Graphics/TextureManager.h"
@@ -119,12 +120,48 @@ UIElement* ScreenBuilder::buildElement(const StringMap& attributes) const
 		element = button;
 	}
 
+	else if (type == "Slider")
+	{
+		UISlider* slider = new UISlider(attributes);
+
+		XMLParser parser(FileManager::Get()->findFile(FileManager::Configs, "Sliders"));
+		XMLNode node = parser.rootChild(attributes.at("slider"));
+		StringMap sliderAttributes = node.attributes();
+
+		buildSlider(slider, sliderAttributes);
+
+		element = slider;
+	}
+
 	else if (type == "TextBox")
 	{
 		element = new UITextBox(attributes);
 	}
 
 	return element;
+}
+
+
+void ScreenBuilder::buildSlider(UISlider* slider, const StringMap& attributes) const
+{
+	const TextureManager* textures = TextureManager::Get();
+
+	// Container
+	Texture* container = textures->getTexture(attributes.at("Container"), FileManager::Image_UI);
+
+	// Bar
+	UIBox::Data barData;
+	barData.parent = slider;
+	barData.texture = textures->getTexture(attributes.at("Bar"), FileManager::Image_UI);
+	UIBox* bar = new UIBox(barData);
+
+	// Button
+	UIButton::Data handleData;
+	handleData.parent = slider;
+	handleData.defaultTexture = textures->getTexture(attributes.at("Handle"), FileManager::Image_UI);
+	UIButton* sliderHandle = new UIButton(handleData);
+
+	slider->setComponents(container, sliderHandle, bar);
 }
 
 
@@ -174,7 +211,7 @@ void ScreenBuilder::reformatText(UIElement* element)
 }
 
 
-void ScreenBuilder::repositionRelativeToParent(UIElement* element)
+void ScreenBuilder::repositionRelativeToParent(UIElement* element) const
 {
 	RectF rect = element->rect();
 
@@ -229,40 +266,49 @@ ScreenBuilder::TexturePacket ScreenBuilder::getButtonTextures(const StringMap& a
 	TexturePacket buttonTextures;
 	const TextureManager* textures = TextureManager::Get();
 
-	if (attributes.at("texture") == "Default")
+	XMLParser button(FileManager::Get()->findFile(FileManager::Configs, "Buttons"));
+	XMLNode buttonNode = button.rootChild(attributes.at("texture"));
+
+#if _DEBUG
+	if (!buttonNode)
 	{
-		XMLParser button(FileManager::Get()->findFile(FileManager::Configs, "DefaultButton"));
-		XMLNode buttonNode = button.rootChild("Button");
-		StringMap map = buttonNode.attributes();
-
-
-		BasicString texture = map.at("texture");
-		buttonTextures.defaultTexture = textures->getTexture(texture, FileManager::Image_UI);
-
-		BasicString textureSelected = map.at("textureSelected");
-		buttonTextures.selected = textures->getTexture(textureSelected, FileManager::Image_UI);
-
-		BasicString textureHovering = map.at("textureHovering");
-		buttonTextures.hovering = textures->getTexture(textureHovering, FileManager::Image_UI);
+		DebugPrint(Warning, "Button config does not have a '%s' node\n", attributes.at("texture"));
 	}
-	else
-	{
-		buttonTextures.defaultTexture = getTexture(attributes);
-		buttonTextures.selected = buttonTextures.defaultTexture;
-		buttonTextures.hovering = buttonTextures.defaultTexture;
+#endif
 
-		if (attributes.contains("textureSelected"))
-		{
-			BasicString textureLabel = attributes.at("textureSelected");
-			buttonTextures.selected = textures->getTexture(textureLabel, FileManager::Image_UI);
-		}
+	StringMap map = buttonNode.attributes();
 
-		if (attributes.contains("textureHovering"))
-		{
-			BasicString textureLabel = attributes.at("textureHovering");
-			buttonTextures.hovering = textures->getTexture(textureLabel, FileManager::Image_UI);
-		}
-	}
+	BasicString texture = map.at("texture");
+	buttonTextures.defaultTexture = textures->getTexture(texture, FileManager::Image_UI);
+
+	BasicString textureSelected = map.at("textureSelected");
+	buttonTextures.selected = textures->getTexture(textureSelected, FileManager::Image_UI);
+
+	BasicString textureHovering = map.at("textureHovering");
+	buttonTextures.hovering = textures->getTexture(textureHovering, FileManager::Image_UI);
+
+	//if (attributes.at("texture") == "Default")
+	//{
+
+	//}
+	//else
+	//{
+	//	buttonTextures.defaultTexture = getTexture(attributes);
+	//	buttonTextures.selected = buttonTextures.defaultTexture;
+	//	buttonTextures.hovering = buttonTextures.defaultTexture;
+
+	//	if (attributes.contains("textureSelected"))
+	//	{
+	//		BasicString textureLabel = attributes.at("textureSelected");
+	//		buttonTextures.selected = textures->getTexture(textureLabel, FileManager::Image_UI);
+	//	}
+
+	//	if (attributes.contains("textureHovering"))
+	//	{
+	//		BasicString textureLabel = attributes.at("textureHovering");
+	//		buttonTextures.hovering = textures->getTexture(textureLabel, FileManager::Image_UI);
+	//	}
+	//}
 	return buttonTextures;
 }
 

@@ -11,57 +11,61 @@
 
 SettingsScreen::SettingsScreen()
 {
-	mSliders.push_back(UISlider());
-	mSliders.push_back(UISlider());
+	//mSliders.push_back(UISlider());
+	//mSliders.push_back(UISlider());
 }
 
 
 void SettingsScreen::enter()
 {
-	UIButton* musicSlider = findButton("MusicSlider");
-	UIElement* musicBar = find("MusicBarGreen");
-	UIElement* musicContainer = find("MusicBarEmpty");
+	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs, "Sliders"));
+	XMLNode node = parser.rootChild("RedSlider");
+	StringMap sliderInfo = node.attributes();
 
-	mSliders[Music].setComponents(musicSlider, musicBar, musicContainer);
-	//mSliders[Music].setValue(mGameData->audioManager->musicVolume());
+	//UIButton* musicSlider = findButton(sliderInfo.at("Handle"));
+	//UIElement* musicBar = find(sliderInfo.at("Bar"));
+	//UIElement* musicContainer = find(sliderInfo.at("Continer"));
 
-	UIButton* soundSlider = findButton("SoundSlider");
-	UIElement* soundBar = find("SoundBarGreen");
-	UIElement* soundContainer = find("SoundBarEmpty");
+	//mSliders[Music].setComponents(musicSlider, musicBar, musicContainer);
+	////mSliders[Music].setValue(mGameData->audioManager->musicVolume());
 
-	mSliders[Sound].setComponents(soundSlider, soundBar, soundContainer);
-	//mSliders[Sound].setValue(mGameData->audioManager->soundVolume());
+	//UIButton* soundSlider = findButton("SoundSlider");
+	//UIElement* soundBar = find("SoundBarGreen");
+	//UIElement* soundContainer = find("SoundBarEmpty");
+
+	//mSliders[Sound].setComponents(soundSlider, soundBar, soundContainer);
+	////mSliders[Sound].setValue(mGameData->audioManager->soundVolume());
 }
 
-void SettingsScreen::handleInput(const InputManager* input)
-{
-	for (int i = 0; i < Setting::Count; i++)
-	{
-		// Activate slider
-		if (mSliders[i].isPressed())
-		{
-			mSliders[i].setActive(true);
-			mSliders[i].setCursorOffset(input->cursorPosition().x);
-		}
-
-		// SetSlider position
-		if (mSliders[i].isActive())
-		{
-			mSliders[i].setPosition(input->cursorPosition().x);
-
-			//if (i == Music)
-			//	mGameData->audioManager->setMusicVolume(mSliders[i].value());
-			//else if (i == Sound)
-			//	mGameData->audioManager->setSoundVolume(mSliders[i].value());
-		}
-
-		// Deactivate slider
-		if (input->isCursorReleased(Cursor::Left))
-		{
-			mSliders[i].setActive(false);
-		}
-	}
-}
+//void SettingsScreen::handleInput(const InputManager* input)
+//{
+//	//for (int i = 0; i < Setting::Count; i++)
+//	//{
+//	//	// Activate slider
+//	//	if (mSliders[i].isPressed())
+//	//	{
+//	//		mSliders[i].setActive(true);
+//	//		mSliders[i].setCursorOffset(input->cursorPosition().x);
+//	//	}
+//
+//	//	// SetSlider position
+//	//	if (mSliders[i].isActive())
+//	//	{
+//	//		mSliders[i].setPosition(input->cursorPosition().x);
+//
+//	//		//if (i == Music)
+//	//		//	mGameData->audioManager->setMusicVolume(mSliders[i].value());
+//	//		//else if (i == Sound)
+//	//		//	mGameData->audioManager->setSoundVolume(mSliders[i].value());
+//	//	}
+//
+//	//	// Deactivate slider
+//	//	if (input->isCursorReleased(Cursor::Left))
+//	//	{
+//	//		mSliders[i].setActive(false);
+//	//	}
+//	//}
+//}
 
 
 void SettingsScreen::update(float dt)
@@ -82,21 +86,21 @@ void SettingsScreen::update(float dt)
 		}
 	}
 
-	UIButton* closeButton = findButton("CloseButton");
-	if (closeButton->isReleased())
-	{
-		DebugPrint(Log, "Unimplemented\n");
-		//mGameData->uiManager->selectScreen(Screen::Pause);
-	}
+	//UIButton* closeButton = findButton("CloseButton");
+	//if (closeButton->isReleased())
+	//{
+	//	DebugPrint(Log, "Unimplemented\n");
+	//	//mGameData->uiManager->selectScreen(Screen::Pause);
+	//}
 }
 
 
 void SettingsScreen::setMusicVolume(float volume)
 {
-	mSliders[Music].setValue(volume);
+	//mSliders[Music].setValue(volume);
 }
 
 void SettingsScreen::setSoundVolume(float volume)
 {
-	mSliders[Sound].setValue(volume);
+	//mSliders[Sound].setValue(volume);
 }

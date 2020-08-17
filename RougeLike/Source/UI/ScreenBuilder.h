@@ -5,6 +5,7 @@
 class Texture;
 class UIElement;
 class Screen;
+class UISlider;
 
 
 class ScreenBuilder
@@ -24,7 +25,7 @@ private:
 
 	void setChildren(const ScreenLayers& screenLayers, Elements& parents);
 	void formatElements(ScreenLayers& screenLayers);
-	void repositionRelativeToParent(UIElement* element);
+	void repositionRelativeToParent(UIElement* element) const;
 	void reformatText(UIElement* element);
 
 
@@ -38,4 +39,6 @@ private:
 
 	Texture* getTexture(const StringMap& attributes) const;
 	TexturePacket getButtonTextures(const StringMap& attributes) const;
+
+	void buildSlider(UISlider* slider, const StringMap& attributes) const;
 };

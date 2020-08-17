@@ -27,41 +27,6 @@ void PauseScreen::update(float dt)
 			mStates[iter->first] = true;
 		}
 	}
-
-	//updateBoxTexture("ResumeButton", "ResumePanel");
-	//updateBoxTexture("SettingsButton", "SettingsPanel");
-	//updateBoxTexture("RestartButton", "RestartPanel");
-	//updateBoxTexture("QuitButton", "QuitPanel");
-}
-
-
-// TODO: replace input parameters with the button and elements rather than strings
-// Change the box texture when the button is pressed
-void PauseScreen::updateBoxTexture(BasicString buttonId, BasicString boxId)
-{
-	const TextureManager* textures = TextureManager::Get();
-	UIButton* button = findButton(buttonId);
-	
-	if (button)
-	{
-		UIBox* boxComponent = static_cast<UIBox*>(find(boxId));
-
-		if (boxComponent)
-		{
-			Texture* texture;
-
-			if (button->isHeld())
-			{
-				texture = textures->getTexture("Big button Pressed", FileManager::Image_UI);
-			}
-			else
-			{
-				texture = textures->getTexture("Big button Released", FileManager::Image_UI);
-			}
-
-			boxComponent->setTexture(texture);
-		}
-	}
 }
 
 

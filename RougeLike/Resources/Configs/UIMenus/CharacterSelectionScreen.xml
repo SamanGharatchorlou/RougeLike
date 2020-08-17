@@ -12,45 +12,36 @@
 		<Box id = "MainPanel"  x = "148.000" y = "35" width = "728.800" height = "714.200" texture = "Main panel"></Box>
 	</Layer>
 
-		<!--
-	<Layer>
-		<Box id = "UpperPanelElement" parent = "MainPanel" x = "27.000" y = "26.000" width = "675.000" height = "55.000" texture = "Upper panel element"></Box>
-		<Box id = "MidPanelElement" parent = "MainPanel" x = "27.000" y = "83.000" width = "675.000" height = "437.000" texture = "Mid panel element"></Box>
-		<Box id = "LowerPanelElement" parent = "MainPanel" x = "27.000" y = "525.000" width = "675.000" height = "167.000" texture = "Lower panel element"></Box>
-	</Layer>
--->
 
 	<Layer>
-		<Box id = "Title2" parent = "MainPanel" x = "1.000" y = "-21.000" width = "727.800" height = "69.000" texture = "Name element 02"></Box>
-		<Box id = "Title1" parent = "MainPanel" x = "54.000" y = "-16.030" width = "621.000" height = "53.000" texture = "Name element 01"></Box>
-		<TextBox id = "ScreenTitle" parent = "Title1" align = "Center" x = "0" y = "0" width = "621.000" height = "53.000" >
+		<TextBox id = "ScreenTitle" parent = "MainPanel" font ="MenuFont" align = "Center" x = "187.598" y = "20.700" width = "351.503" height = "48.400" >
 			<text r = "0" g = "0" b = "0" >Character Selection</text>
 		</TextBox>
 
-		<Box id= "CharacterPanel" parent = "MainPanel"  x = "58.000" y = "221.000" width = "617.000" height = "284.000" texture = "panel"></Box>
-		<Box id= "Description" parent = "MainPanel"  x = "57.000" y = "549.000" width = "620.000" height = "133.000" texture = "Note"></Box>
-
 	</Layer>
 
 	<Layer>
-		<Box id = "CharacterNamePanel" parent = "MainPanel" x = "85.000" y = "103.000" width = "562.000" height = "105.000" texture = "Big button Released"></Box>
-		<Box id= "Character" parent = "MainPanel" x = "-2.000" y = "194.000" width = "345.000" height = "345.000" texture = "Soldier"></Box>
+		<Box id = "CharacterNamePanel" parent = "MainPanel" x = "45.400" y = "106.600" width = "640.299" height = "70.500" texture = "NamePanel"></Box>
+		<Box id= "Character" parent = "MainPanel" x = "193.298" y = "190.700" width = "344.994" height = "345.000" texture = "Soldier"></Box>
+		<Button id = "PlayButton" parent = "CharacterNamePanel" x = "59.800" y = "443.588" width = "520.0" height = "90.595" texture = "WideBlueButton"></Button>
 
-		<!-- Weapon -->
-		<Box id = "Weapon" parent = "MainPanel" x = "584.250" y = "231.000" width = "51.400" height = "258.100" texture = "Mace"></Box>
-		<TextBox id = "WeaponName" parent = "MainPanel" x = "301.100" y = "240.400" width = "262.000" height = "66.000">
-			<text r = "0" g = "0" b = "0" >Basic Sword</text>
-		</TextBox>
-
+		<Button id = "LeftButton" parent = "MainPanel" x = "66.700" y = "315.793" width = "81.895" height = "74.996" texture = "BlankButtonDisabled"></Button>
+		<Button id = "RightButton" parent = "MainPanel" x = "573.287" y = "326.893" width = "82.495" height = "71.696" texture = "BlankButtonDisabled"></Button>
 	</Layer>
 
 	<Layer>
-		<TextBox id = "CharacterName" parent = "CharacterNamePanel" align = "Center" x = "192.000" y = "10.000" width = "361.000" height = "53.000" >
+
+		<Box id= "LeftArrow" parent = "LeftButton" x = "17.700" y = "12.899" width = "43" height = "43" texture = "LeftArrow"></Box>
+		<Box id= "RightArrow" parent = "RightButton" x = "17.700" y = "12.899" width = "43" height = "43" texture = "RightArrow"></Box>
+
+		<TextBox id = "CharacterName" parent = "CharacterNamePanel" align = "Center" x = "2.400" y = "4.600" width = "638.800" height = "55.700" >
 			<text r = "0" g = "0" b = "0" >Knight</text>
 		</TextBox>
 		
-		<Button id = "PlayButton" parent = "CharacterNamePanel" x = "22.000" y = "-10.000" width = "148.000" height = "105.000" texture = "Default"></Button>
-		<Box id = "PlayIcon" parent = "CharacterNamePanel" x = "73.000" y = "10.000" width = "49.000" height = "52.000" texture = "New game icon"></Box>
+		<TextBox id = "PlayText" parent = "PlayButton" align = "Center" x = "0.000" y = "9.000" width = "520.000" height = "66.399" >
+			<text r = "0" g = "0" b = "0" >Play</text>
+		</TextBox>
+
 	</Layer>
 
 </screen>

@@ -7,25 +7,25 @@
 	<Layer>
 
 		<!-- Resume game -->
-		<Button id = "ResumeButton" parent = "MainPanel" x = "60.000" y = "110.000" width = "380.000" height = "80.000" texture = "Default"></Button>
+		<Button id = "ResumeButton" parent = "MainPanel" x = "60.000" y = "110.000" width = "380.000" height = "80.000" texture = "WideBlueButton"></Button>
 		<TextBox id = "ResumeText" parent = "ResumeButton" align = "Center" x = "0" y = "10.000" width = "380.200" height = "55.000" >
 			<text r = "255" g = "255" b = "255" >Resume</text>
 		</TextBox>
 
 		<!-- Settings -->
-		<Button id = "SettingsButton" parent = "MainPanel" x = "60.000" y = "220.000" width = "380.000" height = "80.000" texture = "Default"></Button>
+		<Button id = "SettingsButton" parent = "MainPanel" x = "60.000" y = "220.000" width = "380.000" height = "80.000" texture = "WideBlueButton"></Button>
 		<TextBox id = "SettingsText" parent = "SettingsButton" align = "Center" x = "0.000" y = "10.000" width = "380.000" height = "55.000">
 			<text r = "255" g = "255" b = "255" >Settings</text>
 		</TextBox>
 
 		<!-- Restart -->
-		<Button id = "RestartButton" parent = "MainPanel" x = "60.000" y = "330.000" width = "380.000" height = "80.000" texture = "Default"></Button>
+		<Button id = "RestartButton" parent = "MainPanel" x = "60.000" y = "330.000" width = "380.000" height = "80.000" texture = "WideBlueButton"></Button>
 		<TextBox id = "RestartText" parent = "RestartButton" align = "Center" x = "0.000" y = "10.000" width = "380.000" height = "55.000" >
 			<text r = "255" g = "255" b = "255" >Restart</text>
 		</TextBox>
 
 		<!-- Quit -->
-		<Button id = "QuitButton" parent = "MainPanel" x = "60.000" y = "440.000" width = "380.000" height = "80.000" texture = "Default"></Button>
+		<Button id = "QuitButton" parent = "MainPanel" x = "60.000" y = "440.000" width = "380.000" height = "80.000" texture = "WideBlueButton"></Button>
 		<TextBox id = "QuitText" parent = "QuitButton" align = "Center" x = "0.000" y = "10.000" width = "380.000" height = "55.000" >
 			<text r = "255" g = "255" b = "255" >Quit</text>
 		</TextBox>
@@ -33,7 +33,7 @@
 	</Layer>
 
 	<Layer>
-		<TextBox id = "ScreenTitle" parent = "MainPanel" align = "Center" x = "0.000" y = "11.500" width = "500.800" height = "56.500" >
+		<TextBox id = "ScreenTitle" parent = "MainPanel" font = "MenuFont" align = "Center" x = "142.599" y = "16.100" width = "224.801" height = "38.100" >
 			<text r = "255" g = "255" b = "255" >PAUSED</text>
 		</TextBox>
 	</Layer>

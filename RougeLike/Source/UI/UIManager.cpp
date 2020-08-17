@@ -68,6 +68,8 @@ void UIManager::setupScreens()
 	std::vector<BasicString> configs = FileManager::Get()->allFilesInFolder(FileManager::Config_Menus);
 	for (const BasicString& config : configs)
 	{
+		if (config == "SettingsScreen")
+			continue;
 		Screen* screen = builder.buildNewScreen(config);
 		mScreens.push_back(screen);
 	}

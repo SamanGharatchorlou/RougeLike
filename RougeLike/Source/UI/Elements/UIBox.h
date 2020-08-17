@@ -29,7 +29,8 @@ public:
 
 	bool isPointInBounds(VectorF point);
 
-	virtual void render();
+	virtual void render() override;
+	virtual void render(RectF subRect);
 
 	virtual bool isButton() const { return false; }
 	virtual bool hasText() const { return false; }

@@ -31,28 +31,14 @@ void CharacterSelectionScreen::update(float dt)
 		selectWeapon();
 		mEnterGame = true;
 	}
-
-	//Button::State playButtonState = mPlayButton->
-
-	//if (mPlayButton->isPressed())
-	//{
-	//	UIBox* boxComponent = static_cast<UIBox*>(find("CharacterNamePanel"));
-	//	if (boxComponent)
-	//	{
-	//		BasicString textureId = mPlayButton->isHeld() ? "Big button Pressed" : "Big button Released";
-	//		Texture* texture = mTextures->getTexture(textureId, FileManager::Image_UI);
-	//		boxComponent->setTexture(texture);
-	//		printf("setting");
-	//	}
-	//}
 }
 
 
 void CharacterSelectionScreen::selectWeapon()
 {
-	UIBox* weapon = static_cast<UIBox*>(find("Weapon"));
-	const Texture* weaponTexture = weapon->texture();
+	//UIBox* weapon = static_cast<UIBox*>(find("Weapon"));
+	//const Texture* weaponTexture = weapon->texture();
 
-	const TextureManager* textures = TextureManager::Get();
-	mSelectedWeapon = textures->getTextureName(weaponTexture);
+	//const TextureManager* textures = TextureManager::Get();
+	mSelectedWeapon = "Sword";// textures->getTextureName("Sword");
 }

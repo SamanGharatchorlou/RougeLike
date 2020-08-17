@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<UI>
+	<RedSlider Handle = "SliderHandle" Bar = "SliderBar" Container = "SliderContainer"></RedSlider>
+</UI>

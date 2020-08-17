@@ -1,5 +1,6 @@
 #pragma once
 
+class InputManager;
 
 /* Base element for all UI components */
 class UIElement
@@ -11,7 +12,8 @@ public:
 		Element,
 		Box,
 		TextBox,
-		Button
+		Button,
+		Slider
 	};
 
 	struct Data
@@ -27,6 +29,8 @@ public:
 	UIElement(const StringMap& attributes);
 	UIElement(Data& data);
 	virtual ~UIElement() { };
+
+	virtual void handleInput(const InputManager* input) { }
 
 	void fill(const StringMap& attributes);
 

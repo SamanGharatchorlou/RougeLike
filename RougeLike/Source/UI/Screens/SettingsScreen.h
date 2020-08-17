@@ -19,7 +19,7 @@ public:
 	SettingsScreen();
 
 	void enter() override;
-	void handleInput(const InputManager* input) override;
+	void handleInput(const InputManager* input) override { }
 	void update(float dt) override;
 	void exit() override { };
 
