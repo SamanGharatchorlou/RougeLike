@@ -4,15 +4,13 @@
 #include "Actors/Enemies/Enemy.h"
 
 
-EnemyIdle::EnemyIdle(Enemy* enemy, float time) : EnemyState(enemy), mTime(time)
+EnemyIdle::EnemyIdle() : mTime(-1.0f) { }
+
+
+void EnemyIdle::setTime(float time)
 {
+	mTime = time;
 	mTimer.start();
-}
-
-
-EnemyIdle::EnemyIdle(Enemy* enemy) : EnemyState(enemy), mTime(1.0f) 
-{
-	mTimer.stop();
 }
 
 
@@ -30,7 +28,7 @@ void EnemyIdle::slowUpdate(float dt)
 	if (canSeeAttackTarget())
 		mEnemy->replaceState(EnemyState::Alert);
 
-	if (mTimer.getSeconds() >= mTime)
+	if (mTimer.isStarted() && mTimer.getSeconds() >= mTime)
 		mEnemy->popState();
 }
 

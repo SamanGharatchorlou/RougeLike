@@ -17,6 +17,7 @@ enum class EffectType
 	Count
 };
 
+
 template<class T>
 inline EffectType operator +(EffectType a, T b)
 {

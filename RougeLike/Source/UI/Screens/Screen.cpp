@@ -3,6 +3,7 @@
 
 #include "UI/Elements/UIElement.h"
 #include "UI/Elements/UIButton.h"
+#include "UI/Elements/UISlider.h"
 
 
 Screen::~Screen()
@@ -79,4 +80,55 @@ UIButton* Screen::findButton(const BasicString& id)
 		DebugPrint(Log, "Attemping to use findButton on a none button element, ID: '%s'\n", id.c_str());
 		return nullptr;
 	}
+}
+
+
+void Screen::linkButton(ScreenItem setting, const BasicString& buttonId)
+{
+	UIButton* button = findButton(buttonId);
+
+#if _DEBUG
+	if (!button)
+	{
+		DebugPrint(Warning, "No button element '%s' found on screen type %d\n", buttonId, type());
+		return;
+	}
+#endif
+	mButtons[setting] = button;
+}
+
+
+void Screen::linkSlider(ScreenItem setting, const BasicString& sliderId)
+{
+	UIElement* element = find(sliderId);
+
+#if _DEBUG
+	if (!element)
+	{
+		DebugPrint(Warning, "No element '%s' found on screen type %d\n", sliderId, type());
+		return;
+	}
+
+	if (element->type() != UIElement::Type::Slider)
+	{
+		DebugPrint(Warning, "Element '%s' is not a slider type\n", sliderId);
+		return;
+	}
+#endif
+
+	UISlider* slider = static_cast<UISlider*>(element);
+	mSliders[setting] = slider;
+}
+
+
+bool Screen::selected(ScreenItem item) const
+{
+#if _DEBUG
+	if (mButtons.count(item) == 0)
+	{
+		DebugPrint(Warning, "No button has been linked to the screen item %d\n", (int)item);
+		return false;
+	}
+#endif
+	return mButtons.at(item)->isPressed();
 }

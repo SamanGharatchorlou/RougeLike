@@ -5,9 +5,6 @@
 #include "Map/Map.h"
 
 
-EnemyRun::EnemyRun(Enemy* enemy) : EnemyState(enemy) { }
-
-
 void EnemyRun::init()
 {
 	mEnemy->animator().selectAnimation(Action::Run);

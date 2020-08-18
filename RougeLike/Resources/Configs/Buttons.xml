@@ -7,4 +7,7 @@
 
 	<BlankButton texture = "BlankButton"  textureSelected="BlankButtonSelected" textureHovering="BlankButtonHover"></BlankButton>
 	<BlankButtonDisabled texture = "BlankButton"  textureSelected="BlankButton" textureHovering="BlankButton"></BlankButtonDisabled>
+
+
+	<RedButton texture = "RedButton"  textureSelected="RedButtonSelected" textureHovering="RedButtonHover"></BlankButton>
 </UI>

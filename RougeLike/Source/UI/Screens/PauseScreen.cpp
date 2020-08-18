@@ -1,62 +1,15 @@
 #include "pch.h"
 #include "PauseScreen.h"
 
-#include "Game/Data/GameData.h"
-#include "UI/UIManager.h"
-#include  "Graphics/TextureManager.h"
-
 #include "UI/Elements/UIButton.h"
 
 
 void PauseScreen::enter()
 {
 	mButtons.clear();
-	mStates.clear();
-	setButtonsAndStates();
-}
 
-
-void PauseScreen::update(float dt)
-{
-	std::unordered_map<BasicString, UIButton*>::iterator iter;
-	for (iter = mButtons.begin(); iter != mButtons.end(); iter++)
-	{
-		UIButton* button = iter->second;
-		if (button->isReleased())
-		{
-			mStates[iter->first] = true;
-		}
-	}
-}
-
-
-void PauseScreen::exit()
-{
-	resetButtonStates();
-}
-
-
-void PauseScreen::setButtonsAndStates()
-{
-	addButtonAndState("ResumeButton");
-	addButtonAndState("SettingsButton");
-	addButtonAndState("RestartButton");
-	addButtonAndState("QuitButton");
-}
-
-
-void PauseScreen::resetButtonStates()
-{
-	std::unordered_map<BasicString, bool>::iterator iter;
-	for (iter = mStates.begin(); iter != mStates.end(); iter++)
-	{
-		iter->second = false;
-	}
-}
-
-
-void PauseScreen::addButtonAndState(const BasicString& label)
-{
-	mButtons[label] = findButton(label);
-	mStates[label] = false;
+	linkButton(ScreenItem::Resume, "ResumeButton");
+	linkButton(ScreenItem::Restart, "RestartButton");
+	linkButton(ScreenItem::Settings, "SettingsButton");
+	linkButton(ScreenItem::Quit, "QuitButton");
 }

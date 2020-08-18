@@ -75,6 +75,16 @@ void UIManager::setupScreens()
 	}
 }
 
+void UIManager::clearScreens()
+{
+	for (int i = 0; i < mScreens.size(); i++)
+	{
+		delete mScreens[i];
+	}
+
+	mScreens.clear();
+}
+
 
 void UIManager::handleInput(const InputManager* input)
 {
@@ -83,7 +93,6 @@ void UIManager::handleInput(const InputManager* input)
 #endif
 
 	mActiveScreen->updateButtons(input);
-	mActiveScreen->handleInput(input);
 }
 
 

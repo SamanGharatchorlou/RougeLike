@@ -37,10 +37,6 @@ GameState::GameState(GameData* gameData, GameController* gameController) :
 
 void GameState::init()
 {
-	//mGameData->environment->init();
-
-	//VectorF playerPosition = VectorF(Camera::Get()->rect().Center().x, mGameData->environment->size().y / 2.0f);
-
 	Map* map = mGameData->environment->map(VectorF(0, 0));
 	VectorF playerPosition = map->randomFloorTile(50)->rect().Center();
 
@@ -52,33 +48,10 @@ void GameState::init()
 
 
 	// Start Audio
-	mGameData->audioManager->playMusic("Ludumdum");
-	mGameData->audioManager->setMusicVolume(0.08f);
-	mGameData->audioManager->setSoundVolume(0.4f);
-	mGameData->audioManager->toggleMute();
-
-	//mCollectables.spawnRandomItem(Collectables::MeleeWeapon);
-
-	//Collectable* Armor = new AbilityCollectable("Armor");
-	//mCollectables.spawn(Armor, 15);
-
-	//Collectable* Blink = new AbilityCollectable("Blink");
-	//mCollectables.spawn(Blink, 20);
-
-	//Collectable* Spikes = new AbilityCollectable("Spikes");
-	//mCollectables.spawn(Spikes, 10);
-
-	//Collectable* Heal = new AbilityCollectable("Heal");
-	//mCollectables.spawn(Heal, 12);
-
-	//Collectable* weapon = new WeaponCollectable("Mace");
-	//mCollectables.spawn(weapon, 12);
-
-	//Collectable* smash = new AbilityCollectable("Smash");
-	//mCollectables.spawn(smash, 10);
-
-	//Collectable* charge = new AbilityCollectable("Charge");
-	//mCollectables.spawn(charge, 15);
+	AudioManager* audio = AudioManager::Get();
+	audio->playMusic("Ludumdum");
+	audio->setMusicVolume(0.0f);
+	audio->setSoundVolume(0.0f);
 }
 
 
@@ -116,12 +89,6 @@ void GameState::slowUpdate(float dt)
 
 	Camera::Get()->slowUpdate(dt);
 
-	//// End current level, close old level exit, open new level entrance
-	//if (mGameData->environment->canClosePreviousLevel(mGameData->environment->actors()->player()->position()))
-	//{
-	//	nextLevel();
-	//}
-
 	// End of slow frame
 	mGameData->collisionManager->resetColliders();
 }
@@ -150,7 +117,7 @@ void GameState::resume()
 
 void GameState::exit()
 {
-	mGameData->environment->exit();
+	mGameData->environment->clear();
 	mGameData->scoreManager->reset();
 	mGameData->collisionManager->clearColliders();
 }
@@ -182,18 +149,5 @@ void GameState::initCamera()
 void GameState::initRendering()
 {
 	mGameData->renderManager->Set(mGameData->environment);
-	//mGameData->renderManager->Set(mGameData->actors);
 	mGameData->renderManager->Set(mGameData->uiManager);
-}
-
-
-void GameState::nextLevel()
-{
-	mGameData->environment->nextLevel();
-
-	// end level
-	//mGameData->actors->enemies()->clearAllEnemies();
-	//mGameData->actors->enemies()->spawnLevel();
-
-	//mCollectables.spawnRandomItem(Collectables::MeleeWeapon);
 }

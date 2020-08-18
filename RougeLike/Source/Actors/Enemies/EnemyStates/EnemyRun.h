@@ -7,8 +7,6 @@
 class EnemyRun : public EnemyState
 {
 public:
-	EnemyRun(Enemy* enemy);
-
 	void init() override;
 	void handleInput() override { }
 	void slowUpdate(float) override;

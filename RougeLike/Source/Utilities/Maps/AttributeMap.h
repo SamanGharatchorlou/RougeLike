@@ -11,6 +11,7 @@ class AttributeMap : public DataMap<AttributeType, Attribute*>
 {
 public:
 	virtual ~AttributeMap();
+	void clear();
 
 	void fill(const XMLNode& node) override;
 

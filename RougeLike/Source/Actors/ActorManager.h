@@ -14,17 +14,15 @@ class InputManager;
 class ActorManager : public Observer, public Dispatcher
 {
 public:
-	ActorManager(GameData* gameData);
-	~ActorManager() { }
-
-	void init(Environment* environment);
+	void init(GameData* gameData);
 	void load(const XMLParser& parser);
+
+	void clear();
 
 	void handleInput(const InputManager* input);
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
 	void render();
-	void exit();
 
 	PlayerManager* player() { return &mPlayer; }
 	EnemyManager* enemies() { return &mEnemies; }

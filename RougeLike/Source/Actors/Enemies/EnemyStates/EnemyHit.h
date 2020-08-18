@@ -5,8 +5,6 @@
 class EnemyHit : public EnemyState
 {
 public:
-	EnemyHit(Enemy* enemy);
-
 	void init() override;
 	void handleInput() override { }
 	void fastUpdate(float dt) override { };

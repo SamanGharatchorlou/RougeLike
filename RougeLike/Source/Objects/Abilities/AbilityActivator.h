@@ -15,6 +15,7 @@ class AbilityActivator
 {
 public:
 	void init(Environment* environment) { mEnvironment = environment; }
+	void clear() { mEnvironment = nullptr; }
 
 	bool canSelect(Ability* ability) const;
 

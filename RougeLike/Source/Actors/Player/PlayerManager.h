@@ -9,21 +9,25 @@
 
 struct GameData;
 class Environment;
+class CollisionManager;
+class Screen;
+
 
 class PlayerManager
 {
 public:
-	PlayerManager(GameData* gameData);
+	PlayerManager();
 
 	Player* get() { return &mPlayer; }
 
-	void init(Environment* environment);
+	void init(Environment* environment, CollisionManager* collisions, Screen* gameScreen);
+	void clear();
+
 
 	void handleInput(const InputManager* input);
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
 	void render();
-	void exit();
 
 
 	LocalDispatcher& events() { return mEvents; }
@@ -32,6 +36,7 @@ public:
 	void selectCharacter(const BasicString& characterConfig);
 	void selectWeapon(const BasicString& weaponName);
 	void addAbility(const BasicString& ability);
+
 
 private:
 	Environment* mEnvironment;

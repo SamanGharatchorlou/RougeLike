@@ -79,6 +79,7 @@
     <ClCompile Include="Source\Actors\ActorManager.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyState.cpp" />
     <ClCompile Include="Source\Actors\Enemies\Types\Devil.cpp" />
+    <ClCompile Include="Source\Objects\Pools\EnemyStatePool.cpp" />
     <ClCompile Include="Source\Objects\Pools\TrapPool.cpp" />
     <ClCompile Include="Source\Utilities\Maps\AttributeMap.cpp" />
     <ClCompile Include="Source\Utilities\Maps\DecorMap.cpp" />
@@ -255,6 +256,7 @@
     <ClInclude Include="Source\Actors\Actor.h" />
     <ClInclude Include="Source\Actors\ActorManager.h" />
     <ClInclude Include="Source\Actors\Enemies\Types\Devil.h" />
+    <ClInclude Include="Source\Objects\Pools\EnemyStatePool.h" />
     <ClInclude Include="Source\Objects\Pools\TrapPool.h" />
     <ClInclude Include="Source\Utilities\Maps\AttributeMap.h" />
     <ClInclude Include="Source\Utilities\Maps\DataMap.h" />

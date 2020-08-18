@@ -9,7 +9,8 @@ enum class MapType;
 class MapBuilder
 {
 public:
-	MapBuilder();
+	void load();
+	void clear();
 
 	Map* buildFirst();
 	Map* buildMap(MapType type, VectorF offset);

@@ -6,9 +6,24 @@
 #include "UIButton.h"
 #include "Graphics/Texture.h"
 
-UISlider::UISlider(const StringMap& attributes) : UIBox(attributes), xCursorOffset(0.0f), mSlider(nullptr), mBar(nullptr)
+UISlider::UISlider(const StringMap& attributes) : UIBox(attributes), xCursorOffset(0.0f), mSlider(nullptr), mBar(nullptr), mSelectable(true)
 {
 
+}
+
+UISlider::~UISlider()
+{
+	if (mSlider)
+	{
+		delete mSlider;
+		mSlider = nullptr;
+	}
+
+	if (mBar)
+	{
+		delete mBar;
+		mBar = nullptr;
+	}
 }
 
 
@@ -17,23 +32,31 @@ void UISlider::setComponents(Texture* container, UIButton* slider, UIBox* bar)
 	mTexture = container;
 
 	mBar = bar;
-	VectorF sizeFactor = VectorF(0.01f, 0.1f);
-	VectorF position = mRect.TopLeft() + mRect.Size() * sizeFactor;
-	VectorF size = mRect.Size() * VectorF(0.98f, 0.8f);
-	mBar->setRect(RectF(position, size));
+	VectorF size = mRect.Size() * VectorF(0.9f, 0.725f);
+	RectF barRect = RectF(VectorF(), size);
+	barRect.SetLeftCenter(mRect.LeftCenter());
+	barRect = barRect.Translate(VectorF(4.0f, 0.0f));
+
+	mBar->setRect(barRect);
 
 	mSlider = slider;
-	VectorF sliderSize = mRect.Size() * VectorF(0.1f, 1.2f);
+	VectorF sliderSize = mRect.Size() * VectorF(0.125f, 1.2f);
 	RectF sliderRect = RectF(VectorF(), sliderSize);
 	sliderRect.SetCenter(mRect.Center());
 	mSlider->setRect(sliderRect);
 
-	setSliderValue(50.0f);
+	setSliderValue(1.0f);
 }
 
 
 void UISlider::handleInput(const InputManager* input)
 {
+	if (!mSelectable)
+	{
+		mSlider->reset();
+		return;
+	}
+
 	if (mSlider->isPointInBounds(input->cursorPosition()))
 	{
 		mSlider->setState(UIButton::State::Hovering);
@@ -76,11 +99,11 @@ void UISlider::setCursorOffset(float cursorPosition)
 
 void UISlider::setSliderPosition(float position)
 {
-	position = clamp(position, mRect.LeftPoint() + 10.0f, mRect.RightPoint() - 8.0f);
+	position = clamp(position + xCursorOffset, mRect.LeftPoint(), mRect.RightPoint());
 
 	// Move slider
 	RectF sliderRect = mSlider->rect();
-	sliderRect.SetCenter(VectorF(position + xCursorOffset, sliderRect.Center().y));
+	sliderRect.SetCenter(VectorF(position, sliderRect.Center().y));
 	mSlider->setRect(sliderRect);
 
 	updateBar();

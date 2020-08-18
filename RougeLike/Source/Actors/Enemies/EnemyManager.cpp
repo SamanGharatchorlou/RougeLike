@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Actors/Enemies/EnemyManager.h"
 
-#include "Game/Data/GameData.h"
 #include "Game/Environment.h"
 #include "Game/Camera/Camera.h"
 
@@ -13,32 +12,41 @@
 
 
 
-EnemyManager::EnemyManager(GameData* gameData) : mCollisions(gameData->collisionManager) { }
+EnemyManager::EnemyManager() : mEnvironment(nullptr) { }
 
 
 EnemyManager::~EnemyManager()
 {
-	mActiveEnemies.clear();
+	ASSERT(Warning, mActiveEnemies.size() == 0, "All enemies should have been put back into the pool by now, there are %d left\n", mActiveEnemies.size());
 }
 
 
 void EnemyManager::clear()
 {
 	clearAllEnemies();
-	mAIController.clearMap();
+	mEvents.clear();
+
+	mAIController.clear();
+	mBuilder.clear();
+	mCollisions.clear();
 }
 
 
 void EnemyManager::load()
 {
 	mAIController.loadAIPathMap(mEnvironment->map(MapType::Dungeon));
-	mBuilder.loadSpawnPool();
+
+	int enemyPoolSize = 50;
+	mBuilder.loadSpawnPool(enemyPoolSize);
+	
+
 }
 
 
-void EnemyManager::init(Environment* environment)
+void EnemyManager::init(Environment* environment, CollisionManager* collisions)
 {
 	mEnvironment = environment;
+	mCollisions.init(collisions);
 }
 
 
@@ -111,6 +119,8 @@ void EnemyManager::clearAllEnemies()
 		}
 	}
 
+	mActiveEnemies.clear();
+
 	ASSERT(Warning, mCollisions.isEmpty(), "Enemy colliders are left in the collision trackers when they shouldn't be!\n");
 }
 
@@ -178,6 +188,7 @@ void EnemyManager::addActiveEnemy(Enemy* enemy)
 #if !IGNORED_BY_ENEMIES
 	enemy->setTarget(mEnvironment->actors()->player()->get());
 #endif
+
 
 	mCollisions.add(enemy->collider());
 	mActiveEnemies.push_back(enemy);

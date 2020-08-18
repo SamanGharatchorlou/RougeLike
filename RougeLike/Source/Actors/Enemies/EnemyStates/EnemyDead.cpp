@@ -8,7 +8,7 @@
 
 
 
-EnemyDead::EnemyDead(Enemy* enemy) : EnemyState(enemy), mAlpha(alphaMax) { }
+EnemyDead::EnemyDead() :  mAlpha(alphaMax) { }
 
 
 void EnemyDead::init()

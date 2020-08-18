@@ -12,6 +12,7 @@ public:
 	~WeaponStash();
 
 	void load();
+	void clear();
 
 	MeleeWeapon* getMeleeWeapon() const { return meleeWeapon; }
 	Weapon* getWeapon(const BasicString& weaponType) const;

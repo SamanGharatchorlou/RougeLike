@@ -6,15 +6,35 @@
 #include "Objects/Pools/EnemyPool.h"
 
 
-void EnemyBuilder::loadSpawnPool()
+EnemyBuilder::~EnemyBuilder()
 {
-	std::vector<EnemyType> types;
+	clear();
+}
+
+
+void EnemyBuilder::loadSpawnPool(int poolSize)
+{
+	std::vector<EnemyType> enemyTypes;
 	for (EnemyType type = EnemyType::None + 1; type < EnemyType::Count; type = type + 1)
 	{
-		types.push_back(type);
+		enemyTypes.push_back(type);
 	}
 
-	mPool.load(types, 50);
+	mPool.load(enemyTypes, poolSize);
+
+
+	std::vector<EnemyState::Type> enemyStates;
+	for (EnemyState::Type state = EnemyState::Type::None + 1; state < EnemyState::Type::Count; state = state + 1)
+	{
+		enemyStates.push_back(state);
+	}
+	mStatePool.load(enemyStates, poolSize);
+}
+
+void EnemyBuilder::clear()
+{
+	mPool.freeAll();
+	mStatePool.freeAll();
 }
 
 
@@ -65,9 +85,10 @@ Enemy* EnemyBuilder::getBlankEnemy(EnemyType type)
 }
 
 
-void EnemyBuilder::fillActorData(Enemy* enemy, const XMLNode node) const
+void EnemyBuilder::fillActorData(Enemy* enemy, const XMLNode node)
 {
 	enemy->setCharacter(node);
+	enemy->setStatePool(&mStatePool);
 }
 
 

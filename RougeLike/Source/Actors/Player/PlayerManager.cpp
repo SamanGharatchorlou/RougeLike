@@ -10,20 +10,26 @@
 #include "Weapons/Melee/MeleeWeapon.h"
 
 
-PlayerManager::PlayerManager(GameData* gameData) :
-	mEnvironment(gameData->environment), 
-	mAbilities(&mPlayer, gameData->uiManager->screen(Screen::Game))
+PlayerManager::PlayerManager() : mEnvironment(nullptr) { }
+
+
+void PlayerManager::init(Environment* environment, CollisionManager* collisions, Screen* gameScreen)
 {
-	mPlayerCollisions.init(&mPlayer, gameData->collisionManager);
+	mPlayerCollisions.init(&mPlayer, collisions);
 	mWeaponStash.load();
-}
 
-
-void PlayerManager::init(Environment* environment)
-{
 	mEnvironment = environment;
 	mPlayer.set(environment);
-	mAbilities.init(environment);
+	mAbilities.init(environment, &mPlayer, gameScreen);
+	mEvents.clear();
+}
+
+void PlayerManager::clear()
+{
+	mPlayer.clear();
+	mAbilities.clear();
+	mPlayerCollisions.clear();
+	mWeaponStash.clear();
 }
 
 void PlayerManager::addAbility(const BasicString& ability)
@@ -97,11 +103,6 @@ void PlayerManager::render()
 	mAbilities.render();
 }
 
-
-void PlayerManager::exit()
-{
-	mPlayer.reset();
-}
 
 void PlayerManager::selectCharacter(const BasicString& characterConfig)
 { 

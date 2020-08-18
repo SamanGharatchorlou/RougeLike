@@ -16,6 +16,9 @@ void EnemyDebugger::draw()
 #if LABEL_ENEMY_STATES
 	labelState();
 #endif
+#if LABEL_ENEMY_HEALTH
+	labelHP();
+#endif
 #if DRAW_ENEMY_RECTS
 	drawRects();
 #endif
@@ -36,6 +39,18 @@ void EnemyDebugger::labelState()
 	VectorF position = mEnemy->rect().TopCenter();
 	RenderColour colour = RenderColour::Red;
 	debugRenderText(enemyState, ptSize, position, colour);
+}
+
+
+void EnemyDebugger::labelHP()
+{
+	float hp = mEnemy->getAttributeValue(PropertyType::Health);
+	BasicString health = "HP: " + BasicString(hp);
+
+	int ptSize = 14;
+	VectorF position = mEnemy->rect().TopCenter();
+	RenderColour colour = RenderColour::Red;
+	debugRenderText(health, ptSize, position, colour);
 }
 
 
@@ -94,3 +109,4 @@ void EnemyDebugger::drawPath()
 		}
 	}
 }
+

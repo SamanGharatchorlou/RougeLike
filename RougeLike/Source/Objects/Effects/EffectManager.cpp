@@ -62,6 +62,8 @@ void EffectManager::clear()
 	Queue<Effect*>& exhaustedEffects = mHandler.exhaustedEffects();
 	while (exhaustedEffects.size() > 0)
 		returnEffect(exhaustedEffects.pop());
+
+	mPool = nullptr;
 }
 
 

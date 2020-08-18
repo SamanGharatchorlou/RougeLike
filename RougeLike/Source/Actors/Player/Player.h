@@ -22,7 +22,7 @@ public:
 	void slowUpdate(float dt);
 	void render();
 
-	void reset();
+	void clear();
 
 	bool attemptAttack();
 	void updateCursorPosition(VectorF cursorPosition);

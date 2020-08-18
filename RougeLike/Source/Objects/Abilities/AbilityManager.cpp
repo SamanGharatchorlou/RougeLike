@@ -3,27 +3,38 @@
 
 #include "AbilityClasses/Ability.h"
 
-AbilityManager::AbilityManager(Actor* caster, Screen* screen) :
-	mBuilder(caster), mHotKeys(screen)
-{ }
+AbilityManager::AbilityManager() : mEnvironment(nullptr) { }
 
 
 
 AbilityManager::~AbilityManager()
 {
-	for (int i = 0; i < mAbilities.size(); i++)
-	{
-		Ability* ability = mAbilities[i];
-		delete ability;
-	}
+	clear();
 }
 
 
-void AbilityManager::init(Environment* environment)
+void AbilityManager::init(Environment* environment, Actor* caster, Screen* screen)
 {
 	mActivator.init(environment);
+	mBuilder.init(caster);
+	mHotKeys.init(screen);
 }
 
+void AbilityManager::clear()
+{
+	mEnvironment = nullptr;
+	mEvents.clear();
+	mActivator.clear();
+	mHotKeys.clear();
+
+	for (int i = 0; i < mAbilities.size(); i++)
+	{
+		delete mAbilities[i];
+		mAbilities[i] = nullptr;
+	}
+
+	mAbilities.clear();
+}
 
 void AbilityManager::handleInput(const InputManager* input)
 {

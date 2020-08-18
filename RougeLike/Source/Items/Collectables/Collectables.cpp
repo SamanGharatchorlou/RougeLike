@@ -12,15 +12,25 @@
 #endif
 
 
-Collectables::Collectables(GameData* gameData) : mCollisions(gameData->collisionManager) { }
-
 Collectables::~Collectables()
 {
+	clear();
+}
+
+void Collectables::clear()
+{
+	mCollector = nullptr;
+	mCollisions = nullptr;
+
+	// WARNING: need to remove from collisions first???
 	for (int i = 0; i < mCollectables.size(); i++)
 	{
 		mBuilder.returnCollectable(mCollectables[i]);
 		mCollectables[i] = nullptr;
 	}
+
+	mCollectables.clear();
+	mBuilder.clear();
 }
 
 
@@ -40,8 +50,9 @@ void Collectables::spawn(const XMLNode collectablesNode, const Map* map)
 }
 
 
-void Collectables::setCollector(PlayerManager* collector)
+void Collectables::init(CollisionManager* collisions, PlayerManager* collector)
 {
+	mCollisions = collisions;
 	mCollector = collector;
 }
 

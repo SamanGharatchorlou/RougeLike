@@ -36,8 +36,7 @@ void GameData::load()
 	inputManager->setCursorSize(VectorF(25.0f, 25.0f));
 
 	// Audio
-	audioManager = new AudioManager;
-	audioManager->init();
+	AudioManager::Get()->load();
 
 	// UI
 	uiManager = new UIManager;
@@ -55,8 +54,8 @@ void GameData::load()
 	collisionManager->init();
 
 	// Map Level
-	environment = new Environment(this);
-	environment->init();
+	environment = new Environment;
+	environment->init(this);
 	environment->load();
 
 	// Must be done AFTER everything has been new'd
@@ -90,8 +89,8 @@ void GameData::free()
 	delete uiManager;
 
 	delete inputManager;
-	delete audioManager;
 
+	AudioManager::Get()->unload();
 	TextureManager::Get()->unload();
 
 	delete renderManager;

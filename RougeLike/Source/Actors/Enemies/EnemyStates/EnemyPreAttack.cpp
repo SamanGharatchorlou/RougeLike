@@ -4,7 +4,9 @@
 #include "Actors/Enemies/Enemy.h"
 #include "Collisions/Collider.h"
 
-EnemyPreAttack::EnemyPreAttack(Enemy* enemy) : EnemyState(enemy)
+
+
+void EnemyPreAttack::enter()
 {
 	mEnemy->collider()->setDidHit(false);
 }

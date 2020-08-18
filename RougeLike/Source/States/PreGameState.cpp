@@ -37,7 +37,7 @@ void PreGameState::slowUpdate(float dt)
 		mGameController->quitGame();
 	}
 
-	if (mSelectionScreen->enterGame())
+	if (mSelectionScreen->selected(ScreenItem::Play) || mGameData->inputManager->isPressed(Button::Enter))
 	{
 		PlayerManager* player = mGameData->environment->actors()->player();
 		player->selectCharacter(mSelectionScreen->selectedCharacter());

@@ -7,6 +7,7 @@ class CollectableBuilder
 {
 public:
 	void loadPool();
+	void clear() { mPool.freeAll(); }
 
 	Collectable* build(CollectableSpawner::SpawnData data);
 	void returnCollectable(Collectable* collectable);

@@ -18,6 +18,8 @@ public:
 	~UIManager();
 
 	void setupScreens();
+	void clearScreens();
+
 	void initCursor(Cursor* cursor);
 
 	void selectScreen(Screen::Type screenType);

@@ -7,6 +7,8 @@ class Map;
 class MapSpecifications
 {
 public:
+	void clear();
+
 	void set(const XMLNode node);
 	const DecorMap& getDecor(const Map* map);
 	VectorF size(const BasicString& value) const { return mSizes.at(value); }

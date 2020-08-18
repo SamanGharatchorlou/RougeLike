@@ -656,8 +656,10 @@ namespace MemTrack
 void printMemoryInfo()
 {
 #if MEMORY_TRACKING
-	MemTrack::TrackListMemoryUsage();
-	MemTrack::TrackDumpBlocks();
+	if(MEMORY_TRACKING == 1)
+		MemTrack::TrackListMemoryUsage();
+	else if(MEMORY_TRACKING == 2)
+		MemTrack::TrackDumpBlocks();
 #endif
 }
 /*END*/

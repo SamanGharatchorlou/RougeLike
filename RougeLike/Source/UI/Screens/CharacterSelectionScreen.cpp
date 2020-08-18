@@ -8,9 +8,6 @@
 #include "UI/Elements/UIButton.h"
 
 
-CharacterSelectionScreen::CharacterSelectionScreen() : mEnterGame(false), mPlayButton(nullptr) { }
-
-
 void CharacterSelectionScreen::enter()
 {
 	const TextureManager* textures = TextureManager::Get();
@@ -20,25 +17,7 @@ void CharacterSelectionScreen::enter()
 	Texture* texture = textures->getTexture(mSelectedCharacter + "Icon", FileManager::Image_UI);
 	character->setTexture(texture);
 
-	mPlayButton = findButton("PlayButton");
-}
+	mSelectedWeapon = "Sword";
 
-
-void CharacterSelectionScreen::update(float dt)
-{
-	if (mPlayButton->isReleased())
-	{
-		selectWeapon();
-		mEnterGame = true;
-	}
-}
-
-
-void CharacterSelectionScreen::selectWeapon()
-{
-	//UIBox* weapon = static_cast<UIBox*>(find("Weapon"));
-	//const Texture* weaponTexture = weapon->texture();
-
-	//const TextureManager* textures = TextureManager::Get();
-	mSelectedWeapon = "Sword";// textures->getTextureName("Sword");
+	linkButton(ScreenItem::Play, "PlayButton");
 }

@@ -8,7 +8,10 @@ class Enemy;
 class EnemyCollisions
 {
 public:
-	EnemyCollisions(CollisionManager* collisionManager);
+	EnemyCollisions();
+
+	void init(CollisionManager* collisions) { mCollisionManager = collisions; }
+	void clear() { }
 
 	void updateAttackingColliders(std::vector<Collider*> attackingColliders);
 	void add(Collider* collider);

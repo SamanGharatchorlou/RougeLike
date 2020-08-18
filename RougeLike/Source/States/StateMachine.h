@@ -15,7 +15,7 @@ public:
 	void popState();
 	void replaceState(T* state);
 
-	void processStateChanges();
+	T* processStateChanges();
 
 	T& getActiveState() const;
 
@@ -95,8 +95,11 @@ void StateMachine<T>::replaceState(T* state)
 
 
 template<class T>
-void StateMachine<T>::processStateChanges()
+T* StateMachine<T>::processStateChanges()
 {
+
+	T* state = nullptr;
+
 	// add state
 	if (isAdding)
 	{
@@ -114,7 +117,7 @@ void StateMachine<T>::processStateChanges()
 		{
 			states.top()->exit();
 
-			delete states.top();
+			state = states.top();
 			states.pop();
 
 			states.top()->resume();
@@ -129,11 +132,11 @@ void StateMachine<T>::processStateChanges()
 	// replace state
 	else if (isReplacing)
 	{
-		if (states.size() > 0)
+		if (states.size() > 1)
 		{
 			states.top()->exit();
 
-			delete states.top();
+			state = states.top();
 			states.pop();
 
 			states.push(std::move(newState));
@@ -146,6 +149,8 @@ void StateMachine<T>::processStateChanges()
 
 		isReplacing = false;
 	}
+
+	return state;
 }
 
 
@@ -154,28 +159,3 @@ T& StateMachine<T>::getActiveState() const
 {
 	return *states.top();
 }
-
-
-
-//class StateMachine
-//{
-//public:
-//	StateMachine();
-//	~StateMachine();
-//
-//	void addState(State* state);
-//	void popState(); // do i need to delete the state??
-//	void replaceState(State* state);
-//
-//	void processStateChanges();
-//
-//	State& getActiveState();
-//
-//	size_t size() { return states.size(); }
-//
-//private:
-//	State* newState;
-//	std::stack<State*> states;
-//
-//	bool isAdding, isRemoving, isReplacing;
-//};

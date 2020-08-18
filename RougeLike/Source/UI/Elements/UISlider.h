@@ -10,9 +10,10 @@ class UISlider : public UIBox
 {
 public:
 	UISlider(const StringMap& attributes);
+	virtual ~UISlider();
 
 	void setComponents(Texture* container, UIButton* slider, UIBox* bar);
-
+	void disableInput() { mSelectable = false; }
 
 	void handleInput(const InputManager* input) override;
 
@@ -21,7 +22,6 @@ public:
 	void setSliderPosition(float position);
 	void setSliderValue(float value);
 	
-
 	float getValue() const;
 
 	virtual void render() override;
@@ -45,5 +45,6 @@ private:
 	RectF subRect;
 
 	float xCursorOffset;
+	bool mSelectable;
 };
 

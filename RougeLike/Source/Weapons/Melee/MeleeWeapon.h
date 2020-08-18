@@ -59,8 +59,4 @@ private:
 	float mRotationSum;
 
 	VectorF mAboutPoint;
-
-#if DRAW_PLAYER_RECTS
-	VectorF weaponVectorTest;
-#endif
 };

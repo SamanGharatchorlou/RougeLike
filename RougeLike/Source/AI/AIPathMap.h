@@ -28,5 +28,7 @@ public:
 private:
 	bool isValidPosition(VectorF position) const;
 
+
+private:
 	Grid<int> mCostMap;
 };

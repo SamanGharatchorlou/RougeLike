@@ -14,9 +14,7 @@ class InputManager;
 class Environment : public Dispatcher
 {
 public:
-	Environment(GameData* gameData);
-
-	void init();
+	void init(GameData* gameData);
 
 	void load();
 	void handleInput(const InputManager* input);
@@ -24,8 +22,7 @@ public:
 	void slowUpdate(float dt);
 
 	void nextLevel();
-	void restart();
-	void exit();
+	void clear();
 
 
 	bool canClosePreviousLevel(VectorF playerPosition) const;
@@ -54,6 +51,7 @@ private:
 	LevelManager mLevelManager;
 	EffectPool mEffectPool;
 	
+	// MOVE to level manager
 	Collectables mCollectables;
 
 	Vector2D<int> mMapSize;

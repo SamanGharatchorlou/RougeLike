@@ -11,9 +11,11 @@ class EffectPool;
 class LevelManager
 {
 public:
-	LevelManager(CollisionManager* collisions, EffectPool* effects) : mTrapManager(collisions, effects), mLevel(0) { }
+	LevelManager() : mLevel(0) { }
 
+	void init(CollisionManager* collisions, EffectPool* effects);
 	void load(const XMLParser& parser);
+	void clear();
 
 	void slowUpdate(float dt);
 	void renderLowDepth();

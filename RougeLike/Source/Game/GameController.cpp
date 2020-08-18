@@ -16,7 +16,7 @@
 #include "Input/inputManager.h"
 #include "Graphics/RenderManager.h"
 #include "UI/UIManager.h"
-
+#include "Game/Environment.h"
 
 
 GameController::GameController() : quit(false), mGameStateMachine(new NullState)
@@ -42,6 +42,10 @@ void GameController::load()
 	SDL_WaitThread(threadID, nullptr);
 
 	loader->free();
+
+	mGameData.setupObservers();
+
+	mAudio = AudioManager::Get();
 }
 
 
@@ -101,19 +105,27 @@ void GameController::free()
 // then restart it all again
 void GameController::restartGame()
 {
+	PRINT_MEMORY;
+
 	DebugPrint(Log, "Unimplemented\n");
 
 	//// Remove all states
-	//while (mGameStateMachine.size() > 1)
-	//{
-	//	mGameStateMachine.popState();
-	//	mGameStateMachine.processStateChanges();
-	//}
+	while (mGameStateMachine.size() > 1)
+	{
+		mGameStateMachine.popState();
+		stateChanges();
+	}
 
-	//mGameData.uiManager->clearScreens();
-	//mGameData.uiManager->init();
+	mGameData.uiManager->clearScreens();
+	mGameData.uiManager->setupScreens();
 
-	//mGameStateMachine.addState(new GameState(&mGameData, this));
+	mGameData.collisionManager->init();
+
+	mGameData.environment->init(&mGameData);
+	mGameData.environment->load();
+	mGameStateMachine.addState(new PreGameState(&mGameData, this));
+
+	PRINT_MEMORY;
 }
 
 
@@ -147,7 +159,7 @@ void GameController::updateLoops(float dt)
 		mGameStateMachine.getActiveState().fastUpdate(dt / updateLoopRepeats);
 
 	mGameStateMachine.getActiveState().slowUpdate(dt);
-	mGameData.audioManager->slowUpdate();
+	mAudio->slowUpdate();
 	mGameData.uiManager->update(dt);
 }
 
@@ -159,7 +171,9 @@ void GameController::render()
 
 void GameController::stateChanges()
 {
-	mGameStateMachine.processStateChanges();
+	State* state = mGameStateMachine.processStateChanges();
+	if (state)
+		delete state;
 }
 
 

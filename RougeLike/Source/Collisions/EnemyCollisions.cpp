@@ -4,7 +4,7 @@
 #include "CollisionManager.h"
 
 
-EnemyCollisions::EnemyCollisions(CollisionManager* collisionManager) : mCollisionManager(collisionManager) { }
+EnemyCollisions::EnemyCollisions() : mCollisionManager(nullptr) { }
 
 
 void EnemyCollisions::updateAttackingColliders(std::vector<Collider*> attackingColliders)

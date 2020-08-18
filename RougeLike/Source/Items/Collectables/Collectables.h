@@ -12,10 +12,12 @@ class PlayerManager;
 class Collectables
 {
 public:
-	Collectables(GameData* gameData);
+	Collectables() : mCollisions(nullptr), mCollector(nullptr) { }
 	~Collectables();
 
-	void setCollector(PlayerManager* collector);
+	void clear();
+
+	void init(CollisionManager* collisions, PlayerManager* collector);
 
 	void spawn(const XMLNode collectablesNode, const Map* map);
 

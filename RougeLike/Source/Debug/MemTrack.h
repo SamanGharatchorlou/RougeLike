@@ -85,12 +85,9 @@ namespace MemTrack
 
 
 
-/*
-Samam Gharatchorlou
-Add define so I dont need to keep adding #if MEMORY_TRACKING
-*/
+
+// Samam Gharatchorlou
+// Add define so I dont need to keep adding #if MEMORY_TRACKING
 #define PRINT_MEMORY printMemoryInfo()
 void printMemoryInfo();
-/*END*/
-
 #endif

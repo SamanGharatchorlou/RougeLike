@@ -122,12 +122,13 @@ float LoadingManager::loadedPercentage()
 void LoadingManager::initTextBox(VectorF screenSize)
 {
 	VectorF textPosition = VectorF(screenSize.x / 2.0f, screenSize.y / 1.35f);
-	VectorF textSize = VectorF(240, 100);
+	VectorF textSize = VectorF(300, 100);
 	RectF textRect(VectorF(), textSize);
 	textRect.SetCenter(textPosition);
 
 	// Set text
 	UITextBox::Data textData;
+	textData.font = "MenuFont";
 	textData.ptSize = 0;
 	textData.colour = SDL_Color{ 0, 0, 255 };
 	textData.texture = nullptr;

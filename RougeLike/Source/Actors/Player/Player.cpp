@@ -57,6 +57,9 @@ void Player::fastUpdate(float dt)
 
 	mWeapon->setPosition(rect().Center());
 	mWeapon->fastUpdate(dt);
+
+
+	VectorF wepRect = mWeapon->rect().Center();
  }
 
 
@@ -74,9 +77,12 @@ void Player::slowUpdate(float dt)
 }
 
 
-void Player::reset()
+void Player::clear()
 {
 	tileIndex.zero();
+	mWeapon = nullptr;
+	mControlOverride = false;
+	mBodyCollisions = false;
 	Actor::clear();
 }
 
@@ -104,7 +110,6 @@ void Player::render()
 #if DRAW_PLAYER_RECTS
 	debugDrawRect(rect(), RenderColour(RenderColour::Green));
 	debugDrawRect(mCollider.scaledRect(), RenderColour(RenderColour::Blue));
-	debugDrawRects(mWeapon->getRects(), RenderColour(RenderColour::Yellow));
 #endif
 
 	if (mVisibility)
@@ -112,6 +117,10 @@ void Player::render()
 		mWeapon->render();
 		Actor::render();
 	}
+
+	float weaponPos = mWeapon->getRects().at(0).Center().x;
+	VectorF playerRect = position();
+	printf("diff x: %f\n", playerRect.x - weaponPos);
 }
 
 
@@ -144,12 +153,12 @@ void Player::processHit()
 void Player::updateUI()
 {
 	Health* hp = static_cast<Health*>(getAttribute(AttributeType::Health));
-	SetUIBarEvent* healthBar = new SetUIBarEvent("HealthBar", "BlackHealthBar", hp->getPercentage());
+	SetUISlider* healthBar = new SetUISlider("HealthSlider", hp->getPercentage());
 	mEvents.push(EventPacket(healthBar));
 
-	Armor* armor = static_cast<Armor*>(getAttribute(AttributeType::Armor));
-	SetUIBarEvent* armorBar = new SetUIBarEvent("ArmorBar", "BlackArmorBar", armor->getPercentage());
-	mEvents.push(EventPacket(armorBar));
+	//Armor* armor = static_cast<Armor*>(getAttribute(AttributeType::Armor));
+	//SetUIBarEvent* armorBar = new SetUIBarEvent("ArmorBar", "BlackArmorBar", armor->getPercentage());
+	//mEvents.push(EventPacket(armorBar));
 }
 
 

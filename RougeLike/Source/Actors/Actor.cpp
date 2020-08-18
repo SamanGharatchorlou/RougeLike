@@ -34,11 +34,17 @@ void Actor::setCharacter(const XMLNode actorNode)
 	updatePhysicsStats();
 
 	// Collider
-	StringMap attributes = actorNode.child("ColliderScale").attributes();
-	float x = attributes.getFloat("x");
-	float y = attributes.getFloat("y");
-	VectorF colliderScale(x, y);
-	mCollider.init(&mPhysics.rectRef(), colliderScale);
+	StringMap colliderScale = actorNode.child("ColliderScale").attributes();
+	VectorF scale = colliderScale.getVector("x", "y");
+	mCollider.init(&mPhysics.rectRef(), scale);
+
+	XMLNode renderOffsetNode = actorNode.child("RenderOffset");
+	if (renderOffsetNode)
+	{
+		StringMap renderOffset = renderOffsetNode.attributes();
+		VectorF offset = renderOffset.getVector("x", "y");
+		mRenderOffset = offset;
+	}
 }
 
 
@@ -70,6 +76,14 @@ void Actor::slowUpdate(float dt)
 	mEffects.slowUpdate(dt);
 }
 
+void Actor::render(VectorF offset)
+{
+	RectF renderRect = Camera::Get()->toCameraCoords(rect());
+	renderRect = renderRect.Translate(offset);
+	mAnimator.render(renderRect, mPhysics.flip());
+
+	mEffects.render();
+}
 
 void Actor::render()
 {
@@ -82,6 +96,7 @@ void Actor::render()
 
 void Actor::clear()
 {
+	mEnvironment = nullptr;
 	mPhysics.reset();
 	mAnimator.clear();
 
@@ -91,9 +106,11 @@ void Actor::clear()
 	}
 
 	mEffects.clear();
-	mAttributeBag.empty();
+	mAttributeBag.clear();
 
 	mEvents.clear();
+
+	mVisibility = true;
 }
 
 

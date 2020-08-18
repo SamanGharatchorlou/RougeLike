@@ -12,6 +12,7 @@ public:
 	WeaponCollisionManager() { }
 
 	void init(Player* player, CollisionTracker* tracker);
+	void clear() { mPlayer = nullptr; mTracker = nullptr; }
 
 	void processWeaponEffects(EffectPool* effects);
 

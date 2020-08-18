@@ -7,10 +7,12 @@
 		<Box id = "BlackArmorBar" x = "322.065" y = "34.000" width = "380.000" height = "24.000" texture = "BlackBar"></Box>
 		<Box id = "ArmorBar"   parent = "BlackArmorBar" x = "0" y = "0" width = "380.000" height = "24.000" texture = "BlueBar"></Box>
 
-		<!-- Player health bar -->
+		<!-- Player health bar 
 		<Box id = "HealthIcon" x = "271.000" y = "66.000" width = "50.000" height = "50.000" texture = "HealthIcon"></Box>
 		<Box id = "BlackHealthBar" x = "322.065" y = "84.00" width = "380.000" height = "24.000" texture = "HealthBarContainer"></Box>
-		<Box id = "HealthBar"   parent = "BlackHealthBar" x = "0" y = "0" width = "380.000" height = "24.000" texture = "HealthBar"></Box>
+		<Box id = "HealthBar"   parent = "BlackHealthBar" x = "0" y = "0" width = "380.000" height = "24.000" texture = "HealthBar"></Box>-->
+
+		<Slider id = "HealthSlider" x = "322.065" y = "84.00" width = "450.000" height = "35.000" slider = "HealthSlider"></Slider>
 	</Layer>
 
 	<!-- Map level -->

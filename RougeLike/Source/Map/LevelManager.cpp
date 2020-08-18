@@ -7,6 +7,41 @@
 
 
 
+void LevelManager::init(CollisionManager* collisions, EffectPool* effects)
+{
+	mLevel = 0;
+	mTrapManager.init(collisions, effects);
+}
+
+
+
+void LevelManager::load(const XMLParser& parser)
+{
+	mBuilder.load();
+
+	mTrapManager.load();
+
+	Map* map = mBuilder.buildFirst();
+	mMaps.push(map);
+	mTrapManager.addMap(map, mBuilder.specs(map));
+
+	addMap(MapType::Dungeon);
+}
+
+
+void LevelManager::clear()
+{
+	while (mMaps.size() > 0)
+	{
+		mBuilder.returnMap(mMaps.popFront());
+	}
+
+	mBuilder.clear();
+	mTrapManager.clear();
+	mLevel = 0;
+}
+
+
 
 void LevelManager::addMap(MapType type)
 {
@@ -40,16 +75,7 @@ void LevelManager::popFront()
 }
 
 
-void LevelManager::load(const XMLParser& parser)
-{
-	mTrapManager.load();
 
-	Map* map = mBuilder.buildFirst();
-	mMaps.push(map);
-	mTrapManager.addMap(map, mBuilder.specs(map));
-
-	addMap(MapType::Dungeon);
-}
 
 
 Map* LevelManager::map(MapType type) const

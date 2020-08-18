@@ -8,8 +8,9 @@ class Enemy;
 class EnemyAttack : public EnemyState
 {
 public:
-	EnemyAttack(Enemy* enemy);
+	EnemyAttack();
 
+	void enter() override;
 	void init() override;
 	void handleInput() override { }
 	void slowUpdate(float dt) override;

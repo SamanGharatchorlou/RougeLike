@@ -10,6 +10,13 @@ void MapSpecifications::set(const XMLNode node)
 	fillSpecifications(node);
 }
 
+void MapSpecifications::clear()
+{
+	mSizes.clear();
+	mDungeonDecor.empty();
+	mCorridorDecor.empty();
+}
+
 
 void MapSpecifications::readTileSize(const XMLNode root)
 {

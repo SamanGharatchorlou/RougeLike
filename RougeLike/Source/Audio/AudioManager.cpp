@@ -4,6 +4,16 @@
 
 #include "Game/Data/LoadingManager.h"
 
+
+
+AudioManager* AudioManager::Get()
+{
+	static AudioManager sInstance;
+	return &sInstance;
+}
+
+
+
 AudioManager::AudioManager()
 {
 	DebugPrint(Log, "Audio manager created\n");
@@ -12,17 +22,12 @@ AudioManager::AudioManager()
 
 AudioManager::~AudioManager()
 {
-	for (std::pair<BasicString, Audio*> audio : mAudioBank)
-	{
-		delete audio.second;
-		audio.second = nullptr;
-		audio.first = "";
-	}
+	DebugPrint(Log, "Audio manager destroyed\n");
 }
 
 
 // -- Audio Loading -- //
-void AudioManager::init()
+void AudioManager::load()
 {
 	DebugPrint(Log, "\n--- Loading Audio ---\n");
 	int fails = 0;
@@ -37,6 +42,19 @@ void AudioManager::init()
 	fails += loadAllSoundGroups(FileManager::Audio_SoundGroups);
 
 	DebugPrint(Log, "\n--- Audio Loading Complete: %d Failures ---\n\n", fails);
+}
+
+
+void AudioManager::unload()
+{
+	for (std::pair<BasicString, Audio*> audio : mAudioBank)
+	{
+		delete audio.second;
+	}
+
+	mAudioBank.clear();
+
+	DebugPrint(Log, "Audio manager unloaded\n");
 }
 
 

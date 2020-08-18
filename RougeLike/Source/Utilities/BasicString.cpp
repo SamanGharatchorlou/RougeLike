@@ -137,7 +137,7 @@ void BasicString::increaseBufferSize(int size)
 	memcpy(tempBuffer, mBuffer, mLength + 1);
 
 	delete[] mBuffer;
-	mBuffer = tempBuffer;;
+	mBuffer = tempBuffer;
 }
 
 

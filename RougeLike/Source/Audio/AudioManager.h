@@ -6,10 +6,11 @@
 class AudioManager
 {
 public:
-	AudioManager();
-	~AudioManager();
+	static AudioManager* Get();
 
-	void init();
+	void load();
+	void unload();
+
 	void slowUpdate();
 
 	Audio* getAudio(const BasicString& label) const;
@@ -41,6 +42,10 @@ private:
 	int loadAllSoundGroups(FileManager::Folder folder);
 
 	bool loadAudio(Audio* audio, const BasicString& name, const BasicString& filePath);
+
+	AudioManager();
+	~AudioManager();
+
 
 private:
 	SoundController mSoundController;

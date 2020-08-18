@@ -4,6 +4,8 @@
 #include "States/State.h"
 #include "States/StateMachine.h"
 
+class AudioManager;
+
 
 class GameController
 {
@@ -32,6 +34,7 @@ private:
 
 private:
 	GameData mGameData;
+	AudioManager* mAudio;
 
 	StateMachine<State> mGameStateMachine;
 

@@ -2,7 +2,7 @@
 
 #if _DEBUG
 
-#define MEMORY_TRACKING 0
+#define MEMORY_TRACKING 1 // 1 = default, 2 = verbose
 #define IGNORE_UNKNOWNS 0
 
 // Framerate
@@ -10,9 +10,9 @@
 #define PRINT_FRAMERATE_EVERY 0 // Print at the rate you specify in milliseconds i.e. 500 = print every 0.5 seconds
 
 // Player
-#define DRAW_PLAYER_RECTS 0
+#define DRAW_PLAYER_RECTS 1
 #define IGNORE_WALLS 0
-#define IGNORED_BY_ENEMIES 0
+#define IGNORED_BY_ENEMIES 1
 
 // Collectables
 #define DRAW_COLLECTABLE_RECT 0
@@ -29,7 +29,8 @@
 #define DRAW_AI_PATH 0
 #define DRAW_AI_PATH_COSTMAP 0
 
-#define LABEL_ENEMY_STATES 1
+#define LABEL_ENEMY_STATES 0
+#define LABEL_ENEMY_HEALTH 1
 #define DRAW_PLAYER_ENEMY_DISTANCE 0
 
 #define DRAW_ENEMY_RECTS 0
@@ -39,23 +40,8 @@
 #define MAX_SPAWN_COUNT 1
 
 // UI
-#define DRAW_UI_RECTS 1
+#define DRAW_UI_RECTS 0
 #define UI_EDITOR 1
 #define DEBUG_CURSOR 1
 
-#else
-#define MEMORY_TRACKING 0
-#define FRAMERATE_CAP 0
-#define PRINT_FRAMERATE_EVERY 0
-#define DRAW_ENEMY_RECT 0
-#define DRAW_PLAYER_RECTS 0
-#define DRAW_BINARY_MAP 0
-#define MARK_SURFACE_TYPES 0
-#define DRAW_AI_PATH 0
-#define DRAW_ENEMY_TARGET_PATH 0
-#define LIMIT_ENEMY_SPAWNS 0
-#define DRAW_COLLECTABLE_RECT 0
-#define DRAW_UI_RECTS 0
-#define UI_EDITOR 0
-#define DEBUG_CURSOR 0
 #endif

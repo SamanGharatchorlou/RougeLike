@@ -9,21 +9,21 @@
 #include "AIController.h"
 
 
-struct GameData;
 class Environment;
 class Actor;
 class Enemy;
 class Collider;
 
+
 class EnemyManager
 {
 public:
-	EnemyManager(GameData* gameData);
+	EnemyManager();
 	~EnemyManager();
 
 	// Core
 	void load();
-	void init(Environment* environment);
+	void init(Environment* environment, CollisionManager* collisions);
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
 	void render();

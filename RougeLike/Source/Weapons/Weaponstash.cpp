@@ -6,10 +6,7 @@
 
 
 
-WeaponStash::WeaponStash()
-{
-	meleeWeapon = new MeleeWeapon;
-}
+WeaponStash::WeaponStash() : meleeWeapon(nullptr) { }
 
 
 WeaponStash::~WeaponStash()
@@ -20,6 +17,8 @@ WeaponStash::~WeaponStash()
 		WeaponData* weaponData = iter->second;
 		delete weaponData;
 	}
+
+	mData.clear();
 }
 
 
@@ -43,6 +42,24 @@ void WeaponStash::load()
 			mData[weaponName] = weaponData;
 		}
 	}
+
+
+	meleeWeapon = new MeleeWeapon;
+}
+
+
+void WeaponStash::clear()
+{
+	std::unordered_map<BasicString, WeaponData*>::iterator iter;
+	for (iter = mData.begin(); iter != mData.end(); iter++)
+	{
+		WeaponData* weaponData = iter->second;
+		delete weaponData;
+	}
+
+	mData.clear();
+
+	delete meleeWeapon;
 }
 
 

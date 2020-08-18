@@ -9,8 +9,6 @@ class Enemy;
 class EnemyAlert : public EnemyState
 {
 public:
-	EnemyAlert(Enemy* enemy) : EnemyState(enemy), flipCounter(0) { }
-
 	void init() override;
 	void handleInput() override { }
 	void fastUpdate(float dt) override { };
@@ -19,7 +17,4 @@ public:
 	void exit() override { }
 
 	const Type type() const { return Type::Alert; }
-
-private:
-	int flipCounter;
 };

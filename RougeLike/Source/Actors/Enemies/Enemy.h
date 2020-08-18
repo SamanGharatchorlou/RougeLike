@@ -12,20 +12,19 @@
 #endif
 
 
-struct GameData;
 class AIPathMap;
-class Map;
-class DamageCollider;
-class Environment;
+class EnemyStatePool;
 
 
 class Enemy : public Actor
 {
 public:
 	Enemy();
-	~Enemy() { }
+	~Enemy();
 
 	virtual void init() = 0;
+
+	void setStatePool(EnemyStatePool* pool) { mStatePool = pool; }
 
 	// Core
 	void slowUpdate(float dt);
@@ -47,7 +46,7 @@ public:
 	void replaceState(EnemyState::Type state);
 	EnemyState::Type state() const;
 
-	void addIdleState(float waitTime);
+	void idle(float idleTime);
 	void stun(float stunTime);
 
 	// Map
@@ -66,10 +65,9 @@ public:
 	// Movement
 	void			accellerateTowards(VectorF position);
 	void			move(VectorF velocity, float dt) { mPhysics.move(velocity, dt); }
-
+	void			flip();
 
 protected:
-	//const AIPathMap* mMap;
 	AIPathing mAIPathing;
 
 	StateMachine<EnemyState> mStateMachine;
@@ -79,6 +77,8 @@ protected:
 	Index mCurrentIndex;
 
 	std::deque<Effect*> mAttackEffects;
+
+	EnemyStatePool* mStatePool;
 
 #if _DEBUG
 	EnemyDebugger mDebugger;

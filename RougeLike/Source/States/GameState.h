@@ -25,11 +25,8 @@ public:
 private:
 	void initCamera();
 	void initUI();
-	void initMap();
 	void initRendering();
 
-	void beginGame();
-	void nextLevel();
 
 private:
 	GameController* mGameController;

@@ -6,9 +6,6 @@
 
 
 
-EnemyPatrol::EnemyPatrol(Enemy* enemy) : EnemyState(enemy) { }
-
-
 void EnemyPatrol::init()
 {
 	mEnemy->animator().selectAnimation(Action::Walk);
@@ -27,7 +24,7 @@ void EnemyPatrol::slowUpdate(float dt)
 	mEnemy->resolveCollisions();
 
 	if (hasReachedPositionTarget())
-		mEnemy->addIdleState(1.0f);
+		mEnemy->idle(1.0f);
 
 	if (canSeeAttackTarget())
 		mEnemy->replaceState(EnemyState::Alert);

@@ -16,6 +16,13 @@ AIController::AIController() : pathUpdateRequests(0), pathUpdateStaggerCounter(0
 	updateTimer.start();
 }
 
+void AIController::clear() 
+{ 
+	mPathMap.clear(); 
+	updateTimer.stop();
+	pathUpdateRequests = 0;
+	pathUpdateStaggerCounter = 0;
+}
 
 
 void AIController::loadAIPathMap(const Map* map)

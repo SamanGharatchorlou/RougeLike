@@ -5,6 +5,7 @@
 #include "Elements/UIElement.h"
 #include "Elements/UIButton.h"
 #include "Elements/UITextBox.h"
+#include "Elements/UISlider.h"
 
 
 
@@ -27,6 +28,11 @@ void UIEventHandler::handleEvent(Screen* activeScreen, EventData& data)
 		setTextColour(activeScreen, static_cast<SetTextColourEvent&>(data));
 		break;
 	}
+	case Event::SetUISlider:
+	{
+		setSliderValue(activeScreen, static_cast<SetUISlider&>(data));
+		break;
+	}
 #if UI_EDITOR
 	case Event::MoveUIElement:
 	{
@@ -42,6 +48,14 @@ void UIEventHandler::handleEvent(Screen* activeScreen, EventData& data)
 	default:
 		break;
 	}
+}
+
+
+void UIEventHandler::setSliderValue(Screen* activeScreen, SetUISlider& eventData)
+{
+	UIElement* element = activeScreen->find(eventData.mId);
+	UISlider* slider = static_cast<UISlider*>(element);
+	slider->setSliderValue(eventData.mValue);
 }
 
 

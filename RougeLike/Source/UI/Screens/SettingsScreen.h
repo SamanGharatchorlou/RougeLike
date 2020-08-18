@@ -8,27 +8,26 @@ struct GameData;
 
 class SettingsScreen : public Screen
 {
+public:
 	enum Setting
 	{
 		Music,
 		Sound,
+		Mute,
+		Close,
 		Count
 	};
 
 public:
-	SettingsScreen();
 
 	void enter() override;
-	void handleInput(const InputManager* input) override { }
 	void update(float dt) override;
 	void exit() override { };
 
 	Type type() override { return Type::Settings; }
 
-	void setMusicVolume(float volume);
-	void setSoundVolume(float volume);
 
 private:
-	// TODO change to map
-	std::vector<UISlider> mSliders;
+	std::unordered_map<Setting, UISlider*> mSliders;
+	std::unordered_map<Setting, UIButton*> mButtons;
 };

@@ -164,6 +164,7 @@
     <ClCompile Include="Source\Objects\Effects\EffectTypes\StunEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\ArmorEffect.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyStun.cpp" />
+    <ClCompile Include="Source\Objects\Pools\EnemyStatePool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -356,6 +357,7 @@
     <ClInclude Include="Source\Objects\Effects\EffectTypes\SlowEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\ArmorEffect.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyStun.h" />
+    <ClInclude Include="Source\Objects\Pools\EnemyStatePool.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

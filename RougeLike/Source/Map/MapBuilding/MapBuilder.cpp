@@ -7,8 +7,9 @@
 #include "MapDecorator.h"
 
 
-MapBuilder::MapBuilder()
-{ 
+
+void MapBuilder::load()
+{
 	int poolSize = 5;
 	for (int i = 0; i < poolSize; i++)
 	{
@@ -18,6 +19,16 @@ MapBuilder::MapBuilder()
 	BasicString path = FileManager::Get()->findFile(FileManager::Config_Map, "Environment");
 	XMLParser parser(path);
 	mSpecs.set(parser.rootNode());
+}
+
+void MapBuilder::clear()
+{
+	while (mPool.size() > 0)
+	{
+		delete mPool.popFront();
+	}
+
+	mSpecs.clear();
 }
 
 

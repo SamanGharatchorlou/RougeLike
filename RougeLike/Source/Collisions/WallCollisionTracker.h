@@ -9,6 +9,7 @@ class WallCollisionTracker
 public:
 	WallCollisionTracker() { };
 	void init(Actor* actor);
+	void clear() { mActor = nullptr; }
 	void resolveWallCollisions(const Map* map, float dt);
 
 

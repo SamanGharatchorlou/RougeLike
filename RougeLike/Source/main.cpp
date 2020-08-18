@@ -4,8 +4,7 @@
 
 int main(int argc, char* args[])
 {
-	//GameController* GameAppPtr = new GameController;
-	GameController GameApp;// = *GameAppPtr;
+	GameController GameApp;
 
 	GameApp.load();
 

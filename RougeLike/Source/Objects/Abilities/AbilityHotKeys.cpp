@@ -12,8 +12,19 @@
 #include "UI/Elements/UITextBox.h"
 
 
-AbilityHotKeys::AbilityHotKeys(Screen* screen) : mGameScreen(static_cast<GameScreen*>(screen)) { }
+AbilityHotKeys::AbilityHotKeys() : mGameScreen(nullptr) { }
 
+void AbilityHotKeys::init(Screen* screen)
+{
+	mGameScreen = static_cast<GameScreen*>(screen);
+}
+
+
+void AbilityHotKeys::clear()
+{
+	mGameScreen = nullptr;
+	mHotKeyMap.clear();
+}
 
 Button::State AbilityHotKeys::state(AbilityType ability, const InputManager* input)
 {

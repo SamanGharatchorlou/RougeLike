@@ -6,13 +6,6 @@
 #include "Game/Camera/Camera.h"
 #include "Graphics/Texture.h"
 
-#include "Collisions/DamageCollider.h"
-
-#include "Map/Map.h"
-
-
-EnemyHit::EnemyHit(Enemy* enemy) : EnemyState(enemy)  { }
-
 
 void EnemyHit::init()
 {

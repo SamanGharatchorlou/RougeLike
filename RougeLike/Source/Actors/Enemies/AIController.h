@@ -14,7 +14,7 @@ class AIController
 public:
 	AIController();
 
-	void clearMap() { mPathMap.clear(); }
+	void clear();
 
 	void loadAIPathMap(const Map* map);
 

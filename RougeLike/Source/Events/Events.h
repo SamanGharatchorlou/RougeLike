@@ -27,6 +27,7 @@ enum class Event
 	UpdateTextBox,
 	SetTextColour,
 	SetUIBar,
+	SetUISlider,
 
 	Trauma,
 
@@ -86,6 +87,15 @@ struct SetTextColourEvent : public EventData
 
 	SDL_Color mColour;
 	const BasicString mId;
+};
+
+
+struct SetUISlider : public EventData
+{
+	SetUISlider(const BasicString& id, float value) : EventData(Event::SetUISlider), mId(id), mValue(value) { }
+
+	const BasicString mId;
+	float mValue;
 };
 
 

@@ -14,8 +14,8 @@
 
 
 	<Layer>
-		<TextBox id = "ScreenTitle" parent = "MainPanel" font ="MenuFont" align = "Center" x = "187.598" y = "20.700" width = "351.503" height = "48.400" >
-			<text r = "0" g = "0" b = "0" >Character Selection</text>
+		<TextBox id = "ScreenTitle" parent = "MainPanel" font ="MenuFont" align = "Center" x = "176.798" y = "20.700" width = "381.202" height = "42.000" >
+			<text r = "255" g = "255" b = "255" >Character Selection</text>
 		</TextBox>
 
 	</Layer>
@@ -35,11 +35,11 @@
 		<Box id= "RightArrow" parent = "RightButton" x = "17.700" y = "12.899" width = "43" height = "43" texture = "RightArrow"></Box>
 
 		<TextBox id = "CharacterName" parent = "CharacterNamePanel" align = "Center" x = "2.400" y = "4.600" width = "638.800" height = "55.700" >
-			<text r = "0" g = "0" b = "0" >Knight</text>
+			<text r = "255" g = "255" b = "255" >KNIGHT</text>
 		</TextBox>
 		
 		<TextBox id = "PlayText" parent = "PlayButton" align = "Center" x = "0.000" y = "9.000" width = "520.000" height = "66.399" >
-			<text r = "0" g = "0" b = "0" >Play</text>
+			<text r = "255" g = "255" b = "255" >PLAY</text>
 		</TextBox>
 
 	</Layer>

@@ -8,14 +8,14 @@
 #include "Objects/Effects/EffectTypes/DamageEffect.h"
 
 
-EnemyAttack::EnemyAttack(Enemy* enemy) :
-	EnemyState(enemy),
-	mHasAttacked(false),
-	hitCounter(0)
+EnemyAttack::EnemyAttack() : mHasAttacked(false), hitCounter(0)
 { 
-	mEnemy->collider()->setDidHit(false);
 }
 
+void EnemyAttack::enter()
+{
+	mEnemy->collider()->setDidHit(false);
+}
 
 void EnemyAttack::init()
 {

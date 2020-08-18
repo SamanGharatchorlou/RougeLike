@@ -15,11 +15,11 @@ class Screen;
 class AbilityManager
 {
 public:
-	AbilityManager(Actor* caster, Screen* screen);
+	AbilityManager();
 	~AbilityManager();
 
-	void init(Environment* environment);
-
+	void init(Environment* environment, Actor* caster, Screen* screen);
+	void clear();
 
 	void handleInput(const InputManager* input);
 	void slowUpdate(float dt);
@@ -48,7 +48,7 @@ private:
 
 	LocalDispatcher mEvents;
 	
-	const AbilityBuilder mBuilder;
+	AbilityBuilder mBuilder;
 	AbilityActivator mActivator;
 	AbilityHotKeys mHotKeys;
 

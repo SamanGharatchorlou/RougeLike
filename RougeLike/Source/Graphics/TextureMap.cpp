@@ -13,6 +13,8 @@ void TextureMap::free()
 			iter->second = nullptr;
 		}
 	}
+
+	mData.clear();
 }
 
 

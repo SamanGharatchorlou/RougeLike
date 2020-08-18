@@ -9,29 +9,24 @@
 #include "Map/Map.h"
 
 
-Environment::Environment(GameData* gameData) : 
-	mLevelManager(gameData->collisionManager, &mEffectPool), 
-	mActors(gameData), 
-	mCollectables(gameData)
+
+void Environment::clear()
 {
-};
+	mActors.clear();
+	mCollectables.clear();
 
+	mLevelManager.clear();
+	mEffectPool.freeAll();
 
-
-void Environment::restart()
-{
-	DebugPrint(Log, "Environment restart unimplemented\n");
-	//delete mMaps.entrance;
-	//delete mMaps.primaryMap;
-	//delete mMaps.exit;
-
-	//createNewMaps();
+	mMapSize = Vector2D<int>();
 }
 
-void Environment::init()
+void Environment::init(GameData* gameData)
 {
-	mActors.init(this);
-	mCollectables.setCollector(mActors.player());
+	mLevelManager.init(gameData->collisionManager, &mEffectPool);
+	mActors.init(gameData);
+
+	mCollectables.init(gameData->collisionManager, mActors.player());
 }
 
 
@@ -105,11 +100,6 @@ void Environment::handleInput(const InputManager* input)
 	mActors.handleInput(input);
 }
 
-void Environment::exit()
-{
-	mActors.exit();
-	restart();
-}
 
 void Environment::fastUpdate(float dt)
 {

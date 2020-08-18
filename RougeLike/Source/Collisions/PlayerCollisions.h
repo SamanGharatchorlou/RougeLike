@@ -17,6 +17,7 @@ public:
 	PlayerCollisions() { };
 
 	void init(Player* player, CollisionManager* collisionManager);
+	void clear();
 
 	void resolveWalls(Map* map, float dt);
 	void resolveWeapons(EffectPool* effects);

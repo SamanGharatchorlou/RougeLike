@@ -17,6 +17,7 @@ public:
 
 private:
 	void labelState();
+	void labelHP();
 	void drawPlayerDistance(Environment* environment, const Enemy* enemy);
 	void drawRects();
 	void drawPath();
@@ -25,21 +26,6 @@ private:
 	Enemy* mEnemy;
 	std::vector<PathTile> mPath;
 };
-
-
-
-namespace std
-{
-	template <>
-	struct hash<EnemyState::Type>
-	{
-		std::size_t operator()(EnemyState::Type state) const
-		{
-			unsigned long enemyState = (unsigned long)state;
-			return std::hash<unsigned long>{ }(enemyState);
-		}
-	};
-}
 
 
 const static std::unordered_map<EnemyState::Type, BasicString> enemyStateLookUpTable

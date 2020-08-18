@@ -9,6 +9,13 @@
 #include "Collisions/CollisionManager.h"
 
 
+void TileInteractableManager::init(CollisionManager* collisions, EffectPool* effects)
+{
+	mCollisions = collisions;
+	mEffects = effects;
+}
+
+
 void TileInteractableManager::load()
 {
 	std::vector<DecorType> types;
@@ -17,6 +24,17 @@ void TileInteractableManager::load()
 		types.push_back(type);
 	}
 	mTrapPool.load(types, 50);
+}
+
+void TileInteractableManager::clear()
+{
+	while (mInteractables.size() > 0)
+		popFrontMap();
+
+	mTrapPool.freeAll();
+
+	mCollisions = nullptr;
+	mEffects = nullptr;
 }
 
 

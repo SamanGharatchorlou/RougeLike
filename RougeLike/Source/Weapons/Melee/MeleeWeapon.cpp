@@ -76,6 +76,8 @@ void MeleeWeapon::fastUpdate(float dt)
 			endAttack();
 		else
 			continueAttack(dt);
+
+		updateWeaponBlocks();
 	}
 }
 
@@ -120,7 +122,6 @@ void MeleeWeapon::updateAimDirection(VectorF cursorPosition)
 		mDirection = rotateVector(mDirection, offsetAngle);
 	}
 
-	updateWeaponBlocks();
 }
 
 
@@ -136,7 +137,11 @@ void MeleeWeapon::render()
 
 	// Weapon vector
 	VectorF pos = rect().TopLeft() + mAboutPoint;
-	debugDrawLine(pos, pos + weaponVectorTest , RenderColour::Red);
+	VectorF weaponVector = mDirection.normalise() * mAboutPoint.y;
+	debugDrawLine(pos, pos + weaponVector, RenderColour::Red);
+
+	// block colliders
+	debugDrawRects(mBlockRects, RenderColour(RenderColour::Yellow));
 #endif
 }
 
@@ -187,9 +192,6 @@ const BasicString& MeleeWeapon::hitSoundLabel()
 void MeleeWeapon::updateWeaponBlocks()
 {
 	VectorF weaponVector = mDirection.normalise() * mAboutPoint.y;
-#if DRAW_PLAYER_RECTS
-	weaponVectorTest = weaponVector;
-#endif
 
 	// Size
 	int blocks = mBlockRects.size();

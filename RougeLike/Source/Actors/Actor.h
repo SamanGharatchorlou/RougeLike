@@ -15,13 +15,14 @@ class Actor
 {
 public:
 	Actor();
-	virtual ~Actor() { };
+	virtual ~Actor() { clear(); };
 
 	void set(Environment* environment);
 
 	void setCharacter(const XMLNode node);
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
+	void render(VectorF offset);
 	void render();
 
 	void setVisibility(bool visibility) { mVisibility = visibility; }
@@ -71,6 +72,7 @@ protected:
 	Physics mPhysics;
 	EffectCollider mCollider;
 
+	VectorF mRenderOffset;
 	Animator mAnimator;
 
 	LocalDispatcher mEvents;

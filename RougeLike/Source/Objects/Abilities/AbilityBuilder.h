@@ -7,7 +7,9 @@ class Actor;
 class AbilityBuilder
 {
 public:
-	AbilityBuilder(Actor* caster) : mCaster(caster) { }
+	AbilityBuilder() : mCaster(nullptr) { }
+
+	void init(Actor* caster) { mCaster = caster; }
 
 	Ability* build(const BasicString& id) const;
 

@@ -33,6 +33,8 @@ void TextureManager::unload()
 		textureMap.free();
 	}
 
+	mTextures.clear();
+
 	DebugPrint(Log, "Texture manager unloaded\n");
 }
 

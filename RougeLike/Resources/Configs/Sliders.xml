@@ -2,4 +2,5 @@
 
 <UI>
 	<RedSlider Handle = "SliderHandle" Bar = "SliderBar" Container = "SliderContainer"></RedSlider>
+	<HealthSlider Handle = "HealthIcon" Bar = "SliderBar" Container = "SliderContainer"></HealthSlider>
 </UI>

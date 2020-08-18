@@ -8,7 +8,7 @@
 		<Damage>50</Damage>
 
 		<KnockbackForce>750</KnockbackForce>
-		<KnockbackDistance>100</KnockbackDistance>
+		<KnockbackDistance>150</KnockbackDistance>
 		<StunTime>3</StunTime>
 
 		<Force>800</Force>

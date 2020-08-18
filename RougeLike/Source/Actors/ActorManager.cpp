@@ -10,19 +10,21 @@
 #include "Game/Environment.h"
 
 
-ActorManager::ActorManager(GameData* gameData) : mPlayer(gameData), mEnemies(gameData) { }
-
-
-
 void ActorManager::load(const XMLParser& parser)
 {
 	mEnemies.load();
 }
 
-void ActorManager::init(Environment* environment)
+void ActorManager::init(GameData* gameData)
 {
-	mPlayer.init(environment);
-	mEnemies.init(environment);
+	mPlayer.init(gameData->environment, gameData->collisionManager, gameData->uiManager->screen(Screen::Game));
+	mEnemies.init(gameData->environment, gameData->collisionManager);
+}
+
+void ActorManager::clear()
+{
+	mPlayer.clear();
+	mEnemies.clear();
 }
 
 
@@ -52,8 +54,8 @@ void ActorManager::slowUpdate(float dt)
 
 void ActorManager::render()
 {
-	mPlayer.render();
 	mEnemies.render();
+	mPlayer.render();
 }
 
 
@@ -89,12 +91,6 @@ void ActorManager::handleEvent(EventData& data)
 	}
 }
 
-
-void ActorManager::exit()
-{
-	mEnemies.clear();
-	mPlayer.exit();
-}
 
 // --- Private Functions --- //
 

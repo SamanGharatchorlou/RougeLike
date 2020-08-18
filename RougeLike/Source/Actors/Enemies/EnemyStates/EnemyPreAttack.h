@@ -6,8 +6,7 @@
 class EnemyPreAttack : public EnemyState
 {
 public:
-	EnemyPreAttack(Enemy* enemy);
-
+	void enter() override;
 	void init() override;
 	void handleInput() override { }
 	void fastUpdate(float dt) override { };

@@ -6,8 +6,9 @@
 class EnemyStun: public EnemyState
 {
 public:
-	EnemyStun(Enemy* enemy) : EnemyState(enemy), mStunTime(-1.0f) { }
-	EnemyStun(Enemy* enemy, float stunTime) : EnemyState(enemy), mStunTime(stunTime) { }
+	EnemyStun() : mStunTime(-1.0f) { }
+
+	void setTime(float time) { mStunTime = time; }
 
 	void init() override;
 	void handleInput() override { }

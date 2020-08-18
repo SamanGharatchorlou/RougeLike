@@ -5,45 +5,27 @@
 	</Layer>
 
 	<Layer>
+		<Button id = "CloseButton" parent = "MainPanel" x = "449.698" y = "1.500" width = "50.000" height = "43.000" texture = "RedButton"></Button>
+		<Box id = "CloseCross" parent = "CloseButton" x = "12.899" y = "9.000" width = "25.000" height = "25.000" texture = "RedCross"></Box>
 
-		<Box id = "Title2" parent = "MainPanel" x = "0.000" y = "-18.000" width = "500.800" height = "57.000" texture = "Settings name element 02"></Box>
-		<Box id = "Title1" parent = "MainPanel" x = "30.000" y = "-17.030" width = "386.000" height = "48.000" texture = "Name element 01"></Box>
-		<TextBox id = "ScreenTitle" parent = "Title1" align = "Center" x = "0.000" y = "0.000" width = "428.000" height = "45.000" >
-			<text r = "0" g = "0" b = "0" >SETTINGS</text>
+		<TextBox id = "ScreenTitle" parent = "MainPanel" font = "MenuFont" align = "Center" x = "0.000" y = "9.600" width = "500.000" height = "36.500" >
+			<text r = "255" g = "255" b = "255" >SETTINGS</text>
 		</TextBox>
-	</Layer>
-
-	<Layer>
-		<Button id = "CloseButton" parent = "Title1" x = "390.000" y = "3.000" width = "50.000" height = "43.000" texture = "GreyButton"></Button>
 	</Layer>
 
 	<Layer>
 		<!-- Music -->
-		<!--
-		<Box id = "MusicBarEmpty" parent = "MidPanelElement1" x = "15.000" y = "67.000" width = "425.000" height = "30.000" texture = "Bar empty"></Box>
-		<Box id = "MusicBarGreen" parent = "MusicBarEmpty" x = "3.000" y = "4.000" width = "419.000" height = "20.000" texture = "Bar line"></Box>
-		<Button id = "MusicSlider" parent = "MusicBarEmpty" x = "394.000" y = "-5.000" width = "37.000" height = "37.000" texture = "Slider"></Button>
-		<TextBox id = "MusicString" parent = "MidPanelElement1" align = "Center" x = "13.000" y = "11.000" width = "287.000" height = "39.000" >
-			<text r = "255" g = "255" b = "255" >Music Volume</text>
-		</TextBox>-->
+		<Slider id = "MusicSlider" x = "273.902" y = "207.200" width = "396.801" height = "30.000" slider = "RedSlider"></Slider>
+		<TextBox id = "MusicString" parent = "MusicSlider" align = "Center" x = "57.698" y = "-42.101" width = "287.000" height = "39.000" >
+			<text r = "255" g = "255" b = "255" >Game Music Volume</text>
+		</TextBox>
 
-		<Slider id = "MusicSlider" x = "412.000" y = "200.000" width = "425.000" height = "30.000" slider = "RedSlider"></Slider>
 
 		<!-- Sound -->
-		<Box id = "SoundBarEmpty" parent = "MidPanelElement2" x = "15.000" y = "67.000" width = "425.000" height = "30.000" texture = "Bar empty"></Box>	
-		<Box id = "SoundBarGreen" parent = "MidPanelElement2" x = "18.000" y = "71.000" width = "419.000" height = "20.000" texture = "Bar full"></Box>	
-		<Button id = "SoundSlider" parent = "SoundBarEmpty" x = "394.000" y = "-5.000" width = "37.000" height = "37.000" texture = "Slider"></Button>
-		<TextBox id = "SoundString" parent = "MidPanelElement2" align = "Center" x = "13.000" y = "11.000" width = "287.000" height = "39.000">
-			<text r = "255" g = "255" b = "255" >Sound Volume</text>
+		<Slider id = "SoundSlider" x = "273.902" y = "357.200" width = "396.801" height = "30.000" slider = "RedSlider"></Slider>
+		<TextBox id = "SoundString" parent = "SoundSlider" align = "Center" x = "57.698" y = "-42.101" width = "287.000" height = "39.000">
+			<text r = "255" g = "255" b = "255" >Sound Effects Volume</text>
 		</TextBox>
-
-		<!-- mute -->	
-		<Box id = "MuteBox" parent = "MidPanelElement3" x = "350.000" y = "34.000" width = "37.000" height = "37.000" texture = "Check box"></Box>
-		<Button id = "MuteTick" parent = "MuteBox" x = "3.000" y = "-2.000" width = "34.000" height = "36.000" texture = "Slider"></Button>
-		<TextBox id = "MuteString" parent = "MidPanelElement3" align = "Center" x = "13.000" y = "30.000" width = "287.000" height = "39.000">
-			<text r = "255" g = "255" b = "255" >Mute Game Volume</text>
-		</TextBox>
-
 
 	</Layer>
 

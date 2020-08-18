@@ -13,7 +13,10 @@ class UITextBox;
 class AbilityHotKeys
 {
 public:
-	AbilityHotKeys(Screen* screen);
+	AbilityHotKeys();
+
+	void init(Screen* screen);
+	void clear();
 
 	Button::State state(AbilityType ability, const InputManager* input);
 	void addHotKey(AbilityType ability);

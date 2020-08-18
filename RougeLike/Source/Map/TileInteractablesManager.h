@@ -13,9 +13,11 @@ class EffectPool;
 class TileInteractableManager
 {
 public:
-	TileInteractableManager(CollisionManager* collisions, EffectPool* effects) : mCollisions(collisions), mEffects(effects) { };
+	TileInteractableManager() : mCollisions(nullptr), mEffects(nullptr) { };
 
+	void init(CollisionManager* collisions, EffectPool* effects);
 	void load();
+	void clear();
 
 	void addMap(Map* map, const DecorMap& info);
 	void popFrontMap();

@@ -12,12 +12,21 @@
 
 AttributeMap::~AttributeMap()
 {
+	clear();
+}
+
+
+void AttributeMap::clear()
+{
 	for (iterator iter = mData.begin(); iter != mData.end(); iter++)
 	{
 		Attribute* attribute = iter->second;
 		delete attribute;
 	}
+
+	empty();
 }
+
 
 void AttributeMap::fill(const XMLNode& node)
 {

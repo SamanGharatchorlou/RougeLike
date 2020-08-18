@@ -22,6 +22,14 @@ void PlayerCollisions::init(Player* player, CollisionManager* collisionManager)
 	enableCollisions(CollisionManager::PlayerWeapon_Hit_Enemy, false);
 }
 
+void PlayerCollisions::clear()
+{
+	mPlayer = nullptr;
+	cManager = nullptr;
+	mWallCollisions.clear();
+	mWeaponCollisions.clear();
+}
+
 void PlayerCollisions::resolveWalls(Map* map, float dt)
 {
 	if (mPlayer->userHasControl())

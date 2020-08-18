@@ -5,8 +5,9 @@
 class EnemyWait : public EnemyState
 {
 public:
-	EnemyWait(Enemy* enemy) : EnemyState(enemy), mWaitTime(2.0f) { }
-	EnemyWait(Enemy* enemy, float waitTime) : EnemyState(enemy), mWaitTime(waitTime) { }
+	EnemyWait() : mWaitTime(2.0f) { }
+
+	void setTime(float time) { mWaitTime = time; }
 
 	void init() override;
 	void handleInput() override { }

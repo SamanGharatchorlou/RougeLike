@@ -20,9 +20,14 @@ struct EnemyState : public State
 		Attack,
 		Dead,
 		Exit,
+		Count
 	};
 
-	EnemyState(Enemy* enemy) : mEnemy(enemy) { }
+	EnemyState() : mEnemy(nullptr) { }
+
+	// TODO: replace init with enter!
+	void set(Enemy* enemy) { mEnemy = enemy; }
+	virtual void enter() { }
 
 	virtual const Type type() const = 0;
 
@@ -34,8 +39,6 @@ protected:
 // The null state does nothing
 struct EnemyNullState : public EnemyState
 {
-	EnemyNullState() : EnemyState(nullptr) { }
-
 	void init() override { }
 	void handleInput() override { }
 	void slowUpdate(float /*dt*/) override { }
@@ -49,8 +52,6 @@ struct EnemyNullState : public EnemyState
 // EnemyManager will remove any enemy in this state
 struct EnemyExit : public EnemyState
 {
-	EnemyExit() : EnemyState(nullptr) { }
-
 	void init() override { }
 	void handleInput() override { }
 	void slowUpdate(float /*dt*/) override { }
@@ -62,4 +63,9 @@ struct EnemyExit : public EnemyState
 };
 
 
-EnemyState* newEnemyState(EnemyState::Type state, Enemy* enemy);
+template<class T>
+inline EnemyState::Type operator +(EnemyState::Type a, T b)
+{
+	int sum = static_cast<int>(a) + static_cast<int>(b);
+	return static_cast<EnemyState::Type>(sum);
+}

@@ -7,10 +7,9 @@
 #include "Input/InputManager.h"
 #include "Graphics/RenderManager.h"
 
-#include "Input/Cursor.h"
-
 #include "UI/UIManager.h"
 #include "UI/Screens/PauseScreen.h"
+#include "UI/Screens/SettingsScreen.h"
 
 
 PauseState::PauseState(GameData* gameData, GameController* gameController) : 
@@ -19,10 +18,9 @@ PauseState::PauseState(GameData* gameData, GameController* gameController) :
 
 void PauseState::init() 
 {
-	mGameData->uiManager->selectScreen(Screen::Pause);
+	selectScreen(Screen::Pause);
 	mGameData->uiManager->setCursorTexture(TextureManager::Get()->getTexture("UICursor", FileManager::Image_UI));
 
-	mPauseScreen = static_cast<PauseScreen*>(mGameData->uiManager->getActiveScreen());
 }
 
 
@@ -43,22 +41,64 @@ void PauseState::handleInput()
 
 void PauseState::slowUpdate(float dt)
 {
-	if (mPauseScreen->resumeGame())
+	if (mPauseScreen)
+	{
+		pauseScreenUpdate();
+	}
+	else if (mSettingsScreen)
+	{
+		settingsScreenUpdate();
+	}
+}
+
+void PauseState::pauseScreenUpdate()
+{
+	if (mPauseScreen->selected(ScreenItem::Resume))
 	{
 		resumeGame();
 	}
-	else if (mPauseScreen->quitGame())
+	else if (mPauseScreen->selected(ScreenItem::Quit))
 	{
 		quitGame();
 	}
-	else if (mPauseScreen->restartGame())
+	else if (mPauseScreen->selected(ScreenItem::Restart))
 	{
 		restartGame();
 	}
-	else if (mPauseScreen->openSettings())
+	else if (mPauseScreen->selected(ScreenItem::Settings))
 	{
-		mGameData->uiManager->selectScreen(Screen::Settings);
+		selectScreen(Screen::Settings);
 	}
+}
+
+void PauseState::settingsScreenUpdate()
+{
+	if (mSettingsScreen->selected(ScreenItem::Close))
+	{
+		selectScreen(Screen::Pause);
+	}
+}
+
+
+void PauseState::selectScreen(Screen::Type screen)
+{
+	mGameData->uiManager->selectScreen(screen);
+
+	if (screen == Screen::Settings)
+	{
+		mSettingsScreen = static_cast<SettingsScreen*>(mGameData->uiManager->getActiveScreen());
+		mPauseScreen = nullptr;
+	}
+	else if (screen == Screen::Pause)
+	{
+		mPauseScreen = static_cast<PauseScreen*>(mGameData->uiManager->getActiveScreen());
+		mSettingsScreen = nullptr;
+	}
+	else
+	{
+		DebugPrint(Warning, "Screen type %d not recognised by the pause state\n", (int)screen);
+	}
+	
 }
 
 

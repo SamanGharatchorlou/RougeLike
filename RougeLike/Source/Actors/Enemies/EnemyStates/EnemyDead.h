@@ -7,7 +7,7 @@ class Enemy;
 class EnemyDead : public EnemyState
 {
 public:
-	EnemyDead(Enemy* enemy);
+	EnemyDead();
 
 	void init() override;
 	void handleInput() override { }

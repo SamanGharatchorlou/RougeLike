@@ -7,8 +7,6 @@ class Map;
 class EnemyPatrol : public EnemyState
 {
 public:
-	EnemyPatrol(Enemy* enemy);
-
 	void init() override;
 	void handleInput() override { }
 	void slowUpdate(float) override;
