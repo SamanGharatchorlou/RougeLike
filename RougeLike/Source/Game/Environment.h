@@ -31,8 +31,6 @@ public:
 	Map* firstMap(MapType type) const { return mLevelManager.firstMap(type); }
 	Map* lastMap(MapType type) const { return mLevelManager.lastMap(type); }
 
-	int mapCount(MapType type) const { mLevelManager.mapCount(type); }
-
 	int mapLevel() const { return mLevelManager.level(); }
 
 	void setCameraBoundaries();

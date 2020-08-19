@@ -21,6 +21,9 @@ public:
 	Button::State state(AbilityType ability, const InputManager* input);
 	void addHotKey(AbilityType ability);
 
+	// TODO: implement
+	void changeKey(Button::Key previousKey, Button::Key newKey);
+
 
 private:
 	UIBox* createIcon(AbilityType item, int keyNumber);

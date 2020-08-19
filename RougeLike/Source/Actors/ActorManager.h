@@ -15,7 +15,7 @@ class ActorManager : public Observer, public Dispatcher
 {
 public:
 	void init(GameData* gameData);
-	void load(const XMLParser& parser);
+	void loadPools();
 
 	void clear();
 

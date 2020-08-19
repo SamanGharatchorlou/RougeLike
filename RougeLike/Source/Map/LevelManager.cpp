@@ -15,7 +15,7 @@ void LevelManager::init(CollisionManager* collisions, EffectPool* effects)
 
 
 
-void LevelManager::load(const XMLParser& parser)
+void LevelManager::load()
 {
 	mBuilder.load();
 
@@ -99,7 +99,7 @@ Map* LevelManager::firstMap(MapType type) const
 			return map;
 	}
 
-	return nullptr;
+	return mMaps.front();
 }
 
 
@@ -114,23 +114,7 @@ Map* LevelManager::lastMap(MapType type) const
 			return map;
 	}
 
-	return nullptr;
-}
-
-
-int LevelManager::mapCount(MapType type) const
-{
-	int count = 0;
-	UniqueQueue<Map*>::const_iterator iter;
-	for (iter = mMaps.begin(); iter != mMaps.end(); iter++)
-	{
-		Map* map = *iter;
-
-		if (type == map->type())
-			count++;
-	}
-
-	return count;
+	return mMaps.back();
 }
 
 
@@ -146,7 +130,7 @@ void LevelManager::slowUpdate(float dt)
 	mTrapManager.slowUpdate();
 
 	Camera* camera = Camera::Get();
-	if (last()->midPoint().x < camera->rect().RightPoint())
+	if (lastMap(MapType::None)->midPoint().x < camera->rect().RightPoint())
 	{
 		addNextMap();
 		setCameraBoundaries(camera);
@@ -162,7 +146,7 @@ void LevelManager::closeLevel()
 
 	if (mMaps.size() == 4)
 	{
-		if (camera->rect().LeftPoint() > last()->getFirstRect().LeftPoint())
+		if (camera->rect().LeftPoint() > lastMap(MapType::None)->getFirstRect().LeftPoint())
 		{
 			popFront();
 			popFront();
@@ -229,8 +213,8 @@ MapType LevelManager::nextMapType(MapType type)
 
 void LevelManager::setCameraBoundaries(Camera* camera)
 {
-	VectorF topLeft = first()->getFirstRect().TopLeft();
-	VectorF bottomRight = last()->getBottomLastRect().BotRight();
+	VectorF topLeft = firstMap(MapType::None)->getFirstRect().TopLeft();
+	VectorF bottomRight = lastMap(MapType::None)->getBottomLastRect().BotRight();
 
 	RectF boundaries(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
 	camera->setMapBoundaries(boundaries);

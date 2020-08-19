@@ -7,7 +7,7 @@ class CharacterSelectionScreen : public Screen
 {
 public:
 	void enter() override;
-	void update(float dt) override { }
+	void update() override { }
 	void exit() override { };
 
 	const BasicString& selectedCharacter() const { return mSelectedCharacter; }

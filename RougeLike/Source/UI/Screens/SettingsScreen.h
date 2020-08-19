@@ -21,7 +21,7 @@ public:
 public:
 
 	void enter() override;
-	void update(float dt) override;
+	void update() override;
 	void exit() override { };
 
 	Type type() override { return Type::Settings; }

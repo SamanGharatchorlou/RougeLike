@@ -8,6 +8,7 @@
 #include "Graphics/RenderManager.h"
 
 #include "UI/UIManager.h"
+#include "UI/Screens/GameScreen.h"
 #include "UI/Screens/PauseScreen.h"
 #include "UI/Screens/SettingsScreen.h"
 
@@ -49,6 +50,13 @@ void PauseState::slowUpdate(float dt)
 	{
 		settingsScreenUpdate();
 	}
+	else if (mGameScreen)
+	{
+		if (mGameData->inputManager->getButton(Button::Enter).isPressed())
+		{
+			selectScreen(Screen::Pause);
+		}
+	}
 }
 
 void PauseState::pauseScreenUpdate()
@@ -67,6 +75,7 @@ void PauseState::pauseScreenUpdate()
 	}
 	else if (mPauseScreen->selected(ScreenItem::Settings))
 	{
+		// TODO: extend this to select the game screen then change the hotkeys
 		selectScreen(Screen::Settings);
 	}
 }
@@ -94,11 +103,16 @@ void PauseState::selectScreen(Screen::Type screen)
 		mPauseScreen = static_cast<PauseScreen*>(mGameData->uiManager->getActiveScreen());
 		mSettingsScreen = nullptr;
 	}
+	else if (screen == Screen::Game)
+	{
+		mGameScreen = static_cast<GameScreen*>(mGameData->uiManager->getActiveScreen());
+		mSettingsScreen = nullptr;
+		mPauseScreen = nullptr;
+	}
 	else
 	{
 		DebugPrint(Warning, "Screen type %d not recognised by the pause state\n", (int)screen);
 	}
-	
 }
 
 

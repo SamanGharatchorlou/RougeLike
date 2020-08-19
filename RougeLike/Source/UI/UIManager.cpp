@@ -92,13 +92,14 @@ void UIManager::handleInput(const InputManager* input)
 	mEditor.handleInput(input);
 #endif
 
+	mActiveScreen->handleInput(input);
 	mActiveScreen->updateButtons(input);
 }
 
 
 void UIManager::update(float dt) 
 { 
-	mActiveScreen->update(dt);
+	mActiveScreen->update();
 }
 
 

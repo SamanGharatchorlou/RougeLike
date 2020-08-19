@@ -59,7 +59,8 @@ public:
 	void updateButtons(const InputManager* input);
 
 	virtual void enter() = 0;
-	virtual void update(float dt) = 0;
+	virtual void handleInput(const InputManager* input) { }
+	virtual void update() = 0;
 	virtual void exit() = 0;
 	virtual void render();
 
@@ -71,6 +72,7 @@ public:
 	void linkSlider(ScreenItem setting, const BasicString& sliderId);
 	void linkButton(ScreenItem option, const BasicString& buttonId);
 	bool selected(ScreenItem button) const;
+
 
 protected:
 	ScreenLayers mScreenLayers;

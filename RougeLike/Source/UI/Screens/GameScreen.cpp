@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "GameScreen.h"
 
+#include "Input/InputManager.h"
 #include "UI/Elements/UIElement.h"
 #include "UI/Elements/UIButton.h"
 #include "UI/Elements/UISlider.h"
@@ -15,12 +16,23 @@ GameScreen::GameScreen()
 }
 
 
+
 void GameScreen::enter()
 {
 	linkSlider(ScreenItem::Health, "HealthSlider");
 
 
 	mSliders[ScreenItem::Health]->disableInput();
+}
+
+void GameScreen::handleInput(const InputManager* input)
+{
+	if (input->getButton(Button::E).isPressed())
+	{
+		std::unordered_map<AbilityType, Button::Key>::iterator iter = mHotkeyMap->begin();
+
+		iter->second = Button::Two;
+	}
 }
 
 
@@ -38,4 +50,6 @@ void GameScreen::update(float dt)
 		newRect.SetSize(newSize);
 		icon->setRect(newRect);
 	}
+
+
 }

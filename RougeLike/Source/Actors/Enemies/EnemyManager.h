@@ -22,7 +22,7 @@ public:
 	~EnemyManager();
 
 	// Core
-	void load();
+	void loadPools();
 	void init(Environment* environment, CollisionManager* collisions);
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);

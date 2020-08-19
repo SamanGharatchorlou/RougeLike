@@ -29,7 +29,7 @@ void SettingsScreen::enter()
 }
 
 
-void SettingsScreen::update(float dt)
+void SettingsScreen::update()
 {
 	AudioManager* audio = AudioManager::Get();
 	audio->setMusicVolume(mSliders[Setting::Music]->getValue());

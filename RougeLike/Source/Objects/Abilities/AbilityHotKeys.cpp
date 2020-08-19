@@ -17,6 +17,8 @@ AbilityHotKeys::AbilityHotKeys() : mGameScreen(nullptr) { }
 void AbilityHotKeys::init(Screen* screen)
 {
 	mGameScreen = static_cast<GameScreen*>(screen);
+
+	mGameScreen->initHeyKeys(&mHotKeyMap);
 }
 
 
@@ -89,4 +91,10 @@ UITextBox* AbilityHotKeys::createIconText(UIBox* icon, int count)
 	text->setRect(rect);
 
 	return text;
+}
+
+
+void AbilityHotKeys::changeKey(Button::Key previousKey, Button::Key newKey)
+{
+
 }

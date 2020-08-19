@@ -12,7 +12,7 @@ EnemyBuilder::~EnemyBuilder()
 }
 
 
-void EnemyBuilder::loadSpawnPool(int poolSize)
+void EnemyBuilder::loadPools(int poolSize)
 {
 	std::vector<EnemyType> enemyTypes;
 	for (EnemyType type = EnemyType::None + 1; type < EnemyType::Count; type = type + 1)

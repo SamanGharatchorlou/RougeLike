@@ -15,7 +15,7 @@ public:
 	LevelManager() : mLevel(0) { }
 
 	void init(CollisionManager* collisions, EffectPool* effects);
-	void load(const XMLParser& parser);
+	void load();
 	void clear();
 
 	void slowUpdate(float dt);
@@ -25,15 +25,12 @@ public:
 	int level() const { return mLevel; }
 	void incrementLevel() { mLevel++; }
 
+	// Type::None = any type
 	Map* firstMap(MapType type) const;
 	Map* lastMap(MapType type) const;
 	Map* map(VectorF position) const;
 
-	const Map* first() const { return mMaps.front(); }
-	const Map* last() const { return mMaps.back(); }
-
 	int mapCount() const { return mMaps.size(); }
-	int mapCount(MapType type) const;
 
 	void addNextMap();
 	void addMap(MapType type);

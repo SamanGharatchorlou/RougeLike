@@ -10,9 +10,9 @@
 #include "Game/Environment.h"
 
 
-void ActorManager::load(const XMLParser& parser)
+void ActorManager::loadPools()
 {
-	mEnemies.load();
+	mEnemies.loadPools();
 }
 
 void ActorManager::init(GameData* gameData)

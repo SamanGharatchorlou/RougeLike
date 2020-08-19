@@ -32,13 +32,10 @@ void EnemyManager::clear()
 }
 
 
-void EnemyManager::load()
+void EnemyManager::loadPools()
 {
-	// TODO: find a better way todo this
-	//mAIController.addMap(mEnvironment->firstMap(MapType::Dungeon));
-
 	int enemyPoolSize = 150;
-	mBuilder.loadSpawnPool(enemyPoolSize);
+	mBuilder.loadPools(enemyPoolSize);
 }
 
 

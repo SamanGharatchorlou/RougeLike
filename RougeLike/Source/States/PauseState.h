@@ -7,6 +7,7 @@ class GameController;
 struct GameData;
 class PauseScreen;
 class SettingsScreen;
+class GameScreen;
 
 
 class PauseState : public State
@@ -38,4 +39,5 @@ private:
 
 	PauseScreen* mPauseScreen;
 	SettingsScreen* mSettingsScreen;
+	GameScreen* mGameScreen;
 };

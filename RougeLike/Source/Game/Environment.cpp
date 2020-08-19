@@ -34,7 +34,7 @@ void Environment::load()
 {
 	DebugPrint(Log, "\n--- Loading Environment ---\n\n");
 
-	DebugPrint(Log, "\n Loading Effect pool\n");
+	DebugPrint(Log, "\n Loading pools\n");
 
 	std::vector<EffectType> types;
 	for (EffectType type = EffectType::None + 1; type < EffectType::Count; type = type + 1)
@@ -42,30 +42,25 @@ void Environment::load()
 		types.push_back(type);
 	}
 	mEffectPool.load(types, 25);
+	
+	mActors.loadPools();
 
 	DebugPrint(Log, "\n Loading Maps\n");
 
-	BasicString fileName = "Level0";
-	BasicString path = FileManager::Get()->findFile(FileManager::Config_Map, fileName);
-	XMLParser parser(path);
-
-	// split this into load pools... and load characters
-	mActors.load(parser);
-
-	mLevelManager.load(parser);
+	mLevelManager.load();
 
 	setCameraBoundaries();
 
 	DebugPrint(Log, "\n Loading Characters\n");
 
-
-
-	//XMLNode enemySpawnNode = parser.rootChild("Enemies");
-	//mActors.spawnEnemies(enemySpawnNode, mLevelManager.firstMap(MapType::Dungeon));
-
 	DebugPrint(Log, "\n Loading Collectables\n");
 
 	mCollectables.load();
+
+	// TODO: FIX remove tis
+	BasicString fileName = "Level0";
+	BasicString path = FileManager::Get()->findFile(FileManager::Config_Map, fileName);
+	XMLParser parser(path);
 	XMLNode collectablesSpawnNode = parser.rootChild("Collectables");
 	mCollectables.spawn(collectablesSpawnNode, mLevelManager.firstMap(MapType::Dungeon));
 
@@ -91,11 +86,9 @@ void Environment::nextLevel()
 
 	// spawn new enemies
 	XMLNode enemySpawnNode = parser.rootChild("Enemies");
-	//mActors.spawnEnemies(enemySpawnNode, mLevelManager.primaryMap());
 
 	// spawn collectables
 	XMLNode collectablesSpawnNode = parser.rootChild("Collectables");
-	//mCollectables.spawn(collectablesSpawnNode, mLevelManager.primaryMap());
 }
 
 void Environment::handleInput(const InputManager* input)
@@ -132,8 +125,8 @@ void Environment::renderTopLayer()
 
 void Environment::setCameraBoundaries()
 {
-	VectorF topLeft = mLevelManager.first()->getFirstRect().TopLeft();
-	VectorF bottomRight = mLevelManager.last()->getBottomLastRect().BotRight();
+	VectorF topLeft = mLevelManager.firstMap(MapType::None)->getFirstRect().TopLeft();
+	VectorF bottomRight = mLevelManager.lastMap(MapType::None)->getBottomLastRect().BotRight();
 
 	RectF boundaries(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
 	Camera::Get()->setMapBoundaries(boundaries);
