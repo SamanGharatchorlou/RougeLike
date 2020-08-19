@@ -30,7 +30,7 @@
 #define DRAW_AI_PATH_COSTMAP 0
 
 #define LABEL_ENEMY_STATES 0
-#define LABEL_ENEMY_HEALTH 1
+#define LABEL_ENEMY_HEALTH 0
 #define DRAW_PLAYER_ENEMY_DISTANCE 0
 
 #define DRAW_ENEMY_RECTS 0
@@ -41,7 +41,7 @@
 
 // UI
 #define DRAW_UI_RECTS 0
-#define UI_EDITOR 1
-#define DEBUG_CURSOR 1
+#define UI_EDITOR 0
+#define DEBUG_CURSOR 0
 
 #endif

@@ -24,17 +24,15 @@ public:
 	void nextLevel();
 	void clear();
 
-
-	bool canClosePreviousLevel(VectorF playerPosition) const;
-
 	void renderBottomLayer();
 	void renderTopLayer();
 
 	Map* map(VectorF position) const { return mLevelManager.map(position); }
-	Map* map(MapType type) const { return mLevelManager.map(type); }
-	//const Map* primaryMap() const { return mLevelManager.primaryMap(); }
+	Map* firstMap(MapType type) const { return mLevelManager.firstMap(type); }
+	Map* lastMap(MapType type) const { return mLevelManager.lastMap(type); }
 
-	//VectorF size() const { return mLevelManager.size(); }
+	int mapCount(MapType type) const { mLevelManager.mapCount(type); }
+
 	int mapLevel() const { return mLevelManager.level(); }
 
 	void setCameraBoundaries();
@@ -42,7 +40,7 @@ public:
 
 	ActorManager* actors() { return &mActors; }
 	EffectPool* effectPool() { return &mEffectPool; }
-
+	LevelManager* levelManager() { return &mLevelManager; }
 
 
 private:

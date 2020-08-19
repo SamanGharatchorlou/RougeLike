@@ -39,7 +39,7 @@ public:
 
 	virtual const EnemyType type() const = 0;
 
-	void spawn(EnemyState::Type state, VectorF position, const AIPathMap* map);
+	void spawn(EnemyState::Type state, VectorF position, AIPathMap* map);
 
 	// State handling
 	const StateMachine<EnemyState>*	getStateMachine() const { return &mStateMachine; }
@@ -54,7 +54,8 @@ public:
 	// Map
 	//void setMap(const AIPathMap* map) { mMap = map; }
 	const AIPathing& getPathMap() const { return mAIPathing; }
-	const Map* getEnvironmentMap() const;
+	AIPathing* getAIPathing() { return &mAIPathing; }
+	//const Map* getEnvironmentMap() const;
 
 	// Collisions
 	void resolveCollisions();
@@ -68,6 +69,10 @@ public:
 	void			accellerateTowards(VectorF position);
 	void			move(VectorF velocity, float dt) { mPhysics.move(velocity, dt); }
 
+#if _DEBUG
+	EnemyDebugger mDebugger;
+#endif
+
 protected:
 	AIPathing mAIPathing;
 
@@ -80,8 +85,4 @@ protected:
 	std::deque<Effect*> mAttackEffects;
 
 	EnemyStatePool* mStatePool;
-
-#if _DEBUG
-	EnemyDebugger mDebugger;
-#endif
 };

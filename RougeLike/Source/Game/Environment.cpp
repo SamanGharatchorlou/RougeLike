@@ -29,7 +29,7 @@ void Environment::init(GameData* gameData)
 	mCollectables.init(gameData->collisionManager, mActors.player());
 }
 
-
+// TODO load all pools first
 void Environment::load()
 {
 	DebugPrint(Log, "\n--- Loading Environment ---\n\n");
@@ -49,22 +49,25 @@ void Environment::load()
 	BasicString path = FileManager::Get()->findFile(FileManager::Config_Map, fileName);
 	XMLParser parser(path);
 
+	// split this into load pools... and load characters
+	mActors.load(parser);
+
 	mLevelManager.load(parser);
 
 	setCameraBoundaries();
 
 	DebugPrint(Log, "\n Loading Characters\n");
 
-	mActors.load(parser);
 
-	XMLNode enemySpawnNode = parser.rootChild("Enemies");
-	mActors.spawnEnemies(enemySpawnNode, mLevelManager.map(MapType::Dungeon));
+
+	//XMLNode enemySpawnNode = parser.rootChild("Enemies");
+	//mActors.spawnEnemies(enemySpawnNode, mLevelManager.firstMap(MapType::Dungeon));
 
 	DebugPrint(Log, "\n Loading Collectables\n");
 
 	mCollectables.load();
 	XMLNode collectablesSpawnNode = parser.rootChild("Collectables");
-	mCollectables.spawn(collectablesSpawnNode, mLevelManager.map(MapType::Dungeon));
+	mCollectables.spawn(collectablesSpawnNode, mLevelManager.firstMap(MapType::Dungeon));
 
 	DebugPrint(Log, "\n--- Environment Load Complete---\n\n");
 }
@@ -108,8 +111,6 @@ void Environment::fastUpdate(float dt)
 
 void Environment::slowUpdate(float dt)
 {
-
-
 	mLevelManager.slowUpdate(dt);
 	mActors.slowUpdate(dt);
 	mCollectables.slowUpdate(dt);
@@ -137,20 +138,6 @@ void Environment::setCameraBoundaries()
 	RectF boundaries(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
 	Camera::Get()->setMapBoundaries(boundaries);
 }
-
-
-bool Environment::canClosePreviousLevel(VectorF playerPosition) const
-{
-	//float buffer = 100.0f;
-	//float x = mLevelManager.primaryMap()->getLastRect().RightPoint() + buffer;
-	//float y = playerPosition.y;
-
-	//if (playerPosition.x > x)
-	//	return !Camera::Get()->inView(VectorF(x, y));
-	//else
-		return false;
-}
-
 
 
 // --- Private Functions --- //

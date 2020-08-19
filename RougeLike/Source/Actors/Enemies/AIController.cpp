@@ -18,19 +18,38 @@ AIController::AIController() : pathUpdateRequests(0), pathUpdateStaggerCounter(0
 
 void AIController::clear() 
 { 
-	mPathMap.clear(); 
+	mPathMaps.clear();  // TODO: delte
 	updateTimer.stop();
 	pathUpdateRequests = 0;
 	pathUpdateStaggerCounter = 0;
 }
 
 
-void AIController::loadAIPathMap(const Map* map)
+void AIController::addMap(const Map* map)
 {
-	mPathMap.build(map, 4, 4);
+	// TODO: I call new to allocate some space. how much space is there
+	// if the following call build requires 100 units of space, what if I only have 80 for example?
+	AIPathMap* pathMap = new AIPathMap;
+	pathMap->build(map, 4, 4);
+	mPathMaps.push_back(pathMap);
 }
 
-void AIController::updatePaths(std::vector<Enemy*>& enemies)
+AIPathMap* AIController::popMap()
+{
+	AIPathMap* pathMap = mPathMaps[0];
+	delete pathMap;
+	mPathMaps[0] = nullptr;
+
+	for (int i = 1; i < mPathMaps.size(); i++)
+	{
+		mPathMaps[i - 1] = mPathMaps[i];
+	}
+
+	mPathMaps.erase(mPathMaps.end() - 1);
+	return pathMap;
+}
+
+void AIController::updatePaths(std::vector<Enemy*> enemies)
 {
 	if (pathUpdateStaggerCounter != 0 || pathUpdateRequests)
 	{
@@ -40,11 +59,29 @@ void AIController::updatePaths(std::vector<Enemy*>& enemies)
 
 
 
+AIPathMap* AIController::pathMap(const Map* map)
+{
+	for (int i = 0; i < mPathMaps.size(); i++)
+	{
+		Index index(0, 0);
+		if (mPathMaps[i]->tile(index)->rect().TopLeft() == map->tile(index)->rect().TopLeft())
+		{
+
+			return mPathMaps[i];
+		}
+	}
+
+#if _DEBUG
+	DebugPrint(Warning, "No AI path map matches the provied Map object. Has add map been called?\n");
+#endif
+	return nullptr;
+}
+
+
 // If player moves tile or an enemy moves a tile update this bad boi
 // TODO: what if the size of active enemies changes during an update?
-void AIController::recalculateEnemyPaths(std::vector<Enemy*>& enemies)
+void AIController::recalculateEnemyPaths(std::vector<Enemy*> enemies)
 {
-	mPathMap.costMapRef().setAllValues(1);
 	updateAIPathCostMap(enemies);
 
 	int loopCount = 0;
@@ -79,41 +116,51 @@ void AIController::recalculateEnemyPaths(std::vector<Enemy*>& enemies)
 	}
 }
 
-
-void AIController::updateAIPathCostMap(std::vector<Enemy*>& enemies)
+void AIController::clearCostMaps()
 {
-	Grid<int>& AICostMap = mPathMap.costMapRef();
-	AICostMap.setAllValues(1);
+	for (int i = 0; i < mPathMaps.size(); i++)
+	{
+		mPathMaps[i]->costMapRef().setAllValues(1);
+	}
+}
+
+
+void AIController::updateAIPathCostMap(std::vector<Enemy*> enemies)
+{
+	clearCostMaps();
 
 	for (int i = 0; i < enemies.size(); i++)
 	{
+		Enemy* enemy = enemies[i];
+		CostMap& costMap = *enemy->getAIPathing()->costMap();
+		
 		// Current tile
-		Index index = mPathMap.index(enemies[i]->position());
-		AICostMap[index] += 10;
+		Index index = enemy->getAIPathing()->index(enemy->position());
+		costMap[index] += 10;
 
 		// Immediate surrounding tiles
 		Index surroundingIndexsLayer1[8]{
 			Index(index + Index(-1,-1)),
-			Index(index + Index(+0, -1)),
+			Index(index + Index(+0,-1)),
 			Index(index + Index(+1,-1)),
 
 			Index(index + Index(-1,0)),
 			Index(index + Index(+1,0)),
 
 			Index(index + Index(-1,+1)),
-			Index(index + Index(+0, +1)),
+			Index(index + Index(+0,+1)),
 			Index(index + Index(+1,+1))
 		};
 
 		for (int i = 0; i < 8; i++)
 		{
-			AICostMap[surroundingIndexsLayer1[i]] += 2;
+			costMap[surroundingIndexsLayer1[i]] += 2;
 		}
 	}
 }
 
 
-#if DRAW_AI_PATH_COSTMAP
+#if DRAW_AI_PATH_COSTMAP // TODO: get current map
 void AIController::drawCostMap()
 {
 	int ptSize = 16;
@@ -122,16 +169,16 @@ void AIController::drawCostMap()
 	char text[3];
 	Camera* camera = Camera::Get();
 
-	for (int y = 0; y < mPathMap.yCount(); y++)
+	for (int y = 0; y < mPathMaps[0].yCount(); y++)
 	{
-		for (int x = 0; x < mPathMap.xCount(); x++)
+		for (int x = 0; x < mPathMaps[0].xCount(); x++)
 		{
 			Index index(x, y);
-			VectorF position = mPathMap[index].rect().TopLeft();
+			VectorF position = mPathMaps[0][index].rect().TopLeft();
 
-			if (camera->inView(position) && mPathMap[index].has(CollisionTile::Floor))
+			if (camera->inView(position) && mPathMaps[0][index].has(CollisionTile::Floor))
 			{
-				_itoa_s(mPathMap.costMap().get(index), text, 10);
+				_itoa_s(mPathMaps[0].costMap().get(index), text, 10);
 				debugRenderText(text, ptSize, position, colour);
 			}
 		}

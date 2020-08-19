@@ -4,7 +4,10 @@
 #include "AIPathMap.h"
 
 
-AIPathing::AIPathing(const AIPathMap* map) : mMap(map) { }
+AIPathing::AIPathing(AIPathMap* map) : mMap(map) { }
+
+
+CostMap* AIPathing::costMap() { return &mMap->costMapRef(); }
 
 std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition) const
 {
@@ -102,16 +105,8 @@ Path AIPathing::getPath(Index start, Index finish, Grid<Index>& pathing) const
 	Path path;
 	path.push(finish);
 
-#if DRAW_AI_PATH
-	debugPath.clear();
-	debugPath.push_back(*mMap->tile(finish));
-#endif
-
 	while (pathing[path.top()] != start)
 	{
-#if DRAW_AI_PATH
-		debugPath.push_back(*mMap->tile(pathing[path.top()]));
-#endif
 		path.push(pathing[path.top()]);
 	}
   
@@ -171,31 +166,23 @@ Index AIPathing::index(VectorF position) const
 
 
 
-
-
-
-
-
-
-
-
-#if DRAW_AI_PATH
-void AIPathing::draw()
-{
-	if (debugPath.size() > 1)
-	{
-		for (int i = 0; i < debugPath.size() - 1; i++)
-		{
-			RectF rect = debugPath[i].rect();
-
-			VectorF pointA = debugPath[i].rect().Center();
-			VectorF pointB = debugPath[i + 1].rect().Center();
-
-			debugDrawLine(pointA, pointB, RenderColour::Green);
-		}
-	}
-}
-#endif
+//#if DRAW_AI_PATH
+//void AIPathing::draw()
+//{
+//	if (debugPath.size() > 1)
+//	{
+//		for (int i = 0; i < debugPath.size() - 1; i++)
+//		{
+//			RectF rect = debugPath[i].rect();
+//
+//			VectorF pointA = debugPath[i].rect().Center();
+//			VectorF pointB = debugPath[i + 1].rect().Center();
+//
+//			debugDrawLine(pointA, pointB, RenderColour::Green);
+//		}
+//	}
+//}
+//#endif
 
 
 // --- Private Functions --- //

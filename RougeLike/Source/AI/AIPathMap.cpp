@@ -96,3 +96,32 @@ const PathTile* AIPathMap::offsetTile(const PathTile* target, int xOffset, int y
 	Index tileIndex = index(target) + Index(xOffset, yOffset);
 	return isValidIndex(tileIndex) ? tile(tileIndex) : nullptr;
 }
+
+
+
+Vector2D<int> AIPathMap::yTileFloorRange(Index index) const
+{
+	ASSERT(Warning, tile(index)->is(CollisionTile::Floor), "Not a floor tile, cannot get yTile floor range");
+
+	Index bottomIndex(index);
+	while (true)
+	{
+		Index increment(0, 1);
+		if (!tile(bottomIndex + increment)->is(CollisionTile::Floor))
+			break;
+
+		bottomIndex += increment;
+	}
+
+	Index topIndex(index);
+	while (true)
+	{
+		Index increment(0, -1);
+		if (!tile(topIndex + increment)->is(CollisionTile::Floor))
+			break;
+
+		topIndex += increment;
+	}
+
+	return Vector2D<int>(topIndex.y, bottomIndex.y);
+}

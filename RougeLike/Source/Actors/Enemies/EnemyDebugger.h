@@ -14,6 +14,8 @@ public:
 
 	void draw();
 
+	void setPath(const Path path) { mPath = path; }
+
 
 private:
 	void labelState();
@@ -24,7 +26,7 @@ private:
 
 private:
 	Enemy* mEnemy;
-	std::vector<PathTile> mPath;
+	Path mPath;
 };
 
 

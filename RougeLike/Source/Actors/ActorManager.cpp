@@ -86,6 +86,17 @@ void ActorManager::handleEvent(EventData& data)
 		mEnemies.updateAIPathCostMap();
 		break;
 	}
+	case Event::LevelUpdated:
+	{
+		LevelUpdatedEvent& eventData = static_cast<LevelUpdatedEvent&>(data);
+
+		if (eventData.mStatus == LevelUpdatedEvent::Added)
+			mEnemies.addNewAIPathMap();
+		else if (eventData.mStatus == LevelUpdatedEvent::Removed)
+			mEnemies.popAIPathMap();
+		else
+			DebugPrint(Warning, "Event data not recognised\n");
+	}
 	default:
 		break;
 	}

@@ -17,6 +17,11 @@ public:
 	const_iterator begin() const { return mQueue.begin(); }
 	const_iterator end() const { return mQueue.end(); }
 
+	// reverse
+	using const_rIterator = typename std::deque<T>::const_reverse_iterator;
+	const_rIterator rbegin() const { return mQueue.rbegin(); }
+	const_rIterator rend() const { return mQueue.rend(); }
+
 
 public:
 	T& front() { return mQueue.front(); }

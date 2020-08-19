@@ -78,10 +78,10 @@ void EnemyDebugger::drawPlayerDistance(Environment* environment, const Enemy* en
 
 void EnemyDebugger::drawPath()
 {
-	if (mEnemy->state() == EnemyState::Run)
+	//if (mEnemy->state() == EnemyState::Run)
 	{
-		EnemyRun* enemyRun = static_cast<EnemyRun*>(&(mEnemy->getStateMachine()->getActiveState()));
-		Path path = enemyRun->path();
+		//EnemyRun* enemyRun = static_cast<EnemyRun*>(&(mEnemy->getStateMachine()->getActiveState()));
+		Path path = mPath;
 
 		std::vector<PathTile> enemyPath;
 		const AIPathMap* map = mEnemy->getPathMap().pathMap();

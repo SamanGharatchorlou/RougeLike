@@ -105,19 +105,11 @@ RectF Enemy::renderRect() const
 }
 
 
-// TODO: remove this access?
-const Map* Enemy::getEnvironmentMap() const
-{
-	return mEnvironment->map(MapType::Dungeon);
-}
-
-
 void Enemy::clear()
 {
 	while (mStateMachine.size() > 1)
 	{
-		popState();
-		EnemyState* state = mStateMachine.processStateChanges();
+		EnemyState* state = mStateMachine.forcePop();
 		mStatePool->returnObject(state, state->type());
 	}
 
@@ -143,7 +135,7 @@ void Enemy::resolveCollisions()
 }
 
 
-void Enemy::spawn(EnemyState::Type state, VectorF position, const AIPathMap* map)
+void Enemy::spawn(EnemyState::Type state, VectorF position, AIPathMap* map)
 {
 	mAIPathing.init(map);
 

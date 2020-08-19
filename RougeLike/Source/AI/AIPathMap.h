@@ -5,6 +5,7 @@
 
 class Map;
 
+
 class AIPathMap : public MapBase<PathTile>
 {
 public:
@@ -15,6 +16,7 @@ public:
 	const Index index(const PathTile* tile) const;
 
 	const PathTile* tile(Index index) const { return &mData.get(index); };
+	const PathTile* tile(VectorF position) const { return &mData.get(index(position)); };
 
 	const VectorF tileSize() const;
 
@@ -22,8 +24,11 @@ public:
 
 	const PathTile* offsetTile(const PathTile* target, int xOffset, int yOffset) const;
 
-	const Grid<int>& costMap() const { return mCostMap; }
-	Grid<int>& costMapRef() { return mCostMap; }
+	const CostMap& costMap() const { return mCostMap; }
+	CostMap& costMapRef() { return mCostMap; }
+
+
+	Vector2D<int> yTileFloorRange(Index index) const;
 
 
 	bool isValidPosition(VectorF position) const;
@@ -31,5 +36,5 @@ private:
 
 
 private:
-	Grid<int> mCostMap;
+	CostMap mCostMap;
 };

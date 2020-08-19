@@ -29,9 +29,12 @@ public:
 	void render();
 
 	void clear();
+	void removeActiveEnemies(std::vector<Enemy*> enemies);
 	void clearAllEnemies();
 
 	// AI pathing
+	void addNewAIPathMap();
+	void popAIPathMap();
 	void updateAIPathCostMap() { mAIController.updateAIPathCostMap(mActiveEnemies); }
 	void requestEnemyPathUpdates() { mAIController.addPathUpdateRequest(); }
 
@@ -49,10 +52,11 @@ public:
 
 private:
 	void addActiveEnemy(Enemy* enemy);
-	void spawnEnemies(const std::vector<SpawnData>& spawnData);
+	void spawnEnemies(const std::vector<SpawnData>& spawnData, AIPathMap* aiPathMap);
 
 	void clearDead();
 	void clearAndRemove(std::vector<Enemy*>::iterator& iter);
+	void clearActiveEnemy(Enemy* enemy);
 
 
 private:

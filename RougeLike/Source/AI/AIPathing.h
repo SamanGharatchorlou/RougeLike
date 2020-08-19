@@ -12,9 +12,9 @@ class AIPathing
 {
 public:
 	AIPathing() : mMap(nullptr) { }
-	AIPathing(const AIPathMap* map);
+	AIPathing(AIPathMap* map);
 
-	void init(const AIPathMap* map) { mMap = map; }
+	void init(AIPathMap* map) { mMap = map; }
 	void clear() { mMap = nullptr; }
 
 	Path findPath(VectorF start, VectorF end) const;
@@ -26,11 +26,8 @@ public:
 	const PathTile* tile(Index index) const;
 
 	const AIPathMap* pathMap() const { return mMap; }
+	CostMap* costMap();
 
-#if DRAW_AI_PATH
-	std::vector<PathTile> debugPath;
-	void draw();
-#endif
 
 private:
 	Path getPath(Index start, Index end, Grid<Index>& pathing) const;
@@ -49,7 +46,7 @@ private:
 
 
 private:
-	const AIPathMap* mMap;
+	AIPathMap* mMap;
 };
 
 

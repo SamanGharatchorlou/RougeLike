@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Events/Dispatcher.h"
 #include "MapBuilding/MapBuilder.h"
 #include "TileInteractablesManager.h"
 
@@ -8,7 +9,7 @@ class Camera;
 class CollisionManager;
 class EffectPool;
 
-class LevelManager
+class LevelManager : public Dispatcher
 {
 public:
 	LevelManager() : mLevel(0) { }
@@ -24,13 +25,16 @@ public:
 	int level() const { return mLevel; }
 	void incrementLevel() { mLevel++; }
 
-	Map* map(MapType type) const;
+	Map* firstMap(MapType type) const;
+	Map* lastMap(MapType type) const;
 	Map* map(VectorF position) const;
 
 	const Map* first() const { return mMaps.front(); }
 	const Map* last() const { return mMaps.back(); }
 
 	int mapCount() const { return mMaps.size(); }
+	int mapCount(MapType type) const;
+
 	void addNextMap();
 	void addMap(MapType type);
 	void popFront();

@@ -37,13 +37,13 @@ void GameController::load()
 
 	loader->CountToBeLoadedFiles();
 
+	mGameData.init();
+	mGameData.setupObservers();
 	mGameData.load();
 
 	SDL_WaitThread(threadID, nullptr);
 
 	loader->free();
-
-	mGameData.setupObservers();
 
 	mAudio = AudioManager::Get();
 }

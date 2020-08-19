@@ -33,6 +33,7 @@ enum class Event
 
 	UpdateAIPathMap,
 	UpdateAICostMap,
+	LevelUpdated,
 
 	ActivateAbilityOn,
 
@@ -70,6 +71,19 @@ struct EventPacket
 	EventData* data;
 };
 
+
+
+struct LevelUpdatedEvent : public EventData
+{
+	enum MapStatus
+	{
+		Added,
+		Removed
+	};
+
+	LevelUpdatedEvent(MapStatus status) : EventData(Event::LevelUpdated), mStatus(status) { }
+	MapStatus mStatus;
+};
 
 struct RenderEvent : public EventData
 {

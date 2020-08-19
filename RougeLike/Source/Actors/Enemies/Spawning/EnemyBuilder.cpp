@@ -45,7 +45,7 @@ void EnemyBuilder::returnEnemy(Enemy* enemy)
 
 
 
-std::vector<Enemy*> EnemyBuilder::buildEnemies(const std::vector<SpawnData>& dataList, const AIPathMap* aiPathMap)
+std::vector<Enemy*> EnemyBuilder::buildEnemies(const std::vector<SpawnData>& dataList, AIPathMap* aiPathMap)
 {
 	std::unordered_map<EnemyType, XMLParser> parserMap;
 	setupParserMap(parserMap, dataList);
@@ -66,7 +66,7 @@ std::vector<Enemy*> EnemyBuilder::buildEnemies(const std::vector<SpawnData>& dat
 }
 
 
-Enemy* EnemyBuilder::buildEnemy(const SpawnData& data, const XMLNode enemyNode, const AIPathMap* aiPathMap)
+Enemy* EnemyBuilder::buildEnemy(const SpawnData& data, const XMLNode enemyNode, AIPathMap* aiPathMap)
 {
 	EnemyType type = data.type;
 	BasicString enemyTypeString;
@@ -92,9 +92,9 @@ void EnemyBuilder::fillActorData(Enemy* enemy, const XMLNode node)
 }
 
 
-void EnemyBuilder::fillSpawnData(Enemy* enemy, const SpawnData& data, const AIPathMap* aiPathMap) const
+void EnemyBuilder::fillSpawnData(Enemy* enemy, const SpawnData& data, AIPathMap* aiPathMap) const
 {
-	enemy->spawn(EnemyState::Idle, data.position, aiPathMap);
+	enemy->spawn(data.state, data.position, aiPathMap);
 }
 
 

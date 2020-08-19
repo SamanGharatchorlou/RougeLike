@@ -35,6 +35,9 @@ private:
 };
 
 
+using CostMap = Grid<int>;
+
+
 template<class T>
 Grid<T>::Grid(unsigned int y, unsigned int x, T value)
 {

@@ -25,7 +25,11 @@ private:
 	bool canSeeAttackTarget() const;
 
 
+	//bool canMove(VectorF velocity, float dt);
+
+
 private:
 	VectorF mPositionTarget;
+	//Index mIndexTarget;
 };
 

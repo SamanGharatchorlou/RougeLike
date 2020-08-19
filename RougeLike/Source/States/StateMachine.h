@@ -10,6 +10,7 @@ public:
 	~StateMachine();
 
 	void shallowClear(); // leaves the base null state
+	T* forcePop(); // Warning: does not call exit or resume
 
 	void addState(T* state);
 	void popState();
@@ -60,6 +61,15 @@ void StateMachine<T>::shallowClear()
 		delete states.top();
 		states.pop();
 	}
+}
+
+
+template<class T>
+T* StateMachine<T>::forcePop()
+{
+	T* state = states.top();
+	states.pop();
+	return state;
 }
 
 

@@ -61,9 +61,6 @@ void EnemyRun::slowUpdate(float dt)
 
 void EnemyRun::render()
 {
-#if DRAW_AI_PATH
-	mAIPathing.draw();
-#endif
 	mEnemy->renderCharacter();
 }
 
@@ -77,10 +74,21 @@ void EnemyRun::resume()
 }
 
 
+void EnemyRun::exit()
+{
+#if DRAW_AI_PATH
+	mEnemy->mDebugger.setPath(Path());
+#endif
+}
+
+
 // Generate a new path
 void EnemyRun::updatePath()
 {
 	mPath = mEnemy->getPathMap().findPath(mEnemy->position(), mEnemy->target()->rect().BotCenter());
+#if DRAW_AI_PATH
+	mEnemy->mDebugger.setPath(mPath);
+#endif
 
 	// No valid path was found, wait a bit then try again 
 	if (mPath.size() == 0)
@@ -108,3 +116,4 @@ bool EnemyRun::inChaseRange() const
 {
 	return distance(mEnemy->target()->position(), mEnemy->position()) < mEnemy->getAttributeValue(AttributeType::ChaseRange);
 }
+

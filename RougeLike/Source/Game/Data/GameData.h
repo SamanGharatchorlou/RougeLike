@@ -12,6 +12,7 @@ class CollisionManager;
 struct GameData
 {
 	void setWindow(Window* newWindow);
+	void init();
 	void load();
 	void setupObservers();
 	void free();

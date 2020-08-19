@@ -52,6 +52,12 @@ void LevelManager::addMap(MapType type)
 	Map* map = mBuilder.buildMap(type, offset);
 	mMaps.push(map);
 	mTrapManager.addMap(map, mBuilder.specs(map));
+
+	if (map->type() == MapType::Dungeon)
+	{
+		LevelUpdatedEvent event(LevelUpdatedEvent::Added);
+		notify(event);
+	}
 }
 
 
@@ -63,6 +69,12 @@ void LevelManager::addNextMap()
 	Map* map = mBuilder.buildMap(type, offset);
 	mMaps.push(map);
 	mTrapManager.addMap(map, mBuilder.specs(map));
+
+	if (map->type() == MapType::Dungeon)
+	{
+		LevelUpdatedEvent event(LevelUpdatedEvent::Added);
+		notify(event);
+	}
 }
 
 
@@ -76,9 +88,7 @@ void LevelManager::popFront()
 
 
 
-
-
-Map* LevelManager::map(MapType type) const
+Map* LevelManager::firstMap(MapType type) const
 {
 	UniqueQueue<Map*>::const_iterator iter;
 	for (iter = mMaps.begin(); iter != mMaps.end(); iter++)
@@ -90,6 +100,37 @@ Map* LevelManager::map(MapType type) const
 	}
 
 	return nullptr;
+}
+
+
+Map* LevelManager::lastMap(MapType type) const
+{
+	UniqueQueue<Map*>::const_rIterator rIter;
+	for (rIter = mMaps.rbegin(); rIter != mMaps.rend(); rIter++)
+	{
+		Map* map = *rIter;
+
+		if (type == map->type())
+			return map;
+	}
+
+	return nullptr;
+}
+
+
+int LevelManager::mapCount(MapType type) const
+{
+	int count = 0;
+	UniqueQueue<Map*>::const_iterator iter;
+	for (iter = mMaps.begin(); iter != mMaps.end(); iter++)
+	{
+		Map* map = *iter;
+
+		if (type == map->type())
+			count++;
+	}
+
+	return count;
 }
 
 
@@ -126,6 +167,9 @@ void LevelManager::closeLevel()
 			popFront();
 			popFront();
 			setCameraBoundaries(camera);
+			
+			LevelUpdatedEvent event(LevelUpdatedEvent::Removed);
+			notify(event);
 		}
 	}
 

@@ -21,6 +21,30 @@ void GameData::setWindow(Window* newWindow)
 	window = newWindow;
 }
 
+void GameData::init()
+{
+	// Set camera before UIManager
+	Camera::Get()->setViewport(window->size());
+
+	// Input
+	inputManager = new InputManager;
+
+	// UI
+	uiManager = new UIManager;
+
+	// Rendering
+	renderManager = new RenderManager;
+
+	// Score Manager
+	scoreManager = new ScoreManager;
+
+	// Collision Trackers
+	collisionManager = new CollisionManager;
+
+	// Map Level
+	environment = new Environment;
+}
+
 
 void GameData::load()
 {
@@ -31,7 +55,6 @@ void GameData::load()
 	Camera::Get()->setViewport(window->size());
 
 	// Input
-	inputManager = new InputManager;
 	inputManager->init();
 	inputManager->setCursorSize(VectorF(25.0f, 25.0f));
 
@@ -39,28 +62,59 @@ void GameData::load()
 	AudioManager::Get()->load();
 
 	// UI
-	uiManager = new UIManager;
 	uiManager->setupScreens();
 	uiManager->initCursor(inputManager->getCursor());
 
-	// Rendering
-	renderManager = new RenderManager;
-
-	// Score Manager
-	scoreManager = new ScoreManager;
-
 	// Collision Trackers
-	collisionManager = new CollisionManager;
 	collisionManager->init();
 
 	// Map Level
-	environment = new Environment;
 	environment->init(this);
 	environment->load();
 
 	// Must be done AFTER everything has been new'd
-	setupObservers();
+	//setupObservers();
 }
+
+//void GameData::load()
+//{
+//	// Texture Manager
+//	TextureManager::Get()->load();
+//
+//	// Set camera before UIManager
+//	Camera::Get()->setViewport(window->size());
+//
+//	// Input
+//	inputManager = new InputManager;
+//	inputManager->init();
+//	inputManager->setCursorSize(VectorF(25.0f, 25.0f));
+//
+//	// Audio
+//	AudioManager::Get()->load();
+//
+//	// UI
+//	uiManager = new UIManager;
+//	uiManager->setupScreens();
+//	uiManager->initCursor(inputManager->getCursor());
+//
+//	// Rendering
+//	renderManager = new RenderManager;
+//
+//	// Score Manager
+//	scoreManager = new ScoreManager;
+//
+//	// Collision Trackers
+//	collisionManager = new CollisionManager;
+//	collisionManager->init();
+//
+//	// Map Level
+//	environment = new Environment;
+//	environment->init(this);
+//	environment->load();
+//
+//	// Must be done AFTER everything has been new'd
+//	setupObservers();
+//}
 
 
 void GameData::setupObservers()
@@ -77,6 +131,8 @@ void GameData::setupObservers()
 	environment->actors()->addObserver(Camera::Get()->getShake());
 	environment->actors()->addObserver(scoreManager);
 	environment->actors()->addObserver(renderManager);
+
+	environment->levelManager()->addObserver(environment->actors());
 }
 
 
