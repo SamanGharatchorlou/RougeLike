@@ -35,7 +35,7 @@
 
 	<MaxSize>60</MaxSize>
 	<ColliderScale x = "0.6" y = "0.65"></ColliderScale>
-	<RenderOffset x = "-3" y = "-2"></RenderOffset>
+	<RenderOffset x = "3" y = "-2"></RenderOffset>
 
 	<Animator>
 		<ID>Devil</ID>

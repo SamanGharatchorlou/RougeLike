@@ -65,21 +65,7 @@ bool Texture::loadFromFile(const BasicString& filePath)
 }
 
 
-void Texture::render(const Rect<int> rect) const
-{
-	SDL_Rect renderQuad = { (rect.x1), (rect.y1),
-							(rect.Width()), (rect.Height()) };
 
-	SDL_RenderCopyEx(renderer, texture, nullptr, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
-}
-
-void Texture::render(const Rect<int> rect, SDL_RendererFlip flip) const
-{
-	SDL_Rect renderQuad = { (rect.x1), (rect.y1),
-							(rect.Width()), (rect.Height()) };
-
-	SDL_RenderCopyEx(renderer, texture, nullptr, &renderQuad, 0.0, NULL, flip);
-}
 
 void Texture::render(const RectF rect, SDL_RendererFlip flip) const
 {
@@ -135,19 +121,6 @@ void Texture::render(const RectF rect, double rotation, VectorF aboutPoint, SDL_
 
 
 // Renders part of the texture, e.g. a tile in a set
-void Texture::renderSubTexture(const Rect<int> rect, const Rect<int> subRect) const
-{
-	// texture being displayed on the screen
-	SDL_Rect renderQuad = { rect.x1, rect.y1, rect.Width(), rect.Height() };
-
-	// the region of the texture being displayed on the screen
-	SDL_Rect subQuad = { subRect.x1, subRect.y1, subRect.Width(), subRect.Height() };
-
-	SDL_RenderCopyEx(renderer, texture, &subQuad, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
-}
-
-
-// Renders part of the texture, e.g. a tile in a set
 void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect) const
 {
 	SDL_Rect renderQuad = { static_cast<int>(rect.x1 + 0.5f),
@@ -197,7 +170,7 @@ void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, SDL_Re
 
 
 // Renders part of the texture, e.g. a tile in a set with the flip and alpha specified
-void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, SDL_RendererFlip flip, const Uint8 tempAlpha)
+void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, SDL_RendererFlip flip, Uint8 tempAlpha)
 {
 	SDL_Rect renderQuad = { static_cast<int>(rect.x1 + 0.5f),
 							static_cast<int>(rect.y1 + 0.5f),
@@ -209,12 +182,35 @@ void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, SDL_Re
 
 	// Temporarily set the alpha 
 	const Uint8 currentAlpha = alpha();
-	setAlpha(tempAlpha);
+
+	SDL_SetTextureAlphaMod(texture, tempAlpha);
+
 
 	SDL_RenderCopyEx(renderer, texture, &subQuad, &renderQuad, 0.0, NULL, flip);
 
 	// Set the alpha back to the default value
-	setAlpha(currentAlpha);
+	SDL_SetTextureAlphaMod(texture, tempAlpha);
+}
+
+
+// Renders part of the texture, e.g. a tile in a set with the flip and alpha specified. Also apply a colour mod.
+void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, SDL_RendererFlip flip, RenderColour colourMod)
+{
+	SDL_Rect renderQuad = { static_cast<int>(rect.x1 + 0.5f),
+							static_cast<int>(rect.y1 + 0.5f),
+							static_cast<int>(rect.Width() + 0.5f),
+							static_cast<int>(rect.Height() + 0.5f) };
+
+	// the region of the texture being displayed on the screen
+	SDL_Rect subQuad = { subRect.x1, subRect.y1, subRect.Width(), subRect.Height() };
+
+	// Apply temporary colour modulation 
+	SDL_SetTextureColorMod(texture, colourMod.r, colourMod.g, colourMod.b);
+
+	SDL_RenderCopyEx(renderer, texture, &subQuad, &renderQuad, 0.0, NULL, flip);
+
+	// Remove colour modulation
+	SDL_SetTextureColorMod(texture, 255, 255, 255);
 }
 
 
@@ -235,26 +231,6 @@ void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, double
 	SDL_RenderCopyEx(renderer, texture, &subQuad, &renderQuad, rotation, &point, flip);
 }
 
-
-void Texture::modifyAlpha(const int delta)
-{
-	Uint8 alpha;
-
-	if (SDL_GetTextureAlphaMod(texture, &alpha) == 0)
-	{
-		alpha += delta;
-		alpha = clamp(alpha, alphaMin, alphaMax);
-		setAlpha(alpha);
-	}
-	else
-		DebugPrint(Warning, "SDL_GetTextureAlphaMod function failed\n");
-}
-
-
-void Texture::setAlpha(const Uint8 alpha)
-{
-	SDL_SetTextureAlphaMod(texture, alpha);
-}
 
 const Uint8 Texture::alpha() const
 {

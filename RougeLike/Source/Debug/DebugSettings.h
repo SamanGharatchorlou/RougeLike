@@ -10,7 +10,7 @@
 #define PRINT_FRAMERATE_EVERY 0 // Print at the rate you specify in milliseconds i.e. 500 = print every 0.5 seconds
 
 // Player
-#define DRAW_PLAYER_RECTS 1
+#define DRAW_PLAYER_RECTS 0
 #define IGNORE_WALLS 0
 #define IGNORED_BY_ENEMIES 1
 

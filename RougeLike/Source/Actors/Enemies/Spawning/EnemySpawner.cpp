@@ -116,7 +116,7 @@ std::vector<SpawnData> EnemySpawner::buildSpawnList(const PointList& points, Ene
 
 	for (int i = 0; i < points.size(); i++)
 	{
-		SpawnData data(type, EnemyState::Idle, points[i]);
+		SpawnData data(type, state, points[i]);
 		spawnList.push_back(data);
 	}
 

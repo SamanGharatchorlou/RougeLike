@@ -116,6 +116,7 @@
     <ClCompile Include="Source\UI\Screens\SettingsScreen.cpp" />
     <ClCompile Include="Source\UI\UIEventHandler.cpp" />
     <ClCompile Include="Source\Utilities\BasicString.cpp" />
+    <ClCompile Include="Source\Utilities\RenderColour.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Circle.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Shape.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Square.cpp" />
@@ -299,6 +300,7 @@
     <ClInclude Include="Source\UI\UIEventHandler.h" />
     <ClInclude Include="Source\Utilities\BasicString.h" />
     <ClInclude Include="Source\Utilities\ObjectPool.h" />
+    <ClInclude Include="Source\Utilities\RenderColour.h" />
     <ClInclude Include="Source\Utilities\Shapes\Circle.h" />
     <ClInclude Include="Source\Utilities\Shapes\Shape.h" />
     <ClInclude Include="Source\Utilities\Shapes\Square.h" />

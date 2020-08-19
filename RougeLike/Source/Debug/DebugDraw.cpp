@@ -9,8 +9,8 @@ void debugDrawLine(VectorF pointA, VectorF pointB, RenderColour colour)
 {
 	SDL_SetRenderDrawColor(Renderer::Get()->sdlRenderer(), colour.r, colour.g, colour.b, colour.a);
 
-	Vector2D<int> A = Camera::Get()->toCameraCoords(pointA);
-	Vector2D<int> B = Camera::Get()->toCameraCoords(pointB);
+	Vector2D<int> A = Camera::Get()->toCameraCoords(pointA).toInt();
+	Vector2D<int> B = Camera::Get()->toCameraCoords(pointB).toInt();
 
 	SDL_RenderDrawLine(Renderer::Get()->sdlRenderer(), A.x, A.y, B.x, B.y);
 }

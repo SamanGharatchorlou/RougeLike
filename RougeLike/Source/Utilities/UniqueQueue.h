@@ -25,6 +25,8 @@ public:
 	T& back() { return mQueue.back(); }
 	const T& back() const { return mQueue.back(); }
 
+	T& get(int i);
+
 	T& popFront();
 
 	void clear() { mQueue.clear(); }
@@ -71,4 +73,17 @@ bool UniqueQueue<T>::contains(const T& value) const
 	}
 
 	return false;
+}
+
+
+template <class T>
+T& UniqueQueue<T>::get(int index)
+{
+	for (typename std::deque<T>::iterator iter = mQueue.begin(); iter != mQueue.end(); iter++)
+	{
+		if (index == 0)
+			return *iter;
+
+		index--;
+	}
 }

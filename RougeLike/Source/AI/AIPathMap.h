@@ -25,8 +25,9 @@ public:
 	const Grid<int>& costMap() const { return mCostMap; }
 	Grid<int>& costMapRef() { return mCostMap; }
 
-private:
+
 	bool isValidPosition(VectorF position) const;
+private:
 
 
 private:

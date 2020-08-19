@@ -10,8 +10,13 @@ public:
 	void fastUpdate(float dt) override { };
 	void slowUpdate(float dt) override;
 	void render() override;
-	void exit() override;
+	void exit() override { };
 	void resume() override;
 
 	const Type type() const { return Type::Hit; }
+
+
+private:
+	RenderColour mColourMod;
+	TimerF mTimer;
 };

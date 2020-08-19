@@ -20,6 +20,8 @@ void UIButton::setTextures(Texture* defaultTexture, Texture* selected, Texture* 
 
 	mSelected = selected != nullptr ? selected : defaultTexture;
 	mHovered = hovering != nullptr ? hovering : defaultTexture;
+
+	mTexture = mDefault;
 }
 
 

@@ -134,7 +134,7 @@ const Index Map::index(VectorF position) const
 {
 	VectorF mapTopLeft = mData.get(Index(0, 0)).rect().TopLeft();
 	VectorF shiftedPosition = position - mapTopLeft;
-	return isValidPosition(position) ? Index(shiftedPosition / tileSize()) : Index(-1, -1);
+	return isValidPosition(position) ? (shiftedPosition / tileSize()).toInt() : Index(-1, -1);
 }
 
 

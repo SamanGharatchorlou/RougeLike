@@ -9,6 +9,7 @@
 #include "AI/AIPathMap.h"
 
 #include "Objects/Pools/EnemyStatePool.h"
+#include "Game/Camera/Camera.h"
 
 // TEMP
 #include "Map/Map.h"
@@ -51,9 +52,6 @@ void Enemy::slowUpdate(float dt)
 	// Must run first, some effects e.g. damage apply a gotHit state to the collider
 	Actor::slowUpdate(dt);
 
-	// Reset alpha for enemies sharing the same texture
-	mAnimator.texture()->setAlpha(alphaMax);
-
 	EnemyState* state = mStateMachine.processStateChanges();
 	if (state)
 		mStatePool->returnObject(state, state->type());
@@ -76,25 +74,36 @@ void Enemy::slowUpdate(float dt)
 
 void Enemy::render()
 {
-	if(mVisibility)
+	if (mVisibility)
+	{
+#if _DEBUG
+		mDebugger.draw();
+#endif
+
 		mStateMachine.getActiveState().render();
+		mEffects.render();
+	}
 }
 
 
 void Enemy::renderCharacter()
 {
-#if _DEBUG
-	mDebugger.draw();
-#endif
+	mAnimator.render(renderRect(), mPhysics.flip());
+}
 
+
+RectF Enemy::renderRect() const
+{
 	VectorF offset = mRenderOffset;
-	if (mPhysics.flip() == SDL_FLIP_NONE)
+	if (mPhysics.flip() == SDL_FLIP_HORIZONTAL)
 	{
 		offset = VectorF(-mRenderOffset.x, mRenderOffset.y);;
 	}
 
-	Actor::render(offset);
+	RectF renderRect = Camera::Get()->toCameraCoords(rect());
+	return renderRect.Translate(offset);
 }
+
 
 // TODO: remove this access?
 const Map* Enemy::getEnvironmentMap() const
@@ -103,10 +112,8 @@ const Map* Enemy::getEnvironmentMap() const
 }
 
 
-// Reset everything that needs to be recalculated when spawned
 void Enemy::clear()
 {
-	// REQUIRES TESTING
 	while (mStateMachine.size() > 1)
 	{
 		popState();

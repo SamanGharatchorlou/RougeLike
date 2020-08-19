@@ -16,9 +16,7 @@ Animator AnimationReader::buildAnimator(XMLNode animationNode) const
 	XMLNode frameSizeNode = animationNode.child("FrameSize");
 
 	StringMap attributes = animationNode.child("FrameSize").attributes();
-	int x = attributes.getInt("x");
-	int y = attributes.getInt("y");
-	Vector2D<int> frameSize(x, y);
+	VectorF frameSize = attributes.getVector("x", "y");
 
 	XMLNode animations = animationNode.child("Animations");
 	XMLNode node = animations.child();

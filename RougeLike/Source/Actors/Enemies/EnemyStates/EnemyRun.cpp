@@ -2,8 +2,8 @@
 #include "EnemyRun.h"
 
 #include "Actors/Enemies/Enemy.h"
-#include "Map/Map.h"
 
+#include "AI/AIPathMap.h"
 
 void EnemyRun::init()
 {

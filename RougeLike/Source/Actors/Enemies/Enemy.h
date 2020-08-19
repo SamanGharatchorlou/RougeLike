@@ -29,9 +29,11 @@ public:
 	// Core
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
-	void render();
 
+	void render();
 	void renderCharacter();
+	RectF renderRect() const;
+	VectorF renderOffset() const { return mRenderOffset; }
 
 	void clear();
 
@@ -65,7 +67,6 @@ public:
 	// Movement
 	void			accellerateTowards(VectorF position);
 	void			move(VectorF velocity, float dt) { mPhysics.move(velocity, dt); }
-	void			flip();
 
 protected:
 	AIPathing mAIPathing;

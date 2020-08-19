@@ -165,6 +165,7 @@
     <ClCompile Include="Source\Objects\Effects\EffectTypes\ArmorEffect.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyStun.cpp" />
     <ClCompile Include="Source\Objects\Pools\EnemyStatePool.cpp" />
+    <ClCompile Include="Source\Utilities\RenderColour.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -358,6 +359,7 @@
     <ClInclude Include="Source\Objects\Effects\EffectTypes\ArmorEffect.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyStun.h" />
     <ClInclude Include="Source\Objects\Pools\EnemyStatePool.h" />
+    <ClInclude Include="Source\Utilities\RenderColour.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

@@ -10,7 +10,7 @@
 		<Dungeon>
 			<Column spacing="3"></Column>
 			<Torch type = "TorchBowl" spacing ="3"></Torch>
-			<Spikes rate="10" damage = "10" triggerTime="1.5" recoveryTime="1.0"></Spikes>
+			<Spikes rate="0" damage = "10" triggerTime="1.5" recoveryTime="1.0"></Spikes>
 			<Water width="3" height="2" spacing="10"></Water>
 		</Dungeon>
 

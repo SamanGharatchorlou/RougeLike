@@ -117,10 +117,6 @@ void Player::render()
 		mWeapon->render();
 		Actor::render();
 	}
-
-	float weaponPos = mWeapon->getRects().at(0).Center().x;
-	VectorF playerRect = position();
-	printf("diff x: %f\n", playerRect.x - weaponPos);
 }
 
 

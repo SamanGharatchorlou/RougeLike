@@ -30,8 +30,6 @@ GameState::GameState(GameData* gameData, GameController* gameController) :
 	mGameData(gameData)
 	, mGameController(gameController)
 {
-	// random seed
-	srand((unsigned int)time(NULL));
 }
 
 

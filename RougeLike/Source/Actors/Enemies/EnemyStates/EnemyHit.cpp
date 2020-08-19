@@ -4,15 +4,19 @@
 #include "Actors/Enemies/Enemy.h"
 
 #include "Game/Camera/Camera.h"
-#include "Graphics/Texture.h"
+
 
 
 void EnemyHit::init()
 {
+	mTimer.start();
 	mEnemy->animator().selectAnimation(Action::Hurt);
 
-	Texture* texture = mEnemy->animator().texture();
-	texture->modifyAlpha(-100);
+	// Apply red colour modulation
+	mColourMod = RenderColour(200, 0, 0);
+
+	if(mEnemy->hasTarget())
+		mEnemy->physics()->facePoint(mEnemy->target()->position());
 }
 
 
@@ -24,25 +28,19 @@ void EnemyHit::slowUpdate(float dt)
 	{
 		mEnemy->popState();
 	}
+
+
 }
 
 
 void EnemyHit::render()
 {
-	RectF rect = Camera::Get()->toCameraCoords(mEnemy->rect());
-
-#if DRAW_ENEMY_RECT
-	debugDrawRect(mEnemy->rect(), RenderColour(RenderColour::Red));
-#else
-	mEnemy->animator().render(rect, mEnemy->physics()->flip());
-#endif
-}
-
-
-void EnemyHit::exit()
-{
-	Texture* texture = mEnemy->animator().texture();
-	texture->setAlpha(alphaMax);
+	// Flash red
+	float flashTime = 0.1f;
+	if (mTimer.getSeconds() < flashTime)
+		mEnemy->animator().render(mEnemy->renderRect(), mEnemy->physics()->flip(), mColourMod);
+	else
+		mEnemy->animator().render(mEnemy->renderRect(), mEnemy->physics()->flip());
 }
 
 

@@ -61,6 +61,16 @@ void Animator::Animation::render(RectF rect, SDL_RendererFlip flip, Uint8 alpha)
 	mTexture->renderSubTexture(rect, tileRect, flip, alpha);
 }
 
+void Animator::Animation::render(RectF rect, SDL_RendererFlip flip, RenderColour colourMod) const
+{
+	RectF tileRect = subTileRect(rect);
+	// TODO: does this auto size work correctly and should I always use it?
+	//RectF renderRect = autoSize(rect);
+
+	mTexture->renderSubTexture(rect, tileRect, flip, colourMod);
+}
+
+
 // NOTE: is the sub texture size correct??? the height seems off?
 void Animator::Animation::render(RectF rect, double rotation, VectorF aboutPoint) const
 {
@@ -84,8 +94,8 @@ RectF Animator::Animation::autoSize(RectF rect) const
 RectF Animator::Animation::subTileRect(RectF rect) const
 {
 #if _DEBUG
-	Vector2D<int> requestSize = (mIndex + 1)*mTileDimentions;
-	Vector2D<int> objectSize = mTexture->originalDimentions;
+	VectorF requestSize = (mIndex + 1).toFloat() * mTileDimentions;
+	VectorF objectSize = mTexture->originalDimentions;
 
 	if (requestSize.x > objectSize.x || requestSize.y > objectSize.y)
 		DebugPrint(Error, "Index(%d,%d) out of bounds\n", mIndex.x, mIndex.y);
@@ -99,7 +109,7 @@ RectF Animator::Animation::subTileRect(RectF rect) const
 
 void Animator::Animation::nextFrame()
 {
-	Index bounaries = mTexture->originalDimentions / mTileDimentions;
+	Index bounaries = (mTexture->originalDimentions / mTileDimentions).toInt();
 	mIndex += Index(1, 0);
 
 	Index yIncrement(0, 0);
@@ -122,7 +132,7 @@ void Animator::Animation::nextFrame()
 
 int Animator::Animation::currentFrame() const
 {
-	Index bounaries = mTexture->originalDimentions / mTileDimentions;
+	Index bounaries = (mTexture->originalDimentions / mTileDimentions).toInt();
 	return (mIndex.y * bounaries.x) + mIndex.x;
 }
 
@@ -147,6 +157,12 @@ void Animator::render(RectF rect, SDL_RendererFlip flip, Uint8 alpha) const
 {
 	if (timer.isStarted())
 		mAnimations[mActiveIndex].render(rect, flip, alpha);
+}
+
+void Animator::render(RectF rect, SDL_RendererFlip flip, RenderColour colourMod) const
+{
+	if (timer.isStarted())
+		mAnimations[mActiveIndex].render(rect, flip, colourMod);
 }
 
 void Animator::render(RectF rect, double rotation, VectorF aboutPoint) const

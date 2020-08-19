@@ -31,18 +31,24 @@ public:
 	virtual Type type() const { return Type::Slider; }
 
 
+
 private:
 	void updateBar();
 
 	void setBarRect(float value);
 	void setBarSubRect(float value);
 
+	// Bar rect/subrect at value = 1.0
+	RectF defaultBarSubRect() const;
+	RectF defaultBarRect() const;
+
 
 private:
 	UIButton* mSlider;
-	UIBox* mBar;
 
-	RectF subRect;
+	UIBox* mBar; 
+	// only render part of the texture as the rect decreases in width to prevent it warping
+	RectF mBarSubRect;
 
 	float xCursorOffset;
 	bool mSelectable;

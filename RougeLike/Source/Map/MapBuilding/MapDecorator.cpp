@@ -201,7 +201,7 @@ void MapDecorator::addSpikes(Grid<MapTile>& data, const StringMap& attributes)
 // Spikes
 void MapDecorator::addTiggers(Grid<MapTile>& data, const StringMap& attributes)
 {
-	Index index = attributes.getVector("x", "y");
+	Index index = attributes.getVector("x", "y").toInt();
 	data[index].set(DecorType::GratingTrigger);
 }
 

@@ -4,7 +4,7 @@
 		<!-- Attributes -->
 		<Level>1</Level>
 		<Health>100</Health>
-		<Armor>50</Armor>
+		<Armor>0</Armor>
 		<AttackSpeed>10</AttackSpeed>
 
 		<!-- Physics -->

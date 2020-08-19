@@ -25,11 +25,11 @@ Action stringToAction(const BasicString& action);
 
 struct AnimationData
 {
-	AnimationData(Texture* animTexture, Vector2D<int> tileDim, int frames, Action animAction) :
+	AnimationData(Texture* animTexture, VectorF tileDim, int frames, Action animAction) :
 		texture(animTexture), tileDimentions(tileDim), frameCount(frames), action(animAction) { }
 
 	Texture* texture;
-	Vector2D<int> tileDimentions;
+	VectorF tileDimentions;
 	int frameCount;
 	Action action;
 };
@@ -49,6 +49,7 @@ public:
 
 		void render(RectF rect, SDL_RendererFlip flip) const;
 		void render(RectF rect, SDL_RendererFlip flip, Uint8 alpha) const;
+		void render(RectF rect, SDL_RendererFlip flip, RenderColour colourMod) const;
 		void render(RectF rect, double rotation, VectorF aboutPoint) const;
 
 		Texture* texture() const { return mTexture; }
@@ -84,6 +85,7 @@ public:
 	void slowUpdate(float dt);
 	void render(RectF rect, SDL_RendererFlip flip = SDL_FLIP_NONE) const;
 	void render(RectF rect, SDL_RendererFlip flip, Uint8 alpha) const;
+	void render(RectF rect, SDL_RendererFlip flip, RenderColour colourMod) const;
 	void render(RectF rect, double rotation, VectorF aboutPoint) const;
 
 	void reset();

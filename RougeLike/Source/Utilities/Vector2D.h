@@ -7,11 +7,11 @@ public:
 	Vector2D() { x = 0; y = 0; }
 	Vector2D(T _x, T _y) : x(_x), y(_y) { }
 
-	template<class K>
-	Vector2D(K _x, K _y) : x((T)_x), y((T)_y) { }
+	//template<class K>
+	//Vector2D(K _x, K _y) : x((T)_x), y((T)_y) { }
 
-	template<class K>
-	Vector2D(Vector2D<K> vector) : x(static_cast<T>(vector.x)), y(static_cast<T>(vector.y)) { }
+	//template<class K>
+	//Vector2D(Vector2D<K> vector) : x(static_cast<T>(vector.x)), y(static_cast<T>(vector.y)) { }
 
 	// Operator +
 	template<class K>
@@ -136,10 +136,13 @@ public:
 
 	inline Vector2D<int> toInt() const
 	{
-		Vector2D<int> vector((int)x, (int)y);
-		return vector;
+		return Vector2D<int>((int)x, (int)y);
 	}
 
+	inline Vector2D<float> toFloat() const
+	{
+		return Vector2D<float>((float)x, (float)y);
+	}
 
 	inline Vector2D<T>& zero() 
 	{

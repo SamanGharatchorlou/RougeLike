@@ -139,6 +139,46 @@ Index AIPathing::index(VectorF position) const
 }
 
 
+//
+//Vector2D<int> AIPathing::yTileFloorRange(Index index) const
+//{
+//	ASSERT(Warning, tile(index)->is(CollisionTile::Floor), "Not a floor tile, cannot get yTile floor range");
+//
+//	Index bottomIndex(index);
+//	while (true)
+//	{
+//		Index increment(0, 1);
+//		if (!tile(bottomIndex + increment)->is(CollisionTile::Floor))
+//			break;
+//
+//		bottomIndex += increment;
+//	}
+//
+//	Index topIndex(index);
+//	while (true)
+//	{
+//		Index increment(0, -1);
+//		if (!tile(topIndex + increment)->is(CollisionTile::Floor))
+//			break;
+//
+//		topIndex += increment;
+//	}
+//
+//	return Vector2D<int>(topIndex.y, bottomIndex.y);
+//}
+
+
+
+
+
+
+
+
+
+
+
+
+
 #if DRAW_AI_PATH
 void AIPathing::draw()
 {

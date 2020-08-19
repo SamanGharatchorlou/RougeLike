@@ -94,7 +94,7 @@ void EnemyBuilder::fillActorData(Enemy* enemy, const XMLNode node)
 
 void EnemyBuilder::fillSpawnData(Enemy* enemy, const SpawnData& data, const AIPathMap* aiPathMap) const
 {
-	enemy->spawn(data.state, data.position, aiPathMap);
+	enemy->spawn(EnemyState::Idle, data.position, aiPathMap);
 }
 
 

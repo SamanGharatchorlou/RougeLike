@@ -60,6 +60,7 @@ namespace fs = std::experimental::filesystem;
 #include "Utilities/BasicString.h"
 #include "Utilities/Vector2D.h"
 #include "Utilities/Rect.h"
+#include "Utilities/RenderColour.h"
 #include "Utilities/Helpers.h"
 #include "Utilities/Grid.h"
 #include "Utilities/Timer.h"

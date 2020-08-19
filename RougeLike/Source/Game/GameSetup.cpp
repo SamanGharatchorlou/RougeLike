@@ -3,7 +3,11 @@
 
 #include "System/Window.h"
 
-GameSetup::GameSetup() : title(""), audioChannels(0) { }
+GameSetup::GameSetup() : title(""), audioChannels(0) 
+{
+	// random seed
+	srand((unsigned int)time(NULL));
+}
 
 
 Window* GameSetup::initSDL()

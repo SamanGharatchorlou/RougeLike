@@ -6,6 +6,7 @@
 #include "UI/Elements/UISlider.h"
 
 #include "Graphics/TextureManager.h"
+#include "Graphics/Texture.h"
 
 GameScreen::GameScreen()
 { 
@@ -30,5 +31,11 @@ void GameScreen::update(float dt)
 		UIButton* icon = mSliders[ScreenItem::Health]->handle();
 		Texture* texture = TextureManager::Get()->getTexture("DeadIcon", FileManager::Image_UI);
 		icon->setTextures(texture, nullptr, nullptr);
+
+		float maxDim = icon->rect().Height();
+		VectorF newSize = realiseSize(texture->originalDimentions, maxDim);
+		RectF newRect = icon->rect();
+		newRect.SetSize(newSize);
+		icon->setRect(newRect);
 	}
 }

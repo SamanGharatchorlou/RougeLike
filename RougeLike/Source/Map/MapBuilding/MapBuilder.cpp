@@ -115,7 +115,7 @@ void MapBuilder::populateMapRects(Map* map, VectorF offset)
 		{
 			Index index(x, y);
 
-			VectorF position = index * tileSize;
+			VectorF position = index.toFloat() * tileSize;
 			RectF rect(position + offset, tileSize);
 
 			map->tile(index)->setRect(rect);
@@ -131,13 +131,13 @@ void MapBuilder::buildMapStructure(Map* map, MapType type)
 	if (type == MapType::Dungeon)
 	{
 		VectorF size = mSpecs.size("Dungeon");
-		map->setSize(size);
+		map->setSize(size.toInt());
 		generator.buildDungeon(map->getData());
 	}
 	else if (type == MapType::Corridor)
 	{
 		VectorF size = mSpecs.size("Corridor");
-		map->setSize(size);
+		map->setSize(size.toInt());
 		generator.buildCorridor(map->getData());
 	}
 	else
