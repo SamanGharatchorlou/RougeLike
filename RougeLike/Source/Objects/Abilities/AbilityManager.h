@@ -2,7 +2,7 @@
 
 #include "AbilityClasses/AbilityStates.h"
 #include "AbilityActivator.h"
-#include "AbilityHotKeys.h"
+#include "AbilityHotKeyManager.h"
 #include "AbilityBuilder.h"
 #include "Events/LocalDispatcher.h"
 
@@ -37,8 +37,6 @@ public:
 
 
 private:
-	void sendSetTextColourEvent(Ability* abiliy, Colour colour);
-
 	void handleStates(Ability* ability, float dt);
 	void handleEvents(Ability* ability);
 
@@ -50,7 +48,7 @@ private:
 	
 	AbilityBuilder mBuilder;
 	AbilityActivator mActivator;
-	AbilityHotKeys mHotKeys;
+	AbilityHotKeyManager mHotKeys;
 
 	std::vector<Ability*> mAbilities;
 };

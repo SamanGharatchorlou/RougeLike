@@ -9,11 +9,12 @@
 
 void EnemyHit::init()
 {
+	printf("hit\n");
 	mTimer.start();
 	mEnemy->animator().selectAnimation(Action::Hurt);
 
 	// Apply red colour modulation
-	mColourMod = RenderColour(200, 0, 0);
+	mColourMod = RenderColour(225, 0, 0);
 
 	if(mEnemy->hasTarget())
 		mEnemy->physics()->facePoint(mEnemy->target()->position());
@@ -36,7 +37,7 @@ void EnemyHit::slowUpdate(float dt)
 void EnemyHit::render()
 {
 	// Flash red
-	float flashTime = 0.1f;
+	float flashTime = 0.025f;
 	if (mTimer.getSeconds() < flashTime)
 		mEnemy->animator().render(mEnemy->renderRect(), mEnemy->physics()->flip(), mColourMod);
 	else

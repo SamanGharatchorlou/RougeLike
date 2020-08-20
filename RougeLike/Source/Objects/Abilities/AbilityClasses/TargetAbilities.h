@@ -34,16 +34,15 @@ class TargetPositionAbility : public RangedAbility
 public:
 	virtual void activateAt(VectorF position, EffectPool* pool) = 0;
 
-	AbilityTarget targetType() const override { return AbilityTarget::Position; }
+	virtual AbilityTarget targetType() const override { return AbilityTarget::Position; }
 
 	virtual void render() override;
 };
 
 
-class TargePositionAttackAbility : public RangedAbility
+class TargePositionAttackAbility : public TargetPositionAbility
 {
 public:
-	virtual void activateAt(VectorF position, EffectPool* pool) = 0;
 	virtual void activateOn(Actor* target, EffectPool* pool) = 0;
 
 	AbilityTarget targetType() const override { return AbilityTarget::AttackArea; }

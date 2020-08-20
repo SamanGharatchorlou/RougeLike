@@ -88,7 +88,7 @@ class NullScreen : public Screen
 public:
 	void enter() { }
 	void handleInput(const InputManager* input) { }
-	void update(float dt) { }
+	void update() { }
 	void exit() { }
 	void render() { }
 	Type type() { return Type::None; }

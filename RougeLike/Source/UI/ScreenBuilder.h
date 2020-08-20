@@ -7,12 +7,21 @@ class UIElement;
 class Screen;
 class UISlider;
 
+struct TexturePacket
+{
+	Texture* defaultTexture;
+	Texture* selected;
+	Texture* hovering;
+};
+
 
 class ScreenBuilder
 {
 public:
 	Screen* buildNewScreen(const BasicString& config);
 
+
+	TexturePacket getButtonTextures(const BasicString& buttonType) const;
 
 private:
 	Screen* createNewScreen(const BasicString& screenName);
@@ -30,15 +39,7 @@ private:
 
 
 private:
-	struct TexturePacket
-	{
-		Texture* defaultTexture;
-		Texture* selected;
-		Texture* hovering;
-	};
-
 	Texture* getTexture(const StringMap& attributes) const;
-	TexturePacket getButtonTextures(const StringMap& attributes) const;
 
 	void buildSlider(UISlider* slider, const StringMap& attributes) const;
 };

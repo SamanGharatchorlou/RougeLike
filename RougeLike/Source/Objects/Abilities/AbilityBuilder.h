@@ -18,6 +18,7 @@ private:
 	Ability* createNewAbility(const BasicString& id) const;
 	void setRangedValues(Ability* ability) const;
 
+
 private:
 	Actor* mCaster;
 };

@@ -60,7 +60,6 @@
     <ClCompile Include="Source\Collisions\WallCollisionTracker.cpp" />
     <ClCompile Include="Source\UI\Elements\UISlider.cpp" />
     <ClCompile Include="Source\Animations\AnimationReader.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\AbilityHotKeys.cpp" />
     <ClCompile Include="Source\Collisions\EffectCollider.cpp" />
     <ClCompile Include="Source\Collisions\PlayerCollisions.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityActivator.cpp" />
@@ -166,6 +165,9 @@
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyStun.cpp" />
     <ClCompile Include="Source\Objects\Pools\EnemyStatePool.cpp" />
     <ClCompile Include="Source\Utilities\RenderColour.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityHotKey.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityHotKeyManager.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\SlashAbility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -242,7 +244,6 @@
     <ClInclude Include="Source\UI\Elements\UISlider.h" />
     <ClInclude Include="Source\Events\LocalDispatcher.h" />
     <ClInclude Include="Source\Animations\AnimationReader.h" />
-    <ClInclude Include="Source\Objects\Abilities\AbilityHotKeys.h" />
     <ClInclude Include="Source\Collisions\EffectCollider.h" />
     <ClInclude Include="Source\Collisions\PlayerCollisions.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityActivator.h" />
@@ -360,6 +361,9 @@
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyStun.h" />
     <ClInclude Include="Source\Objects\Pools\EnemyStatePool.h" />
     <ClInclude Include="Source\Utilities\RenderColour.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityHotKey.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityHotKeyManager.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\SlashAbility.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

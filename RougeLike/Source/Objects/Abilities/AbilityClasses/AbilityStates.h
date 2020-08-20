@@ -10,7 +10,8 @@ enum class AbilityType
 	Blink,
 	Spikes,
 	Smash,
-	Charge
+	Charge,
+	Slash
 };
 
 
@@ -23,9 +24,11 @@ inline void operator >>(AbilityType a, BasicString& str)
 	else if (a == AbilityType::Spikes)
 		str = "Spikes";
 	else if (a == AbilityType::Smash)
-		str = "Smash";	
+		str = "Smash";
 	else if (a == AbilityType::Charge)
 		str = "Charge";
+	else if (a == AbilityType::Slash)
+		str = "Slash";
 	else
 		DebugPrint(Warning, "No ability to string conversion defined for ability type %d\n", a);
 }
@@ -42,6 +45,8 @@ inline void operator <<(AbilityType& a, const BasicString& str)
 		a = AbilityType::Smash;
 	else if (str == "Charge")
 		a = AbilityType::Charge;
+	else if (str == "Slash")
+		a = AbilityType::Slash;
 	else
 		DebugPrint(Warning, "No string to ability conversion defined for string '%s'\n", str);
 }
@@ -63,5 +68,6 @@ enum class AbilityState
 	Selected,
 	Activate,
 	Running,
+	Cooldown,
 	Finished
 };

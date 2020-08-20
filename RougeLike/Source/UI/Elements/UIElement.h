@@ -18,6 +18,8 @@ public:
 
 	struct Data
 	{
+		Data() { }
+		Data(const BasicString& dataId, RectF dataRect) : id(dataId), rect(dataRect) { }
 		BasicString id = "";
 		RectF rect;
 		const UIElement* parent = nullptr;

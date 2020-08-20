@@ -9,6 +9,8 @@ class UIBox : public UIElement
 public:
 	struct Data : public UIElement::Data
 	{
+		Data() { }
+		Data(const BasicString& dataId, RectF dataRect, Texture* dataTexture) : UIElement::Data(dataId, dataRect), texture(dataTexture) { }
 		Texture* texture = nullptr;
 #if _DEBUG
 		bool drawRect = false;

@@ -18,4 +18,5 @@ void Ability::exit()
 {
 	mAnimator.reset();
 	mCooldown.stop();
+	mCompleted = false;
 }

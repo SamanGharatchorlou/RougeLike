@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Ability>
+	<Properties>
+		<Range>100</Range>
+		<MaxSize>250</MaxSize>
+		<Cooldown>3</Cooldown>
+
+		<Damage>60</Damage>
+
+		<KnockbackForce>500</KnockbackForce>
+		<KnockbackDistance>40</KnockbackDistance>
+	</Properties>
+
+	<Icon>SlashIcon</Icon>
+
+	<Animator>
+		<ID>Slash</ID>
+		<FrameTime>0.05</FrameTime>
+		<FrameSize x = "213" y ="391"></FrameSize>
+		<Animations>
+			<Active>5</Active>
+		</Animations>
+	</Animator>
+</Ability>

@@ -13,6 +13,7 @@
 #include "Objects/Abilities/AbilityTypes/ArmorAbility.h"
 #include "Objects/Abilities/AbilityTypes/SmashAbility.h"
 #include "Objects/Abilities/AbilityTypes/ChargeAbility.h"
+#include "Objects/Abilities/AbilityTypes/SlashAbility.h"
 
 
 Ability* AbilityBuilder::build(const BasicString& id) const
@@ -68,6 +69,11 @@ Ability* AbilityBuilder::createNewAbility(const BasicString& id) const
 	case AbilityType::Charge:
 	{
 		ability = new ChargeAbility;
+		break;
+	}
+	case AbilityType::Slash:
+	{
+		ability = new SlashAbility;
 		break;
 	}
 

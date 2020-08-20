@@ -38,6 +38,7 @@ public:
 
 	virtual bool isRanged() const { return false; }
 
+	bool hasCompleted() const { return mCompleted; }
 
 protected:
 	BasicString mName;
@@ -52,4 +53,6 @@ protected:
 	RectF mRect;
 
 	PropertyMap mProperties;
+
+	bool mCompleted;
 };

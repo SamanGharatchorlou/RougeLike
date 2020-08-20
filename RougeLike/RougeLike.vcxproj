@@ -23,6 +23,8 @@
     <ClCompile Include="Source\Actors\Enemies\EnemyDebugger.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyStun.cpp" />
     <ClCompile Include="Source\Map\TileInteractables\TileInteractable.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityHotKey.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\SlashAbility.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\ArmorEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\KnockbackStunEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\SlowEffect.cpp" />
@@ -67,7 +69,7 @@
     <ClCompile Include="Source\Objects\Abilities\AbilityClasses\RangedAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityClasses\TargetAbilities.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityActivator.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\AbilityHotKeys.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityHotKeyManager.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityManager.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\ArmorAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\BlinkAbility.cpp" />
@@ -197,6 +199,8 @@
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyStun.h" />
     <ClInclude Include="Source\Map\TileInteractables\TileInteractable.h" />
     <ClInclude Include="Source\Map\TileInteractables\Trigger.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityHotKey.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\SlashAbility.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\ArmorEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\KnockbackStunEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\SlowEffect.h" />
@@ -245,7 +249,7 @@
     <ClInclude Include="Source\Objects\Abilities\AbilityClasses\TargetAbilities.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityActivator.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityManager.h" />
-    <ClInclude Include="Source\Objects\Abilities\AbilityHotKeys.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityHotKeyManager.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\ArmorAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\BilnkAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\ChargeAbility.h" />

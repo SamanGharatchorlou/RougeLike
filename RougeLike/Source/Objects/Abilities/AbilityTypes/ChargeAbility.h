@@ -7,7 +7,7 @@
 class ChargeAbility : public TargePositionAttackAbility
 {
 public:
-	ChargeAbility() : mIsCharging(false) { };
+	ChargeAbility() : mIsCharging(false) { setIsOnlyDirectional(true); };
 
 	void activateAt(VectorF position, EffectPool* effectPool) override;
 	void activateOn(Actor* actor, EffectPool* effectPool) override;

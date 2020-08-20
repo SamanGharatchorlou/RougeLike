@@ -27,16 +27,16 @@ void GameScreen::enter()
 
 void GameScreen::handleInput(const InputManager* input)
 {
-	if (input->getButton(Button::E).isPressed())
-	{
-		std::unordered_map<AbilityType, Button::Key>::iterator iter = mHotkeyMap->begin();
+	//if (input->getButton(Button::E).isPressed())
+	//{
+	//	std::unordered_map<AbilityType, Button::Key>::iterator iter = mHotkeyMap->begin();
 
-		iter->second = Button::Two;
-	}
+	//	iter->second = Button::Two;
+	//}
 }
 
 
-void GameScreen::update(float dt)
+void GameScreen::update()
 {
 	if (mSliders[ScreenItem::Health]->getValue() == 0.0f)
 	{

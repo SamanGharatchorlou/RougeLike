@@ -12,6 +12,7 @@ using ScreenAttributes = std::vector<LayerAttributes>;
 struct ScreenLayer
 {
 	ScreenLayer(const BasicString& name) : id(name) { }
+	void addElements(Elements newElements) { elements.insert(elements.end(), newElements.begin(), newElements.end()); }
 	const BasicString id;
 	std::vector<UIElement*> elements;
 };

@@ -42,7 +42,11 @@ void AbilityManager::handleInput(const InputManager* input)
 	{
 		Ability* ability = mAbilities[i];
 		AbilityType type = ability->type();
-		Button::State buttonState = mHotKeys.state(type, input);
+		Button::State buttonState = mHotKeys.state(ability, input);
+
+		if (buttonState == Button::State::Pressed)
+			int a = 4;
+
 
 		if (mActivator.canSelect(ability) && mActivator.selected(ability, buttonState))
 		{
@@ -80,11 +84,20 @@ void AbilityManager::handleStates(Ability* ability, float dt)
 		ability->fastUpdate(dt);
 		ability->slowUpdate(dt);
 
+		if (ability->hasCompleted())
+		{
+			ability->cooldown().begin();
+			setState(ability, AbilityState::Cooldown);
+
+		}
+		break;
+	}
+	case AbilityState::Cooldown:
+	{
 		if (ability->cooldown().hasCompleted())
 		{
 			setState(ability, AbilityState::Finished);
 		}
-
 		break;
 	}
 	case AbilityState::Finished:
@@ -169,9 +182,10 @@ void AbilityManager::addAbility(const BasicString& name)
 			DebugPrint(Warning, "Ability '%s' has no type defined. Has its type() override function been defined?\n", name);
 #endif
 
+
+		mHotKeys.addHotKey(ability);
 		setState(ability, AbilityState::Idle);
 
-		mHotKeys.addHotKey(type);
 		mAbilities.push_back(ability);
 	}
 	else
@@ -184,15 +198,7 @@ void AbilityManager::addAbility(const BasicString& name)
 void AbilityManager::setState(Ability* ability, AbilityState state)
 {
 	ability->setState(state);
-
-	if(state == AbilityState::Selected)
-		sendSetTextColourEvent(ability, Colour::Green);
-
-	else if (state == AbilityState::Running)
-		sendSetTextColourEvent(ability, Colour::Red);
-
-	else if (state == AbilityState::Idle)
-		sendSetTextColourEvent(ability, Colour::White);
+	mHotKeys.updateStates();
 }
 
 
@@ -208,15 +214,4 @@ Ability* AbilityManager::get(const BasicString& name) const
 
 	DebugPrint(Warning, "Ability '%s' not in ability manager\n", name.c_str());
 	return nullptr;
-}
-
-
-
-// --- Private Functions --- //
-void AbilityManager::sendSetTextColourEvent(Ability* ability, Colour colour)
-{
-	BasicString id = ability->name() + "IconText";
-	SetTextColourEvent* event = new SetTextColourEvent(id, SDLColour(colour));
-	EventPacket eventPacket(event);
-	mEvents.push(eventPacket);
 }

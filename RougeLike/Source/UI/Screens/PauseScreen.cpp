@@ -13,9 +13,3 @@ void PauseScreen::enter()
 	linkButton(ScreenItem::Settings, "SettingsButton");
 	linkButton(ScreenItem::Quit, "QuitButton");
 }
-
-
-void PauseScreen::update()
-{
-
-}

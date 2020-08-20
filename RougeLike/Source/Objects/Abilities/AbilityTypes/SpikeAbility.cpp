@@ -10,9 +10,7 @@
 
 void SpikeAbility::activateAt(VectorF position, EffectPool* effectPool)
 {
-	// TODO: dont need mSource, just set it here?
-	mSource = position;
-	mRect.SetBotCenter(mSource);
+	mRect.SetBotCenter(position);
 	sendActivateOnRequest();
 
 	mAnimator.startAnimation(Action::Active);
@@ -43,5 +41,8 @@ void SpikeAbility::slowUpdate(float dt)
 	mAnimator.slowUpdate(dt);
 
 	if (mAnimator.loops() > 0)
+	{
+		mCompleted = true;
 		mAnimator.stop();
+	}
 }

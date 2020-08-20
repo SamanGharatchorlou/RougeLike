@@ -37,6 +37,9 @@ Collider RangedAbility::collider()
 
 bool RangedAbility::isValidTarget(VectorF target, const Map* map) const 
 {
+	if (mOnlyDirectional)
+		return true;
+
 	// Is it in range
 	float range = mProperties.at(PropertyType::Range);
 	if (distanceSquared(mCaster->position(), target) > range * range)

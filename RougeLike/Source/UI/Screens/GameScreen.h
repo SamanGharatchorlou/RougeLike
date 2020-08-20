@@ -19,7 +19,6 @@ public:
 public:
 	GameScreen();
 
-	void initHeyKeys(std::unordered_map<AbilityType, Button::Key>* hotKeys) { mHotkeyMap = hotKeys; }
 
 	void enter() override;
 	void handleInput(const InputManager* input);
@@ -32,6 +31,4 @@ public:
 private:
 	ScreenLayer* mAdditionalLayer;
 
-	// TEMP
-	std::unordered_map<AbilityType, Button::Key>* mHotkeyMap;
 };

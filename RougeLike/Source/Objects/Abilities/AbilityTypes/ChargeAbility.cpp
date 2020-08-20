@@ -15,7 +15,7 @@ void ChargeAbility::activateAt(VectorF position, EffectPool* effectPool)
 	mDistanceTravelled = 0.0f;
 
 	VectorF direction = (mCaster->position() - position).normalise();
-	mChargeSource = mCaster->position() + direction; // any random point in this particular direction
+	mChargeSource = mCaster->position() + direction * 100.0f; // any random point in this particular direction
 
 	setCharging(true);
 
@@ -51,6 +51,7 @@ void ChargeAbility::fastUpdate(float dt)
 		{
 			setCharging(false);
 			mAnimator.stop();
+			mCompleted = true;
 		}
 	}
 }
