@@ -96,7 +96,6 @@ public:
 	bool hasAnimations() const { return (bool)mAnimations.size(); }
 	void selectAnimation(Action state);
 	void startAnimation(Action state);
-	Action currentAction() const { return mAnimations[mActiveIndex].mState; }
 
 	void setSpeedFactor(float speed) { speedFactor = speed; }
 
@@ -112,7 +111,7 @@ public:
 	int animationCount() const { return mAnimations.size(); }
 
 	const Animation& animation() const { return mAnimations[mActiveIndex]; }
-	Animation& getAnimation(int index) { return mAnimations[index]; }
+	Animation& getAnimation(Action action);
 
 private:
 

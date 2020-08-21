@@ -19,7 +19,7 @@ void TileInteractableManager::init(CollisionManager* collisions, EffectPool* eff
 void TileInteractableManager::load()
 {
 	std::vector<DecorType> types;
-	for (DecorType type = DecorType::Traps << 1; type < DecorType::END; type = type << 1)
+	for (DecorType type = DecorType::TRAP << 1; type < DecorType::END; type = type << 1)
 	{
 		types.push_back(type);
 	}
@@ -52,7 +52,7 @@ void TileInteractableManager::addMap(Map* map, const DecorMap& info)
 			Index index(x, y);
 			MapTile* tile = map->tile(index);
 
-			if (tile->decorType() > DecorType::Triggers)
+			if (tile->decorType() > DecorType::TRIGGER)
 			{
 				Trigger* trigger = mTrapPool.getTrigger(tile->decorType());
 				prepare(trigger, tile, info);
@@ -60,7 +60,7 @@ void TileInteractableManager::addMap(Map* map, const DecorMap& info)
 				interactables.triggers->push_back(trigger);
 
 			}
-			else if (tile->decorType() > DecorType::Traps)
+			else if (tile->decorType() > DecorType::TRAP)
 			{
 				Trap* trap = mTrapPool.getTrap(tile->decorType());
 				prepare(trap, tile, info);

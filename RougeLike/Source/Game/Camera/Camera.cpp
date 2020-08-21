@@ -26,21 +26,19 @@ void Camera::setPosition(VectorF position)
 void Camera::follow(RectF* rect)
 {
 	mFollowingRect = rect;
+	mRect.SetCenter(mFollowingRect->Center());
 }
 
 
 void Camera::fastUpdate(float dt)
 {
-	VectorF translation = mFollowingRect->Center() - mRect.Center();
+	VectorF translation = lerpMovement(dt); // mFollowingRect->Center() - mRect.Center();
+
 
 	if (mRect.LeftPoint() + translation.x >= mBoundaries.x1 &&
 		mRect.RightPoint() + translation.x <= mBoundaries.x2)
 	{
 		mRect = mRect.Translate(translation.x, 0.0f);
-	}
-	else
-	{
-		int a = 4;
 	}
 
 	if (mRect.TopPoint() + translation.y >= mBoundaries.y1 &&
@@ -71,4 +69,10 @@ void Camera::slowUpdate(float dt)
 VectorF Camera::toCameraCoords(const VectorF worldCoords) const
 {
 	return worldCoords - mActiveRect->TopLeft();
+}
+
+
+VectorF Camera::lerpMovement(float dt)
+{
+	return (mFollowingRect->Center() - mRect.Center()) * 0.9f * dt * 10.0f;
 }

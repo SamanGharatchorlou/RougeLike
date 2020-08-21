@@ -38,10 +38,12 @@ FileManager::FileManager()
 
 	// Configs
 	folderPaths[Configs] = folderPaths[Root] + "Configs\\";
+
+	folderPaths[Config_Map] = folderPaths[Configs] + "Map\\";
+	folderPaths[Config_Menus] = folderPaths[Configs] + "UIMenus\\";
 	folderPaths[Configs_Objects] = folderPaths[Configs] + "Objects\\";
 
-	folderPaths[Config_Menus] = folderPaths[Configs] + "UIMenus\\";
-	folderPaths[Config_Map] = folderPaths[Configs] + "Map\\";
+	folderPaths[Configs_MapObjects] = folderPaths[Configs_Objects] + "Map\\";
 	folderPaths[Config_Enemies] = folderPaths[Configs_Objects] + "Enemies\\";
 	folderPaths[Config_Player] = folderPaths[Configs_Objects] + "Player\\";
 	folderPaths[Config_Abilities] = folderPaths[Configs_Objects] + "Abilities\\";

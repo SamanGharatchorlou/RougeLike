@@ -2,7 +2,6 @@
 
 #include "UI/Screens/Screen.h"
 #include "Events/Observer.h"
-#include "Events/Dispatcher.h"
 
 #if UI_EDITOR
 #include "Debug/UIEditor.h"
@@ -14,9 +13,10 @@ class Cursor;
 class UIManager : public Observer
 {
 public:
-	UIManager();
+	UIManager() : mCursor(nullptr), mActiveScreen(nullptr) { }
 	~UIManager();
 
+	void init();
 	void setupScreens();
 	void clearScreens();
 
@@ -32,8 +32,6 @@ public:
 	
 	Screen* screen(Screen::Type type);
 	Screen* getActiveScreen() { return mActiveScreen; }
-
-	//bool isUsingUI() const;
 
 	void setCursorTexture(Texture* texture);
 

@@ -19,9 +19,10 @@ public:
 		Font,
 
 		Configs,
-		Configs_Objects,
-		Config_Menus,
 		Config_Map,
+		Config_Menus,
+		Configs_Objects,
+		Configs_MapObjects,
 		Config_Enemies,
 		Config_Player,
 		Config_Weapons,

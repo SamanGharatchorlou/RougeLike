@@ -52,10 +52,8 @@ public:
 	void stun(float stunTime);
 
 	// Map
-	//void setMap(const AIPathMap* map) { mMap = map; }
 	const AIPathing& getPathMap() const { return mAIPathing; }
 	AIPathing* getAIPathing() { return &mAIPathing; }
-	//const Map* getEnvironmentMap() const;
 
 	// Collisions
 	void resolveCollisions();

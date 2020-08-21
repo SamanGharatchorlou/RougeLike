@@ -77,24 +77,29 @@ enum class DecorType : Uint32
 {
 	None,
 	Column = 1,
-	Water = Column << 1,
-	Torch = Column << 2,
-	Torch_Handle = Column << 3,
-	Torch_Bowl = Column << 4,
+	Water = 1 << 1,
 
-	Traps = Column << 5,
-	Spikes = Traps << 1, // 64
-	Grating = Traps << 2, // 128
+	ANIMATION = 1 << 2,
 
-	Triggers = Traps << 3, // 
-	GratingTrigger = Triggers << 1, // 512
+	Torch = ANIMATION << 1,
+	Torch_Handle = ANIMATION << 2,
+	Torch_Bowl = ANIMATION << 3,
 
-	END = Triggers << 2
+	TRAP = ANIMATION << 4,
+
+	Spikes = TRAP << 1,
+	Grating = TRAP << 2,
+
+	TRIGGER = TRAP << 3,
+
+	GratingTrigger = TRIGGER << 1,
+
+	END = TRIGGER << 2
 };
 
 
 //using DecorMap = std::map<DecorType, StringMap>;
-DecorType stringToType(const BasicString& decorString);
+DecorType stringToDecorType(const BasicString& decorString);
 
 
 
@@ -146,4 +151,9 @@ inline DecorType operator &(DecorType a, DecorType b)
 inline DecorType operator << (DecorType type, int number)
 {
 	return static_cast<DecorType>(static_cast<Uint32>(type) << number);
+}
+
+inline DecorType operator ~(DecorType a)
+{
+	return static_cast<DecorType>(~static_cast<Uint32>(a));
 }

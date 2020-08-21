@@ -82,3 +82,5 @@ SDL_Colour SDLColour(Colour colour);
 
 int toInt(const BasicString& string);
 float toFloat(const BasicString& string);
+
+SDL_Rect toSDLRect(const RectF& rect);

@@ -10,15 +10,15 @@
 		<Dungeon>
 			<Column spacing="3"></Column>
 			<Torch type = "TorchBowl" spacing ="3"></Torch>
-			<Spikes rate="0" damage = "10" triggerTime="1.5" recoveryTime="1.0"></Spikes>
+			<SpikeTrap rate="0" damage = "10" triggerTime="1.5" recoveryTime="1.0"></SpikeTrap>
 			<Water width="3" height="2" spacing="10"></Water>
 		</Dungeon>
 
 		<Corridor>
 			<Column spacing="3"></Column>
 			<Torch type = "TorchBowl" spacing ="3"></Torch>
-			<Spikes rate = "0" damage = "10" triggerTime="1.5" recoveryTime="1.0"></Spikes>
-			<Grating damage = "40" triggerTime="0.1" recoveryTime="-1"></Grating>
+			<SpikeTrap rate = "0" damage = "10" triggerTime="1.5" recoveryTime="1.0"></SpikeTrap>
+			<FireGratingTrap damage = "40" triggerTime="0.1" recoveryTime="-1"></FireGratingTrap>
 			<GratingTrigger x = "13" y = "12"></GratingTrigger>
 		</Corridor>
 	</Decor>

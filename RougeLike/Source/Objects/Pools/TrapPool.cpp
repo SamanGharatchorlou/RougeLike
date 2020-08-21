@@ -11,7 +11,7 @@
 Trap* TrapPool::getTrap(DecorType trapType)
 {
 #if _DEBUG
-	if (!(trapType > DecorType::Traps && trapType < DecorType::Triggers))
+	if (!(trapType > DecorType::TRAP && trapType < DecorType::TRIGGER))
 	{
 		DebugPrint(Warning, "Trap type %d is not a trap\n", trapType);
 		return nullptr;
@@ -25,7 +25,7 @@ Trap* TrapPool::getTrap(DecorType trapType)
 Trigger* TrapPool::getTrigger(DecorType triggerType)
 {
 #if _DEBUG
-	if (!(triggerType > DecorType::Triggers && triggerType < DecorType::END))
+	if (!(triggerType > DecorType::TRIGGER && triggerType < DecorType::END))
 	{
 		DebugPrint(Warning, "Trigger type %d is not a trigger\n", triggerType);
 		return nullptr;

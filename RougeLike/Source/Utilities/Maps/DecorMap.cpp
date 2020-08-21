@@ -9,7 +9,7 @@ void DecorMap::fill(const XMLNode& node)
 	XMLNode decorNode = node.child();
 	while (decorNode)
 	{
-		DecorType type = stringToType(decorNode.name());
+		DecorType type = stringToDecorType(decorNode.name());
 		StringMap attributes(decorNode.attributes());
 
 		mData[type] = attributes;

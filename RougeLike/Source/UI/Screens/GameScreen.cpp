@@ -50,6 +50,4 @@ void GameScreen::update()
 		newRect.SetSize(newSize);
 		icon->setRect(newRect);
 	}
-
-
 }

@@ -7,55 +7,62 @@
 
 void AnimationTilePopulator::addAnimations(Grid<MapTile>& data)
 {
-	XMLParser tourchHandleParser(FileManager::Get()->findFile(FileManager::Configs_Objects, "TorchHandle"));
-	XMLParser tourchBowlParser(FileManager::Get()->findFile(FileManager::Configs_Objects, "TorchBowl"));
-	XMLParser spikeParser(FileManager::Get()->findFile(FileManager::Configs_Objects, "SpikeTrap"));
-	XMLParser triggerParser(FileManager::Get()->findFile(FileManager::Configs_Objects, "TriggerTrap"));
-	XMLParser gratingParser(FileManager::Get()->findFile(FileManager::Configs_Objects, "FireGratingTrap"));
+	FileManager* fm = FileManager::Get();
+	std::unordered_map<DecorType, XMLParser> parserMap;
+
+	std::vector<BasicString> filePaths = fm->allFilesInFolder(FileManager::Configs_MapObjects);
+	for (const BasicString& path : filePaths)
+	{
+		const BasicString fileName = fm->getItemName(path);
+		DecorType type = stringToDecorType(fileName);
+		parserMap[type].parseXML(path);
+	}
+
 
 	for (int x = 0; x < data.xCount(); x++)
 	{
 		for (int y = 0; y < data.yCount(); y++)
 		{
 			MapTile& tile = data[Index(x, y)];
+			DecorType type = tile.decorType();
 
-			if (tile.has(DecorType::Torch_Handle))
+			if (type > DecorType::ANIMATION)
 			{
-				XMLNode node = tourchHandleParser.rootChild("Animator");
-				Animator animator = buildAnimation(node);
-				tile.addAnimation(animator);
-			}
+				if (tile.has(DecorType::Torch))
+					type = type &~DecorType::Torch;
 
-			if (tile.has(DecorType::Torch_Bowl))
-			{
-				XMLNode node = tourchBowlParser.rootChild("Animator");
-				Animator animator = buildAnimation(node);
-				tile.addAnimation(animator);
-			}
+				if (parserMap.count(type) > 0)
+				{
+					XMLParser& parser = parserMap.at(type);
+					XMLNode root = parser.rootNode();
+					XMLNode node = root.child("Animator");
+					Animator animator = buildAnimation(node);
 
-			if (tile.has(DecorType::Spikes))
-			{
-				XMLNode node = spikeParser.rootChild("Animator");
-				Animator animator = buildAnimation(node);
-				tile.addAnimation(animator);
-				tile.animation(0).pause();
-			}
+					if (root.child("Start"))
+					{
+						animator.start();
+					}
+					else if (root.child("Pause"))
+					{
+						animator.start();
+						animator.pause();
+					}
+					else
+					{
+						animator.stop();
+					}
 
-			if (tile.has(DecorType::GratingTrigger))
-			{
-				XMLNode node = triggerParser.rootChild("Animator");
-				Animator animator = buildAnimation(node);
-				tile.addAnimation(animator);
-				tile.animation(0).pause();
-			}
+					if (root.child("DeferredRender"))
+					{
+						tile.setDeferredRendering(true);
+					}
 
-			if (tile.has(DecorType::Grating))
-			{
-				XMLNode node = gratingParser.rootChild("Animator");
-				Animator animator = buildAnimation(node);
-				tile.addAnimation(animator);
-				tile.setDeferredRendering(true);
-				tile.animation(0).stop();
+					tile.addAnimation(animator);
+				}
+				else
+				{
+					DebugPrint(Warning, "No parser has been built for decor type %d. Does it exist in %s?\n", (int)type, fm->generatePath(FileManager::Configs_MapObjects));
+				}
 			}
 		}
 	}

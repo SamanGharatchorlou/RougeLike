@@ -19,7 +19,6 @@ void ChargeAbility::activateAt(VectorF position, EffectPool* effectPool)
 
 	setCharging(true);
 
-	mRect.SetSize(mCaster->rect().Size() * 1.5f);
 	mAnimator.startAnimation(Action::Active);
 }
 

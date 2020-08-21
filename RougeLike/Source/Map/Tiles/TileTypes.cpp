@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "TileTypes.h"
 
-DecorType stringToType(const BasicString& decorString)
+DecorType stringToDecorType(const BasicString& decorString)
 {
 	if (decorString == "Column")
 		return DecorType::Column;
@@ -13,11 +13,11 @@ DecorType stringToType(const BasicString& decorString)
 		return DecorType::Torch_Handle;
 	else if (decorString == "TorchBowl")
 		return DecorType::Torch_Bowl;
-	else if (decorString == "Spikes")
+	else if (decorString == "SpikeTrap")
 		return DecorType::Spikes;	
 	else if (decorString == "GratingTrigger")
 		return DecorType::GratingTrigger;
-	else if (decorString == "Grating")
+	else if (decorString == "FireGratingTrap")
 		return DecorType::Grating;
 	else
 	{

@@ -96,6 +96,15 @@ void ActorManager::handleEvent(EventData& data)
 			mEnemies.popAIPathMap();
 		else
 			DebugPrint(Warning, "Event data not recognised\n");
+		break;
+	}
+	case Event::EnemyDead:
+	{
+		EnemyDeadEvent& eventData = static_cast<EnemyDeadEvent&>(data);
+
+		int exp = eventData.mExp;
+		mPlayer.addExp(exp);
+		break;
 	}
 	default:
 		break;

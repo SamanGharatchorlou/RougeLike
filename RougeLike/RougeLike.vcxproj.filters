@@ -125,8 +125,6 @@
     <ClCompile Include="Source\UI\UIEventHandler.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectManager.cpp" />
     <ClCompile Include="Source\Weapons\WeaponData.cpp" />
-    <ClCompile Include="Source\Objects\Properties\StatManager.cpp" />
-    <ClCompile Include="Source\Objects\Properties\Attributes\Level.cpp" />
     <ClCompile Include="Source\Objects\Properties\Property.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyDebugger.cpp" />
     <ClCompile Include="Source\Map\MapBuilding\MapBuilder.cpp" />
@@ -168,6 +166,7 @@
     <ClCompile Include="Source\Objects\Abilities\AbilityHotKey.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHotKeyManager.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\SlashAbility.cpp" />
+    <ClCompile Include="Source\Objects\Properties\Attributes\Levelling.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -314,11 +313,9 @@
     <ClInclude Include="Source\Debug\UIEditor.h" />
     <ClInclude Include="Source\UI\UIEventHandler.h" />
     <ClInclude Include="Source\Objects\Effects\EffectManager.h" />
-    <ClInclude Include="Source\Objects\Properties\StatManager.h" />
     <ClInclude Include="Source\Objects\Properties\Attributes\Armor.h" />
     <ClInclude Include="Source\Objects\Properties\Attributes\Damage.h" />
     <ClInclude Include="Source\Objects\Properties\Attributes\Health.h" />
-    <ClInclude Include="Source\Objects\Properties\Attributes\Level.h" />
     <ClInclude Include="Source\Objects\Properties\Attributes\Attribute.h" />
     <ClInclude Include="Source\Objects\Properties\Property.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyDebugger.h" />
@@ -364,6 +361,7 @@
     <ClInclude Include="Source\Objects\Abilities\AbilityHotKey.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityHotKeyManager.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\SlashAbility.h" />
+    <ClInclude Include="Source\Objects\Properties\Attributes\Levelling.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

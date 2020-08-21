@@ -8,4 +8,6 @@
 			<Active>2</Active>
 		</Animations>
 	</Animator>
+	
+	<Pause></Pause>
 </Decor>

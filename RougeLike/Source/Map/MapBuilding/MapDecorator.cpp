@@ -154,7 +154,7 @@ void MapDecorator::addColumns(Grid<MapTile>& data, const StringMap& attributes)
 // Torches
 void MapDecorator::addTorches(Grid<MapTile>& data, const StringMap& attributes)
 {
-	DecorType torchType = stringToType(attributes.at("type"));
+	DecorType torchType = stringToDecorType(attributes.at("type"));
 	int spacing = attributes.getInt("spacing");
 
 	for (int x = 0; x < data.xCount(); x++)

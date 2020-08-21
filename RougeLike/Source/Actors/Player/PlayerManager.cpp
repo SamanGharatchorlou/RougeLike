@@ -37,6 +37,11 @@ void PlayerManager::addAbility(const BasicString& ability)
 	mAbilities.addAbility(ability);
 }
 
+void PlayerManager::addExp(int exp)
+{
+	mLevelling.gainExp(exp);
+}
+
 void PlayerManager::setPosition(VectorF position)
 {
 	mPlayer.rectRef().SetLeftCenter(position);
@@ -80,6 +85,7 @@ void PlayerManager::slowUpdate(float dt)
 	mPlayerCollisions.enableBodyCollisions(mPlayer.hasBodyCollisions());
 
 	mPlayer.slowUpdate(dt);
+	mLevelling.slowUpdate(dt);
 
 	Map* playerMap = mEnvironment->map(mPlayer.position());
 	mPlayer.updateCurrentTile(playerMap);
@@ -101,6 +107,8 @@ void PlayerManager::render()
 {
 	mPlayer.render();
 	mAbilities.render();
+
+	mLevelling.render(mPlayer.rect());
 }
 
 
@@ -115,6 +123,9 @@ void PlayerManager::selectCharacter(const BasicString& characterConfig)
 
 	BasicString weapontype = parser.rootChild("WeaponType").value();
 	mPlayer.setWeaponType(mWeaponStash.getWeapon(weapontype));
+
+
+	mLevelling.init(mPlayer.rect());
 }
 
 

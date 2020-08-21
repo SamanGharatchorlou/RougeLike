@@ -86,7 +86,7 @@
     <ClCompile Include="Source\Utilities\Maps\AttributeMap.cpp" />
     <ClCompile Include="Source\Utilities\Maps\DecorMap.cpp" />
     <ClCompile Include="Source\Utilities\Maps\StringMap.cpp" />
-    <ClCompile Include="Source\Objects\Properties\Attributes\Level.cpp" />
+    <ClCompile Include="Source\Objects\Properties\Attributes\Levelling.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectManager.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\BlinkEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\DamageEffect.cpp" />
@@ -95,7 +95,6 @@
     <ClCompile Include="Source\Objects\Effects\EffectTypes\HealEffect.cpp" />
     <ClCompile Include="Source\Actors\Physics.cpp" />
     <ClCompile Include="Source\Objects\Properties\Property.cpp" />
-    <ClCompile Include="Source\Objects\Properties\StatManager.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectHandler.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyManager.cpp" />
     <ClCompile Include="Source\Actors\Enemies\Enemy.cpp" />
@@ -269,7 +268,7 @@
     <ClInclude Include="Source\Utilities\Maps\StringMap.h" />
     <ClInclude Include="Source\Objects\Properties\Attributes\Armor.h" />
     <ClInclude Include="Source\Objects\Properties\Attributes\Damage.h" />
-    <ClInclude Include="Source\Objects\Properties\Attributes\Level.h" />
+    <ClInclude Include="Source\Objects\Properties\Attributes\Levelling.h" />
     <ClInclude Include="Source\Objects\Effects\EffectManager.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\BlinkEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\DamageEffect.h" />
@@ -282,7 +281,6 @@
     <ClInclude Include="Source\Utilities\Maps\EffectMap.h" />
     <ClInclude Include="Source\Objects\Properties\Attributes\Attribute.h" />
     <ClInclude Include="Source\Objects\Properties\Property.h" />
-    <ClInclude Include="Source\Objects\Properties\StatManager.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\Effect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectHandler.h" />
     <ClInclude Include="Source\Actors\Enemies\Enemy.h" />

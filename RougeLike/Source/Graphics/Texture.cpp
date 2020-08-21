@@ -67,23 +67,17 @@ bool Texture::loadFromFile(const BasicString& filePath)
 
 
 
-void Texture::render(const RectF rect, SDL_RendererFlip flip) const
+void Texture::render(const RectF& rect, SDL_RendererFlip flip) const
 {
-	SDL_Rect renderQuad = { static_cast<int>(rect.x1 + 0.5f),
-							static_cast<int>(rect.y1 + 0.5f),
-							static_cast<int>(rect.Width() + 0.5f),
-							static_cast<int>(rect.Height() + 0.5f) };
+	SDL_Rect renderQuad = toSDLRect(rect);
 
 	SDL_RenderCopyEx(renderer, texture, nullptr, &renderQuad, 0.0, NULL, flip);
 }
 
 
-void Texture::render(const RectF rect) const
+void Texture::render(const RectF& rect) const
 {
-	SDL_Rect renderQuad = { static_cast<int>(rect.x1		+ 0.5f),
-							static_cast<int>(rect.y1		+ 0.5f),
-							static_cast<int>(rect.Width()	+ 0.5f),
-							static_cast<int>(rect.Height()	+ 0.5f) };
+	SDL_Rect renderQuad = toSDLRect(rect);
 
 	SDL_RenderCopyEx(renderer, texture, nullptr, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
 }
@@ -91,29 +85,19 @@ void Texture::render(const RectF rect) const
 
 // Renders texture with the roation specified
 // NOTE: the about point is relative to the rect e.g. about the center would be rect.size()/2, not rect.center()
-void Texture::render(const RectF rect, double rotation, VectorF aboutPoint) const
+void Texture::render(const RectF& rect, double rotation, VectorF aboutPoint) const
 {
-	SDL_Rect renderQuad = { static_cast<int>(rect.x1 + 0.5f),
-							static_cast<int>(rect.y1 + 0.5f),
-							static_cast<int>(rect.Width() + 0.5f),
-							static_cast<int>(rect.Height() + 0.5f) };
-
-	// rotate about this point
-	SDL_Point point = { (int)aboutPoint.x, (int)aboutPoint.y };
+	SDL_Rect renderQuad = toSDLRect(rect);
+	SDL_Point point = { (int)(aboutPoint.x + 0.5f), (int)(aboutPoint.y + 0.5f) };
 
 	SDL_RenderCopyEx(renderer, texture, nullptr, &renderQuad, rotation, &point, SDL_FLIP_NONE);
 }
 
 
 // Renders part of the texture, e.g. a tile in a set with the roation specified
-void Texture::render(const RectF rect, double rotation, VectorF aboutPoint, SDL_RendererFlip flip) const
+void Texture::render(const RectF& rect, double rotation, VectorF aboutPoint, SDL_RendererFlip flip) const
 {
-	SDL_Rect renderQuad = { static_cast<int>(rect.x1 + 0.5f),
-							static_cast<int>(rect.y1 + 0.5f),
-							static_cast<int>(rect.Width() + 0.5f),
-							static_cast<int>(rect.Height() + 0.5f) };
-
-	// rotate about this point
+	SDL_Rect renderQuad = toSDLRect(rect);
 	SDL_Point point = { (int)aboutPoint.x, (int)aboutPoint.y };
 
 	SDL_RenderCopyEx(renderer, texture, nullptr, &renderQuad, rotation, &point, flip);
@@ -121,31 +105,21 @@ void Texture::render(const RectF rect, double rotation, VectorF aboutPoint, SDL_
 
 
 // Renders part of the texture, e.g. a tile in a set
-void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect) const
+void Texture::renderSubTexture(const RectF& rect, const RectF& subRect) const
 {
-	SDL_Rect renderQuad = { static_cast<int>(rect.x1 + 0.5f),
-							static_cast<int>(rect.y1 + 0.5f),
-							static_cast<int>(rect.Width() + 0.5f),
-							static_cast<int>(rect.Height() + 0.5f) };
-
-	// the region of the texture being displayed on the screen
-	SDL_Rect subQuad = { subRect.x1, subRect.y1, subRect.Width(), subRect.Height() };
+	SDL_Rect renderQuad = toSDLRect(rect);
+	SDL_Rect subQuad = toSDLRect(subRect);
 
 	SDL_RenderCopyEx(renderer, texture, &subQuad, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
 }
 
 
-// Renders part of the texture, e.g. a tile in a set with the roation specified
+// Renders part of the texture, e.g. a tile in a set with the rotation specified
 // NOTE: the about point is relative to the rect e.g. about the center would be rect.size()/2, not rect.center()
-void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, double rotation, VectorF aboutPoint) const
+void Texture::renderSubTexture(const RectF& rect, const RectF& subRect, double rotation, VectorF aboutPoint) const
 {
-	SDL_Rect renderQuad = { static_cast<int>(rect.x1 + 0.5f),
-							static_cast<int>(rect.y1 + 0.5f),
-							static_cast<int>(rect.Width() + 0.5f),
-							static_cast<int>(rect.Height() + 0.5f) };
-
-	// the region of the texture being displayed on the screen
-	SDL_Rect subQuad = { subRect.x1, subRect.y1, subRect.Width(), subRect.Height() };
+	SDL_Rect renderQuad = toSDLRect(rect);
+	SDL_Rect subQuad = toSDLRect(subRect);
 
 	// rotate about this point
 	SDL_Point point = { (int)aboutPoint.x, (int)aboutPoint.y };
@@ -155,30 +129,20 @@ void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, double
 
 
 // Renders part of the texture, e.g. a tile in a set with the flip specified
-void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, SDL_RendererFlip flip) const
+void Texture::renderSubTexture(const RectF& rect, const RectF& subRect, SDL_RendererFlip flip) const
 {
-	SDL_Rect renderQuad = { static_cast<int>(rect.x1 + 0.5f),
-							static_cast<int>(rect.y1 + 0.5f),
-							static_cast<int>(rect.Width() + 0.5f),
-							static_cast<int>(rect.Height() + 0.5f) };
-
-	// the region of the texture being displayed on the screen
-	SDL_Rect subQuad = { subRect.x1, subRect.y1, subRect.Width(), subRect.Height() };
+	SDL_Rect renderQuad = toSDLRect(rect);
+	SDL_Rect subQuad = toSDLRect(subRect);
 
 	SDL_RenderCopyEx(renderer, texture, &subQuad, &renderQuad, 0.0, NULL, flip);
 }
 
 
 // Renders part of the texture, e.g. a tile in a set with the flip and alpha specified
-void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, SDL_RendererFlip flip, Uint8 tempAlpha)
+void Texture::renderSubTexture(const RectF& rect, const RectF& subRect, SDL_RendererFlip flip, Uint8 tempAlpha)
 {
-	SDL_Rect renderQuad = { static_cast<int>(rect.x1 + 0.5f),
-							static_cast<int>(rect.y1 + 0.5f),
-							static_cast<int>(rect.Width() + 0.5f),
-							static_cast<int>(rect.Height() + 0.5f) };
-
-	// the region of the texture being displayed on the screen
-	SDL_Rect subQuad = { subRect.x1, subRect.y1, subRect.Width(), subRect.Height() };
+	SDL_Rect renderQuad = toSDLRect(rect);
+	SDL_Rect subQuad = toSDLRect(subRect);
 
 	// Temporarily set the alpha 
 	const Uint8 currentAlpha = alpha();
@@ -194,15 +158,10 @@ void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, SDL_Re
 
 
 // Renders part of the texture, e.g. a tile in a set with the flip and alpha specified. Also apply a colour mod.
-void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, SDL_RendererFlip flip, RenderColour colourMod)
+void Texture::renderSubTexture(const RectF& rect, const RectF& subRect, SDL_RendererFlip flip, RenderColour colourMod)
 {
-	SDL_Rect renderQuad = { static_cast<int>(rect.x1 + 0.5f),
-							static_cast<int>(rect.y1 + 0.5f),
-							static_cast<int>(rect.Width() + 0.5f),
-							static_cast<int>(rect.Height() + 0.5f) };
-
-	// the region of the texture being displayed on the screen
-	SDL_Rect subQuad = { subRect.x1, subRect.y1, subRect.Width(), subRect.Height() };
+	SDL_Rect renderQuad = toSDLRect(rect);
+	SDL_Rect subQuad = toSDLRect(subRect);
 
 	// Apply temporary colour modulation 
 	SDL_SetTextureColorMod(texture, colourMod.r, colourMod.g, colourMod.b);
@@ -215,15 +174,10 @@ void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, SDL_Re
 
 
 // Renders part of the texture, e.g. a tile in a set with the roation specified
-void Texture::renderSubTexture(const RectF rect, const Rect<int> subRect, double rotation, VectorF aboutPoint, SDL_RendererFlip flip) const
+void Texture::renderSubTexture(const RectF& rect, const RectF& subRect, double rotation, VectorF aboutPoint, SDL_RendererFlip flip) const
 {
-	SDL_Rect renderQuad = { static_cast<int>(rect.x1 + 0.5f),
-							static_cast<int>(rect.y1 + 0.5f),
-							static_cast<int>(rect.Width() + 0.5f),
-							static_cast<int>(rect.Height() + 0.5f) };
-
-	// the region of the texture being displayed on the screen
-	SDL_Rect subQuad = { subRect.x1, subRect.y1, subRect.Width(), subRect.Height() };
+	SDL_Rect renderQuad = toSDLRect(rect);
+	SDL_Rect subQuad = toSDLRect(subRect);
 
 	// rotate about this point
 	SDL_Point point = { (int)aboutPoint.x, (int)aboutPoint.y };

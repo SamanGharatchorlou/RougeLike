@@ -27,7 +27,7 @@ Enemy::Enemy() :
 	physics()->setFlip(static_cast<SDL_RendererFlip>(randomNumberBetween(0, 2)));
 }
 
-// REQUIRES TESTING
+
 Enemy::~Enemy()
 {
 	if (mStateMachine.size() != 1 || mStateMachine.getActiveState().type() != EnemyState::None)

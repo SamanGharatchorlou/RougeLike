@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LevelUp>
+	<WidthMultiplier>2.75</WidthMultiplier>
+	<RenderOffsetRatio x ="0" y = "0.05"></RenderOffsetRatio>
+
+	<Animator>
+		<ID>LevelUp</ID>
+		<FrameTime>0.06</FrameTime>
+		<FrameSize x = "1036" y ="1036"></FrameSize>
+		<Animations>
+			<Active>12</Active>
+		</Animations>
+	</Animator>
+</LevelUp>

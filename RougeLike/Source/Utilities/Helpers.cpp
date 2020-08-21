@@ -78,6 +78,8 @@ VectorF realiseSize(VectorF baseSize, float maxDimention)
 	return baseSize / maxRatio;
 }
 
+
+
 SDL_Colour SDLColour(Colour colour)
 {
 	Uint8 r = 0;
@@ -122,4 +124,14 @@ int toInt(const BasicString& string)
 float toFloat(const BasicString& string)
 {
 	return atof(string.c_str());
+}
+
+SDL_Rect toSDLRect(const RectF& rect)
+{
+	SDL_Rect sdlRect = { static_cast<int>(rect.x1 + 0.5f),
+						static_cast<int>(rect.y1 + 0.5f),
+						static_cast<int>(rect.Width() + 0.5f),
+						static_cast<int>(rect.Height() + 0.5f) };
+
+	return sdlRect;
 }

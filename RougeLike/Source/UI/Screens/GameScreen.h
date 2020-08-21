@@ -29,6 +29,6 @@ public:
 
 
 private:
-	ScreenLayer* mAdditionalLayer;
+	//ScreenLayer* mAdditionalLayer;
 
 };

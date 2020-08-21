@@ -10,7 +10,7 @@
 void FireGratingTrigger::trigger()
 {
 	Animator& animator = mTile->animation(0);
-	animator.getAnimation(0).nextFrame();
+	animator.getAnimation(Action::Active).nextFrame();
 
 	exhausted = true;
 

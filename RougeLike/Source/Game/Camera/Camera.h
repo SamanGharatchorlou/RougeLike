@@ -41,6 +41,8 @@ private:
 	Camera();
 	~Camera() { }
 
+	VectorF lerpMovement(float dt);
+
 
 private:
 	RectF mRect;

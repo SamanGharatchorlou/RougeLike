@@ -188,6 +188,18 @@ void Animator::selectAnimation(Action state)
 }
 
 
+Animator::Animation& Animator::getAnimation(Action action)
+{
+	for (int i = 0; i < mAnimations.size(); i++)
+	{
+		if (mAnimations[i].mState == action)
+		{
+			return mAnimations[i];
+		}
+	}
+}
+
+
 void Animator::startAnimation(Action state)
 {
 	selectAnimation(state);

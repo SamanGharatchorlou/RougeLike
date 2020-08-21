@@ -158,7 +158,9 @@ void GameController::updateLoops(float dt)
 	for (int i = 0; i < updateLoopRepeats; i++)
 		mGameStateMachine.getActiveState().fastUpdate(dt / updateLoopRepeats);
 
+
 	mGameStateMachine.getActiveState().slowUpdate(dt);
+
 	mAudio->slowUpdate();
 	mGameData.uiManager->update(dt);
 }

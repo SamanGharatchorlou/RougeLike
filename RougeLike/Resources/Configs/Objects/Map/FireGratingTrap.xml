@@ -8,4 +8,6 @@
 			<Active>8</Active>
 		</Animations>
 	</Animator>
+
+	<DeferredRender></DeferredRender>
 </Decor>

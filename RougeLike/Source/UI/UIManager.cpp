@@ -12,20 +12,20 @@
 #include "Elements/UITextBox.h"
 
 
-UIManager::UIManager()
-{
-	Screen* nullScreen = new NullScreen;
-	mScreens.push_back(nullScreen);
-	mActiveScreen = mScreens.front();
-}
-
-
 UIManager::~UIManager()
 {
 	for (Screen* screen : mScreens)
 	{
 		delete screen;
 	}
+}
+
+
+void UIManager::init()
+{
+	Screen* nullScreen = new NullScreen;
+	mScreens.push_back(nullScreen);
+	mActiveScreen = mScreens.front();
 }
 
 
@@ -64,6 +64,8 @@ void UIManager::selectScreen(Screen::Type screenType)
 
 void UIManager::setupScreens()
 {
+	init();
+
 	ScreenBuilder builder;
 	std::vector<BasicString> configs = FileManager::Get()->allFilesInFolder(FileManager::Config_Menus);
 	for (const BasicString& config : configs)

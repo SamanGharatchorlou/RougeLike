@@ -19,7 +19,7 @@ public:
 	};
 
 public:
-
+	~SettingsScreen() { mSliders.clear(); mButtons.clear(); }
 	void enter() override;
 	void update() override;
 	void exit() override { };

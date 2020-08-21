@@ -6,7 +6,6 @@
 #include "Objects/Properties/Attributes/Attribute.h"
 #include "Objects/Properties/Attributes/Armor.h"
 #include "Objects/Properties/Attributes/Health.h"
-#include "Objects/Properties/Attributes/Level.h"
 #include "Objects/Properties/Attributes/Damage.h"
 
 
@@ -57,9 +56,6 @@ Attribute* AttributeMap::getNewAttribute(AttributeType attributeType) const
 		break;
 	case AttributeType::Armor:
 		attribute = new Armor;
-		break;
-	case AttributeType::Level:
-		attribute = new Level;
 		break;
 	default:
 		attribute = new AttributeValue;

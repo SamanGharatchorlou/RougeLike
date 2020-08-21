@@ -77,7 +77,6 @@ public:
 	// Animations
 	void addAnimation(Animator animation);
 	Animator& animation(int index) { return mAnimations[index]; }
-	const Animator& animation(int index) const { return mAnimations[index]; }
 
 	void render(RectF rect);
 

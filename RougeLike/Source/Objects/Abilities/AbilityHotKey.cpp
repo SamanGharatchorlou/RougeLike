@@ -50,7 +50,7 @@ UIBox* HotKey::createIcon() const
 UIBox* HotKey::creatIconBG(const UIBox* icon) const
 {
 	RectF rect = icon->rect();
-	rect.SetSize(icon->rect().Size() * 1.5f);
+	rect.SetSize(VectorF(75.0f, 75.0f));
 	rect.SetCenter(icon->rect().Center());
 
 	const TextureManager* textures = TextureManager::Get();

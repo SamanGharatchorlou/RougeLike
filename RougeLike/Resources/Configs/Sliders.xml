@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <UI>
-	<RedSlider Handle = "SliderHandle" Bar = "SliderBar" Container = "SliderContainer"></RedSlider>
-	<HealthSlider Handle = "HealthIcon" Bar = "SliderBar" Container = "SliderContainer"></HealthSlider>
+	<RedSlider Handle = "SliderHandle" Bar = "RedSliderBar" Container = "SliderContainer"></RedSlider>
+	<HealthSlider Handle = "HealthIcon" Bar = "RedSliderBar" Container = "SliderContainer"></HealthSlider>
+	<LevelSlider Handle = "" Bar = "YellowSliderBar" Container = "YellowSliderContainer"></LevelSlider>
 </UI>

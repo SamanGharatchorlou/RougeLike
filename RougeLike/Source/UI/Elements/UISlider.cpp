@@ -34,7 +34,11 @@ void UISlider::setComponents(Texture* container, UIButton* slider, UIBox* bar)
 	mBar->setRect(defaultBarRect());
 
 	mSlider = slider;
-	VectorF sliderSize = realiseSize(mSlider->texture()->originalDimentions, mRect.Height() * 1.35f);
+	VectorF sliderSize = VectorF();
+	if (mSlider->texture() != nullptr)
+	{
+		sliderSize = realiseSize(mSlider->texture()->originalDimentions, mRect.Height() * 1.35f);
+	}
 	RectF sliderRect = RectF(VectorF(), sliderSize);
 	sliderRect.SetCenter(mRect.Center());
 	mSlider->setRect(sliderRect);
@@ -169,7 +173,7 @@ void UISlider::setBarSubRect(float value)
 RectF UISlider::defaultBarSubRect() const
 {
 	RectF originalRect = RectF(VectorF(), mBar->texture()->originalDimentions);
-	RectF innerBarRect = RectF(VectorF(), mBar->texture()->originalDimentions * VectorF(1.0f, 0.8f));
+	RectF innerBarRect = RectF(VectorF(), mBar->texture()->originalDimentions * VectorF(1.0f, 0.85f));
 	innerBarRect.SetCenter(originalRect.Center());
 	return innerBarRect;
 }
@@ -177,7 +181,7 @@ RectF UISlider::defaultBarSubRect() const
 
 RectF UISlider::defaultBarRect() const
 {
-	VectorF size = mRect.Size() * VectorF(0.975f, 0.7f);
+	VectorF size = mRect.Size() * VectorF(0.98f, 0.75f);
 	RectF barRect = RectF(VectorF(), size);
 	barRect.SetCenter(mRect.Center());
 	return barRect;

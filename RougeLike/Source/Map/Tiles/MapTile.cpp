@@ -68,7 +68,7 @@ bool MapTile::is(DecorType type) const
 // --- MapTile --- //
 void MapTile::addAnimation(Animator animation)
 {
-	animation.start();
+	//animation.start();
 	mAnimations.push_back(animation);
 }
 
@@ -94,6 +94,11 @@ void MapTile::render(RectF rect)
 
 	for (int i = 0; i < mAnimations.size(); i++)
 	{
+		if (has(DecorType::GratingTrigger))
+		{
+			int a = 4;
+		}
+
 		if (mDeferredRendering)
 			return;
 

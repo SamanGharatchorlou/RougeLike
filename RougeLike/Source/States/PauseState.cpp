@@ -21,7 +21,6 @@ void PauseState::init()
 {
 	selectScreen(Screen::Pause);
 	mGameData->uiManager->setCursorTexture(TextureManager::Get()->getTexture("UICursor", FileManager::Image_UI));
-
 }
 
 

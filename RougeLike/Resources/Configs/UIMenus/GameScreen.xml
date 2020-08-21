@@ -13,6 +13,8 @@
 		<Box id = "HealthBar"   parent = "BlackHealthBar" x = "0" y = "0" width = "380.000" height = "24.000" texture = "HealthBar"></Box>-->
 
 		<Slider id = "HealthSlider" x = "322.065" y = "84.00" width = "450.000" height = "35.000" slider = "HealthSlider"></Slider>
+
+		<Slider id = "LevelSlider" x = "322.065" y = "184.00" width = "450.000" height = "35.000" slider = "LevelSlider"></Slider>
 	</Layer>
 
 	<!-- Map level -->

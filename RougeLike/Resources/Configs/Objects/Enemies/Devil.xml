@@ -10,7 +10,7 @@
 
 		<!-- Data values -->
 		<Score>50></Score>
-		<Experience>2000</Experience>
+		<Experience>100</Experience>
 
 		<!-- Attack -->
 		<AttackSpeed>1</AttackSpeed>
