@@ -17,7 +17,7 @@ void ChargeAbility::activateAt(VectorF position, EffectPool* effectPool)
 	VectorF direction = (mCaster->position() - position).normalise();
 	mChargeSource = mCaster->position() + direction * 100.0f; // any random point in this particular direction
 
-	setCharging(true);
+	setCharging(true); // TODO: dont need charging parameter anymore!, I have the mComplete var for this
 
 	mAnimator.startAnimation(Action::Active);
 }
