@@ -4,10 +4,13 @@
 #include "Events/LocalDispatcher.h"
 #include "Animations/Animator.h"
 #include "Objects/Abilities/Cooldown.h"
+#include "Collisions/Collider.h"
 
 
 class Actor;
 class PropertyMap;
+class EffectPool;
+enum class EffectType;
 
 
 class Ability
@@ -33,6 +36,8 @@ public:
 	void setState(AbilityState state) { mState = state; }
 	AbilityState state() const { return mState; }
 
+	void applyEffect(EffectType effectType, Actor* target, EffectPool* effectPool) const;
+
 	LocalDispatcher& events() { return mEvents; }
 	Cooldown& cooldown() { return mCooldown; }
 
@@ -55,4 +60,7 @@ protected:
 	PropertyMap mProperties;
 
 	bool mCompleted;
+
+
+	Collider mCollider;
 };

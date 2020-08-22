@@ -11,9 +11,11 @@
 void SpikeAbility::activateAt(VectorF position, EffectPool* effectPool)
 {
 	mRect.SetBotCenter(position);
+	mProperties.addXYPosition(position);
 	sendActivateOnRequest();
 
-	mAnimator.startAnimation(Action::Active);
+	mAnimator.selectAnimation(Action::Active);
+	mAnimator.start();
 }
 
 
@@ -23,26 +25,20 @@ void SpikeAbility::activateOn(Actor* actor, EffectPool* effectPool)
 }
 
 
-void SpikeAbility::applyEffects(Actor* actor, EffectPool* effectPool)
-{
-	Effect* displacement = effectPool->getObject(EffectType::Displacement);
-	displacement->fill(mProperties);
-
-	Effect* damage = effectPool->getObject(EffectType::Damage);
-	damage->fill(mProperties);
-
-	actor->addEffect(damage);
-	actor->addEffect(displacement);
-}
-
-
 void SpikeAbility::slowUpdate(float dt)
 {
 	mAnimator.slowUpdate(dt);
 
-	if (mAnimator.loops() > 0)
+	if (mAnimator.loops() == 1)
 	{
 		mCompleted = true;
 		mAnimator.stop();
 	}
+}
+
+
+void SpikeAbility::applyEffects(Actor* actor, EffectPool* effectPool)
+{
+	applyEffect(EffectType::Damage, actor, effectPool);
+	applyEffect(EffectType::Displacement, actor, effectPool);
 }

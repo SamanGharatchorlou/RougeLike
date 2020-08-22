@@ -47,7 +47,8 @@ public:
 
 	AbilityTarget targetType() const override { return AbilityTarget::AttackArea; }
 
-	virtual void render() override;
-
 	void sendActivateOnRequest();
 };
+
+
+void animRender(Animator* animator, const RectF& rect);

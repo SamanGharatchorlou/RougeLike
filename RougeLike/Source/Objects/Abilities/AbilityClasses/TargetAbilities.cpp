@@ -3,13 +3,16 @@
 
 #include "Game/Camera/Camera.h"
 
+#if _DEBUG
+#include "Debug/DebugDraw.h"
+#endif
+
 
 void TargetSelfAbility::render()
 {
 	if (mState == AbilityState::Running)
 	{
-		RectF rect = Camera::Get()->toCameraCoords(mRect);
-		mAnimator.render(rect);
+		animRender(&mAnimator, mRect);
 	}
 }
 
@@ -22,22 +25,7 @@ void TargetPositionAbility::render()
 	}
 	else if (mState == AbilityState::Running)
 	{
-		RectF rect = Camera::Get()->toCameraCoords(mRect);
-		mAnimator.render(rect);
-	}
-}
-
-
-void TargePositionAttackAbility::render()
-{
-	if (mState == AbilityState::Selected)
-	{
-		renderRangeCircle();
-	}
-	else if (mState == AbilityState::Running)
-	{
-		RectF rect = Camera::Get()->toCameraCoords(mRect);
-		mAnimator.render(rect);
+		animRender(&mAnimator, mRect);
 	}
 }
 
@@ -49,3 +37,12 @@ void TargePositionAttackAbility::sendActivateOnRequest()
 }
 
 
+
+void animRender(Animator* animator, const RectF& rect)
+{
+#if DRAW_EFFECT_RECTS
+	debugDrawRect(rect, RenderColour::Yellow);
+#endif
+
+	animator->render(Camera::Get()->toCameraCoords(rect));
+}

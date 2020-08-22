@@ -18,8 +18,7 @@ void ArmorEffect::fill(const PropertyMap& valueBag)
 }
 
 
-void ArmorEffect::clearData()
+void ArmorEffect::exit()
 {
-	clearBaseData();
 	mArmor = Armor(0.0f);
 }

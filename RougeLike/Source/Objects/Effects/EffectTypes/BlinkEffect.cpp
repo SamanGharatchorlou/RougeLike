@@ -1,31 +1,24 @@
 #include "pch.h"
 #include "BlinkEffect.h"
 
-#include "Graphics/Texture.h"
-
-#include "Actors/Player/Player.h"
+#include "Actors/Actor.h"
 
 
-void BlinkEffect::init()
+void BlinkEffect::fill(const PropertyMap& propertyMap)
 {
-	mReceiver->setVisibility(false);
-
-	// NOTE: This bit only works for a player specific, if you ever need to do this to another object
-	// then change this bit, move it into BlinkAbility perhaps?
-	Player* player = static_cast<Player*>(mReceiver);
-	player->overrideControl(true);
-}
-
-void BlinkEffect::fill(const PropertyMap& valueBag)
-{
-	setProperty(PropertyType::xPosition, mTarget.x, valueBag);
+	if (propertyMap.contains(PropertyType::xPosition) &&
+		propertyMap.contains(PropertyType::yPosition))
+	{
+		setProperty(PropertyType::xPosition, mTarget.x, propertyMap);
+		setProperty(PropertyType::yPosition, mTarget.y, propertyMap);
+	}
 }
 
 
 void BlinkEffect::slowUpdate(float dt)
 {
-	VectorF direction = (mTarget - mReceiver->position()).normalise();
 	float speed = 2500.0f;
+	VectorF direction = (mTarget - mReceiver->position()).normalise();
 
 	float movementStep = distanceSquared(VectorF(), direction * speed * dt);
 	float distanceToTarget = distanceSquared(mReceiver->position(), mTarget);
@@ -43,13 +36,5 @@ void BlinkEffect::slowUpdate(float dt)
 
 void BlinkEffect::exit()
 {
-	mReceiver->setVisibility(true);
-
-	// NOTE: This bit only works for a player specific, if you ever need to do this to another object
-	// then change this bit, move it into BlinkAbility perhaps?
-	Player* player = static_cast<Player*>(mReceiver);
-	player->overrideControl(false);
-
 	mTarget = VectorF();
-	clearBaseData();
 }

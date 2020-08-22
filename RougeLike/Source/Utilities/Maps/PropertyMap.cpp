@@ -18,3 +18,9 @@ void PropertyMap::fill(const XMLNode& node)
 		mData[name] = value;
 	}
 }
+
+void PropertyMap::addXYPosition(VectorF positon)
+{
+	mData[PropertyType::xPosition] = positon.x;
+	mData[PropertyType::yPosition] = positon.y;
+}

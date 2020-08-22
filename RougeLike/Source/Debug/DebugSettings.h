@@ -17,6 +17,9 @@
 // Collectables
 #define DRAW_COLLECTABLE_RECT 0
 
+// Effects
+#define DRAW_EFFECT_RECTS 1
+
 // Map
 #define MAP_BOUNDARIES 0
 #define LABEL_TILE_INDEX 0

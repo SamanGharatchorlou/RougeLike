@@ -13,7 +13,7 @@ public:
 	~XMLParser();
 
 	void parseXML(const BasicString& filePath);
-
+	
 	rapidxml::xml_document<>& getXML() { return xmlFile; }
 
 	XMLNode rootNode() const;

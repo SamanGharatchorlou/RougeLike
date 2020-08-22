@@ -29,10 +29,10 @@ void RangedAbility::renderRangeCircle()
 }
 
 
-Collider RangedAbility::collider()
-{
-	return Collider(&mRect);
-}
+//Collider RangedAbility::collider()
+//{
+//	return Collider(&mRect);
+//}
 
 
 bool RangedAbility::isValidTarget(VectorF target, const Map* map) const 

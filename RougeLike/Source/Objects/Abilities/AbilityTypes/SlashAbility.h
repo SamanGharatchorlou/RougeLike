@@ -13,6 +13,7 @@ public:
 
 	void fastUpdate(float dt) override { }
 	void slowUpdate(float dt) override;
+	//void render();
 	void exit() override;
 
 	AbilityType type() const override { return AbilityType::Slash; }

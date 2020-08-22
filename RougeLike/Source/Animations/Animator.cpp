@@ -206,6 +206,12 @@ void Animator::startAnimation(Action state)
 	start();
 }
 
+void Animator::stop()
+{
+	timer.stop();
+	mAnimations[mActiveIndex].reset();
+}
+
 
 void Animator::slowUpdate(float dt)
 {

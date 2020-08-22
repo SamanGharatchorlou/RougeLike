@@ -14,12 +14,20 @@ void ChargeAbility::activateAt(VectorF position, EffectPool* effectPool)
 {
 	mDistanceTravelled = 0.0f;
 
+	// Due to not being able to (yet) resolve rotated rects,
+	// Just set this to a square to minimise the error at and between rotations
+	mRect.SetHeight(mRect.Width());
+	mRect.SetSize(mRect.Size() * 0.75f);
+
 	VectorF direction = (mCaster->position() - position).normalise();
-	mChargeSource = mCaster->position() + direction * 100.0f; // any random point in this particular direction
+	mChargeTarget = mCaster->position() + direction * 1000.0f; // any random point in this particular direction
 
-	setCharging(true); // TODO: dont need charging parameter anymore!, I have the mComplete var for this
+	mAnimator.selectAnimation(Action::Active);
 
-	mAnimator.startAnimation(Action::Active);
+	setCharging(true);
+
+
+	//mCaster->rectRef().SetSize(mCaster->rect().Size() * 2.0f);
 }
 
 
@@ -27,6 +35,7 @@ void ChargeAbility::activateOn(Actor* target, EffectPool* effectPool)
 {
 	if (mHitList.count(target) == 0)
 	{
+		mProperties.addXYPosition(mCaster->position());
 		applyEffects(target, effectPool);
 		mHitList.insert(target);
 	}
@@ -35,38 +44,37 @@ void ChargeAbility::activateOn(Actor* target, EffectPool* effectPool)
 
 void ChargeAbility::fastUpdate(float dt)
 {
-	if (mIsCharging)
-	{
-		VectorF direction = (mCaster->position() - mChargeSource).normalise();
-		VectorF velocity = direction * mProperties.at(PropertyType::Force);
-		float movementStep = std::sqrt(velocity.magnitudeSquared());
+	VectorF velocity = direction() * mProperties.at(PropertyType::Force);
+	float movementStep = std::sqrt(velocity.magnitudeSquared());
 
-		if (mDistanceTravelled < mProperties.at(PropertyType::Distance) && canMove(mCaster, velocity, dt))
-		{
-			mCaster->physics()->move(velocity, dt);
-			mDistanceTravelled += movementStep * dt;
-		}
-		else
-		{
-			setCharging(false);
-			mAnimator.stop();
-			mCompleted = true;
-		}
+	if (mDistanceTravelled < mProperties.at(PropertyType::Distance) && canMove(mCaster, velocity, dt))
+	{
+		mCaster->physics()->move(velocity, dt);
+		mDistanceTravelled += movementStep * dt;
+
+
+		sendActivateOnRequest();
+	}
+	else
+	{
+		//setCharging(false);
+	}
+
+	if (!canMove(mCaster, velocity, dt))
+	{
+		setCharging(false);
 	}
 }
 
 
 void ChargeAbility::slowUpdate(float dt)
 {
-	if (mIsCharging)
-	{
-		mAnimator.slowUpdate(dt);
-		mRect.SetCenter(mCaster->position());
+	mAnimator.slowUpdate(dt);
+	mRect.SetCenter(mCaster->position());
 
-		if (mCaster->collider()->didHit())
-		{
-			sendActivateOnRequest();
-		}
+	if (mCaster->collider()->didHit())
+	{
+		sendActivateOnRequest();
 	}
 }
 
@@ -77,51 +85,56 @@ void ChargeAbility::render()
 	{
 		renderRangeCircle();
 	}
-	else if (mState == AbilityState::Running)
+	//else if (mState == AbilityState::Running)
 	{
 		RectF rect = Camera::Get()->toCameraCoords(mRect);
-
-		VectorF direction = (mCaster->position() - mChargeSource).normalise();
-		double rotation = getRotation(direction) - 90;
-
+		rect.SetSize(rect.Size() / 0.75f);
+		double rotation = getRotation(direction()) - 90;
 		VectorF aboutPoint = rect.Size() / 2.0f;
+
+#if DRAW_EFFECT_RECTS
+		debugDrawRect(mRect, RenderColour::Yellow);
+#endif
 
 		mAnimator.render(rect, rotation, aboutPoint);
 	}
+
 }
-
-
 
 
 void ChargeAbility::applyEffects(Actor* actor, EffectPool* effectPool)
 {
-	Effect* damage = effectPool->getObject(EffectType::Damage);
-	damage->fill(mProperties);
-	actor->addEffect(damage);
-
-	Effect* displacement = effectPool->getObject(EffectType::KnockbackStun);
-	KnockbackStunEffect* displacementEffect = static_cast<KnockbackStunEffect*>(displacement);
-	displacementEffect->update(mChargeSource); // TODO: need more testing... charge source or mCaster->postion??
-	displacementEffect->fill(mProperties);
-	actor->addEffect(displacementEffect);
+	applyEffect(EffectType::Damage, actor, effectPool);
+	applyEffect(EffectType::KnockbackStun, actor, effectPool);
 }
 
 
 void ChargeAbility::exit()
 {
-	mChargeSource = VectorF();
+	mChargeTarget = VectorF();
 	mDistanceTravelled = 0.0f;
 	mHitList.clear();
 
 	Ability::exit();
+
+
+	//mCaster->rectRef().SetSize(mCaster->rect().Size() / 2.0f);
 }
 
 
 void ChargeAbility::setCharging(bool isCharging)
 {
 	Player* player = static_cast<Player*>(mCaster);
-	player->enableBodyCollisions(isCharging);
+	//player->enableBodyCollisions(isCharging);
 	player->setVisibility(!isCharging);
 	player->overrideControl(isCharging);
-	mIsCharging = isCharging;
+	mCompleted = !isCharging;
+
+	isCharging ? mAnimator.start() : mAnimator.stop();
+}
+
+
+VectorF ChargeAbility::direction() const
+{
+	return (mCaster->position() - mChargeTarget).normalise();
 }

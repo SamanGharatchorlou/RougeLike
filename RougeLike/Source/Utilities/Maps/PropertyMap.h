@@ -9,7 +9,8 @@ class PropertyMap : public DataMap<PropertyType, float>
 public:
 	PropertyMap() { };
 	PropertyMap(XMLNode node);
-	//PropertyMap(const FloatMap& valueMap);
+
+	void addXYPosition(VectorF position);
 
 	void fill(const XMLNode& node) override;
 };

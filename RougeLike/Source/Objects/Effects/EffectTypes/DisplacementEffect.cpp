@@ -7,10 +7,17 @@
 DisplacementEffect::DisplacementEffect() : mDistance(0.0f), mForce(0.0f), mDistanceTravelled(0.0f) { }
 
 
-void DisplacementEffect::fill(const PropertyMap& PropertyMap)
+void DisplacementEffect::fill(const PropertyMap& propertyMap)
 {
-	setProperty(PropertyType::KnockbackForce, mForce, PropertyMap);
-	setProperty(PropertyType::KnockbackDistance, mDistance, PropertyMap);
+	setProperty(PropertyType::KnockbackForce, mForce, propertyMap);
+	setProperty(PropertyType::KnockbackDistance, mDistance, propertyMap);
+
+	if (propertyMap.contains(PropertyType::xPosition) &&
+		propertyMap.contains(PropertyType::yPosition))
+	{
+		setProperty(PropertyType::xPosition, mSource.x, propertyMap);
+		setProperty(PropertyType::yPosition, mSource.y, propertyMap);
+	}
 }
 
 

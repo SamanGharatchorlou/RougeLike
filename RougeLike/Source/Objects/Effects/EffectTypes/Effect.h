@@ -17,7 +17,6 @@ public:
 
 	void setReceiver(Actor* receiver) { mReceiver = receiver; }
 	
-	virtual void clearData() { };
 	void clearBaseData() { mReceiver = nullptr; mShouldExit = false; }
 
 	virtual void fill(const PropertyMap& properties) { };

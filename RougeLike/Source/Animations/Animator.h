@@ -101,7 +101,7 @@ public:
 
 	void start() { timer.start(); }
 	void pause() { timer.pause(); }
-	void stop() { timer.stop(); }
+	void stop();// { timer.stop(); }
 	bool isRunning() const { return !timer.isPaused() && timer.isStarted(); }
 
 	int loops() const { return mAnimations[mActiveIndex].mLoops; }

@@ -3,7 +3,7 @@
 	<Properties>
 		<Range>500</Range>
 		<MaxSize>200</MaxSize>
-		<Cooldown>3</Cooldown>
+		<Cooldown>0</Cooldown>
 
 		<Damage>50</Damage>
 
