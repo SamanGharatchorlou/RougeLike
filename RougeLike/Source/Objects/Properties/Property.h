@@ -19,6 +19,8 @@ public:
 		Distance,
 		MaxVelocity,
 
+		Time,
+
 		xPosition,
 		yPosition,
 
@@ -89,6 +91,8 @@ static const std::unordered_map<BasicString, PropertyType::Type> PropertyLookUpT
 
 	{ "yPosition", PropertyType::xPosition },
 	{ "xPosition", PropertyType::yPosition },
+
+	{ "Time", PropertyType::Time},
 
 	// Effect values
 	{ "DamageReact", PropertyType::DamageReact },

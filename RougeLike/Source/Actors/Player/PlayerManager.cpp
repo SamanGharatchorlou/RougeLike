@@ -81,9 +81,6 @@ void PlayerManager::fastUpdate(float dt)
 
 void PlayerManager::slowUpdate(float dt)
 {
-	// TODO: move any of these into fast update?
-	mPlayerCollisions.enableBodyCollisions(mPlayer.hasBodyCollisions());
-
 	mPlayer.slowUpdate(dt);
 	mLevelling.slowUpdate(dt);
 

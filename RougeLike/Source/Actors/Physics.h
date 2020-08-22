@@ -36,6 +36,7 @@ public:
 	float force() const { return mForce; }
 
 	// Max velocity
+	void setVelocity(VectorF velocity) { mVelocity = velocity; }
 	void setMaxVelocity(float maxVelocity) { mMaxVelocity = maxVelocity; }
 	float maxVelocity() const { return mMaxVelocity; }
 
@@ -44,6 +45,8 @@ public:
 
 	// Move object
 	void move(VectorF velocity, float dt);
+	void move(VectorF movement);
+	void move(float dt);
 
 	// Rect
 	void setRect(RectF newRect) { mRect = newRect; }
@@ -65,10 +68,6 @@ public:
 	bool hasForce() const { return !mHasForce.isZero(); }
 	bool isMoving() const { return !mVelocity.isZero(); }
 
-	// Movement
-	void resetAllowedMovement();
-	void restrictMovement(Direction direction, bool restriction);
-
 	// soft Reset
 	void reset();
 
@@ -86,7 +85,6 @@ private:
 	VectorF mAcceleration;
 
 	Vector2D<bool> mHasForce;	
-	bool restrictedMovement[Directions];
 
 	float mForce;
 	float mMaxVelocity;
@@ -94,4 +92,8 @@ private:
 	float mMass;
 
 	SDL_RendererFlip mFlip;
+
+
+	// temp
+	bool yes = false;
 };

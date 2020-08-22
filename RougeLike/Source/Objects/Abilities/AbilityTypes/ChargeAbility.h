@@ -3,6 +3,8 @@
 #include "Objects/Abilities/AbilityClasses/TargetAbilities.h"
 #include <unordered_set>
 
+#include "Collisions/WallCollisionTracker.h"
+
 
 class ChargeAbility : public TargePositionAttackAbility
 {
@@ -32,5 +34,9 @@ private:
 
 	float mDistanceTravelled;
 
+	TimerF mTimer;
+
 	std::unordered_set<Actor*> mHitList;
+
+	WallCollisionTracker mWallCollisions;
 };

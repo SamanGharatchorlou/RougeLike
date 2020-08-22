@@ -40,6 +40,7 @@ protected:
 
 
 bool canMove(const Actor* actor, VectorF velocity, float dt);
+bool canMove(const Actor* actor, VectorF velocity, float dt, VectorF direction);
 bool isValidFloor(const Map* map, VectorF point);
 
 void setProperty(PropertyType type, float& value, const PropertyMap& PropertyMap);

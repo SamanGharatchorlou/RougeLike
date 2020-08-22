@@ -12,7 +12,7 @@
 		<StunTime>3</StunTime>
 
 		<Force>800</Force>
-		<Distance>250</Distance>
+		<Time>1</Time>
 	</Properties>
 
 	<Icon>ChargeIcon</Icon>

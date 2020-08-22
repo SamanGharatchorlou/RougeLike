@@ -71,6 +71,7 @@ public:
 	inline void SetTopCenter(Vector2D<T> point);
 	inline void SetBotCenter(Vector2D<T> point);
 	inline void SetLeftCenter(Vector2D<T> point);
+	inline void SetRightCenter(Vector2D<T> point);
 	inline void SetCenter(T x, T y);
 	inline void SetCenter(Vector2D<T> point);
 
@@ -188,6 +189,20 @@ inline void Rect<T> ::SetLeftCenter(Vector2D<T> point)
 
 	x1 = point.x;
 	x2 = point.x + halfWidth * 2;
+	y1 = point.y - halfHeight;
+	y2 = point.y + halfHeight;
+}
+
+
+
+template <class T>
+inline void Rect<T> ::SetRightCenter(Vector2D<T> point)
+{
+	T halfWidth = Width() / 2;
+	T halfHeight = Height() / 2;
+
+	x1 = point.x - halfWidth * 2;
+	x2 = point.x;
 	y1 = point.y - halfHeight;
 	y2 = point.y + halfHeight;
 }

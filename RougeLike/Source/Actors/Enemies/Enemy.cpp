@@ -44,6 +44,8 @@ void Enemy::fastUpdate(float dt)
 	mStateMachine.getActiveState().fastUpdate(dt);
 
 	Actor::fastUpdate(dt);
+
+	mPhysics.move(dt);
 }
 
 

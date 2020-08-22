@@ -14,6 +14,7 @@ void Physics::init(float force, float maxVelocity)
 
 void Physics::handleInput(const InputManager* input)
 {
+	mAcceleration.zero();
 	mHasForce.zero();
 
 	// Movement
@@ -52,36 +53,22 @@ void Physics::fastUpdate(float dt)
 	mVelocity = clamp(mVelocity, -mMaxVelocity, mMaxVelocity);
 
 	applyDrag();
-
-	if (restrictedMovement[Direction::Up])
-	{
-		mVelocity.y = clamp(mVelocity.y, 0.0f, std::abs(mVelocity.y));
-	}
-
-	if (restrictedMovement[Direction::Down])
-	{
-		mVelocity.y = clamp(mVelocity.y, -std::abs(mVelocity.y), 0.0f);
-	}
-
-	if (restrictedMovement[Direction::Right])
-	{
-		mVelocity.x = clamp(mVelocity.x, -std::abs(mVelocity.x), 0.0f);
-	}
-
-	if (restrictedMovement[Direction::Left])
-	{
-		mVelocity.x = clamp(mVelocity.x, 0.0f, std::abs(mVelocity.x));
-	}
-
-	mRect = mRect.Translate(mVelocity * dt);
-
-	mAcceleration.zero();
 }
 
 
 void Physics::move(VectorF velocity, float dt)
 {
 	mRect = mRect.Translate(velocity * dt);
+}
+
+void Physics::move(float dt)
+{
+	mRect = mRect.Translate(mVelocity * dt);
+}
+
+void Physics::move(VectorF movement)
+{
+	mRect = mRect.Translate(movement);
 }
 
 
@@ -106,19 +93,19 @@ void Physics::accellerate(VectorF acceleration)
 }
 
 
-void Physics::resetAllowedMovement()
-{
-	for (int i = 0; i < Direction::Directions; i++)
-	{
-		restrictedMovement[i] = false;
-	}
-}
-
-
-void Physics::restrictMovement(Physics::Direction direction, bool restriction)
-{
-	restrictedMovement[direction] = restriction;
-}
+//void Physics::resetAllowedMovement()
+//{
+//	for (int i = 0; i < Direction::Directions; i++)
+//	{
+//		restrictedMovement[i] = false;
+//	}
+//}
+//
+//
+//void Physics::restrictMovement(Physics::Direction direction, bool restriction)
+//{
+//	restrictedMovement[direction] = restriction;
+//}
 
 
 VectorF Physics::direction() const
@@ -141,7 +128,7 @@ void Physics::reset()
 	mFlip = SDL_FLIP_NONE;
 
 	resetHasForce();
-	resetAllowedMovement();
+	//resetAllowedMovement();
 }
 
 

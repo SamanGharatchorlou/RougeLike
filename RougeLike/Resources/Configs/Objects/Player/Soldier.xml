@@ -8,7 +8,7 @@
 		<AttackSpeed>10</AttackSpeed>
 
 		<!-- Physics -->
-		<Force>5000</Force>
+		<Force>500</Force>
 		<MaxVelocity>500</MaxVelocity>
 	</Properties>
 

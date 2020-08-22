@@ -14,20 +14,19 @@ void ChargeAbility::activateAt(VectorF position, EffectPool* effectPool)
 {
 	mDistanceTravelled = 0.0f;
 
-	// Due to not being able to (yet) resolve rotated rects,
-	// Just set this to a square to minimise the error at and between rotations
-	mRect.SetHeight(mRect.Width());
-	mRect.SetSize(mRect.Size() * 0.75f);
+	// Square with a width of ratio * original width
+	float ratio = 0.45f;
+	VectorF scale = VectorF(1.0f, mRect.Width() / mRect.Height()) * ratio;
+	mCollider.init(&mRect, scale);
 
 	VectorF direction = (mCaster->position() - position).normalise();
 	mChargeTarget = mCaster->position() + direction * 1000.0f; // any random point in this particular direction
 
 	mAnimator.selectAnimation(Action::Active);
 
+	mWallCollisions.setActor(mCaster);
+
 	setCharging(true);
-
-
-	//mCaster->rectRef().SetSize(mCaster->rect().Size() * 2.0f);
 }
 
 
@@ -45,22 +44,14 @@ void ChargeAbility::activateOn(Actor* target, EffectPool* effectPool)
 void ChargeAbility::fastUpdate(float dt)
 {
 	VectorF velocity = direction() * mProperties.at(PropertyType::Force);
-	float movementStep = std::sqrt(velocity.magnitudeSquared());
+	VectorF movement = mWallCollisions.allowedMovement(mCaster->currentMap(), velocity * dt);
 
-	if (mDistanceTravelled < mProperties.at(PropertyType::Distance) && canMove(mCaster, velocity, dt))
+	if(mTimer.getSeconds() < mProperties.at(PropertyType::Time))
 	{
-		mCaster->physics()->move(velocity, dt);
-		mDistanceTravelled += movementStep * dt;
-
-
+		mCaster->physics()->move(movement);
 		sendActivateOnRequest();
 	}
 	else
-	{
-		//setCharging(false);
-	}
-
-	if (!canMove(mCaster, velocity, dt))
 	{
 		setCharging(false);
 	}
@@ -85,15 +76,25 @@ void ChargeAbility::render()
 	{
 		renderRangeCircle();
 	}
-	//else if (mState == AbilityState::Running)
+	else if (mState == AbilityState::Running)
 	{
-		RectF rect = Camera::Get()->toCameraCoords(mRect);
-		rect.SetSize(rect.Size() / 0.75f);
+		RectF collRect = mCollider.scaledRect();
+
+		// render vs collider rect size difference
+		float edgeDistance = mRect.RightPoint() - collRect.RightPoint();
+		VectorF distance = direction() * edgeDistance;
+
+		// Set rendering rect front end = collider front end
+		RectF rect = mRect.Translate(distance * -1.0f);
+
+		rect = Camera::Get()->toCameraCoords(rect);
+
 		double rotation = getRotation(direction()) - 90;
 		VectorF aboutPoint = rect.Size() / 2.0f;
 
 #if DRAW_EFFECT_RECTS
 		debugDrawRect(mRect, RenderColour::Yellow);
+		debugDrawRect(mCollider.scaledRect(), RenderColour::Red);
 #endif
 
 		mAnimator.render(rect, rotation, aboutPoint);
@@ -116,21 +117,26 @@ void ChargeAbility::exit()
 	mHitList.clear();
 
 	Ability::exit();
-
-
-	//mCaster->rectRef().SetSize(mCaster->rect().Size() / 2.0f);
 }
 
 
 void ChargeAbility::setCharging(bool isCharging)
 {
 	Player* player = static_cast<Player*>(mCaster);
-	//player->enableBodyCollisions(isCharging);
 	player->setVisibility(!isCharging);
 	player->overrideControl(isCharging);
 	mCompleted = !isCharging;
 
-	isCharging ? mAnimator.start() : mAnimator.stop();
+	if (isCharging)
+	{
+		mTimer.start();
+		mAnimator.start();
+	}
+	else
+	{
+		mTimer.stop();
+		mAnimator.stop();
+	}
 }
 
 

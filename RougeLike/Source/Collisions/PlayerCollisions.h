@@ -22,8 +22,6 @@ public:
 	void resolveWalls(Map* map, float dt);
 	void resolveWeapons(EffectPool* effects);
 
-	void enableBodyCollisions(bool enable);
-
 	void refreshWeaponColliders();
 	void clearExcludedColliders(CollisionManager::Tracker tracker);
 

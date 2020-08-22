@@ -5,20 +5,17 @@
 #include "Weapons/Melee/MeleeWeapon.h"
 #include "CollisionManager.h"
 
-#include "Map/Map.h"
-
 
 void PlayerCollisions::init(Player* player, CollisionManager* collisionManager)
 {
 	mPlayer = player;
 	cManager = collisionManager;
 
-	mWallCollisions.init(player);
+	mWallCollisions.setActor(mPlayer);
 	mWeaponCollisions.init(player, collisionManager->getTracker(CollisionManager::PlayerWeapon_Hit_Enemy));
 
 	addCollidersToTrackers();
 	enableCollisions(CollisionManager::Player_Hit_Collectable, true);
-	enableCollisions(CollisionManager::Player_Hit_Enemy, false);
 	enableCollisions(CollisionManager::PlayerWeapon_Hit_Enemy, false);
 }
 
@@ -26,7 +23,6 @@ void PlayerCollisions::clear()
 {
 	mPlayer = nullptr;
 	cManager = nullptr;
-	mWallCollisions.clear();
 	mWeaponCollisions.clear();
 }
 
@@ -35,7 +31,11 @@ void PlayerCollisions::resolveWalls(Map* map, float dt)
 	if (mPlayer->userHasControl())
 	{
 #if !IGNORE_WALLS
-		mWallCollisions.resolveWallCollisions(map, dt);
+		VectorF movement = mPlayer->physics()->movementDistance(dt);
+		movement = mWallCollisions.allowedMovement(map, movement);
+		mPlayer->physics()->setVelocity(movement / dt);
+
+		mPlayer->physics()->move(dt);
 #endif
 	}
 }
@@ -53,12 +53,6 @@ void PlayerCollisions::resolveWeapons(EffectPool* effects)
 	{
 		enableCollisions(CollisionManager::PlayerWeapon_Hit_Enemy, false);
 	}
-}
-
-void PlayerCollisions::enableBodyCollisions(bool enable)
-{
-	// TODO: not set this every frame... feels dirty
-	enableCollisions(CollisionManager::Player_Hit_Enemy, enable);
 }
 
 
@@ -93,5 +87,4 @@ void PlayerCollisions::addCollidersToTrackers()
 	cManager->addDefenders(CollisionManager::Trap_Hit_Player, playerCollider);
 	cManager->addAttackers(CollisionManager::Player_Trigger_Trap, playerCollider);
 	cManager->addAttackers(CollisionManager::Player_Hit_Collectable, playerCollider);
-	cManager->addAttackers(CollisionManager::Player_Hit_Enemy, playerCollider);
 }
