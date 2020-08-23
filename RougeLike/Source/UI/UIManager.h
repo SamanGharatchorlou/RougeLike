@@ -1,6 +1,7 @@
 #pragma once
 
 #include "UI/Screens/Screen.h"
+#include "Screens/ScreenController.h"
 #include "Events/Observer.h"
 
 #if UI_EDITOR
@@ -22,7 +23,9 @@ public:
 
 	void initCursor(Cursor* cursor);
 
-	void selectScreen(Screen::Type screenType);
+	void clearScreenStack() { mController.clearStack(); }
+	void pushScreen(ScreenType screenType);
+	void popScreen() { mController.popScreen(); }
 
 	void handleInput(const InputManager* input);
 	void update(float dt);
@@ -30,16 +33,23 @@ public:
 
 	void handleEvent(EventData& data) override;
 	
-	Screen* screen(Screen::Type type);
+	Screen* screen(ScreenType type);
 	Screen* getActiveScreen() { return mActiveScreen; }
 
 	void setCursorTexture(Texture* texture);
 
 
 private:
+
+	void selectScreen(ScreenType screenType);
+
+
+private:
 	Cursor* mCursor;
 	Screen* mActiveScreen;
 	std::vector<Screen*> mScreens;
+
+	ScreenController mController;
 
 #if UI_EDITOR
 	UIEditor mEditor;

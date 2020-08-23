@@ -15,35 +15,40 @@
 #include "ScreenReader.h"
 
 
-Screen* ScreenBuilder::buildNewScreen(const BasicString& config)
+Screen* ScreenBuilder::buildNewScreen(const BasicString& config, ScreenController* controller)
 {
 	const ScreenReader reader;
 	ScreenAttributes attributes = reader.readScreen(config);
 	ScreenLayers screenLayers = buildUIScreen(attributes);
 
-	Screen* screen = createNewScreen(config);
-	screen->add(screenLayers);
+	Screen* screen = createNewScreen(config, controller);
+
+	if(screen)
+		screen->add(screenLayers);
 	
 	return screen;
 }
 
 
-Screen* ScreenBuilder::createNewScreen(const BasicString& config)
+Screen* ScreenBuilder::createNewScreen(const BasicString& config, ScreenController* controller)
 {
 	Screen* screen = nullptr;
 	BasicString screenName = FileManager::Get()->getItemName(config);
 
 	if (screenName == "GameScreen")
-		screen = new GameScreen;
+		screen = new GameScreen(controller);
 
 	else if (screenName == "PauseScreen")
-		screen = new PauseScreen;
+		screen = new PauseScreen(controller);
 
 	else if (screenName == "CharacterSelectionScreen")
-		screen = new CharacterSelectionScreen;
+		screen = new CharacterSelectionScreen(controller);
 
 	else if (screenName == "SettingsScreen")
-		screen = new SettingsScreen;
+		screen = new SettingsScreen(controller);
+
+	else if (screenName == "PopupScreen")
+		screen = new PopupScreen(controller);
 
 	return screen;
 }
@@ -273,6 +278,7 @@ TexturePacket ScreenBuilder::getButtonTextures(const BasicString& buttonType) co
 	if (!buttonNode)
 	{
 		DebugPrint(Warning, "Button config does not have a '%s' node\n", buttonType);
+		return buttonTextures;
 	}
 #endif
 

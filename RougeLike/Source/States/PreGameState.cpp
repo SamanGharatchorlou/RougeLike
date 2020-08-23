@@ -23,8 +23,7 @@ PreGameState::PreGameState(GameData* gameData, GameController* gameController) :
 void PreGameState::init()
 {	
 	UIManager* UI = mGameData->uiManager;
-	UI->selectScreen(Screen::CharacterSelection);
-	mSelectionScreen = static_cast<CharacterSelectionScreen*>(UI->getActiveScreen());
+	UI->pushScreen(ScreenType::CharacterSelection);
 	
 	UI->setCursorTexture(TextureManager::Get()->getTexture("UICursor", FileManager::Image_UI));
 }
@@ -37,11 +36,13 @@ void PreGameState::slowUpdate(float dt)
 		mGameController->quitGame();
 	}
 
-	if (mSelectionScreen->selected(ScreenItem::Play) || mGameData->inputManager->isPressed(Button::Enter))
+	if (mGameData->uiManager->getActiveScreen()->selected(ScreenItem::Play) || mGameData->inputManager->isPressed(Button::Enter))
 	{
+		CharacterSelectionScreen* selectionScreen = static_cast<CharacterSelectionScreen*>(mGameData->uiManager->getActiveScreen());
 		PlayerManager* player = mGameData->environment->actors()->player();
-		player->selectCharacter(mSelectionScreen->selectedCharacter());
-		player->selectWeapon(mSelectionScreen->selectedWeapon());
+
+		player->selectCharacter(selectionScreen->selectedCharacter());
+		player->selectWeapon(selectionScreen->selectedWeapon());
 
 		mGameController->getStateMachine()->replaceState(new GameState(mGameData, mGameController));
 	}

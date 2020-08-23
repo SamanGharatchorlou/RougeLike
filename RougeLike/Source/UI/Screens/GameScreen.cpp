@@ -9,7 +9,9 @@
 #include "Graphics/TextureManager.h"
 #include "Graphics/Texture.h"
 
-GameScreen::GameScreen()
+
+
+GameScreen::GameScreen(ScreenController* controller) : Screen(controller)
 { 
 	ScreenLayer layer("HotKeys");
 	add(layer);

@@ -14,23 +14,20 @@
 
 UIManager::~UIManager()
 {
-	for (Screen* screen : mScreens)
-	{
-		delete screen;
-	}
+	clearScreens();
 }
 
 
 void UIManager::init()
 {
-	Screen* nullScreen = new NullScreen;
+	Screen* nullScreen = new NullScreen(&mController);
 	mScreens.push_back(nullScreen);
 	mActiveScreen = mScreens.front();
 }
 
 
 
-Screen* UIManager::screen(Screen::Type type)
+Screen* UIManager::screen(ScreenType type)
 {
 	for (int i = 0; i < mScreens.size(); i++)
 	{
@@ -43,7 +40,14 @@ Screen* UIManager::screen(Screen::Type type)
 }
 
 
-void UIManager::selectScreen(Screen::Type screenType)
+void UIManager::pushScreen(ScreenType screenType)
+{
+	mController.pushScreen(screenType);
+	selectScreen(screenType);
+}
+
+
+void UIManager::selectScreen(ScreenType screenType)
 {
 	mActiveScreen->exit();
 	
@@ -70,10 +74,10 @@ void UIManager::setupScreens()
 	std::vector<BasicString> configs = FileManager::Get()->allFilesInFolder(FileManager::Config_Menus);
 	for (const BasicString& config : configs)
 	{
-		if (config == "SettingsScreen")
-			continue;
-		Screen* screen = builder.buildNewScreen(config);
-		mScreens.push_back(screen);
+		Screen* screen = builder.buildNewScreen(config, &mController);
+
+		if(screen)
+			mScreens.push_back(screen);
 	}
 }
 
@@ -102,9 +106,15 @@ void UIManager::handleInput(const InputManager* input)
 void UIManager::update(float dt) 
 { 
 	mActiveScreen->update();
+
+	if (mController.activeScreen() != mActiveScreen->type())
+	{
+		selectScreen(mController.activeScreen());
+	}
 }
 
 
+// TODO: render everything on the stack?
 void UIManager::render()
 {
 
@@ -117,24 +127,6 @@ void UIManager::render()
 	mCursor->render();
 }
 
-
-//bool UIManager::isUsingUI() const
-//{
-//	Elements elements = mActiveScreen->layers().elementList();
-//
-//	for (UIElement* element : elements)
-//	{
-//		if (element->type() == UIElement::Type::Button)
-//		{
-//			UIButton* button = static_cast<UIButton*>(element);
-//
-//			if (button->isPressed())
-//				return true;
-//		}
-//	}
-//
-//	return false;
-//}
 
 
 void UIManager::handleEvent(EventData& data)

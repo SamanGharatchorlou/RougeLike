@@ -35,8 +35,6 @@ public:
 	void overrideControl(bool removeControl);
 	bool userHasControl() { return !mControlOverride; }
 
-	void updateUI();
-
 	void enableBodyCollisions(bool isEnabled);
 	bool hasBodyCollisions() { return mBodyCollisions; }
 

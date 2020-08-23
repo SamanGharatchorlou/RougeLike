@@ -13,13 +13,14 @@
 #define DRAW_PLAYER_RECTS 0
 #define IGNORE_WALLS 0
 #define IGNORED_BY_ENEMIES 0
-#define UNLOCK_ALL_ABILITIES 0
+#define UNLOCK_ALL_ABILITIES 1
+#define NO_ABILITY_COOLDOWNS 1
 
 // Collectables
 #define DRAW_COLLECTABLE_RECT 0
 
 // Effects
-#define DRAW_EFFECT_RECTS 0
+#define DRAW_EFFECT_RECTS 1
 
 // Map
 #define MAP_BOUNDARIES 0

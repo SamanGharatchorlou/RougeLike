@@ -9,26 +9,13 @@
 class GameScreen : public Screen
 {
 public:
-	enum Components
-	{
-		None,
-		Health,
-		Armor
-	};
 
-public:
-	GameScreen();
-
+	GameScreen(ScreenController* controller);
 
 	void enter() override;
 	void handleInput(const InputManager* input);
 	void update() override;
 	void exit() override { }
 
-	Type type() override { return Type::Game; }
-
-
-private:
-	//ScreenLayer* mAdditionalLayer;
-
+	ScreenType type() override { return ScreenType::Game; }
 };

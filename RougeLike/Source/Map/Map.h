@@ -24,7 +24,6 @@ public:
 
 	void setInfo(MapType type, int level) { mType = type; mLevel = level; }
 
-	void setType(MapType type) { mType = type; }
 	MapType type() const { return mType; }
 	int level() const { return mLevel; }
 

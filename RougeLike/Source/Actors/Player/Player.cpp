@@ -141,20 +141,6 @@ void Player::processHit()
 		//TraumaEvent* trauma = new TraumaEvent(40);
 		//mEvents.push(EventPacket(trauma));
 	}
-
-	updateUI();
-}
-
-
-void Player::updateUI()
-{
-	Health* hp = static_cast<Health*>(getAttribute(AttributeType::Health));
-	SetUISlider* healthBar = new SetUISlider("HealthSlider", hp->getPercentage());
-	mEvents.push(EventPacket(healthBar));
-
-	//Armor* armor = static_cast<Armor*>(getAttribute(AttributeType::Armor));
-	//SetUIBarEvent* armorBar = new SetUIBarEvent("ArmorBar", "BlackArmorBar", armor->getPercentage());
-	//mEvents.push(EventPacket(armorBar));
 }
 
 

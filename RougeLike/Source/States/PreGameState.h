@@ -25,6 +25,4 @@ public:
 private:
 	GameController* mGameController;
 	GameData* mGameData;
-
-	CharacterSelectionScreen* mSelectionScreen;
 };

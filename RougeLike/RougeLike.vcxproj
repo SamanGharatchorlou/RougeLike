@@ -83,6 +83,8 @@
     <ClCompile Include="Source\Actors\Enemies\Types\Devil.cpp" />
     <ClCompile Include="Source\Objects\Pools\EnemyStatePool.cpp" />
     <ClCompile Include="Source\Objects\Pools\TrapPool.cpp" />
+    <ClCompile Include="Source\UI\Elements\UIWindow.cpp" />
+    <ClCompile Include="Source\UI\Screens\PopupScreen.cpp" />
     <ClCompile Include="Source\Utilities\Maps\AttributeMap.cpp" />
     <ClCompile Include="Source\Utilities\Maps\DecorMap.cpp" />
     <ClCompile Include="Source\Utilities\Maps\StringMap.cpp" />
@@ -262,6 +264,9 @@
     <ClInclude Include="Source\Actors\Enemies\Types\Devil.h" />
     <ClInclude Include="Source\Objects\Pools\EnemyStatePool.h" />
     <ClInclude Include="Source\Objects\Pools\TrapPool.h" />
+    <ClInclude Include="Source\UI\Elements\UIWindow.h" />
+    <ClInclude Include="Source\UI\Screens\PopupScreen.h" />
+    <ClInclude Include="Source\UI\Screens\ScreenController.h" />
     <ClInclude Include="Source\Utilities\Maps\AttributeMap.h" />
     <ClInclude Include="Source\Utilities\Maps\DataMap.h" />
     <ClInclude Include="Source\Utilities\Maps\DecorMap.h" />

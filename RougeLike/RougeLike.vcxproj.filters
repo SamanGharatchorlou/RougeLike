@@ -167,6 +167,8 @@
     <ClCompile Include="Source\Objects\Abilities\AbilityHotKeyManager.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\SlashAbility.cpp" />
     <ClCompile Include="Source\Objects\Properties\Attributes\Levelling.cpp" />
+    <ClCompile Include="Source\UI\Elements\UIWindow.cpp" />
+    <ClCompile Include="Source\UI\Screens\PopupScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -362,6 +364,9 @@
     <ClInclude Include="Source\Objects\Abilities\AbilityHotKeyManager.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\SlashAbility.h" />
     <ClInclude Include="Source\Objects\Properties\Attributes\Levelling.h" />
+    <ClInclude Include="Source\UI\Elements\UIWindow.h" />
+    <ClInclude Include="Source\UI\Screens\PopupScreen.h" />
+    <ClInclude Include="Source\UI\Screens\ScreenController.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

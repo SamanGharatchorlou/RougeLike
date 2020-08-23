@@ -35,7 +35,6 @@ public:
 	int mapCount() const { return mMaps.size(); }
 
 	void addNextMap();
-	void addMap(MapType type);
 	void popFront();
 
 

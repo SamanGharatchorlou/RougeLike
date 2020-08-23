@@ -15,6 +15,10 @@ void Ability::init(Actor* caster, const PropertyMap& properties, Animator animat
 	mRect.SetSize(realiseSize(animator.frameSize(), properties.at(PropertyType::MaxSize)));
 	mCollider.init(&mRect);
 	mCooldown = Cooldown(properties.at(PropertyType::Cooldown));
+
+#if NO_ABILITY_COOLDOWNS
+	mCooldown = Cooldown(0.0f);
+#endif
 }
 
 

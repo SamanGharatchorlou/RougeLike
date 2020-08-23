@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen>
+	<Layer>
+		<Box id = "MainPanel"  x = "300" y = "400.000" width = "500.000" height = "500.000" texture = "PopupPanel"></Box>
+	</Layer>
+
+	<Layer>
+		<TextBox id = "Title" parent = "MainPanel" font = "MenuFont" align = "Center" x = "0.000" y = "9.600" width = "500.000" height = "36.500" >
+			<text r = "255" g = "255" b = "255" >Popup</text>
+		</TextBox>
+
+		<Button id = "OkButton" parent = "MainPanel" x = "449.698" y = "1.500" width = "50.000" height = "43.000" texture = "WideGreenButton"></Button>
+
+	</Layer>
+
+	<Layer>
+		<TextBox id = "ButtonText" parent = "OkButton" font = "MenuFont" align = "Center" x = "0.000" y = "9.600" width = "60.000" height = "20.500" >
+			<text r = "255" g = "255" b = "255" >OK</text>
+		</TextBox>
+
+	</Layer>
+
+</screen>

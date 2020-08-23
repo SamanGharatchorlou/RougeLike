@@ -126,7 +126,7 @@ void GameState::exit()
 void GameState::initUI()
 {
 	mGameData->uiManager->setCursorTexture(TextureManager::Get()->getTexture("GameCursor", FileManager::Image_UI));
-	mGameData->uiManager->selectScreen(Screen::Game);
+	mGameData->uiManager->pushScreen(ScreenType::Game);
 }
 
 void GameState::initCamera()

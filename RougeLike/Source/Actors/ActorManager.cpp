@@ -23,7 +23,7 @@ void ActorManager::loadPools()
 
 void ActorManager::init(GameData* gameData)
 {
-	mPlayer.init(gameData->environment, gameData->collisionManager, gameData->uiManager->screen(Screen::Game));
+	mPlayer.init(gameData->environment, gameData->collisionManager, gameData->uiManager->screen(ScreenType::Game));
 	mEnemies.init(gameData->environment, gameData->collisionManager);
 }
 

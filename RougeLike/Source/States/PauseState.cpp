@@ -19,7 +19,7 @@ PauseState::PauseState(GameData* gameData, GameController* gameController) :
 
 void PauseState::init() 
 {
-	selectScreen(Screen::Pause);
+	mGameData->uiManager->pushScreen(ScreenType::Pause);
 	mGameData->uiManager->setCursorTexture(TextureManager::Get()->getTexture("UICursor", FileManager::Image_UI));
 }
 
@@ -31,86 +31,26 @@ void PauseState::handleInput()
 	{
 		quitGame();
 	}
-
-	if (mGameData->inputManager->isPressed(Button::Pause))
-	{
-		resumeGame();
-	}
 }
 
 
 void PauseState::slowUpdate(float dt)
 {
-	if (mPauseScreen)
+	Screen* screen = mGameData->uiManager->getActiveScreen();
+	if (screen->type() == ScreenType::Pause)
 	{
-		pauseScreenUpdate();
-	}
-	else if (mSettingsScreen)
-	{
-		settingsScreenUpdate();
-	}
-	else if (mGameScreen)
-	{
-		if (mGameData->inputManager->getButton(Button::Enter).isPressed())
+		if (screen->selected(ScreenItem::Quit))
 		{
-			selectScreen(Screen::Pause);
+			quitGame();
+		}
+		else if (screen->selected(ScreenItem::Restart))
+		{
+			restartGame();
 		}
 	}
-}
-
-void PauseState::pauseScreenUpdate()
-{
-	if (mPauseScreen->selected(ScreenItem::Resume))
+	else if (screen->type() == ScreenType::Game)
 	{
 		resumeGame();
-	}
-	else if (mPauseScreen->selected(ScreenItem::Quit))
-	{
-		quitGame();
-	}
-	else if (mPauseScreen->selected(ScreenItem::Restart))
-	{
-		restartGame();
-	}
-	else if (mPauseScreen->selected(ScreenItem::Settings))
-	{
-		// TODO: extend this to select the game screen then change the hotkeys
-		selectScreen(Screen::Settings);
-	}
-}
-
-void PauseState::settingsScreenUpdate()
-{
-	if (mSettingsScreen->selected(ScreenItem::Close))
-	{
-		selectScreen(Screen::Pause);
-	}
-}
-
-
-void PauseState::selectScreen(Screen::Type screen)
-{
-	mGameData->uiManager->selectScreen(screen);
-
-	if (screen == Screen::Settings)
-	{
-		mSettingsScreen = static_cast<SettingsScreen*>(mGameData->uiManager->getActiveScreen());
-		mPauseScreen = nullptr;
-	}
-	else if (screen == Screen::Pause)
-	{
-		mPauseScreen = static_cast<PauseScreen*>(mGameData->uiManager->getActiveScreen());
-		mSettingsScreen = nullptr;
-	}
-	else if (screen == Screen::Game)
-	{
-		mGameScreen = static_cast<GameScreen*>(mGameData->uiManager->getActiveScreen());
-		mSettingsScreen = nullptr;
-		mPauseScreen = nullptr;
-	}
-	else
-	{
-		DebugPrint(Warning, "Screen type %d not recognised by the pause state\n", (int)screen);
 	}
 }
 
@@ -139,7 +79,6 @@ void PauseState::quitGame()
 void PauseState::resumeGame()
 {
 	mGameController->getStateMachine()->popState();
-	mGameData->uiManager->selectScreen(Screen::Game);
 }
 
 

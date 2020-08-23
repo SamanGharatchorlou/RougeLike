@@ -39,17 +39,14 @@ void MapBuilder::returnMap(Map* map)
 }
 
 
+
 Map* MapBuilder::buildMap(MapType type, VectorF offset)
 {
 	Map* map = mPool.popFront();
 
 	buildMapStructure(map, type);
-	addMapDecor(map);
-	populateMapRects(map, offset);
-	populateMapData(map);
-	addTrapMechanics(map);
-
-	map->buildDeferredRenderList();
+	
+	fillMapData(map, type, offset, 1);
 
 	return map;
 }
@@ -71,15 +68,21 @@ Map* MapBuilder::buildFirst()
 		}
 	}
 
-
-	addMapDecor(map);
-	populateMapRects(map, VectorF(0,0));
-	populateMapData(map);
-	addTrapMechanics(map);
-
-	map->buildDeferredRenderList();
+	fillMapData(map, MapType::Corridor, VectorF(), 0);
 
 	return map;
+}
+
+
+void MapBuilder::fillMapData(Map* map, MapType type, VectorF offset, int level)
+{
+	map->setInfo(type, level);
+
+	addMapDecor(map);
+	populateMapRects(map, offset);
+	populateMapData(map);
+
+	map->buildDeferredRenderList();
 }
 
 
@@ -142,8 +145,6 @@ void MapBuilder::buildMapStructure(Map* map, MapType type)
 	}
 	else
 		DebugPrint(Warning, "Map type %d not recognised\n");
-
-	map->setType(type);
 }
 
 
@@ -153,38 +154,3 @@ void MapBuilder::addMapDecor(Map* map)
 	MapDecorator decorator;
 	decorator.addDecor(map, decorMap);
 }
-
-
-void MapBuilder::addTrapMechanics(Map* map)
-{
-	//const DecorMap& decorMap = mSpecs.getDecor(map);
-	//map->traps().set(&decorMap);
-
-	//if (decorMap.contains(DecorType::Spikes))
-	//{
-	//	const StringMap& attributes = decorMap.at(DecorType::Spikes);
-	//	if (attributes.contains("triggerTime") && attributes.contains("recoveryTime"))
-	//	{
-	//		Damage damage = attributes.getFloat("damage");
-	//		float triggerTime = attributes.getFloat("triggerTime");
-	//		float recoveryTime = attributes.getFloat("recoveryTime");
-	//		map->traps().set(damage, triggerTime, recoveryTime);
-	//	}
-	//}
-
-	//if (decorMap.contains(DecorType::Trigger))
-	//{
-	//	const StringMap& attributes = decorMap.at(DecorType::Trigger);
-
-	//	if (attributes.contains("triggerTime") && attributes.contains("recoveryTime"))
-	//	{
-	//		Damage damage = 0;
-	//		float triggerTime = attributes.getFloat("triggerTime");
-	//		float recoveryTime = attributes.getFloat("recoveryTime");
-	//		map->traps().set(damage, triggerTime, recoveryTime);
-	//	}
-	//}
-}
-
-
-

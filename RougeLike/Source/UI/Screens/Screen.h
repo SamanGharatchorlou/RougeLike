@@ -1,10 +1,13 @@
 #pragma once
 
 #include "ScreenTypes.h"
+#include "ScreenController.h"
 
 class UIButton;
 class UIElement;
 class UISlider;
+class ScreenController;
+enum class ScreenType;
 
 class InputManager;
 
@@ -37,17 +40,7 @@ enum class ScreenItem
 class Screen
 {
 public:
-	enum Type
-	{
-		None,
-		CharacterSelection,
-		Game,
-		Pause,
-		Settings
-	};
-
-
-public:
+	Screen(ScreenController* controller) : mController(controller) { }
 	virtual ~Screen();
 
 	void add(const ScreenLayer& layer);
@@ -64,7 +57,7 @@ public:
 	virtual void exit() = 0;
 	virtual void render();
 
-	virtual Type type() = 0;
+	virtual ScreenType type() = 0;
 
 	UIElement* find(const BasicString& id);
 	UIButton* findButton(const BasicString& id);
@@ -75,6 +68,7 @@ public:
 
 
 protected:
+	ScreenController* mController;
 	ScreenLayers mScreenLayers;
 
 	std::unordered_map<ScreenItem, UISlider*> mSliders;
@@ -86,10 +80,11 @@ protected:
 class NullScreen : public Screen
 {
 public:
+	NullScreen(ScreenController* controller) : Screen(nullptr) { }
 	void enter() { }
 	void handleInput(const InputManager* input) { }
 	void update() { }
 	void exit() { }
 	void render() { }
-	Type type() { return Type::None; }
+	ScreenType type() { return ScreenType::None; }
 };

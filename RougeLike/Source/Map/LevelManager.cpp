@@ -25,7 +25,7 @@ void LevelManager::load()
 	mMaps.push(map);
 	mTrapManager.addMap(map, mBuilder.specs(map));
 
-	addMap(MapType::Dungeon);
+	addNextMap();
 }
 
 
@@ -42,27 +42,12 @@ void LevelManager::clear()
 }
 
 
-
-void LevelManager::addMap(MapType type)
-{
-	VectorF offset;
-	if (mMaps.size() > 0)
-		offset = getOffset(mMaps.back());
-
-	Map* map = mBuilder.buildMap(type, offset);
-	mMaps.push(map);
-	mTrapManager.addMap(map, mBuilder.specs(map));
-
-	if (map->type() == MapType::Dungeon)
-	{
-		LevelUpdatedEvent event(LevelUpdatedEvent::Added);
-		notify(event);
-	}
-}
-
-
+// TODO: this causes the game to stutter (only in debug tbf)
+// split the work up across a few frames?
 void LevelManager::addNextMap()
 {
+	ASSERT(Error, mMaps.size() > 0, "Must have atleast one map in the map list to add the next one\n");
+
 	VectorF offset = getOffset(mMaps.back());
 	MapType type = nextMapType(mMaps.back()->type());
 

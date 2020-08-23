@@ -24,14 +24,11 @@ public:
 	void exit() override { }
 
 private:
-	void pauseScreenUpdate();
-	void settingsScreenUpdate();
 
 	void quitGame();
 	void resumeGame();
 	void restartGame();
 
-	void selectScreen(Screen::Type screen);
 
 private:
 	GameController* mGameController;

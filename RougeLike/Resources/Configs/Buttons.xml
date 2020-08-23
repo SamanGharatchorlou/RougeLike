@@ -2,6 +2,7 @@
 
 <UI>
 	<WideBlueButton texture = "WideBlueButton"  textureSelected="WideBlueButtonSelected" textureHovering="WideBlueButtonHover"></WideBlueButton>
+	<WideGreenButton texture = "WideGreenButton"  textureSelected="WideGreenButtonSelected" textureHovering="WideGreenButtonHover"></WideGreenButton>
 	<GreyButton texture = "GreyButton"  textureSelected="GreyButton" textureHovering="GreyButton"></GreyButton>
 	<Slider texture = "BlankButton"  textureSelected="BlankButtonSelected" textureHovering="BlankButtonHover"></Slider>
 

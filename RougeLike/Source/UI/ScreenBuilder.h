@@ -6,25 +6,26 @@ class Texture;
 class UIElement;
 class Screen;
 class UISlider;
+class ScreenController;
 
 struct TexturePacket
 {
-	Texture* defaultTexture;
-	Texture* selected;
-	Texture* hovering;
+	Texture* defaultTexture = nullptr;
+	Texture* selected = nullptr;
+	Texture* hovering = nullptr;
 };
 
 
 class ScreenBuilder
 {
 public:
-	Screen* buildNewScreen(const BasicString& config);
+	Screen* buildNewScreen(const BasicString& config, ScreenController* controller);
 
 
 	TexturePacket getButtonTextures(const BasicString& buttonType) const;
 
 private:
-	Screen* createNewScreen(const BasicString& screenName);
+	Screen* createNewScreen(const BasicString& screenName, ScreenController* controller);
 
 	ScreenLayers buildUIScreen(const ScreenAttributes& screenAttributes);
 	ScreenLayers buildScreenLayers(const ScreenAttributes& screenAttributes);

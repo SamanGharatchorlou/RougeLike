@@ -22,11 +22,12 @@ public:
 	const DecorMap& specs(Map* map) { return mSpecs.getDecor(map); }
 
 private:
+	void fillMapData(Map* map, MapType type, VectorF offset, int level);
+
 	void buildMapStructure(Map* map, MapType type);
 	void populateMapRects(Map* map, VectorF offset);
 	void populateMapData(Map* map);
 	void addMapDecor(Map* map);
-	void addTrapMechanics(Map* map);
 
 private:
 	UniqueQueue<Map*> mPool;
