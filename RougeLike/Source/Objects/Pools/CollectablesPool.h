@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Utilities/ObjectPool.h"
+#include "Items/Collectables/Collectable.h"
 
-class Collectable;
 enum class CollectableType;
 
 

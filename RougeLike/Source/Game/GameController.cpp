@@ -105,8 +105,6 @@ void GameController::free()
 // then restart it all again
 void GameController::restartGame()
 {
-	PRINT_MEMORY;
-
 	DebugPrint(Log, "Unimplemented\n");
 
 	//// Remove all states
@@ -124,8 +122,6 @@ void GameController::restartGame()
 	mGameData.environment->init(&mGameData);
 	mGameData.environment->load();
 	mGameStateMachine.addState(new PreGameState(&mGameData, this));
-
-	PRINT_MEMORY;
 }
 
 

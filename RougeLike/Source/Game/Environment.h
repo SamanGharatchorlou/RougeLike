@@ -14,6 +14,8 @@ class InputManager;
 class Environment : public Dispatcher
 {
 public:
+	~Environment();
+
 	void init(GameData* gameData);
 
 	void load();
@@ -24,6 +26,7 @@ public:
 	void nextLevel();
 	void clear();
 
+	void renderFloor();
 	void renderBottomLayer();
 	void renderTopLayer();
 
@@ -42,7 +45,6 @@ public:
 
 
 private:
-	// Make these pointers to place .h files into this.cpp?
 	ActorManager mActors;
 	LevelManager mLevelManager;
 	EffectPool mEffectPool;

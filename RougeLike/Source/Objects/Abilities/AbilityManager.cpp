@@ -167,14 +167,14 @@ bool AbilityManager::inSelectionMode() const
 }
 
 
-void AbilityManager::addAbility(const BasicString& name)
+void AbilityManager::addAbility(AbilityType abilityType)
 {
-	AbilityType type = AbilityType::None;
-	type << name;
+	BasicString name;
+	abilityType >> name;
 
-	if (type != AbilityType::None)
+	if (abilityType != AbilityType::None)
 	{
-		Ability* ability = mBuilder.build(name);
+		Ability* ability = mBuilder.build(abilityType);
 		AbilityType type = ability->type();
 
 #if _DEBUG
@@ -201,17 +201,3 @@ void AbilityManager::setState(Ability* ability, AbilityState state)
 	mHotKeys.updateStates();
 }
 
-
-Ability* AbilityManager::get(const BasicString& name) const
-{
-	for (int i = 0; i < mAbilities.size(); i++)
-	{
-		if (mAbilities[i]->name() == name)
-		{
-			return mAbilities[i];
-		}
-	}
-
-	DebugPrint(Warning, "Ability '%s' not in ability manager\n", name.c_str());
-	return nullptr;
-}

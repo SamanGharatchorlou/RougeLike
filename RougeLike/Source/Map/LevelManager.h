@@ -19,6 +19,8 @@ public:
 	void clear();
 
 	void slowUpdate(float dt);
+
+	void renderFloor();
 	void renderLowDepth();
 	void renderHighDepth();
 

@@ -6,9 +6,8 @@
 #include "Objects/Effects/EffectTypes/Effect.h"
 
 
-void Ability::init(const BasicString& name, Actor* caster, const PropertyMap& properties, Animator animator)
+void Ability::init(Actor* caster, const PropertyMap& properties, Animator animator)
 {
-	mName = name;
 	mCaster = caster;
 	mAnimator = animator;
 	mProperties = properties;
@@ -33,3 +32,15 @@ void Ability::applyEffect(EffectType effectType, Actor* target, EffectPool* effe
 	effect->fill(mProperties);
 	target->addEffect(effect);
 }
+
+
+
+BasicString Ability::name() const
+{ 
+	AbilityType abilityType = type();
+	BasicString id;
+	abilityType >> id;
+
+	return id; 
+}
+

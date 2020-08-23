@@ -9,24 +9,40 @@
 VectorF WallCollisionTracker::allowedMovement(const Map* map, VectorF movement)
 {
 	// extra buffer to stop small movemets getting stuck in the wall?
+	//float bufferFactor = 3.0f;
+
+	//movement = movement * bufferFactor;
+
+	//restrictLeftMovement(map, movement);
+	//restrictRightMovement(map, movement);
+	//restrictDownMovement(map, movement);
+	//restrictTopMovement(map, movement);
+
+	//return movement / bufferFactor;
+	return VectorF();
+}
+
+VectorF WallCollisionTracker::allowedVelocity(const Map* map, VectorF velocity, float dt)
+{
+	// extra buffer to stop small movemets getting stuck in the wall?
 	float bufferFactor = 3.0f;
+	velocity *= bufferFactor;
 
-	movement = movement * bufferFactor;
+	restrictLeftMovement(map, velocity, dt);
+	restrictRightMovement(map, velocity, dt);
+	restrictDownMovement(map, velocity, dt);
+	restrictTopMovement(map, velocity, dt);
 
-	restrictLeftMovement(map, movement);
-	restrictRightMovement(map, movement);
-	restrictDownMovement(map, movement);
-	restrictTopMovement(map, movement);
-
-	return movement / bufferFactor;
+	return velocity / bufferFactor;
 }
 
 
-void WallCollisionTracker::restrictLeftMovement(const Map* map, VectorF& movement) const
+void WallCollisionTracker::restrictLeftMovement(const Map* map, VectorF& movement, float dt) const
 {
 	if (movement.x < 0.0f)
 	{
-		RectF rect = wallScaledRect(VectorF(movement.x, 0.0f));
+		RectF rect = wallScaledRect();
+		rect = rect.Translate(VectorF(movement.x, 0.0f) * dt);
 
 		const MapTile* topLeft = map->tile(rect.TopLeft());
 		const MapTile* bottomLeft = map->tile(rect.BotLeft());
@@ -36,11 +52,12 @@ void WallCollisionTracker::restrictLeftMovement(const Map* map, VectorF& movemen
 	}
 }
 
-void WallCollisionTracker::restrictRightMovement(const Map* map, VectorF& movement) const
+void WallCollisionTracker::restrictRightMovement(const Map* map, VectorF& movement, float dt) const
 {
 	if (movement.x > 0.0f)
 	{
-		RectF rect = wallScaledRect(VectorF(movement.x, 0.0f));
+		RectF rect = wallScaledRect();
+		rect = rect.Translate(VectorF(movement.x, 0.0f) * dt);
 
 		const MapTile* topRight = map->tile(rect.TopRight());
 		const MapTile* bottomRight = map->tile(rect.BotRight());
@@ -50,11 +67,12 @@ void WallCollisionTracker::restrictRightMovement(const Map* map, VectorF& moveme
 	}
 }
 
-void WallCollisionTracker::restrictDownMovement(const Map* map, VectorF& movement) const
+void WallCollisionTracker::restrictDownMovement(const Map* map, VectorF& movement, float dt) const
 {
 	if (movement.y > 0.0f)
 	{
-		RectF rect = wallScaledRect(VectorF(0.0f, movement.y));
+		RectF rect = wallScaledRect();
+		rect = rect.Translate(VectorF(0.0f, movement.y) * dt);
 
 		const MapTile* bottomRight = map->tile(rect.BotRight());
 		const MapTile* bottomLeft = map->tile(rect.BotLeft());
@@ -64,11 +82,12 @@ void WallCollisionTracker::restrictDownMovement(const Map* map, VectorF& movemen
 	}
 }
 
-void WallCollisionTracker::restrictTopMovement(const Map* map, VectorF& movement) const
+void WallCollisionTracker::restrictTopMovement(const Map* map, VectorF& movement, float dt) const
 {
 	if (movement.y < 0.0f)
 	{
-		RectF rect = wallScaledRect(VectorF(0.0f, movement.y));
+		RectF rect = wallScaledRect();
+		rect = rect.Translate(VectorF(0.0f, movement.y) * dt);
 
 		const MapTile* topLeft = map->tile(rect.TopLeft());
 		const MapTile* topRight = map->tile(rect.TopRight());
@@ -79,7 +98,7 @@ void WallCollisionTracker::restrictTopMovement(const Map* map, VectorF& movement
 }
 
 
-RectF WallCollisionTracker::wallScaledRect(VectorF translation) const
+RectF WallCollisionTracker::wallScaledRect() const
 {
 	RectF rect = mActor->scaledRect();
 	VectorF size = rect.Size();
@@ -87,9 +106,10 @@ RectF WallCollisionTracker::wallScaledRect(VectorF translation) const
 
 	rect.SetSize(VectorF(size.x * 0.7f, size.y * 0.15f));
 	rect.SetBotCenter(botCenter);
-
-	return rect.Translate(translation);
+	return rect;
 }
+
+
 
 
 bool WallCollisionTracker::cannotMove(const MapTile* tile) const

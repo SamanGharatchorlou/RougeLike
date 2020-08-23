@@ -9,10 +9,9 @@
 
 void EnemyHit::init()
 {
-	printf("hit\n");
 	mTimer.start();
 	mEnemy->animator().selectAnimation(Action::Hurt);
-	mEnemy->animator().getAnimation(Action::Hurt).reset();
+	mEnemy->animator().activeAimation()->reset();
 
 	// Apply red colour modulation
 	mColourMod = RenderColour(225, 0, 0);
@@ -40,13 +39,10 @@ void EnemyHit::render()
 	if (mTimer.getSeconds() < flashTime)
 	{
 		mEnemy->animator().render(mEnemy->renderRect(), mEnemy->physics()->flip(), mColourMod);
-		printf("modding\n");
 	}
-		
 	else
 	{
 		mEnemy->animator().render(mEnemy->renderRect(), mEnemy->physics()->flip());
-		printf("no moding\n");
 	}
 }
 

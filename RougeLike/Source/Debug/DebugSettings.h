@@ -12,13 +12,14 @@
 // Player
 #define DRAW_PLAYER_RECTS 0
 #define IGNORE_WALLS 0
-#define IGNORED_BY_ENEMIES 1
+#define IGNORED_BY_ENEMIES 0
+#define UNLOCK_ALL_ABILITIES 0
 
 // Collectables
 #define DRAW_COLLECTABLE_RECT 0
 
 // Effects
-#define DRAW_EFFECT_RECTS 1
+#define DRAW_EFFECT_RECTS 0
 
 // Map
 #define MAP_BOUNDARIES 0
@@ -33,7 +34,7 @@
 #define DRAW_AI_PATH_COSTMAP 0
 
 #define LABEL_ENEMY_STATES 0
-#define LABEL_ENEMY_HEALTH 1
+#define LABEL_ENEMY_HEALTH 0
 #define DRAW_PLAYER_ENEMY_DISTANCE 0
 
 #define DRAW_ENEMY_RECTS 0
@@ -46,5 +47,9 @@
 #define DRAW_UI_RECTS 0
 #define UI_EDITOR 0
 #define DEBUG_CURSOR 0
+
+#else
+
+#define MEMORY_TRACKING 1
 
 #endif

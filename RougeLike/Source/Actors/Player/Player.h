@@ -42,7 +42,7 @@ public:
 
 
 	void updateWeaponHitSound(AudioManager* audio);
-	void updateCurrentTile(Map* map);
+	void updateMapInfo(Map* map);
 
 
 private:
@@ -51,7 +51,8 @@ private:
 
 private:
 
-	Vector2D<int> tileIndex;
+	Vector2D<int> mTileIndex;
+	int mMapLevel;
 
 	Weapon* mWeapon;
 

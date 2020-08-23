@@ -22,14 +22,13 @@ public:
 	void updateButtonState(std::unordered_map<AbilityState, Texture*>& buttonStates);
 
 private:
-	UIBox* createIcon() const;
-	UIBox* creatIconBG(const UIBox* icon) const;
+	UIBox* creatIconBG() const;
+	UIBox* createIcon(const UIBox* iconBg) const;
 	UIBox* createButton(const UIBox* iconBG) const;
 	UITextBox* createButtonText(UIBox* button, const BasicString& text);
 
 
 public:
-
 	const Ability* mAbility;
 
 	int mID;

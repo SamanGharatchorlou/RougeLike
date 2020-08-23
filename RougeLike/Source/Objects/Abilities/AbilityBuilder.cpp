@@ -6,6 +6,7 @@
 #include "Animations/AnimationReader.h"
 
 // Abilities
+#include "AbilityClasses/AbilityStates.h"
 #include "Objects/Abilities/AbilityTypes/SlowAbility.h"
 #include "Objects/Abilities/AbilityTypes/HealAbility.h"
 #include "Objects/Abilities/AbilityTypes/SpikeAbility.h"
@@ -16,10 +17,12 @@
 #include "Objects/Abilities/AbilityTypes/SlashAbility.h"
 
 
-Ability* AbilityBuilder::build(const BasicString& id) const
+Ability* AbilityBuilder::build(AbilityType type) const
 {
-	Ability* ability = createNewAbility(id);
+	Ability* ability = createNewAbility(type);
 
+	BasicString id;
+	type >> id;
 	XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Abilities, id));
 
 	AnimationReader reader;
@@ -27,18 +30,15 @@ Ability* AbilityBuilder::build(const BasicString& id) const
 
 	PropertyMap properties(parser.rootChild("Properties"));
 
-	ability->init(id, mCaster, properties, animator);
-	setRangedValues(ability);
+	ability->init(mCaster, properties, animator);
 
 	return ability;
 }
 
 
-Ability* AbilityBuilder::createNewAbility(const BasicString& id) const
+Ability* AbilityBuilder::createNewAbility(AbilityType type) const
 {
 	Ability* ability = nullptr;
-	AbilityType type = AbilityType::None;
-	type << id;
 
 	switch (type)
 	{
@@ -55,6 +55,9 @@ Ability* AbilityBuilder::createNewAbility(const BasicString& id) const
 		break;
 	case AbilityType::Smash:
 	{
+		BasicString id;
+		type >> id;
+
 		XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Abilities, id));
 		XMLNode hammerDetailsNode = parser.rootChild("Hammer");
 		StringMap hammerDetails(hammerDetailsNode);
@@ -79,54 +82,15 @@ Ability* AbilityBuilder::createNewAbility(const BasicString& id) const
 
 	case AbilityType::None:
 	default:
+	{
+		BasicString id;
+		type >> id;
 		DebugPrint(Log, "Ability creation for type for '%s' has not been set, define in '%s'\n", id.c_str(), __FUNCTION__);
 		break;
+	}
+
 	}
 
 	return ability;
 }
 
-
-void AbilityBuilder::setRangedValues(Ability* ability) const
-{
-	if (ability->isRanged())
-	{
-		RangedAbility* rangedAbility = static_cast<RangedAbility*>(ability);
-		if (rangedAbility)
-		{
-			Texture* rangeCircle = TextureManager::Get()->getTexture("RangeCircle", FileManager::Image_UI);
-			rangedAbility->setRangeCircle(rangeCircle);
-		}
-	}
-}
-
-/*
-	if (name == "Heal")
-	{
-		ability = new HealAbility;
-	}
-	else if (name == "Spikes")
-	{
-		ability = new SpikeAbility;
-	}
-	else if (name == "Blink")
-	{
-		ability = new BlinkAbility;
-	}
-	else if (name == "Armor")
-	{
-		ability = new ArmorAbility;
-	}
-	else if (name == "Smash")
-	{
-		// Create hammer
-		Texture* texture = textureManager->getTexture("Mjolnir", FileManager::Image_Weapons);
-		VectorF size = realiseSize(texture->originalDimentions, values.get("HammerMaxSize"));
-		ability = new SmashAbility(texture, size);
-	}
-	else if (name == "Charge")
-	{
-		ability = new ChargeAbility;
-	}
-
-*/

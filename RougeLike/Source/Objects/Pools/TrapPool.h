@@ -1,11 +1,12 @@
 #pragma once
 
 #include "Utilities/ObjectPool.h"
+#include "Map/TileInteractables/TileInteractable.h"
 
-class TileInteractable;
 class Trap;
 class Trigger;
 enum class DecorType : Uint32;
+
 
 class TrapPool : public ObjectPool<TileInteractable, DecorType>
 {

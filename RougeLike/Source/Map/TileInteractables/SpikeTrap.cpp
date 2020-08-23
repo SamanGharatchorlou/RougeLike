@@ -39,7 +39,7 @@ void SpikeTrap::update(EffectPool* effects)
 void SpikeTrap::trigger()
 {
 	Animator& animator = mTile->animation(0);
-	animator.getAnimation(Action::Active).nextFrame();
+	animator.activeAimation()->nextFrame();
 
 	exhausted = true;
 
@@ -51,7 +51,7 @@ void SpikeTrap::trigger()
 void SpikeTrap::reset()
 {
 	Animator& animator = mTile->animation(0);
-	animator.getAnimation(Action::Active).nextFrame();
+	animator.activeAimation()->nextFrame();
 
 	exhausted = false;
 	mTimer.stop();

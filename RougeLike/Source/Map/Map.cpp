@@ -126,7 +126,7 @@ VectorF Map::tileSize() const
 
 Vector2D<float> Map::size() const 
 { 
-	VectorF tileCount = VectorF(xCount(), yCount());
+	VectorF tileCount = VectorF((float)xCount(), (float)yCount());
 	return tileCount * tileSize();
 };
 

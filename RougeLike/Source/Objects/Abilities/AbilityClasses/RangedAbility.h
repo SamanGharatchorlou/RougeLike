@@ -11,7 +11,8 @@ public:
 	RangedAbility() : mRangeCircle(nullptr), mOnlyDirectional(false) { }
 	virtual ~RangedAbility() { }
 
-	void setRangeCircle(Texture* rangeCircle) { mRangeCircle = rangeCircle; }
+	void init(Actor* caster, const PropertyMap& properties, Animator animator) override;
+
 	void setIsOnlyDirectional(bool isOnlyDirectional) { mOnlyDirectional = isOnlyDirectional; }
 
 	void renderRangeCircle();
@@ -20,8 +21,6 @@ public:
 
 	RectF effectArea() const { return mRect; }
 	Collider collider() { return mCollider; }
-
-	virtual bool isRanged() const { return true; }
 
 protected:
 	Texture* mRangeCircle;

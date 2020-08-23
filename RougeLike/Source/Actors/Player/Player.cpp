@@ -79,7 +79,7 @@ void Player::slowUpdate(float dt)
 
 void Player::clear()
 {
-	tileIndex.zero();
+	mTileIndex.zero();
 	mWeapon = nullptr;
 	mControlOverride = false;
 	mBodyCollisions = false;
@@ -183,18 +183,27 @@ void Player::updateWeaponHitSound(AudioManager* audio)
 }
 
 
-void Player::updateCurrentTile(Map* map)
+void Player::updateMapInfo(Map* map)
 {
 	if (map->isValidPosition(position()))
 	{
 		Vector2D<int> currentTile = map->index(position());
-		if (tileIndex != currentTile)
+		if (mTileIndex != currentTile)
 		{
-			tileIndex = currentTile;
+			mTileIndex = currentTile;
 
 			UpdateAIPathMapEvent* eventPtr = new UpdateAIPathMapEvent;
 			mEvents.push(EventPacket(eventPtr));
 		}
+	}
+
+	int level = map->level();
+
+	if (mMapLevel != level)
+	{
+		mMapLevel = level;
+		UpdateTextBoxEvent* eventPtr = new UpdateTextBoxEvent("MapLevel val", BasicString(mMapLevel));
+		mEvents.push(EventPacket(eventPtr));
 	}
 }
 

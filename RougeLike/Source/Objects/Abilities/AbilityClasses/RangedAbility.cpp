@@ -8,7 +8,18 @@
 #include "Actors/Actor.h"
 
 #include "Graphics/Texture.h"
+#include "Graphics/TextureManager.h"
 #include "Graphics/RenderManager.h"
+
+
+
+void RangedAbility::init(Actor* caster, const PropertyMap& properties, Animator animator)
+{
+	Ability::init(caster, properties, animator);
+	
+	Texture* rangeCircle = TextureManager::Get()->getTexture("RangeCircle", FileManager::Image_UI);
+	mRangeCircle = rangeCircle;
+}
 
 
 void RangedAbility::renderRangeCircle()
@@ -21,18 +32,10 @@ void RangedAbility::renderRangeCircle()
 	RectF rect = RectF(VectorF(), size);
 	rect.SetCenter(position);
 
-	mRangeCircle->render(rect);
-
 	RenderEvent* event = new RenderEvent(mRangeCircle, rect, (int)RenderLayer::Floor);
 	EventPacket ep(event);
 	mEvents.push(ep);
 }
-
-
-//Collider RangedAbility::collider()
-//{
-//	return Collider(&mRect);
-//}
 
 
 bool RangedAbility::isValidTarget(VectorF target, const Map* map) const 

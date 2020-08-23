@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "EffectPool.h"
 
-#include "Objects/Effects/EffectTypes/Effect.h"
 #include "Objects/Effects/EffectTypes/DamageEffect.h"
 #include "Objects/Effects/EffectTypes/DisplacementEffect.h"
 #include "Objects/Effects/EffectTypes/KnockbackStunEffect.h"

@@ -11,14 +11,7 @@ WeaponStash::WeaponStash() : meleeWeapon(nullptr) { }
 
 WeaponStash::~WeaponStash()
 {
-	std::unordered_map<BasicString, WeaponData*>::iterator iter;
-	for (iter = mData.begin(); iter != mData.end(); iter++)
-	{
-		WeaponData* weaponData = iter->second;
-		delete weaponData;
-	}
-
-	mData.clear();
+	clear();
 }
 
 
@@ -59,7 +52,11 @@ void WeaponStash::clear()
 
 	mData.clear();
 
-	delete meleeWeapon;
+	if (meleeWeapon)
+	{
+		delete meleeWeapon;
+		meleeWeapon = nullptr;
+	}
 }
 
 

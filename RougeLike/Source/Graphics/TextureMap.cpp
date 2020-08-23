@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "TextureMap.h"
+#include "Texture.h"
 
 
 void TextureMap::free()

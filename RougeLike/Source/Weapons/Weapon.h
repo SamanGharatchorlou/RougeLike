@@ -1,7 +1,7 @@
 #pragma once
 
 
-struct WeaponData;
+class WeaponData;
 class Effect;
 class Collider;
 

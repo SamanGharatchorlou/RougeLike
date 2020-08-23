@@ -78,7 +78,7 @@ void Text::setWidth(float width)
 }
 
 
-VectorF Text::autoSize(VectorF size)
+void Text::autoSize(VectorF size)
 {
 	int width = -1;
 	int height = -1;
@@ -98,14 +98,4 @@ VectorF Text::autoSize(VectorF size)
 	}
 
 	mFont.setText(mText);
-
-	return VectorF(width, height);
-}
-
-float Text::stringWidth()
-{
-	float width = -1.0f;
-	float height = -1.0f;
-
-	return 0.0f;
 }

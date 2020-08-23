@@ -22,7 +22,7 @@ private:
 	bool loadTexture(TextureMap& textureMap, const BasicString& fileName);
 	int loadAllTexturesIn(FileManager::Folder folder);
 
-	const TextureMap& findTextureMap(const FileManager::Folder folder) const;
+	const TextureMap* findTextureMap(const FileManager::Folder folder) const;
 
 
 private:

@@ -160,13 +160,24 @@ void LevelManager::closeLevel()
 }
 
 
-void LevelManager::renderLowDepth()
+void LevelManager::renderFloor()
 {
 	UniqueQueue<Map*>::iterator iter;
 	for (iter = mMaps.begin(); iter != mMaps.end(); iter++)
 	{
 		Map* map = *iter;
 		map->renderFloor();
+	}
+}
+
+
+
+void LevelManager::renderLowDepth()
+{
+	UniqueQueue<Map*>::iterator iter;
+	for (iter = mMaps.begin(); iter != mMaps.end(); iter++)
+	{
+		Map* map = *iter;
 		map->renderLowerLayer();
 		map->deferredRender();
 	}

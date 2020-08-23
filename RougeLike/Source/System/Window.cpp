@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "Window.h"
 
-void Window::init(const BasicString& title, int width, int height)
+void Window::init(const BasicString& title, Vector2D<int> size)
 {
 	// create window
 	mWindow = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-		width, height, SDL_WINDOW_SHOWN);
+		size.x, size.y, SDL_WINDOW_SHOWN);
 }
 
 
@@ -30,10 +30,10 @@ void Window::setTitle(const char* title)
 }
 
 
-VectorF Window::size() const
+Vector2D<int> Window::size() const
 {
-	int width = 0;
-	int height = 0;
+	int width = -1;
+	int height = -1;
 	SDL_GetWindowSize(mWindow, &width, &height);
-	return VectorF(width, height);
+	return Vector2D<int>(width, height);
 }

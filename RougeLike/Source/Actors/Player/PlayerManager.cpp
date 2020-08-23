@@ -13,6 +13,13 @@
 PlayerManager::PlayerManager() : mEnvironment(nullptr) { }
 
 
+PlayerManager::~PlayerManager()
+{
+	clear();
+	mEnvironment = nullptr;
+}
+
+
 void PlayerManager::init(Environment* environment, CollisionManager* collisions, Screen* gameScreen)
 {
 	mPlayerCollisions.init(&mPlayer, collisions);
@@ -32,14 +39,15 @@ void PlayerManager::clear()
 	mWeaponStash.clear();
 }
 
-void PlayerManager::addAbility(const BasicString& ability)
+
+void PlayerManager::addAbility(AbilityType ability)
 {
 	mAbilities.addAbility(ability);
 }
 
 void PlayerManager::addExp(int exp)
 {
-	mLevelling.gainExp(exp);
+	mLevelling.gainExp(this, exp);
 }
 
 void PlayerManager::setPosition(VectorF position)
@@ -85,7 +93,9 @@ void PlayerManager::slowUpdate(float dt)
 	mLevelling.slowUpdate(dt);
 
 	Map* playerMap = mEnvironment->map(mPlayer.position());
-	mPlayer.updateCurrentTile(playerMap);
+	mPlayer.updateMapInfo(playerMap);
+
+
 
 	//if (mPlayer->weapon()->isAttacking())
 	//{
@@ -93,12 +103,35 @@ void PlayerManager::slowUpdate(float dt)
 	//}
 
 	mAbilities.slowUpdate(dt);
+
+	handleEvents();
+}
+
+
+void PlayerManager::handleEvents()
+{
 	while (mAbilities.hasEvent())
-		 mEvents.push(mAbilities.popEvent());
+		mEvents.push(mAbilities.popEvent());
 
 	while (mPlayer.events().hasEvent())
-		mEvents.push(mPlayer.events().pop());
+	{
+		EventPacket event = mPlayer.events().pop();
+
+		if (event.data->eventType == Event::HealthChanged)
+		{
+			event.free();
+
+			Health* hp = static_cast<Health*>(mPlayer.getAttribute(AttributeType::Health));
+			SetUISlider* healthBar = new SetUISlider("HealthSlider", hp->getPercentage());
+			mEvents.push(EventPacket(healthBar));
+		}
+		else
+		{
+			mEvents.push(event);
+		}
+	}
 }
+
 
 void PlayerManager::render()
 {
@@ -122,7 +155,11 @@ void PlayerManager::selectCharacter(const BasicString& characterConfig)
 	mPlayer.setWeaponType(mWeaponStash.getWeapon(weapontype));
 
 
-	mLevelling.init(mPlayer.rect());
+	mLevelling.init(parser.rootChild("Levelling"), mPlayer.rect());
+
+#if UNLOCK_ALL_ABILITIES
+	mLevelling.unlockAllAbilities(this);
+#endif
 }
 
 

@@ -18,10 +18,10 @@ HotKey::HotKey(Ability* ability, int count) : mAbility(ability)
 	int keyNumber = count + static_cast<int>('0');
 	mKey = static_cast<Button::Key>(keyNumber);
 
-	mIcon = createIcon();
-	mIconBG = creatIconBG(mIcon);
+	mIconBG = creatIconBG();
+	mIcon = createIcon(mIconBG);
 	mButton = createButton(mIconBG);
-	mKeyText = createButtonText(mButton, BasicString(count));
+	mKeyText = createButtonText(mButton, BasicString((float)count));
 }
 
 
@@ -31,33 +31,33 @@ Elements HotKey::getComponents()
 }
 
 
-UIBox* HotKey::createIcon() const
+UIBox* HotKey::creatIconBG() const
 {
-	const TextureManager* textures = TextureManager::Get();
-
-	const BasicString id = mAbility->name() + "Icon";
-	Texture* texture = textures->getTexture(id, FileManager::Image_UI);
-
 	VectorF position(75.0f * mID, 600.0f);
-	VectorF size = realiseSize(texture->originalDimentions, 50.0f);
+	VectorF size(75.0f, 75.0f);
 	RectF rect(position, size);
+
+	const TextureManager* textures = TextureManager::Get();
+	const BasicString& id = mAbility->name() + "IconBG";
+	Texture* texture = textures->getTexture(id, FileManager::Image_UI);
 
 	UIBox::Data data(id, rect, texture);
 	return new UIBox(data);
 }
 
 
-UIBox* HotKey::creatIconBG(const UIBox* icon) const
+UIBox* HotKey::createIcon(const UIBox* iconBg) const
 {
-	RectF rect = icon->rect();
-	rect.SetSize(VectorF(75.0f, 75.0f));
-	rect.SetCenter(icon->rect().Center());
-
 	const TextureManager* textures = TextureManager::Get();
-	const BasicString& id = "IconBG";
+
+	const BasicString id = mAbility->name() + "Icon";
 	Texture* texture = textures->getTexture(id, FileManager::Image_UI);
 
-	UIBox::Data data(mAbility->name() + id, rect, texture);
+	VectorF size = realiseSize(texture->originalDimentions, 50.0f);
+	RectF rect(VectorF(), size);
+	rect.SetCenter(iconBg->rect().Center());
+
+	UIBox::Data data(id, rect, texture);
 	return new UIBox(data);
 }
 

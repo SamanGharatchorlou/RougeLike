@@ -10,6 +10,12 @@
 #include "Game/Environment.h"
 
 
+ActorManager::~ActorManager()
+{
+	clear();
+}
+
+
 void ActorManager::loadPools()
 {
 	mEnemies.loadPools();

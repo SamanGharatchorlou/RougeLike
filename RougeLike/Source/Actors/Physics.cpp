@@ -52,6 +52,9 @@ void Physics::fastUpdate(float dt)
 	mVelocity += mAcceleration * dt;
 	mVelocity = clamp(mVelocity, -mMaxVelocity, mMaxVelocity);
 
+	if (isnan(mVelocity.x))
+		printf("waht?\n");
+
 	applyDrag();
 }
 
@@ -74,7 +77,6 @@ void Physics::move(VectorF movement)
 
 // TODO: I think because the force is huge, i.e. instanct accel the normalisation is essentially not doing anything...
 // fix me!
-// find a work around for instant accelleration?? big units should slowely accellerate though...
 void Physics::accellerate(VectorF acceleration)
 {
 	if (acceleration.x != 0.0f)
@@ -91,21 +93,6 @@ void Physics::accellerate(VectorF acceleration)
 	mAcceleration = clamp(mAcceleration, -1.0f, +1.0f);
 	mAcceleration = mAcceleration.normalise() * mForce;
 }
-
-
-//void Physics::resetAllowedMovement()
-//{
-//	for (int i = 0; i < Direction::Directions; i++)
-//	{
-//		restrictedMovement[i] = false;
-//	}
-//}
-//
-//
-//void Physics::restrictMovement(Physics::Direction direction, bool restriction)
-//{
-//	restrictedMovement[direction] = restriction;
-//}
 
 
 VectorF Physics::direction() const
@@ -128,7 +115,6 @@ void Physics::reset()
 	mFlip = SDL_FLIP_NONE;
 
 	resetHasForce();
-	//resetAllowedMovement();
 }
 
 
@@ -165,6 +151,9 @@ void Physics::applyDrag()
 	{
 		mVelocity.y = mVelocity.y * mDragFactor;
 	}
+
+	if (mVelocity.x > 10000)
+		printf("waht?\n");
 }
 
 

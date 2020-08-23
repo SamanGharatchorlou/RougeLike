@@ -173,5 +173,6 @@ void InputManager::bindDefaultButtons()
 	mButtons.push_back(Button(Button::Key::Six));
 	mButtons.push_back(Button(Button::Key::Seven));
 	mButtons.push_back(Button(Button::Key::Eight));
+	mButtons.push_back(Button(Button::Key::Nine));
 }
 

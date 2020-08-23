@@ -69,8 +69,8 @@ const Index AIPathMap::index(VectorF position) const
 	VectorF shiftedPosition = position - mapTopLeft;
 
 	// Get the index relative to this map
-	Index index(shiftedPosition.x / tileSize().x, shiftedPosition.y / tileSize().y);
-	return isValidPosition(position) ? index : Index(-1, -1);
+	VectorF relativeIndex = shiftedPosition / tileSize();
+	return isValidPosition(position) ? relativeIndex.toInt() : Index(-1, -1);
 }
 
 

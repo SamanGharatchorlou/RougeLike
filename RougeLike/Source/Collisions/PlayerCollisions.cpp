@@ -6,6 +6,12 @@
 #include "CollisionManager.h"
 
 
+PlayerCollisions::~PlayerCollisions()
+{
+	clear();
+}
+
+
 void PlayerCollisions::init(Player* player, CollisionManager* collisionManager)
 {
 	mPlayer = player;
@@ -31,12 +37,11 @@ void PlayerCollisions::resolveWalls(Map* map, float dt)
 	if (mPlayer->userHasControl())
 	{
 #if !IGNORE_WALLS
-		VectorF movement = mPlayer->physics()->movementDistance(dt);
-		movement = mWallCollisions.allowedMovement(map, movement);
-		mPlayer->physics()->setVelocity(movement / dt);
-
-		mPlayer->physics()->move(dt);
+		VectorF velocity = mPlayer->physics()->velocity();
+		velocity = mWallCollisions.allowedVelocity(map, velocity, dt);
+		mPlayer->physics()->setVelocity(velocity);
 #endif
+		mPlayer->physics()->move(dt);
 	}
 }
 

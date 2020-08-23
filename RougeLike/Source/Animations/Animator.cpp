@@ -188,16 +188,19 @@ void Animator::selectAnimation(Action state)
 }
 
 
-Animator::Animation& Animator::getAnimation(Action action)
-{
-	for (int i = 0; i < mAnimations.size(); i++)
-	{
-		if (mAnimations[i].mState == action)
-		{
-			return mAnimations[i];
-		}
-	}
-}
+//Animator::Animation* Animator::getAnimation(Action action)
+//{
+//	for (int i = 0; i < mAnimations.size(); i++)
+//	{
+//		if (mAnimations[i].mState == action)
+//		{
+//			return &mAnimations[i];
+//		}
+//	}
+//
+//	DebugPrint(Warning, "No animation with action %d\n", action);
+//	return nullptr;	
+//}
 
 
 void Animator::startAnimation(Action state)

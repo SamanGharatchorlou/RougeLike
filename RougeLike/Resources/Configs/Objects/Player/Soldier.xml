@@ -26,4 +26,15 @@
 			<Run>12</Run>
 		</Animations>
 	</Animator>
+
+	<Levelling>
+		<Info>SoldierLevelUp</Info>
+		<Abilities>
+			<Slash></Slash>
+			<Heal></Heal>
+			<Charge></Charge>
+			<Smash></Smash>
+			<Spikes></Spikes>
+		</Abilities>
+	</Levelling>
 </Data>

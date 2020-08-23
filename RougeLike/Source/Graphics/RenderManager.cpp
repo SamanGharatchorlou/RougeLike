@@ -14,6 +14,10 @@ void RenderManager::render()
 {
 	renderPackets(RenderLayer::Lowest);
 
+	mEnvironment->renderFloor();
+
+	renderPackets(RenderLayer::Floor);
+
 	mEnvironment->renderBottomLayer();
 
 	renderPackets(RenderLayer::LowerTiles);

@@ -46,14 +46,11 @@ void MeleeWeaponData::copy(const WeaponData* data)
 void MeleeWeaponData::fillProperties(const StringMap& properties)
 {
 	// Cooldown
-	cooldown = Cooldown(properties.getFloat("Cooldown") / 100.0f);
+	cooldown = Cooldown(properties.getFloat("Cooldown"));
 
 	// Size and offset	
 	maxDimention = properties.getFloat("MaxSize");
-
-	int x = properties.getInt("OffsetX");
-	int y = properties.getInt("OffsetY");
-	offset = VectorF(x, y);
+	offset = properties.getVector("OffsetX", "OffsetY");
 
 	swingSpeed = properties.getFloat("SwingSpeed");
 	swingAngle = properties.getFloat("SwingAngle");

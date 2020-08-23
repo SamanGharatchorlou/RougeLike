@@ -14,6 +14,8 @@ int main(int argc, char* args[])
 
 	PRINT_MEMORY;
 
+	int a = 4;
+
 	return 0;
 }
 

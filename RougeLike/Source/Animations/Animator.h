@@ -101,7 +101,7 @@ public:
 
 	void start() { timer.start(); }
 	void pause() { timer.pause(); }
-	void stop();// { timer.stop(); }
+	void stop();
 	bool isRunning() const { return !timer.isPaused() && timer.isStarted(); }
 
 	int loops() const { return mAnimations[mActiveIndex].mLoops; }
@@ -110,8 +110,9 @@ public:
 	float frameTime() const { return mFrameTime; }
 	int animationCount() const { return mAnimations.size(); }
 
-	const Animation& animation() const { return mAnimations[mActiveIndex]; }
-	Animation& getAnimation(Action action);
+	const Animation* activeAimation() const { return &mAnimations[mActiveIndex]; }
+	Animation* activeAimation() { return &mAnimations[mActiveIndex]; }
+	//Animation* getAnimation(Action action);
 
 private:
 

@@ -12,12 +12,14 @@ struct GameData;
 class Environment;
 class CollisionManager;
 class Screen;
+enum class AbilityType;
 
 
 class PlayerManager
 {
 public:
 	PlayerManager();
+	~PlayerManager();
 
 	Player* get() { return &mPlayer; }
 
@@ -29,12 +31,15 @@ public:
 	void slowUpdate(float dt);
 	void render();
 
+	void handleEvents();
 	LocalDispatcher& events() { return mEvents; }
 
 	void setPosition(VectorF position);
 	void selectCharacter(const BasicString& characterConfig);
 	void selectWeapon(const BasicString& weaponName);
-	void addAbility(const BasicString& ability);
+
+	void addAbility(AbilityType ability);
+
 	void addExp(int exp);
 
 

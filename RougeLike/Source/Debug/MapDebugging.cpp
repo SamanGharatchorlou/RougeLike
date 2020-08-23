@@ -67,7 +67,7 @@ void renderSurfaceTypes(const Grid<MapTile>& data)
 void renderTileIndexes(const Grid<MapTile>& data, Index index, int fontSize)
 {
 	RenderColour colour = RenderColour::White;
-	BasicString indexString = BasicString("  ") + BasicString(index.x) + BasicString(", ") + BasicString(index.y);
+	BasicString indexString = BasicString("  ") + BasicString((float)index.x) + BasicString(", ") + BasicString((float)index.y);
 	debugRenderText(indexString, fontSize, data.get(index).rect().TopLeft(), colour, "None");
 }
 

@@ -64,6 +64,8 @@ void Actor::updatePhysicsStats()
 void Actor::fastUpdate(float dt)
 {
 	// enemy needs reset here
+
+
 	mPhysics.fastUpdate(dt);
 	//mPhysics.move(mPhysics.movementDistance(dt));
 	mEffects.fastUpdate(dt);

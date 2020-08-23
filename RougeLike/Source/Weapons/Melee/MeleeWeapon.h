@@ -4,7 +4,7 @@
 #include "Weapons/WeaponData.h"
 
 
-struct MeleeWeaponData;
+class MeleeWeaponData;
 class EffectCollider;
 class Collider;
 

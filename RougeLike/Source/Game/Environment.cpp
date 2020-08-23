@@ -9,6 +9,11 @@
 #include "Map/Map.h"
 
 
+Environment::~Environment()
+{
+	clear();
+}
+
 
 void Environment::clear()
 {
@@ -51,45 +56,30 @@ void Environment::load()
 
 	setCameraBoundaries();
 
-	DebugPrint(Log, "\n Loading Characters\n");
+	//DebugPrint(Log, "\n Loading Collectables\n");
 
-	DebugPrint(Log, "\n Loading Collectables\n");
-
-	mCollectables.load();
-
-	// TODO: FIX remove tis
-	BasicString fileName = "Level0";
-	BasicString path = FileManager::Get()->findFile(FileManager::Config_Map, fileName);
-	XMLParser parser(path);
-	XMLNode collectablesSpawnNode = parser.rootChild("Collectables");
-	mCollectables.spawn(collectablesSpawnNode, mLevelManager.firstMap(MapType::Dungeon));
+	//mCollectables.load();
 
 	DebugPrint(Log, "\n--- Environment Load Complete---\n\n");
 }
 
 
-void Environment::nextLevel()
-{
-	// TODO: wipe enemies / add some exit level thing
-	mLevelManager.incrementLevel();
-
-	BasicString fileName = "Level" + BasicString(mLevelManager.level());
-	BasicString path = FileManager::Get()->findFile(FileManager::Config_Map, fileName);
-	XMLParser parser(path);
-
-	//mLevelManager.buildLevel(parser);
-
-	setCameraBoundaries();
-
-	IncrementLevelEvent event;
-	notify(event);
-
-	// spawn new enemies
-	XMLNode enemySpawnNode = parser.rootChild("Enemies");
-
-	// spawn collectables
-	XMLNode collectablesSpawnNode = parser.rootChild("Collectables");
-}
+//void Environment::nextLevel()
+//{
+//	// TODO: wipe enemies / add some exit level thing
+//	mLevelManager.incrementLevel();
+//
+//	BasicString path = FileManager::Get()->findFile(FileManager::Config_Map, "Environment");
+//	XMLParser parser(path);
+//
+//	setCameraBoundaries();
+//
+//	IncrementLevelEvent event;
+//	notify(event);
+//
+//	// spawn new enemies
+//	XMLNode enemySpawnNode = parser.rootChild("Enemies");
+//}
 
 void Environment::handleInput(const InputManager* input)
 {
@@ -107,6 +97,14 @@ void Environment::slowUpdate(float dt)
 	mLevelManager.slowUpdate(dt);
 	mActors.slowUpdate(dt);
 	mCollectables.slowUpdate(dt);
+
+
+}
+
+
+void Environment::renderFloor()
+{
+	mLevelManager.renderFloor();
 }
 
 

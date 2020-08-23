@@ -28,7 +28,10 @@ void SmashAbility::slowUpdate(float dt)
 
 	// Completed one animation loop 
 	if (mAnimator.loops() > 0)
+	{
+		mCompleted = true;
 		mAnimator.stop();
+	}
 }
 
 
@@ -82,15 +85,6 @@ void SmashAbility::applyEffects(Actor* actor, EffectPool* effectPool)
 {
 	// The enemy state will change to wait (from the stun) before the got hit bool from the
 	// damage will change the state to hit. Hence the damage is taken but there is no hit state change
-	Effect* damage = effectPool->getObject(EffectType::Damage);
-	damage->fill(mProperties);
-	actor->addEffect(damage);
-
-	Effect* stun = effectPool->getObject(EffectType::Stun);
-	stun->fill(mProperties);
-	actor->addEffect(stun);
-
-	//StunEffect* stunEffect = static_cast<StunEffect*>(stun);
-	//stunEffect->set(mTime);
-	//actor->addEffect(stunEffect);
+	applyEffect(EffectType::Damage, actor, effectPool);
+	applyEffect(EffectType::Stun, actor, effectPool);
 }

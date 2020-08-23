@@ -14,6 +14,7 @@ class InputManager;
 class ActorManager : public Observer, public Dispatcher
 {
 public:
+	~ActorManager();
 	void init(GameData* gameData);
 	void loadPools();
 

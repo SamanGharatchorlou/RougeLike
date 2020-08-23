@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Utilities/ObjectPool.h"
+#include "Actors/Enemies/Enemy.h"
 
-class Enemy;
 enum class EnemyType;
 
 

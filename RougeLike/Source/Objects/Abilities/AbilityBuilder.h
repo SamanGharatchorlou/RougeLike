@@ -2,6 +2,7 @@
 
 class Ability;
 class Actor;
+enum class AbilityType;
 
 
 class AbilityBuilder
@@ -11,11 +12,11 @@ public:
 
 	void init(Actor* caster) { mCaster = caster; }
 
-	Ability* build(const BasicString& id) const;
+	Ability* build(AbilityType type) const;
 
 
 private:
-	Ability* createNewAbility(const BasicString& id) const;
+	Ability* createNewAbility(AbilityType type) const;
 	void setRangedValues(Ability* ability) const;
 
 

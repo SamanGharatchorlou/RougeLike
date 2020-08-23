@@ -37,11 +37,14 @@ public:
 
 	// Max velocity
 	void setVelocity(VectorF velocity) { mVelocity = velocity; }
+	VectorF velocity() const { return mVelocity; }
+
 	void setMaxVelocity(float maxVelocity) { mMaxVelocity = maxVelocity; }
 	float maxVelocity() const { return mMaxVelocity; }
 
 	// Accellerate object
 	void accellerate(VectorF acceleration);
+	void stopAcceleration() { mAcceleration = VectorF(); }
 
 	// Move object
 	void move(VectorF velocity, float dt);

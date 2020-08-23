@@ -22,8 +22,11 @@ public:
 	Map(Vector2D<int> mapIndexSize);
 	~Map() { };
 
+	void setInfo(MapType type, int level) { mType = type; mLevel = level; }
+
 	void setType(MapType type) { mType = type; }
 	MapType type() const { return mType; }
+	int level() const { return mLevel; }
 
 	void buildDeferredRenderList();
 
@@ -70,6 +73,7 @@ private:
 
 private:
 	MapType mType;
+	int mLevel;
 
 	std::vector<MapTile*> mDeferredRendering;
 };

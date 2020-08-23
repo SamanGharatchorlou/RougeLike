@@ -8,6 +8,11 @@ void HealEffect::init()
 {
 	Health* health = static_cast<Health*>(mReceiver->getAttribute(AttributeType::Health));
 	health->increase(mHeal);
+
+	HealthChangedEvent* eventPtr = new HealthChangedEvent();
+	EventPacket event(eventPtr);
+	mReceiver->events().push(event);
+
 	endEffect();
 }
 

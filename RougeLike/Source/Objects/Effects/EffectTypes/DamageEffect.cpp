@@ -31,6 +31,10 @@ void DamageEffect::init()
 	if(mReact)
 		mReceiver->collider()->setGotHit(true);
 
+	HealthChangedEvent* eventPtr = new HealthChangedEvent();
+	EventPacket event(eventPtr);
+	mReceiver->events().push(event);
+
 	endEffect();
 }
 

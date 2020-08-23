@@ -16,6 +16,8 @@ void EnemyRun::fastUpdate(float dt)
 {
 	if(mPath.size() > 0)
 		mEnemy->accellerateTowards(mEnemy->getPathMap().position(mPath.top()));
+
+
 }
 
 

@@ -18,6 +18,7 @@ void HealAbility::slowUpdate(float dt)
 	if (mAnimator.loops() > 0)
 	{
 		mAnimator.stop();
+		mCompleted = true;
 	}
 }
 
@@ -27,7 +28,7 @@ void HealAbility::activate(EffectPool* pool)
 	mAnimator.startAnimation(Action::Active);
 
 	applyEffects(pool);
-	updateUI();
+	//updateUI();
 }
 
 

@@ -25,12 +25,13 @@ public:
 	void slowUpdate(float dt);
 	void render();
 
-	void addAbility(const BasicString& name);
+	void addAbility(AbilityType abilityType);
+
 	void setState(Ability* ability, AbilityState state);
 
 	bool inSelectionMode() const;
 
-	Ability* get(const BasicString& name) const;
+	//Ability* get(const BasicString& name) const;
 
 	bool hasEvent() const { return mEvents.hasEvent(); }
 	EventPacket popEvent() { return mEvents.pop(); }

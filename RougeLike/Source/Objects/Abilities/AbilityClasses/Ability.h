@@ -19,34 +19,31 @@ public:
 	Ability() : mState(AbilityState::None), mCaster(nullptr) { }
 	virtual ~Ability() { }
 
-	void init(const BasicString& name, Actor* caster, const PropertyMap& properties, Animator animator);
+	virtual void init(Actor* caster, const PropertyMap& properties, Animator animator);
 
 	virtual void fastUpdate(float dt) = 0;
 	virtual void slowUpdate(float dt) = 0;
 	virtual void render() = 0;
 	virtual void exit();
 
-	virtual AbilityTarget targetType() const = 0;
-	virtual AbilityType type() const { return AbilityType::None; } // TODO:  = 0;
-
 	Actor* caster() const { return mCaster; }
+	LocalDispatcher& events() { return mEvents; }
+	Cooldown& cooldown() { return mCooldown; }
 
-	BasicString name() const { return mName; }
+	virtual AbilityTarget targetType() const = 0;
+	virtual AbilityType type() const = 0;
 
 	void setState(AbilityState state) { mState = state; }
 	AbilityState state() const { return mState; }
 
 	void applyEffect(EffectType effectType, Actor* target, EffectPool* effectPool) const;
 
-	LocalDispatcher& events() { return mEvents; }
-	Cooldown& cooldown() { return mCooldown; }
-
-	virtual bool isRanged() const { return false; }
-
 	bool hasCompleted() const { return mCompleted; }
 
+	BasicString name() const;
+
+
 protected:
-	BasicString mName;
 	AbilityState mState;
 
 	Animator mAnimator;
@@ -60,7 +57,6 @@ protected:
 	PropertyMap mProperties;
 
 	bool mCompleted;
-
 
 	Collider mCollider;
 };

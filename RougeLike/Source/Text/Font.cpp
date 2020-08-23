@@ -68,7 +68,7 @@ void Font::setText(const BasicString& text)
 			if (mTexture == nullptr)
 				DebugPrint(Warning, "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
 			else
-				size = VectorF(textSurface->w, textSurface->h);
+				mSize = Vector2D<int>(textSurface->w, textSurface->h);
 
 			// loaded surface no longer needed
 			SDL_FreeSurface(textSurface);
@@ -87,8 +87,7 @@ void Font::render(const VectorF position) const
 {
 	SDL_Rect renderQuad = { static_cast<int>(position.x),
 							static_cast<int>(position.y),
-							static_cast<int>(size.x),
-							static_cast<int>(size.y) };
+							mSize.x, mSize.y };
 
 	SDL_RenderCopyEx(mRenderer->sdlRenderer(), mTexture, nullptr, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
 }

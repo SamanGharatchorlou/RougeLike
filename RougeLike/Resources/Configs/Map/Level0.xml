@@ -11,9 +11,9 @@
 
 	<Collectables>
 			<Ability xPosition="8" id="Slash"></Ability>
-			<Ability xPosition="12" id="Blink"></Ability>
+			<Ability xPosition="12" id="Heal"></Ability>
 			<Ability xPosition="10" id="Charge"></Ability>
-			<Ability xPosition="15" id="Spikes"></Ability>
+			<Ability xPosition="15" id="Smash"></Ability>
 	</Collectables>
 
 	<Enemies>

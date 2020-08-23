@@ -22,4 +22,10 @@
 			<GratingTrigger x = "13" y = "12"></GratingTrigger>
 		</Corridor>
 	</Decor>
+
+	<Enemies>
+		<Shape type="Devil" xPosition="30" shape="Circle" points="7"></Shape>
+		<Shape type="Devil" xPosition="65" shape="Circle" points="7"></Shape>
+		<Patrol type="Devil" xIncrement="3"></Patrol>
+	</Enemies>
 </Map>

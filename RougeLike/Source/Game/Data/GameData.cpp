@@ -24,7 +24,7 @@ void GameData::setWindow(Window* newWindow)
 void GameData::init()
 {
 	// Set camera before UIManager
-	Camera::Get()->setViewport(window->size());
+	Camera::Get()->setViewport(window->size().toFloat());
 
 	// Input
 	inputManager = new InputManager;
@@ -52,7 +52,7 @@ void GameData::load()
 	TextureManager::Get()->load();
 
 	// Set camera before UIManager
-	Camera::Get()->setViewport(window->size());
+	Camera::Get()->setViewport(window->size().toFloat());
 
 	// Input
 	inputManager->init();
@@ -71,50 +71,7 @@ void GameData::load()
 	// Map Level
 	environment->init(this);
 	environment->load();
-
-	// Must be done AFTER everything has been new'd
-	//setupObservers();
 }
-
-//void GameData::load()
-//{
-//	// Texture Manager
-//	TextureManager::Get()->load();
-//
-//	// Set camera before UIManager
-//	Camera::Get()->setViewport(window->size());
-//
-//	// Input
-//	inputManager = new InputManager;
-//	inputManager->init();
-//	inputManager->setCursorSize(VectorF(25.0f, 25.0f));
-//
-//	// Audio
-//	AudioManager::Get()->load();
-//
-//	// UI
-//	uiManager = new UIManager;
-//	uiManager->setupScreens();
-//	uiManager->initCursor(inputManager->getCursor());
-//
-//	// Rendering
-//	renderManager = new RenderManager;
-//
-//	// Score Manager
-//	scoreManager = new ScoreManager;
-//
-//	// Collision Trackers
-//	collisionManager = new CollisionManager;
-//	collisionManager->init();
-//
-//	// Map Level
-//	environment = new Environment;
-//	environment->init(this);
-//	environment->load();
-//
-//	// Must be done AFTER everything has been new'd
-//	setupObservers();
-//}
 
 
 void GameData::setupObservers()
@@ -138,8 +95,8 @@ void GameData::setupObservers()
 
 void GameData::free()
 {
-	delete collisionManager;
 	delete environment;
+	delete collisionManager;
 
 	delete scoreManager;
 	delete uiManager;

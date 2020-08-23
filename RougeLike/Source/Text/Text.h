@@ -12,16 +12,13 @@ public:
 	void setText(const BasicString& text);
 	void setColour(SDL_Color colour);
 
-	//void displaySubText(int startIndex, int endIndex);
-
 	int fontSize() const { return mFont.ptSize(); }
 	void setFontSize(int fontSize) { mFont.resize(fontSize); }
 
-	VectorF size() const { return VectorF(mFont.width(), mFont.height()); }
-	VectorF autoSize(VectorF size);
-	void setWidth(float width);
+	void autoSize(VectorF size);
 
-	float stringWidth();
+	VectorF size() const { return mFont.size().toFloat(); }
+	void setWidth(float width);
 
 	void setOffset(VectorF offset) { mAlignmentOffset = offset; }
 

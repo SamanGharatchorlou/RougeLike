@@ -19,21 +19,6 @@ UITextBox::UITextBox(const StringMap& attributes) : UIBox(attributes)
 }
 
 
-//UITextBox::UITextBox(const UITextBoxData data)
-//{
-//	StringMap attributes;
-//	attributes.add("x", data.rect.TopLeft().x);
-//	attributes.add("y", data.rect.TopLeft().y);
-//	attributes.add("width", data.rect.Width());
-//	attributes.add("height", data.rect.Height());
-//	UIElement::fill(attributes);
-//
-//
-//	mText.init(data.text, data.font, data.ptSize, data.colour);
-//	setAlignment(data.alignment);
-//}
-
-
 void UITextBox::render()
 {
 	mText.render(mRect.TopLeft());
@@ -43,7 +28,7 @@ void UITextBox::render()
 
 void UITextBox::autoSizeFont()
 {
-	VectorF newSize = mText.autoSize(mRect.Size());
+	mText.autoSize(mRect.Size());
 }
 
 

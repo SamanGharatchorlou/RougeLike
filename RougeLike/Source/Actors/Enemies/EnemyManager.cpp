@@ -17,6 +17,8 @@ EnemyManager::EnemyManager() : mEnvironment(nullptr) { }
 
 EnemyManager::~EnemyManager()
 {
+	clear();
+	mEnvironment = nullptr;
 	ASSERT(Warning, mActiveEnemies.size() == 0, "All enemies should have been put back into the pool by now, there are %d left\n", mActiveEnemies.size());
 }
 
@@ -62,8 +64,7 @@ void EnemyManager::addNewAIPathMap()
 	mAIController.addMap(map);
 
 	// TODO: store these values? in the spawner, then change them as the levels move on
-	BasicString fileName = "Level0";
-	BasicString path = FileManager::Get()->findFile(FileManager::Config_Map, fileName);
+	BasicString path = FileManager::Get()->findFile(FileManager::Config_Map, "Environment");
 	XMLParser parser(path);
 	spawn(parser.rootChild("Enemies"), map);
 }
@@ -73,17 +74,25 @@ void EnemyManager::popAIPathMap()
 {
 	AIPathMap* pathMap = mAIController.popMap();
 
-	for (std::vector<Enemy*>::iterator iter = mActiveEnemies.begin(); iter != mActiveEnemies.end(); iter++)
-	{
-		if ((*iter)->getAIPathing()->pathMap() != pathMap)
-		{
-			std::vector<Enemy*> enemiesToRemove(mActiveEnemies.begin(), iter - 1);
-			mActiveEnemies = std::vector<Enemy*>(iter, mActiveEnemies.end());
+	std::vector<Enemy*>::iterator lastInvalidEnemy;
 
-			removeActiveEnemies(enemiesToRemove);
+	for (lastInvalidEnemy = mActiveEnemies.begin(); lastInvalidEnemy != mActiveEnemies.end(); lastInvalidEnemy++)
+	{
+		if ((*lastInvalidEnemy)->getAIPathing()->pathMap() != pathMap)
+		{
+			if(lastInvalidEnemy != mActiveEnemies.begin())
+				lastInvalidEnemy - 1;
+
 			break;
 		}
 	}
+
+	std::vector<Enemy*> enemiesToRemove(mActiveEnemies.begin(), lastInvalidEnemy);
+
+	std::vector<Enemy*>::iterator firstValidEnemy = lastInvalidEnemy != mActiveEnemies.end() ? lastInvalidEnemy + 1 : mActiveEnemies.end();
+	mActiveEnemies = std::vector<Enemy*>(firstValidEnemy, mActiveEnemies.end());
+
+	removeActiveEnemies(enemiesToRemove);
 }
 
 

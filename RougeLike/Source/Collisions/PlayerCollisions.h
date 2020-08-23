@@ -15,6 +15,7 @@ class PlayerCollisions
 {
 public:
 	PlayerCollisions() { };
+	~PlayerCollisions();
 
 	void init(Player* player, CollisionManager* collisionManager);
 	void clear();

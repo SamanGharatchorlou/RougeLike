@@ -2,23 +2,33 @@
 
 #include "Animations/Animator.h"
 
+class PlayerManager;
+enum class AbilityType;
+
 
 class Levelling
 {
 public:
 	Levelling();
 
-	void init(RectF rect);
+	void init(const XMLNode& levelNode, RectF rect);
 
 	void slowUpdate(float dt);
 	void render(const RectF& playerRect);
 
-	void gainExp(int exp);
+	void gainExp(PlayerManager* player, int exp);
 
 	int getCurrentExp() const { return mCurrentExp; }
 
-	bool didLevelUp();
-	int popLevlledUpEvent();
+
+#if UNLOCK_ALL_ABILITIES
+	void unlockAllAbilities(PlayerManager* player);
+#endif
+
+
+private:
+	void buildAnimator(const BasicString& infoFile, RectF rect);
+	void levelUp(PlayerManager* player);
 
 
 private:
@@ -26,10 +36,9 @@ private:
 	int mCurrentExp;
 	int mRequiredExp;
 
-	UniqueQueue<int> mLevelledUp;
-
 	RectF mRect;
 	VectorF mRenderOffset;
-
 	Animator mAnimator;
+
+	UniqueQueue<AbilityType> mLockedAbilities;
 };

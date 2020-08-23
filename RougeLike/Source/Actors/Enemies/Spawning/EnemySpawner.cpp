@@ -33,10 +33,13 @@ std::vector<SpawnData> EnemySpawner::getspawnList(const XMLNode spawnNode, const
 
 std::vector<SpawnData> EnemySpawner::generateSpawnData(const Map* map, Type spawnType, const StringMap& attributes) const
 {
+	std::vector<SpawnData> data;
 	if (spawnType == Type::Patrol)
-		return spawnPatrollers(map, attributes);
+		data = spawnPatrollers(map, attributes);
 	else if (spawnType == Type::Shape)
-		return spawnShape(map, attributes);
+		data = spawnShape(map, attributes);
+
+	return data;
 }
 
 
@@ -69,7 +72,7 @@ std::vector<SpawnData> EnemySpawner::spawnShape(const Map* map, const StringMap&
 	PointList points;
 	if (attributes.at("shape") == "Circle")
 	{
-		int radius = map->tile(Index(0, 0))->rect().Width();
+		float radius = map->getFirstRect().Width();
 		int pointCount = toInt(attributes.at("points"));
 		
 		Circle circle(VectorF(), radius, pointCount);

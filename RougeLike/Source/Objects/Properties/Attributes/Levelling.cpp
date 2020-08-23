@@ -4,13 +4,40 @@
 #include "Animations/AnimationReader.h"
 #include "Game/Camera/Camera.h"
 
+#include "Actors/Player/PlayerManager.h"
+#include "Objects/Abilities/AbilityClasses/AbilityStates.h"
+
 
 Levelling::Levelling() : mLevel(1), mCurrentExp(0), mRequiredExp(100) { }
 
 
-void Levelling::init(RectF rect)
+void Levelling::init(const XMLNode& levelNode, RectF rect)
 {
-	XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Player, "LevelUp"));
+	XMLNode abilities = levelNode.child("Abilities");
+
+	XMLNode ability = abilities.child();
+	while (ability)
+	{
+		BasicString name = ability.name();
+		AbilityType type = AbilityType::None;
+
+		type << name;
+
+		if (type != AbilityType::None)
+			mLockedAbilities.push(type);
+		else
+			DebugPrint(Warning, "Ability name %s not recognised\n", name.c_str());
+
+		ability = ability.next();
+	}
+
+	buildAnimator(levelNode.child("Info").value(), rect);
+}
+
+
+void Levelling::buildAnimator(const BasicString& infoFile, RectF rect)
+{
+	XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Player, infoFile));
 
 	AnimationReader reader;
 	XMLNode root = parser.rootNode();
@@ -52,26 +79,42 @@ void Levelling::render(const RectF& playerRect)
 }
 
 
-void Levelling::gainExp(int exp)
+void Levelling::gainExp(PlayerManager* player, int exp)
 {
 	mCurrentExp += exp;
 
 	if (mCurrentExp >= mRequiredExp)
 	{
-		mCurrentExp -= mRequiredExp;
-		mLevelledUp.push(++mLevel);
-		mAnimator.start();
+		levelUp(player);
 	}
 }
 
 
-int Levelling::popLevlledUpEvent()
+
+void Levelling::levelUp(PlayerManager* player)
 {
-	return mLevelledUp.popFront();
+	mCurrentExp -= mRequiredExp;
+	mRequiredExp = (int)((float)mRequiredExp * 1.5f);
+
+	mAnimator.start();
+
+	if(mLockedAbilities.size() > 0)
+		player->addAbility(mLockedAbilities.popFront());
 }
 
 
-bool Levelling::didLevelUp()
+
+#if UNLOCK_ALL_ABILITIES
+void Levelling::unlockAllAbilities(PlayerManager* player)
 {
-	return mLevelledUp.size() > 0;
+	for (AbilityType type = AbilityType::None + 1; type < AbilityType::Count; type = type + 1)
+	{
+		mLockedAbilities.push(type);
+	}
+
+	while (mLockedAbilities.size() > 0)
+	{
+		gainExp(player, 100);
+	}
 }
+#endif

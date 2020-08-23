@@ -149,8 +149,8 @@ BasicString TextureManager::getTextureName(const Texture* texture) const
 
 Texture* TextureManager::getTexture(const BasicString& label, const FileManager::Folder folder) const
 {
-	TextureMap textureMap = findTextureMap(folder);
-	Texture* texture = textureMap.find(label);
+	const TextureMap* textureMap = findTextureMap(folder);
+	Texture* texture = textureMap->find(label);
 
 #if _DEBUG
 	if (!texture)
@@ -161,16 +161,17 @@ Texture* TextureManager::getTexture(const BasicString& label, const FileManager:
 }
 
 
-/// --- Priavte Functions --- ///
+// --- Priavte Functions --- //
 
-const TextureMap& TextureManager::findTextureMap(const FileManager::Folder folder) const
+const TextureMap* TextureManager::findTextureMap(const FileManager::Folder folder) const
 {
 	std::unordered_map<FileManager::Folder, TextureMap>::const_iterator iter;
 	for (iter = mTextures.begin(); iter != mTextures.end(); iter++)
 	{
 		if (folder == iter->first)
-			return iter->second;
+			return &iter->second;
 	}
 
-	ASSERT(Error, false, "There is no texture Map in the folder '%s'\n", FileManager::Get()->generatePath(folder).c_str());
+	DebugPrint(Warning, "There is no texture Map in the folder '%s'\n", FileManager::Get()->generatePath(folder).c_str());
+	return nullptr;
 }

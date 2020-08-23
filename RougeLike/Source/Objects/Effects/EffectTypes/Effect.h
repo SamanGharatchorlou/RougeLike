@@ -3,10 +3,12 @@
 class Actor;
 class Map;
 class PropertyMap;
+class PropertyType;
 class Attribute;
 
+
 #include "EffectTypes.h"
-#include "Objects/Properties/Property.h"
+
 
 class Effect
 {

@@ -1,8 +1,9 @@
 #pragma once
 
 #include "Utilities/ObjectPool.h"
+#include "Objects/Effects/EffectTypes/Effect.h"
 
-class Effect;
+//class Effect;
 enum class EffectType;
 
 

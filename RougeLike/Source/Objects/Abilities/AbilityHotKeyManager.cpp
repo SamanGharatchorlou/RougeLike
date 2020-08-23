@@ -5,11 +5,9 @@
 
 #include "AbilityClasses/Ability.h"
 
-#include "UI/UIManager.h"
+//#include "UI/UIManager.h"
 #include "UI/Screens/GameScreen.h"
 #include "UI/ScreenBuilder.h"
-
-
 
 
 AbilityHotKeyManager::AbilityHotKeyManager() : mGameScreen(nullptr) { }
@@ -21,9 +19,9 @@ void AbilityHotKeyManager::addHotKey(Ability* ability)
 	HotKey hotKey(ability, hotKeyNumber);
 
 	mHotKeys.push_back(hotKey);
-
 	addToScreen(hotKey);
 }
+
 
 void AbilityHotKeyManager::updateStates()
 {

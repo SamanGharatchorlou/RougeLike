@@ -81,7 +81,7 @@ void GameSetup::closeSubSystems()
 Window* GameSetup::createWindow()
 {
 	Window* window = new Window;
-	window->init(title, screenSize.x, screenSize.y);
+	window->init(title, screenSize);
 	return window;
 }
 
@@ -101,6 +101,6 @@ void GameSetup::readSettings()
 	title = settings["Title"];
 	int width = settings.getInt("Width");
 	int height = settings.getInt("Height");
-	screenSize = VectorF(width, height);
+	screenSize = Vector2D<int>(width, height);
 	audioChannels = settings.getInt("AudioChannels");
 }

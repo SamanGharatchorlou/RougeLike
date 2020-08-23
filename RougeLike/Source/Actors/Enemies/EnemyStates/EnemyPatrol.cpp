@@ -10,21 +10,11 @@ void EnemyPatrol::init()
 {
 	mEnemy->animator().selectAnimation(Action::Walk);
 	setPatrolPoint();
-
-
-	//const AIPathMap* map = mEnemy->getPathMap().pathMap();
-	//mIndexTarget = map->index(mEnemy->position());
-	//mIndexTarget.y = 0;
-
-	//mPositionTarget = mEnemy->position();
-	//mPositionTarget.y = 0.0f;
 }
 
 
 void EnemyPatrol::fastUpdate(float dt)
 {
-	//if()
-
 	mEnemy->accellerateTowards(mPositionTarget);
 }
 

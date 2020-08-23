@@ -43,12 +43,6 @@ void ScoreManager::handleEvent(EventData& data)
 		updateUI = true;
 		break;
 	}
-	case Event::IncrementMapLevel:
-	{
-		mMapLevel++;
-
-		updateUI = true;
-	}
 	default:
 		break;
 	}

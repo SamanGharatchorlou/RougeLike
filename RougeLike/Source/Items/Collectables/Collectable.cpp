@@ -43,7 +43,7 @@ void WeaponCollectable::activate(PlayerManager* Player)
 // --- Ability pickup --- //
 void AbilityCollectable::activate(PlayerManager* Player)
 {
-	Player->addAbility(mID);
+	//Player->addAbility(mID);
 }
 
 

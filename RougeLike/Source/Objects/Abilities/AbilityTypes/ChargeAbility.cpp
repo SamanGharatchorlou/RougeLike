@@ -44,11 +44,11 @@ void ChargeAbility::activateOn(Actor* target, EffectPool* effectPool)
 void ChargeAbility::fastUpdate(float dt)
 {
 	VectorF velocity = direction() * mProperties.at(PropertyType::Force);
-	VectorF movement = mWallCollisions.allowedMovement(mCaster->currentMap(), velocity * dt);
+	velocity = mWallCollisions.allowedVelocity(mCaster->currentMap(), velocity, dt);
 
 	if(mTimer.getSeconds() < mProperties.at(PropertyType::Time))
 	{
-		mCaster->physics()->move(movement);
+		mCaster->physics()->move(velocity, dt);
 		sendActivateOnRequest();
 	}
 	else
@@ -72,6 +72,7 @@ void ChargeAbility::slowUpdate(float dt)
 
 void ChargeAbility::render()
 {
+
 	if (mState == AbilityState::Selected)
 	{
 		renderRangeCircle();

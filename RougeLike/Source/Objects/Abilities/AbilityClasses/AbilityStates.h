@@ -11,8 +11,17 @@ enum class AbilityType
 	Spikes,
 	Smash,
 	Charge,
-	Slash
+	Slash,
+	Count
 };
+
+
+template<class T>
+inline AbilityType operator +(AbilityType a, T b)
+{
+	int sum = static_cast<int>(a) + static_cast<int>(b);
+	return static_cast<AbilityType>(sum);
+}
 
 
 inline void operator >>(AbilityType a, BasicString& str)

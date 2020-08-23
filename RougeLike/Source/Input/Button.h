@@ -3,19 +3,6 @@
 #if _DEBUG
 #include "Debug/DebugDraw.h"
 #endif
-//
-//template<class T>
-//inline bool operator ==(Key a, T b)
-//{
-//	return static_cast<int>(a) + static_cast<int>(b);
-//}
-//
-//template<class T>
-//inline bool operator ==(T a, Key b)
-//{
-//	return static_cast<int>(a) + static_cast<int>(b);
-//}
-
 
 
 class Button
@@ -69,7 +56,8 @@ public:
 		Five = SDLK_5,
 		Six = SDLK_6,
 		Seven = SDLK_7,
-		Eight = SDLK_8
+		Eight = SDLK_8,
+		Nine = SDLK_9
 	};
 
 

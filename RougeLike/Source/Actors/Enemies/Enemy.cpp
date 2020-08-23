@@ -40,6 +40,7 @@ Enemy::~Enemy()
 void Enemy::fastUpdate(float dt)
 {
 	mPhysics.resetHasForce();
+	mPhysics.stopAcceleration();
 
 	mStateMachine.getActiveState().fastUpdate(dt);
 

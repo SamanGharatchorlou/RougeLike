@@ -19,8 +19,7 @@ public:
 	void resize(int ptSize);
 
 	int ptSize() const { return mPtSize; }
-	float width() const { return size.x; }
-	float height() const { return size.y; }
+	Vector2D<int> size() const { return mSize; }
 
 	TTF_Font* get() { return mFont; }
 
@@ -37,9 +36,9 @@ private:
 
 	int mPtSize;
 
-	VectorF size;
+	Vector2D<int> mSize;
 
-	// Forbid copy to prevent shared ownership of of gFont and
+	// Forbid copy to prevent shared ownership of gFont and
 	// it being destroyed by the destructor while still in use
 	Font(Font& font);
 	Font& operator = (const Font) { DebugPrint(Error, "Do not use!\n"); };

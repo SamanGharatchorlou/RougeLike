@@ -4,23 +4,26 @@ class Actor;
 class Map;
 class MapTile;
 
+
 class WallCollisionTracker
 {
 public:
 	WallCollisionTracker() { };
+	~WallCollisionTracker() { mActor = nullptr; }
 
 	void setActor(Actor* actor) { mActor = actor; }
 
 	VectorF allowedMovement(const Map* map, VectorF movement);
+	VectorF allowedVelocity(const Map* map, VectorF velocity, float dt);
 
 
 private:
-	void restrictLeftMovement(const Map* map, VectorF& movement) const;
-	void restrictRightMovement(const Map* map, VectorF& movement) const;
-	void restrictTopMovement(const Map* map, VectorF& movement) const;
-	void restrictDownMovement(const Map* map, VectorF& movement) const;
+	void restrictLeftMovement(const Map* map, VectorF& movement, float dt) const;
+	void restrictRightMovement(const Map* map, VectorF& movement, float dt) const;
+	void restrictTopMovement(const Map* map, VectorF& movement, float dt) const;
+	void restrictDownMovement(const Map* map, VectorF& movement, float dt) const;
 
-	RectF wallScaledRect(VectorF translation) const;
+	RectF wallScaledRect() const;
 
 	bool cannotMove(const MapTile* tile) const;
 
@@ -30,32 +33,3 @@ private:
 	Actor* mActor;
 };
 
-
-//class WallCollisionTracker2
-//{
-//public:
-//	WallCollisionTracker2() { };
-//
-//	void init(Actor* actor);
-//	void setRect(RectF rect) { mRect = rect; }
-//	void resolveWallCollisions(const Map* map, VectorF& movement);
-//
-//
-//private:
-//	bool restrictLeftMovement(const Map* map, VectorF movement) const;
-//	bool restrictRightMovement(const Map* map, VectorF movement) const;
-//	bool restrictTopMovement(const Map* map, VectorF movement) const;
-//	bool restrictDownMovement(const Map* map, VectorF movement) const;
-//
-//
-//	RectF wallScaledRect(VectorF translation) const;
-//
-//
-//	bool cannotMove(const MapTile* tile) const;
-//
-//
-//private:
-//
-//	Actor* mActor;
-//	RectF mRect;
-//};

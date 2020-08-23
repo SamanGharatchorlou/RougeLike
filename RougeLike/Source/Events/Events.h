@@ -18,7 +18,7 @@ enum class Event
 	EnemyDead,
 	EnemyHit,
 
-	IncrementMapLevel,
+	HealthChanged,
 
 	SetGameVolume,
 	SetMusicVolume,
@@ -104,6 +104,13 @@ struct SetTextColourEvent : public EventData
 };
 
 
+struct HealthChangedEvent : public EventData
+{
+	HealthChangedEvent() : EventData(Event::HealthChanged) { }
+};
+
+
+
 struct SetUISlider : public EventData
 {
 	SetUISlider(const BasicString& id, float value) : EventData(Event::SetUISlider), mId(id), mValue(value) { }
@@ -129,11 +136,11 @@ struct UpdateLoadingBarEvent : public EventData
 
 struct EnemyDeadEvent : public EventData
 {
-	EnemyDeadEvent(const Enemy* enemy, const float score, const float exp) : EventData(Event::EnemyDead), mEnemy(enemy), mScore(score), mExp(exp) { }
+	EnemyDeadEvent(const Enemy* enemy, int score, int exp) : EventData(Event::EnemyDead), mEnemy(enemy), mScore(score), mExp(exp) { }
 
 	const Enemy* mEnemy;
-	const float mScore;
-	const float mExp;
+	const int mScore;
+	const int mExp;
 };
 
 
@@ -148,18 +155,12 @@ struct SetUIBarEvent : public EventData
 };
 
 
-struct IncrementLevelEvent : public EventData
-{
-	IncrementLevelEvent() : EventData(Event::IncrementMapLevel) { };
-};
-
-
 struct UpdateTextBoxEvent : public EventData
 {
-	UpdateTextBoxEvent(const BasicString& id, int value) : EventData(Event::UpdateTextBox), mId(id), mValue(value) { }
+	UpdateTextBoxEvent(const BasicString& id, const BasicString& text) : EventData(Event::UpdateTextBox), mId(id), mText(text) { }
 
 	const BasicString mId;
-	const int mValue;
+	const BasicString mText;
 };
 
 

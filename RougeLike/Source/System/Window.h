@@ -8,12 +8,12 @@ public:
 	Window() : mWindow(nullptr) { };
 	~Window();
 
-	void init(const BasicString& title, int width, int height);
+	void init(const BasicString& title, Vector2D<int> size);
 
 	SDL_Renderer* createRenderer();
 
 	const SDL_Window* get() const { return mWindow; }
-	VectorF size() const;
+	Vector2D<int> size() const;
 
 	void setTitle(const char* title);
 

@@ -9,7 +9,7 @@
 		<OffsetX>13</OffsetX>
 		<OffsetY>25</OffsetY>
 
-		<Cooldown>20</Cooldown>
+		<Cooldown>0.1</Cooldown>
 		<SwingSpeed>1500</SwingSpeed>
 		<SwingAngle>120</SwingAngle>
 	</Properties>

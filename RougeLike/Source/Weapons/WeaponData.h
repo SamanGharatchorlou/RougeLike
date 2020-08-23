@@ -15,7 +15,7 @@ struct WeaponRawData
 };
 
 
-struct WeaponData
+class WeaponData
 {
 public:
 	WeaponData() : texture(nullptr), maxDimention(0.0f) { }
