@@ -4,4 +4,5 @@
 	<RedSlider Handle = "SliderHandle" Bar = "RedSliderBar" Container = "SliderContainer"></RedSlider>
 	<HealthSlider Handle = "HealthIcon" Bar = "RedSliderBar" Container = "SliderContainer"></HealthSlider>
 	<LevelSlider Handle = "" Bar = "YellowSliderBar" Container = "YellowSliderContainer"></LevelSlider>
+	<LoadingSlider Handle = "" Bar = "LoadingBar" Container = "LoadingBarContainer"></LoadingSlider>
 </UI>

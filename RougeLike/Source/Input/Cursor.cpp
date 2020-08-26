@@ -3,7 +3,7 @@
 #include "Graphics/Texture.h"
 
 
-Cursor::Cursor() : mTexture(nullptr), mMoving(false) { }
+Cursor::Cursor() : mTexture(nullptr), mMoving(false), mVisibility(false) { }
 
 
 void Cursor::render()

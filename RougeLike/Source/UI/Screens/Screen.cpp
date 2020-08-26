@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "Screen.h"
 
-#include "UI/Elements/UIElement.h"
+#include "UI/ScreenLayers.h"
+
+//#include "UI/Elements/UIElement.h"
 #include "UI/Elements/UIButton.h"
 #include "UI/Elements/UISlider.h"
 
@@ -15,6 +17,9 @@ Screen::~Screen()
 		delete element;
 		element = nullptr;
 	}
+
+	mSliders.clear();
+	mButtons.clear();
 }
 
 
@@ -133,3 +138,15 @@ bool Screen::selected(ScreenItem item) const
 	return mButtons.at(item)->isPressed();
 }
 
+
+UISlider* Screen::slider(ScreenItem item)
+{
+#if _DEBUG
+	if (mSliders.count(item) == 0)
+	{
+		DebugPrint(Warning, "No slider has been linked to the screen item %d\n", (int)item);
+		return nullptr;
+	}
+#endif
+	return mSliders[item];
+}

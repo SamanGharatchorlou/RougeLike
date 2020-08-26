@@ -1,11 +1,12 @@
 #include "pch.h"
 #include "PauseScreen.h"
 
+#include "UI/ScreenController.h"
 #include "Input/InputManager.h"
 #include "UI/Elements/UIButton.h"
 
 
-void PauseScreen::enter()
+void PauseScreen::init()
 {
 	mButtons.clear();
 
@@ -20,20 +21,33 @@ void PauseScreen::handleInput(const InputManager* input)
 {
 	if (input->isPressed(Button::Pause))
 	{
-		mController->pushScreen(ScreenType::Popup);
+		mController->popScreen();
+	}
+	else if (input->isPressed(Button::Esc) || input->isPressed(Button::Quit))
+	{
+		mController->quitGame();
 	}
 }
 
 
-void PauseScreen::update()
+void PauseScreen::slowUpdate()
 {
 	if (selected(ScreenItem::Settings))
 	{
-		mController->pushScreen(ScreenType::Settings);
+		mController->addScreen(ScreenType::Settings);
 	}
 
-	if (selected(ScreenItem::Resume))
+	if (selected(ScreenItem::Quit))
+	{
+		mController->quitGame();
+	}
+	else if (selected(ScreenItem::Restart))
+	{
+		mController->restartGame();
+	}
+	else if (selected(ScreenItem::Resume))
 	{
 		mController->popScreen();
+		mController->popSystemState();
 	}
 }

@@ -17,13 +17,11 @@ public:
 	};
 
 public:
+	PauseScreen() { }
 
-	PauseScreen(ScreenController* controller) : Screen(controller) { }
-	~PauseScreen() { mButtons.clear(); }
-
-	void enter() override;
+	void init() override;
 	void handleInput(const InputManager* input);
-	void update() override;
+	void slowUpdate() override;
 	void exit() override { };
 
 	ScreenType type() override { return ScreenType::Pause; }

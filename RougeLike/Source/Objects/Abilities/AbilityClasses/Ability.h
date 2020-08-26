@@ -4,12 +4,13 @@
 #include "Events/LocalDispatcher.h"
 #include "Animations/Animator.h"
 #include "Objects/Abilities/Cooldown.h"
-#include "Collisions/Collider.h"
+#include "Collisions/Colliders/Collider.h"
 
 
 class Actor;
 class PropertyMap;
 class EffectPool;
+class Collider;
 enum class EffectType;
 
 
@@ -17,7 +18,7 @@ class Ability
 {
 public:
 	Ability() : mState(AbilityState::None), mCaster(nullptr) { }
-	virtual ~Ability() { }
+	virtual ~Ability();
 
 	virtual void init(Actor* caster, const PropertyMap& properties, Animator animator);
 
@@ -29,6 +30,7 @@ public:
 	Actor* caster() const { return mCaster; }
 	LocalDispatcher& events() { return mEvents; }
 	Cooldown& cooldown() { return mCooldown; }
+	Collider* collider() { return mCollider; }
 
 	virtual AbilityTarget targetType() const = 0;
 	virtual AbilityType type() const = 0;
@@ -58,5 +60,5 @@ protected:
 
 	bool mCompleted;
 
-	Collider mCollider;
+	Collider* mCollider;
 };

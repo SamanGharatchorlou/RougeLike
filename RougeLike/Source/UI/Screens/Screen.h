@@ -1,46 +1,21 @@
 #pragma once
 
-#include "ScreenTypes.h"
-#include "ScreenController.h"
+#include "States/State.h"
+#include "UI/ScreenTypes.h"
+#include "UI/ScreenLayers.h"
 
 class UIButton;
 class UIElement;
 class UISlider;
 class ScreenController;
-enum class ScreenType;
-
 class InputManager;
 
-enum class ScreenItem
-{
-	None,
-
-	// Character Selection
-	Play,
-
-	// Game
-	Health,
-	Armor,
-
-	// Pause
-	Resume,
-	Settings,
-	Restart,
-	Quit,
-
-	// Settings
-	Music,
-	Sound,
-	Mute,
-	Close,
-	Count
-};
 
 
-class Screen
+class Screen : public State
 {
 public:
-	Screen(ScreenController* controller) : mController(controller) { }
+	Screen() { }
 	virtual ~Screen();
 
 	void add(const ScreenLayer& layer);
@@ -51,11 +26,14 @@ public:
 
 	void updateButtons(const InputManager* input);
 
-	virtual void enter() = 0;
+	// Unused state override functions
+	void handleInput() override { }
+	void fastUpdate(float dt) override { }
+	void slowUpdate(float dt) { };
+
 	virtual void handleInput(const InputManager* input) { }
-	virtual void update() = 0;
-	virtual void exit() = 0;
-	virtual void render();
+	virtual void slowUpdate() = 0;
+	void render() override;
 
 	virtual ScreenType type() = 0;
 
@@ -64,8 +42,12 @@ public:
 
 	void linkSlider(ScreenItem setting, const BasicString& sliderId);
 	void linkButton(ScreenItem option, const BasicString& buttonId);
-	bool selected(ScreenItem button) const;
 
+	bool selected(ScreenItem button) const;
+	UISlider* slider(ScreenItem slider);
+
+	void setController(ScreenController* controller) { mController = controller; }
+	ScreenController* controller() { return mController; }
 
 protected:
 	ScreenController* mController;
@@ -80,10 +62,10 @@ protected:
 class NullScreen : public Screen
 {
 public:
-	NullScreen(ScreenController* controller) : Screen(nullptr) { }
-	void enter() { }
-	void handleInput(const InputManager* input) { }
-	void update() { }
+	NullScreen() { }
+
+	void init() { }
+	void slowUpdate() { }
 	void exit() { }
 	void render() { }
 	ScreenType type() { return ScreenType::None; }

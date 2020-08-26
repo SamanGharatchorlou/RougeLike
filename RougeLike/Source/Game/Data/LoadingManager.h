@@ -2,7 +2,7 @@
 
 #include "LoadingBar.h"
 
-class UITextBox;
+class UIManager;
 
 
 // Implementing this means the loading time will probably increase by around 10%-15%
@@ -11,37 +11,31 @@ class LoadingManager
 {
 public:
 	static LoadingManager* Get();
-	void free();
 
-	void init();
-	void CountToBeLoadedFiles();
+	void init(UIManager* UI);
 
-	void directoriesToLoad(std::vector<FileManager::Folder> folders);
-
-	void addFileToLoad(const BasicString& filePath);
 	void successfullyLoaded(const BasicString& filePath);
 	float loadedPercentage();
 
-	bool end() const { return (mTotalFileSizes > 0) && (mLoadedFileSizes == mTotalFileSizes); }
+	bool end() const { return (mTotalFileSizes > 0) && (mLoadedFileSizes >= mTotalFileSizes); }
 
+	void update();
 	void render();
 
 
 private:
-	void initTextBox(VectorF screenSize);
-	void setLoadingBarTextures();
-	void setLoadingBarRect(VectorF screenSize);
-	void setBackgroundTexture();
+	void CountToBeLoadedFiles();
+	void directoriesToLoad(std::vector<FileManager::Folder> folders);
+	void addFileToLoad(const BasicString& filePath);
+
 
 
 private:
-	LoadingManager() : mBackground(nullptr), mLoadingText(nullptr), mTotalFileSizes(0), mLoadedFileSizes(0) { }
+	LoadingManager() : mUI(nullptr), mTotalFileSizes(0), mLoadedFileSizes(0) { }
 	~LoadingManager() { }
 
 	uintmax_t mTotalFileSizes;
 	uintmax_t mLoadedFileSizes;
 
-	LoadingBar mLoadingBar;
-	Texture* mBackground;
-	UITextBox* mLoadingText;
+	UIManager* mUI;
 };

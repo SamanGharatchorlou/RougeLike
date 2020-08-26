@@ -37,6 +37,7 @@ void PlayerManager::clear()
 	mAbilities.clear();
 	mPlayerCollisions.clear();
 	mWeaponStash.clear();
+	mLevelling.reset();
 }
 
 
@@ -47,7 +48,14 @@ void PlayerManager::addAbility(AbilityType ability)
 
 void PlayerManager::addExp(int exp)
 {
-	mLevelling.gainExp(this, exp);
+	bool didLevelUp = mLevelling.gainExp(this, exp);
+
+	if (didLevelUp && mLevelling.level() == 2)
+	{
+		OpenPopupEvent* eventPtr = new OpenPopupEvent("LevelUpInfo");
+		EventPacket event(eventPtr);
+		mEvents.push(event);
+	}
 }
 
 void PlayerManager::setPosition(VectorF position)

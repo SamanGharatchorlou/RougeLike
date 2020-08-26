@@ -2,7 +2,7 @@
 
 #include "Physics.h"
 #include "Animations/Animator.h"
-#include "Collisions/EffectCollider.h"
+#include "Collisions/Colliders/EffectCollider.h"
 #include "Objects/Effects/EffectManager.h"
 #include "Events/LocalDispatcher.h"
 #include "Utilities/Maps/AttributeMap.h"

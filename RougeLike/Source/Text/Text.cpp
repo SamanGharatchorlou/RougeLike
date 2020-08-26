@@ -24,7 +24,7 @@ void Text::init(const BasicString& text, const BasicString& font, int ptSize, SD
 void Text::setColour(SDL_Color colour)
 {
 	mFont.setColour(colour);
-	mFont.setText(mText);
+	setText(mText);
 }
 
 
@@ -90,12 +90,63 @@ void Text::autoSize(VectorF size)
 
 	TTF_SizeText(mFont.get(), mText.c_str(), &width, &height);
 
-	// assume ptSize = 0; so its always smaller
-	while (width < targetWidth && height < targetHeight)
+	if (width > targetWidth || height > targetHeight)
 	{
-		mFont.resize(++ptSize);
-		TTF_SizeText(mFont.get(), mText.c_str(), &width, &height);
+		while (width > targetWidth || height > targetHeight)
+		{
+			mFont.resize(--ptSize);
+			TTF_SizeText(mFont.get(), mText.c_str(), &width, &height);
+		}
+	}
+	else
+	{
+		while (width < targetWidth && height < targetHeight)
+		{
+			mFont.resize(++ptSize);
+			TTF_SizeText(mFont.get(), mText.c_str(), &width, &height);
+		}
 	}
 
 	mFont.setText(mText);
+}
+
+
+
+void Text::autoSizeWrap(VectorF size)
+{
+	int width = -1;
+	int height = -1;
+
+	int targetWidth = (int)size.x;
+	int targetHeight = (int)size.y;
+
+	int ptSize = mFont.ptSize();
+
+	TTF_SizeText(mFont.get(), mText.c_str(), &width, &height);
+
+	int numberOfLines = ceilf((float)width / size.x);
+	int currentHeight = numberOfLines * height;
+
+
+	if (currentHeight > targetHeight)
+	{
+		while (currentHeight > targetHeight)
+		{
+			numberOfLines = ceilf((float)width / size.x);
+			currentHeight = numberOfLines * height;
+
+			mFont.resize(--ptSize);
+			TTF_SizeText(mFont.get(), mText.c_str(), &width, &height);
+		}
+	}
+	else
+	{
+		while (width < targetWidth && height < targetHeight)
+		{
+			mFont.resize(++ptSize);
+			TTF_SizeText(mFont.get(), mText.c_str(), &width, &height);
+		}
+	}
+
+	mFont.setWrappedText(mText, targetWidth);
 }

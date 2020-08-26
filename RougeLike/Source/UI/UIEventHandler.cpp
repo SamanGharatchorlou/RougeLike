@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "UIEventHandler.h"
 
+#include "ScreenController.h"
+
 #include "Screens/Screen.h"
 #include "Elements/UIElement.h"
 #include "Elements/UIButton.h"
@@ -8,7 +10,7 @@
 #include "Elements/UISlider.h"
 
 
-
+// TODO: replace with screencontroller
 void UIEventHandler::handleEvent(Screen* activeScreen, EventData& data)
 {
 	switch (data.eventType)
@@ -33,6 +35,19 @@ void UIEventHandler::handleEvent(Screen* activeScreen, EventData& data)
 		setSliderValue(activeScreen, static_cast<SetUISlider&>(data));
 		break;
 	}
+	case Event::OpenPopup:
+	{
+		OpenPopupEvent& eventData = static_cast<OpenPopupEvent&>(data);
+		XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Menus, eventData.mInfoID));
+
+		XMLNode textNode = parser.rootChild("Text");
+
+		activeScreen->controller()->openPopup(textNode);
+
+
+		break;
+	}
+
 #if UI_EDITOR
 	case Event::MoveUIElement:
 	{

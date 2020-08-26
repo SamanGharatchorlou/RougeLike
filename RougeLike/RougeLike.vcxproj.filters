@@ -12,7 +12,6 @@
     <ClCompile Include="Source\Animations\Animator.cpp" />
     <ClCompile Include="Source\Graphics\TileSet.cpp" />
     <ClCompile Include="Source\Graphics\RenderManager.cpp" />
-    <ClCompile Include="Source\Collisions\Collider.cpp" />
     <ClCompile Include="Source\pch.cpp" />
     <ClCompile Include="Source\UI\UIManager.cpp" />
     <ClCompile Include="Source\System\Window.cpp" />
@@ -36,7 +35,6 @@
     <ClCompile Include="Source\Items\Collectables\Collectable.cpp" />
     <ClCompile Include="Source\Items\Collectables\Collectables.cpp" />
     <ClCompile Include="Source\UI\Elements\UIElement.cpp" />
-    <ClCompile Include="Source\Collisions\DamageCollider.cpp" />
     <ClCompile Include="Source\Weapons\Weapon.cpp" />
     <ClCompile Include="Source\Weapons\Weaponstash.cpp" />
     <ClCompile Include="Source\Weapons\Melee\MeleeWeapon.cpp" />
@@ -60,7 +58,6 @@
     <ClCompile Include="Source\Collisions\WallCollisionTracker.cpp" />
     <ClCompile Include="Source\UI\Elements\UISlider.cpp" />
     <ClCompile Include="Source\Animations\AnimationReader.cpp" />
-    <ClCompile Include="Source\Collisions\EffectCollider.cpp" />
     <ClCompile Include="Source\Collisions\PlayerCollisions.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityActivator.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\SpikeAbility.cpp" />
@@ -120,7 +117,6 @@
     <ClCompile Include="Source\Objects\Abilities\AbilityClasses\RangedAbility.cpp" />
     <ClCompile Include="Source\UI\ScreenReader.cpp" />
     <ClCompile Include="Source\UI\ScreenBuilder.cpp" />
-    <ClCompile Include="Source\UI\Screens\ScreenTypes.cpp" />
     <ClCompile Include="Source\Debug\UIEditor.cpp" />
     <ClCompile Include="Source\UI\UIEventHandler.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectManager.cpp" />
@@ -169,6 +165,14 @@
     <ClCompile Include="Source\Objects\Properties\Attributes\Levelling.cpp" />
     <ClCompile Include="Source\UI\Elements\UIWindow.cpp" />
     <ClCompile Include="Source\UI\Screens\PopupScreen.cpp" />
+    <ClCompile Include="Source\Objects\Pools\ScreenPool.cpp" />
+    <ClCompile Include="Source\UI\ScreenLayers.cpp" />
+    <ClCompile Include="Source\UI\ScreenController.cpp" />
+    <ClCompile Include="Source\UI\Screens\LoadingScreen.cpp" />
+    <ClCompile Include="Source\System\Files\TextFileReader.cpp" />
+    <ClCompile Include="Source\Collisions\Colliders\Collider.cpp" />
+    <ClCompile Include="Source\Collisions\Colliders\EffectCollider.cpp" />
+    <ClCompile Include="Source\Collisions\Colliders\QuadCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -184,7 +188,6 @@
     <ClInclude Include="Source\Animations\Animator.h" />
     <ClInclude Include="Source\Graphics\TileSet.h" />
     <ClInclude Include="Source\Graphics\RenderManager.h" />
-    <ClInclude Include="Source\Collisions\Collider.h" />
     <ClInclude Include="Source\pch.h" />
     <ClInclude Include="Source\UI\UIManager.h" />
     <ClInclude Include="Source\System\Window.h" />
@@ -214,7 +217,6 @@
     <ClInclude Include="Source\Utilities\Vector2D.h" />
     <ClInclude Include="Source\Items\Collectables\Collectable.h" />
     <ClInclude Include="Source\Items\Collectables\Collectables.h" />
-    <ClInclude Include="Source\Collisions\DamageCollider.h" />
     <ClInclude Include="Source\Weapons\Weapon.h" />
     <ClInclude Include="Source\Weapons\WeaponData.h" />
     <ClInclude Include="Source\Weapons\WeaponStash.h" />
@@ -245,7 +247,6 @@
     <ClInclude Include="Source\UI\Elements\UISlider.h" />
     <ClInclude Include="Source\Events\LocalDispatcher.h" />
     <ClInclude Include="Source\Animations\AnimationReader.h" />
-    <ClInclude Include="Source\Collisions\EffectCollider.h" />
     <ClInclude Include="Source\Collisions\PlayerCollisions.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityActivator.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\SpikeAbility.h" />
@@ -311,7 +312,6 @@
     <ClInclude Include="Source\Objects\Abilities\AbilityClasses\RangedAbility.h" />
     <ClInclude Include="Source\UI\ScreenReader.h" />
     <ClInclude Include="Source\UI\ScreenBuilder.h" />
-    <ClInclude Include="Source\UI\Screens\ScreenTypes.h" />
     <ClInclude Include="Source\Debug\UIEditor.h" />
     <ClInclude Include="Source\UI\UIEventHandler.h" />
     <ClInclude Include="Source\Objects\Effects\EffectManager.h" />
@@ -366,7 +366,16 @@
     <ClInclude Include="Source\Objects\Properties\Attributes\Levelling.h" />
     <ClInclude Include="Source\UI\Elements\UIWindow.h" />
     <ClInclude Include="Source\UI\Screens\PopupScreen.h" />
-    <ClInclude Include="Source\UI\Screens\ScreenController.h" />
+    <ClInclude Include="Source\Objects\Pools\ScreenPool.h" />
+    <ClInclude Include="Source\UI\ScreenLayers.h" />
+    <ClInclude Include="Source\UI\ScreenTypes.h" />
+    <ClInclude Include="Source\UI\ScreenController.h" />
+    <ClInclude Include="Source\UI\Screens\LoadingScreen.h" />
+    <ClInclude Include="Source\System\Files\TextFileReader.h" />
+    <ClInclude Include="Source\Utilities\Quad2D.h" />
+    <ClInclude Include="Source\Collisions\Colliders\Collider.h" />
+    <ClInclude Include="Source\Collisions\Colliders\EffectCollider.h" />
+    <ClInclude Include="Source\Collisions\Colliders\QuadCollider.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

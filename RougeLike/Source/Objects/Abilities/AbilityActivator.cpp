@@ -8,7 +8,7 @@
 
 #include "Actors/Actor.h"
 #include "Actors/ActorManager.h"
-#include "Collisions/Collider.h"
+#include "Collisions/Colliders/Collider.h"
 
 
 bool AbilityActivator::canSelect(Ability* ability) const
@@ -95,14 +95,15 @@ bool AbilityActivator::activate(Ability* ability, Button::State buttonState, con
 void AbilityActivator::activateAreaAttack(Ability* ability) const
 {
 	TargePositionAttackAbility* attackAbility = static_cast<TargePositionAttackAbility*>(ability);
-	Collider abilityCollider = attackAbility->collider();
+	Collider* abilityCollider = attackAbility->collider();
 
 	// Apply effect to all enemies caught in area
 	std::vector<Actor*> enemies = mEnvironment->actors()->getAllEnemies();
 	for (int i = 0; i < enemies.size(); i++)
 	{
+		// TODO: dont know why but... make this abiltiyCollider->doesIntersect(enemy) feels better
 		Collider* enemyCollider = enemies[i]->collider();
-		if (enemyCollider->doesIntersect(&abilityCollider))
+		if (enemyCollider->doesIntersect(abilityCollider))
 		{
 			attackAbility->activateOn(enemies[i], mEnvironment->effectPool());
 		}

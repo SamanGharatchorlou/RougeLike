@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "EnemyAttack.h"
 
-#include "Collisions/Collider.h"
+#include "Collisions/Colliders/EffectCollider.h"
 #include "Actors/Enemies/Enemy.h"
 
 #include "Objects/Effects/EffectTypes/DisplacementEffect.h"

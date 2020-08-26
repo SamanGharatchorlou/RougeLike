@@ -2,8 +2,11 @@
 
 #if _DEBUG
 
-#define MEMORY_TRACKING 1 // 1 = default, 2 = verbose
+#define MEMORY_TRACKING 0 // 1 = default, 2 = verbose
 #define IGNORE_UNKNOWNS 0
+
+// Camera
+#define CAMERA_IGNORE_BOUNDARIES 1
 
 // Framerate
 #define FRAMERATE_CAP 0 // Use the FPS cap you want
@@ -11,9 +14,9 @@
 
 // Player
 #define DRAW_PLAYER_RECTS 0
-#define IGNORE_WALLS 0
-#define IGNORED_BY_ENEMIES 0
-#define UNLOCK_ALL_ABILITIES 1
+#define IGNORE_WALLS 1
+#define IGNORED_BY_ENEMIES 1
+#define UNLOCK_ALL_ABILITIES 0
 #define NO_ABILITY_COOLDOWNS 1
 
 // Collectables
@@ -41,13 +44,17 @@
 #define DRAW_ENEMY_RECTS 0
 #define DRAW_ENEMY_TARGET_PATH 0
 
-#define LIMIT_ENEMY_SPAWNS 0
+#define LIMIT_ENEMY_SPAWNS 1
 #define MAX_SPAWN_COUNT 1
 
 // UI
-#define DRAW_UI_RECTS 0
-#define UI_EDITOR 0
+#define DRAW_UI_RECTS 1
+#define UI_EDITOR 1
 #define DEBUG_CURSOR 0
+
+
+// Collisions
+#define DRAW_TEST_QUAD 1
 
 #else
 

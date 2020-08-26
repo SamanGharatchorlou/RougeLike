@@ -1,15 +1,11 @@
 #include "pch.h"
 #include "UIManager.h"
 
-#include "Graphics/TextureManager.h"
 #include "Input/InputManager.h"
 
 #include "UIEventHandler.h"
 
-#include "ScreenReader.h"
-#include "ScreenBuilder.h"
-#include "Elements/UIButton.h"
-#include "Elements/UITextBox.h"
+#include "Screens/PopupScreen.h"
 
 
 UIManager::~UIManager()
@@ -18,77 +14,41 @@ UIManager::~UIManager()
 }
 
 
-void UIManager::init()
+void UIManager::init(GameController* gameController)
 {
-	Screen* nullScreen = new NullScreen(&mController);
-	mScreens.push_back(nullScreen);
-	mActiveScreen = mScreens.front();
+	mController.init(gameController, this);
 }
 
+
+void UIManager::preLoad()
+{
+	std::vector<ScreenType> types{ ScreenType::LoadingScreen };
+	mScreenPool.load(types, 1);
+}
+
+void UIManager::load()
+{
+	std::vector<ScreenType> types;
+	for (ScreenType type = ScreenType::None + 1; type < ScreenType::Count; type = type + 1)
+	{
+		types.push_back(type);
+	}
+
+	mScreenPool.load(types, 1);
+}
 
 
 Screen* UIManager::screen(ScreenType type)
 {
-	for (int i = 0; i < mScreens.size(); i++)
-	{
-		if (mScreens[i]->type() == type)
-			return mScreens[i];
-	}
-
-	DebugPrint(Log, "No screen found with type %d\n", type);
-	return nullptr;
+	return mScreenPool.screenRef(type);
 }
 
-
-void UIManager::pushScreen(ScreenType screenType)
-{
-	mController.pushScreen(screenType);
-	selectScreen(screenType);
-}
-
-
-void UIManager::selectScreen(ScreenType screenType)
-{
-	mActiveScreen->exit();
-	
-	for (Screen* screen : mScreens)
-	{
-		if (screen->type() == screenType)
-		{
-			mActiveScreen = screen;
-			mActiveScreen->enter();
-#if UI_EDITOR
-			mEditor.setScreen(mActiveScreen);
-#endif
-			break;
-		}
-	}
-}
-
-
-void UIManager::setupScreens()
-{
-	init();
-
-	ScreenBuilder builder;
-	std::vector<BasicString> configs = FileManager::Get()->allFilesInFolder(FileManager::Config_Menus);
-	for (const BasicString& config : configs)
-	{
-		Screen* screen = builder.buildNewScreen(config, &mController);
-
-		if(screen)
-			mScreens.push_back(screen);
-	}
-}
 
 void UIManager::clearScreens()
 {
-	for (int i = 0; i < mScreens.size(); i++)
-	{
-		delete mScreens[i];
-	}
-
-	mScreens.clear();
+	// TODO: make sure all screens have been returned first?
+	mController.clearScreenStack();
+	mScreenPool.freeAll();
 }
 
 
@@ -98,27 +58,31 @@ void UIManager::handleInput(const InputManager* input)
 	mEditor.handleInput(input);
 #endif
 
-	mActiveScreen->handleInput(input);
-	mActiveScreen->updateButtons(input);
+	mController.getActiveScreen()->handleInput(input);
+	mController.getActiveScreen()->updateButtons(input);
 }
 
 
-void UIManager::update(float dt) 
-{ 
-	mActiveScreen->update();
+void UIManager::update() 
+{
+	mController.processScreenChanges();
+	mController.getActiveScreen()->slowUpdate();
 
-	if (mController.activeScreen() != mActiveScreen->type())
-	{
-		selectScreen(mController.activeScreen());
-	}
+#if UI_EDITOR
+	mEditor.setScreen(mController.getActiveScreen());
+#endif
 }
 
 
-// TODO: render everything on the stack?
+Screen* UIManager::getActiveScreen()
+{
+	return mController.getActiveScreen();
+}
+
+
 void UIManager::render()
 {
-
-	mActiveScreen->render();
+	mController.getActiveScreen()->render();
 
 #if UI_EDITOR
 	mEditor.render();
@@ -128,19 +92,18 @@ void UIManager::render()
 }
 
 
-
 void UIManager::handleEvent(EventData& data)
 {
 	UIEventHandler eventHandler;
-	eventHandler.handleEvent(mActiveScreen, data);
+	eventHandler.handleEvent(mController.getActiveScreen(), data);
 }
-
 
 
 void UIManager::initCursor(Cursor* cursor)
 {
 	mCursor = cursor;
 }
+
 
 void UIManager::setCursorTexture(Texture* texture) 
 { 

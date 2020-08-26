@@ -1,9 +1,6 @@
 #pragma once
 
-#include "Weapons/WeaponData.h"
-#include "Collisions/DamageCollider.h"
 
-class Texture;
 
 /*
 class Projectile

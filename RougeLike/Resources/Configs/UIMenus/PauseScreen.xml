@@ -33,7 +33,7 @@
 	</Layer>
 
 	<Layer>
-		<TextBox id = "ScreenTitle" parent = "MainPanel" font = "MenuFont" align = "Center" x = "142.599" y = "16.100" width = "224.801" height = "38.100" >
+		<TextBox id = "ScreenTitle" parent = "MainPanel" font = "MenuFont" align = "Center" x = "0" y = "16.100" width = "500.800" height = "38.100" >
 			<text r = "255" g = "255" b = "255" >PAUSED</text>
 		</TextBox>
 	</Layer>

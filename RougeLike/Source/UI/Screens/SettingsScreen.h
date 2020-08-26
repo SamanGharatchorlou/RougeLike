@@ -9,11 +9,10 @@ struct GameData;
 class SettingsScreen : public Screen
 {
 public:
+	SettingsScreen() { }
 
-	SettingsScreen(ScreenController* controller) : Screen(controller) { }
-	~SettingsScreen() { mSliders.clear(); mButtons.clear(); }
-	void enter() override;
-	void update() override;
+	void init() override;
+	void slowUpdate() override;
 	void exit() override { };
 
 	ScreenType type() override { return ScreenType::Settings; }

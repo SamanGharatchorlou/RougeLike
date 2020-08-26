@@ -39,6 +39,15 @@ void TextureManager::unload()
 }
 
 
+void TextureManager::preLoad()
+{
+	loadAllTexturesIn(FileManager::PreLoadFiles);
+
+	//mTextures[FileManager::Image_UI] = mTextures[FileManager::PreLoadFiles];
+	//mTextures[FileManager::PreLoadFiles] = TextureMap();
+}
+
+
 // load all textures here
 void TextureManager::load()
 {
@@ -149,13 +158,22 @@ BasicString TextureManager::getTextureName(const Texture* texture) const
 
 Texture* TextureManager::getTexture(const BasicString& label, const FileManager::Folder folder) const
 {
+	Texture* texture = nullptr;
 	const TextureMap* textureMap = findTextureMap(folder);
-	Texture* texture = textureMap->find(label);
 
-#if _DEBUG
+	if(textureMap)
+		texture = textureMap->find(label);
+
 	if (!texture)
+	{
 		DebugPrint(Warning, "No item in folder map '%d' with label: '%s'\n", folder, label.c_str());
-#endif
+
+		texture = searchAllFiles(label);
+		if (!texture)
+		{
+			DebugPrint(Warning, "No image file with label: '%s' exists in any loaded folder\n", label.c_str());
+		}
+	}
 
 	return texture;
 }
@@ -174,4 +192,23 @@ const TextureMap* TextureManager::findTextureMap(const FileManager::Folder folde
 
 	DebugPrint(Warning, "There is no texture Map in the folder '%s'\n", FileManager::Get()->generatePath(folder).c_str());
 	return nullptr;
+}
+
+
+
+Texture* TextureManager::searchAllFiles(const BasicString& label) const
+{
+	Texture* texture = nullptr;
+
+	std::unordered_map<FileManager::Folder, TextureMap>::const_iterator iter;
+	for (iter = mTextures.begin(); iter != mTextures.end(); iter++)
+	{
+		const TextureMap* textureMap = findTextureMap(iter->first);
+		texture = textureMap->find(label);
+
+		if (texture != nullptr)
+			break;
+	}
+
+	return texture;
 }

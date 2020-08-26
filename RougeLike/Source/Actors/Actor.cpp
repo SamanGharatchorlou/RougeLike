@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Actor.h"
 
-#include "Collisions/EffectCollider.h"
+#include "Collisions/Colliders/EffectCollider.h"
 #include "Objects/Pools/EffectPool.h"
 
 #include "Game/Camera/Camera.h"

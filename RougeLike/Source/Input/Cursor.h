@@ -24,6 +24,9 @@ public:
 	void setPosition(float x, float y) { mRect.SetCenter(x, y); }
 	VectorF position() const { return mRect.Center(); }
 
+	void setVisibility(bool isVisible) { mVisibility = isVisible; }
+	bool isVisible() const { return mVisibility; }
+
 	Button getButton(ButtonType type) const { return mButtons[type]; }
 	void setButton(ButtonType type, Button button);
 	void setMotion(bool isMoving) { mMoving = isMoving; }
@@ -36,10 +39,13 @@ public:
 	bool isPressed(ButtonType type = ButtonType::Left) const;
 	bool isReleased(ButtonType type = ButtonType::Left) const;
 
+
 public:
 	RectF mRect;
 	Texture* mTexture;
 
 	bool mMoving;
-	Button mButtons[2]; 
+	Button mButtons[2];
+
+	bool mVisibility;
 };

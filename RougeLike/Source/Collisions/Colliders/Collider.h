@@ -11,7 +11,7 @@ public:
 	void init(RectF* objectRect, VectorF colliderScale = VectorF(1.0f, 1.0f));
 	void reset();
 
-	bool doesIntersect(Collider* collider) const;
+	virtual bool doesIntersect(Collider* collider) const;
 	void hasCollidedWith(Collider* collider);
 
 	inline void setDidHit(bool collisionStatus) { mDidHit = collisionStatus; }

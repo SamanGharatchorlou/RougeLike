@@ -6,6 +6,12 @@
 #include "Objects/Effects/EffectTypes/Effect.h"
 
 
+Ability::~Ability()
+{
+	delete mCollider;
+}
+
+
 void Ability::init(Actor* caster, const PropertyMap& properties, Animator animator)
 {
 	mCaster = caster;
@@ -13,7 +19,7 @@ void Ability::init(Actor* caster, const PropertyMap& properties, Animator animat
 	mProperties = properties;
 
 	mRect.SetSize(realiseSize(animator.frameSize(), properties.at(PropertyType::MaxSize)));
-	mCollider.init(&mRect);
+	mCollider = new Collider(&mRect);
 	mCooldown = Cooldown(properties.at(PropertyType::Cooldown));
 
 #if NO_ABILITY_COOLDOWNS

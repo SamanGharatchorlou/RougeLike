@@ -1,5 +1,6 @@
 #pragma once
 
+class GameController;
 class Window;
 class InputManager;
 class RenderManager;
@@ -11,8 +12,10 @@ class CollisionManager;
 
 struct GameData
 {
+	// TODO: move this logic somewhere else?
 	void setWindow(Window* newWindow);
-	void init();
+	void init(GameController* gameController);
+	void preLoad();
 	void load();
 	void setupObservers();
 	void free();

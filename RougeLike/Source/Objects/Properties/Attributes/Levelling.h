@@ -10,15 +10,18 @@ class Levelling
 {
 public:
 	Levelling();
+	~Levelling();
 
 	void init(const XMLNode& levelNode, RectF rect);
+	void reset();
 
 	void slowUpdate(float dt);
 	void render(const RectF& playerRect);
 
-	void gainExp(PlayerManager* player, int exp);
+	bool gainExp(PlayerManager* player, int exp);
 
 	int getCurrentExp() const { return mCurrentExp; }
+	int level() const { return mLevel; }
 
 
 #if UNLOCK_ALL_ABILITIES

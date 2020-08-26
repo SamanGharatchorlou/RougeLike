@@ -34,15 +34,19 @@ void Camera::fastUpdate(float dt)
 {
 	VectorF translation = lerpMovement(dt); // mFollowingRect->Center() - mRect.Center();
 
-
+#if !CAMERA_IGNORE_BOUNDARIES
 	if (mRect.LeftPoint() + translation.x >= mBoundaries.x1 &&
 		mRect.RightPoint() + translation.x <= mBoundaries.x2)
+#endif
 	{
 		mRect = mRect.Translate(translation.x, 0.0f);
 	}
 
+
+#if !CAMERA_IGNORE_BOUNDARIES
 	if (mRect.TopPoint() + translation.y >= mBoundaries.y1 &&
 		mRect.BotPoint() + translation.y <= mBoundaries.y2)
+#endif
 	{
 		mRect = mRect.Translate(0.0f, translation.y);
 	}

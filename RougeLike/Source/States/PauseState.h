@@ -1,21 +1,15 @@
 #pragma once
 
 #include "State.h"
-#include "UI/Screens/Screen.h"
 
-class GameController;
 struct GameData;
-class PauseScreen;
-class SettingsScreen;
-class GameScreen;
 
 
 class PauseState : public State
 {
 public:
-	PauseState(GameData* gameData, GameController* gameController);
+	PauseState(GameData* gameData);
 
-	// mandatory functions must be defined
 	void init() override;
 	void slowUpdate(float dt) override;
 	void fastUpdate(float dt) override { };
@@ -23,18 +17,7 @@ public:
 	void render() override;
 	void exit() override { }
 
-private:
-
-	void quitGame();
-	void resumeGame();
-	void restartGame();
-
 
 private:
-	GameController* mGameController;
 	GameData* mGameData;
-
-	PauseScreen* mPauseScreen;
-	SettingsScreen* mSettingsScreen;
-	GameScreen* mGameScreen;
 };

@@ -6,6 +6,10 @@ int main(int argc, char* args[])
 {
 	GameController GameApp;
 
+	GameApp.init();
+
+	GameApp.preLoad();
+
 	GameApp.load();
 
 	GameApp.run();

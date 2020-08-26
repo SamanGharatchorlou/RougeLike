@@ -6,9 +6,11 @@
 class CharacterSelectionScreen : public Screen
 {
 public:
-	CharacterSelectionScreen(ScreenController* controller) : Screen(controller) { }
-	void enter() override;
-	void update() override { }
+	CharacterSelectionScreen() { }
+
+	void init() override;
+	void handleInput(const InputManager* input) override;
+	void slowUpdate() override;
 	void exit() override { };
 
 	const BasicString& selectedCharacter() const { return mSelectedCharacter; }

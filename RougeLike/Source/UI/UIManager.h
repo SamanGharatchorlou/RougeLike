@@ -1,53 +1,51 @@
 #pragma once
 
-#include "UI/Screens/Screen.h"
-#include "Screens/ScreenController.h"
 #include "Events/Observer.h"
-
+#include "ScreenController.h"
+#include "Objects/Pools/ScreenPool.h"
 #if UI_EDITOR
 #include "Debug/UIEditor.h"
 #endif
 
+class GameController;
 class InputManager;
 class Cursor;
+class Screen;
 
 class UIManager : public Observer
 {
+	friend class ScreenController;
+
 public:
-	UIManager() : mCursor(nullptr), mActiveScreen(nullptr) { }
+	UIManager() : mCursor(nullptr) { }
 	~UIManager();
 
-	void init();
-	void setupScreens();
+	void init(GameController* gameController);
+	void preLoad();
+	void load();
 	void clearScreens();
 
 	void initCursor(Cursor* cursor);
 
-	void clearScreenStack() { mController.clearStack(); }
-	void pushScreen(ScreenType screenType);
-	void popScreen() { mController.popScreen(); }
-
 	void handleInput(const InputManager* input);
-	void update(float dt);
+	void update();
 	void render();
 
 	void handleEvent(EventData& data) override;
 	
 	Screen* screen(ScreenType type);
-	Screen* getActiveScreen() { return mActiveScreen; }
+	Screen* getActiveScreen();
 
 	void setCursorTexture(Texture* texture);
 
+	void openPopup(const XMLNode& textNode);
 
-private:
-
-	void selectScreen(ScreenType screenType);
-
+	ScreenController* controller() { return &mController; }
 
 private:
 	Cursor* mCursor;
-	Screen* mActiveScreen;
-	std::vector<Screen*> mScreens;
+
+	ScreenPool mScreenPool;
 
 	ScreenController mController;
 

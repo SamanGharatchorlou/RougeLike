@@ -3,13 +3,11 @@
 #include "State.h"
 
 struct GameData;
-class GameController;
-class CharacterSelectionScreen;
 
 class PreGameState : public State
 {
 public:
-	PreGameState(GameData* gameData, GameController* gameController);
+	PreGameState(GameData* gameData);
 	~PreGameState() { }
 
 	void init() override;
@@ -23,6 +21,5 @@ public:
 
 
 private:
-	GameController* mGameController;
 	GameData* mGameData;
 };

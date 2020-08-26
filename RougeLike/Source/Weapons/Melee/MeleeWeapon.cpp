@@ -5,7 +5,7 @@
 #include "Graphics/Texture.h"
 
 #include "Weapons/WeaponData.h"
-#include "Collisions/EffectCollider.h"
+#include "Collisions/Colliders/EffectCollider.h"
 
 #if _DEBUG
 #include "Debug/DebugDraw.h"

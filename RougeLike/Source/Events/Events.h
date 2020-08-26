@@ -28,6 +28,7 @@ enum class Event
 	SetTextColour,
 	SetUIBar,
 	SetUISlider,
+	OpenPopup,
 
 	Trauma,
 
@@ -71,6 +72,13 @@ struct EventPacket
 	EventData* data;
 };
 
+
+struct OpenPopupEvent : public EventData
+{
+	OpenPopupEvent(const BasicString& infoID) : EventData(Event::OpenPopup), mInfoID(infoID) { }
+
+	const BasicString mInfoID;
+};
 
 
 struct LevelUpdatedEvent : public EventData

@@ -3,9 +3,11 @@
 
 #if UI_EDITOR
 #include "UI/Screens/Screen.h"
+#include "UI/ScreenLayers.h"
+
 #include "Input/InputManager.h"
 
-#include "Collisions/Collider.h"
+#include "Collisions/Colliders/Collider.h"
 #include "UI/Elements/UIElement.h"
 
 #include "UI/UIEventHandler.h"
@@ -13,7 +15,11 @@
 
 void UIEditor::setScreen(Screen* activeScreen)
 {
-	mScreen = activeScreen;
+	if (mScreen != activeScreen)
+	{
+		mElementID.clear();
+		mScreen = activeScreen;
+	}
 }
 
 
@@ -68,6 +74,8 @@ void UIEditor::render()
 		UIElement* element = mScreen->find(mElementID);
 		if (element)
 			debugDrawRectOutline(element->rect(), RenderColour::Red);
+		else
+			mElementID.clear();
 	}
 }
 

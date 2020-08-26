@@ -1,8 +1,13 @@
 #include "pch.h"
 #include "GameScreen.h"
 
+#include "UI/UIManager.h"
 #include "Input/InputManager.h"
-#include "UI/Elements/UIElement.h"
+#include "UI/ScreenLayers.h"
+
+#include "UI/ScreenController.h"
+#include "Game/GameController.h"
+
 #include "UI/Elements/UIButton.h"
 #include "UI/Elements/UISlider.h"
 
@@ -11,7 +16,7 @@
 
 
 
-GameScreen::GameScreen(ScreenController* controller) : Screen(controller)
+GameScreen::GameScreen()
 { 
 	ScreenLayer layer("HotKeys");
 	add(layer);
@@ -19,12 +24,13 @@ GameScreen::GameScreen(ScreenController* controller) : Screen(controller)
 
 
 
-void GameScreen::enter()
+void GameScreen::init()
 {
 	linkSlider(ScreenItem::Health, "HealthSlider");
 
+	slider(ScreenItem::Health)->disableInput();
 
-	mSliders[ScreenItem::Health]->disableInput();
+	mController->ui()->setCursorTexture(TextureManager::Get()->getTexture("GameCursor", FileManager::Image_UI));
 }
 
 void GameScreen::handleInput(const InputManager* input)
@@ -35,12 +41,23 @@ void GameScreen::handleInput(const InputManager* input)
 
 	//	iter->second = Button::Two;
 	//}
+
+	if (input->isPressed(Button::Esc))
+	{
+		mController->quitGame();
+	}
+
+	if (input->isPressed(Button::Pause))
+	{
+		mController->addScreen(ScreenType::Pause);
+		mController->addSystemState(SystemStates::PauseState);
+	}
 }
 
 
-void GameScreen::update()
+void GameScreen::slowUpdate()
 {
-	if (mSliders[ScreenItem::Health]->getValue() == 0.0f)
+	if (slider(ScreenItem::Health)->getValue() == 0.0f)
 	{
 		UIButton* icon = mSliders[ScreenItem::Health]->handle();
 		Texture* texture = TextureManager::Get()->getTexture("DeadIcon", FileManager::Image_UI);
@@ -52,4 +69,6 @@ void GameScreen::update()
 		newRect.SetSize(newSize);
 		icon->setRect(newRect);
 	}
+
+
 }

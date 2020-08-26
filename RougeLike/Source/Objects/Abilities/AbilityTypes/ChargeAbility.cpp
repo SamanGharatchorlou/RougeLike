@@ -17,7 +17,7 @@ void ChargeAbility::activateAt(VectorF position, EffectPool* effectPool)
 	// Square with a width of ratio * original width
 	float ratio = 0.45f;
 	VectorF scale = VectorF(1.0f, mRect.Width() / mRect.Height()) * ratio;
-	mCollider.init(&mRect, scale);
+	mCollider->init(&mRect, scale);
 
 	VectorF direction = (mCaster->position() - position).normalise();
 	mChargeTarget = mCaster->position() + direction * 1000.0f; // any random point in this particular direction
@@ -79,7 +79,7 @@ void ChargeAbility::render()
 	}
 	else if (mState == AbilityState::Running)
 	{
-		RectF collRect = mCollider.scaledRect();
+		RectF collRect = mCollider->scaledRect();
 
 		// render vs collider rect size difference
 		float edgeDistance = mRect.RightPoint() - collRect.RightPoint();
@@ -95,7 +95,7 @@ void ChargeAbility::render()
 
 #if DRAW_EFFECT_RECTS
 		debugDrawRect(mRect, RenderColour::Yellow);
-		debugDrawRect(mCollider.scaledRect(), RenderColour::Red);
+		debugDrawRect(mCollider->scaledRect(), RenderColour::Red);
 #endif
 
 		mAnimator.render(rect, rotation, aboutPoint);

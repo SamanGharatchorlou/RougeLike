@@ -21,7 +21,7 @@ void GameData::setWindow(Window* newWindow)
 	window = newWindow;
 }
 
-void GameData::init()
+void GameData::init(GameController* gameController)
 {
 	// Set camera before UIManager
 	Camera::Get()->setViewport(window->size().toFloat());
@@ -31,6 +31,7 @@ void GameData::init()
 
 	// UI
 	uiManager = new UIManager;
+	uiManager->init(gameController);
 
 	// Rendering
 	renderManager = new RenderManager;
@@ -45,6 +46,14 @@ void GameData::init()
 	environment = new Environment;
 }
 
+
+void GameData::preLoad()
+{
+	TextureManager::Get()->preLoad();
+
+	uiManager->preLoad();
+	uiManager->initCursor(inputManager->getCursor());
+}
 
 void GameData::load()
 {
@@ -62,7 +71,8 @@ void GameData::load()
 	AudioManager::Get()->load();
 
 	// UI
-	uiManager->setupScreens();
+	//uiManager->setupScreens();
+	uiManager->load();
 	uiManager->initCursor(inputManager->getCursor());
 
 	// Collision Trackers

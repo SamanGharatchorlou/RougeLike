@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Collisions/Collider.h"
+#include "Collisions/Colliders/Collider.h"
 
 
 class Texture;

@@ -171,7 +171,12 @@ void Player::updateWeaponHitSound(AudioManager* audio)
 
 void Player::updateMapInfo(Map* map)
 {
-	if (map->isValidPosition(position()))
+#if IGNORE_WALLS // We might want to walk outside of the map
+	if (!map)
+		return;
+#endif
+
+	if(map->isValidPosition(position()))
 	{
 		Vector2D<int> currentTile = map->index(position());
 		if (mTileIndex != currentTile)

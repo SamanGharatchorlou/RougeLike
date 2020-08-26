@@ -63,7 +63,7 @@ K* ObjectPool<K, T>::getObject(T type)
 {
 	if (mPool.count(type) > 0)
 	{
-		if (mPool[type].size() > 1)
+		if (mPool.at(type).size() > 0)
 		{
 			K* object = mPool[type].front();
 			mPool[type].pop();

@@ -16,6 +16,7 @@ public:
 	void setFontSize(int fontSize) { mFont.resize(fontSize); }
 
 	void autoSize(VectorF size);
+	void autoSizeWrap(VectorF size);
 
 	VectorF size() const { return mFont.size().toFloat(); }
 	void setWidth(float width);

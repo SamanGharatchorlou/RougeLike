@@ -1,8 +1,9 @@
 #include "pch.h"
 #include "LoadingManager.h"
 
-#include "Graphics/Texture.h"
-#include "UI/Elements/UITextBox.h"
+#include "UI/UIManager.h"
+#include "UI/Screens/LoadingScreen.h"
+#include "UI/Elements/UISlider.h"
 
 
 LoadingManager* LoadingManager::Get()
@@ -12,34 +13,24 @@ LoadingManager* LoadingManager::Get()
 }
 
 
-void LoadingManager::free()
+void LoadingManager::init(UIManager* UI)
 {
-	delete mBackground;
-	mBackground = nullptr;
+	mUI = UI;
 
-	delete mLoadingText;
-	mLoadingText = nullptr;
+	CountToBeLoadedFiles();
 
-	mLoadingBar.free();
+	mUI->controller()->addScreen(ScreenType::LoadingScreen);
 }
 
-void LoadingManager::init()
+
+void LoadingManager::update()
 {
-	VectorF screen = VectorF(1024.0f, 768.0f);
+	mUI->update();
+	Screen* screen = mUI->getActiveScreen();
 
-	initTextBox(screen);
-	setLoadingBarTextures();
-	setLoadingBarRect(screen);
-	setBackgroundTexture();
-}
-
-void LoadingManager::CountToBeLoadedFiles()
-{
-	std::vector<FileManager::Folder> folders;
-	folders.push_back(FileManager::Images);
-	folders.push_back(FileManager::Audio);
-
-	LoadingManager::Get()->directoriesToLoad(folders);
+	UISlider* loadingBar = screen->slider(ScreenItem::LoadingBar);
+	float value = loadedPercentage();
+	loadingBar->setSliderValue(loadedPercentage());
 }
 
 
@@ -49,16 +40,56 @@ void LoadingManager::render()
 	renderer->Open();
 
 	// Clear screen
-	SDL_SetRenderDrawColor(renderer->sdlRenderer(), 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_SetRenderDrawColor(renderer->sdlRenderer(), 0, 0, 0, 255);
 	SDL_RenderClear(renderer->sdlRenderer());
 
-	mBackground->render(RectF(VectorF(), VectorF(1024.0f, 768.0f)));
-	mLoadingText->render();
-	mLoadingBar.render();
+	mUI->getActiveScreen()->render();
 
 	// Update window surface
 	SDL_RenderPresent(renderer->sdlRenderer());
 	renderer->Close();
+}
+
+
+void LoadingManager::successfullyLoaded(const BasicString& filePath)
+{
+	fs::path fileSystemPath(filePath.c_str());
+	if (fs::exists(fileSystemPath))
+	{
+		if (fs::is_directory(fileSystemPath))
+		{
+			std::vector<BasicString> files = FileManager::Get()->allFilesInFolder(fileSystemPath);
+
+			for(const BasicString& file : files)
+				mLoadedFileSizes += fs::file_size(fs::path(file.c_str()));
+		}
+		else
+		{
+			mLoadedFileSizes += fs::file_size(fileSystemPath);
+		}
+	}
+	else
+	{
+		DebugPrint(Warning, "The file at path '%s' does not exist. Cannot add to 'already loaded'\n", filePath.c_str());
+	}
+}
+
+
+float LoadingManager::loadedPercentage()
+{
+	return (float)mLoadedFileSizes / (float)mTotalFileSizes;
+}
+
+
+
+// -- Private Functions -- //
+void LoadingManager::CountToBeLoadedFiles()
+{
+	std::vector<FileManager::Folder> folders;
+	folders.push_back(FileManager::Images);
+	folders.push_back(FileManager::Audio);
+
+	LoadingManager::Get()->directoriesToLoad(folders);
 }
 
 
@@ -86,87 +117,4 @@ void LoadingManager::addFileToLoad(const BasicString& filePath)
 	{
 		DebugPrint(Warning, "The file at path '%s' does not exist. Cannot add to 'to be loaded'\n", filePath.c_str());
 	}
-}
-
-
-void LoadingManager::successfullyLoaded(const BasicString& filePath)
-{
-	fs::path fileSystemPath(filePath.c_str());
-	if (fs::exists(fileSystemPath))
-	{
-		if (fs::is_directory(fileSystemPath))
-		{
-			std::vector<BasicString> files = FileManager::Get()->allFilesInFolder(fileSystemPath);
-
-			for(const BasicString& file : files)
-				mLoadedFileSizes += fs::file_size(fs::path(file.c_str()));
-		}
-		else
-			mLoadedFileSizes += fs::file_size(fileSystemPath);
-
-		mLoadingBar.setPercentage(loadedPercentage());
-	}
-	else
-	{
-		DebugPrint(Warning, "The file at path '%s' does not exist. Cannot add to 'already loaded'\n", filePath.c_str());
-	}
-}
-
-float LoadingManager::loadedPercentage()
-{
-	return (float)mLoadedFileSizes / (float)mTotalFileSizes;
-}
-
-
-// --- Private Functions --- //
-void LoadingManager::initTextBox(VectorF screenSize)
-{
-	VectorF textPosition = VectorF(screenSize.x / 2.0f, screenSize.y / 1.35f);
-	VectorF textSize = VectorF(300, 100);
-	RectF textRect(VectorF(), textSize);
-	textRect.SetCenter(textPosition);
-
-	// Set text
-	UITextBox::Data textData;
-	textData.font = "MenuFont";
-	textData.ptSize = 0;
-	textData.colour = SDL_Color{ 0, 0, 255 };
-	textData.texture = nullptr;
-	textData.text = "Loading...";
-
-	mLoadingText = new UITextBox(textData);
-	mLoadingText->setRect(textRect);
-	mLoadingText->autoSizeFont();
-}
-
-void LoadingManager::setLoadingBarTextures()
-{
-	// Set textures
-	BasicString loadingBar = FileManager::Get()->findFile(FileManager::PreLoadFiles, "BlueBar");
-	Texture* loadingBarTexture = new Texture;
-	loadingBarTexture->loadFromFile(loadingBar);
-
-	BasicString loadingBarContainer = FileManager::Get()->findFile(FileManager::PreLoadFiles, "BlackBar");
-	Texture* loadingBarContainerTexture = new Texture;
-	loadingBarContainerTexture->loadFromFile(loadingBarContainer);
-
-	mLoadingBar.setTextures(loadingBarTexture, loadingBarContainerTexture);
-}
-
-void LoadingManager::setLoadingBarRect(VectorF screenSize)
-{
-	VectorF barPosition = VectorF(screenSize.x / 2.0f, screenSize.y / 1.2f);
-	VectorF barSize = VectorF(800.0f, 75.0f);
-
-	RectF rect(VectorF(), barSize);
-	rect.SetCenter(barPosition);
-
-	mLoadingBar.setRect(rect);
-}
-
-void LoadingManager::setBackgroundTexture()
-{
-	BasicString splashScreen = FileManager::Get()->findFile(FileManager::PreLoadFiles, "SplashScreen");
-	mBackground = new Texture;
-	mBackground->loadFromFile(splashScreen);
 }

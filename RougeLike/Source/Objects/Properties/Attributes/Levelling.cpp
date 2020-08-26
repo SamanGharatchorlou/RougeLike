@@ -9,7 +9,7 @@
 
 
 Levelling::Levelling() : mLevel(1), mCurrentExp(0), mRequiredExp(100) { }
-
+Levelling::~Levelling() { reset(); }
 
 void Levelling::init(const XMLNode& levelNode, RectF rect)
 {
@@ -32,6 +32,20 @@ void Levelling::init(const XMLNode& levelNode, RectF rect)
 	}
 
 	buildAnimator(levelNode.child("Info").value(), rect);
+}
+
+
+void Levelling::reset()
+{
+	mLevel = 1;
+	mCurrentExp = 0;
+	mRequiredExp = 0;
+
+	mRect = RectF();
+	mRenderOffset = VectorF();
+	mAnimator.clear();
+
+	mLockedAbilities.clear();
 }
 
 
@@ -79,20 +93,24 @@ void Levelling::render(const RectF& playerRect)
 }
 
 
-void Levelling::gainExp(PlayerManager* player, int exp)
+bool Levelling::gainExp(PlayerManager* player, int exp)
 {
 	mCurrentExp += exp;
 
 	if (mCurrentExp >= mRequiredExp)
 	{
 		levelUp(player);
+		return true;
 	}
+
+	return false;
 }
 
 
 
 void Levelling::levelUp(PlayerManager* player)
 {
+	mLevel++;
 	mCurrentExp -= mRequiredExp;
 	mRequiredExp = (int)((float)mRequiredExp * 1.5f);
 

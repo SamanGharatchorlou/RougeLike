@@ -61,6 +61,23 @@ void debugDrawRects(std::vector<RectF> rects, RenderColour colour)
 }
 
 
+void debugDrawQuad(Quad2D<float> quad, RenderColour colour)
+{
+	SDL_SetRenderDrawColor(Renderer::Get()->sdlRenderer(), colour.r, colour.g, colour.b, colour.a);
+
+	for (unsigned int i = 0; i < quad.sides(); i++)
+	{
+		quad[i] = Camera::Get()->toCameraCoords(quad[i]);
+	}
+
+	for (unsigned int i = 0; i < quad.sides(); i++)
+	{
+		int j = i + 1 >= quad.sides() ? 0 : i + 1;
+		SDL_RenderDrawLine(Renderer::Get()->sdlRenderer(), quad[i].x, quad[i].y, quad[j].x, quad[j].y);
+	}
+}
+
+
 void debugRenderText(const BasicString text, int ptSize, VectorF position, RenderColour colour, const BasicString& alignment)
 {
 	UITextBox::Data textData;

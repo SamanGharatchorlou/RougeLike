@@ -32,6 +32,13 @@ void UITextBox::autoSizeFont()
 }
 
 
+void UITextBox::autoSizeWrapFont()
+{
+	mText.autoSizeWrap(mRect.Size());
+}
+
+
+
 void UITextBox::align()
 {
 	if (mAlignment == Alignment::Center)

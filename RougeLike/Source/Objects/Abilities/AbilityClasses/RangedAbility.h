@@ -20,7 +20,7 @@ public:
 	virtual bool isValidTarget(VectorF target, const Map* map) const;
 
 	RectF effectArea() const { return mRect; }
-	Collider collider() { return mCollider; }
+
 
 protected:
 	Texture* mRangeCircle;

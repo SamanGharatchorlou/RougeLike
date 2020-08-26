@@ -8,6 +8,7 @@
 //#include "UI/UIManager.h"
 #include "UI/Screens/GameScreen.h"
 #include "UI/ScreenBuilder.h"
+#include "UI/ScreenLayers.h"
 
 
 AbilityHotKeyManager::AbilityHotKeyManager() : mGameScreen(nullptr) { }

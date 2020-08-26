@@ -7,8 +7,10 @@
 #include "Game/GameSetup.h"
 #include "Debug/FrameRateController.h"
 
-#include "States/GameState.h"
 #include "States/PreGameState.h"
+#include "States/GameState.h"
+#include "States/PauseState.h"
+
 
 // GameData
 #include "System/Window.h"
@@ -27,33 +29,42 @@ GameController::GameController() : quit(false), mGameStateMachine(new NullState)
 }
 
 
+void GameController::init()
+{
+	mGameData.init(this);
+}
+
+
+void GameController::preLoad()
+{
+	mGameData.preLoad();
+}
+
+
 void GameController::load()
 {
 	LoadingManager* loader = LoadingManager::Get();
 
-	loader->init();
+	loader->init(mGameData.uiManager);
 
 	SDL_Thread* threadID = SDL_CreateThread(renderLoadingBar, "LoadingBar", nullptr);
 
-	loader->CountToBeLoadedFiles();
-
-	mGameData.init();
+	//mGameData.init(this);
 	mGameData.setupObservers();
 	mGameData.load();
 
-	SDL_WaitThread(threadID, nullptr);
+	mGameData.uiManager->controller()->popScreen();
 
-	loader->free();
+	SDL_WaitThread(threadID, nullptr);
 
 	mAudio = AudioManager::Get();
 }
 
 
-
 void GameController::run()
 {
 	// add first game state
-	mGameStateMachine.addState(new PreGameState(&mGameData, this));
+	addState(SystemStates::PreGameState);
 
 	FrameRateController frameTimer;
 	frameTimer.start();
@@ -67,9 +78,9 @@ void GameController::run()
 		frameTimer.resetCapTimer();
 #endif
 
-		stateChanges();
 		handleInput(event);
 		updateLoops(frameTimer.delta());
+		stateChanges();
 		render();
 
 		frameTimer.update();
@@ -101,13 +112,10 @@ void GameController::free()
 }
 
 
-// TODO: correctly implement this, you need to first break everything down,
-// then restart it all again
 void GameController::restartGame()
 {
-	DebugPrint(Log, "Unimplemented\n");
-
-	//// Remove all states
+	DebugPrint(Log, "--- Begin game restart ---\n");
+	// Remove all states
 	while (mGameStateMachine.size() > 1)
 	{
 		mGameStateMachine.popState();
@@ -115,13 +123,14 @@ void GameController::restartGame()
 	}
 
 	mGameData.uiManager->clearScreens();
-	mGameData.uiManager->setupScreens();
+	mGameData.uiManager->load();
 
 	mGameData.collisionManager->init();
 
 	mGameData.environment->init(&mGameData);
 	mGameData.environment->load();
-	mGameStateMachine.addState(new PreGameState(&mGameData, this));
+	addState(SystemStates::PreGameState);
+	DebugPrint(Log, "--- End game restart ---\n");
 }
 
 
@@ -158,7 +167,7 @@ void GameController::updateLoops(float dt)
 	mGameStateMachine.getActiveState().slowUpdate(dt);
 
 	mAudio->slowUpdate();
-	mGameData.uiManager->update(dt);
+	mGameData.uiManager->update();
 }
 
 
@@ -166,6 +175,7 @@ void GameController::render()
 {
 	mGameStateMachine.getActiveState().render();
 }
+
 
 void GameController::stateChanges()
 {
@@ -175,6 +185,52 @@ void GameController::stateChanges()
 }
 
 
+void GameController::addState(SystemStates state)
+{
+	mGameStateMachine.addState(getNewGameState(state));
+}
+
+
+void GameController::replaceState(SystemStates state)
+{
+
+	mGameStateMachine.replaceState(getNewGameState(state));
+}
+
+
+void GameController::popState()
+{
+	mGameStateMachine.popState();
+}
+
+
+State* GameController::getNewGameState(SystemStates state)
+{
+	State* systemState = nullptr;
+
+	switch (state)
+	{
+	case SystemStates::PreGameState:
+		systemState = new PreGameState(&mGameData);
+		break;
+	case SystemStates::GameState:
+		systemState = new GameState(&mGameData);
+		break;
+	case SystemStates::PauseState:
+		systemState = new PauseState(&mGameData);
+		break;
+	case SystemStates::None:
+	default:
+		DebugPrint(Warning, "No valid system state with type %d\n", state);
+		break;
+	}
+
+	return systemState;
+}
+
+
+
+
 static int renderLoadingBar(void *ptr)
 {
 	DebugPrint(Log, " -------------------------- starting loader thread -------------------------- \n");
@@ -182,6 +238,7 @@ static int renderLoadingBar(void *ptr)
 
 	while (!loading->end())
 	{
+		loading->update();
 		loading->render();
 	}
 

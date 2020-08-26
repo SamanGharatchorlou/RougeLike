@@ -14,7 +14,9 @@ public:
 
 	//Creates image from font string
 	void setColour(SDL_Color textColor) { colour = textColor; }
-	void setText(const BasicString& textureText);
+	void setText(const BasicString& text);
+
+	void setWrappedText(const BasicString& text, int width);
 
 	void resize(int ptSize);
 

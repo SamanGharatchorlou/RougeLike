@@ -6,7 +6,7 @@
 #include "Objects/Effects/EffectTypes/Effect.h"
 #include "Objects/Pools/EffectPool.h"
 
-#include "Collisions/Collider.h"
+#include "Collisions/Colliders/Collider.h"
 
 
 void HealAbility::slowUpdate(float dt)

@@ -10,10 +10,12 @@ class TextureManager
 public:
 	static TextureManager* Get();
 
+	void preLoad();
 	void load();
 	void unload();
 
 	Texture* getTexture(const BasicString& label, const FileManager::Folder folders) const;
+
 
 	BasicString getTextureName(const Texture* texture) const;
 
@@ -23,6 +25,9 @@ private:
 	int loadAllTexturesIn(FileManager::Folder folder);
 
 	const TextureMap* findTextureMap(const FileManager::Folder folder) const;
+
+
+	Texture* searchAllFiles(const BasicString& label) const;
 
 
 private:

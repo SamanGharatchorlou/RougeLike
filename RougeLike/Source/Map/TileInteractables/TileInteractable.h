@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Collisions/EffectCollider.h"
+#include "Collisions/Colliders/EffectCollider.h"
 #include "Map/Tiles/TileTypes.h"
 
 class MapTile;

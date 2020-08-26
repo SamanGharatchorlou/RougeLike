@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Screens/ScreenTypes.h"
+#include "ScreenLayers.h"
 
 class Texture;
 class UIElement;
@@ -19,13 +19,12 @@ struct TexturePacket
 class ScreenBuilder
 {
 public:
-	Screen* buildNewScreen(const BasicString& config, ScreenController* controller);
-
+	void populateScreen(Screen* screen);
 
 	TexturePacket getButtonTextures(const BasicString& buttonType) const;
 
+
 private:
-	Screen* createNewScreen(const BasicString& screenName, ScreenController* controller);
 
 	ScreenLayers buildUIScreen(const ScreenAttributes& screenAttributes);
 	ScreenLayers buildScreenLayers(const ScreenAttributes& screenAttributes);

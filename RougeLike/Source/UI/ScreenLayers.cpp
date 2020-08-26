@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ScreenTypes.h"
+#include "ScreenLayers.h"
 
 #include "UI/Elements/UIElement.h"
 
@@ -17,10 +17,12 @@ Elements ScreenLayers::elementList() const
 	return elements;
 }
 
+
 void ScreenLayers::add(ScreenLayer layer)
 {
 	mLayers.push_back(layer);
 }
+
 
 UIElement* ScreenLayers::find(const BasicString& id)
 {
@@ -35,7 +37,6 @@ UIElement* ScreenLayers::find(const BasicString& id)
 	DebugPrint(Warning, "No element with the id %s was found from the provided screen\n", id.c_str());
 	return nullptr;
 }
-
 
 
 ScreenLayer* ScreenLayers::layer(const BasicString& id)

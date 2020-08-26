@@ -15,42 +15,23 @@
 #include "ScreenReader.h"
 
 
-Screen* ScreenBuilder::buildNewScreen(const BasicString& config, ScreenController* controller)
+void ScreenBuilder::populateScreen(Screen* screen)
 {
+	ScreenType type = screen->type();
+
+	BasicString fileName;
+	type >> fileName;
+
 	const ScreenReader reader;
-	ScreenAttributes attributes = reader.readScreen(config);
+	ScreenAttributes attributes = reader.readScreen(FileManager::Get()->findFile(FileManager::Config_Menus, fileName));
 	ScreenLayers screenLayers = buildUIScreen(attributes);
 
-	Screen* screen = createNewScreen(config, controller);
+#if _DEBUG
+	if (screenLayers.size() == 0)
+		DebugPrint(Warning, "No screen layers built for screen config %s\n", FileManager::Get()->findFile(FileManager::Config_Menus, fileName));
+#endif
 
-	if(screen)
-		screen->add(screenLayers);
-	
-	return screen;
-}
-
-
-Screen* ScreenBuilder::createNewScreen(const BasicString& config, ScreenController* controller)
-{
-	Screen* screen = nullptr;
-	BasicString screenName = FileManager::Get()->getItemName(config);
-
-	if (screenName == "GameScreen")
-		screen = new GameScreen(controller);
-
-	else if (screenName == "PauseScreen")
-		screen = new PauseScreen(controller);
-
-	else if (screenName == "CharacterSelectionScreen")
-		screen = new CharacterSelectionScreen(controller);
-
-	else if (screenName == "SettingsScreen")
-		screen = new SettingsScreen(controller);
-
-	else if (screenName == "PopupScreen")
-		screen = new PopupScreen(controller);
-
-	return screen;
+	screen->add(screenLayers);
 }
 
 

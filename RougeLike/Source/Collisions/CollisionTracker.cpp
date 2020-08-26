@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include "CollisionTracker.h"
-#include "Collider.h"
+#include "Colliders/Collider.h"
 
 
 void CollisionTracker::addAttackers(std::vector<Collider*> colliders)

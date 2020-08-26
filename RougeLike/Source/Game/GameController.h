@@ -6,6 +6,14 @@
 
 class AudioManager;
 
+enum class SystemStates
+{
+	None,
+	PreGameState,
+	GameState,
+	PauseState,
+};
+
 
 class GameController
 {
@@ -15,10 +23,16 @@ public:
 
 	void free();
 
-	void init() { };
+	void init();
+	void preLoad();
 	void load();
 	void run();
 	void quitGame() { quit = true; }
+
+	// System game states
+	void addState(SystemStates state);
+	void replaceState(SystemStates state);
+	void popState();
 
 	StateMachine<State>* getStateMachine() { return &mGameStateMachine; }
 	
@@ -31,6 +45,8 @@ private:
 	void render();
 
 	void endGame();
+
+	State* getNewGameState(SystemStates state);
 
 private:
 	GameData mGameData;

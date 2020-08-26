@@ -9,12 +9,11 @@
 class GameScreen : public Screen
 {
 public:
+	GameScreen();
 
-	GameScreen(ScreenController* controller);
-
-	void enter() override;
+	void init() override;
 	void handleInput(const InputManager* input);
-	void update() override;
+	void slowUpdate() override;
 	void exit() override { }
 
 	ScreenType type() override { return ScreenType::Game; }

@@ -48,6 +48,7 @@ public:
 
 	int fontSize() const { return mText.fontSize(); }
 	void autoSizeFont();
+	void autoSizeWrapFont();
 
 	void autoSizeRectToText();
 	VectorF textSize() const { return mText.size(); }

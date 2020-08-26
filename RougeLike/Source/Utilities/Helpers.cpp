@@ -16,16 +16,31 @@ VectorF rotateVector(VectorF vector, float dTheta)
 }
 
 
-// NOTE: untested
 VectorF rotateVector(VectorF vector, float dTheta, VectorF about)
 {
+	double radians = toRadians(dTheta);
+	double cosine = cos(radians);
+	double sine = sin(radians);
+
+	VectorF originPoint = about - vector;
+
 	VectorF outVector;
-	float radians = toRadians(dTheta);
+	outVector.x = (originPoint.x * cosine) - (originPoint.y * sine);
+	outVector.y = (originPoint.x * sine) + (originPoint.y * cosine);
 
-	outVector.x =  ((vector.x - about.x) * cos(radians)) - ((about.y - vector.y) * sin(radians)) + about.x;
-	outVector.y = -((vector.x - about.x) * sin(radians)) + ((about.y - vector.y) * cos(radians)) + about.y;
+	return outVector + vector;
+}
 
-	return outVector;
+
+VectorF rotateVector(VectorF vector, VectorF about, double sine, double cosine)
+{
+	VectorF originPoint = vector - about;
+
+	VectorF outVector;
+	outVector.x = (originPoint.x * cosine) - (originPoint.y * sine);
+	outVector.y = (originPoint.x * sine) + (originPoint.y * cosine);
+
+	return outVector + about;
 }
 
 

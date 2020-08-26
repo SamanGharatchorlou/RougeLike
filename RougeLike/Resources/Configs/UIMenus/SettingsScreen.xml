@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <screen>
-	<Layer>
-		<Box id = "MainPanel"  x = "212.000" y = "83.000" width = "500.000" height = "500.000" texture = "Main panel"></Box>
+<Layer>
+		<Box id = "MainPanel"  x = "262.000" y = "83.000" width = "500.800" height = "600.200" texture = "Main panel"></Box>
 	</Layer>
 
 	<Layer>
 		<Button id = "CloseButton" parent = "MainPanel" x = "449.698" y = "1.500" width = "50.000" height = "43.000" texture = "RedButton"></Button>
 		<Box id = "CloseCross" parent = "CloseButton" x = "12.899" y = "9.000" width = "25.000" height = "25.000" texture = "RedCross"></Box>
 
-		<TextBox id = "ScreenTitle" parent = "MainPanel" font = "MenuFont" align = "Center" x = "0.000" y = "9.600" width = "500.000" height = "36.500" >
+		<TextBox id = "ScreenTitle" parent = "MainPanel" font = "MenuFont" align = "Center" x = "0.000" y = "16.100" width = "500.800" height = "36.500" >
 			<text r = "255" g = "255" b = "255" >SETTINGS</text>
 		</TextBox>
 	</Layer>
 
 	<Layer>
 		<!-- Music -->
-		<Slider id = "MusicSlider" x = "273.902" y = "207.200" width = "396.801" height = "30.000" slider = "RedSlider"></Slider>
-		<TextBox id = "MusicString" parent = "MusicSlider" align = "Center" x = "57.698" y = "-42.101" width = "287.000" height = "39.000" >
+		<Slider id = "MusicSlider" x = "311.402" y = "249.700" width = "396.801" height = "30.000" slider = "RedSlider"></Slider>
+		<TextBox id = "MusicString" parent = "MusicSlider" align = "Center" x = "60.198" y = "-54.601" width = "287.000" height = "39.000" >
 			<text r = "255" g = "255" b = "255" >Game Music Volume</text>
 		</TextBox>
 
 
 		<!-- Sound -->
-		<Slider id = "SoundSlider" x = "273.902" y = "357.200" width = "396.801" height = "30.000" slider = "RedSlider"></Slider>
-		<TextBox id = "SoundString" parent = "SoundSlider" align = "Center" x = "57.698" y = "-42.101" width = "287.000" height = "39.000">
+		<Slider id = "SoundSlider" x = "311.402" y = "449.700" width = "396.801" height = "30.000" slider = "RedSlider"></Slider>
+		<TextBox id = "SoundString" parent = "SoundSlider" align = "Center" x = "60.198" y = "-54.601" width = "287.000" height = "39.000" >
 			<text r = "255" g = "255" b = "255" >Sound Effects Volume</text>
 		</TextBox>
 
