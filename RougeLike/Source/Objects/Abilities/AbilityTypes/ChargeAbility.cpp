@@ -2,25 +2,28 @@
 #include "ChargeAbility.h"
 
 #include "Objects/Effects/EffectTypes/Effect.h"
-#include "Objects/Effects/EffectTypes/KnockbackStunEffect.h"
 #include "Objects/Pools/EffectPool.h"
 #include "Actors/Player/Player.h"
 
 #include "Game/Camera/Camera.h"
 
+#include "Collisions/Colliders/QuadCollider.h"
 
 
 void ChargeAbility::activateAt(VectorF position, EffectPool* effectPool)
 {
 	mDistanceTravelled = 0.0f;
 
-	// Square with a width of ratio * original width
-	float ratio = 0.45f;
-	VectorF scale = VectorF(1.0f, mRect.Width() / mRect.Height()) * ratio;
-	mCollider->init(&mRect, scale);
+	// set charge target, only use direction() after this!
+	VectorF dir = (mCaster->position() - position).normalise();
+	mChargeTarget = mCaster->position() + dir * 1000.0f; // any random point far in this direction
+	
+	mRect.SetCenter(mCaster->position());
 
-	VectorF direction = (mCaster->position() - position).normalise();
-	mChargeTarget = mCaster->position() + direction * 1000.0f; // any random point in this particular direction
+	float ratio = 0.6f;
+	setScaledQuad(ratio);
+	setQuadCollider();
+
 
 	mAnimator.selectAnimation(Action::Active);
 
@@ -34,7 +37,6 @@ void ChargeAbility::activateOn(Actor* target, EffectPool* effectPool)
 {
 	if (mHitList.count(target) == 0)
 	{
-		mProperties.addXYPosition(mCaster->position());
 		applyEffects(target, effectPool);
 		mHitList.insert(target);
 	}
@@ -49,6 +51,8 @@ void ChargeAbility::fastUpdate(float dt)
 	if(mTimer.getSeconds() < mProperties.at(PropertyType::Time))
 	{
 		mCaster->physics()->move(velocity, dt);
+		mQuad.translate(velocity * dt);
+		
 		sendActivateOnRequest();
 	}
 	else
@@ -62,11 +66,6 @@ void ChargeAbility::slowUpdate(float dt)
 {
 	mAnimator.slowUpdate(dt);
 	mRect.SetCenter(mCaster->position());
-
-	if (mCaster->collider()->didHit())
-	{
-		sendActivateOnRequest();
-	}
 }
 
 
@@ -79,33 +78,28 @@ void ChargeAbility::render()
 	}
 	else if (mState == AbilityState::Running)
 	{
-		RectF collRect = mCollider->scaledRect();
-
-		// render vs collider rect size difference
-		float edgeDistance = mRect.RightPoint() - collRect.RightPoint();
-		VectorF distance = direction() * edgeDistance;
-
-		// Set rendering rect front end = collider front end
-		RectF rect = mRect.Translate(distance * -1.0f);
-
-		rect = Camera::Get()->toCameraCoords(rect);
-
-		double rotation = getRotation(direction()) - 90;
-		VectorF aboutPoint = rect.Size() / 2.0f;
-
 #if DRAW_EFFECT_RECTS
 		debugDrawRect(mRect, RenderColour::Yellow);
-		debugDrawRect(mCollider->scaledRect(), RenderColour::Red);
+		debugDrawPoint(mQuad.rightCenter(), 5.0f, RenderColour::Black); // front point
+#endif
+#if TRACK_COLLISIONS
+		mCollider->renderCollider();
 #endif
 
-		mAnimator.render(rect, rotation, aboutPoint);
-	}
+		RectF renderRect = renderRectFrontToColliderFront(mRect);
+		renderRect = Camera::Get()->toCameraCoords(renderRect);
 
+		VectorF aboutPoint = renderRect.Size() / 2.0f;
+
+		mAnimator.render(renderRect, rotation(), aboutPoint);
+	}
 }
 
 
 void ChargeAbility::applyEffects(Actor* actor, EffectPool* effectPool)
 {
+	mProperties.addXYPosition(mCaster->position());
+
 	applyEffect(EffectType::Damage, actor, effectPool);
 	applyEffect(EffectType::KnockbackStun, actor, effectPool);
 }
@@ -120,6 +114,9 @@ void ChargeAbility::exit()
 	Ability::exit();
 }
 
+
+
+// -- Private Functions -- //
 
 void ChargeAbility::setCharging(bool isCharging)
 {
@@ -144,4 +141,43 @@ void ChargeAbility::setCharging(bool isCharging)
 VectorF ChargeAbility::direction() const
 {
 	return (mCaster->position() - mChargeTarget).normalise();
+}
+
+
+double ChargeAbility::rotation() const
+{
+	return getRotation(direction()) - 90;
+}
+
+
+void ChargeAbility::setQuadCollider()
+{
+	// replace regular collider with quad collider
+	delete mCollider;
+	mCollider = new QuadCollider(&mQuad);
+}
+
+
+void ChargeAbility::setScaledQuad(float scale)
+{
+	RectF scaledRect = mRect;
+	scaledRect.SetSize(mRect.Size() * scale);
+	scaledRect.SetCenter(mRect.Center());
+	mQuad = Quad2D<float>(scaledRect);
+	mQuad.rotate(rotation(), scaledRect.Center());
+}
+
+
+RectF ChargeAbility::renderRectFrontToColliderFront(const RectF& renderRect)
+{
+	//RectF collRect = mCollider->scaledRect();
+	Quad2D<float> revertedQuad = mQuad;
+	revertedQuad.rotate(-rotation(), revertedQuad.Center());
+
+	// render vs collider rect size difference
+	float edgeDistance = mRect.RightPoint() - revertedQuad.rightCenter().x;
+	VectorF distance = direction() * edgeDistance;
+
+	// Set rendering rect front end = collider front end
+	return mRect.Translate(distance * -0.75f);
 }

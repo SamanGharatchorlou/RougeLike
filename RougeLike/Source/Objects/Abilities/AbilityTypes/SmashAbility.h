@@ -27,8 +27,6 @@ private:
 
 
 private:
-	//float mTime;
-
 	Texture* mHammerTexture;
 	RectF mHammerRect;
 };

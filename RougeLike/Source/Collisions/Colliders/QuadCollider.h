@@ -7,12 +7,16 @@
 class QuadCollider : public Collider
 {
 public:
-	QuadCollider(const Quad2D<float>& quad) : mQuad(quad) { }
-	void init(const Quad2D<float>& quad) { mQuad = quad; }
+	QuadCollider() { }
+	QuadCollider(Quad2D<float>* quad) : mQuad(quad) { }
 
 	bool doesIntersect(Collider* collider) const override;
 
+#if TRACK_COLLISIONS
+	void renderCollider() override;
+#endif
+
 
 private:
-	Quad2D<float> mQuad;
+	const Quad2D<float>* mQuad;
 };

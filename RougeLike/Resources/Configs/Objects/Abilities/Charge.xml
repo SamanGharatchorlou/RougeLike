@@ -3,7 +3,7 @@
 	<Properties>
 		<Range>500</Range>
 		<MaxSize>200</MaxSize>
-		<Cooldown>0</Cooldown>
+		<Cooldown>2</Cooldown>
 
 		<Damage>50</Damage>
 
@@ -11,8 +11,8 @@
 		<KnockbackDistance>150</KnockbackDistance>
 		<StunTime>3</StunTime>
 
-		<Force>800</Force>
-		<Time>1</Time>
+		<Force>600</Force>
+		<Time>0.75</Time>
 	</Properties>
 
 	<Icon>ChargeIcon</Icon>

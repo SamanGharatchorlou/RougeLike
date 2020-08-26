@@ -110,7 +110,6 @@ void EnemyManager::slowUpdate(float dt)
 			mEvents.push(enemy->events().pop());
 	}
 
-
 	clearDead();
 
 	mAIController.updatePaths(mActiveEnemies);

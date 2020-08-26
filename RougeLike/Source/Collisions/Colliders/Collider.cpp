@@ -1,6 +1,10 @@
 #include "pch.h"
 #include "Collider.h"
 
+#if TRACK_COLLISIONS
+#include "Debug/DebugDraw.h"
+#endif
+
 
 Collider::Collider() :
 	mRect(nullptr),
@@ -70,4 +74,29 @@ bool Collider::contains(VectorF position)
 	bool yOverlaps = mRect->TopPoint() < position.y && mRect->BotPoint() > position.y;
 
 	return xOverlaps && yOverlaps;
+}
+
+
+#if TRACK_COLLISIONS
+void Collider::renderCollider()
+{
+	if (didHit())
+	{
+		debugDrawRect(scaledRect(), RenderColour::Blue);
+	}
+	else if(gotHit())
+	{
+		debugDrawRect(scaledRect(), RenderColour::Red);
+	}
+	else
+	{
+		debugDrawRect(scaledRect(), RenderColour::LightGrey);
+	}
+}
+#endif
+
+
+bool test1DOverlap(float minA, float maxA, float minB, float maxB)
+{
+	return maxA > minB && minA < maxB;
 }

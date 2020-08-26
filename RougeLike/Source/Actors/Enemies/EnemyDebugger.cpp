@@ -8,7 +8,7 @@
 #include "Actors/Player/PlayerManager.h"
 
 #include "Enemy.h"
-
+#include "Collisions/Colliders/Collider.h"
 
 
 void EnemyDebugger::draw()
@@ -27,6 +27,9 @@ void EnemyDebugger::draw()
 #endif
 #if DRAW_AI_PATH
 	drawPath();
+#endif
+#if TRACK_COLLISIONS
+	mEnemy->collider()->renderCollider();
 #endif
 }
 
@@ -78,34 +81,31 @@ void EnemyDebugger::drawPlayerDistance(Environment* environment, const Enemy* en
 
 void EnemyDebugger::drawPath()
 {
-	//if (mEnemy->state() == EnemyState::Run)
+	// if not in run state path should be size 0
+	Path path = mPath;
+
+	std::vector<PathTile> enemyPath;
+	const AIPathMap* map = mEnemy->getPathMap().pathMap();
+
+	while (path.size() > 0)
 	{
-		//EnemyRun* enemyRun = static_cast<EnemyRun*>(&(mEnemy->getStateMachine()->getActiveState()));
-		Path path = mPath;
+		Index index = path.top();
+		path.pop();
 
-		std::vector<PathTile> enemyPath;
-		const AIPathMap* map = mEnemy->getPathMap().pathMap();
+		PathTile tile = *map->tile(index);
+		enemyPath.push_back(tile);
+	}
 
-		while (path.size() > 0)
+	if (enemyPath.size() > 1)
+	{
+		for (int i = 0; i < enemyPath.size() - 1; i++)
 		{
-			Index index = path.top();
-			path.pop();
+			RectF rect = enemyPath[i].rect();
 
-			PathTile tile = *map->tile(index);
-			enemyPath.push_back(tile);
-		}
+			VectorF pointA = enemyPath[i].rect().Center();
+			VectorF pointB = enemyPath[i + 1].rect().Center();
 
-		if (enemyPath.size() > 1)
-		{
-			for (int i = 0; i < enemyPath.size() - 1; i++)
-			{
-				RectF rect = enemyPath[i].rect();
-
-				VectorF pointA = enemyPath[i].rect().Center();
-				VectorF pointB = enemyPath[i + 1].rect().Center();
-
-				debugDrawLine(pointA, pointB, RenderColour::Green);
-			}
+			debugDrawLine(pointA, pointB, RenderColour::Green);
 		}
 	}
 }

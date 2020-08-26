@@ -49,6 +49,3 @@ public:
 
 	void sendActivateOnRequest();
 };
-
-
-void animRender(Animator* animator, const RectF& rect);

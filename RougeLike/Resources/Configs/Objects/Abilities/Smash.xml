@@ -5,7 +5,7 @@
 		<Damage>100</Damage>
 		<DamageReact>0</DamageReact>
 		<Range>500</Range>
-		<MaxSize>100</MaxSize>
+		<MaxSize>200</MaxSize>
 		<Cooldown>1</Cooldown>
 
 		<FallSpeed>750</FallSpeed>
@@ -14,7 +14,7 @@
 
 	<Hammer>
 		<Texture>Mjolnir</Texture>
-		<MaxSize>50</MaxSize>
+		<MaxSize>80</MaxSize>
 	</Hammer>
 
 	<Icon>SmashIcon</Icon>

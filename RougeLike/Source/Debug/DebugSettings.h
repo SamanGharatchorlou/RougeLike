@@ -6,7 +6,7 @@
 #define IGNORE_UNKNOWNS 0
 
 // Camera
-#define CAMERA_IGNORE_BOUNDARIES 1
+#define CAMERA_IGNORE_BOUNDARIES 0
 
 // Framerate
 #define FRAMERATE_CAP 0 // Use the FPS cap you want
@@ -14,16 +14,16 @@
 
 // Player
 #define DRAW_PLAYER_RECTS 0
-#define IGNORE_WALLS 1
-#define IGNORED_BY_ENEMIES 1
+#define IGNORE_WALLS 0
+#define IGNORED_BY_ENEMIES 0
 #define UNLOCK_ALL_ABILITIES 0
-#define NO_ABILITY_COOLDOWNS 1
+#define NO_ABILITY_COOLDOWNS 0
 
 // Collectables
 #define DRAW_COLLECTABLE_RECT 0
 
 // Effects
-#define DRAW_EFFECT_RECTS 1
+#define DRAW_EFFECT_RECTS 0
 
 // Map
 #define MAP_BOUNDARIES 0
@@ -44,17 +44,17 @@
 #define DRAW_ENEMY_RECTS 0
 #define DRAW_ENEMY_TARGET_PATH 0
 
-#define LIMIT_ENEMY_SPAWNS 1
+#define LIMIT_ENEMY_SPAWNS 0
 #define MAX_SPAWN_COUNT 1
 
 // UI
-#define DRAW_UI_RECTS 1
-#define UI_EDITOR 1
+#define DRAW_UI_RECTS 0
+#define UI_EDITOR 0
 #define DEBUG_CURSOR 0
 
 
 // Collisions
-#define DRAW_TEST_QUAD 1
+#define TRACK_COLLISIONS 0
 
 #else
 

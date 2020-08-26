@@ -14,10 +14,10 @@ public:
 	virtual bool doesIntersect(Collider* collider) const;
 	void hasCollidedWith(Collider* collider);
 
-	inline void setDidHit(bool collisionStatus) { mDidHit = collisionStatus; }
+	inline void setDidHit(bool didHit) { mDidHit = didHit; }
 	inline bool didHit() const { return mDidHit; }
 
-	inline void setGotHit(bool collisionStatus) { mGotHit = collisionStatus; }
+	inline void setGotHit(bool gotHit) { mGotHit = gotHit; }
 	inline bool gotHit() const { return mGotHit; }
 
 	bool contains(VectorF position);
@@ -27,6 +27,10 @@ public:
 
 	const Collider* getOtherCollider() const { return mOtherCollider; }
 	Collider* getOtherCollider() { return mOtherCollider; }
+
+#if TRACK_COLLISIONS
+	virtual void renderCollider();	
+#endif
 
 
 protected:
@@ -38,3 +42,6 @@ protected:
 	bool mDidHit;
 	bool mGotHit;
 };
+
+
+bool test1DOverlap(float minA, float maxA, float minB, float maxB);

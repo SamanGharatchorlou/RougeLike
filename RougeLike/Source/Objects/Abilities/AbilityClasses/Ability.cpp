@@ -6,6 +6,13 @@
 #include "Objects/Effects/EffectTypes/Effect.h"
 
 
+#include "Game/Camera/Camera.h"
+
+#if _DEBUG
+#include "Debug/DebugDraw.h"
+#endif
+
+
 Ability::~Ability()
 {
 	delete mCollider;
@@ -54,3 +61,17 @@ BasicString Ability::name() const
 	return id; 
 }
 
+
+void Ability::renderAnimator()
+{
+#if DRAW_EFFECT_RECTS
+	debugDrawRect(mRect, RenderColour::Yellow);
+#endif
+#if TRACK_COLLISIONS
+	mCollider->renderCollider();
+#endif
+
+	mAnimator.render(Camera::Get()->toCameraCoords(mRect));
+
+
+}

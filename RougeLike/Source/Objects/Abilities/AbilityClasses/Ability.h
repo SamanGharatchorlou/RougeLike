@@ -27,6 +27,8 @@ public:
 	virtual void render() = 0;
 	virtual void exit();
 
+	void renderAnimator();
+
 	Actor* caster() const { return mCaster; }
 	LocalDispatcher& events() { return mEvents; }
 	Cooldown& cooldown() { return mCooldown; }

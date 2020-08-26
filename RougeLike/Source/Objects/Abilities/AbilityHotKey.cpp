@@ -39,7 +39,7 @@ UIBox* HotKey::creatIconBG() const
 
 	const TextureManager* textures = TextureManager::Get();
 	const BasicString& id = mAbility->name() + "IconBG";
-	Texture* texture = textures->getTexture(id, FileManager::Image_UI);
+	Texture* texture = textures->getTexture("IconBG", FileManager::Image_UI);
 
 	UIBox::Data data(id, rect, texture);
 	return new UIBox(data);

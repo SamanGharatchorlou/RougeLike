@@ -6,22 +6,31 @@
 #include "Objects/Effects/EffectTypes/Effect.h"
 #include "Objects/Pools/EffectPool.h"
 
+#include "Game/Camera/Camera.h"
+#include "Collisions/Colliders/QuadCollider.h"
 
 
 void SlashAbility::activateAt(VectorF position, EffectPool* effectPool)
 {
-	mRect.SetLeftCenter(mCaster->rect().RightCenter());
-	mAnimator.startAnimation(Action::Active);
+	// replace regular collider with quad collider
+	delete mCollider;
+	mCollider = new QuadCollider(&mQuad);
 
+	mTargetDirection = (mCaster->position() - position).normalise();
+	mRect.SetLeftCenter(mCaster->position());
 	slashOnce();
+
+	mAnimator.startAnimation(Action::Active);
 }
 
 
-
-
-void SlashAbility::activateOn(Actor* actor, EffectPool* effectPool)
+void SlashAbility::activateOn(Actor* target, EffectPool* effectPool)
 {
-	applyEffects(actor, effectPool);
+	if (mHitList.count(target) == 0)
+	{
+		applyEffects(target, effectPool);
+		mHitList.insert(target);
+	}
 }
 
 
@@ -29,6 +38,8 @@ void SlashAbility::applyEffects(Actor* actor, EffectPool* effectPool)
 {
 	if (mSlashCount == 1)
 	{
+		mProperties.addXYPosition(mCaster->position());
+
 		Effect* displacement = effectPool->getObject(EffectType::Displacement);
 		displacement->fill(mProperties);
 		actor->addEffect(displacement);
@@ -36,16 +47,22 @@ void SlashAbility::applyEffects(Actor* actor, EffectPool* effectPool)
 
 	Effect* damage = effectPool->getObject(EffectType::Damage);
 	damage->fill(mProperties);
-
 	actor->addEffect(damage);
+}
+
+
+void SlashAbility::fastUpdate(float dt)
+{
+	mRect.SetLeftCenter(mCaster->rect().RightCenter());
+	setQuadRect();
+
+	sendActivateOnRequest();
 }
 
 
 void SlashAbility::slowUpdate(float dt)
 {
-	mRect.SetLeftCenter(mCaster->rect().RightCenter());
 	mAnimator.slowUpdate(dt);
-
 
 	if (mAnimator.loops() == 1)
 	{
@@ -59,19 +76,32 @@ void SlashAbility::slowUpdate(float dt)
 }
 
 
-void SlashAbility::slashOnce()
+void SlashAbility::render()
 {
-	if (mSlashCount < 2)
-	{
-		if (mSlashCount == 1)
-		{
-			mRect.SetSize(mRect.Size() * 2.0f);
-		}
 
-		mSlashCount++;
-		sendActivateOnRequest();
+	if (mState == AbilityState::Selected)
+	{
+		renderRangeCircle();
 	}
+	else if (mState == AbilityState::Running)
+	{
+#if DRAW_EFFECT_RECTS
+		debugDrawRect(mRect, RenderColour::Yellow);
+		debugDrawLine(mCaster->position(), mCaster->position() + mTargetDirection * 10.0, RenderColour::Black);
+#endif
+#if TRACK_COLLISIONS
+		mCollider->renderCollider();
+#endif
+
+		RectF renderRect = Camera::Get()->toCameraCoords(mRect);
+		VectorF aboutPoint = VectorF(-mCaster->rect().Width(), mRect.Size().y) / 2.0f;
+
+		mAnimator.render(renderRect, getRotation(mTargetDirection) + 90, aboutPoint);
+	}
+
 }
+
+
 
 
 void SlashAbility::exit()
@@ -80,4 +110,31 @@ void SlashAbility::exit()
 	mSlashCount = 0;
 
 	Ability::exit();
+}
+
+
+
+// -- Private functions -- //
+void SlashAbility::slashOnce()
+{
+	if (mSlashCount < 2)
+	{
+		if (mSlashCount == 1)
+		{
+			mRect.SetSize(mRect.Size() * 2.0f);
+			mRect.SetLeftCenter(mCaster->rect().RightCenter());
+		}
+
+		setQuadRect();
+
+		mSlashCount++;
+		mHitList.clear();
+	}
+}
+
+
+void SlashAbility::setQuadRect()
+{
+	mQuad = Quad2D<float>(mRect);
+	mQuad.rotate(getRotation(mTargetDirection) + 90, mCaster->position());
 }

@@ -61,8 +61,7 @@ void SmashAbility::render()
 	}
 	else if (mState == AbilityState::Running)
 	{
-		RectF rect = Camera::Get()->toCameraCoords(mRect);
-		mAnimator.render(rect);
+		renderAnimator();
 
 		// while hammer is falling
 		if (!hammerHitGround())

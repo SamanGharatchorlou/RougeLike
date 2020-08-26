@@ -5,6 +5,18 @@
 #include "Game/Camera/Camera.h"
 #include "UI/Elements/UITextBox.h"
 
+
+
+void debugDrawPoint(VectorF point, float size, RenderColour colour)
+{
+	RectF rect;
+	rect.SetSize(size, size);
+	rect.SetCenter(point);
+
+	debugDrawRect(rect, colour);
+}
+
+
 void debugDrawLine(VectorF pointA, VectorF pointB, RenderColour colour)
 {
 	SDL_SetRenderDrawColor(Renderer::Get()->sdlRenderer(), colour.r, colour.g, colour.b, colour.a);

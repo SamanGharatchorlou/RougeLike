@@ -17,7 +17,6 @@ public:
 
 private:
 	Ability* createNewAbility(AbilityType type) const;
-	void setRangedValues(Ability* ability) const;
 
 
 private:

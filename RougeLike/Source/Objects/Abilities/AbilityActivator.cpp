@@ -103,7 +103,7 @@ void AbilityActivator::activateAreaAttack(Ability* ability) const
 	{
 		// TODO: dont know why but... make this abiltiyCollider->doesIntersect(enemy) feels better
 		Collider* enemyCollider = enemies[i]->collider();
-		if (enemyCollider->doesIntersect(abilityCollider))
+		if (abilityCollider->doesIntersect(enemyCollider))//->doesIntersect(abilityCollider))
 		{
 			attackAbility->activateOn(enemies[i], mEnvironment->effectPool());
 		}

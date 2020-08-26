@@ -25,7 +25,7 @@
 
 	<Enemies>
 		<Shape type="Devil" xPosition="12" shape="Circle" points="7"></Shape>
-		<!--<Shape type="Devil" xPosition="65" shape="Circle" points="7"></Shape>
-		<Patrol type="Devil" xIncrement="3"></Patrol>-->
+		<Shape type="Devil" xPosition="65" shape="Circle" points="7"></Shape>
+		<Patrol type="Devil" xIncrement="3"></Patrol>
 	</Enemies>
 </Map>
