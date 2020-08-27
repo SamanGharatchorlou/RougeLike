@@ -18,7 +18,6 @@
     <ClCompile Include="Source\Map\Map.cpp" />
     <ClCompile Include="Source\System\Files\FileManager.cpp" />
     <ClCompile Include="Source\System\Files\XMLParser.cpp" />
-    <ClCompile Include="Source\AI\AIPathing.cpp" />
     <ClCompile Include="Source\System\Files\StatReader.cpp" />
     <ClCompile Include="Source\Managers\ScoreManager.cpp" />
     <ClCompile Include="Source\Events\Dispatcher.cpp" />
@@ -46,9 +45,6 @@
     <ClCompile Include="Source\Text\Text.cpp" />
     <ClCompile Include="Source\UI\Screens\CharacterSelectionScreen.cpp" />
     <ClCompile Include="Source\States\PreGameState.cpp" />
-    <ClCompile Include="Source\AI\AIPathMap.cpp" />
-    <ClCompile Include="Source\Utilities\Shapes\Shape.cpp" />
-    <ClCompile Include="Source\Utilities\Shapes\Square.cpp" />
     <ClCompile Include="Source\Audio\SoundController.cpp" />
     <ClCompile Include="Source\Collisions\CollisionManager.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectHandler.cpp" />
@@ -86,7 +82,6 @@
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyRun.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyState.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyWait.cpp" />
-    <ClCompile Include="Source\Actors\Enemies\Spawning\EnemySpawner.cpp" />
     <ClCompile Include="Source\Actors\Enemies\Types\Devil.cpp" />
     <ClCompile Include="Source\Actors\Enemies\Enemy.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyManager.cpp" />
@@ -98,13 +93,10 @@
     <ClCompile Include="Source\Map\MapBuilding\MapDecorator.cpp" />
     <ClCompile Include="Source\Actors\Player\PlayerManager.cpp" />
     <ClCompile Include="Source\Collisions\EnemyCollisions.cpp" />
-    <ClCompile Include="Source\Actors\Enemies\AIController.cpp" />
     <ClCompile Include="Source\System\Files\XMLNode.cpp" />
-    <ClCompile Include="Source\Actors\Enemies\Spawning\EnemyBuilder.cpp" />
     <ClCompile Include="Source\Items\Collectables\CollectableSpawner.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityBuilder.cpp" />
     <ClCompile Include="Source\Items\Collectables\CollectableBuilder.cpp" />
-    <ClCompile Include="Source\Utilities\Shapes\Circle.cpp" />
     <ClCompile Include="Source\Game\GameSetup.cpp" />
     <ClCompile Include="Source\Debug\FrameRateController.cpp" />
     <ClCompile Include="Source\Debug\MemTrack.cpp" />
@@ -173,6 +165,12 @@
     <ClCompile Include="Source\Collisions\Colliders\Collider.cpp" />
     <ClCompile Include="Source\Collisions\Colliders\EffectCollider.cpp" />
     <ClCompile Include="Source\Collisions\Colliders\QuadCollider.cpp" />
+    <ClCompile Include="Source\AI\Spawning\AISpawnController.cpp" />
+    <ClCompile Include="Source\AI\Pathing\AIPathing.cpp" />
+    <ClCompile Include="Source\AI\Pathing\AIPathMap.cpp" />
+    <ClCompile Include="Source\AI\Spawning\SpawnDataBuilder.cpp" />
+    <ClCompile Include="Source\AI\Pathing\AIPathingController.cpp" />
+    <ClCompile Include="Source\AI\Spawning\EnemyFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -195,7 +193,6 @@
     <ClInclude Include="Source\System\Files\FileManager.h" />
     <ClInclude Include="Source\System\Files\XMLParser.h" />
     <ClInclude Include="Source\System\Files\Attributes.h" />
-    <ClInclude Include="Source\AI\AIPathing.h" />
     <ClInclude Include="Source\System\Files\StatReader.h" />
     <ClInclude Include="Source\Managers\ScoreManager.h" />
     <ClInclude Include="Source\Events\Dispatcher.h" />
@@ -232,9 +229,7 @@
     <ClInclude Include="Source\Text\Text.h" />
     <ClInclude Include="Source\UI\Screens\CharacterSelectionScreen.h" />
     <ClInclude Include="Source\States\PreGameState.h" />
-    <ClInclude Include="Source\AI\AIPathMap.h" />
     <ClInclude Include="Source\Map\MapBase.h" />
-    <ClInclude Include="Source\Utilities\Shapes\Shape.h" />
     <ClInclude Include="Source\Utilities\Shapes\Square.h" />
     <ClInclude Include="Source\Utilities\Shapes\Circle.h" />
     <ClInclude Include="Source\Audio\SoundController.h" />
@@ -278,7 +273,6 @@
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyState.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyStateHeaders.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyWait.h" />
-    <ClInclude Include="Source\Actors\Enemies\Spawning\EnemySpawner.h" />
     <ClInclude Include="Source\Actors\Enemies\Types\Devil.h" />
     <ClInclude Include="Source\Actors\Enemies\Enemy.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyManager.h" />
@@ -293,9 +287,7 @@
     <ClInclude Include="Source\Collisions\EnemyCollisions.h" />
     <ClInclude Include="Source\Utilities\ObjectPool.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\EffectTypes.h" />
-    <ClInclude Include="Source\Actors\Enemies\AIController.h" />
     <ClInclude Include="Source\System\Files\XMLNode.h" />
-    <ClInclude Include="Source\Actors\Enemies\Spawning\EnemyBuilder.h" />
     <ClInclude Include="Source\Items\Collectables\CollectableSpawner.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityBuilder.h" />
     <ClInclude Include="Source\Items\Collectables\CollectableBuilder.h" />
@@ -376,6 +368,15 @@
     <ClInclude Include="Source\Collisions\Colliders\Collider.h" />
     <ClInclude Include="Source\Collisions\Colliders\EffectCollider.h" />
     <ClInclude Include="Source\Collisions\Colliders\QuadCollider.h" />
+    <ClInclude Include="Source\Utilities\Shapes\Point.h" />
+    <ClInclude Include="Source\AI\Spawning\AISpawnController.h" />
+    <ClInclude Include="Source\AI\Pathing\AIPathing.h" />
+    <ClInclude Include="Source\AI\Pathing\AIPathMap.h" />
+    <ClInclude Include="Source\AI\Spawning\SpawnDataBuilder.h" />
+    <ClInclude Include="Source\Utilities\Shapes\Quadrilateral.h" />
+    <ClInclude Include="Source\Utilities\Shapes\Formation.h" />
+    <ClInclude Include="Source\AI\Pathing\AIPathingController.h" />
+    <ClInclude Include="Source\AI\Spawning\EnemyFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

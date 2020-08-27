@@ -26,6 +26,7 @@ void Environment::clear()
 	mMapSize = Vector2D<int>();
 }
 
+
 void Environment::init(GameData* gameData)
 {
 	mLevelManager.init(gameData->collisionManager, &mEffectPool);
@@ -56,30 +57,9 @@ void Environment::load()
 
 	setCameraBoundaries();
 
-	//DebugPrint(Log, "\n Loading Collectables\n");
-
-	//mCollectables.load();
-
 	DebugPrint(Log, "\n--- Environment Load Complete---\n\n");
 }
 
-
-//void Environment::nextLevel()
-//{
-//	// TODO: wipe enemies / add some exit level thing
-//	mLevelManager.incrementLevel();
-//
-//	BasicString path = FileManager::Get()->findFile(FileManager::Config_Map, "Environment");
-//	XMLParser parser(path);
-//
-//	setCameraBoundaries();
-//
-//	IncrementLevelEvent event;
-//	notify(event);
-//
-//	// spawn new enemies
-//	XMLNode enemySpawnNode = parser.rootChild("Enemies");
-//}
 
 void Environment::handleInput(const InputManager* input)
 {
@@ -97,8 +77,6 @@ void Environment::slowUpdate(float dt)
 	mLevelManager.slowUpdate(dt);
 	mActors.slowUpdate(dt);
 	mCollectables.slowUpdate(dt);
-
-
 }
 
 

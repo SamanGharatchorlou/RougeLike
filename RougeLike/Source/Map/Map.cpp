@@ -213,7 +213,6 @@ Vector2D<int> Map::yTileFloorRange(VectorF position) const
 }
 
 
-
 const MapTile* Map::randomFloorTile(int xPointPercentage) const
 {
 	int xTileIndex = (int)((xCount() * xPointPercentage) / 100);
@@ -232,6 +231,24 @@ const MapTile* Map::randomFloorTile(int xPointPercentage) const
 	return tile(index);
 }
 
+
+const MapTile* Map::randomFloorTile() const
+{
+	int randomXTileIndex = randomNumberBetween(0, xCount());
+
+	std::vector<Index> floorIndexes;
+	for (int y = 0; y < yCount(); y++)
+	{
+		Index index(randomXTileIndex, y);
+		if (tile(index)->is(CollisionTile::Floor))
+			floorIndexes.push_back(index);
+	}
+
+	// TODO: -1 -> we dont want to include the 'hidden' floor under the parralax walls?
+	int randomIndex = randomNumberBetween(0, floorIndexes.size());
+	Index index(floorIndexes[randomIndex]);
+	return tile(index);
+}
 
 
 // -- Validity functions -- //

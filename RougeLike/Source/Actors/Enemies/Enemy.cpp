@@ -6,7 +6,7 @@
 #include "EnemyStates/EnemyStateHeaders.h"
 
 #include "Game/Environment.h"
-#include "AI/AIPathMap.h"
+#include "AI/Pathing/AIPathMap.h"
 
 #include "Objects/Pools/EnemyStatePool.h"
 #include "Game/Camera/Camera.h"
@@ -18,8 +18,7 @@
 Enemy::Enemy() :
 	mStateMachine(new EnemyNullState),
 	mTarget(nullptr),
-	mStatePool(nullptr),
-	mCurrentIndex(Vector2D<int>(-1,-1))
+	mStatePool(nullptr)
 #if _DEBUG
 	, mDebugger(this)
 #endif
@@ -61,12 +60,10 @@ void Enemy::slowUpdate(float dt)
 
 	mStateMachine.getActiveState().slowUpdate(dt);
 
-	Index index = mAIPathing.index(position());
-	if (mCurrentIndex != index)
+	if (mAIPathing.updateCurrentIndex(position()))
 	{
 		UpdateAICostMapEvent* event = new UpdateAICostMapEvent;
 		mEvents.push(EventPacket(event));
-		mCurrentIndex = index;
 	}
 
 	Health* health = static_cast<Health*>(getAttribute(AttributeType::Health));
@@ -91,7 +88,17 @@ void Enemy::render()
 
 void Enemy::renderCharacter()
 {
-	mAnimator.render(renderRect(), mPhysics.flip());
+	const float flashTime = 0.1f;
+	if (mColourModTimer.isStarted() && mColourModTimer.getSeconds() < flashTime)
+	{
+		RenderColour colourMod = RenderColour(225, 0, 0);
+		mAnimator.render(renderRect(), mPhysics.flip(), colourMod);
+	}
+	else
+	{
+		mColourModTimer.stop();
+		mAnimator.render(renderRect(), mPhysics.flip());
+	}
 }
 
 
@@ -100,7 +107,7 @@ RectF Enemy::renderRect() const
 	VectorF offset = mRenderOffset;
 	if (mPhysics.flip() == SDL_FLIP_HORIZONTAL)
 	{
-		offset = VectorF(-mRenderOffset.x, mRenderOffset.y);;
+		offset = VectorF(-mRenderOffset.x, mRenderOffset.y);
 	}
 
 	RectF renderRect = Camera::Get()->toCameraCoords(rect());
@@ -122,10 +129,12 @@ void Enemy::clear()
 }
 
 
-void Enemy::resolveCollisions()
+void Enemy::resolveCollisions(bool addHitState)
 {
 	if (mCollider.gotHit())
 	{
+		mColourModTimer.restart();
+
 		// Player weapon hit enemy
 		if (mCollider.getOtherCollider())
 		{
@@ -133,12 +142,13 @@ void Enemy::resolveCollisions()
 			handleEffects(effectCollider);
 		}
 
-		addState(EnemyState::Hit);
+		if(addHitState)
+			addState(EnemyState::Hit);
 	}
 }
 
 
-void Enemy::spawn(EnemyState::Type state, VectorF position, AIPathMap* map)
+void Enemy::spawn(EnemyState::Type state, VectorF position, const AIPathMap* map)
 {
 	mAIPathing.init(map);
 

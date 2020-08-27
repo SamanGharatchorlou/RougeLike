@@ -27,12 +27,12 @@ public:
 	const CostMap& costMap() const { return mCostMap; }
 	CostMap& costMapRef() { return mCostMap; }
 
-
 	Vector2D<int> yTileFloorRange(Index index) const;
 
+	const PathTile* randomFloorTile(int xPointPercentage) const;
+	const PathTile* randomFloorTile() const;
 
 	bool isValidPosition(VectorF position) const;
-private:
 
 
 private:

@@ -2,13 +2,10 @@
 <Ability>
 	<Properties>
 		<Range>100</Range>
-		<MaxSize>200</MaxSize>
+		<MaxSize>100</MaxSize>
 		<Cooldown>3</Cooldown>
 
-		<Damage>60</Damage>
-
-		<KnockbackForce>500</KnockbackForce>
-		<KnockbackDistance>50</KnockbackDistance>
+		<Damage>50</Damage>
 	</Properties>
 
 	<Icon>SlashIcon</Icon>

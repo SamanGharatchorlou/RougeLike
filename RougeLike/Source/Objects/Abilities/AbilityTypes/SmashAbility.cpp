@@ -10,7 +10,7 @@
 #include "Animations/Animator.h"
 #include "Game/Camera/Camera.h"
 
-
+// TODO: fix the placement of this, now that its large its hard to place
 SmashAbility::SmashAbility(Texture* hammerTexture, RectF hammerRect) : mHammerTexture(hammerTexture), mHammerRect(hammerRect) { }
 
 

@@ -1,8 +1,10 @@
 #include "pch.h"
-#include "AIController.h"
+#include "AIPathingController.h"
 
-#include "Enemy.h"
-#include "EnemyStates/EnemyRun.h"
+#include "AIPathMap.h"
+
+#include "Actors/Enemies/Enemy.h"
+#include "Actors/Enemies/EnemyStates/EnemyRun.h"
 
 #include "Map/Map.h"
 
@@ -11,12 +13,13 @@
 #include "UI/Elements/UITextBox.h"
 #endif
 
-AIController::AIController() : pathUpdateRequests(0), pathUpdateStaggerCounter(0)
+
+AIPathingController::AIPathingController() : pathUpdateRequests(0), pathUpdateStaggerCounter(0)
 {
 	updateTimer.start();
 }
 
-void AIController::clear() 
+void AIPathingController::clear() 
 { 
 	mPathMaps.clear();  // TODO: delte
 	updateTimer.stop();
@@ -25,7 +28,7 @@ void AIController::clear()
 }
 
 
-void AIController::addMap(const Map* map)
+void AIPathingController::addMap(const Map* map)
 {
 	// TODO: I call new to allocate some space. how much space is there
 	// if the following call build requires 100 units of space, what if I only have 80 for example?
@@ -34,7 +37,7 @@ void AIController::addMap(const Map* map)
 	mPathMaps.push_back(pathMap);
 }
 
-AIPathMap* AIController::popMap()
+AIPathMap* AIPathingController::popMap()
 {
 	AIPathMap* pathMap = mPathMaps[0];
 	delete pathMap;
@@ -49,7 +52,7 @@ AIPathMap* AIController::popMap()
 	return pathMap;
 }
 
-void AIController::updatePaths(std::vector<Enemy*> enemies)
+void AIPathingController::updatePaths(std::vector<Enemy*> enemies)
 {
 	if (pathUpdateStaggerCounter != 0 || pathUpdateRequests)
 	{
@@ -59,7 +62,7 @@ void AIController::updatePaths(std::vector<Enemy*> enemies)
 
 
 
-AIPathMap* AIController::pathMap(const Map* map)
+AIPathMap* AIPathingController::pathMap(const Map* map)
 {
 	for (int i = 0; i < mPathMaps.size(); i++)
 	{
@@ -80,7 +83,7 @@ AIPathMap* AIController::pathMap(const Map* map)
 
 // If player moves tile or an enemy moves a tile update this bad boi
 // TODO: what if the size of active enemies changes during an update?
-void AIController::recalculateEnemyPaths(std::vector<Enemy*> enemies)
+void AIPathingController::recalculateEnemyPaths(std::vector<Enemy*> enemies)
 {
 	updateAIPathCostMap(enemies);
 
@@ -116,7 +119,7 @@ void AIController::recalculateEnemyPaths(std::vector<Enemy*> enemies)
 	}
 }
 
-void AIController::clearCostMaps()
+void AIPathingController::clearCostMaps()
 {
 	for (int i = 0; i < mPathMaps.size(); i++)
 	{
@@ -125,18 +128,18 @@ void AIController::clearCostMaps()
 }
 
 
-void AIController::updateAIPathCostMap(std::vector<Enemy*> enemies)
+void AIPathingController::updateAIPathCostMap(std::vector<Enemy*> enemies)
 {
 	clearCostMaps();
 
 	for (int i = 0; i < enemies.size(); i++)
 	{
 		Enemy* enemy = enemies[i];
-		CostMap& costMap = *enemy->getAIPathing()->costMap();
+		CostMap& costMap = findPathMap(enemy->pathing()->map())->costMapRef();
 		
 		// Current tile
-		Index index = enemy->getAIPathing()->index(enemy->position());
-		costMap[index] += 10;
+		Index index = enemy->pathing()->index(enemy->position());
+		costMap[index] += 5;
 
 		// Immediate surrounding tiles
 		Index surroundingIndexsLayer1[8]{
@@ -154,14 +157,27 @@ void AIController::updateAIPathCostMap(std::vector<Enemy*> enemies)
 
 		for (int i = 0; i < 8; i++)
 		{
-			costMap[surroundingIndexsLayer1[i]] += 2;
+			costMap[surroundingIndexsLayer1[i]] += 1;
 		}
 	}
 }
 
 
+AIPathMap* AIPathingController::findPathMap(const AIPathMap* pathMap)
+{
+	for (int i = 0; i < mPathMaps.size(); i++)
+	{
+		if (pathMap == mPathMaps[i])
+			return mPathMaps[i];
+	}
+
+	DebugPrint(Warning, "This path map should no longer exist!\n");
+	return nullptr;
+}
+
+
 #if DRAW_AI_PATH_COSTMAP // TODO: get current map
-void AIController::drawCostMap()
+void AIPathingController::drawCostMap()
 {
 	int ptSize = 16;
 	RenderColour colour = RenderColour::Red;

@@ -65,12 +65,6 @@ void ActorManager::render()
 }
 
 
-void ActorManager::spawnEnemies(const XMLNode spawnNode, const Map* map)
-{
-	mEnemies.spawn(spawnNode, map);
-}
-
-
 std::vector<Actor*> ActorManager::getAllEnemies()
 {
 	return mEnemies.getActiveEnemies();
@@ -97,9 +91,9 @@ void ActorManager::handleEvent(EventData& data)
 		LevelUpdatedEvent& eventData = static_cast<LevelUpdatedEvent&>(data);
 
 		if (eventData.mStatus == LevelUpdatedEvent::Added)
-			mEnemies.addNewAIPathMap();
+			mEnemies.openNewMapLevel();
 		else if (eventData.mStatus == LevelUpdatedEvent::Removed)
-			mEnemies.popAIPathMap();
+			mEnemies.closeLastMapLevel();
 		else
 			DebugPrint(Warning, "Event data not recognised\n");
 		break;

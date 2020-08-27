@@ -28,8 +28,8 @@ void EnemyManager::clear()
 	clearAllEnemies();
 	mEvents.clear();
 
-	mAIController.clear();
-	mBuilder.clear();
+	mPathing.clear();
+	mSpawning.clear();
 	mCollisions.clear();
 }
 
@@ -37,7 +37,8 @@ void EnemyManager::clear()
 void EnemyManager::loadPools()
 {
 	int enemyPoolSize = 150;
-	mBuilder.loadPools(enemyPoolSize);
+	//mBuilder.loadPools(enemyPoolSize);
+	mSpawning.loadSpawnPool(enemyPoolSize);
 }
 
 
@@ -58,27 +59,30 @@ void EnemyManager::fastUpdate(float dt)
 	}
 }
 
-void EnemyManager::addNewAIPathMap()
+void EnemyManager::openNewMapLevel()
 {
 	Map* map = mEnvironment->lastMap(MapType::Dungeon);
-	mAIController.addMap(map);
+	mPathing.addMap(map);
 
-	// TODO: store these values? in the spawner, then change them as the levels move on
-	BasicString path = FileManager::Get()->findFile(FileManager::Config_Map, "Environment");
-	XMLParser parser(path);
-	spawn(parser.rootChild("Enemies"), map);
+	const AIPathMap* aiPathMap = mPathing.pathMap(map);
+	std::vector<Enemy*> enemiesToSpawn = mSpawning.getNewLevelSpawns(aiPathMap);
+
+	for (int i = 0; i < enemiesToSpawn.size(); i++)
+	{
+		addActiveEnemy(enemiesToSpawn[i]);
+	}
 }
 
 
-void EnemyManager::popAIPathMap()
+void EnemyManager::closeLastMapLevel()
 {
-	AIPathMap* pathMap = mAIController.popMap();
+	AIPathMap* pathMap = mPathing.popMap();
 
 	std::vector<Enemy*>::iterator lastInvalidEnemy;
 
 	for (lastInvalidEnemy = mActiveEnemies.begin(); lastInvalidEnemy != mActiveEnemies.end(); lastInvalidEnemy++)
 	{
-		if ((*lastInvalidEnemy)->getAIPathing()->pathMap() != pathMap)
+		if ((*lastInvalidEnemy)->pathing()->map() != pathMap)
 		{
 			if(lastInvalidEnemy != mActiveEnemies.begin())
 				lastInvalidEnemy - 1;
@@ -112,17 +116,9 @@ void EnemyManager::slowUpdate(float dt)
 
 	clearDead();
 
-	mAIController.updatePaths(mActiveEnemies);
+	mPathing.updatePaths(mActiveEnemies);
 	mCollisions.updateAttackingColliders(attackingColliders());
 }
-
-
-void EnemyManager::spawn(const XMLNode levelSpawnNode, const Map* map)
-{
-	std::vector<SpawnData> spawnData = mSpawner.getspawnList(levelSpawnNode, map);
-	spawnEnemies(spawnData, mAIController.pathMap(map));
-}
-
 
 
 void EnemyManager::render()
@@ -200,15 +196,13 @@ std::vector<Collider*> EnemyManager::attackingColliders() const
 
 // --- Private Functions --- //
 
-void EnemyManager::spawnEnemies(const std::vector<SpawnData>& spawnData, AIPathMap* aiPathMap)
+void EnemyManager::spawnEnemies(const std::vector<Enemy*>& enemies)
 {
-	std::vector<Enemy*> enemies = mBuilder.buildEnemies(spawnData, aiPathMap);
-
 	for (int i = 0; i < enemies.size(); i++)
 	{
 #if LIMIT_ENEMY_SPAWNS
 		if (mActiveEnemies.size() >= MAX_SPAWN_COUNT)
-			mBuilder.returnEnemy(enemies[i]);
+			mSpawning.returnEnemy(enemies[i]);
 		else
 #endif
 			addActiveEnemy(enemies[i]);
@@ -222,7 +216,6 @@ void EnemyManager::addActiveEnemy(Enemy* enemy)
 #if !IGNORED_BY_ENEMIES
 	enemy->setTarget(mEnvironment->actors()->player()->get());
 #endif
-
 
 	mCollisions.add(enemy->collider());
 	mActiveEnemies.push_back(enemy);
@@ -250,7 +243,7 @@ void EnemyManager::clearAndRemove(std::vector<Enemy*>::iterator& iter)
 	enemy->clear();
 
 	mCollisions.remove(enemy->collider());
-	mBuilder.returnEnemy(enemy);
+	//mBuilder.returnEnemy(enemy);
 
 	iter = mActiveEnemies.erase(iter);
 }
@@ -270,6 +263,6 @@ void EnemyManager::clearActiveEnemy(Enemy* enemy)
 	enemy->clear();
 
 	mCollisions.remove(enemy->collider());
-	mBuilder.returnEnemy(enemy);
+	mSpawning.returnEnemy(enemy);
 	enemy = nullptr;
 }

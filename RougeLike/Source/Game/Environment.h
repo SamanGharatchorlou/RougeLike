@@ -23,7 +23,6 @@ public:
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
 
-	void nextLevel();
 	void clear();
 
 	void renderFloor();

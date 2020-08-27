@@ -24,6 +24,9 @@ void EnemyStun::init()
 
 void EnemyStun::slowUpdate(float dt)
 {
+	bool addHitState = false;
+	mEnemy->resolveCollisions(addHitState);
+
 	if (timer.getSeconds() > mStunTime)
 		mEnemy->popState();
 

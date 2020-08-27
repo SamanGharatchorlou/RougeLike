@@ -78,10 +78,10 @@ void DecorTilePopulator::addWater(Grid<MapTile>& data)
 
 
 				// Corners
-				data[index].set(						RenderTile::Floor_Bottom_Right);
+				data[index].set(								RenderTile::Floor_Bottom_Right);
 				data[index + Index(width - 1, 0)].set(			RenderTile::Floor_Bottom_Left);
 				data[index + Index(width - 1, height - 1)].set(	RenderTile::Floor_Top_Left);
-				data[index + Index(0, height - 1)].set(				RenderTile::Floor_Top_Right);
+				data[index + Index(0, height - 1)].set(			RenderTile::Floor_Top_Right);
 
 				// Move to end of pool + 1
 				x = index.x + width + 1;

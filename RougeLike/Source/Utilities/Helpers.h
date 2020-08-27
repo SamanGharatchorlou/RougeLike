@@ -55,6 +55,14 @@ float magnitudeSqrd(Vector2D<T> vector)
 	return (float)((vector.x * vector.x) + (vector.y * vector.y));
 }
 
+
+template<typename T>
+void merge(std::vector<T>& vectorA, const std::vector<T>& vectorB)
+{
+	vectorA.insert(vectorA.end(), vectorB.begin(), vectorB.end());
+}
+
+
 int randomNumberBetween(int min, int max);
 
 

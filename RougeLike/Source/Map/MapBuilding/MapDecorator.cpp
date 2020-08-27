@@ -208,11 +208,13 @@ void MapDecorator::addTiggers(Grid<MapTile>& data, const StringMap& attributes)
 
 bool MapDecorator::canAddWater(const Grid<MapTile>& data, Index index, Vector2D<int> size) const
 {
-	// +1 either sides of pool
+	// +1 spacing for either sides of pool so we can always walk around it
 	for (int x = index.x; x < index.x + size.x + 2; x++)
 	{
-		// +3 (two water tiles + one empty tile for column base) on top + 1 on bottom
-		for (int y = index.y - 1; y < index.y + size.y + 2; y++)
+		// +1 either sides of pool (spacing like for x), but also...
+		// +2 on top for water top edge parralax + one empty tile in case of a column base
+		// +1 on bottom to make sure there's a floor gap between water and wall, for the correct wall render type calculation
+		for (int y = index.y - 1; y < index.y + size.y + 3; y++)
 		{
 			if (isValid(Index(x, y), data) && data.get(Index(x, y)).is(CollisionTile::Floor) && data.get(Index(x, y)).is(DecorType::None))
 				continue;

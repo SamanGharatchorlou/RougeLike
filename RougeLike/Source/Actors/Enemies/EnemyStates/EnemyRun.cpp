@@ -3,7 +3,7 @@
 
 #include "Actors/Enemies/Enemy.h"
 
-#include "AI/AIPathMap.h"
+#include "AI/Pathing/AIPathMap.h"
 
 void EnemyRun::init()
 {
@@ -15,9 +15,7 @@ void EnemyRun::init()
 void EnemyRun::fastUpdate(float dt)
 {
 	if(mPath.size() > 0)
-		mEnemy->accellerateTowards(mEnemy->getPathMap().position(mPath.top()));
-
-
+		mEnemy->accellerateTowards(mEnemy->pathing()->position(mPath.top()));
 }
 
 
@@ -35,7 +33,7 @@ void EnemyRun::slowUpdate(float dt)
 			}
 			else // Keep chasing!
 			{
-				VectorF targetPosition = mEnemy->getPathMap().position(mPath.top());
+				VectorF targetPosition = mEnemy->pathing()->position(mPath.top());
 				if (distanceSquared(mEnemy->position(), targetPosition) < 5.0f)
 				{
 					mPath.pop();
@@ -87,7 +85,7 @@ void EnemyRun::exit()
 // Generate a new path
 void EnemyRun::updatePath()
 {
-	mPath = mEnemy->getPathMap().findPath(mEnemy->position(), mEnemy->target()->rect().BotCenter());
+	mPath = mEnemy->pathing()->findPath(mEnemy->position(), mEnemy->target()->rect().BotCenter());
 #if DRAW_AI_PATH
 	mEnemy->mDebugger.setPath(mPath);
 #endif

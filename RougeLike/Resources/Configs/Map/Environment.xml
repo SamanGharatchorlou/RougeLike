@@ -24,8 +24,9 @@
 	</Decor>
 
 	<Enemies>
-		<Shape type="Devil" xPosition="12" shape="Circle" points="7"></Shape>
-		<Shape type="Devil" xPosition="65" shape="Circle" points="7"></Shape>
-		<Patrol type="Devil" xIncrement="3"></Patrol>
+		<Spawn formation = "Circle" type="Devil" xPosition="12"></Shape>
+		<Spawn formation = "Square" type="Devil" xPosition="65" shape="Circle"></Shape>
+		<Spawn formation = "Square" type="Devil" xPosition="65" shape="Circle"></Shape>
+		<Spawn formation = "Patrol" type="Devil" xIncrement="3"></Patrol>
 	</Enemies>
 </Map>

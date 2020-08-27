@@ -1,19 +1,19 @@
 #pragma once
 
-#include "AI/AIPathMap.h"
 #include "Events/Dispatcher.h"
 
 #if _DEBUG
 #include "Debug/DebugDraw.h"
 #endif
 
+class AIPathMap;
 class Enemy;
 class Map;
 
-class AIController : public Dispatcher
+class AIPathingController : public Dispatcher
 {
 public:
-	AIController();
+	AIPathingController();
 
 	void clear();
 
@@ -26,8 +26,8 @@ public:
 	void updateAIPathCostMap(std::vector<Enemy*> enemies);
 	void addPathUpdateRequest() { pathUpdateRequests++; }
 
-	const AIPathMap* pathMap() const { return mPathMaps.at(0); }
 	AIPathMap* pathMap(const Map* map);
+	AIPathMap* findPathMap(const AIPathMap* pathMap);
 
 	int mapCount() const { return mPathMaps.size(); }
 
@@ -40,7 +40,6 @@ private:
 	void recalculateEnemyPaths(std::vector<Enemy*> enemies);
 
 private:
-	//AIPathMap mPathMap;
 	std::vector<AIPathMap*> mPathMaps;
 
 	Timer<float> updateTimer;

@@ -18,7 +18,7 @@ RenderColour::RenderColour(Colour colour)
 	switch (colour)
 	{
 	case RenderColour::None:
-		a = 0;
+		r = 0; g = 0; b = 0;
 		break;
 	case RenderColour::Red:
 		r = 255; g = 0; b = 0;

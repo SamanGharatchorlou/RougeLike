@@ -4,10 +4,10 @@
 #include "AIPathMap.h"
 
 
-AIPathing::AIPathing(AIPathMap* map) : mMap(map) { }
+AIPathing::AIPathing(const AIPathMap* map) : mMap(map) { }
 
 
-CostMap* AIPathing::costMap() { return &mMap->costMapRef(); }
+//CostMap* AIPathing::costMap() { return &mMap->costMapRef(); }
 
 std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition) const
 {
@@ -121,7 +121,6 @@ VectorF AIPathing::position(Index tileIndex) const
 }
 
 
-// TEMP
 const PathTile* AIPathing::tile(Index tileIndex) const
 {
 	return &mMap->get(tileIndex);
@@ -134,55 +133,20 @@ Index AIPathing::index(VectorF position) const
 }
 
 
-//
-//Vector2D<int> AIPathing::yTileFloorRange(Index index) const
-//{
-//	ASSERT(Warning, tile(index)->is(CollisionTile::Floor), "Not a floor tile, cannot get yTile floor range");
-//
-//	Index bottomIndex(index);
-//	while (true)
-//	{
-//		Index increment(0, 1);
-//		if (!tile(bottomIndex + increment)->is(CollisionTile::Floor))
-//			break;
-//
-//		bottomIndex += increment;
-//	}
-//
-//	Index topIndex(index);
-//	while (true)
-//	{
-//		Index increment(0, -1);
-//		if (!tile(topIndex + increment)->is(CollisionTile::Floor))
-//			break;
-//
-//		topIndex += increment;
-//	}
-//
-//	return Vector2D<int>(topIndex.y, bottomIndex.y);
-//}
 
-
-
-
-
-//#if DRAW_AI_PATH
-//void AIPathing::draw()
-//{
-//	if (debugPath.size() > 1)
-//	{
-//		for (int i = 0; i < debugPath.size() - 1; i++)
-//		{
-//			RectF rect = debugPath[i].rect();
-//
-//			VectorF pointA = debugPath[i].rect().Center();
-//			VectorF pointB = debugPath[i + 1].rect().Center();
-//
-//			debugDrawLine(pointA, pointB, RenderColour::Green);
-//		}
-//	}
-//}
-//#endif
+bool AIPathing::updateCurrentIndex(VectorF position)
+{
+	Index tileIndex = index(position);
+	if (tileIndex != mCurrentIndex)
+	{
+		mCurrentIndex = tileIndex;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 
 
 // --- Private Functions --- //

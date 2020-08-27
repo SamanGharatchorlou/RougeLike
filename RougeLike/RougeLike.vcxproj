@@ -19,9 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Actors\Enemies\AIController.cpp" />
+    <ClCompile Include="Source\AI\Pathing\AIPathingController.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyDebugger.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyStun.cpp" />
+    <ClCompile Include="Source\AI\Spawning\AISpawnController.cpp" />
     <ClCompile Include="Source\Collisions\Colliders\QuadCollider.cpp" />
     <ClCompile Include="Source\Map\TileInteractables\TileInteractable.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHotKey.cpp" />
@@ -31,10 +32,10 @@
     <ClCompile Include="Source\Objects\Effects\EffectTypes\SlowEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\StunEffect.cpp" />
     <ClCompile Include="Source\Objects\Pools\EnemyPool.cpp" />
-    <ClCompile Include="Source\Actors\Enemies\Spawning\EnemyBuilder.cpp" />
+    <ClCompile Include="Source\AI\Spawning\EnemyFactory.cpp" />
     <ClCompile Include="Source\Actors\Player\PlayerManager.cpp" />
-    <ClCompile Include="Source\AI\AIPathing.cpp" />
-    <ClCompile Include="Source\AI\AIPathMap.cpp" />
+    <ClCompile Include="Source\AI\Pathing\AIPathing.cpp" />
+    <ClCompile Include="Source\AI\Pathing\AIPathMap.cpp" />
     <ClCompile Include="Source\Animations\Animator.cpp" />
     <ClCompile Include="Source\Audio\SoundController.cpp" />
     <ClCompile Include="Source\Collisions\Colliders\EffectCollider.cpp" />
@@ -107,7 +108,7 @@
     <ClCompile Include="Source\Actors\Enemies\Enemy.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyPreAttack.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyWait.cpp" />
-    <ClCompile Include="Source\Actors\Enemies\Spawning\EnemySpawner.cpp" />
+    <ClCompile Include="Source\AI\Spawning\SpawnDataBuilder.cpp" />
     <ClCompile Include="Source\Collisions\CollisionManager.cpp" />
     <ClCompile Include="Source\Actors\Actor.cpp" />
     <ClCompile Include="Source\Objects\Pools\EffectPool.cpp" />
@@ -125,9 +126,6 @@
     <ClCompile Include="Source\UI\UIEventHandler.cpp" />
     <ClCompile Include="Source\Utilities\BasicString.cpp" />
     <ClCompile Include="Source\Utilities\RenderColour.cpp" />
-    <ClCompile Include="Source\Utilities\Shapes\Circle.cpp" />
-    <ClCompile Include="Source\Utilities\Shapes\Shape.cpp" />
-    <ClCompile Include="Source\Utilities\Shapes\Square.cpp" />
     <ClCompile Include="Source\Game\Camera\CameraShake.cpp" />
     <ClCompile Include="Source\Game\Environment.cpp" />
     <ClCompile Include="Source\States\PreGameState.cpp" />
@@ -199,9 +197,10 @@
     <ClCompile Include="Source\System\Files\XMLParser.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Actors\Enemies\AIController.h" />
+    <ClInclude Include="Source\AI\Pathing\AIPathingController.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyDebugger.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyStun.h" />
+    <ClInclude Include="Source\AI\Spawning\AISpawnController.h" />
     <ClInclude Include="Source\Collisions\Colliders\QuadCollider.h" />
     <ClInclude Include="Source\Map\TileInteractables\TileInteractable.h" />
     <ClInclude Include="Source\Map\TileInteractables\Trigger.h" />
@@ -212,10 +211,10 @@
     <ClInclude Include="Source\Objects\Effects\EffectTypes\SlowEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\StunEffect.h" />
     <ClInclude Include="Source\Objects\Pools\EnemyPool.h" />
-    <ClInclude Include="Source\Actors\Enemies\Spawning\EnemyBuilder.h" />
+    <ClInclude Include="Source\AI\Spawning\EnemyFactory.h" />
     <ClInclude Include="Source\Actors\Player\PlayerManager.h" />
-    <ClInclude Include="Source\AI\AIPathing.h" />
-    <ClInclude Include="Source\AI\AIPathMap.h" />
+    <ClInclude Include="Source\AI\Pathing\AIPathing.h" />
+    <ClInclude Include="Source\AI\Pathing\AIPathMap.h" />
     <ClInclude Include="Source\Animations\Animator.h" />
     <ClInclude Include="Source\Audio\SoundController.h" />
     <ClInclude Include="Source\Collisions\Colliders\EffectCollider.h" />
@@ -302,7 +301,7 @@
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyPreAttack.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyState.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyWait.h" />
-    <ClInclude Include="Source\Actors\Enemies\Spawning\EnemySpawner.h" />
+    <ClInclude Include="Source\AI\Spawning\SpawnDataBuilder.h" />
     <ClInclude Include="Source\Collisions\CollisionManager.h" />
     <ClInclude Include="Source\Utilities\Maps\PropertyMap.h" />
     <ClInclude Include="Source\Items\Collectables\CollectableSpawner.h" />
@@ -319,7 +318,9 @@
     <ClInclude Include="Source\Utilities\Quad2D.h" />
     <ClInclude Include="Source\Utilities\RenderColour.h" />
     <ClInclude Include="Source\Utilities\Shapes\Circle.h" />
-    <ClInclude Include="Source\Utilities\Shapes\Shape.h" />
+    <ClInclude Include="Source\Utilities\Shapes\Point.h" />
+    <ClInclude Include="Source\Utilities\Shapes\Quadrilateral.h" />
+    <ClInclude Include="Source\Utilities\Shapes\Formation.h" />
     <ClInclude Include="Source\Utilities\Shapes\Square.h" />
     <ClInclude Include="Source\Events\Events.h" />
     <ClInclude Include="Source\Game\Camera\CameraShake.h" />

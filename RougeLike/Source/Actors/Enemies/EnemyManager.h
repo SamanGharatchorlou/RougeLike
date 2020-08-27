@@ -3,10 +3,9 @@
 #include "Events/LocalDispatcher.h"
 
 #include "Collisions/EnemyCollisions.h"
-#include "Spawning/EnemySpawner.h"
-#include "Actors/Enemies/Spawning/EnemyBuilder.h"
 
-#include "AIController.h"
+#include "AI/Pathing/AIPathingController.h"
+#include "AI/Spawning/AISpawnController.h"
 
 
 class Environment;
@@ -32,17 +31,16 @@ public:
 	void removeActiveEnemies(std::vector<Enemy*> enemies);
 	void clearAllEnemies();
 
+	// Levels
+	void openNewMapLevel();
+	void closeLastMapLevel();
+
 	// AI pathing
-	void addNewAIPathMap();
-	void popAIPathMap();
-	void updateAIPathCostMap() { mAIController.updateAIPathCostMap(mActiveEnemies); }
-	void requestEnemyPathUpdates() { mAIController.addPathUpdateRequest(); }
+	void updateAIPathCostMap() { mPathing.updateAIPathCostMap(mActiveEnemies); }
+	void requestEnemyPathUpdates() { mPathing.addPathUpdateRequest(); }
 
 	// Event handling
 	LocalDispatcher& events() { return mEvents; }
-
-	// Spawning
-	void spawn(const XMLNode levelSpawnNode, const Map* map);
 
 	std::vector<Actor*> getActiveEnemies() const;
 	std::vector<Collider*> attackingColliders() const;
@@ -51,8 +49,8 @@ public:
 
 
 private:
+	void spawnEnemies(const std::vector<Enemy*>& enemies);
 	void addActiveEnemy(Enemy* enemy);
-	void spawnEnemies(const std::vector<SpawnData>& spawnData, AIPathMap* aiPathMap);
 
 	void clearDead();
 	void clearAndRemove(std::vector<Enemy*>::iterator& iter);
@@ -62,10 +60,9 @@ private:
 private:
 	Environment* mEnvironment;
 
-	AIController mAIController;
+	AIPathingController mPathing;
+	AISpawnController mSpawning;
 
-	EnemySpawner mSpawner;
-	EnemyBuilder mBuilder;
 	EnemyCollisions mCollisions;
 
 	LocalDispatcher mEvents;

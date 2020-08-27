@@ -4,6 +4,8 @@
 #include "Debug/DebugDraw.h"
 
 #include "Game/Environment.h"
+#include "AI/Pathing/AIPathMap.h"
+
 #include "Actors/ActorManager.h"
 #include "Actors/Player/PlayerManager.h"
 
@@ -85,7 +87,7 @@ void EnemyDebugger::drawPath()
 	Path path = mPath;
 
 	std::vector<PathTile> enemyPath;
-	const AIPathMap* map = mEnemy->getPathMap().pathMap();
+	const AIPathMap* map = mEnemy->pathing()->map();
 
 	while (path.size() > 0)
 	{

@@ -3,17 +3,19 @@
 #include "Actors/Actor.h"
 #include "States/StateMachine.h"
 #include "EnemyStates/EnemyState.h"
-#include "Types/EnemyTypes.h"
+#include "Actors/Enemies/Types/EnemyTypes.h"
 
-#include "AI/AIPathing.h"
+
+#include "AI/Pathing/AIPathing.h"
+
 
 #if _DEBUG
 #include "EnemyDebugger.h"
 #endif
 
 
-class AIPathMap;
 class EnemyStatePool;
+enum class EnemyType;
 
 
 class Enemy : public Actor
@@ -39,7 +41,7 @@ public:
 
 	virtual const EnemyType type() const = 0;
 
-	void spawn(EnemyState::Type state, VectorF position, AIPathMap* map);
+	void spawn(EnemyState::Type state, VectorF position, const AIPathMap* map);
 
 	// State handling
 	const StateMachine<EnemyState>*	getStateMachine() const { return &mStateMachine; }
@@ -52,11 +54,11 @@ public:
 	void stun(float stunTime);
 
 	// Map
-	const AIPathing& getPathMap() const { return mAIPathing; }
-	AIPathing* getAIPathing() { return &mAIPathing; }
+	const AIPathing* pathing() const { return &mAIPathing; }
+	//AIPathing* getAIPathing() { return &mAIPathing; }
 
 	// Collisions
-	void resolveCollisions();
+	void resolveCollisions(bool addHitState = true);
 
 	// Target
 	void			setTarget(Actor* target) { mTarget = target; }
@@ -74,13 +76,10 @@ public:
 protected:
 	AIPathing mAIPathing;
 
+	EnemyStatePool* mStatePool;
 	StateMachine<EnemyState> mStateMachine;
 
 	const Actor* mTarget;
 
-	Index mCurrentIndex;
-
-	std::deque<Effect*> mAttackEffects;
-
-	EnemyStatePool* mStatePool;
+	TimerF mColourModTimer;
 };

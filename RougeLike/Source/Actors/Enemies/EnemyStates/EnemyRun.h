@@ -1,7 +1,7 @@
 #pragma once
 
 #include "EnemyState.h"
-#include "AI/AIPathing.h"
+#include "AI/Pathing/AIPathing.h"
 
 
 class EnemyRun : public EnemyState

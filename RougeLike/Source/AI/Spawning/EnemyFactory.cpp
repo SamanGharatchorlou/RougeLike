@@ -1,25 +1,23 @@
 #include "pch.h"
-#include "EnemyBuilder.h"
+#include "EnemyFactory.h"
 
-#include "Game/Environment.h"
 #include "Actors/Enemies/Enemy.h"
-#include "Objects/Pools/EnemyPool.h"
 
 
-EnemyBuilder::~EnemyBuilder()
+
+EnemyFactory::~EnemyFactory()
 {
 	clear();
 }
 
 
-void EnemyBuilder::loadPools(int poolSize)
+void EnemyFactory::loadPools(int poolSize)
 {
 	std::vector<EnemyType> enemyTypes;
 	for (EnemyType type = EnemyType::None + 1; type < EnemyType::Count; type = type + 1)
 	{
 		enemyTypes.push_back(type);
 	}
-
 	mPool.load(enemyTypes, poolSize);
 
 
@@ -31,22 +29,23 @@ void EnemyBuilder::loadPools(int poolSize)
 	mStatePool.load(enemyStates, poolSize);
 }
 
-void EnemyBuilder::clear()
+void EnemyFactory::clear()
 {
 	mPool.freeAll();
 	mStatePool.freeAll();
 }
 
 
-void EnemyBuilder::returnEnemy(Enemy* enemy)
+void EnemyFactory::returnEnemy(Enemy* enemy)
 {
 	mPool.returnObject(enemy, enemy->type());
 }
 
 
 
-std::vector<Enemy*> EnemyBuilder::buildEnemies(const std::vector<SpawnData>& dataList, AIPathMap* aiPathMap)
+std::vector<Enemy*> EnemyFactory::buildEnemies(const std::vector<SpawnData>& dataList, const AIPathMap* aiPathMap)
 {
+	// Enemy config files store
 	std::unordered_map<EnemyType, XMLParser> parserMap;
 	setupParserMap(parserMap, dataList);
 
@@ -66,39 +65,23 @@ std::vector<Enemy*> EnemyBuilder::buildEnemies(const std::vector<SpawnData>& dat
 }
 
 
-Enemy* EnemyBuilder::buildEnemy(const SpawnData& data, const XMLNode enemyNode, AIPathMap* aiPathMap)
+Enemy* EnemyFactory::buildEnemy(const SpawnData& data, const XMLNode enemyNode, const AIPathMap* aiPathMap)
 {
 	EnemyType type = data.type;
 	BasicString enemyTypeString;
 	type >> enemyTypeString;
 
-	Enemy* enemy = getBlankEnemy(type);
-	fillActorData(enemy, enemyNode);
-	fillSpawnData(enemy, data, aiPathMap);
+	Enemy* enemy = mPool.getObject(type);
+
+	enemy->setCharacter(enemyNode);
+	enemy->setStatePool(&mStatePool);
+	enemy->spawn(data.state, data.position, aiPathMap);
+
 	return enemy;
 }
 
 
-Enemy* EnemyBuilder::getBlankEnemy(EnemyType type)
-{
-	return mPool.getObject(type);
-}
-
-
-void EnemyBuilder::fillActorData(Enemy* enemy, const XMLNode node)
-{
-	enemy->setCharacter(node);
-	enemy->setStatePool(&mStatePool);
-}
-
-
-void EnemyBuilder::fillSpawnData(Enemy* enemy, const SpawnData& data, AIPathMap* aiPathMap) const
-{
-	enemy->spawn(data.state, data.position, aiPathMap);
-}
-
-
-void EnemyBuilder::setupParserMap(std::unordered_map<EnemyType, XMLParser>& parserMap, const std::vector<SpawnData>& dataList) const
+void EnemyFactory::setupParserMap(std::unordered_map<EnemyType, XMLParser>& parserMap, const std::vector<SpawnData>& dataList) const
 {
 	for (int i = 0; i < dataList.size(); i++)
 	{

@@ -19,8 +19,8 @@
 			<Damage>40</Damage>
 		</Damage>
 		<Displacement>
-			<KnockbackForce>200</KnockbackForce>
-			<KnockbackDistance>20</KnockbackDistance>
+			<KnockbackForce>150</KnockbackForce>
+			<KnockbackDistance>10</KnockbackDistance>
 		</Displacement>
 	</Effects>
 

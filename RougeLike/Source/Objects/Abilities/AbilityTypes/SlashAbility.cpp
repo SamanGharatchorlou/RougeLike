@@ -36,15 +36,6 @@ void SlashAbility::activateOn(Actor* target, EffectPool* effectPool)
 
 void SlashAbility::applyEffects(Actor* actor, EffectPool* effectPool)
 {
-	if (mSlashCount == 1)
-	{
-		mProperties.addXYPosition(mCaster->position());
-
-		Effect* displacement = effectPool->getObject(EffectType::Displacement);
-		displacement->fill(mProperties);
-		actor->addEffect(displacement);
-	}
-
 	Effect* damage = effectPool->getObject(EffectType::Damage);
 	damage->fill(mProperties);
 	actor->addEffect(damage);

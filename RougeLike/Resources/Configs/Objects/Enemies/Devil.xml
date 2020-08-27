@@ -13,9 +13,9 @@
 		<Experience>100</Experience>
 
 		<!-- Attack -->
-		<AttackSpeed>1</AttackSpeed>
-		<TackleDistance>80</TackleDistance>
-		<TackleMovementSpeed>200</TackleMovementSpeed>
+		<AttackSpeed>2</AttackSpeed>
+		<TackleDistance>60</TackleDistance>
+		<TackleMovementSpeed>250</TackleMovementSpeed>
 
 		<!-- Patrol -->
 		<SightRange>300</SightRange>

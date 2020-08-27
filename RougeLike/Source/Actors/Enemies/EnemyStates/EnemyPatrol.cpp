@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "EnemyPatrol.h"
 
-#include "AI/AIPathMap.h"
+#include "AI/Pathing/AIPathMap.h"
 #include "Actors/Enemies/Enemy.h"
 
 
@@ -48,7 +48,7 @@ void EnemyPatrol::resume()
 
 void EnemyPatrol::setPatrolPoint()
 {
-	const AIPathMap* map = mEnemy->getPathMap().pathMap();
+	const AIPathMap* map = mEnemy->pathing()->map();
 
 	VectorF position = mEnemy->position();
 	Index index = map->index(position);
@@ -87,23 +87,3 @@ bool EnemyPatrol::hasReachedPositionTarget() const
 	VectorF position = mEnemy->position();
 	return distanceSquared(position, mPositionTarget) < 10.0f;
 }
-
-
-//bool EnemyPatrol::canMove(VectorF velocity, float dt)
-//{
-//	const AIPathMap* map = mEnemy->getPathMap().pathMap();
-//	mIndexTarget = map->index(mEnemy->position());
-//
-//
-//	bool validMovement = true;
-//	RectF rect = mEnemy->scaledRect().Translate(velocity * dt);
-//	VectorF points[4]{ rect.TopLeft(), rect.TopRight(), rect.BotRight(), rect.BotLeft() };
-//
-//	for (int i = 0; i < 4; i++)
-//	{
-//		if (!mEnemy->getPathMap().pathMap()->isValidPosition(points[i]))
-//			validMovement = false;
-//	}
-//
-//	return validMovement;
-//}
