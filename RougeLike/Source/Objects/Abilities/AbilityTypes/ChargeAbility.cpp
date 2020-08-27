@@ -33,12 +33,11 @@ void ChargeAbility::activateAt(VectorF position, EffectPool* effectPool)
 }
 
 
-void ChargeAbility::activateOn(Actor* target, EffectPool* effectPool)
+void ChargeAbility::activateOn(Actor* actor, EffectPool* effectPool)
 {
-	if (mHitList.count(target) == 0)
+	if (mHitList.count(actor) == 0)
 	{
-		applyEffects(target, effectPool);
-		mHitList.insert(target);
+		applyEffects(actor, effectPool);
 	}
 }
 
@@ -78,7 +77,7 @@ void ChargeAbility::render()
 	}
 	else if (mState == AbilityState::Running)
 	{
-#if DRAW_EFFECT_RECTS
+#if DRAW_ABILITY_RECTS
 		debugDrawRect(mRect, RenderColour::Yellow);
 		debugDrawPoint(mQuad.rightCenter(), 5.0f, RenderColour::Black); // front point
 #endif
@@ -102,16 +101,15 @@ void ChargeAbility::applyEffects(Actor* actor, EffectPool* effectPool)
 
 	applyEffect(EffectType::Damage, actor, effectPool);
 	applyEffect(EffectType::KnockbackStun, actor, effectPool);
+
+	mHitList.insert(actor);
 }
 
 
 void ChargeAbility::exit()
 {
-	mChargeTarget = VectorF();
 	mDistanceTravelled = 0.0f;
 	mHitList.clear();
-
-	Ability::exit();
 }
 
 

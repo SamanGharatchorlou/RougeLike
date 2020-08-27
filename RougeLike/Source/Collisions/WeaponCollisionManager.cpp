@@ -45,6 +45,7 @@ void WeaponCollisionManager::updateWeaponEffect(EffectCollider* weaponCollider)
 	{
 		Effect* effect = weaponCollider->popEffect();
 
+		// TODO: replace this with the property map system
 		if (effect->type() == EffectType::Displacement)
 		{
 			DisplacementEffect* displacementEffect = static_cast<DisplacementEffect*>(effect);

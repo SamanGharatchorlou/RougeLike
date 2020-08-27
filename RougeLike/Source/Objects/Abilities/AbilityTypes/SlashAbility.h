@@ -33,6 +33,5 @@ private:
 	VectorF mTargetDirection;
 
 	Quad2D<float> mQuad;
-
 	std::unordered_set<Actor*> mHitList;
 };

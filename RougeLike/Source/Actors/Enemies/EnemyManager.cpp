@@ -71,6 +71,18 @@ void EnemyManager::openNewMapLevel()
 	{
 		addActiveEnemy(enemiesToSpawn[i]);
 	}
+
+	for (int i = 0; i < mActiveEnemies.size(); i++)
+	{
+		Enemy* enemy = mActiveEnemies[i];
+
+		if (enemy->state() == EnemyState::Idle)
+		{
+			const MapTile* tile = map->tile(enemy->position());
+			if (tile && tile->renderType() > RenderTile::Wall)
+				printf("spawned enemy under a wall at index %d,%d", map->index(enemy->position()).x, map->index(enemy->position()).y);
+		}
+	}
 }
 
 
@@ -243,7 +255,7 @@ void EnemyManager::clearAndRemove(std::vector<Enemy*>::iterator& iter)
 	enemy->clear();
 
 	mCollisions.remove(enemy->collider());
-	//mBuilder.returnEnemy(enemy);
+	mSpawning.returnEnemy(enemy);
 
 	iter = mActiveEnemies.erase(iter);
 }

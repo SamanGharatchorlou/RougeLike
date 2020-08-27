@@ -2,26 +2,27 @@
 <Ability>
 
 	<Properties>
-		<Damage>100</Damage>
-		<DamageReact>0</DamageReact>
-		<Range>500</Range>
-		<MaxSize>200</MaxSize>
+		<Damage>50</Damage>
+		<Range>700</Range>
+		<MaxSize>150</MaxSize>
 		<Cooldown>1</Cooldown>
 
-		<FallSpeed>750</FallSpeed>
-		<StunTime>5</StunTime>
+		<Velocity>400</Velocity>		
+		<KnockbackForce>400</KnockbackForce>
+		<KnockbackDistance>35</KnockbackDistance>
+		<StunTime>4</StunTime>
 	</Properties>
 
 	<Hammer>
 		<Texture>Mjolnir</Texture>
-		<MaxSize>80</MaxSize>
+		<MaxSize>70</MaxSize>
 	</Hammer>
 
 	<Icon>SmashIcon</Icon>
 
 	<Animator>
 		<ID>FloorBurst</ID>
-		<FrameTime>0.1</FrameTime>
+		<FrameTime>0.08</FrameTime>
 		<FrameSize x = "894" y ="426"></FrameSize>
 		<Animations>
 			<Active>6</Active>

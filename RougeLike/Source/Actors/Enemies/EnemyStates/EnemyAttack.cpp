@@ -126,6 +126,7 @@ void EnemyAttack::addEffects()
 }
 
 
+// TODO: replace this with the property bag thing
 void EnemyAttack::updateEffects()
 {
 	EffectCollider* collider = mEnemy->collider();

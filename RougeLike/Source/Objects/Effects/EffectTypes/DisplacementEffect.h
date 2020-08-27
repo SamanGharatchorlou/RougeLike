@@ -10,7 +10,7 @@ public:
 	virtual ~DisplacementEffect() { }
 
 	void fill(const PropertyMap& propertyMap) override;
-	void set(VectorF source, float force, float distance);
+	//void set(VectorF source, float force, float distance);
 	void update(VectorF source) { mSource = source; }
 
 	virtual void init() override { };

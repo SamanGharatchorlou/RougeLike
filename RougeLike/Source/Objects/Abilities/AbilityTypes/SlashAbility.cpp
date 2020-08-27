@@ -12,6 +12,8 @@
 
 void SlashAbility::activateAt(VectorF position, EffectPool* effectPool)
 {
+	mAnimator.startAnimation(Action::Active);
+
 	// replace regular collider with quad collider
 	delete mCollider;
 	mCollider = new QuadCollider(&mQuad);
@@ -20,7 +22,6 @@ void SlashAbility::activateAt(VectorF position, EffectPool* effectPool)
 	mRect.SetLeftCenter(mCaster->position());
 	slashOnce();
 
-	mAnimator.startAnimation(Action::Active);
 }
 
 
@@ -76,7 +77,7 @@ void SlashAbility::render()
 	}
 	else if (mState == AbilityState::Running)
 	{
-#if DRAW_EFFECT_RECTS
+#if DRAW_ABILITY_RECTS
 		debugDrawRect(mRect, RenderColour::Yellow);
 		debugDrawLine(mCaster->position(), mCaster->position() + mTargetDirection * 10.0, RenderColour::Black);
 #endif
@@ -99,8 +100,6 @@ void SlashAbility::exit()
 {
 	mRect.SetSize(mRect.Size() / 2.0f);
 	mSlashCount = 0;
-
-	Ability::exit();
 }
 
 

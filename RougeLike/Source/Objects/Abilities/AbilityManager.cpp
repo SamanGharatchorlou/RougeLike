@@ -103,6 +103,7 @@ void AbilityManager::handleStates(Ability* ability, float dt)
 	case AbilityState::Finished:
 	{
 		ability->exit();
+		ability->baseExit();
 		setState(ability, AbilityState::Idle);
 		break;
 	}

@@ -35,7 +35,7 @@ void Ability::init(Actor* caster, const PropertyMap& properties, Animator animat
 }
 
 
-void Ability::exit()
+void Ability::baseExit()
 {
 	mAnimator.reset();
 	mCooldown.stop();
@@ -64,7 +64,7 @@ BasicString Ability::name() const
 
 void Ability::renderAnimator()
 {
-#if DRAW_EFFECT_RECTS
+#if DRAW_ABILITY_RECTS
 	debugDrawRect(mRect, RenderColour::Yellow);
 #endif
 #if TRACK_COLLISIONS

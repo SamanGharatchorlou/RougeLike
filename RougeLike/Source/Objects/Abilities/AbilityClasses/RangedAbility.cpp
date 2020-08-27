@@ -55,7 +55,11 @@ bool RangedAbility::isValidTarget(VectorF target, const Map* map) const
 	bool validPoint = true;
 	for (int i = 0; i < 4; i++)
 	{
-		if (!map->tile(points[i])->is(CollisionTile::Floor))
+		// IMPROVEMENT
+		// if tile == nullptr that means we've probably asked for a tile on a different map
+		// which could still be valid... but requires a pointer to that map
+		const MapTile* tile = map->tile(points[i]);
+		if (!tile || !map->tile(points[i])->is(CollisionTile::Floor))
 			validPoint = false;
 	}
 

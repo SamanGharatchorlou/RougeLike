@@ -25,7 +25,9 @@ public:
 	virtual void fastUpdate(float dt) = 0;
 	virtual void slowUpdate(float dt) = 0;
 	virtual void render() = 0;
-	virtual void exit();
+	virtual void exit() { };
+
+	void baseExit();
 
 	void renderAnimator();
 

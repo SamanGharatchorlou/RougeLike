@@ -10,19 +10,84 @@
 #include "Animations/Animator.h"
 #include "Game/Camera/Camera.h"
 
+#include "Collisions/Colliders/QuadCollider.h"
+
+
 // TODO: fix the placement of this, now that its large its hard to place
 SmashAbility::SmashAbility(Texture* hammerTexture, RectF hammerRect) : mHammerTexture(hammerTexture), mHammerRect(hammerRect) { }
+
+
+void SmashAbility::activateAt(VectorF position, EffectPool* pool)
+{
+	// Splash animation
+	mAnimator.selectAnimation(Action::Active);
+	mRect.SetCenter(position);
+
+	// replace regular collider with quad colliderd
+	delete mCollider;
+	mCollider = new QuadCollider(&mQuad);
+
+	// Hammer logic
+	mTargetPosition = position;
+	mHammerDirection = (mTargetPosition - mCaster->position()).normalise();
+
+	mHammerRect.SetCenter(mCaster->position());
+
+	// set quad
+	mQuad = Quad2D<float>(mHammerRect);
+	mQuad.rotate(getRotation(mHammerDirection), mHammerRect.Center());
+}
+
+
+void SmashAbility::activateOn(Actor* actor, EffectPool* effectPool)
+{
+	if (!mReachedTarget)
+	{
+		if (mHitList.count(actor) == 0)
+		{
+			applyHammerEffects(actor, effectPool);
+		}
+	}
+	else
+	{
+		applyExplosionEffects(actor, effectPool);
+	}
+}
+
+
+void SmashAbility::fastUpdate(float dt)
+{
+	// Flying hanner
+	if (!mReachedTarget)
+		sendActivateOnRequest(); 
+}
 
 
 void SmashAbility::slowUpdate(float dt)
 {
 	mAnimator.slowUpdate(dt);
 
-	mHammerRect = mHammerRect.Translate(VectorF(0.0f, mProperties[PropertyType::FallSpeed] * dt));
+	VectorF velocity = mHammerDirection * mProperties[PropertyType::Velocity] * dt;
+	mHammerRect = mHammerRect.Translate(velocity);
+	mQuad.translate(velocity);
 
-	if (hammerHitGround() && !mAnimator.isRunning())
+
+	// Same direction to the target?
+	VectorF currentDirection = (mTargetPosition - mHammerRect.Center()).normalise();
+	bool hasPassedTarget = !((currentDirection.x > 0 == mHammerDirection.x > 0) && (currentDirection.y > 0 == mHammerDirection.y > 0));
+
+	if (!mReachedTarget && hasPassedTarget)
+	{
+		mReachedTarget = true;
+	}
+
+	// Final explosions
+	if (mReachedTarget && !mAnimator.isRunning())
 	{
 		mAnimator.start();
+
+		// Final explosion uses mRect not the hammer rect for collision detection
+		mQuad = Quad2D<float>(mRect);
 		sendActivateOnRequest();
 	}
 
@@ -35,24 +100,6 @@ void SmashAbility::slowUpdate(float dt)
 }
 
 
-void SmashAbility::activateAt(VectorF position, EffectPool* pool)
-{
-	mAnimator.selectAnimation(Action::Active);
-
-	mRect.SetCenter(position);
-
-	float hitPosition = Camera::Get()->toCameraCoords(mRect.Center()).y;
-	float fallDistance = Camera::Get()->size().y - hitPosition;
-	mHammerRect.SetCenter(mRect.Center() + VectorF(0.0f, -fallDistance));
-}
-
-
-void SmashAbility::activateOn(Actor* actor, EffectPool* effectPool)
-{
-	applyEffects(actor, effectPool);
-}
-
-
 void SmashAbility::render()
 {
 	if (mState == AbilityState::Selected)
@@ -61,29 +108,52 @@ void SmashAbility::render()
 	}
 	else if (mState == AbilityState::Running)
 	{
-		renderAnimator();
+#if DRAW_ABILITY_RECTS
+		debugDrawRect(mRect, RenderColour::Yellow);
+		debugDrawRect(mHammerRect, RenderColour::Yellow);
+		debugDrawLine(mHammerRect.Center(), mTargetPosition, RenderColour::Black);
+#endif
+#if TRACK_COLLISIONS
+		mCollider->renderCollider();
+#endif
 
-		// while hammer is falling
-		if (!hammerHitGround())
+		RectF renderRect = mRect; Camera::Get()->toCameraCoords(mRect);
+		renderRect.SetSize(mRect.Size() * 1.5f);
+		renderRect.SetCenter(mRect.Center());
+		renderRect = Camera::Get()->toCameraCoords(renderRect);
+
+		mAnimator.render(renderRect);
+
+		// while hammer is flying
+		if (!mReachedTarget)
 		{
 			RectF hammerRect = Camera::Get()->toCameraCoords(mHammerRect);
-			mHammerTexture->render(hammerRect, SDL_FLIP_VERTICAL);
+			VectorF aboutPoint = hammerRect.Size() / 2.0f;
+			mHammerTexture->render(hammerRect, getRotation(mHammerDirection), aboutPoint);
 		}
 	}
 }
 
-
-// --- Private Functions --- //
-bool SmashAbility::hammerHitGround()
+void SmashAbility::exit()
 {
-	return mHammerRect.BotPoint() >= mRect.BotPoint();
+	mReachedTarget = false;
+	mHitList.clear();
 }
 
 
-void SmashAbility::applyEffects(Actor* actor, EffectPool* effectPool)
+// --- Private Functions --- //
+void SmashAbility::applyHammerEffects(Actor* actor, EffectPool* effectPool)
 {
-	// The enemy state will change to wait (from the stun) before the got hit bool from the
-	// damage will change the state to hit. Hence the damage is taken but there is no hit state change
 	applyEffect(EffectType::Damage, actor, effectPool);
+	mHitList.insert(actor);
+}
+
+
+void SmashAbility::applyExplosionEffects(Actor* actor, EffectPool* effectPool)
+{
+	mProperties.addXYPosition(mHammerRect.Center());
+
+	applyEffect(EffectType::Damage, actor, effectPool);
+	applyEffect(EffectType::Displacement, actor, effectPool);
 	applyEffect(EffectType::Stun, actor, effectPool);
 }
