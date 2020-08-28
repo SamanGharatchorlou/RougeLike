@@ -20,7 +20,7 @@
 // Abilities
 #define UNLOCK_ALL_ABILITIES 1
 #define NO_ABILITY_COOLDOWNS 0
-#define DRAW_ABILITY_RECTS 1
+#define DRAW_ABILITY_RECTS 0
 
 // Collectables
 #define DRAW_COLLECTABLE_RECT 0
@@ -55,7 +55,7 @@
 
 
 // Collisions
-#define TRACK_COLLISIONS 0
+#define TRACK_COLLISIONS 1
 
 #else
 

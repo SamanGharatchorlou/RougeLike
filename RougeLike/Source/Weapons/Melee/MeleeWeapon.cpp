@@ -47,9 +47,14 @@ void MeleeWeapon::equipt(const WeaponData* data)
 	mData.copy(data);
 
 	// Set size
+
+	// TODO: ditch mRect?
 	VectorF baseSize = mData.texture->originalDimentions;
 	VectorF size = realiseSize(baseSize, mData.maxDimention);
 	mRect.SetSize(size);
+
+	mQuad = Quad2D<float>(mRect);
+	mCollider.init(&mQuad);
 
 	mAboutPoint = VectorF(rect().Width() / 2.0f, rect().Height() * 0.85f);
 
@@ -78,7 +83,17 @@ void MeleeWeapon::fastUpdate(float dt)
 			continueAttack(dt);
 
 		updateWeaponBlocks();
-	}
+
+
+
+	}		
+	
+	
+	RectF weaponRect = rect();
+	VectorF about = weaponRect.TopCenter() + VectorF(0.0f, weaponRect.Height() * 0.85f);
+
+	mQuad = Quad2D<float>(weaponRect);
+	mQuad.rotate(getRotation(mDirection), about);
 }
 
 
@@ -129,6 +144,18 @@ void MeleeWeapon::render()
 {
 	SDL_RendererFlip flip = (getRotation(mDirection) >= 0.0f && getRotation(mDirection) < 180.0f) ? SDL_FLIP_HORIZONTAL: SDL_FLIP_NONE;
 	mData.texture->render(Camera::Get()->toCameraCoords(rect()), getRotation(mDirection), mAboutPoint, flip);
+
+	Quad2D<float> baseRect(rect());
+	debugDrawQuad(baseRect, RenderColour::Red);
+
+
+#if TRACK_COLLISIONS
+	mCollider.renderCollider();
+#endif
+
+
+	VectorF about = rect().TopCenter() + VectorF(0.0f, rect().Height() * 0.85f);
+	debugDrawPoint(about, 10.0f, RenderColour::Black);
 
 #if DRAW_PLAYER_RECTS
 	// About point

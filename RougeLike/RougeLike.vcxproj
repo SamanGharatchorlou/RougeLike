@@ -25,7 +25,9 @@
     <ClCompile Include="Source\AI\Spawning\AISpawnController.cpp" />
     <ClCompile Include="Source\Collisions\Colliders\QuadCollider.cpp" />
     <ClCompile Include="Source\Map\TileInteractables\TileInteractable.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityClasses\MeleeAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHotKey.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\BasicAttack.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\SlashAbility.cpp" />
     <ClCompile Include="Source\Objects\Effects\AttackingEffects.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\ArmorEffect.cpp" />
@@ -70,7 +72,7 @@
     <ClCompile Include="Source\Objects\Abilities\AbilityBuilder.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityClasses\Ability.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityClasses\RangedAbility.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\AbilityClasses\TargetAbilities.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityClasses\SelfAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityActivator.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHotKeyManager.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityManager.cpp" />
@@ -205,7 +207,9 @@
     <ClInclude Include="Source\Collisions\Colliders\QuadCollider.h" />
     <ClInclude Include="Source\Map\TileInteractables\TileInteractable.h" />
     <ClInclude Include="Source\Map\TileInteractables\Trigger.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityClasses\MeleeAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityHotKey.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\BasicAttack.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\SlashAbility.h" />
     <ClInclude Include="Source\Objects\Effects\AttackingEffects.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\ArmorEffect.h" />
@@ -253,7 +257,7 @@
     <ClInclude Include="Source\Objects\Abilities\AbilityClasses\Ability.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityClasses\AbilityStates.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityClasses\RangedAbility.h" />
-    <ClInclude Include="Source\Objects\Abilities\AbilityClasses\TargetAbilities.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityClasses\SelfAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityActivator.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityManager.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityHotKeyManager.h" />

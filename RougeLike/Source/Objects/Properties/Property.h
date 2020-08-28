@@ -19,6 +19,7 @@ public:
 		Distance,
 		MaxVelocity,
 		Velocity,
+		Collider,
 
 		Time,
 
@@ -90,6 +91,7 @@ static const std::unordered_map<BasicString, PropertyType::Type> PropertyLookUpT
 	{ "Distance", PropertyType::Distance },
 	{ "MaxVelocity", PropertyType::MaxVelocity },
 	{ "Velocity", PropertyType::Velocity },
+	{ "Collider", PropertyType::Collider },
 
 	{ "yPosition", PropertyType::xPosition },
 	{ "xPosition", PropertyType::yPosition },

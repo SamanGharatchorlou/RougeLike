@@ -2,15 +2,11 @@
 #include "AbilityManager.h"
 
 #include "AbilityClasses/Ability.h"
+#include "AbilityClasses/RangedAbility.h"
+
 
 AbilityManager::AbilityManager() : mEnvironment(nullptr) { }
-
-
-
-AbilityManager::~AbilityManager()
-{
-	clear();
-}
+AbilityManager::~AbilityManager() { clear(); }
 
 
 void AbilityManager::init(Environment* environment, Actor* caster, Screen* screen)
@@ -23,7 +19,6 @@ void AbilityManager::init(Environment* environment, Actor* caster, Screen* scree
 void AbilityManager::clear()
 {
 	mEnvironment = nullptr;
-	mEvents.clear();
 	mActivator.clear();
 	mHotKeys.clear();
 
@@ -36,19 +31,15 @@ void AbilityManager::clear()
 	mAbilities.clear();
 }
 
+
 void AbilityManager::handleInput(const InputManager* input)
 {
 	for (int i = 0; i < mAbilities.size(); i++)
 	{
 		Ability* ability = mAbilities[i];
-		AbilityType type = ability->type();
 		Button::State buttonState = mHotKeys.state(ability, input);
 
-		if (buttonState == Button::State::Pressed)
-			int a = 4;
-
-
-		if (mActivator.canSelect(ability) && mActivator.selected(ability, buttonState))
+		if (mActivator.selected(ability, buttonState))
 		{
 			setState(ability, AbilityState::Selected);
 		}
@@ -58,7 +49,7 @@ void AbilityManager::handleInput(const InputManager* input)
 			setState(ability, AbilityState::Activate);
 		}
 
-		if (ability->state() == AbilityState::Selected && mActivator.released(ability, buttonState))
+		if (mActivator.deselected(ability, buttonState))
 		{
 			setState(ability, AbilityState::Idle);
 		}
@@ -66,10 +57,19 @@ void AbilityManager::handleInput(const InputManager* input)
 }
 
 
-void AbilityManager::handleStates(Ability* ability, float dt)
+void AbilityManager::handleState(Ability* ability, float dt)
 {
 	switch (ability->state())
 	{
+	case AbilityState::Selected:
+	{
+		if (ability->targetType() == AbilityTarget::Ranged)
+		{
+			RangedAbility* rangedAbility = static_cast<RangedAbility*>(ability);
+			mEvents.push(rangedAbility->renderRangeCircleEvent());
+		}
+		break;
+	}
 	case AbilityState::Activate:
 	{
 		if (!ability->cooldown().hasStarted())
@@ -81,9 +81,6 @@ void AbilityManager::handleStates(Ability* ability, float dt)
 	}
 	case AbilityState::Running:
 	{
-		ability->fastUpdate(dt);
-		ability->slowUpdate(dt);
-
 		if (ability->hasCompleted())
 		{
 			ability->cooldown().begin();
@@ -108,9 +105,25 @@ void AbilityManager::handleStates(Ability* ability, float dt)
 		break;
 	}
 	case AbilityState::Idle:
-	case AbilityState::Selected:
 	default:
 		break;
+	}
+}
+
+
+void AbilityManager::fastUpdate(float dt)
+{
+	for (int i = 0; i < mAbilities.size(); i++)
+	{
+		Ability* ability = mAbilities[i];
+		if (ability->state() == AbilityState::Running)
+		{
+			ability->fastUpdate(dt);
+			if (ability->shouldActivateCollisions())
+			{
+				mActivator.activateCollisions(ability);
+			}
+		}
 	}
 }
 
@@ -119,28 +132,11 @@ void AbilityManager::slowUpdate(float dt)
 {
 	for (int i = 0; i < mAbilities.size(); i++)
 	{
-		handleStates(mAbilities[i], dt);
-		handleEvents(mAbilities[i]);
-	}
-}
+		Ability* ability = mAbilities[i];
+		handleState(ability, dt);
 
-
-void AbilityManager::handleEvents(Ability* ability)
-{
-	while (ability->events().hasEvent())
-	{
-		EventPacket event = ability->events().pop();
-
-		if (event.data->eventType == Event::ActivateAbilityOn)
-		{
-			mActivator.activateAreaAttack(ability);
-			event.free();
-		}
-		else
-		{
-			mEvents.push(event);
-		}
-
+		if (ability->state() == AbilityState::Running)
+			ability->slowUpdate(dt);
 	}
 }
 
@@ -176,18 +172,17 @@ void AbilityManager::addAbility(AbilityType abilityType)
 	if (abilityType != AbilityType::None)
 	{
 		Ability* ability = mBuilder.build(abilityType);
-		AbilityType type = ability->type();
-
+		if (ability)
+		{
 #if _DEBUG
-		if (type == AbilityType::None)
-			DebugPrint(Warning, "Ability '%s' has no type defined. Has its type() override function been defined?\n", name);
+			if (ability->type() == AbilityType::None)
+				DebugPrint(Warning, "Ability '%s' has no type defined. Has its type() override function been defined?\n", name);
 #endif
 
-
-		mHotKeys.addHotKey(ability);
-		setState(ability, AbilityState::Idle);
-
-		mAbilities.push_back(ability);
+			mHotKeys.addHotKey(ability);
+			setState(ability, AbilityState::Idle);
+			mAbilities.push_back(ability);
+		}
 	}
 	else
 	{

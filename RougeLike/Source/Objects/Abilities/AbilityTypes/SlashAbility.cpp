@@ -3,43 +3,31 @@
 
 #include "Actors/Actor.h"
 
-#include "Objects/Effects/EffectTypes/Effect.h"
 #include "Objects/Pools/EffectPool.h"
 
 #include "Game/Camera/Camera.h"
 #include "Collisions/Colliders/QuadCollider.h"
 
 
-void SlashAbility::activateAt(VectorF position, EffectPool* effectPool)
+void SlashAbility::activate(VectorF posision)
 {
+	mTargetDirection = (mCaster->position() - posision).normalise();
 	mAnimator.startAnimation(Action::Active);
 
 	// replace regular collider with quad collider
 	delete mCollider;
 	mCollider = new QuadCollider(&mQuad);
 
-	mTargetDirection = (mCaster->position() - position).normalise();
 	mRect.SetLeftCenter(mCaster->position());
 	slashOnce();
 
-}
-
-
-void SlashAbility::activateOn(Actor* target, EffectPool* effectPool)
-{
-	if (mHitList.count(target) == 0)
-	{
-		applyEffects(target, effectPool);
-		mHitList.insert(target);
-	}
+	mActivateCollisions = true;
 }
 
 
 void SlashAbility::applyEffects(Actor* actor, EffectPool* effectPool)
 {
-	Effect* damage = effectPool->getObject(EffectType::Damage);
-	damage->fill(mProperties);
-	actor->addEffect(damage);
+	applyEffect(EffectType::Damage, actor, effectPool);
 }
 
 
@@ -47,8 +35,6 @@ void SlashAbility::fastUpdate(float dt)
 {
 	mRect.SetLeftCenter(mCaster->rect().RightCenter());
 	setQuadRect();
-
-	sendActivateOnRequest();
 }
 
 
@@ -70,12 +56,7 @@ void SlashAbility::slowUpdate(float dt)
 
 void SlashAbility::render()
 {
-
-	if (mState == AbilityState::Selected)
-	{
-		renderRangeCircle();
-	}
-	else if (mState == AbilityState::Running)
+	if (mState == AbilityState::Running)
 	{
 #if DRAW_ABILITY_RECTS
 		debugDrawRect(mRect, RenderColour::Yellow);
@@ -94,14 +75,11 @@ void SlashAbility::render()
 }
 
 
-
-
 void SlashAbility::exit()
 {
 	mRect.SetSize(mRect.Size() / 2.0f);
 	mSlashCount = 0;
 }
-
 
 
 // -- Private functions -- //

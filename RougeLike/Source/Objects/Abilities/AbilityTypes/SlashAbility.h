@@ -1,16 +1,14 @@
 #pragma once
 
-#include "Objects/Abilities/AbilityClasses/TargetAbilities.h"
-#include "Utilities/Quad2D.h"
+#include "Objects/Abilities/AbilityClasses/MeleeAbility.h"
 
 
-class SlashAbility : public TargePositionAttackAbility
+class SlashAbility : public MeleeAbility
 {
 public:
-	SlashAbility() : mSlashCount(0) { mOnlyDirectional = true; }
+	SlashAbility() : mSlashCount(0) { }
 
-	void activateAt(VectorF position, EffectPool* effectPool) override;
-	void activateOn(Actor* actor, EffectPool* effectPool) override;
+	void activate(VectorF position) override;
 
 	void fastUpdate(float dt) override;
 	void slowUpdate(float dt) override;
@@ -21,17 +19,13 @@ public:
 
 
 private:
-	void slashOnce();
-	void applyEffects(Actor* actor, EffectPool* effectPool);
-
 	void setQuadRect();
+	void slashOnce();
+
+	void applyEffects(Actor* actor, EffectPool* effectPool) override;
 
 
 private:
 	int mSlashCount;
-
 	VectorF mTargetDirection;
-
-	Quad2D<float> mQuad;
-	std::unordered_set<Actor*> mHitList;
 };

@@ -1,23 +1,18 @@
 #pragma once
 
-#include "Objects/Abilities/AbilityClasses/TargetAbilities.h"
-#include "Objects/Properties/Attributes/Health.h"
+#include "Objects/Abilities/AbilityClasses/SelfAbility.h"
 
 
-class HealAbility : public TargetSelfAbility
+class HealAbility : public SelfAbility
 {
 public:
 	HealAbility() { };
-	
-	void activate(EffectPool* pool) override;
 
-	void fastUpdate(float dt) override { }
+	void fastUpdate(float dt) override { } // make not pure virtual?
 	void slowUpdate(float dt) override;
 
 	AbilityType type() const override { return AbilityType::Heal; }
 
-
-protected:
-	void applyEffects(EffectPool* pool);
-	void updateUI();
+private:
+	void applyEffects(Actor* actor, EffectPool* effectPool) override;
 };

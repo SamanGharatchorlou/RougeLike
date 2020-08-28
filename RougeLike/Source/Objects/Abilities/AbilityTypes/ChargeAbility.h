@@ -1,20 +1,15 @@
 #pragma once
 
-#include "Objects/Abilities/AbilityClasses/TargetAbilities.h"
-#include <unordered_set>
-
-#include "Utilities/Quad2D.h"
+#include "Objects/Abilities/AbilityClasses/MeleeAbility.h"
 #include "Collisions/WallCollisionTracker.h"
 
 
-
-class ChargeAbility : public TargePositionAttackAbility
+class ChargeAbility : public MeleeAbility
 {
 public:
-	ChargeAbility() : mDistanceTravelled(0.0f) { setIsOnlyDirectional(true); };
+	ChargeAbility() : mDistanceTravelled(0.0f) { };
 
-	void activateAt(VectorF position, EffectPool* effectPool) override;
-	void activateOn(Actor* actor, EffectPool* effectPool) override;
+	void activate(VectorF position) override;
 
 	void fastUpdate(float dt) override;
 	void slowUpdate(float dt) override;
@@ -25,7 +20,7 @@ public:
 
 
 private:
-	void applyEffects(Actor* actor, EffectPool* effectPool);
+	void applyEffects(Actor* actor, EffectPool* effectPool) override;
 
 	void setCharging(bool isCharging);
 
@@ -42,7 +37,5 @@ private:
 	VectorF mChargeTarget;
 	float mDistanceTravelled;
 
-	Quad2D<float> mQuad;
-	std::unordered_set<Actor*> mHitList;
 	WallCollisionTracker mWallCollisions;
 };

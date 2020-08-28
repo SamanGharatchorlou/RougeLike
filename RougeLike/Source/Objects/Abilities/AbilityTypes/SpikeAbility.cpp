@@ -2,26 +2,19 @@
 #include "SpikeAbility.h"
 
 #include "Actors/Actor.h"
-
-#include "Objects/Effects/EffectTypes/Effect.h"
 #include "Objects/Pools/EffectPool.h"
 
 
 
-void SpikeAbility::activateAt(VectorF position, EffectPool* effectPool)
+void SpikeAbility::activate(VectorF position)
 {
 	mRect.SetBotCenter(position);
 	mProperties.addXYPosition(position);
-	sendActivateOnRequest();
 
 	mAnimator.selectAnimation(Action::Active);
 	mAnimator.start();
-}
 
-
-void SpikeAbility::activateOn(Actor* actor, EffectPool* effectPool)
-{
-	applyEffects(actor, effectPool);
+	mActivateCollisions = true;
 }
 
 
@@ -42,3 +35,4 @@ void SpikeAbility::applyEffects(Actor* actor, EffectPool* effectPool)
 	applyEffect(EffectType::Damage, actor, effectPool);
 	applyEffect(EffectType::Displacement, actor, effectPool);
 }
+

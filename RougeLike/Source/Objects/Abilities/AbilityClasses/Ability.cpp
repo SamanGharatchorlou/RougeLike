@@ -5,12 +5,18 @@
 #include "Objects/Pools/EffectPool.h"
 #include "Objects/Effects/EffectTypes/Effect.h"
 
-
 #include "Game/Camera/Camera.h"
 
 #if _DEBUG
 #include "Debug/DebugDraw.h"
 #endif
+
+
+Ability::Ability() : 
+	mState(AbilityState::None), 
+	mCollider(nullptr), mCaster(nullptr), 
+	mActivateCollisions(false), mCompleted(false)
+{ }
 
 
 Ability::~Ability()
@@ -62,7 +68,7 @@ BasicString Ability::name() const
 }
 
 
-void Ability::renderAnimator()
+void Ability::render()
 {
 #if DRAW_ABILITY_RECTS
 	debugDrawRect(mRect, RenderColour::Yellow);
@@ -72,6 +78,4 @@ void Ability::renderAnimator()
 #endif
 
 	mAnimator.render(Camera::Get()->toCameraCoords(mRect));
-
-
 }

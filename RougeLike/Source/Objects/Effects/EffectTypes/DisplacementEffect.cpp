@@ -16,14 +16,6 @@ void DisplacementEffect::fill(const PropertyMap& propertyMap)
 	setProperty(PropertyType::yPosition, mSource.y, propertyMap);
 }
 
-//
-//void DisplacementEffect::set(VectorF source, float force, float distance)
-//{
-//	mSource = source;
-//	mForce = force;
-//	mDistance = distance;
-//}
-
 
 void DisplacementEffect::fastUpdate(float dt)
 {

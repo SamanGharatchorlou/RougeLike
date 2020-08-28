@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "ChargeAbility.h"
 
-#include "Objects/Effects/EffectTypes/Effect.h"
 #include "Objects/Pools/EffectPool.h"
 #include "Actors/Player/Player.h"
 
@@ -10,7 +9,7 @@
 #include "Collisions/Colliders/QuadCollider.h"
 
 
-void ChargeAbility::activateAt(VectorF position, EffectPool* effectPool)
+void ChargeAbility::activate(VectorF position)
 {
 	mDistanceTravelled = 0.0f;
 
@@ -33,15 +32,6 @@ void ChargeAbility::activateAt(VectorF position, EffectPool* effectPool)
 }
 
 
-void ChargeAbility::activateOn(Actor* actor, EffectPool* effectPool)
-{
-	if (mHitList.count(actor) == 0)
-	{
-		applyEffects(actor, effectPool);
-	}
-}
-
-
 void ChargeAbility::fastUpdate(float dt)
 {
 	VectorF velocity = direction() * mProperties.at(PropertyType::Force);
@@ -51,8 +41,6 @@ void ChargeAbility::fastUpdate(float dt)
 	{
 		mCaster->physics()->move(velocity, dt);
 		mQuad.translate(velocity * dt);
-		
-		sendActivateOnRequest();
 	}
 	else
 	{
@@ -70,12 +58,7 @@ void ChargeAbility::slowUpdate(float dt)
 
 void ChargeAbility::render()
 {
-
-	if (mState == AbilityState::Selected)
-	{
-		renderRangeCircle();
-	}
-	else if (mState == AbilityState::Running)
+	if (mState == AbilityState::Running)
 	{
 #if DRAW_ABILITY_RECTS
 		debugDrawRect(mRect, RenderColour::Yellow);
@@ -101,8 +84,6 @@ void ChargeAbility::applyEffects(Actor* actor, EffectPool* effectPool)
 
 	applyEffect(EffectType::Damage, actor, effectPool);
 	applyEffect(EffectType::KnockbackStun, actor, effectPool);
-
-	mHitList.insert(actor);
 }
 
 
@@ -122,6 +103,7 @@ void ChargeAbility::setCharging(bool isCharging)
 	player->setVisibility(!isCharging);
 	player->overrideControl(isCharging);
 	mCompleted = !isCharging;
+	mActivateCollisions = isCharging;
 
 	if (isCharging)
 	{
@@ -148,9 +130,9 @@ double ChargeAbility::rotation() const
 }
 
 
+// replace regular collider with quad collider
 void ChargeAbility::setQuadCollider()
 {
-	// replace regular collider with quad collider
 	delete mCollider;
 	mCollider = new QuadCollider(&mQuad);
 }
@@ -168,7 +150,6 @@ void ChargeAbility::setScaledQuad(float scale)
 
 RectF ChargeAbility::renderRectFrontToColliderFront(const RectF& renderRect)
 {
-	//RectF collRect = mCollider->scaledRect();
 	Quad2D<float> revertedQuad = mQuad;
 	revertedQuad.rotate(-rotation(), revertedQuad.Center());
 

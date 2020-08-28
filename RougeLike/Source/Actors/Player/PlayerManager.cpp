@@ -89,6 +89,7 @@ void PlayerManager::handleInput(const InputManager* input)
 void PlayerManager::fastUpdate(float dt)
 {
 	mPlayer.fastUpdate(dt);
+	mAbilities.fastUpdate(dt);
 
 	Map* playerMap = mEnvironment->map(mPlayer.position());
 	mPlayerCollisions.resolveWalls(playerMap, dt);
@@ -118,8 +119,8 @@ void PlayerManager::slowUpdate(float dt)
 
 void PlayerManager::handleEvents()
 {
-	while (mAbilities.hasEvent())
-		mEvents.push(mAbilities.popEvent());
+	while (mAbilities.events().hasEvent())
+		mEvents.push(mAbilities.events().pop());
 
 	while (mPlayer.events().hasEvent())
 	{

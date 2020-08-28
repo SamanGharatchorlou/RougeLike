@@ -2,15 +2,12 @@
 
 #include "RangedAbility.h"
 
-#include "Game/Camera/Camera.h"
-#include "Map/Map.h"
-
 #include "Actors/Actor.h"
-
-#include "Graphics/Texture.h"
+#include "Game/Camera/Camera.h"
 #include "Graphics/TextureManager.h"
 #include "Graphics/RenderManager.h"
 
+#include "Map/Map.h"
 
 
 void RangedAbility::init(Actor* caster, const PropertyMap& properties, Animator animator)
@@ -22,7 +19,7 @@ void RangedAbility::init(Actor* caster, const PropertyMap& properties, Animator 
 }
 
 
-void RangedAbility::renderRangeCircle()
+EventPacket RangedAbility::renderRangeCircleEvent()
 {
 	VectorF position = Camera::Get()->toCameraCoords(mCaster->position());
 
@@ -33,16 +30,24 @@ void RangedAbility::renderRangeCircle()
 	rect.SetCenter(position);
 
 	RenderEvent* event = new RenderEvent(mRangeCircle, rect, (int)RenderLayer::Floor);
-	EventPacket ep(event);
-	mEvents.push(ep);
+	return EventPacket(event);
 }
 
 
-bool RangedAbility::isValidTarget(VectorF target, const Map* map) const 
-{
-	if (mOnlyDirectional)
-		return true;
 
+
+void TargetAreaRangedAbility::activateOn(Actor* actor, EffectPool* effectPool)
+{
+	if (mHitList.count(actor) == 0)
+	{
+		applyEffects(actor, effectPool);
+		mHitList.insert(actor);
+	}
+}
+
+
+bool TargetAreaRangedAbility::isValidTarget(VectorF target, const Map* map) const
+{
 	// Is it in range
 	float range = mProperties.at(PropertyType::Range);
 	if (distanceSquared(mCaster->position(), target) > range * range)
@@ -64,4 +69,13 @@ bool RangedAbility::isValidTarget(VectorF target, const Map* map) const
 	}
 
 	return validPoint;
+}
+
+
+void TargetAreaRangedAbility::baseExit()
+{
+	Ability::baseExit();
+
+	mHitList.clear();
+	mActivateCollisions = false;
 }

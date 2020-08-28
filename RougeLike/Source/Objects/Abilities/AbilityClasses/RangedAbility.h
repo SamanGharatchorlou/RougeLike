@@ -1,30 +1,50 @@
 #pragma once
 
-
 #include "Ability.h"
+#include "Events/Events.h"
 
 class Map;
 
 class RangedAbility : public Ability
 {
 public:
-	RangedAbility() : mRangeCircle(nullptr), mOnlyDirectional(false) { }
+	RangedAbility() : mRangeCircle(nullptr) { }
 	virtual ~RangedAbility() { }
 
 	void init(Actor* caster, const PropertyMap& properties, Animator animator) override;
 
-	void setIsOnlyDirectional(bool isOnlyDirectional) { mOnlyDirectional = isOnlyDirectional; }
+	EventPacket renderRangeCircleEvent();
 
-	void renderRangeCircle();
+	virtual bool isValidTarget(VectorF target, const Map* map) const = 0;
 
-	virtual bool isValidTarget(VectorF target, const Map* map) const;
-
-	RectF effectArea() const { return mRect; }
+	AbilityTarget targetType() const override { return AbilityTarget::Ranged; }
 
 
 protected:
 	Texture* mRangeCircle;
-	bool mOnlyDirectional;
-
 };
 
+
+class TargetAreaRangedAbility : public RangedAbility
+{
+public:
+	virtual void activateOn(Actor* actor, EffectPool* effectPool) override;
+
+	virtual bool isValidTarget(VectorF target, const Map* map) const override;
+	virtual void baseExit() override;
+
+
+private:
+	virtual void applyEffects(Actor* actor, EffectPool* effectPool) = 0;
+
+
+protected:
+	std::unordered_set<Actor*> mHitList;
+};
+
+
+class DirectionalAreaRangedAbility : public TargetAreaRangedAbility
+{
+public:
+	virtual bool isValidTarget(VectorF target, const Map* map) const override { return true; }
+};

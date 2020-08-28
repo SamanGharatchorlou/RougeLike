@@ -64,7 +64,7 @@ void PlayerCollisions::resolveWeapons()
 void PlayerCollisions::refreshWeaponColliders()
 {
 	cManager->removeAllAttackers(CollisionManager::PlayerWeapon_Hit_Enemy);
-	cManager->addAttackers(CollisionManager::PlayerWeapon_Hit_Enemy, mPlayer->weapon()->getColliders());
+	cManager->addAttacker(CollisionManager::PlayerWeapon_Hit_Enemy, mPlayer->weapon()->getCollider());
 }
 
 void PlayerCollisions::clearExcludedColliders(CollisionManager::Tracker tracker)

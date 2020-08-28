@@ -3,6 +3,10 @@
 #include "Weapons/Weapon.h"
 #include "Weapons/WeaponData.h"
 
+// temp
+#include "Utilities/Quad2D.h"
+#include "Collisions/Colliders/QuadCollider.h"
+
 
 class MeleeWeaponData;
 class EffectCollider;
@@ -33,6 +37,7 @@ public:
 
 	VectorF& offset() override;
 	const float getAngle() const { return getRotation(mDirection); }
+	Collider* getCollider() { return &mCollider; }
 	const std::vector<Collider*> getColliders() const override;
 	const std::vector<RectF> getRects() const { return mBlockRects; }
 
@@ -51,6 +56,9 @@ private:
 
 private:
 	MeleeWeaponData mData;
+
+	Quad2D<float> mQuad;
+	QuadCollider mCollider;
 
 	std::vector<RectF> mBlockRects;
 	std::vector<EffectCollider*> mBlockColliders;

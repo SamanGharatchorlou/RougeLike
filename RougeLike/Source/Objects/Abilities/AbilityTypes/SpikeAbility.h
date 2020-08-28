@@ -1,16 +1,15 @@
 #pragma once
 
 
-#include "Objects/Abilities/AbilityClasses/TargetAbilities.h"
+#include "Objects/Abilities/AbilityClasses/RangedAbility.h"
 
 
-class SpikeAbility : public TargePositionAttackAbility
+class SpikeAbility : public TargetAreaRangedAbility
 {
 public:
 	SpikeAbility() { }
 
-	void activateAt(VectorF position, EffectPool* effectPool) override;
-	void activateOn(Actor* actor, EffectPool* effectPool) override;
+	void activate(VectorF position) override;
 
 	void fastUpdate(float dt) override { }
 	void slowUpdate(float dt) override;
@@ -19,6 +18,6 @@ public:
 
 
 private:
-	void applyEffects(Actor* actor, EffectPool* effectPool);
+	void applyEffects(Actor* actor, EffectPool* effectPool) override;
 
 };

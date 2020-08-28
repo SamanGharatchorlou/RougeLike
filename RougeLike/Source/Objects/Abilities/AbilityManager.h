@@ -22,6 +22,7 @@ public:
 	void clear();
 
 	void handleInput(const InputManager* input);
+	void fastUpdate(float dt);
 	void slowUpdate(float dt);
 	void render();
 
@@ -31,22 +32,18 @@ public:
 
 	bool inSelectionMode() const;
 
-	//Ability* get(const BasicString& name) const;
-
-	bool hasEvent() const { return mEvents.hasEvent(); }
-	EventPacket popEvent() { return mEvents.pop(); }
+	LocalDispatcher& events() { return mEvents; }
 
 
 private:
-	void handleStates(Ability* ability, float dt);
-	void handleEvents(Ability* ability);
+	void handleState(Ability* ability, float dt);
 
 
 private:
 	Environment* mEnvironment;
 
 	LocalDispatcher mEvents;
-	
+
 	AbilityBuilder mBuilder;
 	AbilityActivator mActivator;
 	AbilityHotKeyManager mHotKeys;

@@ -1,21 +1,20 @@
 #pragma once
 
 
-#include "Objects/Abilities/AbilityClasses/TargetAbilities.h"
+#include "Objects/Abilities/AbilityClasses/RangedAbility.h"
 #include "Utilities/Quad2D.h"
 
 class Texture;
 
 
-class SmashAbility : public TargePositionAttackAbility
+class SmashAbility : public DirectionalAreaRangedAbility
 {
 public:
 	SmashAbility(Texture* hammerTexture, RectF hammerRect);
 
-	void activateAt(VectorF position, EffectPool* pool) override;
-	void activateOn(Actor* target, EffectPool* pool) override;
+	void activate(VectorF position) override;
 
-	void fastUpdate(float dt) override;
+	void fastUpdate(float dt) override { }
 	void slowUpdate(float dt) override;
 	void render() override;
 
@@ -25,6 +24,7 @@ public:
 
 
 private:
+	void applyEffects(Actor* actor, EffectPool* effectPool);
 	void applyHammerEffects(Actor* actor, EffectPool* effectPool);
 	void applyExplosionEffects(Actor* actor, EffectPool* effectPool);
 
@@ -38,5 +38,4 @@ private:
 	VectorF mHammerDirection;
 
 	Quad2D<float> mQuad;
-	std::unordered_set<Actor*> mHitList;
 };

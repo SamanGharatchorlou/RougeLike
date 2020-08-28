@@ -101,7 +101,8 @@ const PathTile* AIPathMap::offsetTile(const PathTile* target, int xOffset, int y
 
 Vector2D<int> AIPathMap::yTileFloorRange(Index index) const
 {
-	ASSERT(Warning, tile(index)->is(CollisionTile::Floor), "Not a floor tile, cannot get yTile floor range");
+	// This assert is annoying, turn it off
+	//ASSERT(Warning, tile(index)->is(CollisionTile::Floor), "Not a floor tile, cannot get yTile floor range");
 
 	Index bottomIndex(index);
 	while (true)

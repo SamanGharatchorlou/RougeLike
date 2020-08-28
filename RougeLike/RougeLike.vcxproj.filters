@@ -104,7 +104,6 @@
     <ClCompile Include="Source\System\Files\Attributes.cpp" />
     <ClCompile Include="Source\Debug\DebugDraw.cpp" />
     <ClCompile Include="Source\Graphics\TextureMap.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\AbilityClasses\TargetAbilities.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityClasses\Ability.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityClasses\RangedAbility.cpp" />
     <ClCompile Include="Source\UI\ScreenReader.cpp" />
@@ -172,6 +171,9 @@
     <ClCompile Include="Source\AI\Pathing\AIPathingController.cpp" />
     <ClCompile Include="Source\AI\Spawning\EnemyFactory.cpp" />
     <ClCompile Include="Source\Objects\Effects\AttackingEffects.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\BasicAttack.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityClasses\MeleeAbility.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityClasses\SelfAbility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -300,7 +302,6 @@
     <ClInclude Include="Source\Debug\DebugSettings.h" />
     <ClInclude Include="Source\Graphics\TextureMap.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityClasses\AbilityStates.h" />
-    <ClInclude Include="Source\Objects\Abilities\AbilityClasses\TargetAbilities.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityClasses\Ability.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityClasses\RangedAbility.h" />
     <ClInclude Include="Source\UI\ScreenReader.h" />
@@ -379,6 +380,9 @@
     <ClInclude Include="Source\AI\Pathing\AIPathingController.h" />
     <ClInclude Include="Source\AI\Spawning\EnemyFactory.h" />
     <ClInclude Include="Source\Objects\Effects\AttackingEffects.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\BasicAttack.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityClasses\MeleeAbility.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityClasses\SelfAbility.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

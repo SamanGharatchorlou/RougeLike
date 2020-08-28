@@ -20,17 +20,19 @@
 Ability* AbilityBuilder::build(AbilityType type) const
 {
 	Ability* ability = createNewAbility(type);
+	if (ability)
+	{
+		BasicString id;
+		type >> id;
+		XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Abilities, id));
 
-	BasicString id;
-	type >> id;
-	XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Abilities, id));
+		AnimationReader reader;
+		Animator animator = reader.buildAnimator(parser.rootChild("Animator"));
 
-	AnimationReader reader;
-	Animator animator = reader.buildAnimator(parser.rootChild("Animator"));
+		PropertyMap properties(parser.rootChild("Properties"));
 
-	PropertyMap properties(parser.rootChild("Properties"));
-
-	ability->init(mCaster, properties, animator);
+		ability->init(mCaster, properties, animator);
+	}
 
 	return ability;
 }
@@ -46,9 +48,9 @@ Ability* AbilityBuilder::createNewAbility(AbilityType type) const
 		ability = new HealAbility;
 		break;
 
-	case AbilityType::Blink:
-		ability = new BlinkAbility;
-		break;
+	//case AbilityType::Blink:
+	//	ability = new BlinkAbility;
+	//	break;
 
 	case AbilityType::Spikes:
 		ability = new SpikeAbility;

@@ -1,23 +1,18 @@
 #pragma once
 
-#include "Objects/Abilities/AbilityClasses/TargetAbilities.h"
+#include "Objects/Abilities/AbilityClasses/SelfAbility.h"
 
 
-class ArmorAbility : public TargetSelfAbility
+class ArmorAbility : public SelfAbility
 {
 public:
 	ArmorAbility() { };
 
-	void activate(EffectPool* pool) override;
-
 	void fastUpdate(float dt) override { }
 	void slowUpdate(float dt) override;
 
-	AbilityTarget targetType() const override { return AbilityTarget::Self; }
+	AbilityType type() const override { return AbilityType::Armor; }
 
-
-protected:
-	void applyEffects(EffectPool* pool);
-	void updateUI();
-
+private:
+	void applyEffects(Actor* actor, EffectPool* effectPool) override;
 };

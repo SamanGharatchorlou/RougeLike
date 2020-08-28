@@ -1,14 +1,11 @@
 #pragma once
 
 #include "AbilityStates.h"
-#include "Events/LocalDispatcher.h"
 #include "Animations/Animator.h"
 #include "Objects/Abilities/Cooldown.h"
-#include "Collisions/Colliders/Collider.h"
 
 
 class Actor;
-class PropertyMap;
 class EffectPool;
 class Collider;
 enum class EffectType;
@@ -17,22 +14,21 @@ enum class EffectType;
 class Ability
 {
 public:
-	Ability() : mState(AbilityState::None), mCaster(nullptr) { }
+	Ability();
 	virtual ~Ability();
 
 	virtual void init(Actor* caster, const PropertyMap& properties, Animator animator);
 
 	virtual void fastUpdate(float dt) = 0;
 	virtual void slowUpdate(float dt) = 0;
-	virtual void render() = 0;
+	virtual void render();
 	virtual void exit() { };
+	virtual void baseExit();
 
-	void baseExit();
-
-	void renderAnimator();
+	virtual void activate(VectorF position) = 0;
+	virtual void activateOn(Actor* actor, EffectPool* effectPool) = 0;
 
 	Actor* caster() const { return mCaster; }
-	LocalDispatcher& events() { return mEvents; }
 	Cooldown& cooldown() { return mCooldown; }
 	Collider* collider() { return mCollider; }
 
@@ -42,27 +38,29 @@ public:
 	void setState(AbilityState state) { mState = state; }
 	AbilityState state() const { return mState; }
 
-	void applyEffect(EffectType effectType, Actor* target, EffectPool* effectPool) const;
-
 	bool hasCompleted() const { return mCompleted; }
 
 	BasicString name() const;
 
+	bool shouldActivateCollisions() const { return mActivateCollisions; }
+
 
 protected:
+	void applyEffect(EffectType effectType, Actor* target, EffectPool* effectPool) const;
+
+
+
+protected:
+	bool mCompleted;
+	bool mActivateCollisions;
 	AbilityState mState;
 
 	Animator mAnimator;
 	Cooldown mCooldown;
-	LocalDispatcher mEvents;
+	PropertyMap mProperties;
 
 	Actor* mCaster;
 
 	RectF mRect;
-
-	PropertyMap mProperties;
-
-	bool mCompleted;
-
 	Collider* mCollider;
 };
