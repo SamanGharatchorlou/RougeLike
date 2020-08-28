@@ -5,12 +5,14 @@
 
 #include "AbilityClasses/Ability.h"
 
-//#include "UI/UIManager.h"
 #include "UI/Screens/GameScreen.h"
 #include "UI/ScreenBuilder.h"
 #include "UI/ScreenLayers.h"
 
 
+// IMPROVEMENT
+// Add a cooldown machanic where a blue box or something reduces in size
+// showing how much cool down is left 
 AbilityHotKeyManager::AbilityHotKeyManager() : mGameScreen(nullptr) { }
 
 

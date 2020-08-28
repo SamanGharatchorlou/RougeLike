@@ -2,6 +2,7 @@
 
 #include "Objects/Abilities/Cooldown.h"
 #include "Utilities/Maps/EffectMap.h"
+#include "Objects/Effects/AttackingEffects.h"
 
 class Texture;
 
@@ -11,7 +12,7 @@ struct WeaponRawData
 	Texture* texture = nullptr;
 	StringMap properties;
 	StringMap audio;
-	EffectMap effects;
+	AttackingEffects effects;
 };
 
 
@@ -37,13 +38,11 @@ public:
 	VectorF offset;
 
 	StringMap audio;
-	EffectMap effects;
+	AttackingEffects effects;
 
 
 private:	
 	virtual void fillProperties(const StringMap& properties) = 0;
-	void fillEffects(EffectMap EffectMap) { effects = EffectMap; }
-	void fillAudio(StringMap audioData) { audio = audioData; }
 
 };
 

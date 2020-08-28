@@ -22,16 +22,18 @@
 		<ChaseRange>400</ChaseRange>
 	</Properties>
 
-	<Effects>
-		<Damage>
-			<Damage>10</Damage>
-		</Damage>
+	<AttackingEffects>
+		<Types>
+			<Damage></Damage>
+			<Displacement></Displacement>
+		</Types>
 
-		<Displacement>
+		<Info>
+			<Damage>10</Damage>
 			<KnockbackForce>100</KnockbackForce>
 			<KnockbackDistance>20</KnockbackDistance>
-		</Displacement>
-	</Effects>
+		</Info>
+	</AttackingEffects>
 
 	<MaxSize>60</MaxSize>
 	<ColliderScale x = "0.6" y = "0.65"></ColliderScale>

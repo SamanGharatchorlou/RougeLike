@@ -19,7 +19,10 @@ Actor::Actor() : mVisibility(true) { }
 void Actor::setCharacter(const XMLNode actorNode)
 {
 	mAttributeBag.fill(actorNode.child("Properties"));
-	mEffects.fillEffectBag(actorNode.child("Effects"));
+
+	XMLNode attackingEffectsNode = actorNode.child("AttackingEffects");
+	if(attackingEffectsNode)
+		mEffects.fillAttackingEffectData(attackingEffectsNode);
 
 	// Animations
 	AnimationReader reader;
@@ -63,11 +66,7 @@ void Actor::updatePhysicsStats()
 
 void Actor::fastUpdate(float dt)
 {
-	// enemy needs reset here
-
-
 	mPhysics.fastUpdate(dt);
-	//mPhysics.move(mPhysics.movementDistance(dt));
 	mEffects.fastUpdate(dt);
 }
 

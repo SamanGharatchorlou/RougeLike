@@ -14,15 +14,18 @@
 		<SwingAngle>250</SwingAngle>
 	</Properties>
 
-	<Effects>
-		<Damage>
+	<AttackingEffects>
+		<Types>
+			<Damage></Damage>
+			<Displacement></Displacement>
+		</Types>
+
+		<Info>
 			<Damage>60</Damage>
-		</Damage>
-		<Displacement>
-			<KnockbackForce>500</KnockbackForce>
+			<KnockbackForce>200</KnockbackForce>
 			<KnockbackDistance>50</KnockbackDistance>
-		</Displacement>
-	</Effects>
+		</Info>
+	</AttackingEffects>
 
 	<Audio>
 		<Hit>HammerHit</Hit>

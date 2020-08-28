@@ -21,7 +21,7 @@ public:
 	void clear();
 
 	void resolveWalls(Map* map, float dt);
-	void resolveWeapons(EffectPool* effects);
+	void resolveWeapons();
 
 	void refreshWeaponColliders();
 	void clearExcludedColliders(CollisionManager::Tracker tracker);

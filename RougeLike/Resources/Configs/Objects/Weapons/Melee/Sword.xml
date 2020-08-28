@@ -14,15 +14,18 @@
 		<SwingAngle>120</SwingAngle>
 	</Properties>
 
-	<Effects>
-		<Damage>
+	<AttackingEffects>
+		<Types>
+			<Damage></Damage>
+			<Displacement></Displacement>
+		</Types>
+
+		<Info>
 			<Damage>40</Damage>
-		</Damage>
-		<Displacement>
-			<KnockbackForce>150</KnockbackForce>
-			<KnockbackDistance>10</KnockbackDistance>
-		</Displacement>
-	</Effects>
+			<KnockbackForce>200</KnockbackForce>
+			<KnockbackDistance>15</KnockbackDistance>
+		</Info>
+	</AttackingEffects>
 
 	<Audio>
 		<Hit>ShortSwordHit</Hit>

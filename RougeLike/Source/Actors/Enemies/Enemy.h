@@ -5,9 +5,7 @@
 #include "EnemyStates/EnemyState.h"
 #include "Actors/Enemies/Types/EnemyTypes.h"
 
-
 #include "AI/Pathing/AIPathing.h"
-
 
 #if _DEBUG
 #include "EnemyDebugger.h"
@@ -53,10 +51,6 @@ public:
 	void idle(float idleTime);
 	void stun(float stunTime);
 
-	// Map
-	const AIPathing* pathing() const { return &mAIPathing; }
-	//AIPathing* getAIPathing() { return &mAIPathing; }
-
 	// Collisions
 	void resolveCollisions(bool addHitState = true);
 
@@ -65,7 +59,8 @@ public:
 	const Actor*	target() const { return mTarget; }
 	bool			hasTarget() const { return mTarget != nullptr; }
 
-	// Movement
+	// Pathing
+	const AIPathing* pathing() const { return &mAIPathing; }
 	void			accellerateTowards(VectorF position);
 	void			move(VectorF velocity, float dt) { mPhysics.move(velocity, dt); }
 

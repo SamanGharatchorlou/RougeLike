@@ -171,6 +171,7 @@
     <ClCompile Include="Source\AI\Spawning\SpawnDataBuilder.cpp" />
     <ClCompile Include="Source\AI\Pathing\AIPathingController.cpp" />
     <ClCompile Include="Source\AI\Spawning\EnemyFactory.cpp" />
+    <ClCompile Include="Source\Objects\Effects\AttackingEffects.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -377,6 +378,7 @@
     <ClInclude Include="Source\Utilities\Shapes\Formation.h" />
     <ClInclude Include="Source\AI\Pathing\AIPathingController.h" />
     <ClInclude Include="Source\AI\Spawning\EnemyFactory.h" />
+    <ClInclude Include="Source\Objects\Effects\AttackingEffects.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "WeaponData.h"
 
-
-
 /* 
 ERROR
 Why do i need this function???
@@ -16,11 +14,11 @@ created yet so cannot call its derived members version of the function.
 void WeaponData::fillData(const WeaponRawData& data)
 {
 	fillProperties(data.properties);
-	fillEffects(data.effects);
-	fillAudio(data.audio);
-
+	effects = data.effects;
+	audio = data.audio;
 	texture = data.texture;
 }
+
 
 void WeaponData::copy(const WeaponData* data)
 {

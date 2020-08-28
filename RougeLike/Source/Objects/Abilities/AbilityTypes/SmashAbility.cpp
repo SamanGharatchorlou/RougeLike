@@ -36,6 +36,9 @@ void SmashAbility::activateAt(VectorF position, EffectPool* pool)
 	// set quad
 	mQuad = Quad2D<float>(mHammerRect);
 	mQuad.rotate(getRotation(mHammerDirection), mHammerRect.Center());
+
+	// Set displacement source from the throw position
+	mProperties.addXYPosition(mCaster->position());
 }
 
 
@@ -151,8 +154,6 @@ void SmashAbility::applyHammerEffects(Actor* actor, EffectPool* effectPool)
 
 void SmashAbility::applyExplosionEffects(Actor* actor, EffectPool* effectPool)
 {
-	mProperties.addXYPosition(mHammerRect.Center());
-
 	applyEffect(EffectType::Damage, actor, effectPool);
 	applyEffect(EffectType::Displacement, actor, effectPool);
 	applyEffect(EffectType::Stun, actor, effectPool);

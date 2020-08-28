@@ -92,7 +92,7 @@ void PlayerManager::fastUpdate(float dt)
 
 	Map* playerMap = mEnvironment->map(mPlayer.position());
 	mPlayerCollisions.resolveWalls(playerMap, dt);
-	mPlayerCollisions.resolveWeapons(mEnvironment->effectPool());
+	mPlayerCollisions.resolveWeapons();
 }
 
 void PlayerManager::slowUpdate(float dt)
@@ -175,7 +175,8 @@ void PlayerManager::selectWeapon(const BasicString& weaponName)
 {
 	WeaponData* weaponData = mWeaponStash.getData(weaponName);
 	mPlayer.selectWeapon(weaponData);
-	mPlayer.effects().setEffectBag(weaponData->effects);
+
+	mPlayer.effects().setAttackingEffectdata(weaponData->effects);
 
 	mPlayerCollisions.refreshWeaponColliders();
 }

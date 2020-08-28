@@ -19,7 +19,7 @@ void WeaponCollisionManager::init(Player* player, CollisionTracker* tracker)
 }
 
 
-void WeaponCollisionManager::processWeaponEffects(EffectPool* effects)
+void WeaponCollisionManager::processWeaponEffects()
 {
 	if (mPlayer->weapon()->didHit())
 	{
@@ -27,47 +27,18 @@ void WeaponCollisionManager::processWeaponEffects(EffectPool* effects)
 
 		for (int i = 0; i < weaponColliders.size(); i++)
 		{
-			if (!weaponColliders[i]->hasEffects())
+			EffectCollider* collider = weaponColliders[i];
+
+			if (!collider->hasEffects())
 			{
-				addWeaponEffects(weaponColliders[i]);
+				UniqueQueue<Effect*> effects = mPlayer->effects().getNewAttackingEffects();
+				collider->addNewEffects(effects);
 			}
-				
-			// this will trigger as soon as I attack, only if I didHit()?
-			updateWeaponEffect(weaponColliders[i]);
+			
+			VectorF position = mPlayer->position();
+			mPlayer->effects().attackingData().addXYPosition(position);
+			collider->updateEffectData(mPlayer->effects().attackingData());
 		}
-	}
-}
-
-
-void WeaponCollisionManager::updateWeaponEffect(EffectCollider* weaponCollider)
-{
-	for (int i = 0; i < weaponCollider->effectCount(); i++)
-	{
-		Effect* effect = weaponCollider->popEffect();
-
-		// TODO: replace this with the property map system
-		if (effect->type() == EffectType::Displacement)
-		{
-			DisplacementEffect* displacementEffect = static_cast<DisplacementEffect*>(effect);
-			displacementEffect->update(mPlayer->position());
-		}
-
-		weaponCollider->addEffect(effect);
-	}
-}
-
-
-// top up weapon effects, ensure its always full
-void WeaponCollisionManager::addWeaponEffects(EffectCollider* weaponCollider)
-{
-	std::queue<Effect*> effects = mPlayer->effects().getAttackingEffects();
-
-	while (effects.size() > 0)
-	{
-		Effect* effect = effects.front();
-		effects.pop();
-
-		weaponCollider->addEffect(effect);
 	}
 }
 

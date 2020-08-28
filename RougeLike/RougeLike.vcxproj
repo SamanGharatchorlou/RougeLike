@@ -27,6 +27,7 @@
     <ClCompile Include="Source\Map\TileInteractables\TileInteractable.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHotKey.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\SlashAbility.cpp" />
+    <ClCompile Include="Source\Objects\Effects\AttackingEffects.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\ArmorEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\KnockbackStunEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\SlowEffect.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="Source\Map\TileInteractables\Trigger.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityHotKey.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\SlashAbility.h" />
+    <ClInclude Include="Source\Objects\Effects\AttackingEffects.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\ArmorEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\KnockbackStunEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\SlowEffect.h" />

@@ -8,7 +8,7 @@
 #include "Objects/Effects/EffectTypes/DamageEffect.h"
 
 
-EnemyAttack::EnemyAttack() : mHasAttacked(false), hitCounter(0)
+EnemyAttack::EnemyAttack() : mHasAttacked(false), mHitCounter(0)
 { 
 }
 
@@ -23,8 +23,17 @@ void EnemyAttack::init()
 	mAttackPosition = mEnemy->target()->position();
 	mEnemy->physics()->facePoint(mAttackPosition);
 
-	if(!mEnemy->collider()->hasEffects())
-		addEffects();
+	if (!mEnemy->collider()->hasEffects())
+	{
+		UniqueQueue<Effect*> effects = mEnemy->effects().getNewAttackingEffects();
+		mEnemy->collider()->addNewEffects(effects);
+	}
+
+	// TODO: I think it should work just fine only setting the source position
+	// at the start of the attack? in terms of vector directions seems to make more sense
+	VectorF position = mEnemy->position();
+	mEnemy->effects().attackingData().addXYPosition(position);
+	mEnemy->collider()->updateEffectData(mEnemy->effects().attackingData());
 }
 
 
@@ -47,8 +56,6 @@ void EnemyAttack::fastUpdate(float dt)
 
 void EnemyAttack::slowUpdate(float dt)
 {
-	updateEffects();
-
 	mEnemy->resolveCollisions();
 
 	// Return to starting position
@@ -77,8 +84,8 @@ void EnemyAttack::render()
 
 void EnemyAttack::updateHasAttackedStatus()
 {
-	if (mEnemy->collider()->didHit() || hitCounter > 0)
-		hitCounter++;
+	if (mEnemy->collider()->didHit() || mHitCounter > 0)
+		mHitCounter++;
 
 	if (!mHasAttacked)
 	{
@@ -87,7 +94,7 @@ void EnemyAttack::updateHasAttackedStatus()
 		if (distanceTravelled >= mEnemy->getAttributeValue(AttributeType::TackleDistance))
 			mHasAttacked = true;
 
-		if (hitCounter >= 5)
+		if (mHitCounter >= 5)
 			mHasAttacked = true;
 
 		if (distance(mAttackPosition, mEnemy->position()) < 5.0f)
@@ -106,47 +113,15 @@ bool EnemyAttack::attackComplete() const
 void EnemyAttack::resume()
 {
 	mHasAttacked = false;
-	hitCounter = 0;
+	mHitCounter = 0;
 	mEnemy->collider()->setDidHit(false);
 	init();
 }
 
 
-void EnemyAttack::addEffects()
-{
-	std::queue<Effect*> effects = mEnemy->effects().getAttackingEffects();
-
-	while (effects.size() > 0)
-	{
-		Effect* effect = effects.front();
-		effects.pop();
-
-		mEnemy->collider()->addEffect(effect);
-	}
-}
-
-
-// TODO: replace this with the property bag thing
-void EnemyAttack::updateEffects()
-{
-	EffectCollider* collider = mEnemy->collider();
-
-	for (int i = 0; i < collider->effectCount(); i++)
-	{
-		Effect* effect = collider->popEffect();
-
-		if (effect->type() == EffectType::Displacement)
-		{
-			DisplacementEffect* displacementEffect = static_cast<DisplacementEffect*>(effect);
-			displacementEffect->update(mEnemy->position());
-		}
-
-		collider->addEffect(effect);
-	}
-}
-
 
 void EnemyAttack::exit()
 {
-
+	mHasAttacked = false;
+	mHitCounter = 0;
 }

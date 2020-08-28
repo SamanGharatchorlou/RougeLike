@@ -46,12 +46,12 @@ void PlayerCollisions::resolveWalls(Map* map, float dt)
 }
 
 
-void PlayerCollisions::resolveWeapons(EffectPool* effects)
+void PlayerCollisions::resolveWeapons()
 {
 	if (mPlayer->mWeapon->isAttacking())
 	{
 		enableCollisions(CollisionManager::PlayerWeapon_Hit_Enemy, true);
-		mWeaponCollisions.processWeaponEffects(effects);
+		mWeaponCollisions.processWeaponEffects();
 		mWeaponCollisions.addCollidersToExcludedList();
 	}
 	else

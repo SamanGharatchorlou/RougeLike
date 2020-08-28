@@ -15,9 +15,12 @@ public:
 	void addEffect(Effect* effect) { mEffects.push(effect); }
 	Effect* popEffect();
 
+	void addNewEffects(UniqueQueue<Effect*>& effects);
+	void updateEffectData(const PropertyMap& properties);
+
 	bool hasEffects() const { return mEffects.size() > 0; }
 	int effectCount() const { return mEffects.size(); }
 
 private:
-	std::queue<Effect*> mEffects;
+	UniqueQueue<Effect*> mEffects;
 };

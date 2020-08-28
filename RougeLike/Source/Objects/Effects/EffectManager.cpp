@@ -2,14 +2,8 @@
 #include "EffectManager.h"
 
 #include "Objects/Effects/EffectTypes/Effect.h"
-#include "Utilities/Maps/EffectMap.h"
 #include "Objects/Pools/EffectPool.h"
 
-
-void EffectManager::fillEffectBag(XMLNode effectNode)
-{
-	mBag.fill(effectNode);
-}
 
 
 void EffectManager::slowUpdate(float dt)
@@ -33,15 +27,13 @@ void EffectManager::addReceivedEffect(Effect* effect)
 }
 
 
-std::queue<Effect*> EffectManager::getAttackingEffects()
+UniqueQueue<Effect*> EffectManager::getNewAttackingEffects()
 {
-	std::queue<Effect*> effects;
+	UniqueQueue<Effect*> effects;
 
-	for(EffectMap::iterator iter = mBag.begin(); iter != mBag.end(); iter++)
+	for (int i = 0; i < mAttackingEffects.mTypes.size(); i++)
 	{
-		Effect* effect = mPool->getObject(iter->first);
-		effect->fill(iter->second);
-
+		Effect* effect = mPool->getObject(mAttackingEffects.mTypes[i]);
 		effects.push(effect);
 	}
 
@@ -56,7 +48,7 @@ void EffectManager::render()
 
 void EffectManager::clear()
 {
-	mBag.empty();
+	mAttackingEffects.clear();
 	mHandler.clear(mPool);
 
 	Queue<Effect*>& exhaustedEffects = mHandler.exhaustedEffects();

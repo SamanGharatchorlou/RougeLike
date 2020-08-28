@@ -20,6 +20,7 @@ public:
 	void set(Environment* environment);
 
 	void setCharacter(const XMLNode node);
+
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
 	void render(VectorF offset);

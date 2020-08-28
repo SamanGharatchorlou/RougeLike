@@ -21,13 +21,10 @@ public:
 
 	const Type type() const { return Type::Attack; }
 
-	bool didConnectWithTarget() const { return (bool)hitCounter; }
+	bool didConnectWithTarget() const { return (bool)mHitCounter; }
 
 
 private:
-	void addEffects();
-	void updateEffects();
-
 	void updateHasAttackedStatus();
 	bool attackComplete() const;
 
@@ -38,5 +35,5 @@ private:
 	VectorF mStartPosition;
 	VectorF mAttackPosition;
 
-	int hitCounter;
+	int mHitCounter;
 };

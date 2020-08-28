@@ -14,14 +14,14 @@ public:
 	void init(Player* player, CollisionTracker* tracker);
 	void clear() { mPlayer = nullptr; mTracker = nullptr; }
 
-	void processWeaponEffects(EffectPool* effects);
+	void processWeaponEffects();
 
 	void clearExcludedList();
 	void addCollidersToExcludedList();
 
 
 private:
-	void updateWeaponEffect(EffectCollider* weaponCollider);
+	//void updateWeaponEffect(EffectCollider* weaponCollider);
 	void addWeaponEffects(EffectCollider* weaponCollider);
 
 public:
