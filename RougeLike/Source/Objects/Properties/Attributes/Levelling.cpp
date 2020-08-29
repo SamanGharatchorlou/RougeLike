@@ -125,7 +125,8 @@ void Levelling::levelUp(PlayerManager* player)
 #if UNLOCK_ALL_ABILITIES
 void Levelling::unlockAllAbilities(PlayerManager* player)
 {
-	for (AbilityType type = AbilityType::None + 1; type < AbilityType::Count; type = type + 1)
+	// + 2 so we also skip the basic attack ability
+	for (AbilityType type = AbilityType::None + 2; type < AbilityType::Count; type = type + 1)
 	{
 		mLockedAbilities.push(type);
 	}

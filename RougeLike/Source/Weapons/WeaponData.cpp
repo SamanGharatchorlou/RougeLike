@@ -14,7 +14,7 @@ created yet so cannot call its derived members version of the function.
 void WeaponData::fillData(const WeaponRawData& data)
 {
 	fillProperties(data.properties);
-	effects = data.effects;
+	effectData = data.effectData;
 	audio = data.audio;
 	texture = data.texture;
 }
@@ -27,7 +27,7 @@ void WeaponData::copy(const WeaponData* data)
 	maxDimention = data->maxDimention;
 	offset = data->offset;
 	audio = data->audio;
-	effects = data->effects;
+	effectData = data->effectData;
 }
 
 
@@ -43,9 +43,6 @@ void MeleeWeaponData::copy(const WeaponData* data)
 
 void MeleeWeaponData::fillProperties(const StringMap& properties)
 {
-	// Cooldown
-	cooldown = Cooldown(properties.getFloat("Cooldown"));
-
 	// Size and offset	
 	maxDimention = properties.getFloat("MaxSize");
 	offset = properties.getVector("OffsetX", "OffsetY");

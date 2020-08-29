@@ -105,7 +105,7 @@ WeaponRawData WeaponStash::getRawData(const XMLNode weaponNode) const
 	WeaponRawData data;
 	data.properties.fill(weaponNode.child("Properties"));
 	data.audio.fill(weaponNode.child("Audio"));
-	data.effects.fill(weaponNode.child("AttackingEffects"));
+	data.effectData.fill(weaponNode.child("AttackingEffects"));
 	data.texture = TextureManager::Get()->getTexture(data.properties["Texture"], FileManager::Image_Weapons);
 	return data;
 }

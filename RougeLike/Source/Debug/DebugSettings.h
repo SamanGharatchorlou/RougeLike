@@ -13,9 +13,9 @@
 #define PRINT_FRAMERATE_EVERY 0 // Print at the rate you specify in milliseconds i.e. 500 = print every 0.5 seconds
 
 // Player
-#define DRAW_PLAYER_RECTS 0
+#define DRAW_PLAYER_RECT 0
 #define IGNORE_WALLS 0
-#define IGNORED_BY_ENEMIES 1
+#define IGNORED_BY_ENEMIES 0
 
 // Abilities
 #define UNLOCK_ALL_ABILITIES 1
@@ -40,13 +40,13 @@
 
 #define LABEL_ENEMY_STATES 0
 #define LABEL_ENEMY_HEALTH 0
-#define DRAW_PLAYER_ENEMY_DISTANCE 0
+#define DRAW_PLAYER_ENEMY_DISTANCE 1
 
-#define DRAW_ENEMY_RECTS 0
+#define DRAW_ENEMY_RECTS 1
 #define DRAW_ENEMY_TARGET_PATH 0
 
 #define LIMIT_ENEMY_SPAWNS 1
-#define MAX_SPAWN_COUNT 0
+#define MAX_SPAWN_COUNT 1
 
 // UI
 #define DRAW_UI_RECTS 0

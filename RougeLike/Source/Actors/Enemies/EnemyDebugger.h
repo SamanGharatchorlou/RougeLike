@@ -20,7 +20,7 @@ public:
 private:
 	void labelState();
 	void labelHP();
-	void drawPlayerDistance(Environment* environment, const Enemy* enemy);
+	void drawTargetDistance();
 	void drawRects();
 	void drawPath();
 

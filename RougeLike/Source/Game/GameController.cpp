@@ -19,6 +19,7 @@
 #include "Graphics/RenderManager.h"
 #include "UI/UIManager.h"
 #include "Game/Environment.h"
+#include "Collisions/CollisionManager.h"
 
 
 GameController::GameController() : quit(false), mGameStateMachine(new NullState)

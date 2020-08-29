@@ -20,10 +20,6 @@ void Actor::setCharacter(const XMLNode actorNode)
 {
 	mAttributeBag.fill(actorNode.child("Properties"));
 
-	XMLNode attackingEffectsNode = actorNode.child("AttackingEffects");
-	if(attackingEffectsNode)
-		mEffects.fillAttackingEffectData(attackingEffectsNode);
-
 	// Animations
 	AnimationReader reader;
 	mAnimator = reader.buildAnimator(actorNode.child("Animator"));
@@ -137,7 +133,7 @@ bool Actor::hasAttribute(AttributeType type) const
 void Actor::addEffect(Effect* effect)
 {
 	effect->setReceiver(this);
-	mEffects.addReceivedEffect(effect);
+	mEffects.addEffect(effect);
 }
 
 void Actor::handleEffects(EffectCollider* effectCollider)

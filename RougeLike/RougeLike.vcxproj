@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Actors\Player\PlayerStates\PlayerAttackState.cpp" />
     <ClCompile Include="Source\AI\Pathing\AIPathingController.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyDebugger.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyStun.cpp" />
@@ -26,10 +27,10 @@
     <ClCompile Include="Source\Collisions\Colliders\QuadCollider.cpp" />
     <ClCompile Include="Source\Map\TileInteractables\TileInteractable.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityClasses\MeleeAbility.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityHandler.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHotKey.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\BasicAttack.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\BasicAttackAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\SlashAbility.cpp" />
-    <ClCompile Include="Source\Objects\Effects\AttackingEffects.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\ArmorEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\KnockbackStunEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\SlowEffect.cpp" />
@@ -42,8 +43,6 @@
     <ClCompile Include="Source\Animations\Animator.cpp" />
     <ClCompile Include="Source\Audio\SoundController.cpp" />
     <ClCompile Include="Source\Collisions\Colliders\EffectCollider.cpp" />
-    <ClCompile Include="Source\Collisions\EnemyCollisions.cpp" />
-    <ClCompile Include="Source\Collisions\PlayerCollisions.cpp" />
     <ClCompile Include="Source\Collisions\WallCollisionTracker.cpp" />
     <ClCompile Include="Source\Debug\FrameRateController.cpp" />
     <ClCompile Include="Source\Debug\MemTrack.cpp" />
@@ -115,7 +114,6 @@
     <ClCompile Include="Source\Collisions\CollisionManager.cpp" />
     <ClCompile Include="Source\Actors\Actor.cpp" />
     <ClCompile Include="Source\Objects\Pools\EffectPool.cpp" />
-    <ClCompile Include="Source\Collisions\WeaponCollisionManager.cpp" />
     <ClCompile Include="Source\Utilities\Maps\EffectMap.cpp" />
     <ClCompile Include="Source\Utilities\Maps\PropertyMap.cpp" />
     <ClCompile Include="Source\Items\Collectables\CollectableSpawner.cpp" />
@@ -200,6 +198,8 @@
     <ClCompile Include="Source\System\Files\XMLParser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Actors\Player\PlayerStates\PlayerAttackState.h" />
+    <ClInclude Include="Source\Actors\Player\PlayerStates\PlayerState.h" />
     <ClInclude Include="Source\AI\Pathing\AIPathingController.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyDebugger.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyStun.h" />
@@ -208,10 +208,10 @@
     <ClInclude Include="Source\Map\TileInteractables\TileInteractable.h" />
     <ClInclude Include="Source\Map\TileInteractables\Trigger.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityClasses\MeleeAbility.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityHandler.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityHotKey.h" />
-    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\BasicAttack.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\BasicAttackAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\SlashAbility.h" />
-    <ClInclude Include="Source\Objects\Effects\AttackingEffects.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\ArmorEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\KnockbackStunEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\SlowEffect.h" />
@@ -224,8 +224,6 @@
     <ClInclude Include="Source\Animations\Animator.h" />
     <ClInclude Include="Source\Audio\SoundController.h" />
     <ClInclude Include="Source\Collisions\Colliders\EffectCollider.h" />
-    <ClInclude Include="Source\Collisions\EnemyCollisions.h" />
-    <ClInclude Include="Source\Collisions\PlayerCollisions.h" />
     <ClInclude Include="Source\Collisions\WallCollisionTracker.h" />
     <ClInclude Include="Source\Debug\DebugSettings.h" />
     <ClInclude Include="Source\Debug\FrameRateController.h" />
@@ -296,7 +294,6 @@
     <ClInclude Include="Source\Objects\Effects\EffectTypes\EffectTypes.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\HealEffect.h" />
     <ClInclude Include="Source\Actors\Physics.h" />
-    <ClInclude Include="Source\Collisions\WeaponCollisionManager.h" />
     <ClInclude Include="Source\Utilities\Maps\EffectMap.h" />
     <ClInclude Include="Source\Objects\Properties\Attributes\Attribute.h" />
     <ClInclude Include="Source\Objects\Properties\Property.h" />

@@ -5,6 +5,7 @@
 #include "Objects/Pools/EnemyStatePool.h"
 
 class AIPathMap;
+class Ability;
 
 
 class EnemyFactory
@@ -23,6 +24,7 @@ private:
 	Enemy* buildEnemy(const SpawnData& data, const XMLNode enemyNode, const AIPathMap* aiPathMap);
 	void setupParserMap(std::unordered_map<EnemyType, XMLParser>& parserMap, const std::vector<SpawnData>& dataList) const;
 
+	Ability* buildBasicAttack(Enemy* enemy, const XMLNode enemyNode);
 
 private:
 	EnemyPool mPool;

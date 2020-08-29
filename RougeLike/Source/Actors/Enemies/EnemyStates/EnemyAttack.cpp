@@ -22,18 +22,6 @@ void EnemyAttack::init()
 	mStartPosition = mEnemy->position();
 	mAttackPosition = mEnemy->target()->position();
 	mEnemy->physics()->facePoint(mAttackPosition);
-
-	if (!mEnemy->collider()->hasEffects())
-	{
-		UniqueQueue<Effect*> effects = mEnemy->effects().getNewAttackingEffects();
-		mEnemy->collider()->addNewEffects(effects);
-	}
-
-	// TODO: I think it should work just fine only setting the source position
-	// at the start of the attack? in terms of vector directions seems to make more sense
-	VectorF position = mEnemy->position();
-	mEnemy->effects().attackingData().addXYPosition(position);
-	mEnemy->collider()->updateEffectData(mEnemy->effects().attackingData());
 }
 
 
@@ -65,8 +53,6 @@ void EnemyAttack::slowUpdate(float dt)
 	if (attackComplete() == true)
 		mEnemy->popState();
 }
-
-
 
 
 void EnemyAttack::render()
@@ -124,4 +110,6 @@ void EnemyAttack::exit()
 {
 	mHasAttacked = false;
 	mHitCounter = 0;
+
+	printf("attack end\n");
 }

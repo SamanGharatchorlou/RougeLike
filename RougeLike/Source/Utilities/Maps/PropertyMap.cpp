@@ -4,7 +4,15 @@
 
 PropertyMap::PropertyMap(XMLNode node)
 {
-	fill(node);
+	if (node)
+	{
+		fill(node);
+	}
+	else
+	{
+		DebugPrint(Warning, "No property node provided, cannot build propertyMap\n");
+	}
+	
 }
 
 

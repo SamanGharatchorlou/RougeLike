@@ -11,3 +11,10 @@ void MeleeAbility::activateOn(Actor* target, EffectPool* effectPool)
 		mHitList.insert(target);
 	}
 }
+
+
+void MeleeAbility::baseExit()
+{
+	Ability::baseExit();
+	mHitList.clear();
+}

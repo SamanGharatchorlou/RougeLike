@@ -28,9 +28,9 @@ public:
 	PlayerManager* player() { return &mPlayer; }
 	EnemyManager* enemies() { return &mEnemies; }
 
-	void spawnEnemies(const XMLNode spawnNode, const Map* map);
-
-	std::vector<Actor*> getAllEnemies();
+	void updateActiveEnemyActors();
+	std::vector<Actor*>* activeEnemyActors() { return &mActiveEnemyActors; }
+	std::vector<Actor*>* playerActorList() { return &mPlayerActor; }
 
 	void handleEvent(EventData& data) override;
 	void sendEvent(EventPacket event);
@@ -39,4 +39,7 @@ public:
 private:
 	PlayerManager mPlayer;
 	EnemyManager mEnemies;
+
+	std::vector<Actor*> mActiveEnemyActors;
+	std::vector<Actor*> mPlayerActor;
 };

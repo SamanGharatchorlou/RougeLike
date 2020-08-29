@@ -3,6 +3,9 @@
 
 #include "Actors/Enemies/Enemy.h"
 
+#include "Objects/Abilities/AbilityBuilder.h"
+#include "Objects/Abilities/AbilityClasses/AbilityStates.h"
+#include "Objects/Abilities/AbilityClasses/Ability.h"
 
 
 EnemyFactory::~EnemyFactory()
@@ -77,7 +80,24 @@ Enemy* EnemyFactory::buildEnemy(const SpawnData& data, const XMLNode enemyNode, 
 	enemy->setStatePool(&mStatePool);
 	enemy->spawn(data.state, data.position, aiPathMap);
 
+	Ability* basicAttack = buildBasicAttack(enemy, enemyNode);
+	enemy->abilities().add(basicAttack);
+
 	return enemy;
+}
+
+
+Ability* EnemyFactory::buildBasicAttack(Enemy* enemy, const XMLNode enemyNode)
+{
+	AbilityBuilder abilityBuilder;
+	Ability* basicAttack = abilityBuilder.build(AbilityType::Attack, enemy);
+
+	XMLNode abilityNode = enemyNode.child("BasicAttack");
+	PropertyMap nodeProperties(abilityNode);
+	basicAttack->properties().merge(nodeProperties);
+	basicAttack->setState(AbilityState::Idle);
+	//basicAttack->cooldown().set(basicAttack->properties().at(PropertyType::Cooldown));
+	return basicAttack;
 }
 
 
@@ -95,3 +115,6 @@ void EnemyFactory::setupParserMap(std::unordered_map<EnemyType, XMLParser>& pars
 		}
 	}
 }
+
+
+

@@ -2,32 +2,29 @@
 #include "PlayerManager.h"
 
 #include "Game/Camera/Camera.h"
-#include "Game/Data/GameData.h"
 #include "Game/Environment.h"
-#include "Input/InputManager.h"
 #include "UI/UIManager.h"
 
+#include "Objects/Abilities/AbilityClasses/Ability.h"
 #include "Weapons/Melee/MeleeWeapon.h"
 
 
-PlayerManager::PlayerManager() : mEnvironment(nullptr) { }
+PlayerManager::PlayerManager() { }
 
 
 PlayerManager::~PlayerManager()
 {
 	clear();
-	mEnvironment = nullptr;
 }
 
 
-void PlayerManager::init(Environment* environment, CollisionManager* collisions, Screen* gameScreen)
+void PlayerManager::init(Environment* environment, Screen* gameScreen)
 {
-	mPlayerCollisions.init(&mPlayer, collisions);
+	mWallCollisions.setActor(&mPlayer);
 	mWeaponStash.load();
 
-	mEnvironment = environment;
 	mPlayer.set(environment);
-	mAbilities.init(environment, &mPlayer, gameScreen);
+	mAbilities.init(&mPlayer, gameScreen, environment->effectPool(), environment->actors()->activeEnemyActors());
 	mEvents.clear();
 }
 
@@ -35,7 +32,6 @@ void PlayerManager::clear()
 {
 	mPlayer.clear();
 	mAbilities.clear();
-	mPlayerCollisions.clear();
 	mWeaponStash.clear();
 	mLevelling.reset();
 }
@@ -69,19 +65,6 @@ void PlayerManager::handleInput(const InputManager* input)
 	if (mPlayer.userHasControl())
 	{
 		mPlayer.handleInput(input);
-		mPlayer.updateCursorPosition(input->cursorPosition()); // move into player::handleInput?
-
-		if (input->isCursorPressed(Cursor::Left) && !mAbilities.inSelectionMode())
-		{
-			bool didAttack = mPlayer.attemptAttack();
-			if (didAttack)
-			{
-				mPlayerCollisions.clearExcludedColliders(CollisionManager::PlayerWeapon_Hit_Enemy);
-				//mGameData->audioManager->playSound(mPlayer->weapon()->missSoundLabel(), this);
-			}
-		}
-
-
 		mAbilities.handleInput(input);
 	}
 }
@@ -89,11 +72,20 @@ void PlayerManager::handleInput(const InputManager* input)
 void PlayerManager::fastUpdate(float dt)
 {
 	mPlayer.fastUpdate(dt);
+
 	mAbilities.fastUpdate(dt);
 
-	Map* playerMap = mEnvironment->map(mPlayer.position());
-	mPlayerCollisions.resolveWalls(playerMap, dt);
-	mPlayerCollisions.resolveWeapons();
+
+#if !IGNORE_WALLS
+	const Map* playerMap = mPlayer.currentMap();
+
+	VectorF velocity = mPlayer.physics()->velocity();
+	velocity = mWallCollisions.allowedVelocity(playerMap, velocity, dt);
+	mPlayer.physics()->setVelocity(velocity);
+#endif
+
+	mPlayer.move(dt);
+	
 }
 
 void PlayerManager::slowUpdate(float dt)
@@ -101,10 +93,7 @@ void PlayerManager::slowUpdate(float dt)
 	mPlayer.slowUpdate(dt);
 	mLevelling.slowUpdate(dt);
 
-	Map* playerMap = mEnvironment->map(mPlayer.position());
-	mPlayer.updateMapInfo(playerMap);
-
-
+	mPlayer.updateMapInfo();
 
 	//if (mPlayer->weapon()->isAttacking())
 	//{
@@ -163,8 +152,9 @@ void PlayerManager::selectCharacter(const BasicString& characterConfig)
 	BasicString weapontype = parser.rootChild("WeaponType").value();
 	mPlayer.setWeaponType(mWeaponStash.getWeapon(weapontype));
 
-
 	mLevelling.init(parser.rootChild("Levelling"), mPlayer.rect());
+
+
 
 #if UNLOCK_ALL_ABILITIES
 	mLevelling.unlockAllAbilities(this);
@@ -174,10 +164,12 @@ void PlayerManager::selectCharacter(const BasicString& characterConfig)
 
 void PlayerManager::selectWeapon(const BasicString& weaponName)
 {
+	// TODO: fix weapon data, does it still need attacking effects
 	WeaponData* weaponData = mWeaponStash.getData(weaponName);
 	mPlayer.selectWeapon(weaponData);
 
-	mPlayer.effects().setAttackingEffectdata(weaponData->effects);
-
-	mPlayerCollisions.refreshWeaponColliders();
+	// Add weapon properties to basic attack ability
+	Ability* basicAttack = mAbilities.get(AbilityType::Attack);
+	basicAttack->properties().merge(weaponData->effectData);
+	basicAttack->cooldown().set(basicAttack->properties().at(PropertyType::Cooldown));
 }

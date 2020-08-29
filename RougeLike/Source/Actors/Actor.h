@@ -57,6 +57,9 @@ public:
 
 	void addEffect(Effect* effect);
 
+	virtual void attack() = 0;
+	virtual bool isAttacking() const = 0;
+	virtual Collider* attackingCollider() = 0;
 
 
 protected:

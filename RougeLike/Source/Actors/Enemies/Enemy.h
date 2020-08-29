@@ -7,6 +7,8 @@
 
 #include "AI/Pathing/AIPathing.h"
 
+#include "Objects/Abilities/AbilityHandler.h"
+
 #if _DEBUG
 #include "EnemyDebugger.h"
 #endif
@@ -24,6 +26,7 @@ public:
 
 	virtual void init() = 0;
 
+	void initAbilities(std::vector<Actor*>* target);
 	void setStatePool(EnemyStatePool* pool) { mStatePool = pool; }
 
 	// Core
@@ -51,6 +54,9 @@ public:
 	void idle(float idleTime);
 	void stun(float stunTime);
 
+	// Abilities
+	AbilityHandler& abilities() { return mAbilities; }
+
 	// Collisions
 	void resolveCollisions(bool addHitState = true);
 
@@ -64,6 +70,11 @@ public:
 	void			accellerateTowards(VectorF position);
 	void			move(VectorF velocity, float dt) { mPhysics.move(velocity, dt); }
 
+	// Attacking
+	void attack() override;
+	bool isAttacking() const override;
+	Collider* attackingCollider() override;
+
 #if _DEBUG
 	EnemyDebugger mDebugger;
 #endif
@@ -73,6 +84,8 @@ protected:
 
 	EnemyStatePool* mStatePool;
 	StateMachine<EnemyState> mStateMachine;
+
+	AbilityHandler mAbilities;
 
 	const Actor* mTarget;
 

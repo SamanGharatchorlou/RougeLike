@@ -8,6 +8,7 @@
 #include "Graphics/RenderManager.h"
 #include "Input/InputManager.h"
 #include "Managers/ScoreManager.h"
+#include "Collisions/CollisionManager.h"
 
 #include "Game/Environment.h"
 #include "Map/Map.h"
@@ -85,63 +86,8 @@ void GameState::render()
 
 	mGameData->renderManager->render();
 
-
-
-
-	// player rect
-	//RectF playerRect = mGameData->environment->actors()->player()->get()->rect();
-	//Quad2D<float> quad(playerRect);
-
-	//VectorF center = playerRect.Center();
-
-	//quad.rotate(45.0, center);
-
-	//debugDrawQuad(quad, RenderColour::Blue);
-
-	
-	//// draw normal
-	//VectorF p1 = quad[0];
-	//VectorF p2 = quad[1];
-
-	//VectorF midpoint = (p1 + p2) / 2;
-
-	//float dx = p2.x - p1.x;
-	//float dy = p2.y - p1.y;
-
-	//VectorF n1 = VectorF(-dy, dx);
-	//VectorF n2 = VectorF(dy, -dx);
-
-	//debugDrawLine(center, center + (quad.normal0()*50.0f), RenderColour::Yellow);
-	//debugDrawLine(center, center + (quad.normal1()*50.0f), RenderColour::LightGrey);
-
-
-
-
-	//// draw enemy rect
-	//std::vector<Actor*> enemies = mGameData->environment->actors()->getAllEnemies();
-	//Actor* enemy = nullptr;
-	//if (enemies.size() > 0)
-	//	enemy = enemies[0];
-
-	//RectF enemyRect = enemy->rect();
-	//debugDrawRect(enemyRect, RenderColour::Black);
-
-	//Collider enemyColl(&enemyRect);
-	//QuadCollider quadCollider(quad);
-	//if (quadCollider.doesIntersect(&enemyColl))
-	//{
-	//	debugDrawRect(enemyRect, RenderColour::Green);
-	//}
-	//else
-	//{
-	//	debugDrawRect(enemyRect, RenderColour::Red);
-	//}
-
-
-
 	// update window surface
 	SDL_RenderPresent(renderer);
-
 
 #if TRACK_COLLISIONS // Need to keep the hit data until after rendering
 	mGameData->collisionManager->resetColliders();

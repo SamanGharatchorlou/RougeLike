@@ -31,7 +31,9 @@ void Ability::init(Actor* caster, const PropertyMap& properties, Animator animat
 	mAnimator = animator;
 	mProperties = properties;
 
-	mRect.SetSize(realiseSize(animator.frameSize(), properties.at(PropertyType::MaxSize)));
+	if(animator.animationCount() > 0 && properties.contains(PropertyType::MaxSize))
+		mRect.SetSize(realiseSize(animator.frameSize(), properties.at(PropertyType::MaxSize)));
+	
 	mCollider = new Collider(&mRect);
 	mCooldown = Cooldown(properties.at(PropertyType::Cooldown));
 

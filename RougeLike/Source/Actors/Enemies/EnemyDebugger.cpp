@@ -25,7 +25,7 @@ void EnemyDebugger::draw()
 	drawRects();
 #endif
 #if DRAW_PLAYER_ENEMY_DISTANCE
-	mDebugger.drawPlayerDistance(mEnvironment, this);
+	drawTargetDistance();
 #endif
 #if DRAW_AI_PATH
 	drawPath();
@@ -66,16 +66,16 @@ void EnemyDebugger::drawRects()
 }
 
 
-void EnemyDebugger::drawPlayerDistance(Environment* environment, const Enemy* enemy)
+void EnemyDebugger::drawTargetDistance()
 {
-	VectorF playerPosition = environment->actors()->player()->get()->position();
+	VectorF targetPosition = mEnemy->target()->position();
 	VectorF enemyPosition = mEnemy->position();
-	debugDrawLine(playerPosition, enemyPosition, RenderColour::Red);
+	debugDrawLine(targetPosition, enemyPosition, RenderColour::Red);
 
 	int ptSize = 20;
-	VectorF position = (playerPosition + enemyPosition) / 2.0f;
+	VectorF position = (targetPosition + enemyPosition) / 2.0f;
 	RenderColour colour = RenderColour::Green;
-	float playerDistance = distance(playerPosition, enemyPosition);
+	float playerDistance = distance(targetPosition, enemyPosition);
 	const BasicString playerDistanceString(playerDistance, 2);
 	debugRenderText(playerDistanceString, ptSize, position, colour);
 }

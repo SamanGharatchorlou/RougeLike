@@ -13,7 +13,7 @@
 		<Experience>100</Experience>
 
 		<!-- Attack -->
-		<AttackSpeed>2</AttackSpeed>
+		<AttackSpeed>0.5</AttackSpeed>
 		<TackleDistance>60</TackleDistance>
 		<TackleMovementSpeed>250</TackleMovementSpeed>
 
@@ -22,18 +22,12 @@
 		<ChaseRange>400</ChaseRange>
 	</Properties>
 
-	<AttackingEffects>
-		<Types>
-			<Damage></Damage>
-			<Displacement></Displacement>
-		</Types>
-
-		<Info>
-			<Damage>10</Damage>
-			<KnockbackForce>100</KnockbackForce>
-			<KnockbackDistance>20</KnockbackDistance>
-		</Info>
-	</AttackingEffects>
+	<BasicAttack>
+		<Damage>10</Damage>
+		<KnockbackForce>100</KnockbackForce>
+		<KnockbackDistance>20</KnockbackDistance>
+		<Cooldown>2</Cooldown>
+	</BasicAttack>
 
 	<MaxSize>60</MaxSize>
 	<ColliderScale x = "0.6" y = "0.65"></ColliderScale>

@@ -9,22 +9,15 @@
 		<OffsetX>13</OffsetX>
 		<OffsetY>25</OffsetY>
 
-		<Cooldown>0.1</Cooldown>
 		<SwingSpeed>1500</SwingSpeed>
 		<SwingAngle>120</SwingAngle>
 	</Properties>
 
 	<AttackingEffects>
-		<Types>
-			<Damage></Damage>
-			<Displacement></Displacement>
-		</Types>
-
-		<Info>
-			<Damage>40</Damage>
-			<KnockbackForce>200</KnockbackForce>
-			<KnockbackDistance>15</KnockbackDistance>
-		</Info>
+		<Cooldown>0.1</Cooldown>
+		<Damage>40</Damage>
+		<KnockbackForce>200</KnockbackForce>
+		<KnockbackDistance>15</KnockbackDistance>
 	</AttackingEffects>
 
 	<Audio>

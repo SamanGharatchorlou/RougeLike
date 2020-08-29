@@ -3,14 +3,13 @@
 
 #include "Player.h"
 #include "Objects/Abilities/AbilityManager.h"
-#include "Collisions/PlayerCollisions.h"
 #include "Weapons/WeaponStash.h"
 #include "Events/LocalDispatcher.h"
 #include "Objects/Properties/Attributes/Levelling.h"
+#include "Collisions/WallCollisionTracker.h"
 
-struct GameData;
+
 class Environment;
-class CollisionManager;
 class Screen;
 enum class AbilityType;
 
@@ -23,7 +22,7 @@ public:
 
 	Player* get() { return &mPlayer; }
 
-	void init(Environment* environment, CollisionManager* collisions, Screen* gameScreen);
+	void init(Environment* environment, Screen* gameScreen);
 	void clear();
 
 	void handleInput(const InputManager* input);
@@ -44,12 +43,12 @@ public:
 
 
 private:
-	Environment* mEnvironment;
-
 	Player mPlayer;
 	Levelling mLevelling;
 	AbilityManager mAbilities;
-	PlayerCollisions mPlayerCollisions;
+
+	WallCollisionTracker mWallCollisions;
+
 	WeaponStash mWeaponStash;
 
 	LocalDispatcher mEvents;

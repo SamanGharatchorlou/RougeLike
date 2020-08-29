@@ -21,23 +21,9 @@ void EffectManager::fastUpdate(float dt)
 }
 
 
-void EffectManager::addReceivedEffect(Effect* effect)
+void EffectManager::addEffect(Effect* effect)
 {
 	mHandler.addEffect(effect);
-}
-
-
-UniqueQueue<Effect*> EffectManager::getNewAttackingEffects()
-{
-	UniqueQueue<Effect*> effects;
-
-	for (int i = 0; i < mAttackingEffects.mTypes.size(); i++)
-	{
-		Effect* effect = mPool->getObject(mAttackingEffects.mTypes[i]);
-		effects.push(effect);
-	}
-
-	return effects;
 }
 
 
@@ -48,7 +34,6 @@ void EffectManager::render()
 
 void EffectManager::clear()
 {
-	mAttackingEffects.clear();
 	mHandler.clear(mPool);
 
 	Queue<Effect*>& exhaustedEffects = mHandler.exhaustedEffects();

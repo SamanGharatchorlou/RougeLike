@@ -83,9 +83,6 @@ void MeleeWeapon::fastUpdate(float dt)
 			continueAttack(dt);
 
 		updateWeaponBlocks();
-
-
-
 	}		
 	
 	
@@ -145,10 +142,6 @@ void MeleeWeapon::render()
 	SDL_RendererFlip flip = (getRotation(mDirection) >= 0.0f && getRotation(mDirection) < 180.0f) ? SDL_FLIP_HORIZONTAL: SDL_FLIP_NONE;
 	mData.texture->render(Camera::Get()->toCameraCoords(rect()), getRotation(mDirection), mAboutPoint, flip);
 
-	Quad2D<float> baseRect(rect());
-	debugDrawQuad(baseRect, RenderColour::Red);
-
-
 #if TRACK_COLLISIONS
 	mCollider.renderCollider();
 #endif
@@ -157,19 +150,19 @@ void MeleeWeapon::render()
 	VectorF about = rect().TopCenter() + VectorF(0.0f, rect().Height() * 0.85f);
 	debugDrawPoint(about, 10.0f, RenderColour::Black);
 
-#if DRAW_PLAYER_RECTS
-	// About point
-	RectF about = RectF(rect().TopLeft() + mAboutPoint, VectorF(2.0f, 2.0f));
-	debugDrawRect(about, RenderColour::Blue);
-
-	// Weapon vector
-	VectorF pos = rect().TopLeft() + mAboutPoint;
-	VectorF weaponVector = mDirection.normalise() * mAboutPoint.y;
-	debugDrawLine(pos, pos + weaponVector, RenderColour::Red);
-
-	// block colliders
-	debugDrawRects(mBlockRects, RenderColour(RenderColour::Yellow));
-#endif
+//#if DRAW_PLAYER_RECTS
+//	// About point
+//	RectF about = RectF(rect().TopLeft() + mAboutPoint, VectorF(2.0f, 2.0f));
+//	debugDrawRect(about, RenderColour::Blue);
+//
+//	// Weapon vector
+//	VectorF pos = rect().TopLeft() + mAboutPoint;
+//	VectorF weaponVector = mDirection.normalise() * mAboutPoint.y;
+//	debugDrawLine(pos, pos + weaponVector, RenderColour::Red);
+//
+//	// block colliders
+//	debugDrawRects(mBlockRects, RenderColour(RenderColour::Yellow));
+//#endif
 }
 
 

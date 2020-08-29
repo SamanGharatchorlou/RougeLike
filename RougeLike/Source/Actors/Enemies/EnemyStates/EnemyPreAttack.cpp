@@ -5,6 +5,7 @@
 #include "Collisions/Colliders/Collider.h"
 
 
+#include "Objects/Abilities/AbilityClasses/Ability.h"
 
 void EnemyPreAttack::enter()
 {
@@ -14,6 +15,7 @@ void EnemyPreAttack::enter()
 
 void EnemyPreAttack::init()
 {
+	//printf("init pre\n");
 	mEnemy->animator().selectAnimation(Action::Attack);
 	timer.restart();
 }
@@ -26,9 +28,15 @@ void EnemyPreAttack::slowUpdate(float dt)
 	if (!inAttackRange())
 		mEnemy->popState();
 
-	// begin attack
 	if (timer.getSeconds() > (1.0f / mEnemy->getAttributeValue(AttributeType::AttackSpeed)))
-		mEnemy->replaceState(EnemyState::Attack);
+	{
+		Ability* basicAttack = mEnemy->abilities().get(AbilityType::Attack);
+		if (basicAttack->state() == AbilityState::Idle)
+		{
+			basicAttack->activate(VectorF());
+			basicAttack->setState(AbilityState::Running);
+		}
+	}
 }
 
 

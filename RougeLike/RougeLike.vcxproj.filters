@@ -54,7 +54,6 @@
     <ClCompile Include="Source\Collisions\WallCollisionTracker.cpp" />
     <ClCompile Include="Source\UI\Elements\UISlider.cpp" />
     <ClCompile Include="Source\Animations\AnimationReader.cpp" />
-    <ClCompile Include="Source\Collisions\PlayerCollisions.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityActivator.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\SpikeAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\SmashAbility.cpp" />
@@ -68,7 +67,6 @@
     <ClCompile Include="Source\Objects\Effects\EffectTypes\DisplacementEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\Effect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\HealEffect.cpp" />
-    <ClCompile Include="Source\Collisions\WeaponCollisionManager.cpp" />
     <ClCompile Include="Source\Map\MapBuilding\DecorTilePopulator.cpp" />
     <ClCompile Include="Source\Map\MapBuilding\MapGenerator.cpp" />
     <ClCompile Include="Source\Map\MapBuilding\RenderTilePopulator.cpp" />
@@ -92,7 +90,6 @@
     <ClCompile Include="Source\Map\LevelManager.cpp" />
     <ClCompile Include="Source\Map\MapBuilding\MapDecorator.cpp" />
     <ClCompile Include="Source\Actors\Player\PlayerManager.cpp" />
-    <ClCompile Include="Source\Collisions\EnemyCollisions.cpp" />
     <ClCompile Include="Source\System\Files\XMLNode.cpp" />
     <ClCompile Include="Source\Items\Collectables\CollectableSpawner.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityBuilder.cpp" />
@@ -170,10 +167,11 @@
     <ClCompile Include="Source\AI\Spawning\SpawnDataBuilder.cpp" />
     <ClCompile Include="Source\AI\Pathing\AIPathingController.cpp" />
     <ClCompile Include="Source\AI\Spawning\EnemyFactory.cpp" />
-    <ClCompile Include="Source\Objects\Effects\AttackingEffects.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\BasicAttack.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityClasses\MeleeAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityClasses\SelfAbility.cpp" />
+    <ClCompile Include="Source\Actors\Player\PlayerStates\PlayerAttackState.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\BasicAttackAbility.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -245,7 +243,6 @@
     <ClInclude Include="Source\UI\Elements\UISlider.h" />
     <ClInclude Include="Source\Events\LocalDispatcher.h" />
     <ClInclude Include="Source\Animations\AnimationReader.h" />
-    <ClInclude Include="Source\Collisions\PlayerCollisions.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityActivator.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\SpikeAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\SmashAbility.h" />
@@ -261,7 +258,6 @@
     <ClInclude Include="Source\Objects\Effects\EffectTypes\DisplacementEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\Effect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\HealEffect.h" />
-    <ClInclude Include="Source\Collisions\WeaponCollisionManager.h" />
     <ClInclude Include="Source\Map\MapBuilding\DecorTilePopulator.h" />
     <ClInclude Include="Source\Map\MapBuilding\MapGenerator.h" />
     <ClInclude Include="Source\Map\MapBuilding\RenderTilePopulator.h" />
@@ -287,7 +283,6 @@
     <ClInclude Include="Source\Map\MapBuilding\MapDecorator.h" />
     <ClInclude Include="Source\Actors\Enemies\Types\EnemyTypes.h" />
     <ClInclude Include="Source\Actors\Player\PlayerManager.h" />
-    <ClInclude Include="Source\Collisions\EnemyCollisions.h" />
     <ClInclude Include="Source\Utilities\ObjectPool.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\EffectTypes.h" />
     <ClInclude Include="Source\System\Files\XMLNode.h" />
@@ -379,10 +374,12 @@
     <ClInclude Include="Source\Utilities\Shapes\Formation.h" />
     <ClInclude Include="Source\AI\Pathing\AIPathingController.h" />
     <ClInclude Include="Source\AI\Spawning\EnemyFactory.h" />
-    <ClInclude Include="Source\Objects\Effects\AttackingEffects.h" />
-    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\BasicAttack.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityClasses\MeleeAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityClasses\SelfAbility.h" />
+    <ClInclude Include="Source\Actors\Player\PlayerStates\PlayerAttackState.h" />
+    <ClInclude Include="Source\Actors\Player\PlayerStates\PlayerState.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\BasicAttackAbility.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

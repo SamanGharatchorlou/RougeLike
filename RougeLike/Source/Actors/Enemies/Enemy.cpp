@@ -13,6 +13,7 @@
 
 // TEMP
 #include "Map/Map.h"
+#include "Objects/Abilities/AbilityClasses/Ability.h"
 
 
 Enemy::Enemy() :
@@ -36,12 +37,20 @@ Enemy::~Enemy()
 }
 
 
+void Enemy::initAbilities(std::vector<Actor*>* targets)
+{
+	mAbilities.init(mEffects.pool(), targets);
+}
+
+
 void Enemy::fastUpdate(float dt)
 {
 	mPhysics.resetHasForce();
 	mPhysics.stopAcceleration();
 
 	mStateMachine.getActiveState().fastUpdate(dt);
+
+	mAbilities.fastUpdate(dt);
 
 	Actor::fastUpdate(dt);
 
@@ -59,6 +68,8 @@ void Enemy::slowUpdate(float dt)
 		mStatePool->returnObject(state, state->type());
 
 	mStateMachine.getActiveState().slowUpdate(dt);
+
+	mAbilities.slowUpdate(dt);
 
 	if (mAIPathing.updateCurrentIndex(position()))
 	{
@@ -135,13 +146,6 @@ void Enemy::resolveCollisions(bool addHitState)
 	{
 		mColourModTimer.restart();
 
-		// Player weapon hit enemy
-		if (mCollider.getOtherCollider())
-		{
-			EffectCollider* effectCollider = static_cast<EffectCollider*>(mCollider.getOtherCollider());
-			handleEffects(effectCollider);
-		}
-
 		if(addHitState)
 			addState(EnemyState::Hit);
 	}
@@ -169,6 +173,7 @@ void Enemy::replaceState(EnemyState::Type newState)
 {
 	EnemyState* state = mStatePool->getObject(newState);
 	state->set(this);
+	state->enter();
 
 	mStateMachine.replaceState(state);
 }
@@ -231,4 +236,24 @@ EnemyState::Type Enemy::state() const
 		DebugPrint(Warning, "Enemy state machine has no state, size = 0\n");
 		return EnemyState::None;
 	}
+}
+
+
+// -- Attacking
+void Enemy::attack()
+{
+	replaceState(EnemyState::Attack);
+}
+
+
+bool Enemy::isAttacking() const
+{
+	EnemyState::Type currentState = state();
+	return currentState == EnemyState::Attack || currentState == EnemyState::PreAttack;
+}
+
+
+Collider* Enemy::attackingCollider()
+{
+	return &mCollider;
 }

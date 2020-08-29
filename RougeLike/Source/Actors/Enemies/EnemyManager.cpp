@@ -9,7 +9,8 @@
 
 // temp
 #include "Map/Map.h"
-
+#include "Objects/Abilities/AbilityBuilder.h"
+#include "Objects/Abilities/AbilityClasses/AbilityStates.h"
 
 
 EnemyManager::EnemyManager() : mEnvironment(nullptr) { }
@@ -30,24 +31,19 @@ void EnemyManager::clear()
 
 	mPathing.clear();
 	mSpawning.clear();
-	mCollisions.clear();
 }
 
 
 void EnemyManager::loadPools()
 {
 	int enemyPoolSize = 150;
-	//mBuilder.loadPools(enemyPoolSize);
 	mSpawning.loadSpawnPool(enemyPoolSize);
 }
 
 
-
-
-void EnemyManager::init(Environment* environment, CollisionManager* collisions)
+void EnemyManager::init(Environment* environment)
 {
 	mEnvironment = environment;
-	mCollisions.init(collisions);
 }
 
 
@@ -67,10 +63,7 @@ void EnemyManager::openNewMapLevel()
 	const AIPathMap* aiPathMap = mPathing.pathMap(map);
 	std::vector<Enemy*> enemiesToSpawn = mSpawning.getNewLevelSpawns(aiPathMap);
 
-	for (int i = 0; i < enemiesToSpawn.size(); i++)
-	{
-		addActiveEnemy(enemiesToSpawn[i]);
-	}
+	spawnEnemies(enemiesToSpawn);
 
 	for (int i = 0; i < mActiveEnemies.size(); i++)
 	{
@@ -129,7 +122,6 @@ void EnemyManager::slowUpdate(float dt)
 	clearDead();
 
 	mPathing.updatePaths(mActiveEnemies);
-	mCollisions.updateAttackingColliders(attackingColliders());
 }
 
 
@@ -162,8 +154,6 @@ void EnemyManager::clearAllEnemies()
 	}
 
 	mActiveEnemies.clear();
-
-	ASSERT(Warning, mCollisions.isEmpty(), "Enemy colliders are left in the collision trackers when they shouldn't be!\n");
 }
 
 
@@ -226,10 +216,10 @@ void EnemyManager::addActiveEnemy(Enemy* enemy)
 {
 	enemy->set(mEnvironment);
 #if !IGNORED_BY_ENEMIES
+	enemy->initAbilities(mEnvironment->actors()->playerActorList());
 	enemy->setTarget(mEnvironment->actors()->player()->get());
 #endif
 
-	mCollisions.add(enemy->collider());
 	mActiveEnemies.push_back(enemy);
 }
 
@@ -254,7 +244,6 @@ void EnemyManager::clearAndRemove(std::vector<Enemy*>::iterator& iter)
 	Enemy* enemy = *iter;
 	enemy->clear();
 
-	mCollisions.remove(enemy->collider());
 	mSpawning.returnEnemy(enemy);
 
 	iter = mActiveEnemies.erase(iter);
@@ -274,7 +263,6 @@ void EnemyManager::clearActiveEnemy(Enemy* enemy)
 {
 	enemy->clear();
 
-	mCollisions.remove(enemy->collider());
 	mSpawning.returnEnemy(enemy);
 	enemy = nullptr;
 }

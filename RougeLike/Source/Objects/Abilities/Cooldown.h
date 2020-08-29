@@ -8,6 +8,8 @@ public:
 	Cooldown() : mCooldownTime(0.0f) { }
 	Cooldown(float time) : mCooldownTime(time) { }
 
+	void set(float time) { mCooldownTime = time; }
+
 	void stop() { mTimer.stop(); }
 
 	void begin() { mTimer.restart(); }

@@ -1,15 +1,15 @@
 #pragma once
 
-#include "AbilityClasses/AbilityStates.h"
-#include "AbilityActivator.h"
-#include "AbilityHotKeyManager.h"
 #include "AbilityBuilder.h"
+#include "AbilityHotKeyManager.h"
+#include "AbilityHandler.h"
 #include "Events/LocalDispatcher.h"
 
 
 class Actor;
 class InputManager;
 class Screen;
+enum class AbilityState;
 
 
 class AbilityManager
@@ -18,7 +18,7 @@ public:
 	AbilityManager();
 	~AbilityManager();
 
-	void init(Environment* environment, Actor* caster, Screen* screen);
+	void init(Actor* caster, Screen* screen, EffectPool* effectPool, std::vector<Actor*>* targets);
 	void clear();
 
 	void handleInput(const InputManager* input);
@@ -26,9 +26,8 @@ public:
 	void slowUpdate(float dt);
 	void render();
 
-	void addAbility(AbilityType abilityType);
-
-	void setState(Ability* ability, AbilityState state);
+	void addAbility(AbilityType type);
+	Ability* get(AbilityType type);
 
 	bool inSelectionMode() const;
 
@@ -36,17 +35,10 @@ public:
 
 
 private:
-	void handleState(Ability* ability, float dt);
-
-
-private:
-	Environment* mEnvironment;
-
 	LocalDispatcher mEvents;
 
+	Actor* mCaster;
 	AbilityBuilder mBuilder;
-	AbilityActivator mActivator;
 	AbilityHotKeyManager mHotKeys;
-
-	std::vector<Ability*> mAbilities;
+	AbilityHandler mHandler;
 };

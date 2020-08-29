@@ -67,6 +67,11 @@ const K& DataMap<T, K>::at(const T& key) const
 template <class T, class K>
 void DataMap<T, K>::merge(const DataMap<T, K>& map)
 {
-	mData.insert(map.begin(), map.end());
+	DataMap<T, K>::const_iterator iter;
+
+	for (iter = map.begin(); iter != map.end(); iter++)
+	{
+		mData[iter->first] = iter->second;
+	}
 }
 

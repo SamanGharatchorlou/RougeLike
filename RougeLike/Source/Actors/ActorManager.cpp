@@ -23,8 +23,10 @@ void ActorManager::loadPools()
 
 void ActorManager::init(GameData* gameData)
 {
-	mPlayer.init(gameData->environment, gameData->collisionManager, gameData->uiManager->screen(ScreenType::Game));
-	mEnemies.init(gameData->environment, gameData->collisionManager);
+	mPlayer.init(gameData->environment, gameData->uiManager->screen(ScreenType::Game));
+	mEnemies.init(gameData->environment);
+
+	mPlayerActor.push_back(mPlayer.get());
 }
 
 void ActorManager::clear()
@@ -48,6 +50,9 @@ void ActorManager::fastUpdate(float dt)
 
 void ActorManager::slowUpdate(float dt)
 {
+	// TEMP
+	updateActiveEnemyActors();
+
 	mPlayer.slowUpdate(dt);
 	while (mPlayer.events().hasEvent())
 		sendEvent(mPlayer.events().pop());
@@ -65,9 +70,9 @@ void ActorManager::render()
 }
 
 
-std::vector<Actor*> ActorManager::getAllEnemies()
+void ActorManager::updateActiveEnemyActors()
 {
-	return mEnemies.getActiveEnemies();
+	mActiveEnemyActors = mEnemies.getActiveEnemies();
 }
 
 

@@ -4,21 +4,11 @@ class Ability;
 class Actor;
 enum class AbilityType;
 
-
 class AbilityBuilder
 {
 public:
-	AbilityBuilder() : mCaster(nullptr) { }
-
-	void init(Actor* caster) { mCaster = caster; }
-
-	Ability* build(AbilityType type) const;
-
+	Ability* build(AbilityType type, Actor* caster) const;
 
 private:
 	Ability* createNewAbility(AbilityType type) const;
-
-
-private:
-	Actor* mCaster;
 };

@@ -31,6 +31,7 @@ public:
 	Actor* caster() const { return mCaster; }
 	Cooldown& cooldown() { return mCooldown; }
 	Collider* collider() { return mCollider; }
+	PropertyMap& properties() { return mProperties; }
 
 	virtual AbilityTarget targetType() const = 0;
 	virtual AbilityType type() const = 0;
@@ -39,10 +40,10 @@ public:
 	AbilityState state() const { return mState; }
 
 	bool hasCompleted() const { return mCompleted; }
+	bool shouldActivateCollisions() const { return mActivateCollisions; }
 
 	BasicString name() const;
 
-	bool shouldActivateCollisions() const { return mActivateCollisions; }
 
 
 protected:

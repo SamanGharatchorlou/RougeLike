@@ -8,35 +8,40 @@ Animator AnimationReader::buildAnimator(XMLNode animationNode) const
 {
 	Animator animator;
 
-	BasicString id = animationNode.child("ID").value();
-
-	float frameTime = toFloat(animationNode.child("FrameTime").value());
-	animator.setFrameTime(frameTime);
-
-	XMLNode frameSizeNode = animationNode.child("FrameSize");
-
-	StringMap attributes = animationNode.child("FrameSize").attributes();
-	VectorF frameSize = attributes.getVector("x", "y");
-
-	XMLNode animations = animationNode.child("Animations");
-	XMLNode node = animations.child();
-
-	const TextureManager* textures = TextureManager::Get();
-
-	while (node)
+	if (animationNode)
 	{
-		BasicString fileName = id + "_" + node.name();
-		Texture* texture = textures->getTexture(fileName, FileManager::Image_Animations);
+		BasicString id = animationNode.child("ID").value();
 
-		int frames = toInt(node.value());
+		float frameTime = toFloat(animationNode.child("FrameTime").value());
+		animator.setFrameTime(frameTime);
 
-		Action action = stringToAction(node.name());
+		XMLNode frameSizeNode = animationNode.child("FrameSize");
 
-		AnimationData data(texture, frameSize, frames, action);
-		animator.addAnimation(data);
+		StringMap attributes = animationNode.child("FrameSize").attributes();
+		VectorF frameSize = attributes.getVector("x", "y");
 
-		node = node.next();
+		XMLNode animations = animationNode.child("Animations");
+		XMLNode node = animations.child();
+
+		const TextureManager* textures = TextureManager::Get();
+
+		while (node)
+		{
+			BasicString fileName = id + "_" + node.name();
+			Texture* texture = textures->getTexture(fileName, FileManager::Image_Animations);
+
+			int frames = toInt(node.value());
+
+			Action action = stringToAction(node.name());
+
+			AnimationData data(texture, frameSize, frames, action);
+			animator.addAnimation(data);
+
+			node = node.next();
+		}
 	}
+	else
+		DebugPrint(Warning, "No animation node provided, cannot build animator\n");
 
 	return animator;
 }

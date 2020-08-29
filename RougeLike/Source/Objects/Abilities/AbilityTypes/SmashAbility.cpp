@@ -61,7 +61,7 @@ void SmashAbility::slowUpdate(float dt)
 	VectorF currentDirection = (mTargetPosition - mHammerRect.Center()).normalise();
 	bool hasPassedTarget = !((currentDirection.x > 0 == mHammerDirection.x > 0) && (currentDirection.y > 0 == mHammerDirection.y > 0));
 
-	// Being explosion
+	// Begin explosion
 	if (!mReachedTarget && hasPassedTarget)
 	{
 		mReachedTarget = true;

@@ -10,10 +10,7 @@ class CollisionManager
 public:
 	enum Tracker
 	{
-		PlayerWeapon_Hit_Enemy,
 		Player_Hit_Collectable,
-
-		Enemy_Hit_Player,
 		
 		Player_Trigger_Trap,
 		Trap_Hit_Player,

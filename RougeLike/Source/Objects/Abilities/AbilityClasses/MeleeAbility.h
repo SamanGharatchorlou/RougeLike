@@ -12,6 +12,7 @@ public:
 
 	virtual AbilityTarget targetType() const override { return AbilityTarget::Melee; }
 
+	virtual void baseExit() override;
 
 private:
 	virtual void applyEffects(Actor* actor, EffectPool* effectPool) = 0;

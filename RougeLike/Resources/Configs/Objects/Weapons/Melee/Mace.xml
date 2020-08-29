@@ -15,16 +15,9 @@
 	</Properties>
 
 	<AttackingEffects>
-		<Types>
-			<Damage></Damage>
-			<Displacement></Displacement>
-		</Types>
-
-		<Info>
-			<Damage>60</Damage>
-			<KnockbackForce>200</KnockbackForce>
-			<KnockbackDistance>50</KnockbackDistance>
-		</Info>
+		<Damage>60</Damage>
+		<KnockbackForce>200</KnockbackForce>
+		<KnockbackDistance>50</KnockbackDistance>
 	</AttackingEffects>
 
 	<Audio>

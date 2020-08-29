@@ -7,6 +7,7 @@
 
 // Abilities
 #include "AbilityClasses/AbilityStates.h"
+#include "Objects/Abilities/AbilityTypes/BasicAttackAbility.h"
 #include "Objects/Abilities/AbilityTypes/SlowAbility.h"
 #include "Objects/Abilities/AbilityTypes/HealAbility.h"
 #include "Objects/Abilities/AbilityTypes/SpikeAbility.h"
@@ -17,7 +18,7 @@
 #include "Objects/Abilities/AbilityTypes/SlashAbility.h"
 
 
-Ability* AbilityBuilder::build(AbilityType type) const
+Ability* AbilityBuilder::build(AbilityType type, Actor* caster) const
 {
 	Ability* ability = createNewAbility(type);
 	if (ability)
@@ -31,7 +32,7 @@ Ability* AbilityBuilder::build(AbilityType type) const
 
 		PropertyMap properties(parser.rootChild("Properties"));
 
-		ability->init(mCaster, properties, animator);
+		ability->init(caster, properties, animator);
 	}
 
 	return ability;
@@ -46,6 +47,10 @@ Ability* AbilityBuilder::createNewAbility(AbilityType type) const
 	{
 	case AbilityType::Heal:
 		ability = new HealAbility;
+		break;
+
+	case AbilityType::Attack:
+		ability = new BasicAttackAbility;
 		break;
 
 	//case AbilityType::Blink:

@@ -51,10 +51,6 @@ void Physics::fastUpdate(float dt)
 {
 	mVelocity += mAcceleration * dt;
 	mVelocity = clamp(mVelocity, -mMaxVelocity, mMaxVelocity);
-
-	if (isnan(mVelocity.x))
-		printf("waht?\n");
-
 	applyDrag();
 }
 

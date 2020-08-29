@@ -2,8 +2,6 @@
 
 #include "Events/LocalDispatcher.h"
 
-#include "Collisions/EnemyCollisions.h"
-
 #include "AI/Pathing/AIPathingController.h"
 #include "AI/Spawning/AISpawnController.h"
 
@@ -22,7 +20,7 @@ public:
 
 	// Core
 	void loadPools();
-	void init(Environment* environment, CollisionManager* collisions);
+	void init(Environment* environment);
 	void slowUpdate(float dt);
 	void fastUpdate(float dt);
 	void render();
@@ -62,8 +60,6 @@ private:
 
 	AIPathingController mPathing;
 	AISpawnController mSpawning;
-
-	EnemyCollisions mCollisions;
 
 	LocalDispatcher mEvents;
 

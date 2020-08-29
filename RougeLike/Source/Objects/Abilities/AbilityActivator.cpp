@@ -1,36 +1,20 @@
 #include "pch.h"
 #include "AbilityActivator.h"
 
+#include "Game/Camera/Camera.h"
+#include "Input/InputManager.h"
+
 #include "AbilityClasses/RangedAbility.h"
 #include "AbilityClasses/MeleeAbility.h"
 
-#include "Input/InputManager.h"
-#include "Game/Environment.h"
-
 #include "Actors/Actor.h"
-#include "Actors/ActorManager.h"
 #include "Collisions/Colliders/Collider.h"
 
 
-bool AbilityActivator::selected(Ability* ability, Button::State buttonState) const
+void AbilityActivator::init(EffectPool* effectPool, std::vector<Actor*>* targets)
 {
-	AbilityType type = ability->type();
-
-	if (buttonState == Button::State::Pressed && ability->state() == AbilityState::Idle)
-		return true;
-	else
-		return false;
-}
-
-
-bool AbilityActivator::deselected(Ability* ability, Button::State buttonState) const
-{
-	AbilityType type = ability->type();
-
-	if (buttonState == Button::State::Released && ability->state() == AbilityState::Selected)
-		return true;
-	else
-		return false;
+	mEffectPool = effectPool;
+	mTargets = targets;
 }
 
 
@@ -47,7 +31,7 @@ bool AbilityActivator::activate(Ability* ability, Button::State buttonState, con
 		{
 			if (buttonState == Button::State::Released)
 			{
-				ability->activateOn(nullptr, mEnvironment->effectPool());
+				ability->activateOn(nullptr, mEffectPool);
 				didActivate = true;
 			}
 			break;
@@ -61,7 +45,8 @@ bool AbilityActivator::activate(Ability* ability, Button::State buttonState, con
 				VectorF cursorPos = cursorWorldPosition(input->cursorPosition());
 
 				// BUG: if you select just outside of the current map this breaks?
-				if (rangedAbility->isValidTarget(cursorPos, map(cursorPos)))
+				const Map* map = ability->caster()->currentMap();
+				if (rangedAbility->isValidTarget(cursorPos, map))
 				{
 					ability->activate(cursorPos);
 					didActivate = true;
@@ -92,15 +77,14 @@ bool AbilityActivator::activate(Ability* ability, Button::State buttonState, con
 void AbilityActivator::activateCollisions(Ability* ability) const
 {	
 	// Apply effect to all enemies caught in area
-	std::vector<Actor*> enemies = mEnvironment->actors()->getAllEnemies();
 	Collider* abilityCollider = ability->collider();
 
-	for (int i = 0; i < enemies.size(); i++)
+	for (int i = 0; i < mTargets->size(); i++)
 	{
-		Collider* enemyCollider = enemies[i]->collider();
+		Collider* enemyCollider = mTargets->at(i)->collider();
 		if (abilityCollider->doesIntersect(enemyCollider))
 		{
-			ability->activateOn(enemies[i], mEnvironment->effectPool());
+			ability->activateOn(mTargets->at(i), mEffectPool);
 		}
 	}
 }
@@ -108,11 +92,7 @@ void AbilityActivator::activateCollisions(Ability* ability) const
 
 VectorF AbilityActivator::cursorWorldPosition(VectorF cursorPosition) const
 {
-	return mEnvironment->toWorldCoords(cursorPosition);
+	VectorF cameraPosition = Camera::Get()->rect().TopLeft();
+	return cursorPosition + cameraPosition;
 }
 
-
-const Map* AbilityActivator::map(VectorF position) const
-{
-	return mEnvironment->map(position);
-}

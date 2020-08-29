@@ -1,6 +1,10 @@
 #pragma once
 
 #include "Actors/Actor.h"
+#include "States/StateMachine.h"
+#include "PlayerStates/PlayerState.h"
+#include "States/State.h"
+
 
 class Weapon;
 class WeaponData;
@@ -24,8 +28,7 @@ public:
 
 	void clear();
 
-	bool attemptAttack();
-	void updateCursorPosition(VectorF cursorPosition);
+	void move(float dt);
 
 	MeleeWeapon*	weapon();
 
@@ -35,19 +38,20 @@ public:
 	void overrideControl(bool removeControl);
 	bool userHasControl() { return !mControlOverride; }
 
-	void enableBodyCollisions(bool isEnabled);
-	bool hasBodyCollisions() { return mBodyCollisions; }
-
-
 	void updateWeaponHitSound(AudioManager* audio);
-	void updateMapInfo(Map* map);
+	void updateMapInfo();
 
+	void attack() override;
+	bool isAttacking() const override;
+	Collider* attackingCollider() override;
 
 private:
 	void processHit();
+	void updateCursorPosition(VectorF cursorPosition);
 
 
 private:
+	StateMachine<PlayerState> mStateMachine;
 
 	Vector2D<int> mTileIndex;
 	int mMapLevel;
@@ -55,5 +59,4 @@ private:
 	Weapon* mWeapon;
 
 	bool mControlOverride;
-	bool mBodyCollisions;
 };
