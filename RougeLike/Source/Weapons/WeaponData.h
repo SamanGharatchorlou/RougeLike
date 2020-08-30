@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Objects/Abilities/Cooldown.h"
 #include "Utilities/Maps/EffectMap.h"
 
 class Texture;
@@ -35,13 +34,10 @@ private:
 public:
 	Texture* texture;
 
-	Cooldown cooldown;
-
 	float maxDimention;
 	VectorF offset;
 
 	StringMap audio;
-
 	PropertyMap effectData;
 };
 

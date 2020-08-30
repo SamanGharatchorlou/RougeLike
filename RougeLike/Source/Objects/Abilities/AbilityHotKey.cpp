@@ -53,7 +53,7 @@ UIBox* HotKey::createIcon(const UIBox* iconBg) const
 	const BasicString id = mAbility->name() + "Icon";
 	Texture* texture = textures->getTexture(id, FileManager::Image_UI);
 
-	VectorF size = realiseSize(texture->originalDimentions, 50.0f);
+	VectorF size = realiseSize(texture->originalDimentions, 55.0f);
 	RectF rect(VectorF(), size);
 	rect.SetCenter(iconBg->rect().Center());
 

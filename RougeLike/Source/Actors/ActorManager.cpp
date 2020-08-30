@@ -60,6 +60,18 @@ void ActorManager::slowUpdate(float dt)
 	mEnemies.slowUpdate(dt);
 	while (mEnemies.events().hasEvent())
 		sendEvent(mEnemies.events().pop());
+
+	// Reset colliders at the end of the frame
+#if !TRACK_COLLISIONS // Need to keep the hit data until after rendering
+	mPlayer.resetCollider();
+	mEnemies.resetColliders();
+#endif
+}
+
+
+void ActorManager::resetColliders()
+{
+
 }
 
 
@@ -67,6 +79,11 @@ void ActorManager::render()
 {
 	mEnemies.render();
 	mPlayer.render();
+
+#if TRACK_COLLISIONS // Need to keep the hit data until after rendering
+	mPlayer.resetCollider();
+	mEnemies.resetColliders();
+#endif
 }
 
 

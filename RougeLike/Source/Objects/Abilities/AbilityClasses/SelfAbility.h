@@ -10,7 +10,7 @@ public:
 	virtual ~SelfAbility() { }
 
 	virtual void activate(VectorF position) override { };
-	virtual void activateOn(Actor* actor, EffectPool* effectPool);
+	virtual bool activateOn(Actor* actor, EffectPool* effectPool);
 
 	AbilityTarget targetType() const override { return AbilityTarget::Self; }
 

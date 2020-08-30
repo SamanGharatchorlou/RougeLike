@@ -16,6 +16,9 @@ public:
 	void popState();
 	void replaceState(T* state);
 
+	bool hasQueuedState() { return isAdding || isReplacing; }
+	T* queuedState() { return newState; }
+
 	T* processStateChanges();
 
 	T& getActiveState() const;
@@ -107,7 +110,6 @@ void StateMachine<T>::replaceState(T* state)
 template<class T>
 T* StateMachine<T>::processStateChanges()
 {
-
 	T* state = nullptr;
 
 	// add state

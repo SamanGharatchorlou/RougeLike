@@ -3,13 +3,16 @@
 
 
 
-void MeleeAbility::activateOn(Actor* target, EffectPool* effectPool)
+bool MeleeAbility::activateOn(Actor* target, EffectPool* effectPool)
 {
 	if (mHitList.count(target) == 0)
 	{
 		applyEffects(target, effectPool);
 		mHitList.insert(target);
+		return true;
 	}
+
+	return false;
 }
 
 

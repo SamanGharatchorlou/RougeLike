@@ -21,8 +21,6 @@ void EnemyPatrol::fastUpdate(float dt)
 
 void EnemyPatrol::slowUpdate(float dt)
 {
-	mEnemy->resolveCollisions();
-
 	if (hasReachedPositionTarget())
 		mEnemy->idle(1.0f);
 

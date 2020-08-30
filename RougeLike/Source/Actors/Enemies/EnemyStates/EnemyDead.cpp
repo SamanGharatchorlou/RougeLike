@@ -25,9 +25,9 @@ void EnemyDead::init()
 
 void EnemyDead::slowUpdate(float dt)
 {
-	if (mEnemy->animator().loops())
+	if (mEnemy->animator().currentFrame() + 1 == mEnemy->animator().frameCount())
 	{
-		mEnemy->animator().stop();
+		mEnemy->animator().pause();
 		mAlpha -= (250 * dt);
 	}
 

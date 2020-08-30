@@ -98,11 +98,6 @@ void Actor::clear()
 	mPhysics.reset();
 	mAnimator.clear();
 
-	while (mCollider.hasEffects())
-	{
-		mEffects.returnEffect(mCollider.popEffect());
-	}
-
 	mEffects.clear();
 	mAttributeBag.clear();
 
@@ -134,14 +129,6 @@ void Actor::addEffect(Effect* effect)
 {
 	effect->setReceiver(this);
 	mEffects.addEffect(effect);
-}
-
-void Actor::handleEffects(EffectCollider* effectCollider)
-{
-	while (effectCollider->hasEffects())
-	{
-		addEffect(effectCollider->popEffect());
-	}
 }
 
 

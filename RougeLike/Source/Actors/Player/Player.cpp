@@ -16,7 +16,6 @@
 #endif
 
 
-
 Player::Player() :
 	mWeapon(nullptr),
 	mMapLevel(0),
@@ -38,11 +37,12 @@ void Player::handleInput(const InputManager* input)
 }
 
 
-
 void Player::move(float dt)
 {
-	if(userHasControl())
+	if (userHasControl())
+	{
 		mPhysics.move(dt);
+	}
 }
 
 
@@ -121,9 +121,6 @@ void Player::render()
 void Player::overrideControl(bool control)
 {
 	mControlOverride = control;
-	
-	if (mWeapon)
-		mWeapon->overrideCursorControl(!control);
 }
 
 
@@ -133,9 +130,6 @@ void Player::processHit()
 {
 	if (mCollider.getOtherCollider())
 	{
-		EffectCollider* effectCollider = static_cast<EffectCollider*>(mCollider.getOtherCollider());
-		handleEffects(effectCollider);
-
 		//TraumaEvent* trauma = new TraumaEvent(40);
 		//mEvents.push(EventPacket(trauma));
 	}
@@ -160,13 +154,13 @@ Collider* Player::attackingCollider()
 
 void Player::updateWeaponHitSound(AudioManager* audio)
 {
-	if (mWeapon->didHit())
-	{
-		if (audio->isPlaying(mWeapon->missSoundLabel(), this) && mWeapon->canPlayHitSound())
-		{
-			audio->playSound(mWeapon->hitSoundLabel(), this);
-		}
-	}
+	//if (mWeapon->didHit())
+	//{
+	//	if (audio->isPlaying(mWeapon->missSoundLabel(), this) && mWeapon->canPlayHitSound())
+	//	{
+	//		audio->playSound(mWeapon->hitSoundLabel(), this);
+	//	}
+	//}
 }
 
 

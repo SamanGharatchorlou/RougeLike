@@ -7,12 +7,7 @@
 
 
 WeaponStash::WeaponStash() : meleeWeapon(nullptr) { }
-
-
-WeaponStash::~WeaponStash()
-{
-	clear();
-}
+WeaponStash::~WeaponStash() { clear(); }
 
 
 void WeaponStash::load()
@@ -22,8 +17,7 @@ void WeaponStash::load()
 
 	for (const BasicString& filePath : filePaths)
 	{
-		XMLParser parser;
-		parser.parseXML(filePath);
+		XMLParser parser(filePath);
 		XMLNode root = parser.rootNode();
 
 		BasicString weaponName = files->getItemName(filePath);
@@ -103,9 +97,9 @@ WeaponData* WeaponStash::createNewData(const XMLNode weaponNode, const WeaponRaw
 WeaponRawData WeaponStash::getRawData(const XMLNode weaponNode) const
 {
 	WeaponRawData data;
-	data.properties.fill(weaponNode.child("Properties"));
-	data.audio.fill(weaponNode.child("Audio"));
-	data.effectData.fill(weaponNode.child("AttackingEffects"));
+	data.properties.fill(	weaponNode.child("Properties"));
+	data.audio.fill(		weaponNode.child("Audio"));
+	data.effectData.fill(	weaponNode.child("AttackingEffects"));
 	data.texture = TextureManager::Get()->getTexture(data.properties["Texture"], FileManager::Image_Weapons);
 	return data;
 }

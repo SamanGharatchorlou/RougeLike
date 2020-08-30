@@ -45,7 +45,7 @@ public:
 	void spawn(EnemyState::Type state, VectorF position, const AIPathMap* map);
 
 	// State handling
-	const StateMachine<EnemyState>*	getStateMachine() const { return &mStateMachine; }
+	StateMachine<EnemyState>* getStateMachine() { return &mStateMachine; }
 	void addState(EnemyState::Type state);
 	void popState();
 	void replaceState(EnemyState::Type state);
@@ -58,7 +58,7 @@ public:
 	AbilityHandler& abilities() { return mAbilities; }
 
 	// Collisions
-	void resolveCollisions(bool addHitState = true);
+	void resolveCollisions();
 
 	// Target
 	void			setTarget(Actor* target) { mTarget = target; }
@@ -78,6 +78,13 @@ public:
 #if _DEBUG
 	EnemyDebugger mDebugger;
 #endif
+
+
+private:
+	void handleQueuedStates();
+	EnemyState* getNewState(EnemyState::Type type);
+
+
 
 protected:
 	AIPathing mAIPathing;

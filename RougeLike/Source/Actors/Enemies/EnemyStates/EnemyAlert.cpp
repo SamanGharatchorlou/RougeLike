@@ -14,8 +14,6 @@ void EnemyAlert::init()
 
 void EnemyAlert::slowUpdate(float dt)
 {
-	mEnemy->resolveCollisions();
-
 	if (mEnemy->animator().loops() > 0)
 	{
 		mEnemy->replaceState(EnemyState::Run);

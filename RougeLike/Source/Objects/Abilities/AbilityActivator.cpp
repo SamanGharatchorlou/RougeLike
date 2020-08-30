@@ -81,10 +81,14 @@ void AbilityActivator::activateCollisions(Ability* ability) const
 
 	for (int i = 0; i < mTargets->size(); i++)
 	{
-		Collider* enemyCollider = mTargets->at(i)->collider();
-		if (abilityCollider->doesIntersect(enemyCollider))
+		Collider* targetCollider = mTargets->at(i)->collider();
+		if (abilityCollider->doesIntersect(targetCollider))
 		{
-			ability->activateOn(mTargets->at(i), mEffectPool);
+			if (ability->activateOn(mTargets->at(i), mEffectPool))
+			{
+				abilityCollider->setDidHit(true);
+				targetCollider->setGotHit(true);
+			}
 		}
 	}
 }

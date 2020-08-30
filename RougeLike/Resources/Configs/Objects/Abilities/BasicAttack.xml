@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Ability>
-	<Properties>
-		<MaxSize>125</MaxSize>
-		<Cooldown>0.25</Cooldown>
-	</Properties>
-</Ability>

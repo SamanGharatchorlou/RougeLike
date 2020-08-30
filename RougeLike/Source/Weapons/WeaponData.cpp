@@ -23,7 +23,6 @@ void WeaponData::fillData(const WeaponRawData& data)
 void WeaponData::copy(const WeaponData* data)
 {
 	texture = data->texture;
-	cooldown = data->cooldown;
 	maxDimention = data->maxDimention;
 	offset = data->offset;
 	audio = data->audio;

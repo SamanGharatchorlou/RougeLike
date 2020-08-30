@@ -25,14 +25,20 @@ Ability* AbilityBuilder::build(AbilityType type, Actor* caster) const
 	{
 		BasicString id;
 		type >> id;
-		XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Abilities, id));
 
-		AnimationReader reader;
-		Animator animator = reader.buildAnimator(parser.rootChild("Animator"));
+		ability->setCaster(caster);
 
-		PropertyMap properties(parser.rootChild("Properties"));
+		if(FileManager::Get()->exists(FileManager::Config_Abilities, id))
+		{
+			XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Abilities, id));
 
-		ability->init(caster, properties, animator);
+			AnimationReader reader;
+			Animator animator = reader.buildAnimator(parser.rootChild("Animator"));
+
+			PropertyMap properties(parser.rootChild("Properties"));
+
+			ability->init(properties, animator);
+		}
 	}
 
 	return ability;

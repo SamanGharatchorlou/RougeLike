@@ -26,9 +26,8 @@ EnemyManager::~EnemyManager()
 
 void EnemyManager::clear()
 {
-	clearAllEnemies();
+	removeActiveEnemies(mActiveEnemies);
 	mEvents.clear();
-
 	mPathing.clear();
 	mSpawning.clear();
 }
@@ -64,18 +63,6 @@ void EnemyManager::openNewMapLevel()
 	std::vector<Enemy*> enemiesToSpawn = mSpawning.getNewLevelSpawns(aiPathMap);
 
 	spawnEnemies(enemiesToSpawn);
-
-	for (int i = 0; i < mActiveEnemies.size(); i++)
-	{
-		Enemy* enemy = mActiveEnemies[i];
-
-		if (enemy->state() == EnemyState::Idle)
-		{
-			const MapTile* tile = map->tile(enemy->position());
-			if (tile && tile->renderType() > RenderTile::Wall)
-				printf("spawned enemy under a wall at index %d,%d", map->index(enemy->position()).x, map->index(enemy->position()).y);
-		}
-	}
 }
 
 
@@ -141,18 +128,18 @@ void EnemyManager::render()
 }
 
 
+void EnemyManager::resetColliders()
+{
+	for (int i = 0; i < mActiveEnemies.size(); i++)
+	{
+		mActiveEnemies[i]->collider()->reset();
+	}
+}
+
+
 void EnemyManager::clearAllEnemies()
 {
-	if (mActiveEnemies.size() > 0)
-	{
-		std::vector<Enemy*>::iterator iter = mActiveEnemies.begin();
-
-		while (mActiveEnemies.size() > 0)
-		{
-			clearAndRemove(iter);
-		}
-	}
-
+	removeActiveEnemies(mActiveEnemies);
 	mActiveEnemies.clear();
 }
 
@@ -224,6 +211,7 @@ void EnemyManager::addActiveEnemy(Enemy* enemy)
 }
 
 
+// Can remove one per frame, no need to rush here...
 void EnemyManager::clearDead()
 {
 	for (std::vector<Enemy*>::iterator iter = mActiveEnemies.begin(); iter != mActiveEnemies.end(); iter++)
@@ -231,38 +219,27 @@ void EnemyManager::clearDead()
 		if ((*iter)->state() == EnemyState::Exit)
 		{
 			clearAndRemove(iter);
-
-			if (iter == mActiveEnemies.end())
-				break;
+			return;
 		}
+	}
+}
+
+
+void EnemyManager::removeActiveEnemies(std::vector<Enemy*>& enemies)
+{
+	for (std::vector<Enemy*>::iterator iter = mActiveEnemies.begin(); iter != mActiveEnemies.end(); iter++)
+	{
+		clearAndRemove(iter);
+
+		if (iter == mActiveEnemies.end())
+			break;
 	}
 }
 
 
 void EnemyManager::clearAndRemove(std::vector<Enemy*>::iterator& iter)
 {
-	Enemy* enemy = *iter;
-	enemy->clear();
-
-	mSpawning.returnEnemy(enemy);
-
+	(*iter)->clear();
+	mSpawning.returnEnemy(*iter);
 	iter = mActiveEnemies.erase(iter);
-}
-
-
-void EnemyManager::removeActiveEnemies(std::vector<Enemy*> enemies)
-{
-	for (int i = 0; i < enemies.size(); i++)
-	{
-		clearActiveEnemy(enemies[i]);
-	}
-}
-
-
-void EnemyManager::clearActiveEnemy(Enemy* enemy)
-{
-	enemy->clear();
-
-	mSpawning.returnEnemy(enemy);
-	enemy = nullptr;
 }

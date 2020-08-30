@@ -111,17 +111,40 @@ fs::path FileManager::fsPath(const Folder folder) const
 }
 
 
-BasicString FileManager::findFile(const Folder folder, const BasicString& name) const
+bool FileManager::exists(const Folder folder, const BasicString& name) const
 {
-	BasicString outPath = "";
+	BasicString outPath("");
 
 	for (const auto& directoryPath : fs::directory_iterator(fsPath(folder)))
 	{
-		BasicString item = getItemName(directoryPath.path());
 		if (!fs::is_directory(directoryPath) && getItemName(directoryPath.path()) == name)
 		{
-			BasicString myStr = pathToString(directoryPath.path());
-			outPath = myStr; //pathToString(directoryPath.path());
+			return true;
+		}
+		// if directory, search all sub folders
+		else if (fs::is_directory(directoryPath)) 
+		{
+			BasicString outPath("");
+			outFilePath(outPath, directoryPath.path(), name);
+
+		}
+
+		if (!outPath.empty())
+			return true;
+	}
+
+	return false;
+}
+
+BasicString FileManager::findFile(const Folder folder, const BasicString& name) const
+{
+	BasicString outPath("");
+
+	for (const auto& directoryPath : fs::directory_iterator(fsPath(folder)))
+	{
+		if (!fs::is_directory(directoryPath) && getItemName(directoryPath.path()) == name)
+		{
+			outPath = pathToString(directoryPath.path());
 		}
 		else if (fs::is_directory(directoryPath))
 		{

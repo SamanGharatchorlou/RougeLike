@@ -10,12 +10,7 @@
 
 
 PlayerManager::PlayerManager() { }
-
-
-PlayerManager::~PlayerManager()
-{
-	clear();
-}
+PlayerManager::~PlayerManager() { clear(); }
 
 
 void PlayerManager::init(Environment* environment, Screen* gameScreen)
@@ -41,6 +36,7 @@ void PlayerManager::addAbility(AbilityType ability)
 {
 	mAbilities.addAbility(ability);
 }
+
 
 void PlayerManager::addExp(int exp)
 {
@@ -75,18 +71,20 @@ void PlayerManager::fastUpdate(float dt)
 
 	mAbilities.fastUpdate(dt);
 
-
+	if (mPlayer.userHasControl())
+	{
 #if !IGNORE_WALLS
-	const Map* playerMap = mPlayer.currentMap();
+		const Map* playerMap = mPlayer.currentMap();
 
-	VectorF velocity = mPlayer.physics()->velocity();
-	velocity = mWallCollisions.allowedVelocity(playerMap, velocity, dt);
-	mPlayer.physics()->setVelocity(velocity);
+		VectorF velocity = mPlayer.physics()->velocity();
+		velocity = mWallCollisions.allowedVelocity(playerMap, velocity, dt);
+		mPlayer.physics()->setVelocity(velocity);
 #endif
 
-	mPlayer.move(dt);
-	
+		mPlayer.move(dt);
+	}
 }
+
 
 void PlayerManager::slowUpdate(float dt)
 {
@@ -131,6 +129,13 @@ void PlayerManager::handleEvents()
 }
 
 
+
+void PlayerManager::resetCollider() 
+{ 
+	mPlayer.collider()->reset(); 
+}
+
+
 void PlayerManager::render()
 {
 	mPlayer.render();
@@ -145,16 +150,10 @@ void PlayerManager::selectCharacter(const BasicString& characterConfig)
 	XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Player, characterConfig));
 	mPlayer.setCharacter(parser.rootNode());
 
-	EffectMap bag;
-	XMLNode effects = parser.rootChild("Effects");
-	bag.fill(effects);
-
 	BasicString weapontype = parser.rootChild("WeaponType").value();
 	mPlayer.setWeaponType(mWeaponStash.getWeapon(weapontype));
 
 	mLevelling.init(parser.rootChild("Levelling"), mPlayer.rect());
-
-
 
 #if UNLOCK_ALL_ABILITIES
 	mLevelling.unlockAllAbilities(this);

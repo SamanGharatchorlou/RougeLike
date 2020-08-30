@@ -6,6 +6,12 @@
 
 class EnemyStatePool : public ObjectPool<EnemyState, EnemyState::Type>
 {
+public:
+	void returnObject(EnemyState* object) { ObjectPool::returnObject(object, object->type()); }
+
 private:
 	EnemyState* createNewObject(EnemyState::Type type) const override;
+
+
+
 };

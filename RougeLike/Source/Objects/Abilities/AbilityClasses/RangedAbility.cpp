@@ -10,9 +10,9 @@
 #include "Map/Map.h"
 
 
-void RangedAbility::init(Actor* caster, const PropertyMap& properties, Animator animator)
+void RangedAbility::init(const PropertyMap& properties, Animator animator)
 {
-	Ability::init(caster, properties, animator);
+	Ability::init(properties, animator);
 	
 	Texture* rangeCircle = TextureManager::Get()->getTexture("RangeCircle", FileManager::Image_UI);
 	mRangeCircle = rangeCircle;
@@ -36,13 +36,16 @@ EventPacket RangedAbility::renderRangeCircleEvent()
 
 
 
-void TargetAreaRangedAbility::activateOn(Actor* actor, EffectPool* effectPool)
+bool TargetAreaRangedAbility::activateOn(Actor* target, EffectPool* effectPool)
 {
-	if (mHitList.count(actor) == 0)
+	if (mHitList.count(target) == 0)
 	{
-		applyEffects(actor, effectPool);
-		mHitList.insert(actor);
+		applyEffects(target, effectPool);
+		mHitList.insert(target);
+		return true;
 	}
+
+	return false;
 }
 
 

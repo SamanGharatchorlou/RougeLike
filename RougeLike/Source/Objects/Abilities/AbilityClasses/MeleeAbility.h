@@ -8,7 +8,7 @@ class MeleeAbility : public Ability
 {
 public:
 	virtual void activate(VectorF direction) = 0;
-	void activateOn(Actor* target, EffectPool* effectPool) override;
+	bool activateOn(Actor* target, EffectPool* effectPool) override;
 
 	virtual AbilityTarget targetType() const override { return AbilityTarget::Melee; }
 

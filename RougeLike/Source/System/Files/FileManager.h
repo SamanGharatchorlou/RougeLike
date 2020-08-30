@@ -45,6 +45,7 @@ public:
 
 	BasicString generatePath(const Folder folder) const;
 
+	bool exists(const Folder folder, const BasicString& name) const;
 	BasicString findFile(const Folder folder, const BasicString& name) const;
 
 	std::vector<BasicString> fullPathsInFolder(const Folder folder) const;

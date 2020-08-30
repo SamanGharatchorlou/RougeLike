@@ -9,12 +9,12 @@
 		<OffsetX>8</OffsetX>
 		<OffsetY>23</OffsetY>
 
-		<Cooldown>50</Cooldown>
 		<SwingSpeed>700</SwingSpeed>
 		<SwingAngle>250</SwingAngle>
 	</Properties>
 
 	<AttackingEffects>
+		<Cooldown>0.5</Cooldown>
 		<Damage>60</Damage>
 		<KnockbackForce>200</KnockbackForce>
 		<KnockbackDistance>50</KnockbackDistance>

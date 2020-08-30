@@ -2,7 +2,7 @@
 
 #include "Physics.h"
 #include "Animations/Animator.h"
-#include "Collisions/Colliders/EffectCollider.h"
+#include "Collisions/Colliders/Collider.h"
 #include "Objects/Effects/EffectManager.h"
 #include "Events/LocalDispatcher.h"
 #include "Utilities/Maps/AttributeMap.h"
@@ -17,26 +17,26 @@ public:
 	Actor();
 	virtual ~Actor() { clear(); };
 
+	// init
 	void set(Environment* environment);
-
 	void setCharacter(const XMLNode node);
+	void clear();
 
+	// core loops
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
 	void render(VectorF offset);
 	void render();
 
-	void setVisibility(bool visibility) { mVisibility = visibility; }
-	void clear();
 
-	// StringMap
+	// Attributes
 	Attribute* getAttribute(AttributeType type) const;
 	float getAttributeValue(AttributeType type) const;
 	bool hasAttribute(AttributeType type) const;
 
 	// Collider
-	EffectCollider* collider() { return &mCollider; }
-	const EffectCollider* collider() const { return &mCollider; }
+	Collider* collider() { return &mCollider; }
+	const Collider* collider() const { return &mCollider; }
 
 	// Systems
 	LocalDispatcher& events() { return mEvents; }
@@ -54,16 +54,14 @@ public:
 	RectF		rect() const { return mPhysics.rect(); }
 	RectF		scaledRect() const;
 
-
-	void addEffect(Effect* effect);
-
+	// Attacking
 	virtual void attack() = 0;
 	virtual bool isAttacking() const = 0;
 	virtual Collider* attackingCollider() = 0;
 
 
-protected:
-	void handleEffects(EffectCollider* effectCollider);
+	void addEffect(Effect* effect);
+	void setVisibility(bool visibility) { mVisibility = visibility; }
 
 
 protected:
@@ -74,7 +72,7 @@ protected:
 	AttributeMap mAttributeBag;
 
 	Physics mPhysics;
-	EffectCollider mCollider;
+	Collider mCollider;
 
 	VectorF mRenderOffset;
 	Animator mAnimator;

@@ -21,8 +21,6 @@ void EnemyRun::fastUpdate(float dt)
 
 void EnemyRun::slowUpdate(float dt)
 {
-	mEnemy->resolveCollisions();
-
 	if (!inAttackRange())
 	{
 		if (mPath.size() > 0)

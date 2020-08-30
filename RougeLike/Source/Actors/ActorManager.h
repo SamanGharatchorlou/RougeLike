@@ -35,6 +35,9 @@ public:
 	void handleEvent(EventData& data) override;
 	void sendEvent(EventPacket event);
 
+private:
+	void resetColliders();
+
 
 private:
 	PlayerManager mPlayer;

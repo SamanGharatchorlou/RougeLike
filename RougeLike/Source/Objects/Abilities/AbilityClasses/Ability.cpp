@@ -21,13 +21,13 @@ Ability::Ability() :
 
 Ability::~Ability()
 {
-	delete mCollider;
+	if(mCollider)
+		delete mCollider;
 }
 
 
-void Ability::init(Actor* caster, const PropertyMap& properties, Animator animator)
+void Ability::init(const PropertyMap& properties, Animator animator)
 {
-	mCaster = caster;
 	mAnimator = animator;
 	mProperties = properties;
 
@@ -76,7 +76,8 @@ void Ability::render()
 	debugDrawRect(mRect, RenderColour::Yellow);
 #endif
 #if TRACK_COLLISIONS
-	mCollider->renderCollider();
+	if(mCollider)
+		mCollider->renderCollider();
 #endif
 
 	mAnimator.render(Camera::Get()->toCameraCoords(mRect));

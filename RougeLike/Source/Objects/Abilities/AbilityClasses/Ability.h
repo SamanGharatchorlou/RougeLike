@@ -17,7 +17,7 @@ public:
 	Ability();
 	virtual ~Ability();
 
-	virtual void init(Actor* caster, const PropertyMap& properties, Animator animator);
+	virtual void init(const PropertyMap& properties, Animator animator);
 
 	virtual void fastUpdate(float dt) = 0;
 	virtual void slowUpdate(float dt) = 0;
@@ -26,9 +26,11 @@ public:
 	virtual void baseExit();
 
 	virtual void activate(VectorF position) = 0;
-	virtual void activateOn(Actor* actor, EffectPool* effectPool) = 0;
+	virtual bool activateOn(Actor* actor, EffectPool* effectPool) = 0;
 
 	Actor* caster() const { return mCaster; }
+	void setCaster(Actor* caster) { mCaster = caster; }
+
 	Cooldown& cooldown() { return mCooldown; }
 	Collider* collider() { return mCollider; }
 	PropertyMap& properties() { return mProperties; }

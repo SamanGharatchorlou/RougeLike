@@ -14,6 +14,7 @@
 
 // Player
 #define DRAW_PLAYER_RECT 0
+#define DRAW_PLAYER_WEAPON_RECT 0
 #define IGNORE_WALLS 0
 #define IGNORED_BY_ENEMIES 0
 
@@ -38,11 +39,11 @@
 #define DRAW_AI_PATH 0
 #define DRAW_AI_PATH_COSTMAP 0
 
-#define LABEL_ENEMY_STATES 0
+#define LABEL_ENEMY_STATES 1
 #define LABEL_ENEMY_HEALTH 0
 #define DRAW_PLAYER_ENEMY_DISTANCE 1
 
-#define DRAW_ENEMY_RECTS 1
+#define DRAW_ENEMY_RECTS 0
 #define DRAW_ENEMY_TARGET_PATH 0
 
 #define LIMIT_ENEMY_SPAWNS 1
@@ -55,7 +56,7 @@
 
 
 // Collisions
-#define TRACK_COLLISIONS 1
+#define TRACK_COLLISIONS 0
 
 #else
 

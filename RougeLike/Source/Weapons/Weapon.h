@@ -9,13 +9,13 @@ class Collider;
 class Weapon
 {
 public:
-	Weapon() : mOverrideCursorControl(false), mAttacking(false), mCanPlayHitSound(true) { }
+	Weapon() : mAttacking(false), mCanPlayHitSound(true) { }
 	virtual ~Weapon() { };
 
 	virtual void attack() = 0;
 
 	virtual void fastUpdate(float dt) = 0;
-	virtual void slowUpdate(float dt) = 0;
+	virtual void slowUpdate(float dt) { };
 	virtual void render() = 0;
 
 	virtual bool canPlayHitSound() const { return mCanPlayHitSound; }
@@ -23,7 +23,6 @@ public:
 	virtual const BasicString& missSoundLabel() = 0;
 
 	bool isAttacking() const { return mAttacking; }
-	virtual bool didHit() const = 0;
 
 	virtual RectF rect() { return mRect.Translate(offset()); }
 	virtual void setPosition(VectorF position) { mRect.SetBotCenter(position); }
@@ -37,20 +36,12 @@ public:
 
 	virtual void equipt(const WeaponData* data) = 0;
 
-	virtual bool containsCollider(Collider* collider) const = 0;
-	virtual const std::vector<Collider*> getColliders() const = 0;
-	virtual const std::vector<RectF> getRects() const = 0;
-
-	void overrideCursorControl(bool overrideControl) { mOverrideCursorControl = overrideControl; }
-
 
 protected:
 	RectF mRect;
 
-	VectorF mDirection;
-
 	bool mAttacking;
-	bool mOverrideCursorControl;
+	VectorF mDirection;
 	
 	bool mCanPlayHitSound;
 	const BasicString* mAudioToPlay;

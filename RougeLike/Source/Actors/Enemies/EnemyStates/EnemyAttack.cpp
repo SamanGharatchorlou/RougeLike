@@ -44,8 +44,6 @@ void EnemyAttack::fastUpdate(float dt)
 
 void EnemyAttack::slowUpdate(float dt)
 {
-	mEnemy->resolveCollisions();
-
 	// Return to starting position
 	updateHasAttackedStatus();
 

@@ -7,7 +7,6 @@
 
 void BasicAttackAbility::activate(VectorF position)
 {
-
 	mCollider = mCaster->attackingCollider();
 	mActivateCollisions = true;
 	mCaster->attack();
@@ -29,4 +28,9 @@ void BasicAttackAbility::applyEffects(Actor* actor, EffectPool* effectPool)
 
 	applyEffect(EffectType::Damage, actor, effectPool);
 	applyEffect(EffectType::Displacement, actor, effectPool);
+}
+
+void BasicAttackAbility::exit()
+{
+	mCollider = nullptr;
 }

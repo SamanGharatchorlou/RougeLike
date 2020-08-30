@@ -23,8 +23,6 @@ void EnemyPreAttack::init()
 
 void EnemyPreAttack::slowUpdate(float dt)
 {
-	mEnemy->resolveCollisions();
-
 	if (!inAttackRange())
 		mEnemy->popState();
 

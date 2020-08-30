@@ -33,12 +33,13 @@ public:
 	void handleEvents();
 	LocalDispatcher& events() { return mEvents; }
 
+	void resetCollider();
+
 	void setPosition(VectorF position);
 	void selectCharacter(const BasicString& characterConfig);
 	void selectWeapon(const BasicString& weaponName);
 
 	void addAbility(AbilityType ability);
-
 	void addExp(int exp);
 
 

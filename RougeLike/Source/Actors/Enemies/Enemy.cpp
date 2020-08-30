@@ -65,8 +65,11 @@ void Enemy::slowUpdate(float dt)
 
 	EnemyState* state = mStateMachine.processStateChanges();
 	if (state)
-		mStatePool->returnObject(state, state->type());
-
+	{
+		mStatePool->returnObject(state);
+	}
+	
+	resolveCollisions();
 	mStateMachine.getActiveState().slowUpdate(dt);
 
 	mAbilities.slowUpdate(dt);
@@ -128,26 +131,18 @@ RectF Enemy::renderRect() const
 
 void Enemy::clear()
 {
-	while (mStateMachine.size() > 1)
-	{
-		EnemyState* state = mStateMachine.forcePop();
-		mStatePool->returnObject(state, state->type());
-	}
-
 	mEvents.clear();
 	mAIPathing.clear();
 	Actor::clear();
 }
 
 
-void Enemy::resolveCollisions(bool addHitState)
+void Enemy::resolveCollisions()
 {
 	if (mCollider.gotHit())
 	{
 		mColourModTimer.restart();
-
-		if(addHitState)
-			addState(EnemyState::Hit);
+		addState(EnemyState::Hit);
 	}
 }
 
@@ -169,13 +164,26 @@ void Enemy::accellerateTowards(VectorF position)
 }
 
 
+void Enemy::addState(EnemyState::Type newState)
+{
+	if (state() != EnemyState::Dead && state() != EnemyState::Stun && state() != EnemyState::Exit)
+	{
+		handleQueuedStates();
+		mStateMachine.addState(getNewState(newState));
+	}
+}
+
+
 void Enemy::replaceState(EnemyState::Type newState)
 {
-	EnemyState* state = mStatePool->getObject(newState);
-	state->set(this);
-	state->enter();
+	handleQueuedStates();
+	mStateMachine.replaceState(getNewState(newState));
+}
 
-	mStateMachine.replaceState(state);
+
+void Enemy::popState()
+{
+	mStateMachine.popState();
 }
 
 
@@ -207,22 +215,7 @@ void Enemy::idle(float idleTime)
 }
 
 
-void Enemy::addState(EnemyState::Type newState)
-{
-	if (state() != EnemyState::Dead)
-	{
-		EnemyState* state = mStatePool->getObject(newState);
-		state->set(this);
-		state->enter();
-		mStateMachine.addState(state);
-	}
-}
 
-
-void Enemy::popState()
-{
-	mStateMachine.popState();
-}
 
 
 EnemyState::Type Enemy::state() const
@@ -256,4 +249,24 @@ bool Enemy::isAttacking() const
 Collider* Enemy::attackingCollider()
 {
 	return &mCollider;
+}
+
+
+// -- Private Functions --
+EnemyState* Enemy::getNewState(EnemyState::Type type)
+{
+	EnemyState* state = mStatePool->getObject(type);
+	state->set(this);
+	state->enter();
+
+	return state;
+}
+
+void Enemy::handleQueuedStates()
+{
+	if (mStateMachine.hasQueuedState())
+	{
+		EnemyState* queuedEnemyState = mStateMachine.queuedState();
+		mStatePool->returnObject(queuedEnemyState);
+	}
 }

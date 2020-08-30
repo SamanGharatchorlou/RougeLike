@@ -26,8 +26,8 @@ public:
 	void render();
 
 	void clear();
-	void removeActiveEnemies(std::vector<Enemy*> enemies);
 	void clearAllEnemies();
+	void resetColliders();
 
 	// Levels
 	void openNewMapLevel();
@@ -51,8 +51,8 @@ private:
 	void addActiveEnemy(Enemy* enemy);
 
 	void clearDead();
+	void removeActiveEnemies(std::vector<Enemy*>& enemies);
 	void clearAndRemove(std::vector<Enemy*>::iterator& iter);
-	void clearActiveEnemy(Enemy* enemy);
 
 
 private:

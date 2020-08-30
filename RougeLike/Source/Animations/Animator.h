@@ -106,13 +106,13 @@ public:
 
 	int loops() const { return mAnimations[mActiveIndex].mLoops; }
 	VectorF frameSize() const { return mAnimations[mActiveIndex].mTileDimentions; }
-	int frameCount() const { return mAnimations[mActiveIndex].mFrameCount; }
+	int frameCount() const { return mAnimations[mActiveIndex].frameCount(); }
+	int currentFrame() const { return mAnimations[mActiveIndex].currentFrame(); }
 	float frameTime() const { return mFrameTime; }
 	int animationCount() const { return mAnimations.size(); }
 
 	const Animation* activeAimation() const { return &mAnimations[mActiveIndex]; }
 	Animation* activeAimation() { return &mAnimations[mActiveIndex]; }
-	//Animation* getAnimation(Action action);
 
 private:
 

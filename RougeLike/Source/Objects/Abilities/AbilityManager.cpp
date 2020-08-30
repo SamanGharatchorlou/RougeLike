@@ -69,7 +69,7 @@ void AbilityManager::handleInput(const InputManager* input)
 	if (input->isCursorPressed(Cursor::Left))
 	{
 		Ability* basicAttack = mHandler.get(AbilityType::Attack);
-		if (basicAttack->state() == AbilityState::Idle)
+		if (basicAttack->state() == AbilityState::Idle && !inSelectionMode())
 		{
 			basicAttack->activate(VectorF());
 			basicAttack->setState(AbilityState::Running);

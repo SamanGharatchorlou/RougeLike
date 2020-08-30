@@ -34,6 +34,7 @@ void EnemyFactory::loadPools(int poolSize)
 
 void EnemyFactory::clear()
 {
+	printf("factory clear()\n");
 	mPool.freeAll();
 	mStatePool.freeAll();
 }
@@ -41,6 +42,14 @@ void EnemyFactory::clear()
 
 void EnemyFactory::returnEnemy(Enemy* enemy)
 {
+	// Return all enemy states (except null, statemachine itself deals with that)
+	StateMachine<EnemyState>* states = enemy->getStateMachine();
+	while (enemy->state() != EnemyState::None)
+	{
+		EnemyState* state = states->forcePop();
+		mStatePool.returnObject(state);
+	}
+
 	mPool.returnObject(enemy, enemy->type());
 }
 
@@ -96,7 +105,6 @@ Ability* EnemyFactory::buildBasicAttack(Enemy* enemy, const XMLNode enemyNode)
 	PropertyMap nodeProperties(abilityNode);
 	basicAttack->properties().merge(nodeProperties);
 	basicAttack->setState(AbilityState::Idle);
-	//basicAttack->cooldown().set(basicAttack->properties().at(PropertyType::Cooldown));
 	return basicAttack;
 }
 

@@ -10,6 +10,7 @@ public:
 
 	void fastUpdate(float dt) override { } // make not pure virtual?
 	void slowUpdate(float dt) override;
+	void exit() override;
 
 	AbilityType type() const override { return AbilityType::Attack; }
 

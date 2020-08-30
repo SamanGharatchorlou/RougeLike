@@ -12,8 +12,6 @@ void EnemyWait::init()
 
 void EnemyWait::slowUpdate(float dt)
 {
-	mEnemy->resolveCollisions();
-
 	if (timer.getSeconds() > mWaitTime)
 		mEnemy->popState();
 }

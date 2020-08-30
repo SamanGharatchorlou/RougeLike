@@ -11,7 +11,7 @@ public:
 	RangedAbility() : mRangeCircle(nullptr) { }
 	virtual ~RangedAbility() { }
 
-	void init(Actor* caster, const PropertyMap& properties, Animator animator) override;
+	void init(const PropertyMap& properties, Animator animator) override;
 
 	EventPacket renderRangeCircleEvent();
 
@@ -28,7 +28,7 @@ protected:
 class TargetAreaRangedAbility : public RangedAbility
 {
 public:
-	virtual void activateOn(Actor* actor, EffectPool* effectPool) override;
+	virtual bool activateOn(Actor* target, EffectPool* effectPool) override;
 
 	virtual bool isValidTarget(VectorF target, const Map* map) const override;
 	virtual void baseExit() override;
