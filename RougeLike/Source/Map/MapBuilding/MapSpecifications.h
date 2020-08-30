@@ -4,6 +4,8 @@
 
 class Map;
 
+using TrapDataMap = std::unordered_map<DecorType, PropertyMap>;
+
 class MapSpecifications
 {
 public:
@@ -13,6 +15,8 @@ public:
 	const DecorMap& getDecor(const Map* map);
 	VectorF size(const BasicString& value) const { return mSizes.at(value); }
 
+	void readTrapData();
+	const TrapDataMap* trapData() { return &mTrapData; }
 
 private:
 	void readTileSize(const XMLNode node);
@@ -25,4 +29,6 @@ private:
 
 	DecorMap mDungeonDecor;
 	DecorMap mCorridorDecor;
+
+	TrapDataMap mTrapData;
 };

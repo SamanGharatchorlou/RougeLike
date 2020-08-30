@@ -8,4 +8,12 @@
 			<Active>2</Active>
 		</Animations>
 	</Animator>
+
+	<Pause></Pause>
+
+	<Info>
+		<Damage>10</Damage>
+		<Time>1.5</Time>
+		<Cooldown>5.0</Cooldown>
+	</Info>
 </Decor>

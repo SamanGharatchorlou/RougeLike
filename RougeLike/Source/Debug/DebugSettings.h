@@ -47,7 +47,7 @@
 #define DRAW_ENEMY_TARGET_PATH 0
 
 #define LIMIT_ENEMY_SPAWNS 1
-#define MAX_SPAWN_COUNT 1
+#define MAX_SPAWN_COUNT 0
 
 // UI
 #define DRAW_UI_RECTS 0

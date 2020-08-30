@@ -34,7 +34,6 @@ void EnemyFactory::loadPools(int poolSize)
 
 void EnemyFactory::clear()
 {
-	printf("factory clear()\n");
 	mPool.freeAll();
 	mStatePool.freeAll();
 }

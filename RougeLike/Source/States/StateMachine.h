@@ -117,7 +117,9 @@ T* StateMachine<T>::processStateChanges()
 	{
 		states.top()->pause();
 
-		states.push(std::move(newState));
+		states.push(newState);
+		newState = nullptr;
+
 		states.top()->init();
 
 		isAdding = false;
@@ -151,7 +153,9 @@ T* StateMachine<T>::processStateChanges()
 			state = states.top();
 			states.pop();
 
-			states.push(std::move(newState));
+			states.push(newState);
+			newState = nullptr;
+
 			states.top()->init();
 		}
 		else

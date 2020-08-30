@@ -2,19 +2,21 @@
 
 #include "Events/Dispatcher.h"
 #include "MapBuilding/MapBuilder.h"
-#include "TileInteractablesManager.h"
 
+class Environment;
 class Map;
 class Camera;
 class CollisionManager;
 class EffectPool;
+class Actor;
+
 
 class LevelManager : public Dispatcher
 {
 public:
 	LevelManager() : mLevel(0) { }
 
-	void init(CollisionManager* collisions, EffectPool* effects);
+	void init(Environment* environment);
 	void load();
 	void clear();
 
@@ -34,9 +36,10 @@ public:
 
 	int mapCount() const { return mMaps.size(); }
 
+
+private:
 	void addNextMap();
 	void popFront();
-
 
 private:
 	VectorF getOffset(const Map* map) const;
@@ -49,7 +52,6 @@ private:
 private:
 	MapBuilder mBuilder;
 	UniqueQueue<Map*> mMaps;
-	TileInteractableManager mTrapManager;
 
 	int mLevel;
 };

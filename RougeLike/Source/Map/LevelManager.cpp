@@ -7,10 +7,10 @@
 
 
 
-void LevelManager::init(CollisionManager* collisions, EffectPool* effects)
+void LevelManager::init(Environment* environment)
 {
 	mLevel = 0;
-	mTrapManager.init(collisions, effects);
+	mBuilder.init(environment);
 }
 
 
@@ -19,11 +19,8 @@ void LevelManager::load()
 {
 	mBuilder.load();
 
-	mTrapManager.load();
-
 	Map* map = mBuilder.buildFirst();
 	mMaps.push(map);
-	mTrapManager.addMap(map, mBuilder.specs(map));
 
 	addNextMap();
 }
@@ -37,7 +34,6 @@ void LevelManager::clear()
 	}
 
 	mBuilder.clear();
-	mTrapManager.clear();
 	mLevel = 0;
 }
 
@@ -53,7 +49,6 @@ void LevelManager::addNextMap()
 
 	Map* map = mBuilder.buildMap(type, offset);
 	mMaps.push(map);
-	mTrapManager.addMap(map, mBuilder.specs(map));
 
 	if (map->type() == MapType::Dungeon)
 	{
@@ -65,8 +60,6 @@ void LevelManager::addNextMap()
 
 void LevelManager::popFront()
 {
-	mTrapManager.popFrontMap();
-		
 	Map* map = mMaps.popFront();
 	mBuilder.returnMap(map);
 }
@@ -112,15 +105,12 @@ void LevelManager::slowUpdate(float dt)
 		map->slowUpdate(dt);
 	}
 
-	mTrapManager.slowUpdate();
-
 	Camera* camera = Camera::Get();
 	if (lastMap(MapType::None)->midPoint().x < camera->rect().RightPoint())
 	{
 		addNextMap();
 		setCameraBoundaries(camera);
 	}
-
 
 	closeLevel();
 }

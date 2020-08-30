@@ -8,8 +8,9 @@
 #include "Debug/DebugDraw.h"
 #endif
 
+Map::Map() : mTraps(this), mType(MapType::None) { }
 
-Map::Map(Vector2D<int> mapIndexSize) : MapBase(mapIndexSize), mType(MapType::None) { }
+Map::Map(Vector2D<int> mapIndexSize) : MapBase(mapIndexSize), mType(MapType::None), mTraps(this) { }
 
 
 void Map::setSize(Vector2D<int> size)
@@ -46,6 +47,7 @@ void Map::slowUpdate(float dt)
 		}
 	}
 
+	mTraps.slowUpdate();
 }
 
 
@@ -115,6 +117,7 @@ void Map::deferredRender()
 void Map::clearData()
 {
 	mData = Grid<MapTile>(Vector2D<int>(xCount(), yCount()), MapTile());
+	mTraps.flushQueues();
 }
 
 
@@ -301,4 +304,11 @@ void Map::render(MapTile* tile, Camera* camera)
 		tileRect = camera->toCameraCoords(tileRect);
 		tile->render(tileRect);
 	}
+}
+
+
+
+void Map::initTrapManager(Actor* actor, EffectPool* effectPool, const TrapDataMap* trapData)
+{
+	mTraps.init(actor, effectPool, trapData);
 }

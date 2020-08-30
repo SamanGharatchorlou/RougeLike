@@ -2,6 +2,9 @@
 
 #include "MapSpecifications.h"
 
+class Environment;
+class EffectPool;
+class Actor;
 class Map;
 enum class MapType;
 
@@ -9,6 +12,8 @@ enum class MapType;
 class MapBuilder
 {
 public:
+	void init(Environment* environment);
+
 	void load();
 	void clear();
 
@@ -30,6 +35,9 @@ private:
 	void addMapDecor(Map* map);
 
 private:
+	EffectPool* mEffectPool;
+	Actor* mPlayer;
+
 	UniqueQueue<Map*> mPool;
 
 	MapSpecifications mSpecs;

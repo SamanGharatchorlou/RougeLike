@@ -6,10 +6,9 @@
 #include "Player/PlayerManager.h"
 #include "Enemies/EnemyManager.h"
 
-
 struct GameData;
-class Environment;
 class InputManager;
+
 
 class ActorManager : public Observer, public Dispatcher
 {

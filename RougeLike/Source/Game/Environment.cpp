@@ -29,7 +29,7 @@ void Environment::clear()
 
 void Environment::init(GameData* gameData)
 {
-	mLevelManager.init(gameData->collisionManager, &mEffectPool);
+	mLevelManager.init(this);
 	mActors.init(gameData);
 
 	mCollectables.init(gameData->collisionManager, mActors.player());

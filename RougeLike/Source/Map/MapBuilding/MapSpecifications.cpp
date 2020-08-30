@@ -3,6 +3,31 @@
 
 #include "Map/Map.h"
 
+
+void MapSpecifications::readTrapData()
+{
+	FileManager* fm = FileManager::Get();
+	std::vector<BasicString> filePaths = fm->allFilesInFolder(FileManager::Configs_MapObjects);
+
+	for (const BasicString& path : filePaths)
+	{
+		XMLParser parser(path);
+
+		XMLNode infoNode = parser.rootChild("Info");
+
+		if (infoNode)
+		{
+			const BasicString fileName = fm->getItemName(path);
+			DecorType type = stringToDecorType(fileName);
+
+			PropertyMap properties(infoNode);
+
+			mTrapData[type] = properties;
+		}
+	}
+}
+
+
 void MapSpecifications::set(const XMLNode node)
 {
 	readTileSize(node);

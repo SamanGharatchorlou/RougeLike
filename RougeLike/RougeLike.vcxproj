@@ -25,7 +25,7 @@
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyStun.cpp" />
     <ClCompile Include="Source\AI\Spawning\AISpawnController.cpp" />
     <ClCompile Include="Source\Collisions\Colliders\QuadCollider.cpp" />
-    <ClCompile Include="Source\Map\TileInteractables\TileInteractable.cpp" />
+    <ClCompile Include="Source\Map\TrapManager.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityClasses\MeleeAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHandler.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHotKey.cpp" />
@@ -64,10 +64,6 @@
     <ClCompile Include="Source\Map\MapBuilding\MapSpecifications.cpp" />
     <ClCompile Include="Source\Map\MapBuilding\RenderTilePopulator.cpp" />
     <ClCompile Include="Source\Map\Tiles\TileTypes.cpp" />
-    <ClCompile Include="Source\Map\TileInteractablesManager.cpp" />
-    <ClCompile Include="Source\Map\TileInteractables\FireGratingTrap.cpp" />
-    <ClCompile Include="Source\Map\TileInteractables\FireGratingTrigger.cpp" />
-    <ClCompile Include="Source\Map\TileInteractables\SpikeTrap.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityBuilder.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityClasses\Ability.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityClasses\RangedAbility.cpp" />
@@ -87,7 +83,6 @@
     <ClCompile Include="Source\Actors\Enemies\Types\Devil.cpp" />
     <ClCompile Include="Source\Objects\Pools\EnemyStatePool.cpp" />
     <ClCompile Include="Source\Objects\Pools\ScreenPool.cpp" />
-    <ClCompile Include="Source\Objects\Pools\TrapPool.cpp" />
     <ClCompile Include="Source\System\Files\TextFileReader.cpp" />
     <ClCompile Include="Source\UI\Elements\UIWindow.cpp" />
     <ClCompile Include="Source\UI\Screens\LoadingScreen.cpp" />
@@ -205,8 +200,7 @@
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyStun.h" />
     <ClInclude Include="Source\AI\Spawning\AISpawnController.h" />
     <ClInclude Include="Source\Collisions\Colliders\QuadCollider.h" />
-    <ClInclude Include="Source\Map\TileInteractables\TileInteractable.h" />
-    <ClInclude Include="Source\Map\TileInteractables\Trigger.h" />
+    <ClInclude Include="Source\Map\TrapManager.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityClasses\MeleeAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityHandler.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityHotKey.h" />
@@ -246,11 +240,6 @@
     <ClInclude Include="Source\Map\MapBuilding\MapSpecifications.h" />
     <ClInclude Include="Source\Map\MapBuilding\RenderTilePopulator.h" />
     <ClInclude Include="Source\Map\Tiles\TileTypes.h" />
-    <ClInclude Include="Source\Map\TileInteractablesManager.h" />
-    <ClInclude Include="Source\Map\TileInteractables\FireGratingTrap.h" />
-    <ClInclude Include="Source\Map\TileInteractables\FireGratingTrigger.h" />
-    <ClInclude Include="Source\Map\TileInteractables\SpikeTrap.h" />
-    <ClInclude Include="Source\Map\TileInteractables\Trap.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityBuilder.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityClasses\Ability.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityClasses\AbilityStates.h" />
@@ -272,7 +261,6 @@
     <ClInclude Include="Source\Actors\Enemies\Types\Devil.h" />
     <ClInclude Include="Source\Objects\Pools\EnemyStatePool.h" />
     <ClInclude Include="Source\Objects\Pools\ScreenPool.h" />
-    <ClInclude Include="Source\Objects\Pools\TrapPool.h" />
     <ClInclude Include="Source\System\Files\TextFileReader.h" />
     <ClInclude Include="Source\UI\Elements\UIWindow.h" />
     <ClInclude Include="Source\UI\Screens\LoadingScreen.h" />

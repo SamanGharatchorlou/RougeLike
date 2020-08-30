@@ -267,6 +267,7 @@ void Enemy::handleQueuedStates()
 	if (mStateMachine.hasQueuedState())
 	{
 		EnemyState* queuedEnemyState = mStateMachine.queuedState();
-		mStatePool->returnObject(queuedEnemyState);
+		if(queuedEnemyState)
+			mStatePool->returnObject(queuedEnemyState);
 	}
 }

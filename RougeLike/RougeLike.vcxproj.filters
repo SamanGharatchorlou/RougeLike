@@ -134,12 +134,6 @@
     <ClCompile Include="Source\Objects\Pools\EffectPool.cpp" />
     <ClCompile Include="Source\Objects\Pools\EnemyPool.cpp" />
     <ClCompile Include="Source\Objects\Pools\CollectablesPool.cpp" />
-    <ClCompile Include="Source\Objects\Pools\TrapPool.cpp" />
-    <ClCompile Include="Source\Map\TileInteractables\FireGratingTrap.cpp" />
-    <ClCompile Include="Source\Map\TileInteractables\FireGratingTrigger.cpp" />
-    <ClCompile Include="Source\Map\TileInteractables\SpikeTrap.cpp" />
-    <ClCompile Include="Source\Map\TileInteractablesManager.cpp" />
-    <ClCompile Include="Source\Map\TileInteractables\TileInteractable.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\KnockbackStunEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\SlowEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\StunEffect.cpp" />
@@ -172,6 +166,7 @@
     <ClCompile Include="Source\Actors\Player\PlayerStates\PlayerAttackState.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\BasicAttackAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHandler.cpp" />
+    <ClCompile Include="Source\Map\TrapManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -334,14 +329,6 @@
     <ClInclude Include="Source\Objects\Pools\EffectPool.h" />
     <ClInclude Include="Source\Objects\Pools\EnemyPool.h" />
     <ClInclude Include="Source\Objects\Pools\CollectablesPool.h" />
-    <ClInclude Include="Source\Objects\Pools\TrapPool.h" />
-    <ClInclude Include="Source\Map\TileInteractables\FireGratingTrap.h" />
-    <ClInclude Include="Source\Map\TileInteractables\FireGratingTrigger.h" />
-    <ClInclude Include="Source\Map\TileInteractables\SpikeTrap.h" />
-    <ClInclude Include="Source\Map\TileInteractables\Trap.h" />
-    <ClInclude Include="Source\Map\TileInteractablesManager.h" />
-    <ClInclude Include="Source\Map\TileInteractables\TileInteractable.h" />
-    <ClInclude Include="Source\Map\TileInteractables\Trigger.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\StunEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\KnockbackStunEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\SlowEffect.h" />
@@ -380,6 +367,7 @@
     <ClInclude Include="Source\Actors\Player\PlayerStates\PlayerState.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\BasicAttackAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityHandler.h" />
+    <ClInclude Include="Source\Map\TrapManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

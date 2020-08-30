@@ -2,9 +2,11 @@
 
 #include "Map/MapBase.h"
 #include "Tiles/MapTile.h"
+#include "TrapManager.h"
 
 class Camera;
-
+class Actor;
+class EffectPool;
 
 enum class MapType
 {
@@ -18,10 +20,11 @@ enum class MapType
 class Map : public MapBase<MapTile>
 {
 public:
-	Map() : mType(MapType::None) { }
+	Map();
 	Map(Vector2D<int> mapIndexSize);
 	~Map() { };
 
+	void initTrapManager(Actor* actor, EffectPool* effectPool, const TrapDataMap* trapData);
 	void setInfo(MapType type, int level) { mType = type; mLevel = level; }
 
 	MapType type() const { return mType; }
@@ -66,6 +69,7 @@ public:
 	bool isValidTile(RectF rect) const;
 	bool isValidPosition(VectorF position) const;
 
+
 private:
 
 	void render(MapTile* tile, Camera* camera);
@@ -74,6 +78,8 @@ private:
 private:
 	MapType mType;
 	int mLevel;
+
+	TrapManager mTraps;
 
 	std::vector<MapTile*> mDeferredRendering;
 };

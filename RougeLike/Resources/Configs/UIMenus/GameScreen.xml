@@ -3,7 +3,7 @@
 
 	<Layer>
 		<!-- Player shield bar -->
-		<Box id = "ArmorIcon" x = "271.000" y = "16.000" width = "50.000" height = "50.000" texture = "ShieldIcon"></Box>
+		<Box id = "ArmorIcon" x = "271.000" y = "16.000" width = "50.000" height = "50.000" texture = "ArmorIcon"></Box>
 		<Box id = "BlackArmorBar" x = "322.065" y = "34.000" width = "380.000" height = "24.000" texture = "BlackBar"></Box>
 		<Box id = "ArmorBar"   parent = "BlackArmorBar" x = "0" y = "0" width = "380.000" height = "24.000" texture = "BlueBar"></Box>
 

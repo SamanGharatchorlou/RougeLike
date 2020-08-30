@@ -6,19 +6,28 @@
 #include "MapPopulator.h"
 #include "MapDecorator.h"
 
+#include "Game/Environment.h"
+
+
+void MapBuilder::init(Environment* environment)
+{
+	mEffectPool = environment->effectPool();
+	mPlayer = environment->actors()->player()->get();
+}
 
 
 void MapBuilder::load()
 {
-	int poolSize = 5;
-	for (int i = 0; i < poolSize; i++)
-	{
-		mPool.push(new Map());
-	}
-
 	BasicString path = FileManager::Get()->findFile(FileManager::Config_Map, "Environment");
 	XMLParser parser(path);
 	mSpecs.set(parser.rootNode());
+	mSpecs.readTrapData();
+
+	int poolSize = 5;
+	for (int i = 0; i < poolSize; i++)
+	{
+		mPool.push(new Map);
+	}
 }
 
 void MapBuilder::clear()
@@ -47,6 +56,7 @@ Map* MapBuilder::buildMap(MapType type, VectorF offset)
 	buildMapStructure(map, type);
 	
 	fillMapData(map, type, offset, 1);
+	map->initTrapManager(mPlayer, mEffectPool, mSpecs.trapData());
 
 	return map;
 }
@@ -69,6 +79,7 @@ Map* MapBuilder::buildFirst()
 	}
 
 	fillMapData(map, MapType::Corridor, VectorF(), 0);
+	map->initTrapManager(mPlayer, mEffectPool, mSpecs.trapData());
 
 	return map;
 }
