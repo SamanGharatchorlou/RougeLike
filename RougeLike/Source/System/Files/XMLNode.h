@@ -29,6 +29,8 @@ public:
 	const BasicString name() const { return BasicString(node->name()); }
 	const BasicString value() const { return BasicString(node->value()); }
 
+	void setValue(const BasicString& value) { node->value(value.c_str()); }
+
 	bool isEmpty() const { return node == nullptr; }
 
 

@@ -87,11 +87,20 @@ void UITextBox::initText(const StringMap& attributes)
 	BasicString text = attributes.at("text");
 	BasicString font = attributes.contains("font") ? attributes.at("font") : "default";
 	int ptSize = attributes.contains("ptSize") ? attributes.getInt("ptSize") : 0;
-	SDL_Color colour = {
+
+	SDL_Color colour;
+	if (attributes.contains("r"))
+	{
+		colour = {
 		(Uint8)attributes.getInt("r"),
 		(Uint8)attributes.getInt("g"),
 		(Uint8)attributes.getInt("b")
-	};
+		};
+	}
+	else // dafult to white
+	{
+		colour = { 255, 255, 255 };
+	}
 
 	mText.init(text, font, ptSize, colour);
 }

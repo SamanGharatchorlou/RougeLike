@@ -21,7 +21,7 @@ void PauseScreen::handleInput(const InputManager* input)
 {
 	if (input->isPressed(Button::Pause))
 	{
-		mController->popScreen();
+		popScreenState();
 	}
 	else if (input->isPressed(Button::Esc) || input->isPressed(Button::Quit))
 	{
@@ -47,7 +47,13 @@ void PauseScreen::slowUpdate()
 	}
 	else if (selected(ScreenItem::Resume))
 	{
-		mController->popScreen();
-		mController->popSystemState();
+		popScreenState();
 	}
+}
+
+
+void PauseScreen::popScreenState()
+{
+	mController->popScreen();
+	mController->popSystemState();
 }

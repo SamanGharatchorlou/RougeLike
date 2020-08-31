@@ -9,10 +9,12 @@ public:
 	enum class Type
 	{
 		None,
+
 		Element,
 		Box,
 		TextBox,
 		Button,
+		Switch,
 		Slider
 	};
 
@@ -48,7 +50,7 @@ public:
 	std::vector<UIElement*> children() const { return mChildren; }
 
 	virtual Type type() const { return Type::Element; }
-	virtual bool hasText() const { return false; }
+	//virtual bool hasText() const { return false; }
 
 	virtual void render() { };
 

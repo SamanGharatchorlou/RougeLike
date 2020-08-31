@@ -2,13 +2,12 @@
 <screen>
 
 	<Layer>
-		<!-- Player shield bar -->
-		<Box id = "ArmorIcon" x = "271.000" y = "16.000" width = "50.000" height = "50.000" texture = "ArmorIcon"></Box>
-		<Box id = "BlackArmorBar" x = "322.065" y = "34.000" width = "380.000" height = "24.000" texture = "BlackBar"></Box>
-		<Box id = "ArmorBar"   parent = "BlackArmorBar" x = "0" y = "0" width = "380.000" height = "24.000" texture = "BlueBar"></Box>
+		<Slider id = "HealthSlider" x = "244.565" y = "61.500" width = "507.500" height = "35.000" slider = "HealthSlider"></Slider>
+		<Slider id = "LevelSlider" x = "319.565" y = "21.500" width = "432.500" height = "30.000" slider = "LevelSlider"></Slider>
+		<TextBox id = "ExpText" parent = "LevelSlider" x = "-65.000" y = "-5.000" width = "58.000" height = "36.500">
+			<text>Exp:</text>
+		</TextBox>
 
-		<Slider id = "HealthSlider" x = "322.065" y = "84.00" width = "450.000" height = "35.000" slider = "HealthSlider"></Slider>
-		<Slider id = "LevelSlider" x = "322.065" y = "184.00" width = "450.000" height = "35.000" slider = "LevelSlider"></Slider>
 	</Layer>
 
 	<!-- Map level -->

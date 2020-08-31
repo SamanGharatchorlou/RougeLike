@@ -79,14 +79,15 @@ Screen* ScreenController::getPoolScreen(ScreenType type)
 
 void ScreenController::openPopup(const XMLNode& textNode)
 {
-	Screen* screen = mUI->mScreenPool.screenRef(ScreenType::Popup);
-	PopupScreen* popup = static_cast<PopupScreen*>(screen);
-	popup->setMainText(textNode.value());
+	if (mEnablePopups)
+	{
+		Screen* screen = mUI->mScreenPool.screenRef(ScreenType::Popup);
+		PopupScreen* popup = static_cast<PopupScreen*>(screen);
+		popup->setMainText(textNode.value());
 
-	addScreen(ScreenType::Popup);
-	addSystemState(SystemStates::PauseState);
-
-	//mGameController->getStateMachine()->addState(new PauseState(mGameData, mGameController));
+		addScreen(ScreenType::Popup);
+		addSystemState(SystemStates::PauseState);
+	}
 }
 
 

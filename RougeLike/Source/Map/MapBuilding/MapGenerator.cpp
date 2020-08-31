@@ -43,7 +43,7 @@ void MapGenerator::fillWithDefaultTiles(Grid<MapTile>& data)
 
 void MapGenerator::carveRandomTunnel(Grid<MapTile>& data, Index& outEndIndex)
 {
-	int widthMax = 12;
+	int widthMax = 8;
 	int widthMin = 2;
 
 	// Entrace values

@@ -23,6 +23,25 @@ void MapPopulator::populateData(Map* map)
 	AnimationTilePopulator animationTiles;
 	animationTiles.addAnimations(data);
 
+	for (int y = 0; y < data.yCount(); y++)
+	{
+		for (int x = 0; x < data.xCount(); x++)
+		{
+			MapTile& tile = data[Index(x, y)];
+			RenderTile type = tile.renderType();
+
+			if (type == RenderTile::Floor)
+			{				
+				int rand = randomNumberBetween(0, 14);
+				if (rand >= 12)
+					tile.set(RenderTile::Floor_2);
+				else
+					tile.set(RenderTile::Floor_1);
+			}
+		}
+	}
+
+
 	editCollisionInfo(data);
 	setTextures(data);
 }
@@ -34,7 +53,8 @@ void MapPopulator::setTextures(Grid<MapTile>& data)
 	const TextureManager* textures = TextureManager::Get();
 	std::unordered_map<RenderTile, Texture*> tileTextures;
 
-	tileTextures[RenderTile::Floor] = textures->getTexture("floor", FileManager::Image_Maps);
+	tileTextures[RenderTile::Floor_1] = textures->getTexture("floor_1", FileManager::Image_Maps);
+	tileTextures[RenderTile::Floor_2] = textures->getTexture("floor_2", FileManager::Image_Maps);
 	tileTextures[RenderTile::Floor_Left] = textures->getTexture("floor_left", FileManager::Image_Maps);
 	tileTextures[RenderTile::Floor_Right] = textures->getTexture("floor_right", FileManager::Image_Maps);
 	tileTextures[RenderTile::Floor_Top] = textures->getTexture("floor_top", FileManager::Image_Maps);
@@ -83,12 +103,15 @@ void MapPopulator::setTextures(Grid<MapTile>& data)
 		{
 			MapTile& tile = data[Index(x, y)];
 			RenderTile type = tile.renderType();
-
 			tile.setTexture(tileTextures[type]);
 		}
 	}
 }
 
+/*
+
+
+*/
 
 
 // --- Collision Tiles --- //

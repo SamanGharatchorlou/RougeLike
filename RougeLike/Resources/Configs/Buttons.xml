@@ -13,4 +13,6 @@
 
 	<TrafficLightRoundButton texture = "RoundButtonGreen" textureSelected="RoundButtonBlue" textureHovering ="RoundButtonRed"></TrafficLightRoundButton>
 	<TrafficLightSquareButton texture = "SquareButtonGreen" textureSelected="SquareButtonBlue" textureHovering ="SquareButtonRed"></TrafficLightRoundButton>
+
+	<BasicSwitch texture = "OffSwitch" textureSelected = "OnSwitch"></BasicSwitch>
 </UI>

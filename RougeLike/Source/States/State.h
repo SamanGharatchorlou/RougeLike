@@ -15,6 +15,7 @@ struct State
 	// Movement, collisions etc 
 	virtual void fastUpdate(float dt) = 0;
 
+	// TODO: make this render() const
 	virtual void render() = 0;
 	virtual void exit() = 0;
 

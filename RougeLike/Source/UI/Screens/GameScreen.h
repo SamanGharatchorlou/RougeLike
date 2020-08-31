@@ -16,5 +16,8 @@ public:
 	void slowUpdate() override;
 	void exit() override { }
 
+	void resume() override;
+	void pause() override;
+
 	ScreenType type() override { return ScreenType::Game; }
 };

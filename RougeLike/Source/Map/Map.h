@@ -34,6 +34,8 @@ public:
 
 	// Update
 	void slowUpdate(float dt);
+	void pause() { mTraps.pause(); }
+	void resume() { mTraps.resume(); }
 
 	// Rendering
 	void renderFloor();

@@ -42,6 +42,10 @@ void PlayerManager::addExp(int exp)
 {
 	bool didLevelUp = mLevelling.gainExp(this, exp);
 
+	SetUISlider* sliderEventPtr = new SetUISlider("LevelSlider", mLevelling.expProgress());
+	EventPacket sliderEvent(sliderEventPtr);
+	mEvents.push(sliderEvent);
+
 	if (didLevelUp && mLevelling.level() == 2)
 	{
 		OpenPopupEvent* eventPtr = new OpenPopupEvent("LevelUpInfo");
@@ -75,10 +79,12 @@ void PlayerManager::fastUpdate(float dt)
 	{
 #if !IGNORE_WALLS
 		const Map* playerMap = mPlayer.currentMap();
-
-		VectorF velocity = mPlayer.physics()->velocity();
-		velocity = mWallCollisions.allowedVelocity(playerMap, velocity, dt);
-		mPlayer.physics()->setVelocity(velocity);
+		if (playerMap)
+		{
+			VectorF velocity = mPlayer.physics()->velocity();
+			velocity = mWallCollisions.allowedVelocity(playerMap, velocity, dt);
+			mPlayer.physics()->setVelocity(velocity);
+		}
 #endif
 
 		mPlayer.move(dt);
@@ -153,7 +159,7 @@ void PlayerManager::selectCharacter(const BasicString& characterConfig)
 	BasicString weapontype = parser.rootChild("WeaponType").value();
 	mPlayer.setWeaponType(mWeaponStash.getWeapon(weapontype));
 
-	mLevelling.init(parser.rootChild("Levelling"), mPlayer.rect());
+	mLevelling.init(parser.rootChild("LevellingInfo"), mPlayer.rect());
 
 #if UNLOCK_ALL_ABILITIES
 	mLevelling.unlockAllAbilities(this);
@@ -163,7 +169,6 @@ void PlayerManager::selectCharacter(const BasicString& characterConfig)
 
 void PlayerManager::selectWeapon(const BasicString& weaponName)
 {
-	// TODO: fix weapon data, does it still need attacking effects
 	WeaponData* weaponData = mWeaponStash.getData(weaponName);
 	mPlayer.selectWeapon(weaponData);
 

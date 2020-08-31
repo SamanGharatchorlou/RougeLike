@@ -13,6 +13,7 @@
 #include <sstream>
 #include <cstdio>
 #include <iostream>
+#include <fstream>
 
 // Containers
 #include <stack>

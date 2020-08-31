@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "ScreenBuilder.h"
 
+#include "Elements/UIElement.h"
 #include "Elements/UIBox.h"
 #include "Elements/UIButton.h"
-#include "Elements/UIElement.h"
+#include "Elements/UISwitch.h"
 #include "Elements/UITextBox.h"
 #include "Elements/UISlider.h"
 
@@ -116,6 +117,15 @@ UIElement* ScreenBuilder::buildElement(const StringMap& attributes) const
 		element = button;
 	}
 
+	else if (type == "Switch")
+	{
+		UISwitch* uiSwitch = new UISwitch(attributes);
+		TexturePacket textures = getButtonTextures(attributes.at("texture"));
+
+		uiSwitch->setTextures(textures.defaultTexture, textures.selected);
+		element = uiSwitch;
+	}
+
 	else if (type == "Slider")
 	{
 		UISlider* slider = new UISlider(attributes);
@@ -194,7 +204,7 @@ void ScreenBuilder::formatElements(ScreenLayers& screenLayers)
 void ScreenBuilder::reformatText(UIElement* element)
 {
 	// set text sizes
-	if (element->hasText())
+	if (element->type() == UIElement::Type::TextBox)
 	{
 		UITextBox* textBox = static_cast<UITextBox*>(element);
 
@@ -275,14 +285,23 @@ TexturePacket ScreenBuilder::getButtonTextures(const BasicString& buttonType) co
 
 	StringMap map = buttonNode.attributes();
 
-	BasicString texture = map.at("texture");
-	buttonTextures.defaultTexture = textures->getTexture(texture, FileManager::Image_UI);
+	if (map.contains("texture"))
+	{
+		BasicString texture = map.at("texture");
+		buttonTextures.defaultTexture = textures->getTexture(texture, FileManager::Image_UI);
+	}
 
-	BasicString textureSelected = map.at("textureSelected");
-	buttonTextures.selected = textures->getTexture(textureSelected, FileManager::Image_UI);
+	if (map.contains("textureSelected"))
+	{
+		BasicString textureSelected = map.at("textureSelected");
+		buttonTextures.selected = textures->getTexture(textureSelected, FileManager::Image_UI);
+	}
 
-	BasicString textureHovering = map.at("textureHovering");
-	buttonTextures.hovering = textures->getTexture(textureHovering, FileManager::Image_UI);
+	if (map.contains("textureHovering"))
+	{
+		BasicString textureHovering = map.at("textureHovering");
+		buttonTextures.hovering = textures->getTexture(textureHovering, FileManager::Image_UI);
+	}
 
 	return buttonTextures;
 }

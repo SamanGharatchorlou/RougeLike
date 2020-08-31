@@ -16,6 +16,7 @@ public:
 	void handleInput() override;
 	void render() override;
 
+	void pause() override;
 	void resume() override;
 	void exit() override;
 

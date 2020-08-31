@@ -8,190 +8,187 @@ void MapDecorator::addDecor(Map* map, const DecorMap& decorMap)
 {
 	Grid<MapTile>& data = map->getData();
 
-	for (DecorMap::const_iterator iter = decorMap.begin(); iter != decorMap.end(); iter++)
-	{
-		DecorType type = iter->first;
-
-		if (doesTypeContain(type, DecorType::Column))
-		{
-			addColumns(data, iter->second);
-		}
-
-		if (doesTypeContain(type, DecorType::Water))
-		{
-			addWaterFeatures(data, iter->second);
-		}
-
-		if (doesTypeContain(type, DecorType::Torch))
-		{
-			addTorches(data, iter->second);
-		}
-
-		addTraps(map, iter);
-
-		if (doesTypeContain(type, DecorType::Grating))
-		{
-			addGrating(data, iter->second);
-		}
-	}
+	addColumns(data, decorMap);
+	addWaterFeatures(data, decorMap);
+	addTorches(data, decorMap);
+	addSpikes(data, decorMap);
+	addTiggers(data, decorMap);
+	addGrating(data, decorMap);
 }
 
 
-void MapDecorator::addGrating(Grid<MapTile>& data, const StringMap& attributes)
+void MapDecorator::addGrating(Grid<MapTile>& data, const DecorMap& decorMap)
 {
-	for (int x = 0; x < data.xCount(); x++)
+	if (decorMap.contains(DecorType::Grating))
 	{
-		for (int y = 0; y < data.yCount(); y++)
+		for (int x = 0; x < data.xCount(); x++)
 		{
-			Index index(x, y);
-			Index down = index + Index(0, 1);
-
-			if (data[index].is(CollisionTile::Floor))
+			for (int y = 0; y < data.yCount(); y++)
 			{
-				data[down].add(DecorType::Grating);
-				if (data[index].is(DecorType::None))
+				Index index(x, y);
+				Index down = index + Index(0, 1);
+
+				if (data[index].is(CollisionTile::Floor))
 				{
-					data[index].add(DecorType::Grating);
+					data[down].add(DecorType::Grating);
+					if (data[index].is(DecorType::None))
+					{
+						data[index].add(DecorType::Grating);
+					}
 				}
 			}
 		}
 	}
-}
 
-
-void MapDecorator::addTraps(Map* map, DecorMap::const_iterator& attributes)
-{
-	Grid<MapTile>& data = map->getData();
-	DecorType type = attributes->first;
-
-
-	if (doesTypeContain(type, DecorType::Spikes))
-	{
-		addSpikes(data, attributes->second);
-	}
-
-	if (doesTypeContain(type, DecorType::GratingTrigger))
-	{
-		addTiggers(data, attributes->second);
-	}
 }
 
 
 // Water
-void MapDecorator::addWaterFeatures(Grid<MapTile>& data, const StringMap& attributes)
+void MapDecorator::addWaterFeatures(Grid<MapTile>& data, const DecorMap& decorMap)
 {
-	int width = attributes.getInt("width");
-	int height = attributes.getInt("height");
-	int spacing = attributes.getInt("spacing");
-	Vector2D<int> poolSize(width, height);
-
-	int xWaterIndex = -spacing;
-
-	for (int x = 0; x < data.xCount(); x++)
+	DecorType water = DecorType::Water;
+	if (decorMap.contains(water))
 	{
-		for (int y = 0; y < data.yCount(); y++)
-		{
-			Index index(x, y);
-			if (canAddWater(data, index, poolSize))
-			{
-				// +1 either sides of pool size
-				for (int x = index.x; x < index.x + poolSize.x + 2; x++)
-				{
-					for (int y = index.y; y < index.y + poolSize.y + 2; y++)
-					{
-						data[Index(x, y)].set(CollisionTile::Water);
-						data[Index(x, y)].add(DecorType::Water);
-					}
-				}
+		const StringMap& attributes = decorMap.at(water);
+		int width = attributes.getInt("width");
+		int height = attributes.getInt("height");
+		int spacing = attributes.getInt("spacing");
+		Vector2D<int> poolSize(width, height);
 
-				x += spacing + width;
-				break;
+		int xWaterIndex = -spacing;
+
+		for (int x = 0; x < data.xCount(); x++)
+		{
+			for (int y = 0; y < data.yCount(); y++)
+			{
+				Index index(x, y);
+
+				if (canAddWater(data, index, poolSize))
+				{
+					while (canAddWater(data, index, poolSize + Index(1, 0)))
+					{
+						poolSize.x++;
+					}
+					while (canAddWater(data, index, poolSize + Index(0, 1)))
+					{
+						poolSize.y++;
+					}
+
+					// +1 either sides of pool size
+					for (int x = index.x; x < index.x + poolSize.x + 2; x++)
+					{
+						for (int y = index.y; y < index.y + poolSize.y + 2; y++)
+						{
+							data[Index(x, y)].set(CollisionTile::Water);
+							data[Index(x, y)].add(water);
+						}
+					}
+
+					x += spacing + width;
+					break;
+				}
 			}
 		}
 	}
 }
-
-
 
 
 
 // Columns
-void MapDecorator::addColumns(Grid<MapTile>& data, const StringMap& attributes)
+void MapDecorator::addColumns(Grid<MapTile>& data, const DecorMap& decorMap)
 {
-	int spacing = attributes.getInt("spacing");
-
-	for (int x = 0; x < data.xCount(); x++)
+	DecorType column = DecorType::Column;
+	if (decorMap.contains(column))
 	{
-		for (int y = 0; y < data.yCount(); y++)
+		const StringMap& attributes = decorMap.at(column);
+		int spacing = attributes.getInt("spacing");
+
+		for (int x = 0; x < data.xCount(); x++)
 		{
-			Index index(x, y);
-
-			if (isLowerWall(data, index) && canAddWallDecor(data, DecorType::Column, index, spacing))
+			for (int y = 0; y < data.yCount(); y++)
 			{
-				Index up(index + Index(0, -1));
-				Index up2(index + Index(0, -2));
-				Index down(index + Index(0, 1));
+				Index index(x, y);
 
-				if (isValid(up2, data))
-					data[up2].add(DecorType::Column); // Wall top
+				if (isLowerWall(data, index) && canAddWallDecor(data, column, index, spacing))
+				{
+					Index up(index + Index(0, -1));
+					Index up2(index + Index(0, -2));
+					Index down(index + Index(0, 1));
 
-				if (isValid(up, data))
-					data[up].add(DecorType::Column); // Upper
+					if (isValid(up2, data))
+						data[up2].add(column); // Wall top
 
-				data[index].add(DecorType::Column); // Lower
-				data[down].add(DecorType::Column); // Base
+					if (isValid(up, data))
+						data[up].add(column); // Upper
 
-				//x += columnWidth - 1;
-				break;
+					data[index].add(column); // Lower
+					data[down].add(column); // Base
+
+					//x += columnWidth - 1;
+					break;
+				}
 			}
 		}
 	}
 }
-
 
 
 
 // Torches
-void MapDecorator::addTorches(Grid<MapTile>& data, const StringMap& attributes)
+void MapDecorator::addTorches(Grid<MapTile>& data, const DecorMap& decorMap)
 {
-	DecorType torchType = stringToDecorType(attributes.at("type"));
-	int spacing = attributes.getInt("spacing");
-
-	for (int x = 0; x < data.xCount(); x++)
+	DecorType torch = DecorType::Torch;
+	if (decorMap.contains(torch))
 	{
-		for (int y = 0; y < data.yCount(); y++)
-		{
-			Index index(x, y);
-			if (isLowerWall(data, index))
-			{
-				if (canAddWallDecor(data, torchType, index, spacing))
-				{
-					data[index].add(DecorType::Torch | torchType);
-				}
-			}
+		const StringMap& attributes = decorMap.at(torch);
+		DecorType torchType = stringToDecorType(attributes.at("type"));
+		int spacing = attributes.getInt("spacing");
 
+		for (int x = 0; x < data.xCount(); x++)
+		{
+			for (int y = 0; y < data.yCount(); y++)
+			{
+				Index index(x, y);
+				if (isLowerWall(data, index))
+				{
+					if (canAddWallDecor(data, torchType, index, spacing))
+					{
+						data[index].add(torch | torchType);
+					}
+				}
+
+			}
 		}
 	}
 }
 
 
 // Spikes
-void MapDecorator::addSpikes(Grid<MapTile>& data, const StringMap& attributes)
+void MapDecorator::addSpikes(Grid<MapTile>& data, const DecorMap& decorMap)
 {
-	int rate = attributes.getInt("rate");
-	for (int x = 0; x < data.xCount(); x++)
+	DecorType spikes = DecorType::Spikes;
+	if (decorMap.contains(spikes))
 	{
-		for (int y = 0; y < data.yCount(); y++)
+		const StringMap& attributes = decorMap.at(spikes);
+		int rate = attributes.getInt("rate");
+		for (int x = 0; x < data.xCount(); x++)
 		{
-			Index index(x, y);
-			Index up(x, y);
-
-			if (data[index].is(CollisionTile::Floor) && data[index].is(DecorType::None))
+			for (int y = 0; y < data.yCount(); y++)
 			{
-				bool addSpike = randomNumberBetween(0, 101) > 100 - rate;
-				if (addSpike)
+				Index index(x, y);
+				Index up(x, y);
+
+				if (data[index].is(CollisionTile::Floor) && data[index].is(DecorType::None))
 				{
-					data[Index(x, y)].add(DecorType::Spikes);
+					if (data[index].has(DecorType::Water))
+					{
+						bool test = data[index].is(DecorType::None);
+					}
+					bool addSpike = randomNumberBetween(0, 101) > 100 - rate;
+					if (addSpike)
+					{
+						data[Index(x, y)].add(spikes);
+					}
 				}
 			}
 		}
@@ -199,10 +196,15 @@ void MapDecorator::addSpikes(Grid<MapTile>& data, const StringMap& attributes)
 }
 
 // Spikes
-void MapDecorator::addTiggers(Grid<MapTile>& data, const StringMap& attributes)
+void MapDecorator::addTiggers(Grid<MapTile>& data, const DecorMap& decorMap)
 {
-	Index index = attributes.getVector("x", "y").toInt();
-	data[index].set(DecorType::GratingTrigger);
+	DecorType trigger = DecorType::GratingTrigger;
+	if (decorMap.contains(trigger))
+	{
+		const StringMap& attributes = decorMap.at(trigger);
+		Index index = attributes.getVector("x", "y").toInt();
+		data[index].set(trigger);
+	}
 }
 
 
@@ -216,8 +218,12 @@ bool MapDecorator::canAddWater(const Grid<MapTile>& data, Index index, Vector2D<
 		// +1 on bottom to make sure there's a floor gap between water and wall, for the correct wall render type calculation
 		for (int y = index.y - 1; y < index.y + size.y + 3; y++)
 		{
-			if (isValid(Index(x, y), data) && data.get(Index(x, y)).is(CollisionTile::Floor) && data.get(Index(x, y)).is(DecorType::None))
-				continue;
+			if (isValid(Index(x, y), data))
+			{
+				const MapTile& tile = data.get(Index(x, y));
+				if (tile.is(CollisionTile::Floor))
+					continue;
+			}
 
 			return false;
 		}

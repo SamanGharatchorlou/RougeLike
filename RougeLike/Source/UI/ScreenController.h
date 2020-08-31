@@ -39,6 +39,11 @@ public:
 
 	UIManager* ui() { return mUI; }
 
+	// TODO: make const(), need render() to be const first
+	void setPersistingScren(Screen* screen) { mPersistingScreen = screen; }
+	Screen* persistingScreen() { return mPersistingScreen; }
+
+	void enablePopups(bool enable) { mEnablePopups = enable; }
 
 private:
 	Screen* getPoolScreen(ScreenType type);
@@ -49,4 +54,7 @@ private:
 	UIManager* mUI;
 
 	StateMachine<Screen> mScreens;
+	Screen* mPersistingScreen;
+
+	bool mEnablePopups;
 };

@@ -9,6 +9,9 @@
 #include "Game/Environment.h"
 
 
+MapBuilder::MapBuilder() : mEffectPool(nullptr), mPlayer(nullptr), mMapLevel(0) { }
+
+
 void MapBuilder::init(Environment* environment)
 {
 	mEffectPool = environment->effectPool();
@@ -22,40 +25,21 @@ void MapBuilder::load()
 	XMLParser parser(path);
 	mSpecs.set(parser.rootNode());
 	mSpecs.readTrapData();
-
-	int poolSize = 5;
-	for (int i = 0; i < poolSize; i++)
-	{
-		mPool.push(new Map);
-	}
 }
 
 void MapBuilder::clear()
 {
-	while (mPool.size() > 0)
-	{
-		delete mPool.popFront();
-	}
-
 	mSpecs.clear();
 }
 
 
-void MapBuilder::returnMap(Map* map)
-{
-	map->clear();
-	mPool.push(map);
-}
-
-
-
 Map* MapBuilder::buildMap(MapType type, VectorF offset)
 {
-	Map* map = mPool.popFront();
+	Map* map = new Map;
 
 	buildMapStructure(map, type);
 	
-	fillMapData(map, type, offset, 1);
+	fillMapData(map, type, offset, mMapLevel);
 	map->initTrapManager(mPlayer, mEffectPool, mSpecs.trapData());
 
 	return map;
@@ -64,7 +48,7 @@ Map* MapBuilder::buildMap(MapType type, VectorF offset)
 
 Map* MapBuilder::buildFirst()
 {
-	Map* map = mPool.popFront();
+	Map* map = new Map;
 
 	buildMapStructure(map, MapType::Corridor);
 
@@ -147,6 +131,7 @@ void MapBuilder::buildMapStructure(Map* map, MapType type)
 		VectorF size = mSpecs.size("Dungeon");
 		map->setSize(size.toInt());
 		generator.buildDungeon(map->getData());
+		mMapLevel++;
 	}
 	else if (type == MapType::Corridor)
 	{

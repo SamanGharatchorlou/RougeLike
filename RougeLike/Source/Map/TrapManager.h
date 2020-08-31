@@ -34,6 +34,8 @@ public:
 		bool isExhausted() const { return exhausted; }
 		void setExhausted(bool isExhausted) { exhausted = isExhausted; }
 
+		void pause() { timer.pause(); }
+		void resume() { timer.resume(); }
 		float time() const { return timer.getSeconds(); }
 		void reset() { timer.restart(); }
 
@@ -55,23 +57,25 @@ public:
 	TrapManager(Map* map) : mMap(map), mTrapData(nullptr), mActor(nullptr), mEffectPool(nullptr) { }
 
 	void init(Actor* actor, EffectPool* effectPool, const TrapDataMap* trapData);
-	void flushQueues();
+	void clear();
 
 	void slowUpdate();
-	void processCollisions(VectorF position);
+	void processCollisions(Index index);
 
+	void pause();
+	void resume();
 
 private:	
 	
 	void triggerAll(DecorType type);
-	void triggerTrap(VectorF position);
+	void triggerTrap(Index index);
 
 	void resolveCollision(Trap& trap);
 
 	void updateTriggerTraps();
 	void updateResetTraps();
 
-	MapTile* mapTile(Trap trap) const;
+	MapTile* mapTile(const Trap& trap) const;
 
 
 private:

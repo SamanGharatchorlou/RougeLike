@@ -39,9 +39,7 @@ public:
 	virtual void render() override;
 	virtual void render(RectF subRect);
 
-	virtual bool isButton() const { return false; }
-	virtual bool hasText() const { return false; }
-	virtual Type type() const { return Type::Box; }
+	virtual Type type() const override { return Type::Box; }
 
 protected:
 	Texture* mTexture;

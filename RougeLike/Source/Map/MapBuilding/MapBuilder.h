@@ -12,6 +12,7 @@ enum class MapType;
 class MapBuilder
 {
 public:
+	MapBuilder();
 	void init(Environment* environment);
 
 	void load();
@@ -20,7 +21,7 @@ public:
 	Map* buildFirst();
 	Map* buildMap(MapType type, VectorF offset);
 
-	void returnMap(Map* map);
+	//void returnMap(Map* map);
 
 	void close(Map* map);
 
@@ -38,7 +39,6 @@ private:
 	EffectPool* mEffectPool;
 	Actor* mPlayer;
 
-	UniqueQueue<Map*> mPool;
-
 	MapSpecifications mSpecs;
+	int mMapLevel;
 };

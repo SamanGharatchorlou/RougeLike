@@ -14,7 +14,10 @@ enum class RenderTile : Uint64
 {
 	None,
 
-	Floor,
+	Floor_1 = 1 << 0,
+	Floor_2 = 1 << 1,
+
+	Floor = 1 << 2,
 
 	Floor_ColumnBase = Floor << 1,
 
@@ -67,9 +70,11 @@ enum class RenderTile : Uint64
 	Point_Top_Right = Wall << 15,
 	Point_Top_Left = Wall << 16,
 
-	Column_Lower = Wall << 17,
-	Column_Upper = Wall << 18,
-	Column_Top = Wall << 19,
+	Column = Wall << 17,
+
+	Column_Lower = Column << 18,
+	Column_Upper = Column << 19,
+	Column_Top = Column << 20,
 };
 
 
@@ -134,6 +139,11 @@ inline RenderTile operator |(RenderTile a, RenderTile b)
 inline RenderTile operator ~(RenderTile a)
 {
 	return static_cast<RenderTile>(~static_cast<Uint64>(a));
+}
+
+inline RenderTile operator +(RenderTile a, int b)
+{
+	return static_cast<RenderTile>(static_cast<Uint64>(a) + static_cast<Uint64>(b));
 }
 
 

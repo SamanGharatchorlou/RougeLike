@@ -116,8 +116,8 @@ void Map::deferredRender()
 
 void Map::clearData()
 {
-	mData = Grid<MapTile>(Vector2D<int>(xCount(), yCount()), MapTile());
-	mTraps.flushQueues();
+	mData.clear();
+	mTraps.clear();
 }
 
 

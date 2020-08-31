@@ -16,52 +16,53 @@ void TrapManager::init(Actor* actor, EffectPool* effectPool, const TrapDataMap* 
 }
 
 
-void TrapManager::flushQueues()
+void TrapManager::clear()
 {
 	mUntriggeredTraps.clear();
 	mTriggeredTraps.clear();
+	mPersistingTraps.clear();
+
+	mEffectPool = nullptr;
+	mActor = nullptr;
+	mTrapData = nullptr;
 }
 
 
 void TrapManager::slowUpdate()
 {
-	triggerTrap(mActor->position());
+	if (mMap->isValidPosition(mActor->position()))
+	{
+		Index index = mMap->index(mActor->position());
+		processCollisions(index);
+		triggerTrap(index);
+	}
+
 	updateTriggerTraps();
 	updateResetTraps();
-	processCollisions(mActor->position());
 }
 
 
-void TrapManager::triggerTrap(VectorF position)
+void TrapManager::triggerTrap(Index index)
 {
-	if (mMap->isValidPosition(position))
+	MapTile* tile = mMap->tile(index);
+	if (tile->has(DecorType::Spikes))
 	{
-		Index index = mMap->index(position);
-		MapTile* tile = mMap->tile(index);
+		Animator& animator = tile->animation(0);
 
-		// Add untriggered trap
-		DecorType decor = tile->decorType();
-
-		if (tile->has(DecorType::Spikes))
+		if (animator.activeAimation()->currentFrame() == 0)
 		{
-			
-			Animator& animator = tile->animation(0);
-
-			if (animator.activeAimation()->currentFrame() == 0)
-			{
-				Trap trap(index, mTrapData->at(decor));
-				mUntriggeredTraps.push(trap);
-			}
+			Trap trap(index, mTrapData->at(tile->decorType()));
+			mUntriggeredTraps.push(trap);
 		}
-		else if (tile->has(DecorType::GratingTrigger))
-		{
-			Animator& animator = tile->animation(0);
+	}
+	else if (tile->has(DecorType::GratingTrigger))
+	{
+		Animator& animator = tile->animation(0);
 
-			if (animator.activeAimation()->currentFrame() == 0)
-			{
-				animator.activeAimation()->nextFrame();
-				triggerAll(DecorType::Grating);
-			}
+		if (animator.activeAimation()->currentFrame() == 0)
+		{
+			animator.activeAimation()->nextFrame();
+			triggerAll(DecorType::Grating);
 		}
 	}
 }
@@ -87,11 +88,9 @@ void TrapManager::triggerAll(DecorType type)
 }
 
 
-void TrapManager::processCollisions(VectorF position)
+void TrapManager::processCollisions(Index index)
 {
-	Index index = mMap->index(position);
-
-	for (std::deque<Trap>::iterator iter = mTriggeredTraps.begin(); iter != mTriggeredTraps.end(); iter++)
+	for (UniqueQueue<Trap>::iterator iter = mTriggeredTraps.begin(); iter != mTriggeredTraps.end(); iter++)
 	{
 		Trap& trap = *iter;
 		if (trap.doesCollide(index))
@@ -110,6 +109,30 @@ void TrapManager::processCollisions(VectorF position)
 			trap.reset();
 			break;
 		}
+	}
+}
+
+
+void TrapManager::pause()
+{
+	for (UniqueQueue<Trap>::iterator iter = mTriggeredTraps.begin(); iter != mTriggeredTraps.end(); iter++)
+	{
+		iter->pause();
+	}
+	for (UniqueQueue<Trap>::iterator iter = mUntriggeredTraps.begin(); iter != mUntriggeredTraps.end(); iter++)
+	{
+		iter->pause();
+	}
+}
+void TrapManager::resume()
+{
+	for (UniqueQueue<Trap>::iterator iter = mTriggeredTraps.begin(); iter != mTriggeredTraps.end(); iter++)
+	{
+		iter->resume();
+	}
+	for (UniqueQueue<Trap>::iterator iter = mUntriggeredTraps.begin(); iter != mUntriggeredTraps.end(); iter++)
+	{
+		iter->resume();
 	}
 }
 
@@ -171,7 +194,7 @@ void TrapManager::updateResetTraps()
 
 
 
-MapTile* TrapManager::mapTile(Trap trap) const
+MapTile* TrapManager::mapTile(const Trap& trap) const
 {
 	Index trapIndex = trap.index();
 	return mMap->tile(trapIndex);

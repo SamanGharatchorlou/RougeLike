@@ -27,10 +27,15 @@ GameScreen::GameScreen()
 void GameScreen::init()
 {
 	linkSlider(ScreenItem::Health, "HealthSlider");
+	linkSlider(ScreenItem::Exp, "LevelSlider");
 
 	slider(ScreenItem::Health)->disableInput();
 
+	slider(ScreenItem::Exp)->disableInput();
+	slider(ScreenItem::Exp)->setSliderValue(0.0f);
+
 	mController->ui()->setCursorTexture(TextureManager::Get()->getTexture("GameCursor", FileManager::Image_UI));
+
 
 #if SET_GAME_SCALE
 	Renderer::Get()->setScale(game_scale);
@@ -66,6 +71,16 @@ void GameScreen::slowUpdate()
 		newRect.SetSize(newSize);
 		icon->setRect(newRect);
 	}
+}
 
 
+void GameScreen::resume()
+{
+	mController->setPersistingScren(nullptr);
+}
+
+
+void GameScreen::pause()
+{
+	mController->setPersistingScren(this);
 }

@@ -68,9 +68,6 @@ void Player::slowUpdate(float dt)
 
 	Action action = mPhysics.isMoving() ? Action::Run : Action::Idle;
 	mAnimator.selectAnimation(action);
-
-	//if (collider()->gotHit())
-	//	processHit();
 }
 
 
@@ -168,7 +165,7 @@ void Player::updateMapInfo()
 {
 	const Map* map = currentMap();
 
-#if IGNORE_WALLS // We might want to walk outside of the map
+#if _DEBUG // break points might break this
 	if (!map)
 		return;
 #endif

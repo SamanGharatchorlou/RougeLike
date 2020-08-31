@@ -13,14 +13,13 @@ public:
 	void addDecor(Map* map, const DecorMap& decorMap);
 
 private:
-	void addTraps(Map* map, DecorMap::const_iterator& attributes);
 
-	void addColumns(Grid<MapTile>& data, const StringMap& attributes);
-	void addWaterFeatures(Grid<MapTile>& data, const StringMap& attributes);
-	void addTorches(Grid<MapTile>& data, const StringMap& attributes);
-	void addSpikes(Grid<MapTile>& data, const StringMap& attributes);
-	void addTiggers(Grid<MapTile>& data, const StringMap& attributes);
-	void addGrating(Grid<MapTile>& data, const StringMap& attributes);
+	void addColumns(Grid<MapTile>& data,		const DecorMap& decorMap);
+	void addWaterFeatures(Grid<MapTile>& data,	const DecorMap& decorMap);
+	void addTorches(Grid<MapTile>& data,		const DecorMap& decorMap);
+	void addSpikes(Grid<MapTile>& data,			const DecorMap& decorMap);
+	void addTiggers(Grid<MapTile>& data,		const DecorMap& decorMap);
+	void addGrating(Grid<MapTile>& data,		const DecorMap& decorMap);
 
 	bool doesTypeContain(DecorType baseType, DecorType queryType) const;
 

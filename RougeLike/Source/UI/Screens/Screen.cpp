@@ -3,7 +3,7 @@
 
 #include "UI/ScreenLayers.h"
 
-//#include "UI/Elements/UIElement.h"
+#include "UI/Elements/UISwitch.h"
 #include "UI/Elements/UIButton.h"
 #include "UI/Elements/UISlider.h"
 
@@ -53,7 +53,7 @@ void Screen::updateButtons(const InputManager* input)
 }
 
 
-void Screen::render()
+void Screen::render() 
 {
 	for (const ScreenLayer& layer : mScreenLayers.layers())
 	{
@@ -88,7 +88,7 @@ UIButton* Screen::findButton(const BasicString& id)
 }
 
 
-void Screen::linkButton(ScreenItem setting, const BasicString& buttonId)
+void Screen::linkButton(ScreenItem option, const BasicString& buttonId)
 {
 	UIButton* button = findButton(buttonId);
 
@@ -99,11 +99,35 @@ void Screen::linkButton(ScreenItem setting, const BasicString& buttonId)
 		return;
 	}
 #endif
-	mButtons[setting] = button;
+	mButtons[option] = button;
 }
 
 
-void Screen::linkSlider(ScreenItem setting, const BasicString& sliderId)
+void Screen::linkSwitch(ScreenItem option, const BasicString& switchId)
+{
+	UIElement* element = find(switchId);
+
+#if _DEBUG
+	if (!element)
+	{
+		DebugPrint(Warning, "No element '%s' found on screen type %d\n", switchId, type());
+		return;
+	}
+
+	if (element->type() != UIElement::Type::Switch)
+	{
+		DebugPrint(Warning, "Element '%s' is not a switch type\n", switchId);
+		return;
+	}
+#endif
+
+
+	UISwitch* uiSwitch = static_cast<UISwitch*>(element);
+	mSwitches[option] = uiSwitch;
+}
+
+
+void Screen::linkSlider(ScreenItem option, const BasicString& sliderId)
 {
 	UIElement* element = find(sliderId);
 
@@ -122,7 +146,7 @@ void Screen::linkSlider(ScreenItem setting, const BasicString& sliderId)
 #endif
 
 	UISlider* slider = static_cast<UISlider*>(element);
-	mSliders[setting] = slider;
+	mSliders[option] = slider;
 }
 
 

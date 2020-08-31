@@ -2,13 +2,25 @@
 #include "Cursor.h"
 #include "Graphics/Texture.h"
 
+#if DEBUG_CURSOR
+#include "Debug/DebugDraw.h"
+#endif
+
 
 Cursor::Cursor() : mTexture(nullptr), mMoving(false), mVisibility(false) { }
 
 
 void Cursor::render()
 {
+#if DEBUG_CURSOR
+	debugDrawRect(mRect, RenderColour::LightGrey);
+#endif
+
 	mTexture->render(mRect);
+
+#if DEBUG_CURSOR
+	debugDrawPoint(position(), 5.0f, RenderColour::Black);
+#endif
 }
 
 void Cursor::setButton(ButtonType type, Button button)
@@ -23,6 +35,12 @@ void Cursor::clearInputs()
 
 	mButtons[Cursor::Left].setReleased(false);
 	mButtons[Cursor::Right].setReleased(false);
+}
+
+
+void Cursor::setCursorOffsetPoint(VectorF offset)
+{
+	mCursorOffsetPoint = offset;
 }
 
 

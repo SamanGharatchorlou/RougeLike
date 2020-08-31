@@ -40,14 +40,5 @@
 		</Animations>
 	</Animator>
 
-	<Levelling>
-		<Info>SoldierLevelUp</Info>
-		<Abilities>
-			<Slash></Slash>
-			<Heal></Heal>
-			<Charge></Charge>
-			<Smash></Smash>
-			<Spikes></Spikes>
-		</Abilities>
-	</Levelling>
+	<LevellingInfo>SoldierLevelUp</InfoLevelling>
 </Data>

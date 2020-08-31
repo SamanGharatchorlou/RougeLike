@@ -30,7 +30,7 @@ void LevelManager::clear()
 {
 	while (mMaps.size() > 0)
 	{
-		mBuilder.returnMap(mMaps.popFront());
+		delete mMaps.popFront();
 	}
 
 	mBuilder.clear();
@@ -56,14 +56,6 @@ void LevelManager::addNextMap()
 		notify(event);
 	}
 }
-
-
-void LevelManager::popFront()
-{
-	Map* map = mMaps.popFront();
-	mBuilder.returnMap(map);
-}
-
 
 
 Map* LevelManager::firstMap(MapType type) const
@@ -115,6 +107,25 @@ void LevelManager::slowUpdate(float dt)
 	closeLevel();
 }
 
+
+void LevelManager::pause()
+{
+	UniqueQueue<Map*>::iterator iter;
+	for (iter = mMaps.begin(); iter != mMaps.end(); iter++)
+	{
+		(*iter)->pause();
+	}
+
+}
+void LevelManager::resume()
+{
+	UniqueQueue<Map*>::iterator iter;
+	for (iter = mMaps.begin(); iter != mMaps.end(); iter++)
+	{
+		(*iter)->resume();
+	}
+}
+
 void LevelManager::closeLevel()
 {
 	Camera* camera = Camera::Get();
@@ -123,8 +134,8 @@ void LevelManager::closeLevel()
 	{
 		if (camera->rect().LeftPoint() > lastMap(MapType::None)->getFirstRect().LeftPoint())
 		{
-			popFront();
-			popFront();
+			delete mMaps.popFront();
+			delete mMaps.popFront();
 			setCameraBoundaries(camera);
 			
 			LevelUpdatedEvent event(LevelUpdatedEvent::Removed);

@@ -1,12 +1,13 @@
 #pragma once
 
 #include "Screen.h"
+#include "UI/Elements/UISwitch.h"
 
 
 class CharacterSelectionScreen : public Screen
 {
 public:
-	CharacterSelectionScreen() { }
+	CharacterSelectionScreen() : mTutorialFileState(UISwitch::Off) { }
 
 	void init() override;
 	void handleInput(const InputManager* input) override;
@@ -22,4 +23,6 @@ public:
 private:
 	BasicString mSelectedCharacter;
 	BasicString mSelectedWeapon;
+
+	UISwitch::State mTutorialFileState;
 };

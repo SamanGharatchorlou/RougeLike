@@ -32,6 +32,7 @@ public:
 	UIElement* find(const BasicString& id);
 
 	std::vector<ScreenLayer>& layers() { return mLayers; }
+	const std::vector<ScreenLayer>& layers() const { return mLayers; }
 
 private:
 	std::vector<ScreenLayer> mLayers;

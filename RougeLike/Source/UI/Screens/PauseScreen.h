@@ -28,5 +28,9 @@ public:
 
 
 private:
+	void popScreenState();
+
+
+private:
 	std::unordered_map<Option, UIButton*> mButtons;
 };

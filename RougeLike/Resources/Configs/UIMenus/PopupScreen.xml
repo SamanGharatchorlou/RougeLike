@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <screen>
 	<Layer>
-		<Box id = "MainPanel" x = "222.500" y = "52.500" width = "562.500" height = "230.000" texture = "PopupPanel"></Box>
+		<Box id = "MainPanel" x = "222.500" y = "112.500" width = "562.500" height = "230.000" texture = "PopupPanel"></Box>
 	</Layer>
 
 	<Layer>

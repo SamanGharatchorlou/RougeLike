@@ -2,6 +2,7 @@
 #include "UIManager.h"
 
 #include "Input/InputManager.h"
+#include "Graphics/TextureManager.h"
 
 #include "UIEventHandler.h"
 
@@ -82,6 +83,9 @@ Screen* UIManager::getActiveScreen()
 
 void UIManager::render()
 {
+	if (mController.persistingScreen())
+		mController.persistingScreen()->render();
+
 	mController.getActiveScreen()->render();
 
 #if UI_EDITOR
@@ -107,5 +111,10 @@ void UIManager::initCursor(Cursor* cursor)
 
 void UIManager::setCursorTexture(Texture* texture) 
 { 
+	if (TextureManager::Get()->getTextureName(texture) == "GameCursor")
+		mCursor->setCursorOffsetPoint(VectorF());
+	else
+		mCursor->setCursorOffsetPoint(mCursor->size() / -2.0f);
+
 	mCursor->setTexture(texture);
 }

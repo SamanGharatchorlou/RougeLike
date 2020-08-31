@@ -23,6 +23,9 @@ public:
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
 
+	void pause() { mLevelManager.pause(); }
+	void resume() { mLevelManager.resume(); }
+
 	void clear();
 
 	void renderFloor();

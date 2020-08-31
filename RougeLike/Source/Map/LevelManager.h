@@ -21,6 +21,8 @@ public:
 	void clear();
 
 	void slowUpdate(float dt);
+	void pause();
+	void resume();
 
 	void renderFloor();
 	void renderLowDepth();
@@ -39,7 +41,7 @@ public:
 
 private:
 	void addNextMap();
-	void popFront();
+
 
 private:
 	VectorF getOffset(const Map* map) const;

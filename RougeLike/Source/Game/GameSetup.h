@@ -9,7 +9,9 @@ class GameSetup
 public:
 	GameSetup();
 	Window* initSDL();
-	void closeSubSystems();
+
+	void static closeSubSystems();
+	void static setTutorial(const BasicString& mode);
 
 private:
 	void readSettings();

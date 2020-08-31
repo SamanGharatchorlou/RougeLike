@@ -6,7 +6,7 @@
 #define IGNORE_UNKNOWNS 0
 
 // Camera
-#define CAMERA_IGNORE_BOUNDARIES 1
+#define CAMERA_IGNORE_BOUNDARIES 0
 #define SET_GAME_SCALE 0 // 
 constexpr float game_scale = 0.5f;
 
@@ -17,11 +17,11 @@ constexpr float game_scale = 0.5f;
 // Player
 #define DRAW_PLAYER_RECT 0
 #define DRAW_PLAYER_WEAPON_RECT 0
-#define IGNORE_WALLS 1
+#define IGNORE_WALLS 0
 #define IGNORED_BY_ENEMIES 0
 
 // Abilities
-#define UNLOCK_ALL_ABILITIES 1
+#define UNLOCK_ALL_ABILITIES 0
 #define NO_ABILITY_COOLDOWNS 0
 #define DRAW_ABILITY_RECTS 0
 
@@ -41,9 +41,9 @@ constexpr float game_scale = 0.5f;
 #define DRAW_AI_PATH 0
 #define DRAW_AI_PATH_COSTMAP 0
 
-#define LABEL_ENEMY_STATES 1
+#define LABEL_ENEMY_STATES 0
 #define LABEL_ENEMY_HEALTH 0
-#define DRAW_PLAYER_ENEMY_DISTANCE 1
+#define DRAW_PLAYER_ENEMY_DISTANCE 0
 
 #define DRAW_ENEMY_RECTS 0
 #define DRAW_ENEMY_TARGET_PATH 0
@@ -52,9 +52,10 @@ constexpr float game_scale = 0.5f;
 #define MAX_SPAWN_COUNT 0
 
 // UI
+#define UI_EDITOR 1
 #define DRAW_UI_RECTS 0
-#define UI_EDITOR 0
-#define DEBUG_CURSOR 0
+
+#define DEBUG_CURSOR 1
 
 
 // Collisions
@@ -62,6 +63,6 @@ constexpr float game_scale = 0.5f;
 
 #else
 
-#define MEMORY_TRACKING 1
+#define MEMORY_TRACKING 0
 
 #endif

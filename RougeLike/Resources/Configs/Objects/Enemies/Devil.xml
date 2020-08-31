@@ -6,7 +6,7 @@
 		<MaxVelocity>70</MaxVelocity>
 
 		<!-- General Attributes -->
-		<Health>250</Health>
+		<Health>120</Health>
 
 		<!-- Data values -->
 		<Score>50></Score>

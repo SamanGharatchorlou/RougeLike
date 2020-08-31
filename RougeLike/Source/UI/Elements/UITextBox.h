@@ -57,8 +57,6 @@ public:
 
 	void render() override;
 
-	virtual bool isButton() const { return false; }
-	virtual bool hasText() const { return true; }
 	virtual Type type() const { return Type::TextBox; }
 
 

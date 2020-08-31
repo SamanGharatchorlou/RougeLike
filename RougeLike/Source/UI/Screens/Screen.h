@@ -7,6 +7,7 @@
 class UIButton;
 class UIElement;
 class UISlider;
+class UISwitch;
 class ScreenController;
 class InputManager;
 
@@ -40,10 +41,11 @@ public:
 	UIElement* find(const BasicString& id);
 	UIButton* findButton(const BasicString& id);
 
-	void linkSlider(ScreenItem setting, const BasicString& sliderId);
+	void linkSlider(ScreenItem option, const BasicString& sliderId);
 	void linkButton(ScreenItem option, const BasicString& buttonId);
+	void linkSwitch(ScreenItem option, const BasicString& switchId);
 
-	bool selected(ScreenItem button) const;
+	virtual bool selected(ScreenItem button) const;
 	UISlider* slider(ScreenItem slider);
 
 	void setController(ScreenController* controller) { mController = controller; }
@@ -55,6 +57,7 @@ protected:
 
 	std::unordered_map<ScreenItem, UISlider*> mSliders;
 	std::unordered_map<ScreenItem, UIButton*> mButtons;
+	std::unordered_map<ScreenItem, UISwitch*> mSwitches;
 };
 
 
@@ -69,4 +72,6 @@ public:
 	void exit() { }
 	void render() { }
 	ScreenType type() { return ScreenType::None; }
+
+	bool selected(ScreenItem button) const override { return false; }
 };

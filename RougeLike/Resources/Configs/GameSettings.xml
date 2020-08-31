@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
 <Settings>
 	<Game>
 		<Title>RougeLike</Title>
@@ -7,25 +5,6 @@
 		<Height>768</Height>
 		<AudioChannels>8</AudioChannels>
 	</Game>
-
-	<Debug>
-		<FRAMERATE_CAP>0</FRAMERATE_CAP>
-		<PRINT_FRAMERATE_EVERY>0</PRINT_FRAMERATE_EVERY>
-		<DRAW_ENEMY_RECT>0</DRAW_ENEMY_RECT>
-		<DRAW_PLAYER_RECTS>0</DRAW_PLAYER_RECTS>
-		<DRAW_BINARY_MAP>0</DRAW_BINARY_MAP>
-		<MARK_SURFACE_TYPES>0</MARK_SURFACE_TYPES>
-		<DRAW_AI_PATH >0</DRAW_AI_PATH>
-		<DRAW_ENEMY_TARGET_PATH>0</DRAW_ENEMY_TARGET_PATH>
-		<LIMIT_ENEMY_SPAWNS>0</LIMIT_ENEMY_SPAWNS>
-		<DRAW_COLLECTABLE_RECT>0</DRAW_COLLECTABLE_RECT>
-		<DRAW_UI_RECTS>0</DRAW_UI_RECTS>
-		<UI_EDITOR>0</UI_EDITOR>
-		<DEBUG_CURSOR>0</DEBUG_CURSOR>
-	</Debug>
-
-<!-- add some editor settings here e.g. movment speed, hold speed, delay etc -->
-	<UI_EDITOR>
-	</UI_EDITOR>
-
+	<Tutorial>OFF</Tutorial>
 </Settings>
+

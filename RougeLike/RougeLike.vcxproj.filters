@@ -167,6 +167,7 @@
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\BasicAttackAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHandler.cpp" />
     <ClCompile Include="Source\Map\TrapManager.cpp" />
+    <ClCompile Include="Source\UI\Elements\UISwitch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -368,6 +369,7 @@
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\BasicAttackAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityHandler.h" />
     <ClInclude Include="Source\Map\TrapManager.h" />
+    <ClInclude Include="Source\UI\Elements\UISwitch.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

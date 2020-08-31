@@ -62,9 +62,11 @@ enum class ScreenItem
 
 	// Character Selection
 	Play,
+	Tutorial,
 
 	// Game
 	Health,
+	Exp,
 	Armor,
 
 	// Pause

@@ -15,14 +15,14 @@
 
 	<Layer>
 		<TextBox id = "ScreenTitle" parent = "MainPanel" font ="MenuFont" align = "Center" x = "176.798" y = "20.700" width = "381.202" height = "42.000" >
-			<text r = "255" g = "255" b = "255" >Character Selection</text>
+			<text>Character Selection</text>
 		</TextBox>
 
 	</Layer>
 
 	<Layer>
 		<Box id = "CharacterNamePanel" parent = "MainPanel" x = "45.400" y = "106.600" width = "640.299" height = "70.500" texture = "NamePanel"></Box>
-		<Box id= "Character" parent = "MainPanel" x = "193.298" y = "190.700" width = "344.994" height = "345.000" texture = "Soldier"></Box>
+		<Box id= "Character" parent = "MainPanel" x = "193.298" y = "167.700" width = "344.994" height = "345.000" texture = "Soldier"></Box>
 		<Button id = "PlayButton" parent = "CharacterNamePanel" x = "59.800" y = "443.588" width = "520.0" height = "90.595" texture = "WideBlueButton"></Button>
 
 		<Button id = "LeftButton" parent = "MainPanel" x = "66.700" y = "315.793" width = "81.895" height = "74.996" texture = "BlankButtonDisabled"></Button>
@@ -31,15 +31,20 @@
 
 	<Layer>
 
+		<Switch id = "TutorialSwitch" parent = "MainPanel" x = "386.300" y = "489.588" width = "90.000" height = "45.000" texture = "BasicSwitch"></Switch>
+		<TextBox id = "TutorialText" parent = "TutorialSwitch" align = "Center" x = "-152.900" y = "2.100" width = "167.300" height = "44.700">
+			<text>Tutorial</text>
+		</TextBox>
+
 		<Box id= "LeftArrow" parent = "LeftButton" x = "17.700" y = "12.899" width = "43" height = "43" texture = "LeftArrow"></Box>
 		<Box id= "RightArrow" parent = "RightButton" x = "17.700" y = "12.899" width = "43" height = "43" texture = "RightArrow"></Box>
 
-		<TextBox id = "CharacterName" parent = "CharacterNamePanel" align = "Center" x = "2.400" y = "4.600" width = "638.800" height = "55.700" >
-			<text r = "255" g = "255" b = "255" >KNIGHT</text>
+		<TextBox id = "CharacterName" parent = "CharacterNamePanel" align = "Center" x = "2.400" y = "8.000" width = "638.800" height = "55.700" >
+			<text>KNIGHT</text>
 		</TextBox>
 		
 		<TextBox id = "PlayText" parent = "PlayButton" align = "Center" x = "0.000" y = "9.000" width = "520.000" height = "66.399" >
-			<text r = "255" g = "255" b = "255" >PLAY</text>
+			<text>PLAY</text>
 		</TextBox>
 
 	</Layer>

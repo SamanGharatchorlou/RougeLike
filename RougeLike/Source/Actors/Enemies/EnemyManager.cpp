@@ -26,7 +26,8 @@ EnemyManager::~EnemyManager()
 
 void EnemyManager::clear()
 {
-	removeActiveEnemies(mActiveEnemies);
+	wipeEnemies(mActiveEnemies);
+	mActiveEnemies.clear();
 	mEvents.clear();
 	mPathing.clear();
 	mSpawning.clear();
@@ -70,25 +71,18 @@ void EnemyManager::closeLastMapLevel()
 {
 	AIPathMap* pathMap = mPathing.popMap();
 
-	std::vector<Enemy*>::iterator lastInvalidEnemy;
-
-	for (lastInvalidEnemy = mActiveEnemies.begin(); lastInvalidEnemy != mActiveEnemies.end(); lastInvalidEnemy++)
+	std::vector<Enemy*>::iterator iter;
+	for (iter = mActiveEnemies.begin(); iter != mActiveEnemies.end(); iter++)
 	{
-		if ((*lastInvalidEnemy)->pathing()->map() != pathMap)
+		if ((*iter)->pathing()->map() != pathMap)
 		{
-			if(lastInvalidEnemy != mActiveEnemies.begin())
-				lastInvalidEnemy - 1;
-
 			break;
 		}
+
+		wipeEnemy(*iter);
 	}
 
-	std::vector<Enemy*> enemiesToRemove(mActiveEnemies.begin(), lastInvalidEnemy);
-
-	std::vector<Enemy*>::iterator firstValidEnemy = lastInvalidEnemy != mActiveEnemies.end() ? lastInvalidEnemy + 1 : mActiveEnemies.end();
-	mActiveEnemies = std::vector<Enemy*>(firstValidEnemy, mActiveEnemies.end());
-
-	removeActiveEnemies(enemiesToRemove);
+	mActiveEnemies = std::vector<Enemy*>(iter, mActiveEnemies.end());
 }
 
 
@@ -139,7 +133,7 @@ void EnemyManager::resetColliders()
 
 void EnemyManager::clearAllEnemies()
 {
-	removeActiveEnemies(mActiveEnemies);
+	wipeEnemies(mActiveEnemies);
 	mActiveEnemies.clear();
 }
 
@@ -225,17 +219,23 @@ void EnemyManager::clearDead()
 }
 
 
-void EnemyManager::removeActiveEnemies(std::vector<Enemy*>& enemies)
+void EnemyManager::wipeEnemies(std::vector<Enemy*>& enemies)
 {
-	for (std::vector<Enemy*>::iterator iter = mActiveEnemies.begin(); iter != mActiveEnemies.end(); iter++)
+	for (int i = 0; i < enemies.size(); i++)
 	{
-		clearAndRemove(iter);
-
-		if (iter == mActiveEnemies.end())
-			break;
+		enemies[i]->clear();
+		mSpawning.returnEnemy(enemies[i]);
+		enemies[i] = nullptr;
 	}
 }
 
+
+void EnemyManager::wipeEnemy(Enemy*& enemy)
+{
+	enemy->clear();
+	mSpawning.returnEnemy(enemy);
+	enemy = nullptr;
+}
 
 void EnemyManager::clearAndRemove(std::vector<Enemy*>::iterator& iter)
 {

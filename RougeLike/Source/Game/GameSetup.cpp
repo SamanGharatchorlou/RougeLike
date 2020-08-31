@@ -43,6 +43,35 @@ Window* GameSetup::initSDL()
 }
 
 
+
+// --- Static Functions --- //
+
+void GameSetup::closeSubSystems()
+{
+	Mix_Quit();
+	IMG_Quit();
+	SDL_Quit();
+}
+
+
+void GameSetup::setTutorial(const BasicString& mode)
+{
+	const BasicString gameSettingsPath = FileManager::Get()->findFile(FileManager::Configs, "GameSettings");
+
+	XMLParser parser(gameSettingsPath);
+	XMLNode tutorialNode = parser.rootChild("Tutorial");
+	tutorialNode.setValue(mode);
+
+	std::ofstream settingsFile;
+	settingsFile.open(gameSettingsPath.c_str());
+
+	parser.saveToFile(settingsFile);
+
+	settingsFile.close();
+}
+
+
+
 // --- Private Functions --- //
 
 void GameSetup::initIMG()
@@ -70,12 +99,7 @@ void GameSetup::initAudio()
 	}
 }
 
-void GameSetup::closeSubSystems()
-{
-	Mix_Quit();
-	IMG_Quit();
-	SDL_Quit();
-}
+
 
 
 Window* GameSetup::createWindow()
@@ -104,3 +128,4 @@ void GameSetup::readSettings()
 	screenSize = Vector2D<int>(width, height);
 	audioChannels = settings.getInt("AudioChannels");
 }
+

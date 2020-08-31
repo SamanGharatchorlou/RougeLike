@@ -106,8 +106,10 @@ void GameController::free()
 	Renderer::Get()->free();
 
 	// quit SDL subsystems
-	GameSetup setup;
-	setup.closeSubSystems();
+	//GameSetup setup;
+	//setup.closeSubSystems();
+
+	GameSetup::closeSubSystems();
 
 	DebugPrint(Log, "GameController destroyed\n");
 }
@@ -116,6 +118,9 @@ void GameController::free()
 void GameController::restartGame()
 {
 	DebugPrint(Log, "--- Begin game restart ---\n");
+
+	GameSetup::setTutorial("OFF");
+
 	// Remove all states
 	while (mGameStateMachine.size() > 1)
 	{

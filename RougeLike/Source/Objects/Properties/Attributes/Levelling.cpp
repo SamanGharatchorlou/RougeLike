@@ -8,12 +8,18 @@
 #include "Objects/Abilities/AbilityClasses/AbilityStates.h"
 
 
-Levelling::Levelling() : mLevel(1), mCurrentExp(0), mRequiredExp(100) { }
+Levelling::Levelling() : mLevel(1), mCurrentExp(0), mRequiredExp(0) { }
 Levelling::~Levelling() { reset(); }
 
 void Levelling::init(const XMLNode& levelNode, RectF rect)
 {
-	XMLNode abilities = levelNode.child("Abilities");
+	const BasicString& levelInfoFile = levelNode.value();
+	XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Player, levelInfoFile));
+
+	XMLNode requiredExpNode = parser.rootChild("RequiredExp");
+	mRequiredExp = atoi(requiredExpNode.value().c_str());
+
+	XMLNode abilities = parser.rootChild("Abilities");
 
 	XMLNode ability = abilities.child();
 	while (ability)
@@ -31,7 +37,7 @@ void Levelling::init(const XMLNode& levelNode, RectF rect)
 		ability = ability.next();
 	}
 
-	buildAnimator(levelNode.child("Info").value(), rect);
+	buildAnimator(parser.rootNode(), rect);
 }
 
 
@@ -49,23 +55,20 @@ void Levelling::reset()
 }
 
 
-void Levelling::buildAnimator(const BasicString& infoFile, RectF rect)
+void Levelling::buildAnimator(const XMLNode& node, RectF rect)
 {
-	XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Player, infoFile));
-
 	AnimationReader reader;
-	XMLNode root = parser.rootNode();
-	mAnimator = reader.buildAnimator(root.child("Animator"));
+	mAnimator = reader.buildAnimator(node.child("Animator"));
 	mAnimator.selectAnimation(Action::Active);
 
 	// size
-	float targetWidth = rect.Width() * atof(root.child("WidthMultiplier").value().c_str());
+	float targetWidth = rect.Width() * atof(node.child("WidthMultiplier").value().c_str());
 	float targetHeight = targetWidth * mAnimator.frameSize().y / mAnimator.frameSize().x;
 	VectorF size = VectorF(targetWidth, targetHeight);
 	mRect.SetSize(size);
 
 	// render offset
-	XMLNode renderOffsetNode = root.child("RenderOffsetRatio");
+	XMLNode renderOffsetNode = node.child("RenderOffsetRatio");
 	StringMap offsetData = renderOffsetNode.attributes();
 	mRenderOffset = offsetData.getVector("x", "y") * size;
 }
@@ -112,7 +115,7 @@ void Levelling::levelUp(PlayerManager* player)
 {
 	mLevel++;
 	mCurrentExp -= mRequiredExp;
-	mRequiredExp = (int)((float)mRequiredExp * 1.5f);
+	mRequiredExp = mRequiredExp * 3;
 
 	mAnimator.start();
 

@@ -35,8 +35,6 @@ void DamageEffect::init()
 	EventPacket event(eventPtr);
 	mReceiver->events().push(event);
 
-	printf("removing damage\n");
-
 	endEffect();
 }
 

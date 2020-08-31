@@ -1,1 +1,1 @@
-Here is some info regarding levelling up \n\nKill enemies to level up, when you level up\nyou gain new abilities and become more awesome.
+Kill enemies to level up! Levelling up gains you a new ability and is shown at the bottom left of the screen.

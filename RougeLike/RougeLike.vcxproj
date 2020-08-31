@@ -84,6 +84,7 @@
     <ClCompile Include="Source\Objects\Pools\EnemyStatePool.cpp" />
     <ClCompile Include="Source\Objects\Pools\ScreenPool.cpp" />
     <ClCompile Include="Source\System\Files\TextFileReader.cpp" />
+    <ClCompile Include="Source\UI\Elements\UISwitch.cpp" />
     <ClCompile Include="Source\UI\Elements\UIWindow.cpp" />
     <ClCompile Include="Source\UI\Screens\LoadingScreen.cpp" />
     <ClCompile Include="Source\UI\Screens\PopupScreen.cpp" />
@@ -262,6 +263,7 @@
     <ClInclude Include="Source\Objects\Pools\EnemyStatePool.h" />
     <ClInclude Include="Source\Objects\Pools\ScreenPool.h" />
     <ClInclude Include="Source\System\Files\TextFileReader.h" />
+    <ClInclude Include="Source\UI\Elements\UISwitch.h" />
     <ClInclude Include="Source\UI\Elements\UIWindow.h" />
     <ClInclude Include="Source\UI\Screens\LoadingScreen.h" />
     <ClInclude Include="Source\UI\Screens\PopupScreen.h" />

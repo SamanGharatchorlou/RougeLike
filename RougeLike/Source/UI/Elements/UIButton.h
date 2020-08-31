@@ -46,8 +46,8 @@ public:
 	inline bool isHeld() const { return mButton.isHeld(); }
 	inline int holdCount() const { return mButton.getHeldFrames(); }
 
-	virtual bool hasText() const { return false; }
-	virtual Type type() const { return Type::Button; }
+	//virtual bool hasText() const { return false; }
+	virtual Type type() const override { return Type::Button; }
 
 	void setActive(bool state);
 	bool isActive() const { return mState == State::Active; }

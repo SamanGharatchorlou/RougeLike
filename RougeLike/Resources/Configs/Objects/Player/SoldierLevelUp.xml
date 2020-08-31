@@ -2,6 +2,7 @@
 <LevelUp>
 	<WidthMultiplier>2.75</WidthMultiplier>
 	<RenderOffsetRatio x ="0" y = "0.05"></RenderOffsetRatio>
+	<RequiredExp>500</RequiredExp>
 
 	<Animator>
 		<ID>LevelUp</ID>
@@ -11,4 +12,12 @@
 			<Active>12</Active>
 		</Animations>
 	</Animator>
+
+	<Abilities>
+			<Slash></Slash>
+			<Heal></Heal>
+			<Charge></Charge>
+			<Smash></Smash>
+			<Spikes></Spikes>
+	</Abilities>
 </LevelUp>

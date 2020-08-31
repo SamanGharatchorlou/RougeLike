@@ -23,6 +23,7 @@ public:
 	int getCurrentExp() const { return mCurrentExp; }
 	int level() const { return mLevel; }
 
+	float expProgress() const { return (float)mCurrentExp / (float)mRequiredExp; }
 
 #if UNLOCK_ALL_ABILITIES
 	void unlockAllAbilities(PlayerManager* player);
@@ -30,7 +31,7 @@ public:
 
 
 private:
-	void buildAnimator(const BasicString& infoFile, RectF rect);
+	void buildAnimator(const XMLNode& node, RectF rect);
 	void levelUp(PlayerManager* player);
 
 

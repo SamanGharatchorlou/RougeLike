@@ -19,10 +19,14 @@ public:
 	void render();
 
 	void setTexture(Texture* texture) { mTexture = texture; }
+
+	VectorF size() const { return mRect.Size(); }
 	void setSize(VectorF size) { mRect.SetSize(size); }
 
 	void setPosition(VectorF position) { mRect.SetCenter(position); }
-	VectorF position() const { return mRect.Center(); }
+	VectorF position() const { return mRect.Center() + mCursorOffsetPoint; }
+
+	void setCursorOffsetPoint(VectorF offset);
 
 	void setVisibility(bool isVisible) { mVisibility = isVisible; }
 	bool isVisible() const { return mVisibility; }
@@ -40,9 +44,11 @@ public:
 	bool isReleased(ButtonType type = ButtonType::Left) const;
 
 
-public:
+private:
 	RectF mRect;
 	Texture* mTexture;
+
+	VectorF mCursorOffsetPoint;
 
 	bool mMoving;
 	Button mButtons[2];

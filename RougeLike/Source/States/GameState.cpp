@@ -95,7 +95,14 @@ void GameState::render()
 }
 
 
-void GameState::resume() { }
+void GameState::resume() 
+{
+	mGameData->environment->resume();
+}
+void GameState::pause()
+{
+	mGameData->environment->pause();
+}
 
 
 void GameState::exit()

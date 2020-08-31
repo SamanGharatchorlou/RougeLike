@@ -51,7 +51,8 @@ private:
 	void addActiveEnemy(Enemy* enemy);
 
 	void clearDead();
-	void removeActiveEnemies(std::vector<Enemy*>& enemies);
+	void wipeEnemies(std::vector<Enemy*>& enemies);
+	void wipeEnemy(Enemy*& enemy);
 	void clearAndRemove(std::vector<Enemy*>::iterator& iter);
 
 
