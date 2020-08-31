@@ -31,17 +31,14 @@ void GameScreen::init()
 	slider(ScreenItem::Health)->disableInput();
 
 	mController->ui()->setCursorTexture(TextureManager::Get()->getTexture("GameCursor", FileManager::Image_UI));
+
+#if SET_GAME_SCALE
+	Renderer::Get()->setScale(game_scale);
+#endif
 }
 
 void GameScreen::handleInput(const InputManager* input)
 {
-	//if (input->getButton(Button::E).isPressed())
-	//{
-	//	std::unordered_map<AbilityType, Button::Key>::iterator iter = mHotkeyMap->begin();
-
-	//	iter->second = Button::Two;
-	//}
-
 	if (input->isPressed(Button::Esc))
 	{
 		mController->quitGame();

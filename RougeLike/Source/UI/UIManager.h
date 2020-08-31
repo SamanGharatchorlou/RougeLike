@@ -38,8 +38,6 @@ public:
 
 	void setCursorTexture(Texture* texture);
 
-	void openPopup(const XMLNode& textNode);
-
 	ScreenController* controller() { return &mController; }
 
 private:

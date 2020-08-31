@@ -12,7 +12,7 @@
 	<DeferredRender></DeferredRender>
 
 	<Info>
-		<Damage>50</Damage>
+		<Damage>35</Damage>
 		<Cooldown>0.2</Cooldown>
 	</Info>
 </Decor>

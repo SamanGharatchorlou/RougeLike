@@ -19,6 +19,8 @@ public:
 
 	SDL_Renderer* sdlRenderer() const { return mRenderer; }
 
+	void setScale(float scale);
+
 private:
 	Renderer() { mLoadingSemaphor = SDL_CreateSemaphore(1); }
 	~Renderer() { }

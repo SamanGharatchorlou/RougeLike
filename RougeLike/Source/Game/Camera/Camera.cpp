@@ -10,9 +10,16 @@ Camera* Camera::Get()
 }
 
 
-Camera::Camera() : mFollowingRect(nullptr)
+Camera::Camera() : mFollowingRect(nullptr), mScale(1.0f)
 {
 	mActiveRect = &mRect;
+}
+
+
+void Camera::setScale(float scale)
+{
+	mScale = scale;
+	setViewport(size() / mScale);
 }
 
 
@@ -32,7 +39,7 @@ void Camera::follow(RectF* rect)
 
 void Camera::fastUpdate(float dt)
 {
-	VectorF translation = lerpMovement(dt); // mFollowingRect->Center() - mRect.Center();
+	VectorF translation = lerpMovement(dt);
 
 #if !CAMERA_IGNORE_BOUNDARIES
 	if (mRect.LeftPoint() + translation.x >= mBoundaries.x1 &&

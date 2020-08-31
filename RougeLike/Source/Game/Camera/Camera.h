@@ -9,6 +9,9 @@ class Camera
 public:
 	static Camera* Get();
 
+	void setScale(float scale);
+	float scale() const { return mScale; }
+
 	void setViewport(VectorF viewport) { mRect.SetSize(viewport); }
 	void setPosition(VectorF position);
 
@@ -47,10 +50,13 @@ private:
 private:
 	RectF mRect;
 	RectF mBoundaries;
+
 	const RectF* mActiveRect;
 	RectF* mFollowingRect;
 
 	CameraShake shakeyCam;
+
+	float mScale;
 };
 
 

@@ -6,7 +6,9 @@
 #define IGNORE_UNKNOWNS 0
 
 // Camera
-#define CAMERA_IGNORE_BOUNDARIES 0
+#define CAMERA_IGNORE_BOUNDARIES 1
+#define SET_GAME_SCALE 0 // 
+constexpr float game_scale = 0.5f;
 
 // Framerate
 #define FRAMERATE_CAP 0 // Use the FPS cap you want
@@ -15,7 +17,7 @@
 // Player
 #define DRAW_PLAYER_RECT 0
 #define DRAW_PLAYER_WEAPON_RECT 0
-#define IGNORE_WALLS 0
+#define IGNORE_WALLS 1
 #define IGNORED_BY_ENEMIES 0
 
 // Abilities

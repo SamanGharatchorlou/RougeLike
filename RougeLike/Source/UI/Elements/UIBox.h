@@ -27,6 +27,11 @@ public:
 	void fill(const StringMap& attributes);
 
 	void setTexture(Texture* texture) { mTexture = texture; }
+
+	// TODO: make this...better
+	// Keeps the original ratio, clipping the texture if required
+	void setTextureClipping();
+
 	const Texture* texture() const { return mTexture; }
 
 	bool isPointInBounds(VectorF point);
@@ -40,6 +45,8 @@ public:
 
 protected:
 	Texture* mTexture;
+
+	RectF mSubrect;
 
 #if _DEBUG
 	bool mDrawRect;

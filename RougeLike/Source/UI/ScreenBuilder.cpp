@@ -14,6 +14,8 @@
 #include "Screens/ScreenHeaders.h"
 #include "ScreenReader.h"
 
+#include "Game/Camera/Camera.h"
+
 
 void ScreenBuilder::populateScreen(Screen* screen)
 {
@@ -92,6 +94,14 @@ UIElement* ScreenBuilder::buildElement(const StringMap& attributes) const
 		UIBox* box = new UIBox(attributes);
 		Texture* texture = getTexture(attributes);
 		box->setTexture(texture);
+
+		if (attributes.contains("fitting"))
+		{
+			if (attributes.at("fitting") == "clip")
+			{
+				box->setTextureClipping();
+			}
+		}
 
 		element = box;
 	}

@@ -15,7 +15,7 @@ void CharacterSelectionScreen::init()
 {
 	const TextureManager* textures = TextureManager::Get();
 	UIBox* character = static_cast<UIBox*>(find("Character"));
-	mSelectedCharacter = textures->getTextureName(character->texture());
+	mSelectedCharacter = "Soldier";// textures->getTextureName(character->texture());
 
 	Texture* texture = textures->getTexture(mSelectedCharacter + "Icon", FileManager::Image_UI);
 	character->setTexture(texture);

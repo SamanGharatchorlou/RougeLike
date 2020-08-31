@@ -21,7 +21,7 @@ public:
 	void setTexture(Texture* texture) { mTexture = texture; }
 	void setSize(VectorF size) { mRect.SetSize(size); }
 
-	void setPosition(float x, float y) { mRect.SetCenter(x, y); }
+	void setPosition(VectorF position) { mRect.SetCenter(position); }
 	VectorF position() const { return mRect.Center(); }
 
 	void setVisibility(bool isVisible) { mVisibility = isVisible; }

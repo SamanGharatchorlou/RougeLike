@@ -40,10 +40,42 @@ void UIBox::fill(const StringMap& attributes)
 }
 
 
+void UIBox::setTextureClipping()
+{
+	VectorF baseDimentions = mTexture->originalDimentions;
+	VectorF requestedSize = mRect.Size();
+
+	float baseRatio = baseDimentions.x / baseDimentions.y;
+	float requestRatio = requestedSize.x / requestedSize.y;
+
+	// wide
+	if (baseRatio > 1.0f)
+	{
+		RectF textRect = RectF(VectorF(), baseDimentions);
+
+		float newY = baseDimentions.y;
+		float newX = newY * requestRatio;
+
+		mSubrect.SetSize(VectorF(newX, newY));
+		mSubrect.SetCenter(textRect.Center());
+	}
+}
+
+
 void UIBox::render()
 {
-	if(mTexture)
-		mTexture->render(mRect);
+	if (mTexture)
+	{
+		if (mSubrect.Size().isPositive())
+		{
+			mTexture->renderSubTexture(mRect, mSubrect);
+		}
+		else
+		{
+			mTexture->render(mRect);
+		}
+
+	}
 
 #if _DEBUG
 	if (mDrawRect || DRAW_UI_RECTS)

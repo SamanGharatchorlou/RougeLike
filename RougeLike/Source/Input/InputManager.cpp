@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "InputManager.h"
 
+#include "Game/Camera/Camera.h"
+
 void InputManager::init()
 {
 	bindDefaultButtons();
@@ -80,7 +82,10 @@ void InputManager::processMouseMovementEvent()
 	int x, y;
 	SDL_GetMouseState(&x, &y);
 
-	mCursor.setPosition((float)x, (float)y);
+	float scale = Camera::Get()->scale();
+	VectorF cursorPostion = VectorF(x, y) / scale;
+
+	mCursor.setPosition(cursorPostion);
 	mCursor.setMotion(true);
 }
 

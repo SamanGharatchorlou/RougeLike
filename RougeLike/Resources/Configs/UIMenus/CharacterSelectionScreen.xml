@@ -3,7 +3,7 @@
 
 	<!-- Background -->
 	<Layer>
-		<Box id = "Background" x = "0" y = "0" width = "1024" height = "768" texture = "bg"></Box>
+		<Box id = "Background" x = "0" y = "0" width = "1024" height = "768" texture = "bg" fitting = "clip"></Box>
 	</Layer>
 
 

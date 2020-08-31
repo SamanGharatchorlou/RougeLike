@@ -13,7 +13,7 @@
 
 	<Info>
 		<Damage>10</Damage>
-		<Time>1.5</Time>
-		<Cooldown>5.0</Cooldown>
+		<Time>1.0</Time>
+		<Cooldown>3.0</Cooldown>
 	</Info>
 </Decor>
