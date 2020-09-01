@@ -48,14 +48,14 @@ constexpr float game_scale = 0.5f;
 #define DRAW_ENEMY_RECTS 0
 #define DRAW_ENEMY_TARGET_PATH 0
 
-#define LIMIT_ENEMY_SPAWNS 1
+#define LIMIT_ENEMY_SPAWNS 0
 #define MAX_SPAWN_COUNT 0
 
 // UI
 #define UI_EDITOR 1
 #define DRAW_UI_RECTS 0
 
-#define DEBUG_CURSOR 1
+#define DEBUG_CURSOR 0
 
 
 // Collisions

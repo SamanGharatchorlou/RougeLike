@@ -55,6 +55,13 @@ void EnemyPatrol::setPatrolPoint()
 	{
 		Vector2D<int> yTileRange = map->yTileFloorRange(index);
 
+		if (!map->isValidIndex(Index(index.x, yTileRange.x)) ||
+			!map->isValidIndex(Index(index.x, yTileRange.y)))
+		{
+			mPositionTarget = map->randomFloorTile()->rect().Center();
+			DebugPrint(Warning, "The yTile range of %d,%d is not valid ofr x = %d. Getting a random path tile instead for enemy patrol\n", yTileRange.x, yTileRange.y, index.x);
+		}
+
 		VectorF highestPoint = map->tile(Index(index.x, yTileRange.x))->rect().BotCenter();
 		VectorF lowestPoint = map->tile(Index(index.x, yTileRange.y))->rect().TopCenter();
 

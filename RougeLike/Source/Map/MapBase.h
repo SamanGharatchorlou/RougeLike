@@ -8,9 +8,9 @@ template<class K>
 class MapBase
 {
 public:
-	MapBase() { }
-	MapBase(Vector2D<int> size) : mData(size, K()) { }
-	MapBase(Vector2D<int> size, K value) : mData(size, value) { }
+	MapBase() : mLevel(-1) { }
+	MapBase(Vector2D<int> size) : mData(size, K()), mLevel(-1) { }
+	MapBase(Vector2D<int> size, K value) : mData(size, value), mLevel(-1) { }
 	virtual ~MapBase() { }
 
 	K& operator [] (Index index) { return mData[index.y][index.x]; }
@@ -27,7 +27,11 @@ public:
 	bool inBounds(Index index) const;
 	bool isValidIndex(Index index) const;
 
+	void setLevel(int level) { mLevel = level; }
+	int level() const { return mLevel; }
+
 protected:
+	int mLevel;
 	Grid<K> mData;
 };
 

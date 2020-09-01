@@ -65,7 +65,7 @@ void GameState::slowUpdate(float dt)
 {
 	mGameData->environment->slowUpdate(dt);
 
-	//mGameData->scoreManager->slowUpdate();
+	mGameData->scoreManager->slowUpdate();
 
 	Camera::Get()->slowUpdate(dt);
 

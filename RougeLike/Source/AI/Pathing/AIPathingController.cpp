@@ -30,8 +30,6 @@ void AIPathingController::clear()
 
 void AIPathingController::addMap(const Map* map)
 {
-	// TODO: I call new to allocate some space. how much space is there
-	// if the following call build requires 100 units of space, what if I only have 80 for example?
 	AIPathMap* pathMap = new AIPathMap;
 	pathMap->build(map, 4, 4);
 	mPathMaps.push_back(pathMap);
@@ -52,6 +50,7 @@ AIPathMap* AIPathingController::popMap()
 	return pathMap;
 }
 
+
 void AIPathingController::updatePaths(std::vector<Enemy*> enemies)
 {
 	if (pathUpdateStaggerCounter != 0 || pathUpdateRequests)
@@ -59,7 +58,6 @@ void AIPathingController::updatePaths(std::vector<Enemy*> enemies)
 		recalculateEnemyPaths(enemies);
 	}
 }
-
 
 
 AIPathMap* AIPathingController::pathMap(const Map* map)

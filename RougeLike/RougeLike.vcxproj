@@ -128,6 +128,7 @@
     <ClCompile Include="Source\States\PreGameState.cpp" />
     <ClCompile Include="Source\UI\Screens\CharacterSelectionScreen.cpp" />
     <ClCompile Include="Source\Utilities\Buffer.cpp" />
+    <ClCompile Include="Source\Utilities\Shapes\Formation.cpp" />
     <ClCompile Include="Source\Weapons\Melee\MeleeWeapon.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyAlert.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyAttack.cpp" />

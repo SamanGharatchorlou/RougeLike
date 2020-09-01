@@ -55,6 +55,7 @@ void EnemyManager::fastUpdate(float dt)
 	}
 }
 
+
 void EnemyManager::openNewMapLevel()
 {
 	Map* map = mEnvironment->lastMap(MapType::Dungeon);

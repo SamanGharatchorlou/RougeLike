@@ -9,7 +9,6 @@
 
 std::vector<Enemy*> AISpawnController::getNewLevelSpawns(const AIPathMap* map)
 {
-
 	SpawnDataList spawnDataList;
 
 	// spawn patrollers
@@ -23,36 +22,54 @@ std::vector<Enemy*> AISpawnController::getNewLevelSpawns(const AIPathMap* map)
 	}
 
 
-	// TODO: spawn random number of random shapes
-
-	// spawn quad
-	int xRandom = randomNumberBetween(3, 8);
-	int yRandom = randomNumberBetween(2, 7);
-
-	Quadrilateral quadFormation(VectorF(), xRandom, yRandom, 50.0f);
-
-	mSpawnData.setRandomPosition(quadFormation, map);
-
-	SpawnDataList spawnData = mSpawnData.buildSpawnData(quadFormation, EnemyType::Devil, EnemyState::Idle);
-	merge(spawnDataList, spawnData);
+	for (int i = 0; i < map->level(); i++)
+	{
+		SpawnDataList spawnData = spawnRandomQuad(EnemyType::Devil, EnemyState::Idle, map);
+		merge(spawnDataList, spawnData);
+	}
 
 	return mFactory.buildEnemies(spawnDataList, map);
 }
+
+
+SpawnDataList AISpawnController::spawnRandomQuad(EnemyType type, EnemyState::Type state, const AIPathMap* map)
+{
+	int xRandom = randomNumberBetween(2, 8);
+	int yRandom = randomNumberBetween(2, 8);
+	Quadrilateral formation(VectorF(), xRandom, yRandom, 40.0f);
+	setRandomPosition(formation, map);
+
+	return mSpawnData.buildSpawnData(formation, type, state);
+}
+
+
+void AISpawnController::setRandomPosition(Formation& formation, const AIPathMap* map)
+{
+	while (!formation.isValid(map))
+	{
+		VectorF randomFloorPosition = map->randomFloorTile()->rect().Center();
+		formation.setPosition(randomFloorPosition);
+	}
+}
+
 
 void AISpawnController::returnEnemy(Enemy* enemy)
 {
 	mFactory.returnEnemy(enemy);
 }
 
+
 void AISpawnController::loadSpawnPool(int poolSize)
 {
 	mFactory.loadPools(poolSize);
 }
 
+
 AISpawnController::~AISpawnController()
 {
 	clear();
 }
+
 
 void AISpawnController::clear()
 {

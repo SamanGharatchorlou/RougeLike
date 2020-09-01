@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Utilities/Vector2D.h"
+class AIPathMap;
 
 using PointList = std::vector<VectorF>;
+
 
 class Formation
 {
@@ -12,9 +13,8 @@ public:
 	const PointList& points() const { return mPoints; }
 
 	virtual void setPosition(VectorF position) = 0;
-	//{
-	//	DebugPrint(Warning, "I'm an ambiguous formation so I dont know how to move my points");
-	//}
+
+	bool isValid(const AIPathMap* map) const;
 
 protected:
 	PointList mPoints;

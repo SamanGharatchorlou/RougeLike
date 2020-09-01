@@ -16,7 +16,7 @@
 
 		<Corridor>
 			<Column spacing="3"></Column>
-			<Torch type = "TorchBowl" spacing ="3"></Torch>
+			<Torch type = "TorchHandle" spacing ="3"></Torch>
 			<FireGratingTrap></FireGratingTrap>
 			<GratingTrigger x = "13" y = "6"></GratingTrigger>
 		</Corridor>
@@ -26,6 +26,6 @@
 		<Spawn formation = "Circle" type="Devil" xPosition="12"></Shape>
 		<Spawn formation = "Square" type="Devil" xPosition="65" shape="Circle"></Shape>
 		<Spawn formation = "Square" type="Devil" xPosition="65" shape="Circle"></Shape>
-		<Spawn formation = "Patrol" type="Devil" xIncrement="3"></Patrol>
+		<Spawn formation = "Patrol" type="Devil" xIncrement="1"></Patrol>
 	</Enemies>
 </Map>

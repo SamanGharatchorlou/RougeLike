@@ -28,7 +28,6 @@ public:
 	void setInfo(MapType type, int level) { mType = type; mLevel = level; }
 
 	MapType type() const { return mType; }
-	int level() const { return mLevel; }
 
 	void buildDeferredRenderList();
 
@@ -64,7 +63,7 @@ public:
 	const Vector2D<int> index(RectF rect) const;
 	const Vector2D<int> index(const MapTile* tile) const;
 
-	Vector2D<int> yTileFloorRange(VectorF position) const;
+	Vector2D<int> yTileFloorRange(VectorF position) const;// TODO can remove
 	const MapTile* randomFloorTile(int xPointPercentage) const;
 	const MapTile* randomFloorTile() const;
 
@@ -73,15 +72,11 @@ public:
 
 
 private:
-
 	void render(MapTile* tile, Camera* camera);
 
 
 private:
 	MapType mType;
-	int mLevel;
-
 	TrapManager mTraps;
-
 	std::vector<MapTile*> mDeferredRendering;
 };

@@ -168,6 +168,7 @@
     <ClCompile Include="Source\Objects\Abilities\AbilityHandler.cpp" />
     <ClCompile Include="Source\Map\TrapManager.cpp" />
     <ClCompile Include="Source\UI\Elements\UISwitch.cpp" />
+    <ClCompile Include="Source\Utilities\Shapes\Formation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />

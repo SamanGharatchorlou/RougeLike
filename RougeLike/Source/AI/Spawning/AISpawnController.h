@@ -17,6 +17,10 @@ public:
 	void clear();
 
 private:
+	void setRandomPosition(Formation& formation, const AIPathMap* map);
+	SpawnDataList spawnRandomQuad(EnemyType type, EnemyState::Type state, const AIPathMap* map);
+
+private:
 	SpawnDataBuilder mSpawnData;
 	EnemyFactory mFactory;
 };

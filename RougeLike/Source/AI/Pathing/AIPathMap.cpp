@@ -12,6 +12,8 @@ void AIPathMap::clear()
 
 void AIPathMap::build(const Map* map, int xSplit, int ySplit)
 {
+	setLevel(map->level());
+
 	const Grid<MapTile>& tileMap = map->getData();
 
 	// New larger path tile map

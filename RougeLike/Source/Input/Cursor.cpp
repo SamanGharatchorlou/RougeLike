@@ -18,7 +18,7 @@ void Cursor::render()
 
 	mTexture->render(mRect);
 
-#if DEBUG_CURSOR
+#if DEBUG_CURSOR // ERROR: Needs to be converted to camera coords
 	debugDrawPoint(position(), 5.0f, RenderColour::Black);
 #endif
 }
