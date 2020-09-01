@@ -15,9 +15,10 @@ public:
 	AbilityTarget targetType() const override { return AbilityTarget::Self; }
 
 
-private:
-	virtual void applyEffects(Actor* actor, EffectPool* effectPool) = 0;
 
+private:
+	virtual void playAudio() = 0;
+	virtual void applyEffects(Actor* actor, EffectPool* effectPool) = 0;
 };
 
 

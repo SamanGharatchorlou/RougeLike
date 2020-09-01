@@ -30,7 +30,7 @@ void AbilityHotKeyManager::updateStates()
 {
 	for (int i = 0; i < mHotKeys.size(); i++)
 	{
-		mHotKeys[i].updateButtonState(mStateButtons);
+		mHotKeys[i].updateButtonStateTextures(mStateButtons);
 	}
 }
 

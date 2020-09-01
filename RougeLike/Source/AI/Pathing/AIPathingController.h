@@ -22,9 +22,9 @@ public:
 
 	void clearCostMaps();
 
-	void updatePaths(std::vector<Enemy*> enemies);
-	void updateAIPathCostMap(std::vector<Enemy*> enemies);
-	void addPathUpdateRequest() { pathUpdateRequests++; }
+	void updatePaths(const std::vector<Enemy*>& enemies, float dt);
+
+	void updateAIPathCostMap(const std::vector<Enemy*>& enemies);
 
 	AIPathMap* pathMap(const Map* map);
 	AIPathMap* findPathMap(const AIPathMap* pathMap);
@@ -37,7 +37,9 @@ public:
 
 
 private:
-	void recalculateEnemyPaths(std::vector<Enemy*> enemies);
+	int calculatePathingLimit(int minimunFrameCount, float dt);
+	Vector2D<int> getCalculationIndexRange(const std::vector<Enemy*>& enemies);
+
 
 private:
 	std::vector<AIPathMap*> mPathMaps;
@@ -45,4 +47,12 @@ private:
 	Timer<float> updateTimer;
 	int pathUpdateRequests;
 	int pathUpdateStaggerCounter;
+
+	int mPathLimit;
+	
+	Vector2D<int> mCalculationIndexRange;
+
+	int mListSplit;
+	int mSegmentLength;
+	int mSegmentIndex;
 };

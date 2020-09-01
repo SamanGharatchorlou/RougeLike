@@ -14,14 +14,17 @@ public:
 	void slowUpdate();
 
 	Audio* getAudio(const BasicString& label) const;
+	BasicString getLabel(Audio* audio) const;
 
 	// Playback
 	void playMusic(const BasicString& label);
 	void playSound(const BasicString& label, void* sourceId);
+	void loopSoundGroup(const BasicString& label, void* sourceId);
 
 	void pause(const BasicString& label, void* sourceId);
 	void resume(const BasicString& label, void* sourceId);
 	void stop(const BasicString& label, void* sourceId);
+	void fadeOutSound(const BasicString& label, void* sourceId);
 
 	bool isPlaying(const BasicString& label, void* sourced);
 

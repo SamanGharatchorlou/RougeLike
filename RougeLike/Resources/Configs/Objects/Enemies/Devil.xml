@@ -19,7 +19,7 @@
 
 		<!-- Patrol -->
 		<SightRange>1000</SightRange>
-		<ChaseRange>400</ChaseRange>
+		<ChaseRange>10000</ChaseRange>
 	</Properties>
 
 	<BasicAttack>

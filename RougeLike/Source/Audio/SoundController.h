@@ -11,10 +11,13 @@ public:
 
 	void playMusic(Audio* audio);
 	void playSound(Audio* audio, void* sourceId);
+	void loopSound(Audio* audio, void* sourceId);
 
 	void pauseSound(Audio* audio, void* sourceId);
 	void resumeSound(Audio* audio, void* sourceId);
 	void stopSound(Audio* audio, void* sourceId);
+
+	void fadeOut(Audio* audio, void* sourceId);
 
 	bool isPlaying(Audio* audio, void* sourceId);
 
@@ -32,7 +35,10 @@ private:
 	{
 		Free,
 		Playing,
-		Paused
+		Looping,
+		Paused,
+		// TODO add fast/slow fades
+		FadingOut
 	}; 
 
 	// Playing channels

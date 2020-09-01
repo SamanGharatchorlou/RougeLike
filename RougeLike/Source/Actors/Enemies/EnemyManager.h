@@ -35,7 +35,7 @@ public:
 
 	// AI pathing
 	void updateAIPathCostMap() { mPathing.updateAIPathCostMap(mActiveEnemies); }
-	void requestEnemyPathUpdates() { mPathing.addPathUpdateRequest(); }
+	//void requestEnemyPathUpdates() { mPathing.addPathUpdateRequest(); }
 
 	// Event handling
 	LocalDispatcher& events() { return mEvents; }

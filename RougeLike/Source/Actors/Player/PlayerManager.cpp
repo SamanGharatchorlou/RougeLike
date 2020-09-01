@@ -136,9 +136,9 @@ void PlayerManager::handleEvents()
 
 
 
-void PlayerManager::resetCollider() 
+void PlayerManager::resetColliders() 
 { 
-	mPlayer.collider()->reset(); 
+	mPlayer.resetColliders();
 }
 
 

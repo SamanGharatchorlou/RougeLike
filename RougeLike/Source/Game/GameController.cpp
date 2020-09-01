@@ -81,10 +81,13 @@ void GameController::run()
 
 		handleInput(event);
 		updateLoops(frameTimer.delta());
+
 		stateChanges();
 		render();
 
 		frameTimer.update();
+		//float spare = frameTimer.spareFrameTime(60);
+		//printf("spare time: %f\n", spare);
 	}
 
 	endGame();
@@ -104,10 +107,6 @@ void GameController::free()
 	// delete globals
 	FileManager::Get()->free();
 	Renderer::Get()->free();
-
-	// quit SDL subsystems
-	//GameSetup setup;
-	//setup.closeSubSystems();
 
 	GameSetup::closeSubSystems();
 
@@ -168,7 +167,6 @@ void GameController::updateLoops(float dt)
 	float updateLoopRepeats = 10;
 	for (int i = 0; i < updateLoopRepeats; i++)
 		mGameStateMachine.getActiveState().fastUpdate(dt / updateLoopRepeats);
-
 
 	mGameStateMachine.getActiveState().slowUpdate(dt);
 

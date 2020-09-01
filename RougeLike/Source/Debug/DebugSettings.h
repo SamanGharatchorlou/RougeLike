@@ -22,7 +22,7 @@ constexpr float game_scale = 0.5f;
 
 // Abilities
 #define UNLOCK_ALL_ABILITIES 0
-#define NO_ABILITY_COOLDOWNS 0
+#define NO_ABILITY_COOLDOWNS 1
 #define DRAW_ABILITY_RECTS 0
 
 // Collectables
@@ -49,10 +49,10 @@ constexpr float game_scale = 0.5f;
 #define DRAW_ENEMY_TARGET_PATH 0
 
 #define LIMIT_ENEMY_SPAWNS 0
-#define MAX_SPAWN_COUNT 0
+#define MAX_SPAWN_COUNT 20
 
 // UI
-#define UI_EDITOR 1
+#define UI_EDITOR 0
 #define DRAW_UI_RECTS 0
 
 #define DEBUG_CURSOR 0
@@ -61,7 +61,12 @@ constexpr float game_scale = 0.5f;
 // Collisions
 #define TRACK_COLLISIONS 0
 
+
+// Audio
+#define PRINT_PLAY_AUDIO 1
+
 #else
+#define PRINT_FRAMERATE_EVERY 1000 // Print at the rate you specify in milliseconds i.e. 500 = print every 0.5 seconds
 
 #define MEMORY_TRACKING 0
 

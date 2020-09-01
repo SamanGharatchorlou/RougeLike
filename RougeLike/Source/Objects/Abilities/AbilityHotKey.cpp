@@ -92,7 +92,7 @@ UITextBox* HotKey::createButtonText(UIBox* button, const BasicString& text)
 }
 
 
-void HotKey::updateButtonState(std::unordered_map<AbilityState, Texture*>& buttonStates)
+void HotKey::updateButtonStateTextures(std::unordered_map<AbilityState, Texture*>& buttonStates)
 {
 	Texture* texture = buttonStates[mAbility->state()];
 	if (texture)

@@ -9,7 +9,7 @@ class Collider;
 class Weapon
 {
 public:
-	Weapon() : mAttacking(false), mCanPlayHitSound(true) { }
+	Weapon() : mAttacking(false) { }
 	virtual ~Weapon() { };
 
 	virtual void attack() = 0;
@@ -18,7 +18,6 @@ public:
 	virtual void slowUpdate(float dt) { };
 	virtual void render() = 0;
 
-	virtual bool canPlayHitSound() const { return mCanPlayHitSound; }
 	virtual const BasicString& hitSoundLabel() = 0;
 	virtual const BasicString& missSoundLabel() = 0;
 
@@ -42,8 +41,4 @@ protected:
 
 	bool mAttacking;
 	VectorF mDirection;
-	
-	bool mCanPlayHitSound;
-	const BasicString* mAudioToPlay;
-	const BasicString* mAudioToStop;
 };

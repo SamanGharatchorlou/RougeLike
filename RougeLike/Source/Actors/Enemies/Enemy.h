@@ -74,6 +74,7 @@ public:
 	void attack() override;
 	bool isAttacking() const override;
 	Collider* attackingCollider() override;
+	void resetColliders() override;
 
 #if _DEBUG
 	EnemyDebugger mDebugger;

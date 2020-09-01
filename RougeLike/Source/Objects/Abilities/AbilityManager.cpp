@@ -2,6 +2,7 @@
 #include "AbilityManager.h"
 
 #include "Input/InputManager.h"
+#include "Input/Button.h"
 #include "AbilityClasses/Ability.h"
 #include "AbilityClasses/RangedAbility.h"
 
@@ -46,7 +47,9 @@ void AbilityManager::handleInput(const InputManager* input)
 		{
 			Button::State buttonState = input->state(hotKey->mKey);
 
-			if (ability->state() == AbilityState::Idle && buttonState == Button::State::Pressed)
+			const Button& button = input->getButton(hotKey->mKey);
+
+			if (ability->state() == AbilityState::Idle && button.isPressed())
 			{
 				ability->setState(AbilityState::Selected);
 			}
@@ -59,7 +62,7 @@ void AbilityManager::handleInput(const InputManager* input)
 				}
 			}
 
-			if (ability->state() == AbilityState::Selected && buttonState == Button::State::Released)
+			if (ability->state() == AbilityState::Selected && !button.isHeld())
 			{
 				ability->setState(AbilityState::Idle);
 			}

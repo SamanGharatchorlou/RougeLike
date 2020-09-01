@@ -8,15 +8,24 @@
 
 #include "Map/Map.h"
 
+#include "Debug/FrameRateController.h"
+
 #if DRAW_AI_PATH_COSTMAP
 #include "Game/Camera/Camera.h"
 #include "UI/Elements/UITextBox.h"
 #endif
 
 
-AIPathingController::AIPathingController() : pathUpdateRequests(0), pathUpdateStaggerCounter(0)
+AIPathingController::AIPathingController() : pathUpdateRequests(0), pathUpdateStaggerCounter(0), mPathLimit(-1)
 {
 	updateTimer.start();
+
+	// Split enemy list calculations over 5 frames, for now this is more than enough
+	// IMPROVEMENT: dynamically adjust this according to framerate drops
+	mListSplit = 5;
+
+	mSegmentLength = 10;
+	mSegmentIndex = 0;
 }
 
 void AIPathingController::clear() 
@@ -51,12 +60,76 @@ AIPathMap* AIPathingController::popMap()
 }
 
 
-void AIPathingController::updatePaths(std::vector<Enemy*> enemies)
+void AIPathingController::updatePaths(const std::vector<Enemy*>& enemies, float dt)
 {
-	if (pathUpdateStaggerCounter != 0 || pathUpdateRequests)
+	updateAIPathCostMap(enemies);
+
+	// dynamically adjust the length of the A* pathing calculation
+	int minimumFrameCount = 60;
+#if _DEBUG
+	minimumFrameCount = 15;
+#endif
+
+	float pathingLimit = calculatePathingLimit(minimumFrameCount, dt);
+
+	// split the list up into sections and calculate a single section per frame
+	Vector2D<int> range = getCalculationIndexRange(enemies);
+	   
+	for (int i = range.x; i < range.y; i++)
 	{
-		recalculateEnemyPaths(enemies);
+		Enemy* enemy = enemies[i];
+		if (enemy->state() == EnemyState::Run)
+		{
+			EnemyRun& runState = static_cast<EnemyRun&>(enemy->getStateMachine()->getActiveState());
+
+			// No need to update anything if in attack range
+			if (!runState.inAttackRange())
+			{
+				runState.updatePath(pathingLimit);
+			}
+		}
 	}
+}
+
+
+Vector2D<int> AIPathingController::getCalculationIndexRange(const std::vector<Enemy*>& enemies)
+{
+	if (mSegmentLength * mSegmentIndex >= enemies.size())
+	{
+		mSegmentLength = enemies.size() / mListSplit;
+		mSegmentIndex = 0;
+	}
+
+	int start = mSegmentLength * mSegmentIndex;
+	int end = start + mSegmentLength;
+	end = clamp(end, end, (int)enemies.size());
+
+	if ( start < 0	|| start >= end ||
+		 end < 0	|| end > enemies.size())
+	{
+		DebugPrint(Warning, "Invalid range for ai path calculator");
+		mSegmentLength = enemies.size() / mListSplit;
+		mSegmentIndex = 0;
+		return Vector2D<int>(0, enemies.size());
+	}
+
+	mSegmentIndex++;
+	return Vector2D<int>(start, end);
+}
+
+
+int AIPathingController::calculatePathingLimit(int minimunFrameCount, float dt)
+{
+	float maximumTime = 1.0f / (float)minimunFrameCount;
+	float spareTime = maximumTime - dt;
+
+	if (spareTime <= 0)
+		mPathLimit--;
+	else if (spareTime > 0)
+		mPathLimit++;
+
+	mPathLimit = clamp(mPathLimit, 5, 50);
+	return mPathLimit == 50 ? -1 : mPathLimit;
 }
 
 
@@ -79,44 +152,6 @@ AIPathMap* AIPathingController::pathMap(const Map* map)
 }
 
 
-// If player moves tile or an enemy moves a tile update this bad boi
-// TODO: what if the size of active enemies changes during an update?
-void AIPathingController::recalculateEnemyPaths(std::vector<Enemy*> enemies)
-{
-	updateAIPathCostMap(enemies);
-
-	int loopCount = 0;
-
-	for (; pathUpdateStaggerCounter < enemies.size(); pathUpdateStaggerCounter++)
-	{
-		// Only allow a number of these (expensive) updates per frame, reduce stuttering
-		if (loopCount++ >= 3)
-			return;
-
-		if (enemies[pathUpdateStaggerCounter]->state() == EnemyState::Run)
-		{
-			EnemyRun& runState = static_cast<EnemyRun&>(enemies[pathUpdateStaggerCounter]->getStateMachine()->getActiveState());
-
-			// No need to update anything if in attack range
-			if (!runState.inAttackRange())
-			{
-				runState.updatePath();
-			}
-		}
-	}
-
-	if (pathUpdateStaggerCounter == enemies.size())
-	{
-		pathUpdateStaggerCounter = 0;
-		pathUpdateRequests--;
-
-		ASSERT(Warning, pathUpdateRequests >= 0, "Cannot have negative path update requests, count: %d\n", pathUpdateRequests);
-
-		// No reason to have more than 1 request queued up after completing a request
-		pathUpdateRequests = clamp(pathUpdateStaggerCounter, 0, 1);
-	}
-}
-
 void AIPathingController::clearCostMaps()
 {
 	for (int i = 0; i < mPathMaps.size(); i++)
@@ -126,8 +161,10 @@ void AIPathingController::clearCostMaps()
 }
 
 
-void AIPathingController::updateAIPathCostMap(std::vector<Enemy*> enemies)
+void AIPathingController::updateAIPathCostMap(const std::vector<Enemy*>& enemies)
 {
+	TimerF timer;
+	timer.start();
 	clearCostMaps();
 
 	for (int i = 0; i < enemies.size(); i++)
@@ -155,7 +192,10 @@ void AIPathingController::updateAIPathCostMap(std::vector<Enemy*> enemies)
 
 		for (int i = 0; i < 8; i++)
 		{
-			costMap[surroundingIndexsLayer1[i]] += 1;
+			if (isValid(surroundingIndexsLayer1[i], costMap))
+			{
+				costMap[surroundingIndexsLayer1[i]] += 1;
+			}
 		}
 	}
 }

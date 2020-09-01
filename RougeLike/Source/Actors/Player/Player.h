@@ -44,10 +44,12 @@ public:
 	void attack() override;
 	bool isAttacking() const override;
 	Collider* attackingCollider() override;
+	void resetColliders() override;
 
 private:
 	void processHit();
 	void updateCursorPosition(VectorF cursorPosition);
+
 
 
 private:

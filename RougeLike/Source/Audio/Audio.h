@@ -10,7 +10,13 @@ public:
 
 	virtual void play(int channel) = 0;
 	virtual void pause(int channel) { };
-	virtual void stop(int channel) { };
+	virtual void stop(int channel) = 0;
+
+	virtual void playNext(int channel) = 0;
+
+#if PRINT_PLAY_AUDIO
+	BasicString mFilePath;
+#endif
 };
 
 
@@ -24,6 +30,9 @@ public:
 	bool load(const BasicString& filePath) override;
 
 	void play(int channel) override;
+	void playNext(int channel) override { play(channel); }
+
+	void stop(int channel) override;
 
 private:
 	Mix_Chunk *mChunk;
@@ -40,6 +49,8 @@ public:
 	bool load(const BasicString& filePath) override;
 
 	void play(int channel) override;
+	void playNext(int channel) override { play(channel); }
+
 	void pause(int channel) override;
 	void stop(int channel) override;
 
@@ -52,13 +63,17 @@ private:
 class AudioGroup : public Audio
 {
 public:
-	AudioGroup() { }
+	AudioGroup() : playingIndex(0) { }
 	~AudioGroup();
 
 	bool load(const BasicString& directoryPath) override;
 
 	void play(int channel) override;
+	void playNext(int channel) override;
+
+	void stop(int channel) override;
 
 private:
 	std::vector<Audio*> group;
+	int playingIndex;
 };

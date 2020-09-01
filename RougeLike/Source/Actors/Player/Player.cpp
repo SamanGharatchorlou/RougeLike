@@ -15,6 +15,8 @@
 #include "Debug/DebugDraw.h"
 #endif
 
+#include "Audio/AudioManager.h"
+
 
 Player::Player() :
 	mWeapon(nullptr),
@@ -68,6 +70,28 @@ void Player::slowUpdate(float dt)
 
 	Action action = mPhysics.isMoving() ? Action::Run : Action::Idle;
 	mAnimator.selectAnimation(action);
+
+	AudioManager* audio = AudioManager::Get();
+	if (action == Action::Run)
+	{
+		if (!audio->isPlaying("PlayerWalk2", this))
+			audio->loopSoundGroup("PlayerWalk2", this);
+	}
+	else
+	{
+		if (audio->isPlaying("PlayerWalk2", this))
+			audio->stop("PlayerWalk2", this);
+	}
+
+
+	if (mCollider.gotHit())
+	{
+		HealthChangedEvent* eventPtr = new HealthChangedEvent();
+		EventPacket event(eventPtr);
+		mEvents.push(event);
+
+		audio->playSound("PlayerHurt", this);
+	}
 }
 
 
@@ -158,6 +182,13 @@ void Player::updateWeaponHitSound(AudioManager* audio)
 	//		audio->playSound(mWeapon->hitSoundLabel(), this);
 	//	}
 	//}
+}
+
+
+void Player::resetColliders()
+{
+	mCollider.reset();
+	weapon()->getCollider()->reset();
 }
 
 

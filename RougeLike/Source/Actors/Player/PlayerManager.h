@@ -33,7 +33,7 @@ public:
 	void handleEvents();
 	LocalDispatcher& events() { return mEvents; }
 
-	void resetCollider();
+	void resetColliders();
 
 	void setPosition(VectorF position);
 	void selectCharacter(const BasicString& characterConfig);

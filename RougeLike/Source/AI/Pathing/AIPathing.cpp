@@ -6,10 +6,7 @@
 
 AIPathing::AIPathing(const AIPathMap* map) : mMap(map) { }
 
-
-//CostMap* AIPathing::costMap() { return &mMap->costMapRef(); }
-
-std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition) const
+std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition, int pathLimit) const
 {
 	Index startingIndex = mMap->index(startPosition);
 	Index endIndex = mMap->index(endPosition);
@@ -31,6 +28,8 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 #if _DEBUG
 	int loopCounter = 0;
 #endif
+
+	int pathCount = 0;
 
 	while (!frontier.empty())
 	{
@@ -72,6 +71,20 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 		}
 
 		frontier.pop();
+
+		// Only find part of the path
+		if (pathLimit > 0)
+		{
+			pathCount++;
+			if (pathCount >= pathLimit)
+			{
+				TileCost lastTile = frontier.top();
+				const PathTile* tile = lastTile.first;
+				Index index = mMap->index(tile);
+
+				return getPath(startingIndex, index, cameFrom);
+			}
+		}
 
 #if _DEBUG
 		if (frontier.size() > mMap->yCount() * mMap->xCount())

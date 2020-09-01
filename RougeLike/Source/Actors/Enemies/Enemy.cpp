@@ -252,6 +252,12 @@ Collider* Enemy::attackingCollider()
 }
 
 
+void Enemy::resetColliders()
+{
+	mCollider.reset();
+}
+
+
 // -- Private Functions --
 EnemyState* Enemy::getNewState(EnemyState::Type type)
 {

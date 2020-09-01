@@ -19,7 +19,7 @@ public:
 	HotKey(Ability* ability, int count);
 
 	Elements getComponents();
-	void updateButtonState(std::unordered_map<AbilityState, Texture*>& buttonStates);
+	void updateButtonStateTextures(std::unordered_map<AbilityState, Texture*>& buttonStates);
 
 private:
 	UIBox* creatIconBG() const;

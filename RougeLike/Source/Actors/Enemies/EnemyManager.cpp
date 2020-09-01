@@ -103,7 +103,7 @@ void EnemyManager::slowUpdate(float dt)
 
 	clearDead();
 
-	mPathing.updatePaths(mActiveEnemies);
+	mPathing.updatePaths(mActiveEnemies, dt);
 }
 
 
@@ -127,7 +127,7 @@ void EnemyManager::resetColliders()
 {
 	for (int i = 0; i < mActiveEnemies.size(); i++)
 	{
-		mActiveEnemies[i]->collider()->reset();
+		mActiveEnemies[i]->resetColliders();
 	}
 }
 

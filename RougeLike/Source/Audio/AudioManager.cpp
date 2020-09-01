@@ -122,6 +122,8 @@ void AudioManager::playSound(const BasicString& label, void* sourceId)
 		mSoundController.playSound(audio, sourceId);
 }
 
+
+
 void AudioManager::playMusic(const BasicString& label)
 {
 	Audio* audio = getAudio(label);
@@ -130,6 +132,16 @@ void AudioManager::playMusic(const BasicString& label)
 		mSoundController.playMusic(audio);
 }
 
+
+void AudioManager::loopSoundGroup(const BasicString& label, void* sourceId)
+{
+	Audio* audio = getAudio(label);
+
+	if (audio)
+		mSoundController.loopSound(audio, sourceId);
+}
+
+
 void AudioManager::stop(const BasicString& label, void* sourceId)
 {
 	Audio* audio = getAudio(label);
@@ -137,6 +149,16 @@ void AudioManager::stop(const BasicString& label, void* sourceId)
 	if (audio)
 		mSoundController.stopSound(audio, sourceId);
 }
+
+void AudioManager::fadeOutSound(const BasicString& label, void* sourceId)
+{
+	Audio* audio = getAudio(label);
+
+	if (audio)
+		mSoundController.fadeOut(audio, sourceId);
+}
+
+
 
 void AudioManager::pause(const BasicString& label, void* sourceId)
 {
@@ -236,4 +258,20 @@ bool AudioManager::loadAudio(Audio* audio, const BasicString& name, const BasicS
 	}
 
 	return success;
+}
+
+
+BasicString AudioManager::getLabel(Audio* audio) const
+{
+	std::unordered_map<BasicString, Audio*>::const_iterator iter;
+	for (iter = mAudioBank.begin(); iter != mAudioBank.end(); iter++)
+	{
+		if (audio == iter->second)
+		{
+			return iter->first;
+		}
+	}
+
+	DebugPrint(Warning, "The audio file was not found in the audio bank\n");
+	return BasicString();
 }

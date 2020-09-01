@@ -21,7 +21,7 @@ public:
 
 	bool inAttackRange() const;
 
-	void updatePath();
+	void updatePath(int pathLimit);
 	Index nextTileIndex();
 
 	const Path& path() const { return mPath; }

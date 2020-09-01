@@ -17,7 +17,7 @@ public:
 	void init(const AIPathMap* map) { mMap = map; }
 	void clear() { mMap = nullptr; }
 
-	Path findPath(VectorF start, VectorF end) const;
+	Path findPath(VectorF start, VectorF end, int pathLimit) const;
 
 	Index index(VectorF position) const;
 	VectorF position(Index tileIndex) const;
@@ -25,8 +25,6 @@ public:
 	const PathTile* tile(Index index) const;
 
 	const AIPathMap* map() const { return mMap; }
-	//CostMap* costMap();
-
 
 	bool updateCurrentIndex(VectorF position);
 

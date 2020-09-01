@@ -20,6 +20,9 @@ bool Sound::load(const BasicString& filePath)
 	}
 	else
 	{
+#if PRINT_PLAY_AUDIO
+		mFilePath = filePath;
+#endif
 		return true;
 	}
 }
@@ -27,6 +30,16 @@ bool Sound::load(const BasicString& filePath)
 void Sound::play(int channel)
 {
 	Mix_PlayChannel(channel, mChunk, 0);
+
+#if PRINT_PLAY_AUDIO
+	DebugPrint(Log, "Playing sound %s\n", mFilePath.c_str());
+#endif
+}
+
+
+void Sound::stop(int channel)
+{
+	Mix_HaltChannel(channel);
 }
 
 
@@ -49,6 +62,9 @@ bool Music::load(const BasicString& filePath)
 	}
 	else
 	{
+#if PRINT_PLAY_AUDIO
+		mFilePath = filePath;
+#endif
 		return true;
 	}
 }
@@ -59,6 +75,9 @@ void Music::play(int channel)
 	if (!Mix_PlayingMusic())
 	{
 		Mix_PlayMusic(mMusic, -1);
+#if PRINT_PLAY_AUDIO
+		DebugPrint(Log, "Playing music %s\n", mFilePath.c_str());
+#endif
 	}
 	else if (Mix_PausedMusic() == 1)
 	{
@@ -107,6 +126,7 @@ bool AudioGroup::load(const BasicString& directoryPath)
 		if (audio->load(audioFilePaths[i]))
 		{
 			group.push_back(audio);
+
 		}
 		else
 		{
@@ -127,3 +147,14 @@ void AudioGroup::play(int channel)
 }
 
 
+void AudioGroup::playNext(int channel)
+{
+	playingIndex = playingIndex + 1 >= group.size() ? 0 : playingIndex + 1;
+	group[playingIndex]->play(channel);
+}
+
+void AudioGroup::stop(int channel)
+{
+	playingIndex = 0;
+	Mix_HaltChannel(channel);
+}

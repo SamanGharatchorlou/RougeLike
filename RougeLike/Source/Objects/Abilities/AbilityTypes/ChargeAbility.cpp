@@ -7,6 +7,7 @@
 #include "Game/Camera/Camera.h"
 
 #include "Collisions/Colliders/QuadCollider.h"
+#include "Audio/AudioManager.h"
 
 
 void ChargeAbility::activate(VectorF position)
@@ -109,11 +110,14 @@ void ChargeAbility::setCharging(bool isCharging)
 	{
 		mTimer.start();
 		mAnimator.start();
+		AudioManager::Get()->playSound("ChargeAbility", mCaster);
 	}
 	else
 	{
 		mTimer.stop();
 		mAnimator.stop();
+
+		AudioManager::Get()->fadeOutSound("ChargeAbility", mCaster);
 	}
 }
 

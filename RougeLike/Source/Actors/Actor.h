@@ -59,6 +59,8 @@ public:
 	virtual bool isAttacking() const = 0;
 	virtual Collider* attackingCollider() = 0;
 
+	virtual void resetColliders() = 0;
+
 
 	void addEffect(Effect* effect);
 	void setVisibility(bool visibility) { mVisibility = visibility; }

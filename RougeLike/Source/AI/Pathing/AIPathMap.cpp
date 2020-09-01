@@ -110,20 +110,22 @@ Vector2D<int> AIPathMap::yTileFloorRange(Index index) const
 	while (true)
 	{
 		Index increment(0, 1);
-		if (!tile(bottomIndex + increment)->is(CollisionTile::Floor))
+		Index nextIndex = bottomIndex + increment;
+		if (!isValidIndex(nextIndex) || !tile(nextIndex)->is(CollisionTile::Floor))
 			break;
 
-		bottomIndex += increment;
+		bottomIndex = nextIndex;
 	}
 
 	Index topIndex(index);
 	while (true)
 	{
 		Index increment(0, -1);
-		if (!tile(topIndex + increment)->is(CollisionTile::Floor))
+		Index nextIndex = topIndex + increment;
+		if (!isValidIndex(nextIndex) || !tile(nextIndex)->is(CollisionTile::Floor))
 			break;
 
-		topIndex += increment;
+		topIndex = nextIndex;
 	}
 
 	return Vector2D<int>(topIndex.y, bottomIndex.y);

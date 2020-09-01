@@ -19,7 +19,6 @@ void MeleeWeapon::equipt(const WeaponData* data)
 {
 	mMeleeData.copy(data);
 
-	// TODO: ditch mRect?
 	VectorF baseSize = mMeleeData.texture->originalDimentions;
 	VectorF size = realiseSize(baseSize, mMeleeData.maxDimention);
 	mRect.SetSize(size);
@@ -40,7 +39,6 @@ VectorF& MeleeWeapon::offset()
 void MeleeWeapon::attack()
 {
 	mAttacking = true;
-	mCanPlayHitSound = true;
 	mRotationSum = 0.0f;
 }
 
@@ -93,11 +91,7 @@ void MeleeWeapon::render()
 
 // Audio
 const BasicString& MeleeWeapon::missSoundLabel() { return mMeleeData.audioMiss(); };
-const BasicString& MeleeWeapon::hitSoundLabel() 
-{ 
-	mCanPlayHitSound = false;
-	return mMeleeData.audioHit();
-};
+const BasicString& MeleeWeapon::hitSoundLabel() { return mMeleeData.audioHit(); };
 
 
 /// --- Private Functions --- ///
@@ -125,7 +119,6 @@ void MeleeWeapon::updateQuadCollider()
 void MeleeWeapon::endAttack()
 {
 	mAttacking = false;
-	mCanPlayHitSound = false;
 	flipSide();
 }
 

@@ -6,6 +6,6 @@ bool SelfAbility::activateOn(Actor* actor, EffectPool* effectPool)
 {
 	mAnimator.startAnimation(Action::Active);
 	applyEffects(mCaster, effectPool);
-	mCompleted = true;
+	playAudio();
 	return false;
 }

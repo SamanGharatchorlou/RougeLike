@@ -41,7 +41,7 @@ void GameState::init()
 	AudioManager* audio = AudioManager::Get();
 	audio->playMusic("Ludumdum");
 	audio->setMusicVolume(0.0f);
-	audio->setSoundVolume(0.0f);
+	audio->setSoundVolume(25.0f);
 }
 
 

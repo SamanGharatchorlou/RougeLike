@@ -7,6 +7,8 @@
 #include "Input/InputManager.h"
 #include "Input/Cursor.h"
 
+#include "Audio/AudioManager.h"
+
 
 
 PlayerAttackState::PlayerAttackState(Player* player)
@@ -18,7 +20,7 @@ PlayerAttackState::PlayerAttackState(Player* player)
 void PlayerAttackState::init()
 {
 	mWeapon->attack();
-
+	AudioManager::Get()->playSound(mWeapon->missSoundLabel(), mWeapon);
 }
 
 
@@ -31,6 +33,13 @@ void PlayerAttackState::fastUpdate(float dt)
 void PlayerAttackState::slowUpdate(float dt)
 {
 	mWeapon->slowUpdate(dt);
+
+	AudioManager* audio = AudioManager::Get();
+	if (mWeapon->getCollider()->didHit() && !audio->isPlaying(mWeapon->hitSoundLabel(), mWeapon))
+	{
+		audio->stop(mWeapon->missSoundLabel(), mWeapon);
+		audio->playSound(mWeapon->hitSoundLabel(), mWeapon);
+	}
 }
 
 

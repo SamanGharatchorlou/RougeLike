@@ -3,6 +3,9 @@
 
 #include "Audio.h"
 
+#if PRINT_PLAY_AUDIO
+#endif
+
 
 SoundController::SoundController() : gameVolume(-1), musicVolume(-1), muted(false)
 {
@@ -33,6 +36,29 @@ void SoundController::slowUpdate()
 			sourceIds[i] = nullptr;
 			playingAudio[i] = nullptr;
 		}
+		else if (channels[i] == FadingOut)
+		{
+			// TODO: this will depend on framerate
+			// change to using a timer
+			float volume = (float)Mix_Volume(i, -1) * 0.96f;
+
+			Mix_Volume(i, (int)volume);
+
+			if (Mix_Volume(i, -1) < 3)
+			{
+				Mix_Volume(i, Mix_Volume(-1, -1));
+				stopSound(playingAudio[i], sourceIds[i]);
+			}
+		}
+		else if (channels[i] == Looping)
+		{
+			if (!Mix_Playing(i))
+			{
+				playingAudio[i]->playNext(i);
+			}
+		}
+
+
 
 #if _DEBUG
 		if (channels[i] != Free)
@@ -108,6 +134,37 @@ void SoundController::playSound(Audio* audio, void* sourceId)
 }
 
 
+void SoundController::loopSound(Audio* audio, void* sourceId)
+{
+	// Check if the source is already playing this sound
+	for (int i = 0; i < MIX_CHANNELS; i++)
+	{
+		if (channels[i] == Playing || channels[i] == Looping)
+		{
+			// This source is already playing, do nothing
+			if (sourceIds[i] == sourceId && playingAudio[i] == audio)
+			{
+				return;
+			}
+		}
+	}
+
+	// Find free channel
+	for (int i = 0; i < MIX_CHANNELS; i++)
+	{
+		if (channels[i] == Free)
+		{
+			channels[i] = Looping;
+			sourceIds[i] = sourceId;
+			playingAudio[i] = audio;
+			return;
+		}
+	}
+
+	DebugPrint(Warning, "No available channels to loop audio\n");
+}
+
+
 void SoundController::pauseSound(Audio* audio, void* sourceId)
 {
 	for (int i = 0; i < MIX_CHANNELS; i++)
@@ -158,7 +215,7 @@ void SoundController::stopSound(Audio* audio, void* sourceId)
 	{
 		if (channels[i] >= Playing && playingAudio[i] == audio && sourceIds[i] == sourceId)
 		{
-			Mix_HaltChannel(i);
+			audio->stop(i);
 
 			channels[i] = Free;
 			sourceIds[i] = nullptr;
@@ -176,7 +233,7 @@ bool SoundController::isPlaying(Audio* audio, void* sourceId)
 {
 	for (int i = 0; i < MIX_CHANNELS; i++)
 	{
-		if (channels[i] == Playing && playingAudio[i] == audio && sourceIds[i] == sourceId)
+		if ((channels[i] == Playing || channels[i] == Looping) && playingAudio[i] == audio && sourceIds[i] == sourceId)
 		{
 			return true;
 		}
@@ -184,6 +241,23 @@ bool SoundController::isPlaying(Audio* audio, void* sourceId)
 
 	return false;
 }
+
+
+void SoundController::fadeOut(Audio* audio, void* sourceId)
+{
+	for (int i = 0; i < MIX_CHANNELS; i++)
+	{
+		if (channels[i] >= Playing && playingAudio[i] == audio && sourceIds[i] == sourceId)
+		{
+			channels[i] = FadingOut;
+			return;
+		}
+	}
+
+
+	DebugPrint(Warning, "Could not fade out audio, place a breakpoint here to find out why\n");
+}
+
 
 
 void SoundController::setSoundVolume(float volume)

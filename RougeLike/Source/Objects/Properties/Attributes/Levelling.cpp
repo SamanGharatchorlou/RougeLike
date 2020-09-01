@@ -7,6 +7,8 @@
 #include "Actors/Player/PlayerManager.h"
 #include "Objects/Abilities/AbilityClasses/AbilityStates.h"
 
+#include "Audio/AudioManager.h"
+
 
 Levelling::Levelling() : mLevel(1), mCurrentExp(0), mRequiredExp(0) { }
 Levelling::~Levelling() { reset(); }
@@ -118,6 +120,7 @@ void Levelling::levelUp(PlayerManager* player)
 	mRequiredExp = mRequiredExp * 3;
 
 	mAnimator.start();
+	AudioManager::Get()->playSound("LevelUp", player);
 
 	if(mLockedAbilities.size() > 0)
 		player->addAbility(mLockedAbilities.popFront());

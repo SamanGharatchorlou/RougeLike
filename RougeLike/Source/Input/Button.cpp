@@ -22,6 +22,8 @@ Button::State Button::state() const
 		return State::Pressed;
 	else if (mReleased)
 		return State::Released;
+	else if (mHeld)
+		return State::Held;
 	else
 		return State::None;
 }

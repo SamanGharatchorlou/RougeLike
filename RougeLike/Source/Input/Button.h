@@ -12,7 +12,8 @@ public:
 	{
 		None,
 		Pressed,
-		Released
+		Released,
+		Held
 	};
 
 	enum Key

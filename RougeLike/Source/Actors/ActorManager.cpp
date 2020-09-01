@@ -63,7 +63,7 @@ void ActorManager::slowUpdate(float dt)
 
 	// Reset colliders at the end of the frame
 #if !TRACK_COLLISIONS // Need to keep the hit data until after rendering
-	mPlayer.resetCollider();
+	mPlayer.resetColliders();
 	mEnemies.resetColliders();
 #endif
 }
@@ -98,16 +98,16 @@ void ActorManager::handleEvent(EventData& data)
 	switch (data.eventType)
 	{
 		// TODO: profile how frequently this is run, get a number of calls per time
-	case Event::UpdateAIPathMap:
-	{
-		mEnemies.requestEnemyPathUpdates();
-		break;
-	}
-	case Event::UpdateAICostMap:
-	{
-		mEnemies.updateAIPathCostMap();
-		break;
-	}
+	//case Event::UpdateAIPathMap:
+	//{
+	//	mEnemies.requestEnemyPathUpdates();
+	//	break;
+	//}
+	//case Event::UpdateAICostMap:
+	//{
+	//	mEnemies.updateAIPathCostMap();
+	//	break;
+	//}
 	case Event::LevelUpdated:
 	{
 		LevelUpdatedEvent& eventData = static_cast<LevelUpdatedEvent&>(data);

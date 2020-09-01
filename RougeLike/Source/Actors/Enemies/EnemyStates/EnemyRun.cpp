@@ -2,13 +2,13 @@
 #include "EnemyRun.h"
 
 #include "Actors/Enemies/Enemy.h"
-
 #include "AI/Pathing/AIPathMap.h"
+
 
 void EnemyRun::init()
 {
 	mEnemy->animator().selectAnimation(Action::Run);
-	updatePath();
+	updatePath(-1);
 }
 
 
@@ -35,16 +35,12 @@ void EnemyRun::slowUpdate(float dt)
 				if (distanceSquared(mEnemy->position(), targetPosition) < 5.0f)
 				{
 					mPath.pop();
-
-					// Random chance to update own path
-					if (randomNumberBetween(0, 100) >= 75)
-						updatePath();
 				}
 			}
 		}
 		else // Not in attack range and no path left
 		{
-			updatePath();
+			updatePath(-1);
 		}
 	}
 	else // Target has been reached, attack!
@@ -68,7 +64,7 @@ void EnemyRun::resume()
 	mEnemy->animator().selectAnimation(Action::Run);
 	
 	if(!inAttackRange())
-		updatePath();
+		updatePath(-1);
 }
 
 
@@ -81,9 +77,9 @@ void EnemyRun::exit()
 
 
 // Generate a new path
-void EnemyRun::updatePath()
+void EnemyRun::updatePath(int pathLimit)
 {
-	mPath = mEnemy->pathing()->findPath(mEnemy->position(), mEnemy->target()->rect().BotCenter());
+	mPath = mEnemy->pathing()->findPath(mEnemy->position(), mEnemy->target()->rect().Center(), pathLimit);
 #if DRAW_AI_PATH
 	mEnemy->mDebugger.setPath(mPath);
 #endif

@@ -13,6 +13,8 @@ public:
 
 	AbilityType type() const override { return AbilityType::Heal; }
 
+
 private:
+	void playAudio() override;
 	void applyEffects(Actor* actor, EffectPool* effectPool) override;
 };

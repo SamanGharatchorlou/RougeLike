@@ -8,6 +8,8 @@
 #include "Game/Camera/Camera.h"
 #include "Collisions/Colliders/QuadCollider.h"
 
+#include "Audio/AudioManager.h"
+
 
 void SlashAbility::activate(VectorF posision)
 {
@@ -87,15 +89,18 @@ void SlashAbility::slashOnce()
 {
 	if (mSlashCount < 2)
 	{
-		if (mSlashCount == 1)
+		mSlashCount++;
+
+		if (mSlashCount == 2)
 		{
 			mRect.SetSize(mRect.Size() * 2.0f);
 			mRect.SetLeftCenter(mCaster->rect().RightCenter());
 		}
 
-		setQuadRect();
+		const BasicString slashAudio = "Slash" + BasicString(mSlashCount);
+		AudioManager::Get()->playSound(slashAudio, mCaster);
 
-		mSlashCount++;
+		setQuadRect();
 		mHitList.clear();
 	}
 }
