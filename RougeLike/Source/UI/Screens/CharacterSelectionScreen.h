@@ -3,6 +3,9 @@
 #include "Screen.h"
 #include "UI/Elements/UISwitch.h"
 
+// Name + Weapon
+using CharacterInfo = std::pair<BasicString, BasicString>;
+
 
 class CharacterSelectionScreen : public Screen
 {
@@ -32,5 +35,5 @@ private:
 	UISwitch::State mTutorialFileState;
 
 	int mCharacterIndex;
-	std::vector<BasicString> mCharacters;
+	std::vector<CharacterInfo> mCharacters;
 };

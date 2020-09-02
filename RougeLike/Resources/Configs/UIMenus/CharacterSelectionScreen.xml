@@ -41,7 +41,7 @@
 		<Box id= "RightArrow" parent = "RightButton" x = "17.700" y = "12.899" width = "43" height = "43" texture = "RightArrow"></Box>
 
 		<TextBox id = "CharacterName" parent = "CharacterNamePanel" align = "Center" x = "2.400" y = "8.000" width = "638.800" height = "55.700" >
-			<text>KNIGHT</text>
+			<text></text>
 		</TextBox>
 		
 		<TextBox id = "PlayText" parent = "PlayButton" align = "Center" x = "0.000" y = "0.000" width = "495.000" height = "60.000" >

@@ -24,7 +24,7 @@ constexpr float game_scale = 0.5f;
 
 // Abilities
 #define UNLOCK_ALL_ABILITIES 0
-#define NO_ABILITY_COOLDOWNS 1
+#define NO_ABILITY_COOLDOWNS 0
 #define DRAW_ABILITY_RECTS 0
 
 // Collectables
@@ -50,12 +50,12 @@ constexpr float game_scale = 0.5f;
 #define DRAW_ENEMY_RECTS 0
 #define DRAW_ENEMY_TARGET_PATH 0
 
-#define LIMIT_ENEMY_SPAWNS 1
+#define LIMIT_ENEMY_SPAWNS 0
 #define MAX_SPAWN_COUNT 1
 
 // UI
-#define UI_EDITOR 1
-#define DRAW_UI_RECTS 1
+#define UI_EDITOR 0
+#define DRAW_UI_RECTS 0
 
 #define DEBUG_CURSOR 0
 

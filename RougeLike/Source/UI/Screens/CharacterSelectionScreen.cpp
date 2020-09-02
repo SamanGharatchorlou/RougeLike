@@ -10,6 +10,7 @@
 
 #include "UI/Elements/UIBox.h"
 #include "UI/Elements/UIButton.h"
+#include "UI/Elements/UITextBox.h"
 #include "UI/Elements/UISwitch.h"
 
 
@@ -17,8 +18,6 @@ void CharacterSelectionScreen::init()
 {
 	readCharacters();
 	updateCharacter();
-
-	mSelectedWeapon = "Sword";
 
 	linkButton(ScreenItem::Play, "PlayButton");
 	linkButton(ScreenItem::LeftArrow, "LeftButton");
@@ -88,18 +87,25 @@ void CharacterSelectionScreen::readCharacters()
 	XMLNode characterNode = characterParser.rootNode().child();
 	while (characterNode)
 	{
-		mCharacters.push_back(characterNode.name());
+		CharacterInfo info(characterNode.name(), characterNode.value());
+		mCharacters.push_back(info);
 		characterNode = characterNode.next();
 	}
 }
 
 void CharacterSelectionScreen::updateCharacter()
 {
-	mSelectedCharacter = mCharacters.at(mCharacterIndex);
+	mSelectedCharacter = mCharacters.at(mCharacterIndex).first;
+	mSelectedWeapon = mCharacters.at(mCharacterIndex).second;
 
 	const TextureManager* textures = TextureManager::Get();
 	Texture* texture = TextureManager::Get()->getTexture(mSelectedCharacter + "Icon", FileManager::Image_UI);
 
 	UIBox* character = static_cast<UIBox*>(find("Character"));
 	character->setTexture(texture);
+
+	UITextBox* textBox = static_cast<UITextBox*>(find("CharacterName"));
+	BasicString textString = mSelectedCharacter + " - " + mSelectedWeapon;
+	textBox->setText(textString);
+	textBox->align();
 }

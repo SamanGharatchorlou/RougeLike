@@ -69,8 +69,16 @@ void UIEventHandler::handleEvent(Screen* activeScreen, EventData& data)
 void UIEventHandler::setSliderValue(Screen* activeScreen, SetUISlider& eventData)
 {
 	UIElement* element = activeScreen->find(eventData.mId);
-	UISlider* slider = static_cast<UISlider*>(element);
-	slider->setSliderValue(eventData.mValue);
+	if (element)
+	{
+		UISlider* slider = static_cast<UISlider*>(element);
+		slider->setSliderValue(eventData.mValue);
+	}
+	else
+	{
+		DebugPrint(Log, "Cannot find the slider, wrong screen? probably requesting during a popup\n");
+	}
+
 }
 
 
