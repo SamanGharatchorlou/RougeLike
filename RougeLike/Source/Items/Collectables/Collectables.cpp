@@ -5,7 +5,6 @@
 
 #include "Game/Camera/Camera.h"
 #include "Game/Data/GameData.h"
-#include "Collisions/CollisionManager.h"
 
 #if _DEBUG
 #include "Debug/DebugDraw.h"
@@ -45,7 +44,7 @@ void Collectables::spawn(const XMLNode collectablesNode, const Map* map)
 
 		Collectable* collectable = mBuilder.build(data);
 		mCollectables.push_back(collectable);
-		mCollisions->addDefender(CollisionManager::Player_Hit_Collectable, collectable->collider());
+		//mCollisions->addDefender(CollisionManager::Player_Hit_Collectable, collectable->collider());
 	}
 }
 
@@ -75,7 +74,7 @@ void Collectables::slowUpdate(float dt)
 			collectable->activate(mCollector);
 
 			iter = mCollectables.erase(iter);
-			mCollisions->removeDefender(CollisionManager::Player_Hit_Collectable, collectable->collider());
+			//mCollisions->removeDefender(CollisionManager::Player_Hit_Collectable, collectable->collider());
 
 			mBuilder.returnCollectable(collectable);
 		}

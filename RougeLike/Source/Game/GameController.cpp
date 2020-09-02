@@ -19,7 +19,6 @@
 #include "Graphics/RenderManager.h"
 #include "UI/UIManager.h"
 #include "Game/Environment.h"
-#include "Collisions/CollisionManager.h"
 
 
 GameController::GameController() : quit(false), mGameStateMachine(new NullState)
@@ -130,8 +129,6 @@ void GameController::restartGame()
 	mGameData.uiManager->clearScreens();
 	mGameData.uiManager->load();
 
-	mGameData.collisionManager->init();
-
 	mGameData.environment->init(&mGameData);
 	mGameData.environment->load();
 	addState(SystemStates::PreGameState);
@@ -156,7 +153,7 @@ void GameController::handleInput(SDL_Event& event)
 
 #if DEBUG_CURSOR // show mouse position in screen title
 	VectorF pos = mGameData.inputManager->cursorPosition();
-	BasicString cursor = BasicString("X: ") + BasicString(pos.x) + BasicString(" Y: ") + BasicString(pos.y);
+	const BasicString cursor = "X: " + BasicString(pos.x) + " Y: " + BasicString(pos.y);
 	mGameData.window->setTitle(cursor.c_str());
 #endif
 }

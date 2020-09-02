@@ -109,6 +109,10 @@ Vector2D<int> AIPathingController::getCalculationIndexRange(const std::vector<En
 	{
 		DebugPrint(Warning, "Invalid range for ai path calculator");
 		mSegmentLength = enemies.size() / mListSplit;
+
+		if (mSegmentLength == 0)
+			mSegmentLength = enemies.size();
+
 		mSegmentIndex = 0;
 		return Vector2D<int>(0, enemies.size());
 	}

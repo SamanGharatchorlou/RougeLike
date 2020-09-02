@@ -84,7 +84,9 @@ Enemy* EnemyFactory::buildEnemy(const SpawnData& data, const XMLNode enemyNode, 
 
 	Enemy* enemy = mPool.getObject(type);
 
-	enemy->setCharacter(enemyNode);
+	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs_Objects, "DevilAnim"));
+
+	enemy->setCharacter(enemyNode, parser.rootChild("Animator"));
 	enemy->setStatePool(&mStatePool);
 	enemy->spawn(data.state, data.position, aiPathMap);
 
@@ -118,7 +120,7 @@ void EnemyFactory::setupParserMap(std::unordered_map<EnemyType, XMLParser>& pars
 
 		if (parserMap.count(type) == 0)
 		{
-			parserMap[type].parseXML(FileManager::Get()->findFile(FileManager::Configs_Objects, enemyTypeString));
+			parserMap[type].parseXML(FileManager::Get()->findFile(FileManager::Configs_Objects, "BasicEnemy"));
 		}
 	}
 }

@@ -9,7 +9,6 @@
 #include "Graphics/RenderManager.h"
 #include "UI/UIManager.h"
 #include "Managers/ScoreManager.h"
-#include "Collisions/CollisionManager.h"
 #include "Actors/ActorManager.h"
 
 #include "Game/Environment.h"
@@ -38,9 +37,6 @@ void GameData::init(GameController* gameController)
 
 	// Score Manager
 	scoreManager = new ScoreManager;
-
-	// Collision Trackers
-	collisionManager = new CollisionManager;
 
 	// Map Level
 	environment = new Environment;
@@ -75,9 +71,6 @@ void GameData::load()
 	uiManager->load();
 	uiManager->initCursor(inputManager->getCursor());
 
-	// Collision Trackers
-	collisionManager->init();
-
 	// Map Level
 	environment->init(this);
 	environment->load();
@@ -106,7 +99,6 @@ void GameData::setupObservers()
 void GameData::free()
 {
 	delete environment;
-	delete collisionManager;
 
 	delete scoreManager;
 	delete uiManager;

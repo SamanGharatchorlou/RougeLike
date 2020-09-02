@@ -2,7 +2,6 @@
 #include "Enemy.h"
 
 #include "Graphics/Texture.h"
-#include "Collisions/Colliders/EffectCollider.h"
 #include "EnemyStates/EnemyStateHeaders.h"
 
 #include "Game/Environment.h"

@@ -45,7 +45,8 @@ public:
 	void linkButton(ScreenItem option, const BasicString& buttonId);
 	void linkSwitch(ScreenItem option, const BasicString& switchId);
 
-	virtual bool selected(ScreenItem button) const;
+	virtual bool pressed(ScreenItem button) const;
+	virtual bool released(ScreenItem button) const;
 	UISlider* slider(ScreenItem slider);
 
 	void setController(ScreenController* controller) { mController = controller; }
@@ -73,5 +74,6 @@ public:
 	void render() { }
 	ScreenType type() { return ScreenType::None; }
 
-	bool selected(ScreenItem button) const override { return false; }
+	bool pressed(ScreenItem button) const override { return false; }
+	bool released(ScreenItem button) const override { return false; }
 };

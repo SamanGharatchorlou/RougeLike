@@ -7,7 +7,7 @@
 class CharacterSelectionScreen : public Screen
 {
 public:
-	CharacterSelectionScreen() : mTutorialFileState(UISwitch::Off) { }
+	CharacterSelectionScreen() : mTutorialFileState(UISwitch::Off), mCharacterIndex(0) { }
 
 	void init() override;
 	void handleInput(const InputManager* input) override;
@@ -21,8 +21,16 @@ public:
 
 
 private:
+	void readCharacters();
+	void updateCharacter();
+
+
+private:
 	BasicString mSelectedCharacter;
 	BasicString mSelectedWeapon;
 
 	UISwitch::State mTutorialFileState;
+
+	int mCharacterIndex;
+	std::vector<BasicString> mCharacters;
 };

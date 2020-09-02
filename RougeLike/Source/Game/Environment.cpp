@@ -18,7 +18,6 @@ Environment::~Environment()
 void Environment::clear()
 {
 	mActors.clear();
-	mCollectables.clear();
 
 	mLevelManager.clear();
 	mEffectPool.freeAll();
@@ -31,8 +30,6 @@ void Environment::init(GameData* gameData)
 {
 	mLevelManager.init(this);
 	mActors.init(gameData);
-
-	mCollectables.init(gameData->collisionManager, mActors.player());
 }
 
 // TODO load all pools first
@@ -76,7 +73,6 @@ void Environment::slowUpdate(float dt)
 {
 	mLevelManager.slowUpdate(dt);
 	mActors.slowUpdate(dt);
-	mCollectables.slowUpdate(dt);
 }
 
 
@@ -89,7 +85,6 @@ void Environment::renderFloor()
 void Environment::renderBottomLayer()
 {
 	mLevelManager.renderLowDepth();
-	mCollectables.render();
 	mActors.render();
 }
 

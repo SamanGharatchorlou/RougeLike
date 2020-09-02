@@ -19,7 +19,7 @@ public:
 
 	// init
 	void set(Environment* environment);
-	void setCharacter(const XMLNode node);
+	void setCharacter(const XMLNode actorNode, const XMLNode animationNode);
 	void clear();
 
 	// core loops

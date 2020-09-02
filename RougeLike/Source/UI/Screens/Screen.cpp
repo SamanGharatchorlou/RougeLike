@@ -150,7 +150,7 @@ void Screen::linkSlider(ScreenItem option, const BasicString& sliderId)
 }
 
 
-bool Screen::selected(ScreenItem item) const
+bool Screen::pressed(ScreenItem item) const
 {
 #if _DEBUG
 	if (mButtons.count(item) == 0)
@@ -160,6 +160,18 @@ bool Screen::selected(ScreenItem item) const
 	}
 #endif
 	return mButtons.at(item)->isPressed();
+}
+
+bool Screen::released(ScreenItem item) const
+{
+#if _DEBUG
+	if (mButtons.count(item) == 0)
+	{
+		DebugPrint(Warning, "No button has been linked to the screen item %d\n", (int)item);
+		return false;
+	}
+#endif
+	return mButtons.at(item)->isReleased();
 }
 
 

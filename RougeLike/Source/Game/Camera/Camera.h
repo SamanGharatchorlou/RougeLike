@@ -36,7 +36,7 @@ public:
 	RectF rect() const { return mRect; }
 	VectorF size() const { return mRect.Size(); }
 
-	void initShakeyCam(float maxTrauma, float traumaReduction, float maxAngle) { shakeyCam.init(maxTrauma, traumaReduction, maxAngle); }
+	void initShakeyCam(float maxTrauma, float traumaReduction) { shakeyCam.init(maxTrauma, traumaReduction); }
 	CameraShake* getShake() { return &shakeyCam; }
 
 

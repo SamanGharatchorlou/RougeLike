@@ -15,20 +15,18 @@
 
 void CharacterSelectionScreen::init()
 {
-	const TextureManager* textures = TextureManager::Get();
-	UIBox* character = static_cast<UIBox*>(find("Character"));
-	mSelectedCharacter = "Soldier";
-
-	Texture* texture = textures->getTexture(mSelectedCharacter + "Icon", FileManager::Image_UI);
-	character->setTexture(texture);
+	readCharacters();
+	updateCharacter();
 
 	mSelectedWeapon = "Sword";
 
 	linkButton(ScreenItem::Play, "PlayButton");
+	linkButton(ScreenItem::LeftArrow, "LeftButton");
+	linkButton(ScreenItem::RightArrow, "RightButton");
 	linkSwitch(ScreenItem::Tutorial, "TutorialSwitch");
 
-	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs, "GameSettings"));
-	BasicString switchState = parser.rootChild("Tutorial").value();
+	XMLParser settingsParser(FileManager::Get()->findFile(FileManager::Configs, "GameSettings"));
+	BasicString switchState = settingsParser.rootChild("Tutorial").value();
 
 	mTutorialFileState = switchState == "ON" ? UISwitch::On : UISwitch::Off;
 	mSwitches[ScreenItem::Tutorial]->setState(mTutorialFileState);
@@ -50,9 +48,10 @@ void CharacterSelectionScreen::handleInput(const InputManager* input)
 #endif
 }
 
+
 void CharacterSelectionScreen::slowUpdate()
 {
-	if (selected(ScreenItem::Play))
+	if (released(ScreenItem::Play))
 	{
 		mController->replaceScreen(ScreenType::Game);
 		mController->replaceSystemState(SystemStates::GameState);
@@ -66,4 +65,41 @@ void CharacterSelectionScreen::slowUpdate()
 		}
 		mController->enablePopups((bool)tutorialState);
 	}
+
+	if (released(ScreenItem::LeftArrow))
+	{
+		mCharacterIndex = mCharacterIndex - 1 < 0 ? mCharacters.size() - 1 : mCharacterIndex - 1;
+		updateCharacter();
+	}
+
+	if (released(ScreenItem::RightArrow))
+	{
+		mCharacterIndex = mCharacterIndex + 1 >= mCharacters.size() ? 0 : mCharacterIndex + 1;
+		updateCharacter();
+	}
+}
+
+
+// -- Private Funtions -- //
+
+void CharacterSelectionScreen::readCharacters()
+{
+	XMLParser characterParser(FileManager::Get()->findFile(FileManager::Configs, "Characters"));
+	XMLNode characterNode = characterParser.rootNode().child();
+	while (characterNode)
+	{
+		mCharacters.push_back(characterNode.name());
+		characterNode = characterNode.next();
+	}
+}
+
+void CharacterSelectionScreen::updateCharacter()
+{
+	mSelectedCharacter = mCharacters.at(mCharacterIndex);
+
+	const TextureManager* textures = TextureManager::Get();
+	Texture* texture = TextureManager::Get()->getTexture(mSelectedCharacter + "Icon", FileManager::Image_UI);
+
+	UIBox* character = static_cast<UIBox*>(find("Character"));
+	character->setTexture(texture);
 }

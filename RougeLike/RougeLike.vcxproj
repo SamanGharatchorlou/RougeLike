@@ -107,7 +107,6 @@
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyPreAttack.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyWait.cpp" />
     <ClCompile Include="Source\AI\Spawning\SpawnDataBuilder.cpp" />
-    <ClCompile Include="Source\Collisions\CollisionManager.cpp" />
     <ClCompile Include="Source\Actors\Actor.cpp" />
     <ClCompile Include="Source\Objects\Pools\EffectPool.cpp" />
     <ClCompile Include="Source\Utilities\Maps\EffectMap.cpp" />
@@ -147,7 +146,6 @@
     <ClCompile Include="Source\Collisions\Colliders\Collider.cpp" />
     <ClCompile Include="Source\Audio\Audio.cpp" />
     <ClCompile Include="Source\Audio\AudioManager.cpp" />
-    <ClCompile Include="Source\Collisions\CollisionTracker.cpp" />
     <ClCompile Include="Source\Events\Dispatcher.cpp" />
     <ClCompile Include="Source\Game\Data\GameData.cpp" />
     <ClCompile Include="Source\Text\Font.cpp" />
@@ -296,7 +294,6 @@
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyState.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyWait.h" />
     <ClInclude Include="Source\AI\Spawning\SpawnDataBuilder.h" />
-    <ClInclude Include="Source\Collisions\CollisionManager.h" />
     <ClInclude Include="Source\Utilities\Maps\PropertyMap.h" />
     <ClInclude Include="Source\Items\Collectables\CollectableSpawner.h" />
     <ClInclude Include="Source\System\Files\XMLNode.h" />
@@ -347,7 +344,6 @@
     <ClInclude Include="Source\Objects\Properties\Attributes\Health.h" />
     <ClInclude Include="Source\Audio\Audio.h" />
     <ClInclude Include="Source\Audio\AudioManager.h" />
-    <ClInclude Include="Source\Collisions\CollisionTracker.h" />
     <ClInclude Include="Source\Events\Dispatcher.h" />
     <ClInclude Include="Source\Events\Observer.h" />
     <ClInclude Include="Source\Game\Data\GameData.h" />

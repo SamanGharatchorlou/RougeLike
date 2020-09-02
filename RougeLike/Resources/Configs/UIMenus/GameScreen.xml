@@ -2,9 +2,9 @@
 <screen>
 
 	<Layer>
-		<Slider id = "HealthSlider" x = "244.565" y = "61.500" width = "507.500" height = "35.000" slider = "HealthSlider"></Slider>
-		<Slider id = "LevelSlider" x = "319.565" y = "21.500" width = "432.500" height = "30.000" slider = "LevelSlider"></Slider>
-		<TextBox id = "ExpText" parent = "LevelSlider" x = "-65.000" y = "-5.000" width = "58.000" height = "36.500">
+		<Slider id = "HealthSlider" x = "261.065" y = "20.500" width = "512.500" height = "35.000" slider = "HealthSlider"></Slider>
+		<Slider id = "LevelSlider" x = "112.565" y = "64.000" width = "839.000" height = "27.500" slider = "LevelSlider"></Slider>
+		<TextBox id = "ExpText" parent = "LevelSlider" x = "-60.500" y = "-6.500" width = "58.000" height = "36.500">
 			<text>Exp:</text>
 		</TextBox>
 
@@ -12,21 +12,21 @@
 
 	<!-- Map level -->
 	<Layer>
-		<TextBox id = "MapLevel str" x = "782.450" y = "12.025" width = "226.000" height = "54.000">
-			<text r = "0" g = "255" b = "0">Level:</text>
+		<TextBox id = "MapLevel str" x = "810.450" y = "17.025" width = "137.000" height = "40.000">
+			<text>Map Level:</text>
 		</TextBox>
-		<TextBox id = "MapLevel val" parent = "MapLevel str" x = "129.000" y = "0.000" width = "96.000" height = "54.000">
-			<text r = "0" g = "255" b = "0">0</text>
+		<TextBox id = "MapLevel val" parent = "MapLevel str" x = "141.500" y = "0.000" width = "75.500" height = "40.000">
+			<text>0</text>
 		</TextBox>
 	</Layer>
 		
 	<Layer>
 		<!-- Score -->
-		<TextBox id = "Score str" x = "26.025" y = "12.025" width = "218.000" height = "52.000">
-			<text r = "0" g = "255" b = "0" >Score:</text>
+		<TextBox id = "Score str" x = "26.025" y = "12.025" width = "200.000" height = "45.000">
+			<text>Score:</text>
 		</TextBox>  
-		<TextBox id = "Score val" parent = "Score str" x = "126.000" y = "0.000" width = "92.000" height = "52.000">
-			<text r = "0" g = "255" b = "0" >0</text>
+		<TextBox id = "Score val" parent = "Score str" x = "115.000" y = "0.000" width = "92.000" height = "45.000">
+			<text>100000</text>
 		</TextBox>		
 	</Layer>
 	

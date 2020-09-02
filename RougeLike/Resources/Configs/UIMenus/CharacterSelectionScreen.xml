@@ -25,8 +25,8 @@
 		<Box id= "Character" parent = "MainPanel" x = "193.298" y = "167.700" width = "344.994" height = "345.000" texture = "Soldier"></Box>
 		<Button id = "PlayButton" parent = "CharacterNamePanel" x = "59.800" y = "443.588" width = "520.0" height = "90.595" texture = "WideBlueButton"></Button>
 
-		<Button id = "LeftButton" parent = "MainPanel" x = "66.700" y = "315.793" width = "81.895" height = "74.996" texture = "BlankButtonDisabled"></Button>
-		<Button id = "RightButton" parent = "MainPanel" x = "573.287" y = "326.893" width = "82.495" height = "71.696" texture = "BlankButtonDisabled"></Button>
+		<Button id = "LeftButton" parent = "MainPanel" x = "66.700" y = "315.793" width = "81.895" height = "74.996" texture = "BlankButton"></Button>
+		<Button id = "RightButton" parent = "MainPanel" x = "573.287" y = "326.893" width = "82.495" height = "71.696" texture = "BlankButton"></Button>
 	</Layer>
 
 	<Layer>

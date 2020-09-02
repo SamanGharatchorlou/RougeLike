@@ -7,7 +7,6 @@ class RenderManager;
 class UIManager;
 class Environment;
 class ScoreManager;
-class CollisionManager;
 
 
 struct GameData
@@ -26,7 +25,6 @@ struct GameData
 	RenderManager* renderManager = nullptr;
 	UIManager* uiManager = nullptr;
 	ScoreManager* scoreManager = nullptr;
-	CollisionManager* collisionManager = nullptr;
 
 	Environment* environment = nullptr;
 };

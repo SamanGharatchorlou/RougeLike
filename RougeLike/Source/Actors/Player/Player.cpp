@@ -26,12 +26,6 @@ Player::Player() :
 { }
 
 
-void Player::setCharacter(const XMLNode playerNode)
-{
-	Actor::setCharacter(playerNode);
-}
-
-
 void Player::handleInput(const InputManager* input)
 {
 	mPhysics.handleInput(input);
@@ -91,13 +85,17 @@ void Player::slowUpdate(float dt)
 		mEvents.push(event);
 
 		audio->playSound("PlayerHurt", this);
+
+		TraumaEvent* trauma = new TraumaEvent(60);
+		mEvents.push(EventPacket(trauma));
+
+		printf("got hit\n");
 	}
 }
 
 
 void Player::clear()
 {
-	mTileIndex.zero();
 	mWeapon = nullptr;
 	mControlOverride = false;
 	Actor::clear();
@@ -147,16 +145,6 @@ void Player::overrideControl(bool control)
 
 // --- Private Functions --- //
 
-void Player::processHit()
-{
-	if (mCollider.getOtherCollider())
-	{
-		//TraumaEvent* trauma = new TraumaEvent(40);
-		//mEvents.push(EventPacket(trauma));
-	}
-}
-
-
 bool Player::isAttacking() const
 {
 	return mWeapon->isAttacking();
@@ -170,18 +158,6 @@ void Player::attack()
 Collider* Player::attackingCollider()
 {
 	return weapon()->getCollider();
-}
-
-
-void Player::updateWeaponHitSound(AudioManager* audio)
-{
-	//if (mWeapon->didHit())
-	//{
-	//	if (audio->isPlaying(mWeapon->missSoundLabel(), this) && mWeapon->canPlayHitSound())
-	//	{
-	//		audio->playSound(mWeapon->hitSoundLabel(), this);
-	//	}
-	//}
 }
 
 
@@ -200,18 +176,6 @@ void Player::updateMapInfo()
 	if (!map)
 		return;
 #endif
-
-	if(map->isValidPosition(position()))
-	{
-		Vector2D<int> currentTile = map->index(position());
-		if (mTileIndex != currentTile)
-		{
-			mTileIndex = currentTile;
-
-			UpdateAIPathMapEvent* eventPtr = new UpdateAIPathMapEvent;
-			mEvents.push(EventPacket(eventPtr));
-		}
-	}
 
 	int level = map->level();
 

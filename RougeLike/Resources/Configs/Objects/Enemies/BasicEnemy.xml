@@ -32,19 +32,4 @@
 	<MaxSize>60</MaxSize>
 	<ColliderScale x = "0.6" y = "0.65"></ColliderScale>
 	<RenderOffset x = "3" y = "-2"></RenderOffset>
-
-	<Animator>
-		<ID>Devil</ID>
-		<FrameTime>0.05</FrameTime>
-		<FrameSize x = "900" y ="900"></FrameSize>
-		<Animations>
-			<Idle>16</Idle>
-			<Walk>24</Walk>
-			<Run>12</Run>
-			<Attack>16</Attack>
-			<Hurt>12</Hurt>
-			<Dead>15</Dead>
-			<Alert>6</Alert>
-		</Animations>
-	</Animator>
 </Enemy>

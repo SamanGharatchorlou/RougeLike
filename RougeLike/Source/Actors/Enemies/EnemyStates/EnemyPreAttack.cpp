@@ -2,22 +2,22 @@
 #include "EnemyPreAttack.h"
 
 #include "Actors/Enemies/Enemy.h"
-#include "Collisions/Colliders/Collider.h"
-
-
 #include "Objects/Abilities/AbilityClasses/Ability.h"
+
 
 void EnemyPreAttack::enter()
 {
-	mEnemy->collider()->setDidHit(false);
 }
 
 
 void EnemyPreAttack::init()
 {
-	//printf("init pre\n");
 	mEnemy->animator().selectAnimation(Action::Attack);
 	timer.restart();
+
+	float attackWaitTime = 1.0f / mEnemy->getAttributeValue(AttributeType::AttackSpeed);
+	float range = attackWaitTime / 4.0f;
+	mAttackWaitTime = randomNumberBetween(attackWaitTime - range, attackWaitTime + range);
 }
 
 
@@ -26,7 +26,7 @@ void EnemyPreAttack::slowUpdate(float dt)
 	if (!inAttackRange())
 		mEnemy->popState();
 
-	if (timer.getSeconds() > (1.0f / mEnemy->getAttributeValue(AttributeType::AttackSpeed)))
+	if (timer.getSeconds() > mAttackWaitTime)
 	{
 		Ability* basicAttack = mEnemy->abilities().get(AbilityType::Attack);
 		if (basicAttack->state() == AbilityState::Idle)
@@ -54,7 +54,6 @@ bool EnemyPreAttack::inAttackRange() const
 
 void EnemyPreAttack::resume()
 {
-	mEnemy->collider()->setDidHit(false);
 	init();
 }
 

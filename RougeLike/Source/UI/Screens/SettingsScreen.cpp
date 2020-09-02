@@ -28,7 +28,7 @@ void SettingsScreen::slowUpdate()
 	audio->setMusicVolume(slider(ScreenItem::Music)->getValue());
 	audio->setSoundVolume(slider(ScreenItem::Sound)->getValue());
 
-	if (selected(ScreenItem::Close))
+	if (released(ScreenItem::Close))
 	{
 		mController->popScreen();
 	}

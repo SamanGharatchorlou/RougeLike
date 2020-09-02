@@ -23,6 +23,7 @@ private:
 
 private:
 	Timer<float> timer;
+	float mAttackWaitTime;
 };
 
 

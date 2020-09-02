@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Actor.h"
 
-#include "Collisions/Colliders/EffectCollider.h"
 #include "Objects/Pools/EffectPool.h"
 
 #include "Game/Camera/Camera.h"
@@ -16,13 +15,14 @@
 Actor::Actor() : mVisibility(true) { }
 
 
-void Actor::setCharacter(const XMLNode actorNode)
+void Actor::setCharacter(const XMLNode actorNode, const XMLNode animationNode)
 {
 	mAttributeBag.fill(actorNode.child("Properties"));
 
 	// Animations
+
 	AnimationReader reader;
-	mAnimator = reader.buildAnimator(actorNode.child("Animator"));
+	mAnimator = reader.buildAnimator(animationNode);
 	mAnimator.start();
 
 	// Physics 

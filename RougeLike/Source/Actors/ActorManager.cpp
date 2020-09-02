@@ -97,17 +97,6 @@ void ActorManager::handleEvent(EventData& data)
 {
 	switch (data.eventType)
 	{
-		// TODO: profile how frequently this is run, get a number of calls per time
-	//case Event::UpdateAIPathMap:
-	//{
-	//	mEnemies.requestEnemyPathUpdates();
-	//	break;
-	//}
-	//case Event::UpdateAICostMap:
-	//{
-	//	mEnemies.updateAIPathCostMap();
-	//	break;
-	//}
 	case Event::LevelUpdated:
 	{
 		LevelUpdatedEvent& eventData = static_cast<LevelUpdatedEvent&>(data);

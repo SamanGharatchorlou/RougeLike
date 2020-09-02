@@ -57,6 +57,13 @@ void Camera::fastUpdate(float dt)
 	{
 		mRect = mRect.Translate(0.0f, translation.y);
 	}
+
+
+	if (shakeyCam.hasTrauma())
+	{
+		//shakeyCam.setRect(mRect);
+		//shakeyCam.fastUpdate(dt);
+	}
 }
 
 
@@ -68,7 +75,14 @@ void Camera::slowUpdate(float dt)
 		mActiveRect = shakeyCam.rect();
 
 		shakeyCam.setRect(mRect);
-		shakeyCam.update(dt);
+		shakeyCam.fastUpdate(dt);
+
+
+#if PRINT_SHAKEYCAM_VALUES
+		DebugPrint(Log, "Trauma %.3f | Offset = %.3f, %.3f\n",
+			shakeyCam.trauma(),
+			shakeyCam.offset().x, shakeyCam.offset().y);
+#endif
 	}
 	else
 	{

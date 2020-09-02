@@ -1,11 +1,8 @@
 #include "pch.h"
 #include "EnemyAttack.h"
 
-#include "Collisions/Colliders/EffectCollider.h"
 #include "Actors/Enemies/Enemy.h"
 
-#include "Objects/Effects/EffectTypes/DisplacementEffect.h"
-#include "Objects/Effects/EffectTypes/DamageEffect.h"
 
 
 EnemyAttack::EnemyAttack() : mHasAttacked(false), mHitCounter(0)
@@ -108,6 +105,4 @@ void EnemyAttack::exit()
 {
 	mHasAttacked = false;
 	mHitCounter = 0;
-
-	printf("attack end\n");
 }

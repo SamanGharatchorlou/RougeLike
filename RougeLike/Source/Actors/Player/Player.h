@@ -32,13 +32,12 @@ public:
 
 	MeleeWeapon*	weapon();
 
-	void setCharacter(const XMLNode playerNode);
+	//void setCharacter(const XMLNode playerNode);
 	void selectWeapon(WeaponData* weapon);
 
 	void overrideControl(bool removeControl);
 	bool userHasControl() { return !mControlOverride; }
 
-	void updateWeaponHitSound(AudioManager* audio);
 	void updateMapInfo();
 
 	void attack() override;
@@ -46,8 +45,8 @@ public:
 	Collider* attackingCollider() override;
 	void resetColliders() override;
 
+
 private:
-	void processHit();
 	void updateCursorPosition(VectorF cursorPosition);
 
 
@@ -55,7 +54,6 @@ private:
 private:
 	StateMachine<PlayerState> mStateMachine;
 
-	Vector2D<int> mTileIndex;
 	int mMapLevel;
 
 	Weapon* mWeapon;

@@ -52,7 +52,7 @@ private:
 	EffectPool mEffectPool;
 	
 	// MOVE to level manager
-	Collectables mCollectables;
+	//Collectables mCollectables;
 
 	Vector2D<int> mMapSize;
 };

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Data>
+	<Properties>
+		<!-- Attributes -->
+		<Level>1</Level>
+		<Health>100</Health>
+		<Armor>0</Armor>
+		<AttackSpeed>10</AttackSpeed>
+
+		<!-- Physics -->
+		<Force>500</Force>
+		<MaxVelocity>500</MaxVelocity>
+	</Properties>
+
+	<MaxSize>80</MaxSize>
+	<ColliderScale x = "0.32" y = "0.57"></ColliderScale>
+	<Icon>SoldierIcon</Icon>
+	<WeaponType>Melee</WeaponType>
+
+	<AttackingEffects>
+		<Types>
+			<Damage></Damage>
+			<Displacement></Displacement>
+		</Types>
+
+		<Info>
+			<Damage>40</Damage>
+			<KnockbackForce>200</KnockbackForce>
+			<KnockbackDistance>15</KnockbackDistance>
+		</Info>
+	</AttackingEffects>
+
+	<Animator>
+		<ID>Soldier</ID>
+		<FrameTime>0.04</FrameTime>
+		<FrameSize x = "900" y ="900"></FrameSize>
+		<Animations>
+			<Idle>16</Idle>
+			<Run>12</Run>
+		</Animations>
+	</Animator>
+
+	<LevellingInfo>SoldierLevelUp</InfoLevelling>
+</Data>

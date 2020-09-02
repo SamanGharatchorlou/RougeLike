@@ -7,8 +7,10 @@
 
 // Camera
 #define CAMERA_IGNORE_BOUNDARIES 0
+#define PRINT_SHAKEYCAM_VALUES 0
 #define SET_GAME_SCALE 0 // 
 constexpr float game_scale = 0.5f;
+
 
 // Framerate
 #define FRAMERATE_CAP 0 // Use the FPS cap you want
@@ -52,8 +54,8 @@ constexpr float game_scale = 0.5f;
 #define MAX_SPAWN_COUNT 20
 
 // UI
-#define UI_EDITOR 0
-#define DRAW_UI_RECTS 0
+#define UI_EDITOR 1
+#define DRAW_UI_RECTS 1
 
 #define DEBUG_CURSOR 0
 
@@ -63,7 +65,7 @@ constexpr float game_scale = 0.5f;
 
 
 // Audio
-#define PRINT_PLAY_AUDIO 1
+#define PRINT_PLAY_AUDIO 0
 
 #else
 #define PRINT_FRAMERATE_EVERY 1000 // Print at the rate you specify in milliseconds i.e. 500 = print every 0.5 seconds

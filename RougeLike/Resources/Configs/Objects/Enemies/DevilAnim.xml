@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Enemy>
+	<Animator>
+		<ID>Devil</ID>
+		<FrameTime>0.05</FrameTime>
+		<FrameSize x = "900" y ="900"></FrameSize>
+		<Animations>
+			<Idle>16</Idle>
+			<Walk>24</Walk>
+			<Run>12</Run>
+			<Attack>16</Attack>
+			<Hurt>12</Hurt>
+			<Dead>15</Dead>
+			<Alert>6</Alert>
+		</Animations>
+	</Animator>
+</Enemy>

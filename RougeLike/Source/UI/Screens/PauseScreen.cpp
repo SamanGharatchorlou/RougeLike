@@ -19,11 +19,11 @@ void PauseScreen::init()
 
 void PauseScreen::handleInput(const InputManager* input) 
 {
-	if (input->isPressed(Button::Pause))
+	if (input->isReleased(Button::Pause))
 	{
 		popScreenState();
 	}
-	else if (input->isPressed(Button::Esc) || input->isPressed(Button::Quit))
+	else if (input->isReleased(Button::Esc) || input->isReleased(Button::Quit))
 	{
 		mController->quitGame();
 	}
@@ -32,20 +32,20 @@ void PauseScreen::handleInput(const InputManager* input)
 
 void PauseScreen::slowUpdate()
 {
-	if (selected(ScreenItem::Settings))
+	if (released(ScreenItem::Settings))
 	{
 		mController->addScreen(ScreenType::Settings);
 	}
 
-	if (selected(ScreenItem::Quit))
+	if (released(ScreenItem::Quit))
 	{
 		mController->quitGame();
 	}
-	else if (selected(ScreenItem::Restart))
+	else if (released(ScreenItem::Restart))
 	{
 		mController->restartGame();
 	}
-	else if (selected(ScreenItem::Resume))
+	else if (released(ScreenItem::Resume))
 	{
 		popScreenState();
 	}

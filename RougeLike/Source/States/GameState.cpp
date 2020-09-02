@@ -8,7 +8,6 @@
 #include "Graphics/RenderManager.h"
 #include "Input/InputManager.h"
 #include "Managers/ScoreManager.h"
-#include "Collisions/CollisionManager.h"
 
 #include "Game/Environment.h"
 #include "Map/Map.h"
@@ -54,25 +53,15 @@ void GameState::handleInput()
 void GameState::fastUpdate(float dt)
 {
 	Camera::Get()->fastUpdate(dt);
-
-	mGameData->collisionManager->fastUpdate();
-
 	mGameData->environment->fastUpdate(dt);
 }
 
 
 void GameState::slowUpdate(float dt)
 {
-	mGameData->environment->slowUpdate(dt);
-
-	mGameData->scoreManager->slowUpdate();
-
 	Camera::Get()->slowUpdate(dt);
-
-	// End of slow frame
-#if !TRACK_COLLISIONS // Moved to end of render function
-	mGameData->collisionManager->resetColliders();
-#endif
+	mGameData->environment->slowUpdate(dt);
+	mGameData->scoreManager->slowUpdate();
 }
 
 
@@ -88,10 +77,6 @@ void GameState::render()
 
 	// update window surface
 	SDL_RenderPresent(renderer);
-
-#if TRACK_COLLISIONS // Need to keep the hit data until after rendering
-	mGameData->collisionManager->resetColliders();
-#endif
 }
 
 
@@ -109,7 +94,6 @@ void GameState::exit()
 {
 	mGameData->environment->clear();
 	mGameData->scoreManager->reset();
-	mGameData->collisionManager->clearColliders();
 }
 
 
@@ -123,7 +107,7 @@ void GameState::initCamera()
 	camera->setPosition(cameraPosition);
 
 	// TODO: fix these values
-	camera->initShakeyCam(150.0f, 100.0f, 50.0f);
+	camera->initShakeyCam(100.0f, 80.0f);
 
 	RectF* playerRect = &mGameData->environment->actors()->player()->get()->rectRef();
 	camera->follow(playerRect);

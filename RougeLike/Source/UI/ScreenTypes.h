@@ -63,6 +63,8 @@ enum class ScreenItem
 	// Character Selection
 	Play,
 	Tutorial,
+	LeftArrow,
+	RightArrow,
 
 	// Game
 	Health,

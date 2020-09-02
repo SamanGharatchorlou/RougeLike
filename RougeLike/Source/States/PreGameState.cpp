@@ -1,4 +1,4 @@
-#include "pch.h"
+ #include "pch.h"
 #include "PreGameState.h"
 
 #include "Game/Data/GameData.h"
@@ -29,7 +29,7 @@ void PreGameState::init()
 
 void PreGameState::slowUpdate(float dt)
 {
-	if (mGameData->uiManager->getActiveScreen()->selected(ScreenItem::Play) || mGameData->inputManager->isPressed(Button::Enter))
+	if (mGameData->uiManager->getActiveScreen()->released(ScreenItem::Play) || mGameData->inputManager->isReleased(Button::Enter))
 	{
 		CharacterSelectionScreen* selectionScreen = static_cast<CharacterSelectionScreen*>(mGameData->uiManager->getActiveScreen());
 

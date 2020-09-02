@@ -7,5 +7,9 @@ Devil::Devil() { }
 void Devil::init()
 {
 	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs_Objects, "Devil"));
-	setCharacter(parser.rootNode());
+
+	XMLParser animator(FileManager::Get()->findFile(FileManager::Configs_Objects, "DevilAnim"));
+	XMLNode animatorNode = animator.rootChild("Animator");
+
+	setCharacter(parser.rootNode(), animatorNode);
 }

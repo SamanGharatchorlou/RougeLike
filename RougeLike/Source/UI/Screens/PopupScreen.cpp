@@ -16,7 +16,7 @@ void PopupScreen::init()
 
 void PopupScreen::handleInput(const InputManager* input)
 {
-	if (input->isPressed(Button::Enter) || input->isPressed(Button::Esc))
+	if (input->isReleased(Button::Enter) || input->isReleased(Button::Esc))
 	{
 		exitPopup();
 	}
@@ -25,7 +25,7 @@ void PopupScreen::handleInput(const InputManager* input)
 
 void PopupScreen::slowUpdate()
 {
-	if (selected(ScreenItem::Close))
+	if (released(ScreenItem::Close))
 	{
 		exitPopup();
 	}

@@ -99,11 +99,6 @@ void PlayerManager::slowUpdate(float dt)
 
 	mPlayer.updateMapInfo();
 
-	//if (mPlayer->weapon()->isAttacking())
-	//{
-	//	mPlayer->updateWeaponHitSound(mGameData->audioManager);
-	//}
-
 	mAbilities.slowUpdate(dt);
 
 	handleEvents();
@@ -153,8 +148,11 @@ void PlayerManager::render()
 
 void PlayerManager::selectCharacter(const BasicString& characterConfig)
 { 
-	XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Player, characterConfig));
-	mPlayer.setCharacter(parser.rootNode());
+	XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Player, "Player"));
+	XMLParser animationParser(FileManager::Get()->findFile(FileManager::Config_Player, characterConfig + "Anim"));
+	XMLNode animationNode = animationParser.rootChild("Animator");
+
+	mPlayer.setCharacter(parser.rootNode(), animationNode);
 
 	BasicString weapontype = parser.rootChild("WeaponType").value();
 	mPlayer.setWeaponType(mWeaponStash.getWeapon(weapontype));

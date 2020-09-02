@@ -49,7 +49,7 @@ void GameScreen::handleInput(const InputManager* input)
 		mController->quitGame();
 	}
 
-	if (input->isPressed(Button::Pause))
+	if (input->isReleased(Button::Pause))
 	{
 		mController->addScreen(ScreenType::Pause);
 		mController->addSystemState(SystemStates::PauseState);

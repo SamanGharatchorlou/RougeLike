@@ -4,22 +4,20 @@
 CameraShake::CameraShake() :
 	mTrauma(0), 
 	mMaxTrauma(0), 
-	mTraumaReduction(0), 
-	mMaxAngle(0.0f)
+	mTraumaReduction(0)
 {
 
 }
 
 
-void CameraShake::init(float maxTrauma, float traumaReduction, float maxAngle)
+void CameraShake::init(float maxTrauma, float traumaReduction)
 {
 	mMaxTrauma = maxTrauma;
 	mTraumaReduction = traumaReduction;
-	mMaxAngle = maxAngle;
 }
 
 
-void CameraShake::update(float dt)
+void CameraShake::fastUpdate(float dt)
 {
 	cameraRect = cameraRect.Translate(offset());
 
@@ -39,13 +37,6 @@ void CameraShake::handleEvent(EventData& data)
 
 		mTrauma = clamp(mTrauma, 0.0f, mMaxTrauma);
 	}
-}
-
-
-float CameraShake::angle()
-{
-	float randomNumber = (float)randomNumberBetween(-100, 100) / 100;
-	return mTrauma * mMaxAngle * randomNumber;
 }
 
 
