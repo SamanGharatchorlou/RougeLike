@@ -37,6 +37,9 @@ EnemyState* EnemyStatePool::createNewObject(EnemyState::Type type) const
 	case EnemyState::Attack:
 		state = new EnemyAttack;
 		break;
+	case EnemyState::Charge:
+		state = new EnemyCharge;
+		break;
 	case EnemyState::Dead:
 		state = new EnemyDead;
 		break;

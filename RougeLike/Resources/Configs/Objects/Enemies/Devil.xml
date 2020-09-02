@@ -1,38 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Enemy>
-	<Properties>
-		<!-- Physics -->
-		<Force>500</Force>
-		<MaxVelocity>70</MaxVelocity>
-
-		<!-- General Attributes -->
-		<Health>120</Health>
-
-		<!-- Data values -->
-		<Score>50></Score>
-		<Experience>100</Experience>
-
-		<!-- Attack -->
-		<AttackSpeed>1.0</AttackSpeed>
-		<TackleDistance>60</TackleDistance>
-		<TackleMovementSpeed>250</TackleMovementSpeed>
-
-		<!-- Patrol -->
-		<SightRange>1000</SightRange>
-		<ChaseRange>10000</ChaseRange>
-	</Properties>
-
-	<BasicAttack>
-		<Damage>10</Damage>
-		<KnockbackForce>100</KnockbackForce>
-		<KnockbackDistance>20</KnockbackDistance>
-		<Cooldown>2</Cooldown>
-	</BasicAttack>
-
-	<MaxSize>60</MaxSize>
-	<ColliderScale x = "0.6" y = "0.65"></ColliderScale>
-	<RenderOffset x = "3" y = "-2"></RenderOffset>
-
+	<BaseType>BasicEnemy</BaseType>
 	<Animator>
 		<ID>Devil</ID>
 		<FrameTime>0.05</FrameTime>

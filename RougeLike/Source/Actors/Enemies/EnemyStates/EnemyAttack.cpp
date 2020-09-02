@@ -19,6 +19,7 @@ void EnemyAttack::init()
 	mStartPosition = mEnemy->position();
 	mAttackPosition = mEnemy->target()->position();
 	mEnemy->physics()->facePoint(mAttackPosition);
+	mEnemy->animator().selectAnimation(Action::Idle);
 }
 
 

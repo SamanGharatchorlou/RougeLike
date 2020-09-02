@@ -82,8 +82,8 @@ void AIPathingController::updatePaths(const std::vector<Enemy*>& enemies, float 
 		{
 			EnemyRun& runState = static_cast<EnemyRun&>(enemy->getStateMachine()->getActiveState());
 
-			// No need to update anything if in attack range
-			if (!runState.inAttackRange())
+			// No need to update anything if its about to attack
+			if (!runState.canAttack())
 			{
 				runState.updatePath(pathingLimit);
 			}
@@ -107,7 +107,6 @@ Vector2D<int> AIPathingController::getCalculationIndexRange(const std::vector<En
 	if ( start < 0	|| start >= end ||
 		 end < 0	|| end > enemies.size())
 	{
-		DebugPrint(Warning, "Invalid range for ai path calculator");
 		mSegmentLength = enemies.size() / mListSplit;
 
 		if (mSegmentLength == 0)

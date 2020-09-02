@@ -9,4 +9,5 @@
 #include "EnemyStun.h"
 #include "EnemyPreAttack.h"
 #include "EnemyAttack.h"
+#include "EnemyCharge.h"
 #include "EnemyDead.h"

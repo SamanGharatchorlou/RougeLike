@@ -2,6 +2,7 @@
 #include "EnemyPool.h"
 
 #include "Actors/Enemies/Types/Devil.h"
+#include "Actors/Enemies/Types/Orc.h"
 
 
 Enemy* EnemyPool::createNewObject(EnemyType type) const
@@ -13,6 +14,11 @@ Enemy* EnemyPool::createNewObject(EnemyType type) const
 	case EnemyType::Devil:
 	{
 		enemy = new Devil;
+		break;
+	}
+	case EnemyType::Orc:
+	{
+		enemy = new Orc;
 		break;
 	}
 	default:

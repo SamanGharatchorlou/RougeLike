@@ -24,8 +24,6 @@ public:
 	Enemy();
 	~Enemy();
 
-	virtual void init() = 0;
-
 	void initAbilities(std::vector<Actor*>* target);
 	void setStatePool(EnemyStatePool* pool) { mStatePool = pool; }
 
@@ -71,7 +69,9 @@ public:
 	void			move(VectorF velocity, float dt) { mPhysics.move(velocity, dt); }
 
 	// Attacking
-	void attack() override;
+	virtual void attack() override;
+	virtual bool canAttck() const { return true; }
+
 	bool isAttacking() const override;
 	Collider* attackingCollider() override;
 	void resetColliders() override;

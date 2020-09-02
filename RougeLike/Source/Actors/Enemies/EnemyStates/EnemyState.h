@@ -18,6 +18,7 @@ struct EnemyState : public State
 		Stun,
 		PreAttack,
 		Attack,
+		Charge,
 		Dead,
 		Exit,
 		Count

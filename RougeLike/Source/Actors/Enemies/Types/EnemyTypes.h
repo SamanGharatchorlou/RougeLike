@@ -5,6 +5,7 @@ enum class EnemyType
 {
 	None,
 	Devil,
+	Orc,
 	Count
 };
 
@@ -29,6 +30,9 @@ inline void operator >>(EnemyType type, BasicString& string)
 	case EnemyType::Devil:
 		string = "Devil";
 		break;
+	case EnemyType::Orc:
+		string = "Orc";
+		break;
 	case EnemyType::None:
 	default:
 		DebugPrint(Warning, "EnemyType to string conversion has not been defined\n");
@@ -41,6 +45,8 @@ inline void operator <<(EnemyType& type, const BasicString& string)
 {
 	if (string == "Devil")
 		type = EnemyType::Devil;
+	if (string == "Orc")
+		type = EnemyType::Orc;
 	else
 		DebugPrint(Warning, "The string '%s' has not been defined as an enemy type\n", string);
 }

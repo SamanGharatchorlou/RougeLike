@@ -9,6 +9,8 @@ void EnemyRun::init()
 {
 	mEnemy->animator().selectAnimation(Action::Run);
 	updatePath(-1);
+
+	printf("init run\n");
 }
 
 
@@ -21,7 +23,7 @@ void EnemyRun::fastUpdate(float dt)
 
 void EnemyRun::slowUpdate(float dt)
 {
-	if (!inAttackRange())
+	if (!canAttack())
 	{
 		if (mPath.size() > 0)
 		{
@@ -45,6 +47,8 @@ void EnemyRun::slowUpdate(float dt)
 	}
 	else // Target has been reached, attack!
 	{
+		printf("start pre attack\n");
+		mEnemy->physics()->facePoint(mEnemy->target()->position());
 		mEnemy->addState(EnemyState::PreAttack);
 	}
 
@@ -96,10 +100,17 @@ Index EnemyRun::nextTileIndex()
 }
 
 
+bool EnemyRun::canAttack() const
+{
+	return mEnemy->canAttck() && inAttackRange();
+}
+
 bool EnemyRun::inAttackRange() const
 {
 	VectorF position = mEnemy->rect().Center();
 	VectorF nearestTargetSide = closestRectSide(position, mEnemy->target()->scaledRect());
+
+	float dis = mEnemy->getAttributeValue(AttributeType::TackleDistance);
 
 	return distance(position, nearestTargetSide) < (mEnemy->getAttributeValue(AttributeType::TackleDistance) * 0.8f);
 }

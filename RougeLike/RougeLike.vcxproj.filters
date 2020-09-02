@@ -167,6 +167,8 @@
     <ClCompile Include="Source\Map\TrapManager.cpp" />
     <ClCompile Include="Source\UI\Elements\UISwitch.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Formation.cpp" />
+    <ClCompile Include="Source\Actors\Enemies\Types\Orc.cpp" />
+    <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyCharge.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -367,6 +369,8 @@
     <ClInclude Include="Source\Objects\Abilities\AbilityHandler.h" />
     <ClInclude Include="Source\Map\TrapManager.h" />
     <ClInclude Include="Source\UI\Elements\UISwitch.h" />
+    <ClInclude Include="Source\Actors\Enemies\Types\Orc.h" />
+    <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyCharge.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

@@ -9,7 +9,8 @@
 	<BlankButton texture = "BlankButton"  textureSelected="BlankButtonSelected" textureHovering="BlankButtonHover"></BlankButton>
 	<BlankButtonDisabled texture = "BlankButton"  textureSelected="BlankButton" textureHovering="BlankButton"></BlankButtonDisabled>
 
-	<RedButton texture = "RedButton"  textureSelected="RedButtonSelected" textureHovering="RedButtonHover"></BlankButton>
+	<RedButton texture = "RedButton"  textureSelected="RedButtonSelected" textureHovering="RedButtonHover"></RedButton>
+	<WideRedButton texture = "WideRedButton"  textureSelected="WideRedButtonSelected" textureHovering="WideRedButtonHover"></WideRedButton>
 
 	<TrafficLightRoundButton texture = "RoundButtonGreen" textureSelected="RoundButtonBlue" textureHovering ="RoundButtonRed"></TrafficLightRoundButton>
 	<TrafficLightSquareButton texture = "SquareButtonGreen" textureSelected="SquareButtonBlue" textureHovering ="SquareButtonRed"></TrafficLightRoundButton>

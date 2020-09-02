@@ -57,8 +57,8 @@ void EnemyFactory::returnEnemy(Enemy* enemy)
 std::vector<Enemy*> EnemyFactory::buildEnemies(const std::vector<SpawnData>& dataList, const AIPathMap* aiPathMap)
 {
 	// Enemy config files store
-	std::unordered_map<EnemyType, XMLParser> parserMap;
-	setupParserMap(parserMap, dataList);
+	std::unordered_map<BasicString, XMLParser> dataMap;
+	setupParserMap(dataMap, dataList);
 
 	std::vector<Enemy*> enemies;
 
@@ -66,9 +66,18 @@ std::vector<Enemy*> EnemyFactory::buildEnemies(const std::vector<SpawnData>& dat
 	{
 		const SpawnData& data = dataList[i];
 		EnemyType type = data.type;
-		XMLNode node = parserMap[type].rootNode();
 
-		Enemy* enemy = buildEnemy(data, node, aiPathMap);
+		BasicString name;
+		type >> name;
+
+		XMLNode root = dataMap[name].rootNode();
+
+		XMLNode animationNode = root.child("Animator");
+
+		BasicString enemyBaseType = root.child("BaseType").value();
+		XMLNode baseTypeNode = dataMap[enemyBaseType].rootNode();
+
+		Enemy* enemy = buildEnemy(data, baseTypeNode, animationNode, aiPathMap);
 		enemies.push_back(enemy);
 	}
 
@@ -76,21 +85,15 @@ std::vector<Enemy*> EnemyFactory::buildEnemies(const std::vector<SpawnData>& dat
 }
 
 
-Enemy* EnemyFactory::buildEnemy(const SpawnData& data, const XMLNode enemyNode, const AIPathMap* aiPathMap)
+Enemy* EnemyFactory::buildEnemy(const SpawnData& data, const XMLNode baseNode, const XMLNode animationNode, const AIPathMap* aiPathMap)
 {
-	EnemyType type = data.type;
-	BasicString enemyTypeString;
-	type >> enemyTypeString;
+	Enemy* enemy = mPool.getObject(data.type);
 
-	Enemy* enemy = mPool.getObject(type);
-
-	XMLParser parser(FileManager::Get()->findFile(FileManager::Configs_Objects, "DevilAnim"));
-
-	enemy->setCharacter(enemyNode, parser.rootChild("Animator"));
+	enemy->setCharacter(baseNode, animationNode);
 	enemy->setStatePool(&mStatePool);
 	enemy->spawn(data.state, data.position, aiPathMap);
 
-	Ability* basicAttack = buildBasicAttack(enemy, enemyNode);
+	Ability* basicAttack = buildBasicAttack(enemy, baseNode);
 	enemy->abilities().add(basicAttack);
 
 	return enemy;
@@ -110,18 +113,16 @@ Ability* EnemyFactory::buildBasicAttack(Enemy* enemy, const XMLNode enemyNode)
 }
 
 
-void EnemyFactory::setupParserMap(std::unordered_map<EnemyType, XMLParser>& parserMap, const std::vector<SpawnData>& dataList) const
+void EnemyFactory::setupParserMap(std::unordered_map<BasicString, XMLParser>& parserMap, const std::vector<SpawnData>& dataList) const
 {
-	for (int i = 0; i < dataList.size(); i++)
-	{
-		EnemyType type = dataList[i].type;
-		BasicString enemyTypeString;
-		type >> enemyTypeString;
+	std::vector<BasicString> filePaths = FileManager::Get()->allFilesInFolder(FileManager::Config_Enemies);
+	std::vector<BasicString> fileNames = FileManager::Get()->fileNamesInFolder(FileManager::Config_Enemies);
 
-		if (parserMap.count(type) == 0)
-		{
-			parserMap[type].parseXML(FileManager::Get()->findFile(FileManager::Configs_Objects, "BasicEnemy"));
-		}
+	for (const BasicString& name : fileNames)
+	{
+		BasicString filePath = FileManager::Get()->findFile(FileManager::Config_Enemies, name);
+
+		parserMap[name].parseXML(filePath);
 	}
 }
 

@@ -5,19 +5,14 @@
 #include "Objects/Abilities/AbilityClasses/Ability.h"
 
 
-void EnemyPreAttack::enter()
-{
-}
-
-
 void EnemyPreAttack::init()
 {
-	mEnemy->animator().selectAnimation(Action::Attack);
+	mEnemy->animator().selectAnimation(Action::Idle);
 	timer.restart();
 
-	float attackWaitTime = 1.0f / mEnemy->getAttributeValue(AttributeType::AttackSpeed);
+	float attackWaitTime = 100.0f / mEnemy->getAttributeValue(AttributeType::AttackSpeed);
 	float range = attackWaitTime / 4.0f;
-	mAttackWaitTime = randomNumberBetween(attackWaitTime - range, attackWaitTime + range);
+	mAttackWaitTime = randomNumberBetween(attackWaitTime - range, attackWaitTime + range) / 100.0f;
 }
 
 
@@ -31,6 +26,7 @@ void EnemyPreAttack::slowUpdate(float dt)
 		Ability* basicAttack = mEnemy->abilities().get(AbilityType::Attack);
 		if (basicAttack->state() == AbilityState::Idle)
 		{
+			printf("attack!\n");
 			basicAttack->activate(VectorF());
 			basicAttack->setState(AbilityState::Running);
 		}

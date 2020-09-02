@@ -17,14 +17,15 @@ std::vector<Enemy*> AISpawnController::getNewLevelSpawns(const AIPathMap* map)
 		VectorF position = map->randomFloorTile(xPoint)->rect().Center();
 		Point patrolPoint(position);
 
-		SpawnDataList spawnData = mSpawnData.buildSpawnData(patrolPoint, EnemyType::Devil, EnemyState::Patrol);
+		SpawnDataList spawnData = mSpawnData.buildSpawnData(patrolPoint, EnemyType::Orc, EnemyState::Patrol);
 		merge(spawnDataList, spawnData);
 	}
 
 
 	for (int i = 0; i < map->level(); i++)
 	{
-		SpawnDataList spawnData = spawnRandomQuad(EnemyType::Devil, EnemyState::Idle, map);
+		EnemyType type = i % 2 == 0 ? EnemyType::Devil : EnemyType::Orc;
+		SpawnDataList spawnData = spawnRandomQuad(type, EnemyState::Idle, map);
 		merge(spawnDataList, spawnData);
 	}
 

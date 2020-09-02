@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyCharge.cpp" />
+    <ClCompile Include="Source\Actors\Enemies\Types\Orc.cpp" />
     <ClCompile Include="Source\Actors\Player\PlayerStates\PlayerAttackState.cpp" />
     <ClCompile Include="Source\AI\Pathing\AIPathingController.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyDebugger.cpp" />
@@ -193,6 +195,8 @@
     <ClCompile Include="Source\System\Files\XMLParser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyCharge.h" />
+    <ClInclude Include="Source\Actors\Enemies\Types\Orc.h" />
     <ClInclude Include="Source\Actors\Player\PlayerStates\PlayerAttackState.h" />
     <ClInclude Include="Source\Actors\Player\PlayerStates\PlayerState.h" />
     <ClInclude Include="Source\AI\Pathing\AIPathingController.h" />

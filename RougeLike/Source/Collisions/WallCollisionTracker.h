@@ -9,12 +9,12 @@ class WallCollisionTracker
 {
 public:
 	WallCollisionTracker() { };
-	~WallCollisionTracker() { mActor = nullptr; }
+	//~WallCollisionTracker() { mActor = nullptr; }
 
-	void setActor(Actor* actor) { mActor = actor; }
+	void setActor(const Actor* actor) { mActor = actor; }
+	void setRect(const RectF* rect) { mRect = rect; }
 
-	VectorF allowedMovement(const Map* map, VectorF movement);
-	VectorF allowedVelocity(const Map* map, VectorF velocity, float dt);
+	VectorF allowedVelocity(const Map* map, VectorF velocity, float dt) const;
 
 
 private:
@@ -29,7 +29,7 @@ private:
 
 
 private:
-	//const RectF* mRect;
-	Actor* mActor;
+	const RectF* mRect;
+	const Actor* mActor;
 };
 

@@ -22,7 +22,8 @@ public:
 
 private:
 	Enemy* buildEnemy(const SpawnData& data, const XMLNode enemyNode, const AIPathMap* aiPathMap);
-	void setupParserMap(std::unordered_map<EnemyType, XMLParser>& parserMap, const std::vector<SpawnData>& dataList) const;
+	Enemy* buildEnemy(const SpawnData& data, const XMLNode baseNode, const XMLNode animationNode, const AIPathMap* aiPathMap);
+	void setupParserMap(std::unordered_map<BasicString, XMLParser>& parserMap, const std::vector<SpawnData>& dataList) const;
 
 	Ability* buildBasicAttack(Enemy* enemy, const XMLNode enemyNode);
 

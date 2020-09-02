@@ -5,24 +5,7 @@
 #include "Actors/Actor.h"
 
 
-
-VectorF WallCollisionTracker::allowedMovement(const Map* map, VectorF movement)
-{
-	// extra buffer to stop small movemets getting stuck in the wall?
-	//float bufferFactor = 3.0f;
-
-	//movement = movement * bufferFactor;
-
-	//restrictLeftMovement(map, movement);
-	//restrictRightMovement(map, movement);
-	//restrictDownMovement(map, movement);
-	//restrictTopMovement(map, movement);
-
-	//return movement / bufferFactor;
-	return VectorF();
-}
-
-VectorF WallCollisionTracker::allowedVelocity(const Map* map, VectorF velocity, float dt)
+VectorF WallCollisionTracker::allowedVelocity(const Map* map, VectorF velocity, float dt) const
 {
 	// extra buffer to stop small movemets getting stuck in the wall?
 	float bufferFactor = 3.0f;
@@ -100,7 +83,15 @@ void WallCollisionTracker::restrictTopMovement(const Map* map, VectorF& movement
 
 RectF WallCollisionTracker::wallScaledRect() const
 {
-	RectF rect = mActor->scaledRect();
+	RectF rect;
+
+	if (mActor)
+		rect = mActor->scaledRect();
+	else if(mRect)
+		rect = *mRect;
+	else
+		DebugPrint(Error, "No rect or actor has been set to check wall collisions for, call setActor or setRect first\n");
+
 	VectorF size = rect.Size();
 	VectorF botCenter = rect.BotCenter();
 
@@ -117,93 +108,3 @@ bool WallCollisionTracker::cannotMove(const MapTile* tile) const
 	return tile && !tile->is(CollisionTile::Floor);
 }
 
-
-
-
-// ----------------------------
-
-//void WallCollisionTracker2::init(Actor* actor)
-//{
-//	mActor = actor;
-//}
-//
-//void WallCollisionTracker2::resolveWallCollisions(const Map* map, VectorF& movement)
-//{
-//	VectorF moveMe = VectorF(std::abs(movement.x), std::abs(movement.y));
-//	if (restrictLeftMovement(map, moveMe))
-//	{
-//		movement.x = clamp(movement.x, 0.0f, std::abs(movement.x));
-//	}
-//	if (restrictRightMovement(map, moveMe))
-//	{
-//		movement.x = clamp(movement.x, -std::abs(movement.x), 0.0f);
-//	}
-//	if (restrictTopMovement(map, moveMe))
-//	{
-//		movement.y = clamp(movement.y, 0.0f, std::abs(movement.y));
-//	}
-//	if (restrictDownMovement(map, moveMe))
-//	{
-//		movement.y = clamp(movement.y, -std::abs(movement.y), 0.0f);
-//	}
-//}
-//
-//
-//bool WallCollisionTracker2::restrictLeftMovement(const Map* map, VectorF movement) const
-//{
-//	RectF rect = wallScaledRect(VectorF(-movement.x, 0.0f));
-//
-//	const MapTile* topLeft = map->tile(rect.TopLeft());
-//	const MapTile* bottomLeft = map->tile(rect.BotLeft());
-//
-//	return cannotMove(topLeft) || cannotMove(bottomLeft);
-//}
-//
-//bool WallCollisionTracker2::restrictRightMovement(const Map* map, VectorF movement) const
-//{
-//	RectF rect = wallScaledRect(VectorF(movement.x, 0.0f));
-//
-//	const MapTile* topRight = map->tile(rect.TopRight());
-//	const MapTile* bottomRight = map->tile(rect.BotRight());
-//
-//	return cannotMove(topRight) || cannotMove(bottomRight);
-//}
-//
-//bool WallCollisionTracker2::restrictDownMovement(const Map* map, VectorF movement) const
-//{
-//	RectF rect = wallScaledRect(VectorF(0.0f, movement.y));
-//
-//	const MapTile* bottomRight = map->tile(rect.BotRight());
-//	const MapTile* bottomLeft = map->tile(rect.BotLeft());
-//
-//	return cannotMove(bottomRight) || cannotMove(bottomLeft);
-//}
-//
-//bool WallCollisionTracker2::restrictTopMovement(const Map* map, VectorF movement) const
-//{
-//	RectF rect = wallScaledRect(VectorF(0.0f, -movement.y));
-//
-//	const MapTile* topLeft = map->tile(rect.TopLeft());
-//	const MapTile* topRight = map->tile(rect.TopRight());
-//
-//	return cannotMove(topLeft) || cannotMove(topRight);
-//}
-//
-//
-//bool WallCollisionTracker2::cannotMove(const MapTile* tile) const
-//{
-//	return tile && !tile->is(CollisionTile::Floor);
-//}
-//
-//
-//RectF WallCollisionTracker2::wallScaledRect(VectorF translation) const
-//{
-//	RectF rect = mActor->scaledRect();
-//	VectorF size = rect.Size();
-//	VectorF botCenter = rect.BotCenter();
-//
-//	rect.SetSize(VectorF(size.x * 0.7f, size.y * 0.15f));
-//	rect.SetBotCenter(botCenter);
-//
-//	return rect.Translate(translation);
-//}

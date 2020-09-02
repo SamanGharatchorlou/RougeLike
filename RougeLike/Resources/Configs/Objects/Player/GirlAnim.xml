@@ -7,6 +7,7 @@
 		<Animations>
 			<Idle>18</Idle>
 			<Run>12</Run>
+			<Dead>15</Dead>
 		</Animations>
 	</Animator>
 </Player>

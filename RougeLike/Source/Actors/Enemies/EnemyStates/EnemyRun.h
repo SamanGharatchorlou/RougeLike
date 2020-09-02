@@ -19,7 +19,7 @@ public:
 
 	const Type type() const { return Type::Run; }
 
-	bool inAttackRange() const;
+	bool canAttack() const;
 
 	void updatePath(int pathLimit);
 	Index nextTileIndex();
@@ -28,6 +28,7 @@ public:
 
 
 private:
+	bool inAttackRange() const;
 	bool inChaseRange() const;
 
 
