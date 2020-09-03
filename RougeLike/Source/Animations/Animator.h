@@ -52,11 +52,8 @@ public:
 		void render(RectF rect, SDL_RendererFlip flip, RenderColour colourMod) const;
 		void render(RectF rect, double rotation, VectorF aboutPoint) const;
 
-		Texture* texture() const { return mTexture; }
-
 		void nextFrame();
 		int currentFrame() const;
-		int frameCount() const { return mFrameCount; }
 
 
 	private:
@@ -91,7 +88,7 @@ public:
 	void reset();
 	void clear();
 
-	Texture* texture() const { return mAnimations[mActiveIndex].texture(); }
+	Texture* texture() const { return mAnimations[mActiveIndex].mTexture; }
 
 	bool hasAnimations() const { return (bool)mAnimations.size(); }
 	void selectAnimation(Action state);
@@ -105,14 +102,20 @@ public:
 	bool isRunning() const { return !timer.isPaused() && timer.isStarted(); }
 
 	int loops() const { return mAnimations[mActiveIndex].mLoops; }
+
 	VectorF frameSize() const { return mAnimations[mActiveIndex].mTileDimentions; }
-	int frameCount() const { return mAnimations[mActiveIndex].frameCount(); }
+	int frameCount() const { return mAnimations[mActiveIndex].mFrameCount; }
 	int currentFrame() const { return mAnimations[mActiveIndex].currentFrame(); }
 	float frameTime() const { return mFrameTime; }
+
+	bool isLastFrame() const { return mAnimations[mActiveIndex].currentFrame() == mAnimations[mActiveIndex].mFrameCount - 1; }
+
 	int animationCount() const { return mAnimations.size(); }
 
 	const Animation* activeAimation() const { return &mAnimations[mActiveIndex]; }
 	Animation* activeAimation() { return &mAnimations[mActiveIndex]; }
+
+	Action currentAction() const { return mAnimations[mActiveIndex].mState; }
 
 private:
 

@@ -89,7 +89,7 @@ void ActorManager::render()
 
 void ActorManager::updateActiveEnemyActors()
 {
-	mActiveEnemyActors = mEnemies.getActiveEnemies();
+	mActiveEnemyActors = mEnemies.getActiveEnemyActors();
 }
 
 
@@ -115,6 +115,16 @@ void ActorManager::handleEvent(EventData& data)
 
 		int exp = eventData.mExp;
 		mPlayer.addExp(exp);
+		break;
+	}
+	case Event::PlayerDead:
+	{
+		// Turn enemies 'off'
+		std::vector<Enemy*>& enemies = mEnemies.getActiveEnemies();
+		for (Enemy* enemy : enemies)
+		{
+			enemy->setTarget(nullptr);
+		}
 		break;
 	}
 	default:

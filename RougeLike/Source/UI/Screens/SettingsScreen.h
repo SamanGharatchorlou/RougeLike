@@ -3,8 +3,6 @@
 #include "Screen.h"
 #include "UI/Elements/UISlider.h"
 
-struct GameData;
-
 
 class SettingsScreen : public Screen
 {

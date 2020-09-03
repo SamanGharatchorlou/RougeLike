@@ -48,7 +48,7 @@ void ScreenController::addScreen(ScreenType type)
 
 void ScreenController::replaceScreen(ScreenType type)
 {
-#if _DEBUG
+#if DEBUG_CHECK
 	if (mScreens.size() <= 1)
 	{
 		BasicString screenName;
@@ -77,13 +77,13 @@ Screen* ScreenController::getPoolScreen(ScreenType type)
 }
 
 
-void ScreenController::openPopup(const XMLNode& textNode)
+void ScreenController::openPopup(const BasicString& textFile)
 {
 	if (mEnablePopups)
 	{
 		Screen* screen = mUI->mScreenPool.screenRef(ScreenType::Popup);
 		PopupScreen* popup = static_cast<PopupScreen*>(screen);
-		popup->setMainText(textNode.value());
+		popup->setMainText(textFile);
 
 		addScreen(ScreenType::Popup);
 		addSystemState(SystemStates::PauseState);

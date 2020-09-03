@@ -30,7 +30,7 @@ void TextFileReader::readText(BasicString& outText)
 		outText.concat(buffer);
 	}
 
-#if _DEBUG
+#if DEBUG_CHECK
 	if (outText.length() != length)
 	{
 		DebugPrint(Warning, "The file size %d does not match out out string length %d\n", length, outText.length());

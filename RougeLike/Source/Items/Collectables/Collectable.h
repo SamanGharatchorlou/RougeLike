@@ -20,7 +20,7 @@ inline CollectableType operator +(CollectableType type, int number)
 {
 	int sum = static_cast<int>(type) + number;
 
-#if _DEBUG
+#if DEBUG_CHECK
 	if (sum > (int)CollectableType::Count)
 		DebugPrint(Warning, "adding %d to CollectableType %d is out of bounds", number, (int)type);
 #endif
@@ -37,7 +37,7 @@ inline void operator <<(CollectableType& a, const BasicString& str)
 	else
 	{
 		a = CollectableType::None;
-		DebugPrint(Log, "CollectableType '<<' has not been defined for string '%s'\n", str.c_str());
+		DebugPrint(Warning, "CollectableType '<<' has not been defined for string '%s'\n", str.c_str());
 	}
 		
 
@@ -68,7 +68,7 @@ public:
 
 	virtual CollectableType type() const = 0;
 
-#if _DEBUG
+#if DEBUG_CHECK
 	RectF colliderRect() const { return mCollider.scaledRect(); }
 #endif
 

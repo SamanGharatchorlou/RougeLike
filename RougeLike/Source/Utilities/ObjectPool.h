@@ -23,7 +23,7 @@ private:
 protected:
 	std::unordered_map<T, std::queue<K*>> mPool;
 
-#if _DEBUG
+#if DEBUG_CHECK
 	int objectCount = 0;
 #endif
 };
@@ -48,7 +48,7 @@ void ObjectPool<K, T>::addNewObjects(T type, int count)
 	{
 		K* object = createNewObject(type);
 		queue.push(object);
-#if _DEBUG
+#if DEBUG_CHECK
 		objectCount++;
 #endif
 	}
@@ -102,7 +102,7 @@ void ObjectPool<K, T>::freeAll()
 			K* object = queue.front();
 			delete object;
 			queue.pop();
-#if _DEBUG
+#if DEBUG_CHECK
 			objectCount--;
 #endif
 		}
@@ -110,7 +110,7 @@ void ObjectPool<K, T>::freeAll()
 
 	mPool.clear();
 
-#if _DEBUG
+#if DEBUG_CHECK
 	if (objectCount != 0)
 	{
 		DebugPrint(Warning, "Object Pool object count after free all != 0. There's probably %d objects left floating around undeleted!\n", objectCount);

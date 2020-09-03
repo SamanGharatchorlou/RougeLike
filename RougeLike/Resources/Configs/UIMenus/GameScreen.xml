@@ -26,7 +26,7 @@
 			<text>Score:</text>
 		</TextBox>  
 		<TextBox id = "Score val" parent = "Score str" x = "115.000" y = "0.000" width = "92.000" height = "45.000">
-			<text>100000</text>
+			<text>0</text>
 		</TextBox>		
 	</Layer>
 	

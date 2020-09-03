@@ -8,6 +8,7 @@
 #include "Graphics/RenderManager.h"
 #include "Input/InputManager.h"
 #include "Managers/ScoreManager.h"
+#include "UI/UIManager.h"
 
 #include "Game/Environment.h"
 #include "Map/Map.h"
@@ -16,11 +17,6 @@
 #include "Actors/ActorManager.h"
 #include "Actors/Player/Player.h"
 #include "Actors/Enemies/EnemyManager.h"
-
-
-
-#include "Utilities/Quad2D.h"
-#include "Collisions/Colliders/QuadCollider.h"
 
 
 GameState::GameState(GameData* gameData) : mGameData(gameData) { }
@@ -41,6 +37,10 @@ void GameState::init()
 	audio->playMusic("Ludumdum");
 	audio->setMusicVolume(0.0f);
 	audio->setSoundVolume(25.0f);
+/*
+	mGameData->uiManager->controller()->openPopup("Attack");
+	mGameData->uiManager->controller()->openPopup("Movement");*/
+
 }
 
 

@@ -28,9 +28,6 @@ void DamageEffect::init()
 		hp->reduce(mDamage);
 	}
 
-	if(mReact)
-		mReceiver->collider()->setGotHit(true);
-
 	endEffect();
 }
 
@@ -38,13 +35,6 @@ void DamageEffect::init()
 void DamageEffect::fill(const PropertyMap& valueBag)
 {
 	setProperty(PropertyType::Damage, mDamage, valueBag);
-
-	if (valueBag.contains(PropertyType::DamageReact))
-	{
-		float shouldReact = -1;
-		setProperty(PropertyType::DamageReact, shouldReact, valueBag);
-		mReact = (bool)shouldReact;
-	}
 }
 
 

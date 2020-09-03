@@ -26,7 +26,7 @@ public:
 		xmlFile.first_node()->first_node("Tutorial")->value("OFF");
 	}
 
-#if _DEBUG
+#if DEBUG_CHECK
 	BasicString path;
 #endif
 

@@ -5,6 +5,14 @@
 #include "Objects/Effects/EffectTypes/EffectTypes.h"
 
 
+// BasicAttack never owns its collider
+BasicAttackAbility::~BasicAttackAbility()
+{ 
+	mCollider = nullptr; 
+}
+
+
+
 void BasicAttackAbility::activate(VectorF position)
 {
 	mCollider = mCaster->attackingCollider();

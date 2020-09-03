@@ -3,7 +3,7 @@
 
 #include "Game/Camera/Camera.h"
 
-#if _DEBUG
+#if DEBUG_CHECK
 #include "Debug/MapDebugging.h"
 #include "Debug/DebugDraw.h"
 #endif

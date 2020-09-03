@@ -18,10 +18,10 @@ BasicString PropertyType::string() const
 
 PropertyType::Type findPropertyType(const BasicString& string)
 {
-#if _DEBUG
+#if DEBUG_CHECK
 	if (PropertyLookUpTable.count(string) == 0)
 	{
-		DebugPrint(Log, "No property in the lookup table with string '%s'\n", string.c_str());
+		DebugPrint(Warning, "No property in the lookup table with string '%s'\n", string.c_str());
 		return PropertyType::None;
 	}
 	else
@@ -39,7 +39,7 @@ BasicString findPropertyString(PropertyType::Type type)
 			return iter->first;
 	}
 
-	DebugPrint(Log, "No property in the lookup table with type '%d'\n", type);
+	DebugPrint(Warning, "No property in the lookup table with type '%d'\n", type);
 	return "";
 }
 

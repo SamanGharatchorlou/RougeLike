@@ -9,7 +9,7 @@
 
 #include "Objects/Abilities/AbilityHandler.h"
 
-#if _DEBUG
+#if DEBUG_CHECK
 #include "EnemyDebugger.h"
 #endif
 
@@ -76,7 +76,7 @@ public:
 	Collider* attackingCollider() override;
 	void resetColliders() override;
 
-#if _DEBUG
+#if DEBUG_CHECK
 	EnemyDebugger mDebugger;
 #endif
 
@@ -96,6 +96,4 @@ protected:
 	AbilityHandler mAbilities;
 
 	const Actor* mTarget;
-
-	TimerF mColourModTimer;
 };

@@ -67,7 +67,7 @@ void TextureManager::load()
 
 	for (int i = 0; i < folders.size(); i++)
 	{
-#if _DEBUG
+#if DEBUG_CHECK
 		BasicString folderPath = fm->generatePath(folders[i]);
 		BasicString rootPath = fm->generatePath(FileManager::Root);
 		int start = rootPath.length();
@@ -86,7 +86,7 @@ int TextureManager::loadAllTexturesIn(FileManager::Folder folder)
 {
 	TextureMap textureMap;
 	int fails = 0;
-#if _DEBUG
+#if DEBUG_CHECK
 	int count = 0;
 #endif
 
@@ -94,12 +94,12 @@ int TextureManager::loadAllTexturesIn(FileManager::Folder folder)
 	for (const BasicString& path : imagePaths)
 	{
 		fails += !loadTexture(textureMap, path);
-#if _DEBUG
+#if DEBUG_CHECK
 		count++;
 #endif
 	}
 
-#if _DEBUG
+#if DEBUG_CHECK
 	if (textureMap.size() != count)
 		DebugPrint(Warning, "The final number of textures does not match the number of file paths provided.\ncount (%d) != map size (%d).\n", count, textureMap.size());
 #endif
@@ -166,7 +166,7 @@ Texture* TextureManager::getTexture(const BasicString& label, const FileManager:
 
 	if (!texture)
 	{
-		DebugPrint(Warning, "No item in folder map '%d' with label: '%s'\n", folder, label.c_str());
+		DebugPrint(Log, "No item in folder map '%d' with label: '%s'\n", folder, label.c_str());
 
 		texture = searchAllFiles(label);
 		if (!texture)

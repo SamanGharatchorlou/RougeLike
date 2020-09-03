@@ -6,7 +6,7 @@
 
 #include "Weapons/WeaponData.h"
 
-#if _DEBUG
+#if DEBUG_CHECK
 #include "Debug/DebugDraw.h"
 #endif
 

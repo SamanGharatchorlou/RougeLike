@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen>
+	<Layer>
+		<Box id = "MainPanel"  x = "62.000" y = "155.500" width = "903.300" height = "437.700" texture = "PopupPanel"></Box>
+	</Layer>
+
+	<Layer>
+
+		<TextBox id = "ScreenTitle" parent = "MainPanel" font = "MenuFont" align = "Center" x = "0.000" y = "13.600" width = "903.800" height = "51.500" >
+			<text>YOU DIED</text>
+		</TextBox>
+
+		<Button id = "ContinueButton" parent = "MainPanel" x = "188.300" y = "311.088" width = "532.500" height = "72.500" texture = "WideRedButton"></Button>
+	</Layer>
+
+	<Layer>		
+		<TextBox id = "Map Level" parent = "MainPanel" align = "Center" x = "0.000" y = "90.000" width = "903.500" height = "60.000" >
+			<text></text>
+		</TextBox>
+
+		<TextBox id = "Score" parent = "MainPanel" align = "Center" x = "0.000" y = "150.000" width = "903.000" height = "60.000" >
+			<text></text>
+		</TextBox>
+
+		<TextBox id = "Kills" parent = "MainPanel" align = "Center" x = "0.000" y = "210.500" width = "903.000" height = "60.000" >
+			<text></text>
+		</TextBox>
+
+
+
+		<TextBox id = "ContinueText" parent = "ContinueButton" align = "Center" x = "0.000" y = "0.000" width = "532.000" height = "60.000" >
+			<text>CONTINUE</text>
+		</TextBox>
+	</Layer>
+
+</screen>

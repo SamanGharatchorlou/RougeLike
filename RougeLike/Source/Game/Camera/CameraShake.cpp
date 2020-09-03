@@ -10,6 +10,13 @@ CameraShake::CameraShake() :
 }
 
 
+void CameraShake::clear()
+{
+	mTrauma = 0;
+	mMaxTrauma = 0;
+	mTraumaReduction = 0;
+}
+
 void CameraShake::init(float maxTrauma, float traumaReduction)
 {
 	mMaxTrauma = maxTrauma;

@@ -19,7 +19,7 @@ Enemy::Enemy() :
 	mStateMachine(new EnemyNullState),
 	mTarget(nullptr),
 	mStatePool(nullptr)
-#if _DEBUG
+#if DEBUG_CHECK
 	, mDebugger(this)
 #endif
 {
@@ -73,12 +73,6 @@ void Enemy::slowUpdate(float dt)
 
 	mAbilities.slowUpdate(dt);
 
-	if (mAIPathing.updateCurrentIndex(position()))
-	{
-		UpdateAICostMapEvent* event = new UpdateAICostMapEvent;
-		mEvents.push(EventPacket(event));
-	}
-
 	Health* health = static_cast<Health*>(getAttribute(AttributeType::Health));
 	if (health->isDead())
 		addState(EnemyState::Dead);
@@ -89,7 +83,7 @@ void Enemy::render()
 {
 	if (mVisibility)
 	{
-#if _DEBUG
+#if DEBUG_CHECK
 		mDebugger.draw();
 #endif
 

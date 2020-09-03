@@ -13,7 +13,7 @@
 		<Experience>100</Experience>
 
 		<!-- Attack -->
-		<AttackSpeed>1.0</AttackSpeed>
+		<AttackSpeed>1.25</AttackSpeed>
 		<TackleDistance>60</TackleDistance>
 		<TackleMovementSpeed>250</TackleMovementSpeed>
 
@@ -24,8 +24,8 @@
 
 	<BasicAttack>
 		<Damage>10</Damage>
-		<KnockbackForce>200</KnockbackForce>
-		<KnockbackDistance>20</KnockbackDistance>
+		<KnockbackForce>300</KnockbackForce>
+		<KnockbackDistance>25</KnockbackDistance>
 		<Cooldown>2</Cooldown>
 	</BasicAttack>
 

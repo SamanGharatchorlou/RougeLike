@@ -54,7 +54,7 @@ private:
 	int musicVolume;
 	bool muted;
 
-#if _DEBUG
+#if DEBUG_CHECK
 	Timer<float> pauseTimers[MIX_CHANNELS];
 #endif
 };

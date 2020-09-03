@@ -56,7 +56,7 @@ void WeaponStash::clear()
 
 WeaponData* WeaponStash::getData(const BasicString& weaponName)
 {
-#if _DEBUG
+#if DEBUG_CHECK
 	if(mData.count(weaponName) == 0)
 		DebugPrint(Warning, "There is no weapon with the label %s\n", weaponName.c_str());
 #endif

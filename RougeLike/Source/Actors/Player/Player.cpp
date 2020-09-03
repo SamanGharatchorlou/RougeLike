@@ -10,12 +10,12 @@
 #include "Weapons/Melee/MeleeWeapon.h"
 
 #include "PlayerStates/PlayerAttackState.h"
+#include "PlayerStates/PlayerDeadState.h"
 
 #if DRAW_PLAYER_RECTS
 #include "Debug/DebugDraw.h"
 #endif
 
-#include "Audio/AudioManager.h"
 
 
 Player::Player() :
@@ -54,42 +54,23 @@ void Player::fastUpdate(float dt)
 void Player::slowUpdate(float dt)
 {
 	Actor::slowUpdate(dt);
-
-	mStateMachine.getActiveState().slowUpdate(dt);
-
-	if (mStateMachine.getActiveState().finished())
-		mStateMachine.popState();
-
-	mStateMachine.processStateChanges();
-
-	Action action = mPhysics.isMoving() ? Action::Run : Action::Idle;
-	mAnimator.selectAnimation(action);
+	handleStates(dt);
+	updateMapInfo();
 
 	AudioManager* audio = AudioManager::Get();
-	if (action == Action::Run)
+	Health* health = static_cast<Health*>(getAttribute(AttributeType::Health));
+
+	if (!health->isDead())
 	{
-		if (!audio->isPlaying("PlayerWalk2", this))
-			audio->loopSoundGroup("PlayerWalk2", this);
-	}
-	else
-	{
-		if (audio->isPlaying("PlayerWalk2", this))
-			audio->stop("PlayerWalk2", this);
+		setMovementAnimation();
+		updateMovementSound(audio);
 	}
 
+	handleHealthChanges(health);
 
-	if (mCollider.gotHit())
+	if(!health->isDead() && mCollider.gotHit())
 	{
-		HealthChangedEvent* eventPtr = new HealthChangedEvent();
-		EventPacket event(eventPtr);
-		mEvents.push(event);
-
-		audio->playSound("PlayerHurt", this);
-
-		TraumaEvent* trauma = new TraumaEvent(60);
-		mEvents.push(EventPacket(trauma));
-
-		printf("got hit\n");
+		handleHit(audio);
 	}
 }
 
@@ -132,7 +113,21 @@ void Player::render()
 	if (mVisibility)
 	{
 		mWeapon->render();
-		Actor::render();
+
+		RectF renderRect = Camera::Get()->toCameraCoords(rect());
+		const float flashTime = 0.1f;
+		if (mColourModTimer.isStarted() && mColourModTimer.getSeconds() < flashTime)
+		{
+			RenderColour colourMod = RenderColour(225, 0, 0);
+			mAnimator.render(renderRect, mPhysics.flip(), colourMod);
+		}
+		else
+		{
+			mColourModTimer.stop();
+			mAnimator.render(renderRect, mPhysics.flip());
+		}
+
+		mEffects.render();
 	}
 }
 
@@ -172,7 +167,7 @@ void Player::updateMapInfo()
 {
 	const Map* map = currentMap();
 
-#if _DEBUG // break points might break this
+#if DEBUG_CHECK // break points might break this
 	if (!map)
 		return;
 #endif
@@ -182,11 +177,10 @@ void Player::updateMapInfo()
 	if (mMapLevel != level)
 	{
 		mMapLevel = level;
-		UpdateTextBoxEvent* eventPtr = new UpdateTextBoxEvent("MapLevel val", BasicString(mMapLevel));
-		mEvents.push(EventPacket(eventPtr));
+		MapLevelEvent* mapLevelEventPtr = new MapLevelEvent(mMapLevel);
+		mEvents.push(EventPacket(mapLevelEventPtr));
 	}
 }
-
 
 
 void Player::updateCursorPosition(VectorF cursorPosition)
@@ -205,4 +199,70 @@ void Player::updateCursorPosition(VectorF cursorPosition)
 	}
 
 	mWeapon->updateAimDirection(cursorPosition);
+}
+
+
+void Player::handleStates(float dt)
+{
+	mStateMachine.getActiveState().slowUpdate(dt);
+
+	if (mStateMachine.getActiveState().finished())
+		mStateMachine.popState();
+
+	PlayerState* usedState = mStateMachine.processStateChanges();
+	if (usedState)
+		delete usedState;
+}
+
+
+void Player::setMovementAnimation()
+{
+	Action action = mPhysics.isMoving() ? Action::Run : Action::Idle;
+	mAnimator.selectAnimation(action);
+}
+
+
+void Player::updateMovementSound(AudioManager* audio)
+{
+	Action currentAction = mAnimator.currentAction();
+	if (currentAction == Action::Run)
+	{
+		if (!audio->isPlaying("PlayerWalk2", this))
+			audio->loopSoundGroup("PlayerWalk2", this);
+	}
+	else if (currentAction == Action::Idle)
+	{
+		if (audio->isPlaying("PlayerWalk2", this))
+			audio->stop("PlayerWalk2", this);
+	}
+}
+
+
+void Player::handleHit(AudioManager* audio)
+{
+	audio->playSound("PlayerHurt", this);
+
+	TraumaEvent* trauma = new TraumaEvent(60);
+	mEvents.push(EventPacket(trauma));
+
+	mColourModTimer.restart();
+}
+
+
+void Player::handleHealthChanges(Health* health)
+{
+	if (health->hasChanged())
+	{
+		SetUISlider* eventPtr = new SetUISlider("HealthSlider", health->getPercentage());
+		EventPacket event(eventPtr);
+		mEvents.push(event);
+
+		if (health->isDead() && !mControlOverride)
+		{
+			mStateMachine.addState(new PlayerDeadState(this));
+			AudioManager::Get()->stop("PlayerWalk2", this);
+		}
+
+		health->changedHandled();
+	}
 }

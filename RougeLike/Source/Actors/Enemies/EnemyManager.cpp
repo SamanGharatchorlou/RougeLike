@@ -140,7 +140,7 @@ void EnemyManager::clearAllEnemies()
 
 
 
-std::vector<Actor*> EnemyManager::getActiveEnemies() const
+std::vector<Actor*> EnemyManager::getActiveEnemyActors() const
 { 
 	std::vector<Actor*> actors;
 	actors.reserve(mActiveEnemies.size());

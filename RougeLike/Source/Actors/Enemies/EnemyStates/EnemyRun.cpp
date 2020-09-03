@@ -9,8 +9,6 @@ void EnemyRun::init()
 {
 	mEnemy->animator().selectAnimation(Action::Run);
 	updatePath(-1);
-
-	printf("init run\n");
 }
 
 
@@ -23,37 +21,38 @@ void EnemyRun::fastUpdate(float dt)
 
 void EnemyRun::slowUpdate(float dt)
 {
-	if (!canAttack())
+	if (mEnemy->hasTarget())
 	{
-		if (mPath.size() > 0)
+		if (!canAttack())
 		{
-			if (!inChaseRange())
+			if (mPath.size() > 0)
 			{
-				mEnemy->replaceState(EnemyState::Patrol);
-			}
-			else // Keep chasing!
-			{
-				VectorF targetPosition = mEnemy->pathing()->position(mPath.top());
-				if (distanceSquared(mEnemy->position(), targetPosition) < 5.0f)
+				if (!inChaseRange())
 				{
-					mPath.pop();
+					mEnemy->replaceState(EnemyState::Patrol);
+				}
+				else // Keep chasing!
+				{
+					VectorF targetPosition = mEnemy->pathing()->position(mPath.top());
+					if (distanceSquared(mEnemy->position(), targetPosition) < 5.0f)
+					{
+						mPath.pop();
+					}
+
+					mEnemy->physics()->facePoint(mEnemy->target()->position());
 				}
 			}
+			else // Not in attack range and no path left
+			{
+				updatePath(-1);
+			}
 		}
-		else // Not in attack range and no path left
+		else // Target has been reached, attack!
 		{
-			updatePath(-1);
+			mEnemy->physics()->facePoint(mEnemy->target()->position());
+			mEnemy->addState(EnemyState::PreAttack);
 		}
 	}
-	else // Target has been reached, attack!
-	{
-		printf("start pre attack\n");
-		mEnemy->physics()->facePoint(mEnemy->target()->position());
-		mEnemy->addState(EnemyState::PreAttack);
-	}
-
-	// Face player
-	mEnemy->physics()->facePoint(mEnemy->target()->position());
 }
 
 
@@ -66,9 +65,7 @@ void EnemyRun::render()
 void EnemyRun::resume()
 {
 	mEnemy->animator().selectAnimation(Action::Run);
-	
-	if(!inAttackRange())
-		updatePath(-1);
+	mPath.empty();
 }
 
 
@@ -84,6 +81,7 @@ void EnemyRun::exit()
 void EnemyRun::updatePath(int pathLimit)
 {
 	mPath = mEnemy->pathing()->findPath(mEnemy->position(), mEnemy->target()->rect().Center(), pathLimit);
+
 #if DRAW_AI_PATH
 	mEnemy->mDebugger.setPath(mPath);
 #endif

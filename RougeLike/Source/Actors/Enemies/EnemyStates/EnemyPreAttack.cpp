@@ -26,7 +26,6 @@ void EnemyPreAttack::slowUpdate(float dt)
 		Ability* basicAttack = mEnemy->abilities().get(AbilityType::Attack);
 		if (basicAttack->state() == AbilityState::Idle)
 		{
-			printf("attack!\n");
 			basicAttack->activate(VectorF());
 			basicAttack->setState(AbilityState::Running);
 		}
@@ -42,10 +41,18 @@ void EnemyPreAttack::render()
 
 bool EnemyPreAttack::inAttackRange() const
 {
-	VectorF currentPosition = mEnemy->position();
-	VectorF nearestTargetSide = closestRectSide(currentPosition, mEnemy->target()->scaledRect());
+	if (mEnemy->hasTarget())
+	{
+		VectorF currentPosition = mEnemy->position();
+		VectorF nearestTargetSide = closestRectSide(currentPosition, mEnemy->target()->scaledRect());
 
-	return distance(currentPosition, nearestTargetSide) < (mEnemy->getAttributeValue(AttributeType::TackleDistance));
+		return distance(currentPosition, nearestTargetSide) < (mEnemy->getAttributeValue(AttributeType::TackleDistance));
+	}
+	else
+	{
+		return false;
+	}
+
 }
 
 void EnemyPreAttack::resume()

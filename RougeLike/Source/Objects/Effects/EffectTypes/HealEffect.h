@@ -8,9 +8,7 @@ class HealEffect : public Effect
 {
 public:
 	HealEffect() { }
-	HealEffect(float heal) : mHeal(heal) { };
 
-	void set(Health health) { mHeal = health; }
 	void fill(const PropertyMap& properties) override;
 
 	void init() override;

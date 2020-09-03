@@ -109,7 +109,7 @@ public:
 		return Rect<T>(x1 + rect.x1, y1 + rect.y1, x2 + rect.x2, y2 + rect.y2);
 	}
 
-#ifdef _DEBUG
+#ifdef DEBUG_CHECK
 	BasicString  infoString()
 	{
 		char infoString[500];

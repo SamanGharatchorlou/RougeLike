@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "MapDebugging.h"
 
-#if _DEBUG
+#if DEBUG_CHECK
 #include "Game/Camera/Camera.h"
 #include "Debug/DebugDraw.h"
 #include "Map/Map.h"

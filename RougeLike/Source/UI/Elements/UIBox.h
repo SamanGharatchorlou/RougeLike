@@ -12,7 +12,7 @@ public:
 		Data() { }
 		Data(const BasicString& dataId, RectF dataRect, Texture* dataTexture) : UIElement::Data(dataId, dataRect), texture(dataTexture) { }
 		Texture* texture = nullptr;
-#if _DEBUG
+#if DEBUG_CHECK
 		bool drawRect = false;
 #endif
 	};
@@ -46,7 +46,7 @@ protected:
 
 	RectF mSubrect;
 
-#if _DEBUG
+#if DEBUG_CHECK
 	bool mDrawRect;
 #endif
 };

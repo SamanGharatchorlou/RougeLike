@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Utilities/BasicString.h"
-#if _DEBUG
+#if DEBUG_CHECK
 #include "Debug/Logging.h"
 #endif
 
@@ -14,6 +14,7 @@ enum class ScreenType
 	None,
 	CharacterSelection,
 	Game,
+	GameOver,
 	Pause,
 	Settings,
 	Popup,
@@ -29,7 +30,9 @@ inline void operator >>(ScreenType type, BasicString& str)
 	else if (type == ScreenType::CharacterSelection)
 		str = "CharacterSelectionScreen";
 	else if (type == ScreenType::Game)
-		str = "GameScreen";
+		str = "GameScreen";	
+	else if (type == ScreenType::GameOver)
+		str = "GameOverScreen";
 	else if (type == ScreenType::Pause)
 		str = "PauseScreen";
 	else if (type == ScreenType::Settings)
@@ -82,5 +85,7 @@ enum class ScreenItem
 	Sound,
 	Mute,
 	Close,
-	Count
+
+	// Game over
+	Continue
 };

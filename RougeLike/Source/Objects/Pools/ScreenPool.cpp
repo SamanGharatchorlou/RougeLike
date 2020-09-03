@@ -19,6 +19,9 @@ Screen* ScreenPool::createNewObject(ScreenType type) const
 		break;
 	case ScreenType::Game:
 		screen = new GameScreen;
+		break;	
+	case ScreenType::GameOver:
+		screen = new GameOverScreen;
 		break;
 	case ScreenType::Pause:
 		screen = new PauseScreen;

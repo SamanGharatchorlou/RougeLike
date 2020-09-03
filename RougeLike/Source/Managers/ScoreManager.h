@@ -22,6 +22,7 @@ public:
 private:
 	int mScore;
 	int mMapLevel;
+	int mKills;
 
 	bool updateUI;
 };

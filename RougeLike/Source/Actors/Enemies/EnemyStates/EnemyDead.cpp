@@ -11,8 +11,11 @@
 EnemyDead::EnemyDead() :  mAlpha(alphaMax) { }
 
 
+
 void EnemyDead::init()
 {
+	mAlpha = alphaMax;
+
 	mEnemy->animator().selectAnimation(Action::Dead);
 
 	int score = (int)mEnemy->getAttributeValue(AttributeType::Score);

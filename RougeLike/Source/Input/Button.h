@@ -1,6 +1,6 @@
 #pragma once
 
-#if _DEBUG
+#if DEBUG_CHECK
 #include "Debug/DebugDraw.h"
 #endif
 

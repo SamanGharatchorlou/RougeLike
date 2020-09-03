@@ -11,7 +11,7 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 	Index startingIndex = mMap->index(startPosition);
 	Index endIndex = mMap->index(endPosition);
 
-	if (!mMap->isValidIndex(endIndex) || 
+	if (startingIndex.isNegative() || endIndex.isNegative() ||
 		startingIndex == endIndex || 
 		!mMap->floorCollisionTile(endIndex))
 		return Path();
@@ -25,7 +25,7 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 	const Grid<int>& globalCostMap = mMap->costMap();
 
 
-#if _DEBUG
+#if DEBUG_CHECK
 	int loopCounter = 0;
 #endif
 
@@ -86,7 +86,7 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 			}
 		}
 
-#if _DEBUG
+#if DEBUG_CHECK
 		if (frontier.size() > mMap->yCount() * mMap->xCount())
 		{
 			DebugPrint(Log,
@@ -99,7 +99,7 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 #endif
 	}
 
-#if _DEBUG
+#if DEBUG_CHECK
 	int largeNumberOfLoops = 50;
 	if (loopCounter > largeNumberOfLoops)
 	{
@@ -145,21 +145,6 @@ Index AIPathing::index(VectorF position) const
 	return mMap->index(position);
 }
 
-
-
-bool AIPathing::updateCurrentIndex(VectorF position)
-{
-	Index tileIndex = index(position);
-	if (tileIndex != mCurrentIndex)
-	{
-		mCurrentIndex = tileIndex;
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
 
 
 // --- Private Functions --- //

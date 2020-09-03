@@ -38,7 +38,7 @@ void CollectableBuilder::setIcon(Collectable* collectable, CollectableSpawner::S
 	Texture* icon = textures->getTexture(iconName, FileManager::Image_UI);
 
 	if(!icon)
-		DebugPrint(Log, "Collectable '%s' info has no valid icon name\n", data.id.c_str());
+		DebugPrint(Warning, "Collectable '%s' info has no valid icon name\n", data.id.c_str());
 
 	collectable->setIcon(icon);
 }

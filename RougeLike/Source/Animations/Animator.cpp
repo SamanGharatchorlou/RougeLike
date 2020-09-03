@@ -93,7 +93,7 @@ RectF Animator::Animation::autoSize(RectF rect) const
 
 RectF Animator::Animation::subTileRect(RectF rect) const
 {
-#if _DEBUG
+#if DEBUG_CHECK
 	VectorF requestSize = (mIndex + 1).toFloat() * mTileDimentions;
 	VectorF objectSize = mTexture->originalDimentions;
 

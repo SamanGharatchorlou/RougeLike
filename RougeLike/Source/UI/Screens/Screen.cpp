@@ -5,6 +5,7 @@
 
 #include "UI/Elements/UISwitch.h"
 #include "UI/Elements/UIButton.h"
+#include "UI/Elements/UITextBox.h"
 #include "UI/Elements/UISlider.h"
 
 
@@ -82,7 +83,25 @@ UIButton* Screen::findButton(const BasicString& id)
 	}
 	else
 	{
-		DebugPrint(Log, "Attemping to use findButton on a none button element, ID: '%s'\n", id.c_str());
+		DebugPrint(Warning, "Attemping to use findButton on a none button element, ID: '%s'\n", id.c_str());
+		return nullptr;
+	}
+}
+
+
+
+UITextBox* Screen::findTextBox(const BasicString& id)
+{
+	UIElement* element = mScreenLayers.find(id);
+
+	if (element->type() == UIElement::Type::TextBox)
+	{
+		UITextBox* textBox = static_cast<UITextBox*>(element);
+		return textBox;
+	}
+	else
+	{
+		DebugPrint(Warning, "Attemping to use findTextBox on a none textbox element, ID: '%s'\n", id.c_str());
 		return nullptr;
 	}
 }
@@ -92,7 +111,7 @@ void Screen::linkButton(ScreenItem option, const BasicString& buttonId)
 {
 	UIButton* button = findButton(buttonId);
 
-#if _DEBUG
+#if DEBUG_CHECK
 	if (!button)
 	{
 		DebugPrint(Warning, "No button element '%s' found on screen type %d\n", buttonId, type());
@@ -107,7 +126,7 @@ void Screen::linkSwitch(ScreenItem option, const BasicString& switchId)
 {
 	UIElement* element = find(switchId);
 
-#if _DEBUG
+#if DEBUG_CHECK
 	if (!element)
 	{
 		DebugPrint(Warning, "No element '%s' found on screen type %d\n", switchId, type());
@@ -131,7 +150,7 @@ void Screen::linkSlider(ScreenItem option, const BasicString& sliderId)
 {
 	UIElement* element = find(sliderId);
 
-#if _DEBUG
+#if DEBUG_CHECK
 	if (!element)
 	{
 		DebugPrint(Warning, "No element '%s' found on screen type %d\n", sliderId, type());
@@ -152,7 +171,7 @@ void Screen::linkSlider(ScreenItem option, const BasicString& sliderId)
 
 bool Screen::pressed(ScreenItem item) const
 {
-#if _DEBUG
+#if DEBUG_CHECK
 	if (mButtons.count(item) == 0)
 	{
 		DebugPrint(Warning, "No button has been linked to the screen item %d\n", (int)item);
@@ -164,7 +183,7 @@ bool Screen::pressed(ScreenItem item) const
 
 bool Screen::released(ScreenItem item) const
 {
-#if _DEBUG
+#if DEBUG_CHECK
 	if (mButtons.count(item) == 0)
 	{
 		DebugPrint(Warning, "No button has been linked to the screen item %d\n", (int)item);
@@ -177,7 +196,7 @@ bool Screen::released(ScreenItem item) const
 
 UISlider* Screen::slider(ScreenItem item)
 {
-#if _DEBUG
+#if DEBUG_CHECK
 	if (mSliders.count(item) == 0)
 	{
 		DebugPrint(Warning, "No slider has been linked to the screen item %d\n", (int)item);

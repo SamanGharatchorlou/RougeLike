@@ -7,6 +7,8 @@
 #include "Input/InputManager.h"
 #include "System/Files/TextFileReader.h"
 
+#include "UI/Elements/UIButton.h"
+
 
 void PopupScreen::init()
 {
@@ -32,15 +34,17 @@ void PopupScreen::slowUpdate()
 }
 
 
-void PopupScreen::setMainText(const BasicString& text)
+void PopupScreen::setMainText(const BasicString& textFile)
 {
-	BasicString myText("");
-	TextFileReader reader(FileManager::Get()->findFile(FileManager::Config_Menus, "LevelUp").c_str());
-	reader.readText(myText);
+	const BasicString filePath = FileManager::Get()->findFile(FileManager::Config_Menus, textFile);
+	TextFileReader reader(filePath.c_str());
+
+	BasicString text("");
+	reader.readText(text);
 
 	UIElement* element = find("PopupText");
 	UITextBox* textBox = static_cast<UITextBox*>(element);
-	textBox->setText(myText);
+	textBox->setText(text);
 	textBox->autoSizeWrapFont();
 }
 
@@ -50,4 +54,6 @@ void PopupScreen::exitPopup()
 {
 	mController->popScreen();
 	mController->popSystemState();
+
+	mButtons[ScreenItem::Close]->setActive(false);
 }

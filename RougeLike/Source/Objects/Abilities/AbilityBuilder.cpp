@@ -98,7 +98,7 @@ Ability* AbilityBuilder::createNewAbility(AbilityType type) const
 	{
 		BasicString id;
 		type >> id;
-		DebugPrint(Log, "Ability creation for type for '%s' has not been set, define in '%s'\n", id.c_str(), __FUNCTION__);
+		DebugPrint(Warning, "Ability creation for type for '%s' has not been set, define in '%s'\n", id.c_str(), __FUNCTION__);
 		break;
 	}
 

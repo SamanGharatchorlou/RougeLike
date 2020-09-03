@@ -2,8 +2,8 @@
 <Ability>
 	<Properties>
 		<MaxSize>125</MaxSize>
-		<Health>50</Health>
-		<Cooldown>5</Cooldown>
+		<Health>25</Health>
+		<Cooldown>15</Cooldown>
 	</Properties>
 
 	<Icon>HealIcon</Icon>

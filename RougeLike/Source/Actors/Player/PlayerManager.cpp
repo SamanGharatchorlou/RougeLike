@@ -48,7 +48,7 @@ void PlayerManager::addExp(int exp)
 
 	if (didLevelUp && mLevelling.level() == 2)
 	{
-		OpenPopupEvent* eventPtr = new OpenPopupEvent("LevelUpInfo");
+		OpenPopupEvent* eventPtr = new OpenPopupEvent("LevelUp");
 		EventPacket event(eventPtr);
 		mEvents.push(event);
 	}
@@ -96,8 +96,6 @@ void PlayerManager::slowUpdate(float dt)
 {
 	mPlayer.slowUpdate(dt);
 	mLevelling.slowUpdate(dt);
-
-	mPlayer.updateMapInfo();
 
 	mAbilities.slowUpdate(dt);
 

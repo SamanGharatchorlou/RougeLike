@@ -43,7 +43,7 @@ RenderColour::RenderColour(Colour colour)
 		break;
 	default:
 		r = 0; g = 0; b = 0;
-		DebugPrint(Log, "Render colour has not been defined\n");
+		DebugPrint(Warning, "Render colour has not been defined\n");
 		break;
 	}
 }

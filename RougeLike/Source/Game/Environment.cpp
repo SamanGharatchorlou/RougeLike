@@ -23,6 +23,8 @@ void Environment::clear()
 	mEffectPool.freeAll();
 
 	mMapSize = Vector2D<int>();
+
+	Camera::Get()->clear();
 }
 
 

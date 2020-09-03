@@ -9,6 +9,7 @@ public:
 	Text(const BasicString& text, const BasicString& font, int ptSize, SDL_Color colour);
 	void init(const BasicString& text, const BasicString& font, int ptSize, SDL_Color colour);
 
+	const BasicString& text() const { return mText; }
 	void setText(const BasicString& text);
 	void setColour(SDL_Color colour);
 

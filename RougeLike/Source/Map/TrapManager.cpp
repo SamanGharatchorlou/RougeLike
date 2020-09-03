@@ -206,5 +206,6 @@ void TrapManager::resolveCollision(Trap& trap)
 	damageEffect->fill(trap.properties());
 
 	mActor->addEffect(damageEffect);
+	mActor->collider()->setGotHit(true);
 	trap.setExhausted(true);
 }

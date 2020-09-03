@@ -37,6 +37,7 @@ void GameScreen::init()
 	mController->ui()->setCursorTexture(TextureManager::Get()->getTexture("GameCursor", FileManager::Image_UI));
 
 
+	mController->openPopup("Introduction");
 #if SET_GAME_SCALE
 	Renderer::Get()->setScale(game_scale);
 #endif

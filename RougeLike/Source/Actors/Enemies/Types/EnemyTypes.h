@@ -14,7 +14,7 @@ inline EnemyType operator +(EnemyType type, int number)
 {
 	int sum = static_cast<int>(type) + number;
 
-#if _DEBUG
+#if DEBUG_CHECK
 	if (sum > (int)EnemyType::Count)
 		DebugPrint(Warning, "adding %d to EnemyType %d is out of bounds", number, (int)type);
 #endif

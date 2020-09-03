@@ -8,6 +8,8 @@ class CameraShake : public Observer
 public:
 	CameraShake();
 
+	void clear();
+
 	void init(float maxTrauma, float traumaReduction);
 	void fastUpdate(float dt);
 

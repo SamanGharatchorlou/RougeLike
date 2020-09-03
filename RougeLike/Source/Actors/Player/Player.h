@@ -32,7 +32,6 @@ public:
 
 	MeleeWeapon*	weapon();
 
-	//void setCharacter(const XMLNode playerNode);
 	void selectWeapon(WeaponData* weapon);
 
 	void overrideControl(bool removeControl);
@@ -47,8 +46,13 @@ public:
 
 
 private:
-	void updateCursorPosition(VectorF cursorPosition);
+	void updateMovementSound(AudioManager* audio);
+	void setMovementAnimation();
+	void handleStates(float dt);
+	void handleHealthChanges(Health* health);
+	void handleHit(AudioManager* audio);
 
+	void updateCursorPosition(VectorF cursorPosition);
 
 
 private:

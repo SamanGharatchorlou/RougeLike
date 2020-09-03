@@ -29,7 +29,7 @@ void ScreenBuilder::populateScreen(Screen* screen)
 	ScreenAttributes attributes = reader.readScreen(FileManager::Get()->findFile(FileManager::Config_Menus, fileName));
 	ScreenLayers screenLayers = buildUIScreen(attributes);
 
-#if _DEBUG
+#if DEBUG_CHECK
 	if (screenLayers.size() == 0)
 		DebugPrint(Warning, "No screen layers built for screen config %s\n", FileManager::Get()->findFile(FileManager::Config_Menus, fileName));
 #endif
@@ -255,7 +255,7 @@ Elements ScreenBuilder::setParents(ScreenLayers& layers, const ScreenAttributes&
 				}
 				else
 				{
-					DebugPrint(Log, "No parent was found with label: %s\n", attributes.at("parent").c_str());
+					DebugPrint(Warning, "No parent was found with label: %s\n", attributes.at("parent").c_str());
 				}
 			}
 		}
@@ -275,7 +275,7 @@ TexturePacket ScreenBuilder::getButtonTextures(const BasicString& buttonType) co
 	XMLParser button(FileManager::Get()->findFile(FileManager::Configs, "Buttons"));
 	XMLNode buttonNode = button.rootChild(buttonType);
 
-#if _DEBUG
+#if DEBUG_CHECK
 	if (!buttonNode)
 	{
 		DebugPrint(Warning, "Button config does not have a '%s' node\n", buttonType);

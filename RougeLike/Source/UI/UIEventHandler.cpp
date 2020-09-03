@@ -1,9 +1,13 @@
 #include "pch.h"
 #include "UIEventHandler.h"
 
+#include "Game/GameController.h"
 #include "ScreenController.h"
 
+#include "UIManager.h"
 #include "Screens/Screen.h"
+#include "Screens/GameOverScreen.h"
+
 #include "Elements/UIElement.h"
 #include "Elements/UIButton.h"
 #include "Elements/UITextBox.h"
@@ -38,13 +42,24 @@ void UIEventHandler::handleEvent(Screen* activeScreen, EventData& data)
 	case Event::OpenPopup:
 	{
 		OpenPopupEvent& eventData = static_cast<OpenPopupEvent&>(data);
-		XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Menus, eventData.mInfoID));
+		activeScreen->controller()->openPopup(eventData.mInfoID);
+		break;
+	}
+	case Event::PlayerDead:
+	{
+		PlayerDeadEvent& eventData = static_cast<PlayerDeadEvent&>(data);
+		if (eventData.mMapLevel >= 0)
+		{
+			Screen* screen = activeScreen->controller()->ui()->screen(ScreenType::GameOver);
+			GameOverScreen* gameOver = static_cast<GameOverScreen*>(screen);
 
-		XMLNode textNode = parser.rootChild("Text");
+			gameOver->mScore = eventData.mScore;
+			gameOver->mKills = eventData.mKills;
+			gameOver->mMapLevel = eventData.mMapLevel;
 
-		activeScreen->controller()->openPopup(textNode);
-
-
+			activeScreen->controller()->addSystemState(SystemStates::PauseState);
+			activeScreen->controller()->addScreen(ScreenType::GameOver);
+		}
 		break;
 	}
 
@@ -76,7 +91,7 @@ void UIEventHandler::setSliderValue(Screen* activeScreen, SetUISlider& eventData
 	}
 	else
 	{
-		DebugPrint(Log, "Cannot find the slider, wrong screen? probably requesting during a popup\n");
+		DebugPrint(Warning, "Cannot find the slider, wrong screen? probably requesting during a popup\n");
 	}
 
 }

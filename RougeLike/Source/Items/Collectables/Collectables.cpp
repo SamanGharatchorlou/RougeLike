@@ -6,7 +6,7 @@
 #include "Game/Camera/Camera.h"
 #include "Game/Data/GameData.h"
 
-#if _DEBUG
+#if DEBUG_CHECK
 #include "Debug/DebugDraw.h"
 #endif
 

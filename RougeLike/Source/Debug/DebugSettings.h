@@ -1,6 +1,8 @@
 #pragma once
 
-#if _DEBUG
+#define DEBUG_CHECK 1
+
+#if DEBUG_CHECK
 
 #define MEMORY_TRACKING 0 // 1 = default, 2 = verbose
 #define IGNORE_UNKNOWNS 0
@@ -54,8 +56,8 @@ constexpr float game_scale = 0.5f;
 #define MAX_SPAWN_COUNT 1
 
 // UI
-#define UI_EDITOR 0
-#define DRAW_UI_RECTS 0
+#define UI_EDITOR 1
+#define DRAW_UI_RECTS 1
 
 #define DEBUG_CURSOR 0
 

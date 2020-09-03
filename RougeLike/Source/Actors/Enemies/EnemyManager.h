@@ -33,14 +33,12 @@ public:
 	void openNewMapLevel();
 	void closeLastMapLevel();
 
-	// AI pathing
-	void updateAIPathCostMap() { mPathing.updateAIPathCostMap(mActiveEnemies); }
-	//void requestEnemyPathUpdates() { mPathing.addPathUpdateRequest(); }
-
 	// Event handling
 	LocalDispatcher& events() { return mEvents; }
 
-	std::vector<Actor*> getActiveEnemies() const;
+
+	std::vector<Enemy*>& getActiveEnemies() { return mActiveEnemies; }
+	std::vector<Actor*> getActiveEnemyActors() const;
 	std::vector<Collider*> attackingColliders() const;
 
 	unsigned int size() const { return mActiveEnemies.size(); }

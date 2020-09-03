@@ -87,7 +87,7 @@ void MapTile::slowUpdate(float dt)
 
 void MapTile::render(RectF rect) 
 {
-#if _DEBUG
+#if DEBUG_CHECK
 	if(mTexture)
 #endif
 		mTexture->render(rect); 

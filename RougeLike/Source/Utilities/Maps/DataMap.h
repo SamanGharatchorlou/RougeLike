@@ -32,7 +32,7 @@ public:
 
 	void merge(const DataMap<T, K>& map);
 
-#if _DEBUG
+#if DEBUG_CHECK
 	void log() const;
 #endif
 
@@ -40,7 +40,7 @@ protected:
 	std::unordered_map<T, K> mData;
 };
 
-#if _DEBUG
+#if DEBUG_CHECK
 template<class T, class K>
 void DataMap<T,K>::log() const
 {

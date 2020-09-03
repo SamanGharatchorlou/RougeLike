@@ -26,8 +26,6 @@ public:
 
 	const AIPathMap* map() const { return mMap; }
 
-	bool updateCurrentIndex(VectorF position);
-
 
 private:
 	Path getPath(Index start, Index end, Grid<Index>& pathing) const;
@@ -47,8 +45,6 @@ private:
 
 private:
 	const AIPathMap* mMap;
-
-	Index mCurrentIndex;
 };
 
 

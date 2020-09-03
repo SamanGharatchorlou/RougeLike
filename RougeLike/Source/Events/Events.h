@@ -16,7 +16,7 @@ enum class Event
 	None,
 
 	EnemyDead,
-	EnemyHit,
+	PlayerDead,
 
 	HealthChanged,
 
@@ -32,9 +32,8 @@ enum class Event
 
 	Trauma,
 
-	UpdateAIPathMap,
-	UpdateAICostMap,
 	LevelUpdated,
+	MapLevel,
 
 	ActivateAbilityOn,
 
@@ -70,6 +69,24 @@ struct EventPacket
 	}
 
 	EventData* data;
+};
+
+
+
+struct MapLevelEvent : public EventData
+{
+	MapLevelEvent(int mapLevel) : mMapLevel(mapLevel), EventData(Event::MapLevel) { }
+	int mMapLevel;
+};
+
+
+struct PlayerDeadEvent : public EventData
+{
+	PlayerDeadEvent() : mKills(-1), mScore(-1), mMapLevel(-1), EventData(Event::PlayerDead) { }
+	PlayerDeadEvent(int kills, int score, int mapLevel) : mKills(kills), mScore(score), mMapLevel(mapLevel), EventData(Event::PlayerDead) { }
+	int mKills;
+	int mScore;
+	int mMapLevel;
 };
 
 
@@ -177,18 +194,6 @@ struct TraumaEvent : public EventData
 	TraumaEvent(int trauma) : EventData(Event::Trauma), mTrauma(trauma) { }
 
 	const int mTrauma;
-};
-
-
-struct UpdateAIPathMapEvent : public EventData
-{
-	UpdateAIPathMapEvent() : EventData(Event::UpdateAIPathMap) { };
-};
-
-
-struct UpdateAICostMapEvent : public EventData
-{
-	UpdateAICostMapEvent() : EventData(Event::UpdateAICostMap) { };
 };
 
 

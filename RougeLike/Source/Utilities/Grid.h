@@ -63,7 +63,7 @@ Grid<T>::Grid(Vector2D<int> size, T value)
 template<class T>
 std::vector<T>& Grid<T>::operator [] (int y)
 {
-#if _DEBUG
+#if DEBUG_CHECK
 	if (y >= 0 && y < yCount() == false)
 		DebugPrint(Error, "Attempting to get out of bounds row %d. Data only has %d rows\n", y, yCount());
 #endif
@@ -77,9 +77,6 @@ std::vector<T>& Grid<T>::operator [] (int y)
 template<class T>
 T& Grid<T>::operator [] (Vector2D<int> index)
 {
-	if (!inBounds(index))
-		int a = 4;
-
 	ASSERT(Error, inBounds(index),
 		"Attempting to get out of bounds index %d, %d in data of size %d, %d \n",
 		index.x, index.y, xCount(), yCount());

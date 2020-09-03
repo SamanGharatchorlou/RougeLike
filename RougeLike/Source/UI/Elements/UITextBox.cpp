@@ -51,7 +51,7 @@ void UITextBox::align()
 	}
 	else if (mAlignment == Alignment::Left || mAlignment == Alignment::Right)
 	{
-		DebugPrint(Log, "Unimplemented\n");
+		DebugPrint(Warning, "Unimplemented\n");
 	}
 }
 

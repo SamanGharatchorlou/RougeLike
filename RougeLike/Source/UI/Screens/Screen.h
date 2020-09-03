@@ -7,6 +7,7 @@
 class UIButton;
 class UIElement;
 class UISlider;
+class UITextBox;
 class UISwitch;
 class ScreenController;
 class InputManager;
@@ -40,6 +41,7 @@ public:
 
 	UIElement* find(const BasicString& id);
 	UIButton* findButton(const BasicString& id);
+	UITextBox* findTextBox(const BasicString& id);
 
 	void linkSlider(ScreenItem option, const BasicString& sliderId);
 	void linkButton(ScreenItem option, const BasicString& buttonId);

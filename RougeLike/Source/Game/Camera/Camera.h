@@ -9,6 +9,8 @@ class Camera
 public:
 	static Camera* Get();
 
+	void clear();
+
 	void setScale(float scale);
 	float scale() const { return mScale; }
 

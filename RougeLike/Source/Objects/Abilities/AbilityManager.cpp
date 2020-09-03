@@ -142,7 +142,7 @@ void AbilityManager::addAbility(AbilityType abilityType)
 		Ability* ability = mBuilder.build(abilityType, mCaster);
 		if (ability)
 		{
-#if _DEBUG
+#if DEBUG_CHECK
 			if (ability->type() == AbilityType::None)
 			{
 				BasicString name;
@@ -161,7 +161,7 @@ void AbilityManager::addAbility(AbilityType abilityType)
 	{
 		BasicString name;
 		abilityType >> name;
-		DebugPrint(Log, "No ability type with the name '%s'. No ability was added.\n", name.c_str());
+		DebugPrint(Warning, "No ability type with the name '%s'. No ability was added.\n", name.c_str());
 	}
 }
 

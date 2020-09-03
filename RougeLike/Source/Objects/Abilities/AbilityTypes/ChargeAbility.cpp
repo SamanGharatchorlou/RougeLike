@@ -9,6 +9,8 @@
 #include "Collisions/Colliders/QuadCollider.h"
 #include "Audio/AudioManager.h"
 
+#include "Objects/Properties/Attributes/Health.h"
+
 
 void ChargeAbility::activate(VectorF position)
 {
@@ -17,18 +19,14 @@ void ChargeAbility::activate(VectorF position)
 	// set charge target, only use direction() after this!
 	VectorF dir = (mCaster->position() - position).normalise();
 	mChargeTarget = mCaster->position() + dir * 1000.0f; // any random point far in this direction
-	
 	mRect.SetCenter(mCaster->position());
 
 	float ratio = 0.6f;
 	setScaledQuad(ratio);
 	setQuadCollider();
 
-
 	mAnimator.selectAnimation(Action::Active);
-
 	mWallCollisions.setActor(mCaster);
-
 	setCharging(true);
 }
 
@@ -106,6 +104,10 @@ void ChargeAbility::setCharging(bool isCharging)
 	mCompleted = !isCharging;
 	mActivateCollisions = isCharging;
 
+	Attribute* attribute = mCaster->getAttribute(AttributeType::Health);
+	Health* health = static_cast<Health*>(attribute);
+	health->setInvulnerablity(isCharging);
+
 	if (isCharging)
 	{
 		mTimer.start();
@@ -116,7 +118,6 @@ void ChargeAbility::setCharging(bool isCharging)
 	{
 		mTimer.stop();
 		mAnimator.stop();
-
 		AudioManager::Get()->fadeOutSound("ChargeAbility", mCaster);
 	}
 }

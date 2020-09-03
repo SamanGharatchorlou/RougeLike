@@ -23,7 +23,7 @@ SoundController::SoundController() : gameVolume(-1), musicVolume(-1), muted(fals
 
 void SoundController::slowUpdate()
 {
-#if _DEBUG
+#if DEBUG_CHECK
 	int counter = 0;
 #endif
 
@@ -60,7 +60,7 @@ void SoundController::slowUpdate()
 
 
 
-#if _DEBUG
+#if DEBUG_CHECK
 		if (channels[i] != Free)
 		{
 			counter++;
@@ -73,7 +73,7 @@ void SoundController::slowUpdate()
 #endif
 	}
 
-#if _DEBUG // Check channels aren't getting clogged up with paused audio
+#if DEBUG_CHECK // Check channels aren't getting clogged up with paused audio
 	if (counter >= 7)
 	{
 		int playingCounter = 0;
@@ -87,7 +87,7 @@ void SoundController::slowUpdate()
 				pauseCounter++;
 		}
 
-		DebugPrint(Log, "7 or more out the the 8 audio channels are being used. %d channels are playing and %d channels are paused\n", playingCounter, pauseCounter);
+		DebugPrint(Warning, "7 or more out the the 8 audio channels are being used. %d channels are playing and %d channels are paused\n", playingCounter, pauseCounter);
 	}
 #endif
 
@@ -173,7 +173,7 @@ void SoundController::pauseSound(Audio* audio, void* sourceId)
 		{
 			Mix_Pause(i);
 			channels[i] = Paused;
-#if _DEBUG
+#if DEBUG_CHECK
 			pauseTimers[i].start();
 #endif
 

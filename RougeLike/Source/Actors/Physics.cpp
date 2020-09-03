@@ -147,9 +147,6 @@ void Physics::applyDrag()
 	{
 		mVelocity.y = mVelocity.y * mDragFactor;
 	}
-
-	if (mVelocity.x > 10000)
-		printf("waht?\n");
 }
 
 

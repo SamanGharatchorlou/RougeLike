@@ -10,7 +10,7 @@ enum PriorityLevel
 };
 
 
-#if _DEBUG
+#if DEBUG_CHECK
 #define ASSERT(...) DebugAssert(__LINE__, __FUNCTION__, __VA_ARGS__)
 #else
 #define ASSERT(...)

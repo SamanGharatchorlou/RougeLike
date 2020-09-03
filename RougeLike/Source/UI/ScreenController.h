@@ -17,9 +17,10 @@ public:
 
 	void init(GameController* gameController, UIManager* UI);
 
-	void openPopup(const XMLNode& textNode);
+	void openPopup(const BasicString& textFile);
 	
 	void addScreen(ScreenType type);
+	void addScreen(Screen* screen);
 	void replaceScreen(ScreenType type);
 
 	void processScreenChanges();
@@ -29,6 +30,7 @@ public:
 	void clearScreenStack();
 
 	Screen* getActiveScreen() const { return &mScreens.getActiveState(); }
+	//Screen* getStackScreen(ScreenType screen) const;
 
 	void quitGame();
 	void restartGame();

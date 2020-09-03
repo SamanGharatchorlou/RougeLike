@@ -22,7 +22,7 @@ void TextureMap::free()
 
 void TextureMap::add(const BasicString& id, Texture* texture)
 {
-#if _DEBUG
+#if DEBUG_CHECK
 	if (mData.count(id) > 0)
 	{
 		DebugPrint(Warning, "ID '%s' already contained in texture map. Replacing old value, this value might be lost forever, i.e. a memory leak\n", id.c_str());

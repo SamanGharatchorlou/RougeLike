@@ -22,6 +22,7 @@
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyCharge.cpp" />
     <ClCompile Include="Source\Actors\Enemies\Types\Orc.cpp" />
     <ClCompile Include="Source\Actors\Player\PlayerStates\PlayerAttackState.cpp" />
+    <ClCompile Include="Source\Actors\Player\PlayerStates\PlayerDeadState.cpp" />
     <ClCompile Include="Source\AI\Pathing\AIPathingController.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyDebugger.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyStun.cpp" />
@@ -88,6 +89,7 @@
     <ClCompile Include="Source\System\Files\TextFileReader.cpp" />
     <ClCompile Include="Source\UI\Elements\UISwitch.cpp" />
     <ClCompile Include="Source\UI\Elements\UIWindow.cpp" />
+    <ClCompile Include="Source\UI\Screens\GameOverScreen.cpp" />
     <ClCompile Include="Source\UI\Screens\LoadingScreen.cpp" />
     <ClCompile Include="Source\UI\Screens\PopupScreen.cpp" />
     <ClCompile Include="Source\UI\ScreenController.cpp" />
@@ -198,6 +200,7 @@
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyCharge.h" />
     <ClInclude Include="Source\Actors\Enemies\Types\Orc.h" />
     <ClInclude Include="Source\Actors\Player\PlayerStates\PlayerAttackState.h" />
+    <ClInclude Include="Source\Actors\Player\PlayerStates\PlayerDeadState.h" />
     <ClInclude Include="Source\Actors\Player\PlayerStates\PlayerState.h" />
     <ClInclude Include="Source\AI\Pathing\AIPathingController.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyDebugger.h" />
@@ -268,6 +271,7 @@
     <ClInclude Include="Source\System\Files\TextFileReader.h" />
     <ClInclude Include="Source\UI\Elements\UISwitch.h" />
     <ClInclude Include="Source\UI\Elements\UIWindow.h" />
+    <ClInclude Include="Source\UI\Screens\GameOverScreen.h" />
     <ClInclude Include="Source\UI\Screens\LoadingScreen.h" />
     <ClInclude Include="Source\UI\Screens\PopupScreen.h" />
     <ClInclude Include="Source\UI\ScreenController.h" />

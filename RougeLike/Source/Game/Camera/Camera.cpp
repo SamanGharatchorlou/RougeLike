@@ -10,6 +10,14 @@ Camera* Camera::Get()
 }
 
 
+void Camera::clear()
+{
+	mActiveRect = nullptr;
+	mFollowingRect = nullptr;
+	shakeyCam.clear();
+}
+
+
 Camera::Camera() : mFollowingRect(nullptr), mScale(1.0f)
 {
 	mActiveRect = &mRect;

@@ -139,7 +139,7 @@ void UISlider::render()
 	mSlider->render();
 
 
-#if _DEBUG
+#if DEBUG_CHECK
 	if (mDrawRect || DRAW_UI_RECTS)
 		debugDrawRectOutline(mRect, RenderColour::Blue);
 #endif

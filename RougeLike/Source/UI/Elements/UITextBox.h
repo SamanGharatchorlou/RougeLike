@@ -43,6 +43,7 @@ public:
 	virtual ~UITextBox() { }
 
 	void setText(const BasicString& text) { mText.setText(text); }
+	const BasicString& text() const { return mText.text(); }
 
 	void setColour(SDL_Color colour) { mText.setColour(colour); }
 

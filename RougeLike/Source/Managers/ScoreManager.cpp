@@ -39,8 +39,24 @@ void ScoreManager::handleEvent(EventData& data)
 	{
 		EnemyDeadEvent deathData = static_cast<EnemyDeadEvent&>(data);
 		mScore += (int)deathData.mScore;
+		mKills++;
 
 		updateUI = true;
+		break;
+	}
+	case Event::MapLevel:
+	{
+		MapLevelEvent mapLevelEvent = static_cast<MapLevelEvent&>(data);
+		mMapLevel = mapLevelEvent.mMapLevel;
+
+		UpdateTextBoxEvent event = UpdateTextBoxEvent("MapLevel val", BasicString(mMapLevel));
+		notify(event);
+		break;
+	}
+	case Event::PlayerDead:
+	{
+		PlayerDeadEvent event(mKills, mScore, mMapLevel);
+		notify(event);
 		break;
 	}
 	default:

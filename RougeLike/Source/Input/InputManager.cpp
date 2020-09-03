@@ -44,7 +44,7 @@ bool InputManager::isCursorHeld(Cursor::ButtonType button) const { return mCurso
 void InputManager::resetInputEvents()
 {
 	// Reset cursor states
-#if _DEBUG
+#if DEBUG_CHECK
 	if (((mCursor.isHeld(Cursor::Left) || mCursor.isPressed(Cursor::Left)) && mCursor.isReleased(Cursor::Left)) ||
 		((mCursor.isHeld(Cursor::Right) || mCursor.isPressed(Cursor::Right)) && mCursor.isReleased(Cursor::Right)))
 	{
@@ -57,7 +57,7 @@ void InputManager::resetInputEvents()
 	// Reset button states
 	for (Button& button : mButtons)
 	{
-#if _DEBUG
+#if DEBUG_CHECK
 		if ((button.isHeld() || button.isPressed()) && button.isReleased())
 		{
 			DebugPrint(Warning, "Button key %d is being pressed and released at the same time\n", button.key());
@@ -104,7 +104,7 @@ void InputManager::processMouseButtonEvent(SDL_Event& event)
 	else if (buttonEvent.button == Button::rightClick)
 		buttonType = Cursor::Right;
 	else
-		DebugPrint(Log, "Mouse button type %d not left or right\n", buttonEvent.button);
+		DebugPrint(Warning, "Mouse button type %d not left or right\n", buttonEvent.button);
 
 	// Get input data
 	Button cursorButton = mCursor.getButton(buttonType);

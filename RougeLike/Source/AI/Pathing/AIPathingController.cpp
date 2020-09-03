@@ -66,7 +66,7 @@ void AIPathingController::updatePaths(const std::vector<Enemy*>& enemies, float 
 
 	// dynamically adjust the length of the A* pathing calculation
 	int minimumFrameCount = 60;
-#if _DEBUG
+#if DEBUG_CHECK
 	minimumFrameCount = 15;
 #endif
 
@@ -83,7 +83,7 @@ void AIPathingController::updatePaths(const std::vector<Enemy*>& enemies, float 
 			EnemyRun& runState = static_cast<EnemyRun&>(enemy->getStateMachine()->getActiveState());
 
 			// No need to update anything if its about to attack
-			if (!runState.canAttack())
+			if (enemy->hasTarget() && !runState.canAttack())
 			{
 				runState.updatePath(pathingLimit);
 			}
@@ -148,7 +148,7 @@ AIPathMap* AIPathingController::pathMap(const Map* map)
 		}
 	}
 
-#if _DEBUG
+#if DEBUG_CHECK
 	DebugPrint(Warning, "No AI path map matches the provied Map object. Has add map been called?\n");
 #endif
 	return nullptr;
@@ -173,31 +173,33 @@ void AIPathingController::updateAIPathCostMap(const std::vector<Enemy*>& enemies
 	for (int i = 0; i < enemies.size(); i++)
 	{
 		Enemy* enemy = enemies[i];
-		CostMap& costMap = findPathMap(enemy->pathing()->map())->costMapRef();
-		
-		// Current tile
 		Index index = enemy->pathing()->index(enemy->position());
-		costMap[index] += 5;
 
-		// Immediate surrounding tiles
-		Index surroundingIndexsLayer1[8]{
-			Index(index + Index(-1,-1)),
-			Index(index + Index(+0,-1)),
-			Index(index + Index(+1,-1)),
-
-			Index(index + Index(-1,0)),
-			Index(index + Index(+1,0)),
-
-			Index(index + Index(-1,+1)),
-			Index(index + Index(+0,+1)),
-			Index(index + Index(+1,+1))
-		};
-
-		for (int i = 0; i < 8; i++)
+		if (index.isPositive()) // == if valid
 		{
-			if (isValid(surroundingIndexsLayer1[i], costMap))
+			CostMap& costMap = findPathMap(enemy->pathing()->map())->costMapRef();
+			costMap[index] += 5;
+
+			// Immediate surrounding tiles
+			Index surroundingIndexsLayer1[8]{
+				Index(index + Index(-1,-1)),
+				Index(index + Index(+0,-1)),
+				Index(index + Index(+1,-1)),
+
+				Index(index + Index(-1,0)),
+				Index(index + Index(+1,0)),
+
+				Index(index + Index(-1,+1)),
+				Index(index + Index(+0,+1)),
+				Index(index + Index(+1,+1))
+			};
+
+			for (int i = 0; i < 8; i++)
 			{
-				costMap[surroundingIndexsLayer1[i]] += 1;
+				if (isValid(surroundingIndexsLayer1[i], costMap))
+				{
+					costMap[surroundingIndexsLayer1[i]] += 1;
+				}
 			}
 		}
 	}

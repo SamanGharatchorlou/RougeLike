@@ -2,10 +2,10 @@
 <Ability>
 	<Properties>
 		<Range>100</Range>
-		<MaxSize>100</MaxSize>
-		<Cooldown>3</Cooldown>
+		<MaxSize>110</MaxSize>
+		<Cooldown>3.5</Cooldown>
 
-		<Damage>50</Damage>
+		<Damage>40</Damage>
 	</Properties>
 
 	<Icon>SlashIcon</Icon>

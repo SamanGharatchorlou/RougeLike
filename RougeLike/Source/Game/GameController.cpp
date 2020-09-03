@@ -85,8 +85,6 @@ void GameController::run()
 		render();
 
 		frameTimer.update();
-		//float spare = frameTimer.spareFrameTime(60);
-		//printf("spare time: %f\n", spare);
 	}
 
 	endGame();

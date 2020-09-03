@@ -11,7 +11,7 @@ void XMLParser::parseXML(const BasicString& filePath)
 	file = new rapidxml::file<>(filePath.c_str());
 	xmlFile.parse<rapidxml::parse_no_data_nodes>(file->data());
 
-#if _DEBUG
+#if DEBUG_CHECK
 	path = filePath;
 #endif
 }
@@ -40,7 +40,7 @@ XMLNode XMLParser::rootNode() const
 
 XMLNode XMLParser::rootChild(const BasicString& label) const
 {
-#if _DEBUG
+#if DEBUG_CHECK
 	XMLNode child = rootNode().child(label);
 	if (child.isEmpty())
 		DebugPrint(Log, "Parser at path '%s' has no child node labeled '%s'\n", path.c_str(), label.c_str());

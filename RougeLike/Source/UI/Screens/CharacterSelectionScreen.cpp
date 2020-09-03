@@ -20,6 +20,7 @@ void CharacterSelectionScreen::init()
 	updateCharacter();
 
 	linkButton(ScreenItem::Play, "PlayButton");
+	linkButton(ScreenItem::Quit, "ExitButton");
 	linkButton(ScreenItem::LeftArrow, "LeftButton");
 	linkButton(ScreenItem::RightArrow, "RightButton");
 	linkSwitch(ScreenItem::Tutorial, "TutorialSwitch");
@@ -63,6 +64,11 @@ void CharacterSelectionScreen::slowUpdate()
 
 		}
 		mController->enablePopups((bool)tutorialState);
+	}
+
+	if (released(ScreenItem::Quit))
+	{
+		mController->quitGame();
 	}
 
 	if (released(ScreenItem::LeftArrow))

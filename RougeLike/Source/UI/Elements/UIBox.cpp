@@ -3,14 +3,14 @@
 
 #include "Graphics/Texture.h"
 
-#if _DEBUG
+#if DEBUG_CHECK
 #include "Debug/DebugDraw.h"
 #endif
 
 
 UIBox::UIBox(Data& data) : UIElement(data), mTexture(data.texture)
 {
-#if _DEBUG
+#if DEBUG_CHECK
 	mDrawRect = data.drawRect;
 #endif
 }
@@ -18,7 +18,7 @@ UIBox::UIBox(Data& data) : UIElement(data), mTexture(data.texture)
 
 UIBox::UIBox() : mTexture(nullptr) 
 {
-#if _DEBUG
+#if DEBUG_CHECK
 	mDrawRect = false;
 #endif
 }
@@ -26,7 +26,7 @@ UIBox::UIBox() : mTexture(nullptr)
 
 UIBox::UIBox(const StringMap& attributes) : UIElement(attributes)
 {
-#if _DEBUG
+#if DEBUG_CHECK
 	if (attributes.contains("debugDraw"))
 		mDrawRect = true;
 	else
@@ -77,7 +77,7 @@ void UIBox::render()
 
 	}
 
-#if _DEBUG
+#if DEBUG_CHECK
 	if (mDrawRect || DRAW_UI_RECTS)
 		debugDrawRectOutline(mRect, RenderColour::Blue);
 #endif
@@ -89,7 +89,7 @@ void UIBox::render(RectF subRect)
 	if (mTexture)
 		mTexture->renderSubTexture(mRect, subRect);
 
-#if _DEBUG
+#if DEBUG_CHECK
 	if (mDrawRect || DRAW_UI_RECTS)
 		debugDrawRectOutline(mRect, RenderColour::Blue);
 #endif

@@ -82,4 +82,6 @@ protected:
 	LocalDispatcher mEvents;
 
 	bool mVisibility;
+
+	TimerF mColourModTimer;
 };
