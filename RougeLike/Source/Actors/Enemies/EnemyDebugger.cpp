@@ -15,8 +15,8 @@
 
 void EnemyDebugger::draw()
 {
-#if LABEL_ENEMY_STATES
-	labelState();
+#if TRACK_COLLISIONS
+	mEnemy->collider()->renderCollider();
 #endif
 #if LABEL_ENEMY_HEALTH
 	labelHP();
@@ -30,8 +30,8 @@ void EnemyDebugger::draw()
 #if DRAW_AI_PATH
 	drawPath();
 #endif
-#if TRACK_COLLISIONS
-	mEnemy->collider()->renderCollider();
+#if LABEL_ENEMY_STATES
+	labelState();
 #endif
 }
 

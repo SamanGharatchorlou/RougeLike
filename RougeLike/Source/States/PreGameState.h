@@ -15,7 +15,7 @@ public:
 	void fastUpdate(float dt) override { };
 	void handleInput() override { };
 	void render() override;
-	void exit() override { };
+	void exit() override;
 
 	void resume() { };
 

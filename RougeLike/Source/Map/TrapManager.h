@@ -22,7 +22,7 @@ public:
 	public:
 		Trap(Index index, const PropertyMap& properties) : mIndex(index), mData(properties), timer(TimerF::Start), exhausted(false) { }
 
-		inline bool operator == (Trap value)
+		inline bool operator == (const Trap& value) const
 		{
 			return hasIndex(value.index());
 		}
@@ -54,9 +54,9 @@ public:
 
 public:
 	TrapManager(Map* map) : mMap(map), mTrapData(nullptr), mActor(nullptr), mEffectPool(nullptr) { }
+	~TrapManager();
 
 	void init(Actor* actor, EffectPool* effectPool, const TrapDataMap* trapData);
-	void clear();
 
 	void slowUpdate();
 	void processCollisions(Index index);

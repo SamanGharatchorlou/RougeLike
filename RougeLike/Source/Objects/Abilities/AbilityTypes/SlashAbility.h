@@ -8,8 +8,9 @@ class SlashAbility : public MeleeAbility
 public:
 	SlashAbility() : mSlashCount(0) { }
 
-	void activate(VectorF position) override;
+	void activate() override;
 
+	void handleInput(const InputManager* input) override;
 	void fastUpdate(float dt) override;
 	void slowUpdate(float dt) override;
 	void render() override;
@@ -19,7 +20,7 @@ public:
 
 
 private:
-	void setQuadRect();
+	void updateQuad();
 	void slashOnce();
 
 	void applyEffects(Actor* actor, EffectPool* effectPool) override;

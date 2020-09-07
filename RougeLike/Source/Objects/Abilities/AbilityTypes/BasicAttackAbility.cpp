@@ -13,7 +13,7 @@ BasicAttackAbility::~BasicAttackAbility()
 
 
 
-void BasicAttackAbility::activate(VectorF position)
+void BasicAttackAbility::activate()
 {
 	mCollider = mCaster->attackingCollider();
 	mActivateCollisions = true;

@@ -35,12 +35,7 @@ void GameState::init()
 	// Start Audio
 	AudioManager* audio = AudioManager::Get();
 	audio->playMusic("Ludumdum");
-	audio->setMusicVolume(0.0f);
-	audio->setSoundVolume(25.0f);
-/*
-	mGameData->uiManager->controller()->openPopup("Attack");
-	mGameData->uiManager->controller()->openPopup("Movement");*/
-
+	audio->setSource(mGameData->environment->actors()->player()->get(), Camera::Get()->size().x);
 }
 
 

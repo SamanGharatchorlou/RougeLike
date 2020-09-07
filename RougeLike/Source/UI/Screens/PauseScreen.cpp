@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "PauseScreen.h"
 
+#include "Audio/AudioManager.h"
 #include "UI/ScreenController.h"
 #include "Input/InputManager.h"
 #include "UI/Elements/UIButton.h"
@@ -14,6 +15,7 @@ void PauseScreen::init()
 	linkButton(ScreenItem::Restart, "RestartButton");
 	linkButton(ScreenItem::Settings, "SettingsButton");
 	linkButton(ScreenItem::Quit, "QuitButton");
+	linkButton(ScreenItem::Close, "CloseButton");
 }
 
 
@@ -45,7 +47,7 @@ void PauseScreen::slowUpdate()
 	{
 		mController->restartGame();
 	}
-	else if (released(ScreenItem::Resume))
+	else if (released(ScreenItem::Resume) || released(ScreenItem::Close))
 	{
 		popScreenState();
 	}
@@ -56,4 +58,5 @@ void PauseScreen::popScreenState()
 {
 	mController->popScreen();
 	mController->popSystemState();
+
 }

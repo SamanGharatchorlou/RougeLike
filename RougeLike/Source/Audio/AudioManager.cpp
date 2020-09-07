@@ -25,6 +25,17 @@ AudioManager::~AudioManager()
 	DebugPrint(Log, "Audio manager destroyed\n");
 }
 
+void AudioManager::init()
+{
+	mSoundController.init();
+}
+
+
+void AudioManager::setSource(Actor* listener, float attenuationDistance)
+{
+	mSoundController.setListener(listener);
+	mSoundController.attenuationDistance(attenuationDistance);
+}
 
 // -- Audio Loading -- //
 void AudioManager::load()
@@ -84,12 +95,14 @@ Audio* AudioManager::getAudio(const BasicString& label) const
 // -- Audio Control -- //
 void AudioManager::toggleMute()
 {
-	mSoundController.toggleMute();
+	DebugPrint(Warning, "UNIMPLEMENTED\n");
+	//mSoundController.toggleMute();
 }
 
 void AudioManager::mute(bool shouldMute)
 {
-	mSoundController.mute(shouldMute);
+	DebugPrint(Warning, "UNIMPLEMENTED\n");
+	//mSoundController.mute(shouldMute);
 }
 
 
@@ -114,12 +127,12 @@ float AudioManager::musicVolume() const
 }
 
 
-void AudioManager::playSound(const BasicString& label, void* sourceId)
+void AudioManager::playSound(const BasicString& label, void* sourceId, VectorF source)
 {
 	Audio* audio = getAudio(label);
 
 	if (audio)
-		mSoundController.playSound(audio, sourceId);
+		mSoundController.playSound(audio, sourceId, source);
 }
 
 
@@ -133,12 +146,12 @@ void AudioManager::playMusic(const BasicString& label)
 }
 
 
-void AudioManager::loopSoundGroup(const BasicString& label, void* sourceId)
+void AudioManager::loopSound(const BasicString& label, void* sourceId, VectorF source)
 {
 	Audio* audio = getAudio(label);
 
 	if (audio)
-		mSoundController.loopSound(audio, sourceId);
+		mSoundController.loopSound(audio, sourceId, source);
 }
 
 
@@ -189,7 +202,18 @@ bool AudioManager::isPlaying(const BasicString& label, void* sourceId)
 	}
 }
 
+bool AudioManager::isActive(const BasicString& label, void* sourceId)
+{
+	Audio* audio = getAudio(label);
 
+	if (audio)
+		return mSoundController.hasActiveAudio(audio, sourceId);
+	else
+	{
+		DebugPrint(Warning, "No audio with label '%s' found, cannot check if active\n", label.c_str());
+		return false;
+	}
+}
 
 // --- Private Functions --- //
 int AudioManager::loadAllMusic(FileManager::Folder folder)

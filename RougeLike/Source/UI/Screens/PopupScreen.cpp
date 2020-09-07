@@ -15,6 +15,15 @@ void PopupScreen::init()
 	linkButton(ScreenItem::Close, "OkButton");
 }
 
+void PopupScreen::build(const XMLNode& node)
+{
+	XMLNode title = node.child("Title");
+	setTitle(title);
+
+	XMLNode body = node.child("Body");
+	setBody(body);
+}
+
 
 void PopupScreen::handleInput(const InputManager* input)
 {
@@ -48,6 +57,23 @@ void PopupScreen::setMainText(const BasicString& textFile)
 	textBox->autoSizeWrapFont();
 }
 
+
+
+void PopupScreen::setTitle(const XMLNode& titleNode)
+{
+	UIElement* element = find("Title");
+	UITextBox* textBox = static_cast<UITextBox*>(element);
+	textBox->setText(titleNode.value());
+	textBox->align();
+}
+
+void PopupScreen::setBody(const XMLNode& bodyNode)
+{
+	UIElement* element = find("Body");
+	UITextBox* textBox = static_cast<UITextBox*>(element);
+	textBox->setText(bodyNode.value());
+	textBox->autoSizeWrapFont();
+}
 
 
 void PopupScreen::exitPopup()

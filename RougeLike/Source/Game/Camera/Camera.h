@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CameraShake.h"
-
+#include "Utilities/Quad2D.h"
 
 class Camera
 {
@@ -26,14 +26,15 @@ public:
 	void fastUpdate(float dt);
 
 	template <typename T>
-	bool inView(Rect<T> object) const;
+	bool inView(const Rect<T>& object) const;
 
 	template <typename T>
-	bool inView(Vector2D<T> point) const;
+	bool inView(const Vector2D<T>& point) const;
 
 	template <typename T>
-	Rect<T> toCameraCoords(const Rect<T> worldCoords) const;
-	VectorF toCameraCoords(const VectorF worldCoords) const;
+	Rect<T> toCameraCoords(const Rect<T>& worldCoords) const;
+	VectorF toCameraCoords(const VectorF& worldCoords) const;
+	Quad2D<float> toCameraCoords(const Quad2D<float>& worldCoords) const;
 
 	RectF rect() const { return mRect; }
 	VectorF size() const { return mRect.Size(); }
@@ -63,7 +64,7 @@ private:
 
 
 template <typename T>
-bool Camera::inView(Rect<T> object) const
+bool Camera::inView(const Rect<T>& object) const
 {
 	if (object.RightPoint() < (T)mRect.LeftPoint()	||
 		object.LeftPoint()	> (T)mRect.RightPoint() ||
@@ -78,7 +79,7 @@ bool Camera::inView(Rect<T> object) const
 
 
 template <typename T>
-bool Camera::inView(Vector2D<T> object) const
+bool Camera::inView(const Vector2D<T>& object) const
 {
 	if (object.x < (T)mRect.LeftPoint() ||
 		object.x > (T)mRect.RightPoint() ||
@@ -94,7 +95,7 @@ bool Camera::inView(Vector2D<T> object) const
 
 
 template <typename T>
-Rect<T> Camera::toCameraCoords(const Rect<T> worldCoords) const
+Rect<T> Camera::toCameraCoords(const Rect<T>& worldCoords) const
 {
 	return Rect<T>(worldCoords.TopLeft() - mActiveRect->TopLeft(), worldCoords.Size());
 }

@@ -24,6 +24,7 @@ public:
 
 
 private:
+	void enterGame();
 	void readCharacters();
 	void updateCharacter();
 

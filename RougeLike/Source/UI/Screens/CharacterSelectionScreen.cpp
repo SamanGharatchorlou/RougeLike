@@ -3,6 +3,7 @@
 
 #include "Input/InputManager.h"
 #include  "Graphics/TextureManager.h"
+#include "Audio/AudioManager.h"
 
 #include "Game/GameController.h"
 #include "UI/ScreenController.h"
@@ -42,28 +43,20 @@ void CharacterSelectionScreen::handleInput(const InputManager* input)
 #if !UI_EDITOR
 	else if (input->isPressed(Button::Enter))
 	{
-		mController->replaceScreen(ScreenType::Game);
-		mController->replaceSystemState(SystemStates::GameState);
+		updateCharacter();
+		enterGame();
 	}
 #endif
 }
+
 
 
 void CharacterSelectionScreen::slowUpdate()
 {
 	if (released(ScreenItem::Play))
 	{
-		mController->replaceScreen(ScreenType::Game);
-		mController->replaceSystemState(SystemStates::GameState);
-
-		UISwitch::State tutorialState = mSwitches[ScreenItem::Tutorial]->state();
-		if (mTutorialFileState != tutorialState)
-		{
-			const BasicString mode = (tutorialState == UISwitch::On) ? "ON" : "OFF";
-			GameSetup::setTutorial(mode);
-
-		}
-		mController->enablePopups((bool)tutorialState);
+		updateCharacter();
+		enterGame();
 	}
 
 	if (released(ScreenItem::Quit))
@@ -114,4 +107,20 @@ void CharacterSelectionScreen::updateCharacter()
 	BasicString textString = mSelectedCharacter + " - " + mSelectedWeapon;
 	textBox->setText(textString);
 	textBox->align();
+}
+
+
+void CharacterSelectionScreen::enterGame()
+{
+	mController->replaceScreen(ScreenType::Game);
+	mController->replaceSystemState(SystemStates::GameState);
+
+	UISwitch::State tutorialState = mSwitches[ScreenItem::Tutorial]->state();
+	if (mTutorialFileState != tutorialState)
+	{
+		const BasicString mode = (tutorialState == UISwitch::On) ? "ON" : "OFF";
+		GameSetup::setTutorial(mode);
+	}
+	mController->enablePopups((bool)tutorialState);
+	AudioManager::Get()->playSound("StartGame", mController);
 }

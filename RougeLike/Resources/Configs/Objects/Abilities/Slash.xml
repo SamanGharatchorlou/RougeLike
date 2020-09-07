@@ -2,7 +2,7 @@
 <Ability>
 	<Properties>
 		<Range>100</Range>
-		<MaxSize>110</MaxSize>
+		<MaxSize>225</MaxSize>
 		<Cooldown>3.5</Cooldown>
 
 		<Damage>40</Damage>

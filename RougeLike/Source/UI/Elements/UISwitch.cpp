@@ -19,17 +19,23 @@ void UISwitch::setTextures(Texture* off, Texture* on)
 }
 
 
-void UISwitch::handleInput(const InputManager* input)
+bool UISwitch::handleInput(const InputManager* input)
 {
+	bool hasPressed = false;
 	if (isPointInBounds(input->cursorPosition()))
 	{
 		if (input->isCursorPressed(Cursor::Left))
+		{
 			switchState();
+			hasPressed = true;
+		}
 	}
 	else
 	{
 		reset();
 	}
+
+	return hasPressed;
 }
 
 

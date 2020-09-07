@@ -66,7 +66,7 @@ void Camera::fastUpdate(float dt)
 		mRect = mRect.Translate(0.0f, translation.y);
 	}
 
-
+	// TODO: ???? fastupdate is in sloupdate?
 	if (shakeyCam.hasTrauma())
 	{
 		//shakeyCam.setRect(mRect);
@@ -99,9 +99,19 @@ void Camera::slowUpdate(float dt)
 }
 
 
-VectorF Camera::toCameraCoords(const VectorF worldCoords) const
+VectorF Camera::toCameraCoords(const VectorF& worldCoords) const
 {
 	return worldCoords - mActiveRect->TopLeft();
+}
+
+
+Quad2D<float> Camera::toCameraCoords(const Quad2D<float>& worldCoords) const
+{
+	VectorF translation = toCameraCoords(worldCoords.at(0)) - worldCoords.at(0);
+	Quad2D<float> newQuad(worldCoords);
+	newQuad.translate(translation);
+
+	return newQuad;
 }
 
 

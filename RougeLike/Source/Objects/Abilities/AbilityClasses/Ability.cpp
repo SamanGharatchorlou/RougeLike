@@ -26,7 +26,7 @@ Ability::~Ability()
 }
 
 
-void Ability::init(const PropertyMap& properties, Animator animator)
+void Ability::baseInit(const PropertyMap& properties, Animator animator)
 {
 	mAnimator = animator;
 	mProperties = properties;
@@ -34,8 +34,8 @@ void Ability::init(const PropertyMap& properties, Animator animator)
 	if(animator.animationCount() > 0 && properties.contains(PropertyType::MaxSize))
 		mRect.SetSize(realiseSize(animator.frameSize(), properties.at(PropertyType::MaxSize)));
 	
-	mCollider = new Collider(&mRect);
 	mCooldown = Cooldown(properties.at(PropertyType::Cooldown));
+	mSelectHighlight = RenderColour::LightGrey;
 
 #if NO_ABILITY_COOLDOWNS
 	mCooldown = Cooldown(0.0f);
@@ -48,6 +48,7 @@ void Ability::baseExit()
 	mAnimator.reset();
 	mCooldown.stop();
 	mCompleted = false;
+	mSelectHighlight = RenderColour::LightGrey;
 }
 
 
@@ -81,4 +82,16 @@ void Ability::render()
 #endif
 
 	mAnimator.render(Camera::Get()->toCameraCoords(mRect));
+}
+
+
+void renderQuadOutline(const Quad2D<float>& quad, RenderColour colour)
+{
+	SDL_SetRenderDrawColor(Renderer::Get()->sdlRenderer(), colour.r, colour.g, colour.b, colour.a);
+
+	for (unsigned int i = 0; i < quad.sides(); i++)
+	{
+		int j = i + 1 >= quad.sides() ? 0 : i + 1;
+		SDL_RenderDrawLine(Renderer::Get()->sdlRenderer(), quad.at(i).x, quad.at(i).y, quad.at(j).x, quad.at(j).y);
+	}
 }

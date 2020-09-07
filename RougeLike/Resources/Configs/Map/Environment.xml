@@ -11,7 +11,7 @@
 			<Column spacing="3"></Column>
 			<Torch type = "TorchBowl" spacing ="3"></Torch>
 			<Water width="3" height="2" spacing="2"></Water>
-			<SpikeTrap rate="8"></SpikeTrap>
+			<SpikeTrap rate="15"></SpikeTrap>
 		</Dungeon>
 
 		<Corridor>

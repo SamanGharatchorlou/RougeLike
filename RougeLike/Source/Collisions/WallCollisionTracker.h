@@ -8,11 +8,10 @@ class MapTile;
 class WallCollisionTracker
 {
 public:
-	WallCollisionTracker() { };
-	//~WallCollisionTracker() { mActor = nullptr; }
+	WallCollisionTracker() : mRect(nullptr), mActor(nullptr) { };
 
-	void setActor(const Actor* actor) { mActor = actor; }
-	void setRect(const RectF* rect) { mRect = rect; }
+	void setActor(const Actor* actor) { mActor = actor; mRect = nullptr; }
+	void setRect(const RectF* rect) { mRect = rect; mActor = nullptr; }
 
 	VectorF allowedVelocity(const Map* map, VectorF velocity, float dt) const;
 

@@ -34,6 +34,15 @@ void PreGameState::slowUpdate(float dt)
 		CharacterSelectionScreen* selectionScreen = static_cast<CharacterSelectionScreen*>(mGameData->uiManager->getActiveScreen());
 
 		PlayerManager* player = mGameData->environment->actors()->player();
+
+#if DEBUG_CHECK
+		if (selectionScreen->selectedCharacter().empty())
+			DebugPrint(Warning, "No character has been selected\n");
+
+		if (selectionScreen->selectedWeapon().empty())
+			DebugPrint(Warning, "No weapon has been selected\n");
+#endif
+
 		player->selectCharacter(selectionScreen->selectedCharacter());
 		player->selectWeapon(selectionScreen->selectedWeapon());
 	}
@@ -52,4 +61,27 @@ void PreGameState::render()
 
 	// update window surface
 	SDL_RenderPresent(renderer);
+}
+
+
+void PreGameState::exit()
+{
+	CharacterSelectionScreen* selectionScreen = static_cast<CharacterSelectionScreen*>(mGameData->uiManager->screen(ScreenType::CharacterSelection));
+	
+	if (selectionScreen)
+	{
+		PlayerManager* player = mGameData->environment->actors()->player();
+
+	#if DEBUG_CHECK
+		if (selectionScreen->selectedCharacter().empty())
+			DebugPrint(Warning, "No character has been selected\n");
+
+		if (selectionScreen->selectedWeapon().empty())
+			DebugPrint(Warning, "No weapon has been selected\n");
+	#endif
+
+		player->selectCharacter(selectionScreen->selectedCharacter());
+		player->selectWeapon(selectionScreen->selectedWeapon());
+
+	}
 }

@@ -15,8 +15,15 @@ void UIElement::fill(const StringMap& attributes)
 	float x = attributes.getFloat("x");
 	float y = attributes.getFloat("y");
 
-	float width = attributes.getFloat("width");
-	float height = attributes.getFloat("height");
+	// If one dimention is not set, auto size keeping the texture ratio
+	float width = attributes.contains("width") ? attributes.getFloat("width") : -1.0f;
+	float height = attributes.contains("height") ? attributes.getFloat("height") : -1.0f;
+	VectorF size(width, height);
+
+#if DEBUG_CHECK
+	if (size.x < 0.0f && size.y < 0.0f)
+		DebugPrint(Warning, "Either the height OR the width must at least be set. Neither has been\n");
+#endif
 
 	mRect = RectF(VectorF(x, y), VectorF(width, height));
 

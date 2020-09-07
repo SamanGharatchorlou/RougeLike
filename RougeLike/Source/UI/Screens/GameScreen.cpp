@@ -4,6 +4,7 @@
 #include "UI/UIManager.h"
 #include "Input/InputManager.h"
 #include "UI/ScreenLayers.h"
+#include "Audio/AudioManager.h"
 
 #include "UI/ScreenController.h"
 #include "Game/GameController.h"
@@ -36,8 +37,8 @@ void GameScreen::init()
 
 	mController->ui()->setCursorTexture(TextureManager::Get()->getTexture("GameCursor", FileManager::Image_UI));
 
-
 	mController->openPopup("Introduction");
+
 #if SET_GAME_SCALE
 	Renderer::Get()->setScale(game_scale);
 #endif
@@ -58,6 +59,15 @@ void GameScreen::handleInput(const InputManager* input)
 }
 
 
+// Override this so we dont have any cursor or button clicking sounds
+void GameScreen::updateInputs(const InputManager* input)
+{
+	updateButtons(input);
+	updateSliders(input);
+	updateSwitches(input);
+}
+
+
 void GameScreen::slowUpdate()
 {
 	if (slider(ScreenItem::Health)->getValue() == 0.0f)
@@ -75,13 +85,26 @@ void GameScreen::slowUpdate()
 }
 
 
+void GameScreen::setCursorTexture(Texture* texture)
+{
+	mController->ui()->setCursorTexture(texture);
+}
+
+
 void GameScreen::resume()
 {
-	mController->setPersistingScren(nullptr);
+	mController->setPersistingScreen(nullptr);
+	mController->ui()->setCursorTexture(TextureManager::Get()->getTexture("GameCursor", FileManager::Image_UI));
 }
 
 
 void GameScreen::pause()
 {
-	mController->setPersistingScren(this);
+	exit();
+}
+
+void GameScreen::exit()
+{
+	mController->setPersistingScreen(this);
+	mController->ui()->setCursorTexture(TextureManager::Get()->getTexture("UICursor", FileManager::Image_UI));
 }

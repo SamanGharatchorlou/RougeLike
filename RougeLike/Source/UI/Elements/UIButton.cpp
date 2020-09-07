@@ -4,11 +4,11 @@
 #include "Input/InputManager.h"
 
 UIButton::UIButton(const StringMap& attributes) :
-	UIBox(attributes), mState(State::None),
+	UIBox(attributes), mIsActive(false),
 	mDefault(nullptr), mSelected(nullptr), mHovered(nullptr) { }
 
 
-UIButton::UIButton(Data& buttonData) : UIBox(buttonData)
+UIButton::UIButton(Data& buttonData) : UIBox(buttonData), mIsActive(false)
 {
 	setTextures(buttonData.defaultTexture, buttonData.selected, buttonData.hovered);
 }
@@ -25,19 +25,27 @@ void UIButton::setTextures(Texture* defaultTexture, Texture* selected, Texture* 
 }
 
 
-void UIButton::handleInput(const InputManager* input)
+bool UIButton::handleInput(const InputManager* input)
 {
+	bool hasPressed = false;
 	if (isPointInBounds(input->cursorPosition()))
 	{
 		setState(UIButton::State::Hovering);
-		setPressed(input->isCursorPressed(Cursor::Left));
 		setHeld(input->isCursorHeld(Cursor::Left));
 		setReleased(input->isCursorReleased(Cursor::Left));
+
+		if (input->isCursorPressed(Cursor::Left))
+		{
+			setPressed(true);
+			hasPressed = true;
+		}
 	}
 	else
 	{
 		reset();
 	}
+
+	return hasPressed;
 }
 
 
@@ -48,15 +56,13 @@ void UIButton::reset()
 	mButton.setHeld(false);
 	mButton.setHeldFrames(0);
 
+	setActive(false);
 	setState(State::None);
 }
 
 
 void UIButton::setState(State state)
 {
-	if (mState == State::Active)
-		return;
-
 	switch (state)
 	{
 	case UIButton::None:
@@ -73,24 +79,7 @@ void UIButton::setState(State state)
 		DebugPrint(Warning, "Not a valid button state %d\n", state);
 		break;
 	}
-
-	mState = state;
 }
-
-
-void UIButton::setActive(bool state)
-{
-	if (state)
-	{
-		setState(State::Active);
-	}
-	else
-	{
-		mState = State::None;
-		mTexture = mDefault;
-	}
-}
-
 
 void UIButton::setPressed(bool isPressed) 
 { 

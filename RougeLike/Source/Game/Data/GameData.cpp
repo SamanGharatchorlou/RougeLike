@@ -25,6 +25,8 @@ void GameData::init(GameController* gameController)
 	// Set camera before UIManager
 	Camera::Get()->setViewport(window->size().toFloat());
 
+	AudioManager::Get()->init();
+
 	// Input
 	inputManager = new InputManager;
 

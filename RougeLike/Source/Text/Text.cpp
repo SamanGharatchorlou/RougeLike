@@ -130,10 +130,13 @@ void Text::autoSizeWrap(VectorF size)
 
 	if (currentHeight > targetHeight)
 	{
-		while (currentHeight > targetHeight)
+		while (currentHeight >= targetHeight)
 		{
 			numberOfLines = ceilf((float)width / size.x);
 			currentHeight = numberOfLines * height;
+
+			if (currentHeight > targetHeight * 2.0f)
+				ptSize -= 4;
 
 			mFont.resize(--ptSize);
 			TTF_SizeText(mFont.get(), mText.c_str(), &width, &height);

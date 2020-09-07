@@ -15,7 +15,19 @@ void EnemyPreAttack::init()
 	mAttackWaitTime = randomNumberBetween(attackWaitTime - range, attackWaitTime + range) / 100.0f;
 }
 
+// NOTES
+/*
+Seems like the enemies are in the pre attack attack state... not the attack state?
+could explain the weird movements and no collisions?
 
+remove
+	if (!inAttackRange())
+		mEnemy->popState();
+
+and see if that helps at all otherwise figure out why they are not going into the attack state
+especially the orcs, they are only in the attack states?
+
+*/
 void EnemyPreAttack::slowUpdate(float dt)
 {
 	if (!inAttackRange())
@@ -26,7 +38,7 @@ void EnemyPreAttack::slowUpdate(float dt)
 		Ability* basicAttack = mEnemy->abilities().get(AbilityType::Attack);
 		if (basicAttack->state() == AbilityState::Idle)
 		{
-			basicAttack->activate(VectorF());
+			basicAttack->activate();
 			basicAttack->setState(AbilityState::Running);
 		}
 	}

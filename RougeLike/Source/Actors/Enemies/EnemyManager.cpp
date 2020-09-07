@@ -36,8 +36,7 @@ void EnemyManager::clear()
 
 void EnemyManager::loadPools()
 {
-	int enemyPoolSize = 150;
-	mSpawning.loadSpawnPool(enemyPoolSize);
+	mSpawning.loadSpawnPool();
 }
 
 

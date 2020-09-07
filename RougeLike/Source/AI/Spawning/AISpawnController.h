@@ -13,7 +13,7 @@ public:
 	std::vector<Enemy*> getNewLevelSpawns(const AIPathMap* map);
 	void returnEnemy(Enemy* enemy);
 
-	void loadSpawnPool(int poolSize);
+	void loadSpawnPool();
 	void clear();
 
 private:

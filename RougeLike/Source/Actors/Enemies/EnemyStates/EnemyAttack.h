@@ -21,7 +21,7 @@ public:
 
 	const Type type() const { return Type::Attack; }
 
-	bool didConnectWithTarget() const { return (bool)mHitCounter; }
+	bool didConnectWithTarget() const { return mDidHit; }
 
 
 private:
@@ -31,9 +31,9 @@ private:
 
 private:
 	bool mHasAttacked;
+	bool mDidHit;
 
 	VectorF mStartPosition;
-	VectorF mAttackPosition;
-
-	int mHitCounter;
+	VectorF mEndPosition;
+	VectorF mDirection;
 };

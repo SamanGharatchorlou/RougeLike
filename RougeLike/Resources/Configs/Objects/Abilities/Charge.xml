@@ -11,7 +11,7 @@
 		<KnockbackDistance>150</KnockbackDistance>
 		<StunTime>3</StunTime>
 
-		<Force>600</Force>
+		<Velocity>600</Velocity>
 		<Time>0.75</Time>
 	</Properties>
 

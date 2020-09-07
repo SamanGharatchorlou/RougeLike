@@ -26,14 +26,8 @@ public:
 	ScreenLayers& layers() { return mScreenLayers; }
 	ScreenLayer* layer(const BasicString& id);
 
-	void updateButtons(const InputManager* input);
-
-	// Unused state override functions
-	void handleInput() override { }
-	void fastUpdate(float dt) override { }
-	void slowUpdate(float dt) { };
-
-	virtual void handleInput(const InputManager* input) { }
+	virtual void updateInputs(const InputManager* input);
+	virtual void handleInput(const InputManager* input) { };
 	virtual void slowUpdate() = 0;
 	void render() override;
 
@@ -54,6 +48,13 @@ public:
 	void setController(ScreenController* controller) { mController = controller; }
 	ScreenController* controller() { return mController; }
 
+
+protected:
+	bool updateButtons(const InputManager* input);
+	bool updateSliders(const InputManager* input);
+	bool updateSwitches(const InputManager* input);
+
+
 protected:
 	ScreenController* mController;
 	ScreenLayers mScreenLayers;
@@ -61,6 +62,14 @@ protected:
 	std::unordered_map<ScreenItem, UISlider*> mSliders;
 	std::unordered_map<ScreenItem, UIButton*> mButtons;
 	std::unordered_map<ScreenItem, UISwitch*> mSwitches;
+
+
+
+	// Unused state override functions
+private:
+	void handleInput() override { }
+	void fastUpdate(float dt) override { }
+	void slowUpdate(float dt) { };
 };
 
 

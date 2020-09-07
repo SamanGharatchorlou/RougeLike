@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "RangedAbility.h"
+#include "Input/InputManager.h"
 
 #include "Actors/Actor.h"
 #include "Game/Camera/Camera.h"
@@ -10,12 +11,18 @@
 #include "Map/Map.h"
 
 
-void RangedAbility::init(const PropertyMap& properties, Animator animator)
+bool RangedAbility::initiate(const InputManager* input) const
 {
-	Ability::init(properties, animator);
-	
+	return input->isCursorReleased(Cursor::Left);
+}
+
+
+void RangedAbility::init()
+{
 	Texture* rangeCircle = TextureManager::Get()->getTexture("RangeCircle", FileManager::Image_UI);
 	mRangeCircle = rangeCircle;
+
+	mCollider = new Collider(&mRect);
 }
 
 

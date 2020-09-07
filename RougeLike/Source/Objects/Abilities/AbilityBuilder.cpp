@@ -8,10 +8,7 @@
 // Abilities
 #include "AbilityClasses/AbilityStates.h"
 #include "Objects/Abilities/AbilityTypes/BasicAttackAbility.h"
-#include "Objects/Abilities/AbilityTypes/SlowAbility.h"
 #include "Objects/Abilities/AbilityTypes/HealAbility.h"
-#include "Objects/Abilities/AbilityTypes/SpikeAbility.h"
-#include "Objects/Abilities/AbilityTypes/BilnkAbility.h"
 #include "Objects/Abilities/AbilityTypes/ArmorAbility.h"
 #include "Objects/Abilities/AbilityTypes/SmashAbility.h"
 #include "Objects/Abilities/AbilityTypes/ChargeAbility.h"
@@ -37,7 +34,8 @@ Ability* AbilityBuilder::build(AbilityType type, Actor* caster) const
 
 			PropertyMap properties(parser.rootChild("Properties"));
 
-			ability->init(properties, animator);
+			ability->baseInit(properties, animator);
+			ability->init();
 		}
 	}
 
@@ -59,13 +57,6 @@ Ability* AbilityBuilder::createNewAbility(AbilityType type) const
 		ability = new BasicAttackAbility;
 		break;
 
-	//case AbilityType::Blink:
-	//	ability = new BlinkAbility;
-	//	break;
-
-	case AbilityType::Spikes:
-		ability = new SpikeAbility;
-		break;
 	case AbilityType::Smash:
 	{
 		BasicString id;

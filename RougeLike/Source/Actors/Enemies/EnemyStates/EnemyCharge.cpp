@@ -15,15 +15,20 @@ void EnemyCharge::enter()
 
 void EnemyCharge::init()
 {
-	mStartPosition = mEnemy->position();
-	VectorF target = mEnemy->target()->position();
-	mDirection = (target - mStartPosition).normalise();
+	if (mEnemy->hasTarget())
+	{
+		VectorF target = mEnemy->target()->position();
+		mStartPosition = mEnemy->position();
+		mDirection = (target - mStartPosition).normalise();
 
-	mEnemy->physics()->facePoint(target);
-	mEnemy->animator().selectAnimation(Action::Attack);
-
-	//if (inAttackRange())
-	//	mEnemy->replaceState(EnemyState::Attack);
+		mEnemy->physics()->facePoint(target);
+		mEnemy->animator().selectAnimation(Action::Attack);
+	}
+	else
+	{
+		mDirection = VectorF(0.0f, 0.0f);
+		mEndAttack = true;
+	}
 }
 
 
@@ -89,7 +94,6 @@ void EnemyCharge::updateHasAttackedStatus()
 void EnemyCharge::resume()
 {
 	mEndAttack = true;
-	//mEnemy->popState();
 }
 
 

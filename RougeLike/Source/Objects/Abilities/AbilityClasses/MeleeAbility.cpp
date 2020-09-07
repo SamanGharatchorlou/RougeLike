@@ -1,6 +1,18 @@
 #include "pch.h"
 #include "MeleeAbility.h"
 
+#include "Input/InputManager.h"
+#include "Collisions/Colliders/QuadCollider.h"
+
+void MeleeAbility::init()
+{
+	mCollider = new QuadCollider(&mQuad);
+}
+
+bool MeleeAbility::initiate(const InputManager* input) const
+{
+	return input->isCursorReleased(Cursor::Left);
+}
 
 
 bool MeleeAbility::activateOn(Actor* target, EffectPool* effectPool)

@@ -2,22 +2,34 @@
 #include "SoundController.h"
 
 #include "Audio.h"
-
-#if PRINT_PLAY_AUDIO
-#endif
+#include "Actors/Actor.h"
 
 
-SoundController::SoundController() : gameVolume(-1), musicVolume(-1), muted(false)
+SoundController::SoundController() : soundVolume(-1), musicVolume(-1)
 {
 	// Defualt to 8 channels
 	Mix_AllocateChannels(MIX_CHANNELS);
 
 	for (int i = 0; i < MIX_CHANNELS; i++)
 	{
-		channels[i] = Free;
-		sourceIds[i] = nullptr;
-		playingAudio[i] = nullptr;
+		channels[i].init(i);
 	}
+
+	float vol = getMusicVolume();
+	int vim = Mix_VolumeMusic(-1);
+}
+
+
+void SoundController::init()
+{
+	setMusicVolume(musicVolume);
+	for (int i = 0; i < MIX_CHANNELS; i++)
+	{
+		updateMixerVolume(channels[i]);
+	}
+
+	float vol = getMusicVolume();
+	int vim = Mix_VolumeMusic(-1);
 }
 
 
@@ -26,49 +38,51 @@ void SoundController::slowUpdate()
 #if DEBUG_CHECK
 	int counter = 0;
 #endif
+	float vol = getMusicVolume();
+	int vim = Mix_VolumeMusic(-1);
 
 	for (int i = 0; i < MIX_CHANNELS; i++)
 	{
+		Channel& sound = channels[i];
+
+		if (sound.hasPlayingState() && sound.attenuate())
+		{
+			sound.mVolume = attenuation(sound);
+		}
+
+		if (sound.mState == Channel::FadingOut)
+		{
+			float volume = sound.mVolume * 0.98;
+			sound.mVolume = volume;
+
+			if (sound.mVolume < 0.02f)
+			{
+				sound.stop();
+			}
+		}
+		else if (sound.mState == Channel::Looping)
+		{
+			if (!sound.isAudioRunning())
+			{
+				sound.playNext();
+			}
+		}
+
 		// Free up channels after audio has stopped playing
-		if (channels[i] == Playing && !Mix_Playing(i))
+		if (sound.canFree())
 		{
-			channels[i] = Free;
-			sourceIds[i] = nullptr;
-			playingAudio[i] = nullptr;
-		}
-		else if (channels[i] == FadingOut)
-		{
-			// TODO: this will depend on framerate
-			// change to using a timer
-			float volume = (float)Mix_Volume(i, -1) * 0.96f;
-
-			Mix_Volume(i, (int)volume);
-
-			if (Mix_Volume(i, -1) < 3)
-			{
-				Mix_Volume(i, Mix_Volume(-1, -1));
-				stopSound(playingAudio[i], sourceIds[i]);
-			}
-		}
-		else if (channels[i] == Looping)
-		{
-			if (!Mix_Playing(i))
-			{
-				playingAudio[i]->playNext(i);
-			}
+			sound.free();
 		}
 
+		updateMixerVolume(sound);
 
+		float vol = getMusicVolume();
+		int vim = Mix_VolumeMusic(-1);
 
 #if DEBUG_CHECK
-		if (channels[i] != Free)
+		if (sound.mState != Channel::Free)
 		{
 			counter++;
-		}
-
-		if (channels[i] != Paused)
-		{
-			pauseTimers[i].stop();
 		}
 #endif
 	}
@@ -81,9 +95,10 @@ void SoundController::slowUpdate()
 
 		for (int i = 0; i < MIX_CHANNELS; i++)
 		{
-			if (channels[i] == Playing)
+			const Channel& channel = channels[i];
+			if (channel.hasPlayingState())
 				playingCounter++;
-			else if (channels[i] == Paused)
+			else if (channel.isPaused())
 				pauseCounter++;
 		}
 
@@ -94,38 +109,65 @@ void SoundController::slowUpdate()
 }
 
 
+bool SoundController::isPlaying(Audio* audio, void* souceId)
+{
+	for (int i = 0; i < MIX_CHANNELS; i++)
+	{
+		if (channels[i].isPlaying(audio, souceId))
+			return true;
+	}
+
+	return false;
+}
+
+
+bool SoundController::hasActiveAudio(Audio* audio, void* souceId)
+{
+	for (int i = 0; i < MIX_CHANNELS; i++)
+	{
+		if (channels[i].has(audio, souceId))
+			return true;
+	}
+
+	return false;
+}
+
+
 void SoundController::playMusic(Audio* music)
 {
 	music->play(-1);
 }
 
 
-void SoundController::playSound(Audio* audio, void* sourceId)
+void SoundController::playSound(Audio* audio, void* sourceId, VectorF position)
 {
 	// Check if the source is already playing this sound
 	for (int i = 0; i < MIX_CHANNELS; i++)
 	{
-		if (channels[i] == Playing)
+		Channel& channel = channels[i];
+		if (channel.isPlaying(audio, sourceId))
 		{
-			// This source is already playing, replay on same channel
-			if (sourceIds[i] == sourceId && playingAudio[i] == audio)
-			{
-				audio->play(i);
-				return;
-			}
+			channel.play();
+			channel.mSource = position;
+			return;
 		}
 	}
 
 	// Find free channel
 	for (int i = 0; i < MIX_CHANNELS; i++)
 	{
-		if (channels[i] == Free)
+		Channel& channel = channels[i];
+		if (channel.mState == Channel::Free)
 		{
-			audio->play(i);
+#if DEBUG_CHECK
+			if (channel.mAudio)
+				DebugPrint(Warning, "This channel still has an audio attached, but its state is free. This is wrong!\n");
+#endif
 
-			channels[i] = Playing;
-			sourceIds[i] = sourceId;
-			playingAudio[i] = audio;
+			channel.mID = sourceId;
+			channel.mAudio = audio;
+			channel.mSource = position;
+			channel.play();
 			return;
 		}
 	}
@@ -134,29 +176,29 @@ void SoundController::playSound(Audio* audio, void* sourceId)
 }
 
 
-void SoundController::loopSound(Audio* audio, void* sourceId)
+void SoundController::loopSound(Audio* audio, void* sourceId, VectorF position)
 {
 	// Check if the source is already playing this sound
 	for (int i = 0; i < MIX_CHANNELS; i++)
 	{
-		if (channels[i] == Playing || channels[i] == Looping)
+		Channel& channel = channels[i];
+		if (channel.isPlaying(audio, sourceId))
 		{
-			// This source is already playing, do nothing
-			if (sourceIds[i] == sourceId && playingAudio[i] == audio)
-			{
-				return;
-			}
+			channel.mSource = position;
+			return;
 		}
 	}
 
 	// Find free channel
 	for (int i = 0; i < MIX_CHANNELS; i++)
 	{
-		if (channels[i] == Free)
+		Channel& channel = channels[i];
+		if (channel.mState == Channel::Free)
 		{
-			channels[i] = Looping;
-			sourceIds[i] = sourceId;
-			playingAudio[i] = audio;
+			channel.mID = sourceId;
+			channel.mAudio = audio;
+			channel.mSource = position;
+			channel.loop();
 			return;
 		}
 	}
@@ -169,19 +211,15 @@ void SoundController::pauseSound(Audio* audio, void* sourceId)
 {
 	for (int i = 0; i < MIX_CHANNELS; i++)
 	{
-		if (channels[i] == Playing && playingAudio[i] == audio && sourceIds[i] == sourceId)
+		Channel& channel = channels[i];
+		if (channel.isPlaying(audio, sourceId))
 		{
-			Mix_Pause(i);
-			channels[i] = Paused;
-#if DEBUG_CHECK
-			pauseTimers[i].start();
-#endif
-
+			channel.pause();
 			return;
 		}
 	}
 
-	DebugPrint(Warning, "Could not pause audio, place a breakpoint here to find out why\n");
+	DebugPrint(Warning, "Could not pause audio\n");
 }
 
 
@@ -189,23 +227,15 @@ void SoundController::resumeSound(Audio* audio, void* sourceId)
 {
 	for (int i = 0; i < MIX_CHANNELS; i++)
 	{
-		if (playingAudio[i] == audio && sourceIds[i] == sourceId)
+		Channel& channel = channels[i];
+		if (channel.isPaused() && channel.has(audio, sourceId))
 		{
-			if (channels[i] == Paused)
-			{
-				Mix_Resume(i);
-				channels[i] = Playing;
-				return;
-			}
-			else if (channels[i] == Playing)
-			{
-				// Do nothing
-				return;
-			}
+			channel.resume();
+			return;
 		}
 	}
 
-	DebugPrint(Warning, "Could not resume audio, place a breakpoint here to find out why\n");
+	DebugPrint(Warning, "Could not resume audio\n");
 }
 
 
@@ -213,33 +243,15 @@ void SoundController::stopSound(Audio* audio, void* sourceId)
 {
 	for (int i = 0; i < MIX_CHANNELS; i++)
 	{
-		if (channels[i] >= Playing && playingAudio[i] == audio && sourceIds[i] == sourceId)
+		Channel& channel = channels[i];
+		if (channel.has(audio, sourceId))
 		{
-			audio->stop(i);
-
-			channels[i] = Free;
-			sourceIds[i] = nullptr;
-			playingAudio[i] = nullptr;
+			channel.stop();
 			return;
 		}
 	}
 
-
-	DebugPrint(Warning, "Could not stop audio, place a breakpoint here to find out why\n");
-}
-
-
-bool SoundController::isPlaying(Audio* audio, void* sourceId)
-{
-	for (int i = 0; i < MIX_CHANNELS; i++)
-	{
-		if ((channels[i] == Playing || channels[i] == Looping) && playingAudio[i] == audio && sourceIds[i] == sourceId)
-		{
-			return true;
-		}
-	}
-
-	return false;
+	DebugPrint(Warning, "Could not stop audio,\n");
 }
 
 
@@ -247,66 +259,43 @@ void SoundController::fadeOut(Audio* audio, void* sourceId)
 {
 	for (int i = 0; i < MIX_CHANNELS; i++)
 	{
-		if (channels[i] >= Playing && playingAudio[i] == audio && sourceIds[i] == sourceId)
+		Channel& channel = channels[i];
+		if (channel.isPlaying(audio, sourceId))
 		{
-			channels[i] = FadingOut;
+			channel.mState = Channel::FadingOut;
 			return;
 		}
 	}
 
 
-	DebugPrint(Warning, "Could not fade out audio, place a breakpoint here to find out why\n");
+	DebugPrint(Warning, "Could not fade out audio\n");
 }
-
 
 
 void SoundController::setSoundVolume(float volume)
-{
-	volume = clamp(volume, 0.0f, 1.0f);
-	int mixVolume = (int)(MIX_MAX_VOLUME * volume);
-	Mix_Volume(-1, mixVolume);
+{ 
+	soundVolume = volume;
 }
-
-
-float SoundController::getSoundVolume() const
-{
-	return (float)Mix_Volume(-1, -1) / (float)MIX_MAX_VOLUME;
-}
-
 
 void SoundController::setMusicVolume(float volume)
 {
-	volume = clamp(volume, 0.0f, 1.0f);
-	int mixVolume = (int)(MIX_MAX_VOLUME * volume);
-	Mix_VolumeMusic(mixVolume);
+	musicVolume = volume <= 0.05 ? 0 : volume;
+	float mixVolume = maxVolume * musicVolume;
+	Mix_VolumeMusic((int)mixVolume);
 }
 
 
-float SoundController::getMusicVolume() const
+// -- Private Functions -- //
+
+void SoundController::updateMixerVolume(Channel& channel)
 {
-	return (float)Mix_VolumeMusic(-1) / (float)MIX_MAX_VOLUME;
+	float relativeVolume = soundVolume * channel.mVolume * maxVolume;
+	Mix_Volume(channel.index(), (int)relativeVolume);
 }
 
-
-void SoundController::mute(bool shouldMute)
+float SoundController::attenuation(Channel& channel)
 {
-	// Audio on
-	if (!shouldMute)
-	{
-		Mix_Volume(-1, gameVolume);
-		Mix_VolumeMusic(musicVolume);
-
-		muted = false;
-	}
-	// Audio off
-	else
-	{
-		gameVolume = Mix_Volume(-1, -1);
-		musicVolume = Mix_VolumeMusic(-1);
-
-		Mix_Volume(-1, 0);
-		Mix_VolumeMusic(0);
-
-		muted = true;
-	}
+	float audioDistance = distanceSquared(mListener->position(), channel.mSource);
+	float attenuation = (mAttenuationDistance - audioDistance) / mAttenuationDistance;
+	return clamp(attenuation, 0.0f, 1.0f);
 }

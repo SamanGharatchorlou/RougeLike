@@ -60,6 +60,7 @@ private:
 };
 
 
+
 template<class T>
 void Quad2D<T>::translate(Vector2D<T> movement)
 {

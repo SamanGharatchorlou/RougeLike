@@ -23,7 +23,9 @@ Player::Player() :
 	mMapLevel(0),
 	mControlOverride(false),
 	mStateMachine(new PlayerNullState)
-{ }
+{
+	mStepTimer.start();
+}
 
 
 void Player::handleInput(const InputManager* input)
@@ -80,6 +82,9 @@ void Player::clear()
 	mWeapon = nullptr;
 	mControlOverride = false;
 	Actor::clear();
+
+	if (mStateMachine.size() > 1)
+		mStateMachine.forcePop();
 }
 
 
@@ -227,8 +232,11 @@ void Player::updateMovementSound(AudioManager* audio)
 	Action currentAction = mAnimator.currentAction();
 	if (currentAction == Action::Run)
 	{
-		if (!audio->isPlaying("PlayerWalk2", this))
-			audio->loopSoundGroup("PlayerWalk2", this);
+		if (mStepTimer.getMilliseconds() > 400)
+		{
+			audio->playSound("PlayerWalk2", this, VectorF(-1, -1));
+			mStepTimer.restart();
+		}
 	}
 	else if (currentAction == Action::Idle)
 	{
@@ -253,13 +261,17 @@ void Player::handleHealthChanges(Health* health)
 {
 	if (health->hasChanged())
 	{
+#if INVUNERABLE
+		health->setFullHp();
+#endif
+
 		SetUISlider* eventPtr = new SetUISlider("HealthSlider", health->getPercentage());
 		EventPacket event(eventPtr);
 		mEvents.push(event);
 
 		if (health->isDead() && !mControlOverride)
 		{
-			mStateMachine.addState(new PlayerDeadState(this));
+			mStateMachine.addState(new PlayerDeadState(this)); 
 			AudioManager::Get()->stop("PlayerWalk2", this);
 		}
 

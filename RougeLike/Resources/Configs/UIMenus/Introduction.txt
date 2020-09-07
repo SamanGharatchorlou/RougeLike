@@ -1,1 +1,0 @@
-Use the w, a, s, d keys to move around and left click the mouse to attack! Oh... and try not to die.

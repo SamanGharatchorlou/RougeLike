@@ -9,6 +9,9 @@
 #include "Actors/Actor.h"
 #include "Actors/ActorManager.h"
 
+// TEMP
+#include "Graphics/TextureManager.h"
+
 
 AbilityManager::AbilityManager() { }
 AbilityManager::~AbilityManager() { clear(); }
@@ -36,7 +39,6 @@ void AbilityManager::clear()
 void AbilityManager::handleInput(const InputManager* input)
 {
 	const std::vector<Ability*>& abilities = mHandler.abilities();
-	const AbilityActivator& activator = mHandler.activator();
 
 	for (int i = 1; i < abilities.size(); i++)
 	{
@@ -54,14 +56,6 @@ void AbilityManager::handleInput(const InputManager* input)
 				ability->setState(AbilityState::Selected);
 			}
 
-			if (ability->state() == AbilityState::Selected)
-			{			
-				if (activator.activate(ability, buttonState, input))
-				{
-					ability->setState(AbilityState::Running);
-				}
-			}
-
 			if (ability->state() == AbilityState::Selected && !button.isHeld())
 			{
 				ability->setState(AbilityState::Idle);
@@ -69,14 +63,27 @@ void AbilityManager::handleInput(const InputManager* input)
 		}
 	}
 
+	mHandler.handleInput(input);
+
 	if (input->isCursorPressed(Cursor::Left))
 	{
 		Ability* basicAttack = mHandler.get(AbilityType::Attack);
 		if (basicAttack->state() == AbilityState::Idle && !inSelectionMode())
 		{
-			basicAttack->activate(VectorF());
+			basicAttack->activate();
 			basicAttack->setState(AbilityState::Running);
 		}
+	}
+
+	// TEMP
+	TextureManager* texture = TextureManager::Get();
+	if (inSelectionMode())
+	{
+		mHotKeys.setCursorTexture(texture->getTexture("GameCursorGreen", FileManager::Image_UI));
+	}
+	else
+	{
+		mHotKeys.setCursorTexture(texture->getTexture("GameCursor", FileManager::Image_UI));
 	}
 }
 

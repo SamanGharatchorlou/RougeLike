@@ -2,21 +2,27 @@
 
 #include "Objects/Abilities/AbilityClasses/MeleeAbility.h"
 #include "Collisions/WallCollisionTracker.h"
+#include "Collisions/Colliders/QuadCollider.h"
 
 
 class ChargeAbility : public MeleeAbility
 {
 public:
-	ChargeAbility() : mDistanceTravelled(0.0f) { };
+	ChargeAbility();
 
-	void activate(VectorF position) override;
+	void handleInput(const InputManager* input) override;
+
+	void activate() override;
 
 	void fastUpdate(float dt) override;
 	void slowUpdate(float dt) override;
 	void render() override;
 	void exit() override;
 
+	const Collider* selectionCollider() const override { return &mSelectionCollider; }
+
 	AbilityType type() const override { return AbilityType::Charge; }
+
 
 
 private:
@@ -24,12 +30,13 @@ private:
 
 	void setCharging(bool isCharging);
 
-	void setScaledQuad(float scale);
-	void setQuadCollider();
+	void updateQuad();
+	void updateSelectionQuad();
 
 	VectorF direction() const;
 	double rotation() const;
 	RectF renderRectFrontToColliderFront(const RectF& renderRect);
+
 
 
 private:
@@ -38,4 +45,7 @@ private:
 	float mDistanceTravelled;
 
 	WallCollisionTracker mWallCollisions;
+
+	Quad2D<float> mSelectionQuad;
+	QuadCollider mSelectionCollider;
 };

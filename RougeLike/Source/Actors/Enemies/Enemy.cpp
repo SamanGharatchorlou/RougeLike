@@ -126,6 +126,7 @@ void Enemy::clear()
 {
 	mEvents.clear();
 	mAIPathing.clear();
+	mAbilities.clear();
 	Actor::clear();
 }
 
@@ -184,12 +185,20 @@ void Enemy::stun(float stunTime)
 {
 	if (state() != EnemyState::Dead)
 	{
-		EnemyState* state = mStatePool->getObject(EnemyState::Stun);
-		EnemyStun* stunState = static_cast<EnemyStun*>(state);
-		stunState->setTime(stunTime);
+		Health* health = static_cast<Health*>(getAttribute(AttributeType::Health));
+		if (health->isDead())
+		{
+			addState(EnemyState::Dead);
+		}
+		else
+		{
+			EnemyState* state = mStatePool->getObject(EnemyState::Stun);
+			EnemyStun* stunState = static_cast<EnemyStun*>(state);
+			stunState->setTime(stunTime);
 
-		stunState->set(this);
-		mStateMachine.addState(stunState);
+			stunState->set(this);
+			mStateMachine.addState(stunState);
+		}
 	}
 }
 
@@ -234,8 +243,7 @@ void Enemy::attack()
 
 bool Enemy::isAttacking() const
 {
-	EnemyState::Type currentState = state();
-	return currentState == EnemyState::Attack || currentState == EnemyState::PreAttack;
+	return state() == EnemyState::Attack || state() == EnemyState::PreAttack;
 }
 
 

@@ -81,7 +81,7 @@ void ActorManager::render()
 	mPlayer.render();
 
 #if TRACK_COLLISIONS // Need to keep the hit data until after rendering
-	mPlayer.resetCollider();
+	mPlayer.resetColliders();
 	mEnemies.resetColliders();
 #endif
 }

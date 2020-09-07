@@ -12,8 +12,8 @@ void MapSpecifications::readTrapData()
 	for (const BasicString& path : filePaths)
 	{
 		XMLParser parser(path);
-
-		XMLNode infoNode = parser.rootChild("Info");
+		XMLNode root = parser.rootNode();
+		XMLNode infoNode = root.child("Info");
 
 		if (infoNode)
 		{

@@ -48,45 +48,42 @@ void UISlider::setComponents(Texture* container, UIButton* slider, UIBox* bar)
 
 
 
-void UISlider::handleInput(const InputManager* input)
+bool UISlider::handleInput(const InputManager* input)
 {
-	if (!mSelectable)
+	bool hasPressed = false;
+
+	if (mSelectable)
 	{
-		mSlider->reset();
-		return;
+		if (mSlider->isPointInBounds(input->cursorPosition()))
+		{
+			mSlider->setState(UIButton::State::Hovering);
+			mSlider->setPressed(input->isCursorPressed(Cursor::Left));
+			mSlider->setHeld(input->isCursorHeld(Cursor::Left));
+			mSlider->setReleased(input->isCursorReleased(Cursor::Left));
+		}
+
+		// Activate slider
+		if (mSlider->isPressed())
+		{
+			mSlider->setActive(true);
+			setCursorOffset(input->cursorPosition().x);
+			hasPressed = true;
+		}
+
+		// SetSlider position
+		if (mSlider->isActive())
+		{
+			setSliderPosition(input->cursorPosition().x);
+		}
+
+		// Deactivate slider
+		if (input->isCursorReleased(Cursor::Left))
+		{
+			mSlider->reset();
+		}
 	}
 
-	if (mSlider->isPointInBounds(input->cursorPosition()))
-	{
-		mSlider->setState(UIButton::State::Hovering);
-		mSlider->setPressed(input->isCursorPressed(Cursor::Left));
-		mSlider->setHeld(input->isCursorHeld(Cursor::Left));
-		mSlider->setReleased(input->isCursorReleased(Cursor::Left));
-	}
-	else
-	{
-		mSlider->reset();
-	}
-
-
-	// Activate slider
-	if (mSlider->isPressed())
-	{
-		mSlider->setActive(true);
-		setCursorOffset(input->cursorPosition().x);
-	}
-
-	// SetSlider position
-	if (mSlider->isActive())
-	{
-		setSliderPosition(input->cursorPosition().x);
-	}
-
-	// Deactivate slider
-	if (input->isCursorReleased(Cursor::Left))
-	{
-		mSlider->setActive(false);
-	}
+	return hasPressed;
 }
 
 
@@ -143,6 +140,11 @@ void UISlider::render()
 	if (mDrawRect || DRAW_UI_RECTS)
 		debugDrawRectOutline(mRect, RenderColour::Blue);
 #endif
+}
+
+bool UISlider::isActive() const 
+{ 
+	return mSlider->isActive();
 }
 
 

@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Screen.h"
 
+#include "Input/InputManager.h"
+#include "Audio/AudioManager.h"
 #include "UI/ScreenLayers.h"
 
 #include "UI/Elements/UISwitch.h"
@@ -29,6 +31,7 @@ void Screen::add(const ScreenLayer& layer)
 	mScreenLayers.add(layer);
 }
 
+
 void Screen::add(const ScreenLayers& layers)
 {
 	for (int i = 0; i < layers.size(); i++)
@@ -43,13 +46,16 @@ ScreenLayer* Screen::layer(const BasicString& id)
 	return mScreenLayers.layer(id);
 }
 
-// TODO: change to handle input
-void Screen::updateButtons(const InputManager* input)
+
+void Screen::updateInputs(const InputManager* input)
 {
-	Elements elements = mScreenLayers.elementList();
-	for (UIElement* element : elements)
+	if (updateButtons(input) || updateSliders(input) || updateSwitches(input))
 	{
-		element->handleInput(input);
+		AudioManager::Get()->playSound("ButtonClick", nullptr);
+	}
+	else if(input->isCursorPressed(Cursor::Left))
+	{
+		AudioManager::Get()->playSound("MouseClick", nullptr);
 	}
 }
 
@@ -66,11 +72,11 @@ void Screen::render()
 }
 
 
-
 UIElement* Screen::find(const BasicString& id)
 {
 	return mScreenLayers.find(id);
 }
+
 
 UIButton* Screen::findButton(const BasicString& id)
 {
@@ -87,7 +93,6 @@ UIButton* Screen::findButton(const BasicString& id)
 		return nullptr;
 	}
 }
-
 
 
 UITextBox* Screen::findTextBox(const BasicString& id)
@@ -140,7 +145,6 @@ void Screen::linkSwitch(ScreenItem option, const BasicString& switchId)
 	}
 #endif
 
-
 	UISwitch* uiSwitch = static_cast<UISwitch*>(element);
 	mSwitches[option] = uiSwitch;
 }
@@ -178,6 +182,7 @@ bool Screen::pressed(ScreenItem item) const
 		return false;
 	}
 #endif
+
 	return mButtons.at(item)->isPressed();
 }
 
@@ -204,4 +209,43 @@ UISlider* Screen::slider(ScreenItem item)
 	}
 #endif
 	return mSliders[item];
+}
+
+
+
+// -- Private Functions -- //
+bool Screen::updateButtons(const InputManager* input)
+{
+	bool hasPressed = false;
+	std::unordered_map<ScreenItem, UIButton*>::iterator iter;
+	for (iter = mButtons.begin(); iter != mButtons.end(); iter++)
+	{
+		if (iter->second->handleInput(input))
+			hasPressed = true;
+	}
+	return hasPressed;
+}
+
+bool Screen::updateSliders(const InputManager* input)
+{
+	bool hasPressed = false;
+	std::unordered_map<ScreenItem, UISlider*>::iterator iter;
+	for (iter = mSliders.begin(); iter != mSliders.end(); iter++)
+	{
+		if (iter->second->handleInput(input))
+			hasPressed = true;
+	}
+	return hasPressed;
+}
+
+bool Screen::updateSwitches(const InputManager* input)
+{
+	bool hasPressed = false;
+	std::unordered_map<ScreenItem, UISwitch*>::iterator iter;
+	for (iter = mSwitches.begin(); iter != mSwitches.end(); iter++)
+	{
+		if (iter->second->handleInput(input))
+			hasPressed = true;
+	}
+	return hasPressed;
 }

@@ -42,6 +42,21 @@ void Sound::stop(int channel)
 	Mix_HaltChannel(channel);
 }
 
+bool Sound::isPlaying(int channel) const
+{
+	return Mix_Playing(channel);
+}
+
+void Sound::pause(int channel)
+{
+	Mix_Pause(channel);
+}
+
+void Sound::resume(int channel)
+{
+	Mix_Resume(channel);
+}
+
 
 // --- Music --- //
 
@@ -98,6 +113,11 @@ void Music::pause(int channel)
 void Music::stop(int channel)
 {
 	Mix_HaltMusic();
+}
+
+bool Music::isPlaying(int channel) const
+{
+	return Mix_PlayingMusic();
 }
 
 
@@ -157,4 +177,19 @@ void AudioGroup::stop(int channel)
 {
 	playingIndex = 0;
 	Mix_HaltChannel(channel);
+}
+
+bool AudioGroup::isPlaying(int channel) const
+{
+	return group[playingIndex]->isPlaying(channel);
+}
+
+void AudioGroup::pause(int channel)
+{
+	group[playingIndex]->pause(channel);
+}
+
+void AudioGroup::resume(int channel)
+{
+	group[playingIndex]->resume(channel);
 }

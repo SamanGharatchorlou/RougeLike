@@ -9,7 +9,10 @@ class SelfAbility : public Ability
 public:
 	virtual ~SelfAbility() { }
 
-	virtual void activate(VectorF position) override { };
+	void init();
+	virtual bool initiate(const InputManager* input) const { return true; }
+
+	virtual void activate() override { };
 	virtual bool activateOn(Actor* actor, EffectPool* effectPool);
 
 	AbilityTarget targetType() const override { return AbilityTarget::Self; }

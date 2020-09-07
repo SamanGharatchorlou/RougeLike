@@ -53,12 +53,9 @@
     <ClCompile Include="Source\UI\Elements\UISlider.cpp" />
     <ClCompile Include="Source\Animations\AnimationReader.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityActivator.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\SpikeAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\SmashAbility.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\SlowAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\HealAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\ChargeAbility.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\BlinkAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\ArmorAbility.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\BlinkEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\DamageEffect.cpp" />
@@ -171,6 +168,7 @@
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyCharge.cpp" />
     <ClCompile Include="Source\UI\Screens\GameOverScreen.cpp" />
     <ClCompile Include="Source\Actors\Player\PlayerStates\PlayerDeadState.cpp" />
+    <ClCompile Include="Source\Audio\Channel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -241,12 +239,9 @@
     <ClInclude Include="Source\Events\LocalDispatcher.h" />
     <ClInclude Include="Source\Animations\AnimationReader.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityActivator.h" />
-    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\SpikeAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\SmashAbility.h" />
-    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\SlowAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\HealAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\ChargeAbility.h" />
-    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\BilnkAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\ArmorAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\Cooldown.h" />
     <ClInclude Include="Source\Utilities\UniqueQueue.h" />
@@ -375,6 +370,7 @@
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyCharge.h" />
     <ClInclude Include="Source\UI\Screens\GameOverScreen.h" />
     <ClInclude Include="Source\Actors\Player\PlayerStates\PlayerDeadState.h" />
+    <ClInclude Include="Source\Audio\Channel.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

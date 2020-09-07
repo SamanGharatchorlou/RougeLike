@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <screen>
 	<Layer>
-		<Box id = "MainPanel" x = "222.500" y = "112.500" width = "562.500" height = "230.000" texture = "PopupPanel"></Box>
+		<Box id = "MainPanel" x = "212.500" y = "110.000" width = "600.000" height = "305.000" texture = "PopupPanel"></Box>
 	</Layer>
 
 	<Layer>
-		<TextBox id = "Title" parent = "MainPanel" align = "Center" x = "0.000" y = "-0.400" width = "562.500" height = "39.000" >
+		<TextBox id = "Title" parent = "MainPanel" align = "Center" x = "0.000" y = "-0.400" width = "600.500" height = "45.000" >
 			<text>Popup</text>
 		</TextBox>
 
-		<Button id = "OkButton" parent = "MainPanel" x = "152.198" y = "159.000" width = "260.000" height = "43.000" texture = "WideGreenButton"></Button>
+		<Button id = "OkButton" parent = "MainPanel" x = "142.500" y = "217.500" width = "322.500" height = "48.000" texture = "WideGreenButton"></Button>
 	</Layer>
 
 	<Layer>
-		<TextBox id = "PopupText" parent = "MainPanel" x = "37.500" y = "52.500" width = "487.500" height = "94.500">
+		<TextBox id = "Body" parent = "MainPanel" x = "50.000" y = "60.000" width = "500.000" height = "144.000">
 			<text r = "0" g = "0" b = "0" ></text>
 		</TextBox>
 
-		<TextBox id = "ButtonText" parent = "OkButton" font = "MenuFont" align = "Center" x = "0.000" y = "5.000" width = "262.500" height = "24.500">
+		<TextBox id = "ButtonText" parent = "OkButton" font = "MenuFont" align = "Center" x = "0.000" y = "7.500" width = "322.500" height = "28.000">
 			<text>OK</text>
 		</TextBox>
 	</Layer>

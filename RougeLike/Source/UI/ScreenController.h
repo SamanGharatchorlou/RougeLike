@@ -20,17 +20,15 @@ public:
 	void openPopup(const BasicString& textFile);
 	
 	void addScreen(ScreenType type);
-	void addScreen(Screen* screen);
 	void replaceScreen(ScreenType type);
 
 	void processScreenChanges();
-	void popScreen() { mScreens.popState(); }
+	void popScreen();
 
 	int screenCount() const { return mScreens.size(); }
 	void clearScreenStack();
 
 	Screen* getActiveScreen() const { return &mScreens.getActiveState(); }
-	//Screen* getStackScreen(ScreenType screen) const;
 
 	void quitGame();
 	void restartGame();
@@ -42,7 +40,7 @@ public:
 	UIManager* ui() { return mUI; }
 
 	// TODO: make const(), need render() to be const first
-	void setPersistingScren(Screen* screen) { mPersistingScreen = screen; }
+	void setPersistingScreen(Screen* screen) { mPersistingScreen = screen; }
 	Screen* persistingScreen() { return mPersistingScreen; }
 
 	void enablePopups(bool enable) { mEnablePopups = enable; }

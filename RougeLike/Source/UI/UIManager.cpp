@@ -60,7 +60,7 @@ void UIManager::handleInput(const InputManager* input)
 #endif
 
 	mController.getActiveScreen()->handleInput(input);
-	mController.getActiveScreen()->updateButtons(input);
+	mController.getActiveScreen()->updateInputs(input);
 }
 
 

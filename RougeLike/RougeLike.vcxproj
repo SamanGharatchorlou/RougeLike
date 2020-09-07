@@ -27,6 +27,7 @@
     <ClCompile Include="Source\Actors\Enemies\EnemyDebugger.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyStun.cpp" />
     <ClCompile Include="Source\AI\Spawning\AISpawnController.cpp" />
+    <ClCompile Include="Source\Audio\Channel.cpp" />
     <ClCompile Include="Source\Collisions\Colliders\QuadCollider.cpp" />
     <ClCompile Include="Source\Map\TrapManager.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityClasses\MeleeAbility.cpp" />
@@ -75,12 +76,9 @@
     <ClCompile Include="Source\Objects\Abilities\AbilityHotKeyManager.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityManager.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\ArmorAbility.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\BlinkAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\ChargeAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\HealAbility.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\SlowAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\SmashAbility.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\SpikeAbility.cpp" />
     <ClCompile Include="Source\Actors\ActorManager.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyState.cpp" />
     <ClCompile Include="Source\Actors\Enemies\Types\Devil.cpp" />
@@ -206,6 +204,7 @@
     <ClInclude Include="Source\Actors\Enemies\EnemyDebugger.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyStun.h" />
     <ClInclude Include="Source\AI\Spawning\AISpawnController.h" />
+    <ClInclude Include="Source\Audio\Channel.h" />
     <ClInclude Include="Source\Collisions\Colliders\QuadCollider.h" />
     <ClInclude Include="Source\Map\TrapManager.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityClasses\MeleeAbility.h" />
@@ -256,12 +255,9 @@
     <ClInclude Include="Source\Objects\Abilities\AbilityManager.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityHotKeyManager.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\ArmorAbility.h" />
-    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\BilnkAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\ChargeAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\HealAbility.h" />
-    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\SlowAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\SmashAbility.h" />
-    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\SpikeAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\Cooldown.h" />
     <ClInclude Include="Source\Actors\Actor.h" />
     <ClInclude Include="Source\Actors\ActorManager.h" />

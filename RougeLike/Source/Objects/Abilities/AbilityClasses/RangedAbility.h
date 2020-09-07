@@ -11,7 +11,9 @@ public:
 	RangedAbility() : mRangeCircle(nullptr) { }
 	virtual ~RangedAbility() { }
 
-	void init(const PropertyMap& properties, Animator animator) override;
+	void init() override;
+
+	bool initiate(const InputManager* input) const override;
 
 	EventPacket renderRangeCircleEvent();
 

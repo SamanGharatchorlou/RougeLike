@@ -38,7 +38,7 @@ Screen* ScreenPool::createNewObject(ScreenType type) const
 		break;
 	}
 
-	ScreenBuilder builder;
+	const ScreenBuilder builder;
 	builder.populateScreen(screen);
 
 	return screen;

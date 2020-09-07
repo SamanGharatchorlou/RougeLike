@@ -30,6 +30,7 @@ void MapBuilder::load()
 void MapBuilder::clear()
 {
 	mSpecs.clear();
+	mMapLevel = 0;
 }
 
 

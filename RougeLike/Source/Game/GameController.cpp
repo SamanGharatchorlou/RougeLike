@@ -56,8 +56,6 @@ void GameController::load()
 	mGameData.uiManager->controller()->popScreen();
 
 	SDL_WaitThread(threadID, nullptr);
-
-	mAudio = AudioManager::Get();
 }
 
 
@@ -165,7 +163,7 @@ void GameController::updateLoops(float dt)
 
 	mGameStateMachine.getActiveState().slowUpdate(dt);
 
-	mAudio->slowUpdate();
+	AudioManager::Get()->slowUpdate();
 	mGameData.uiManager->update();
 }
 

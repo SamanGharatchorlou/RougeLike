@@ -14,14 +14,14 @@ EnemyFactory::~EnemyFactory()
 }
 
 
-void EnemyFactory::loadPools(int poolSize)
+void EnemyFactory::loadPools()
 {
 	std::vector<EnemyType> enemyTypes;
 	for (EnemyType type = EnemyType::None + 1; type < EnemyType::Count; type = type + 1)
 	{
 		enemyTypes.push_back(type);
 	}
-	mPool.load(enemyTypes, poolSize);
+	mPool.load(enemyTypes, 150);
 
 
 	std::vector<EnemyState::Type> enemyStates;
@@ -29,7 +29,13 @@ void EnemyFactory::loadPools(int poolSize)
 	{
 		enemyStates.push_back(state);
 	}
-	mStatePool.load(enemyStates, poolSize);
+	mStatePool.load(enemyStates, 50);
+
+	// Need lots of these states
+	mStatePool.addNewObjects(EnemyState::Wait, 200);
+	mStatePool.addNewObjects(EnemyState::Idle, 200);
+	mStatePool.addNewObjects(EnemyState::Run, 200);
+	mStatePool.addNewObjects(EnemyState::Patrol, 100);
 }
 
 void EnemyFactory::clear()

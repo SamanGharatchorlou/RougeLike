@@ -13,7 +13,7 @@ class EnemyFactory
 public:
 	~EnemyFactory();
 
-	void loadPools(int poolSize);
+	void loadPools();
 	void clear();
 
 	std::vector<Enemy*> buildEnemies(const std::vector<SpawnData>& data, const AIPathMap* aiPathMap);

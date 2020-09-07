@@ -3,10 +3,11 @@
 
 #include "System/Window.h"
 
+#include "Audio/AudioManager.h"
+
 GameSetup::GameSetup() : title(""), audioChannels(0) 
 {
-	// random seed
-	srand((unsigned int)time(NULL));
+	srand((unsigned int)time(NULL)); // random seed
 }
 
 
@@ -127,5 +128,9 @@ void GameSetup::readSettings()
 	int height = settings.getInt("Height");
 	screenSize = Vector2D<int>(width, height);
 	audioChannels = settings.getInt("AudioChannels");
+
+	AudioManager* audio = AudioManager::Get();
+	audio->setMusicVolume(settings.getFloat("MusicVolume") / 100.0f);
+	audio->setSoundVolume(settings.getFloat("SoundVolume") / 100.0f);
 }
 

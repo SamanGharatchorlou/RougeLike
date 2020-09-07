@@ -34,7 +34,7 @@ public:
 
 	void reset();
 
-	void handleInput(const InputManager* input) override;
+	bool handleInput(const InputManager* input);
 
 	void setState(State state);
 	void setHeld(bool isHeld);
@@ -46,11 +46,10 @@ public:
 	inline bool isHeld() const { return mButton.isHeld(); }
 	inline int holdCount() const { return mButton.getHeldFrames(); }
 
-	//virtual bool hasText() const { return false; }
 	virtual Type type() const override { return Type::Button; }
 
-	void setActive(bool state);
-	bool isActive() const { return mState == State::Active; }
+	void setActive(bool active) { mIsActive = active; }
+	bool isActive() const { return mIsActive; }
 
 private:
 	Texture* mDefault;
@@ -59,5 +58,5 @@ private:
 
 	Button mButton;
 
-	State mState;
+	bool mIsActive;
 };

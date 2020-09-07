@@ -48,7 +48,7 @@ bool AbilityActivator::activate(Ability* ability, Button::State buttonState, con
 				const Map* map = ability->caster()->currentMap();
 				if (rangedAbility->isValidTarget(cursorPos, map))
 				{
-					ability->activate(cursorPos);
+					ability->activate();
 					didActivate = true;
 				}
 			}
@@ -60,7 +60,7 @@ bool AbilityActivator::activate(Ability* ability, Button::State buttonState, con
 			{
 				MeleeAbility* meleeAbility = static_cast<MeleeAbility*>(ability);
 				VectorF cursorPos = cursorWorldPosition(input->cursorPosition());
-				meleeAbility->activate(cursorPos);
+				meleeAbility->activate();
 				return true;
 			}
 			break;

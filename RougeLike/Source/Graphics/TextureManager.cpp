@@ -166,13 +166,17 @@ Texture* TextureManager::getTexture(const BasicString& label, const FileManager:
 
 	if (!texture)
 	{
-		DebugPrint(Log, "No item in folder map '%d' with label: '%s'\n", folder, label.c_str());
-
-		texture = searchAllFiles(label);
-		if (!texture)
+		if (!label.empty())
 		{
-			DebugPrint(Warning, "No image file with label: '%s' exists in any loaded folder\n", label.c_str());
+			DebugPrint(Log, "No item in folder map '%d' with label: '%s'\n", folder, label.c_str());
+
+			texture = searchAllFiles(label);
+			if (!texture)
+			{
+				DebugPrint(Warning, "No image file with label: '%s' exists in any loaded folder\n", label.c_str());
+			}
 		}
+		// else empty label
 	}
 
 	return texture;

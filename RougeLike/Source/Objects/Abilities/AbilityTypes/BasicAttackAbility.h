@@ -7,7 +7,7 @@ class BasicAttackAbility : public MeleeAbility
 {
 public:
 	~BasicAttackAbility();
-	void activate(VectorF position) override;
+	void activate() override;
 
 	void fastUpdate(float dt) override { } // make not pure virtual?
 	void slowUpdate(float dt) override;

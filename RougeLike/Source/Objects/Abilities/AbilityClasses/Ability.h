@@ -3,11 +3,13 @@
 #include "AbilityStates.h"
 #include "Animations/Animator.h"
 #include "Objects/Abilities/Cooldown.h"
-
+#include "Utilities/Quad2D.h"
 
 class Actor;
 class EffectPool;
 class Collider;
+class InputManager;
+
 enum class EffectType;
 
 
@@ -17,7 +19,11 @@ public:
 	Ability();
 	virtual ~Ability();
 
-	virtual void init(const PropertyMap& properties, Animator animator);
+	virtual void baseInit(const PropertyMap& properties, Animator animator);
+	virtual void init() { }
+
+	virtual void handleInput(const InputManager* input) { };
+	virtual bool initiate(const InputManager* input) const = 0;
 
 	virtual void fastUpdate(float dt) = 0;
 	virtual void slowUpdate(float dt) = 0;
@@ -25,14 +31,16 @@ public:
 	virtual void exit() { };
 	virtual void baseExit();
 
-	virtual void activate(VectorF position) = 0;
+	virtual void activate() = 0;
 	virtual bool activateOn(Actor* actor, EffectPool* effectPool) = 0;
 
 	Actor* caster() const { return mCaster; }
 	void setCaster(Actor* caster) { mCaster = caster; }
 
-	Cooldown& cooldown() { return mCooldown; }
 	Collider* collider() { return mCollider; }
+	virtual const Collider* selectionCollider() const { return mCollider; }
+
+	Cooldown& cooldown() { return mCooldown; }
 	PropertyMap& properties() { return mProperties; }
 
 	virtual AbilityTarget targetType() const = 0;
@@ -46,6 +54,7 @@ public:
 
 	BasicString name() const;
 
+	void setSelectHighligh(RenderColour colour) { mSelectHighlight = colour; }
 
 
 protected:
@@ -64,6 +73,11 @@ protected:
 
 	Actor* mCaster;
 
-	RectF mRect;
+	RectF mRect; // remove this? melle has quad, ranged and self have rect?
 	Collider* mCollider;
+
+	RenderColour mSelectHighlight;
 };
+
+
+void renderQuadOutline(const Quad2D<float>& quad, RenderColour colour);

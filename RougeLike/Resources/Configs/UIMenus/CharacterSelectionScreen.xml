@@ -14,41 +14,41 @@
 
 
 	<Layer>
-		<TextBox id = "ScreenTitle" parent = "MainPanel" font ="MenuFont" align = "Center" x = "176.798" y = "20.700" width = "381.202" height = "42.000" >
+		<TextBox id = "ScreenTitle" parent = "MainPanel" font ="MenuFont" align = "Center" x = "0.0" y = "20.700" width = "728.202" height = "31.500" >
 			<text>Character Selection</text>
 		</TextBox>
 
 	</Layer>
 
 	<Layer>
-		<Box id = "CharacterNamePanel" parent = "MainPanel" x = "45.400" y = "106.600" width = "640.299" height = "70.500" texture = "NamePanel"></Box>
-		<Box id= "Character" parent = "MainPanel" x = "193.298" y = "167.700" width = "344.994" height = "345.000" texture = "Soldier"></Box>
-		<Button id = "PlayButton" parent = "CharacterNamePanel" x = "73.300" y = "418.588" width = "495.000" height = "65.000" texture = "WideBlueButton"></Button>
-		<Button id = "ExitButton" parent = "CharacterNamePanel" x = "73.300" y = "490.588" width = "495.000" height = "65.000" texture = "WideRedButton"></Button>
+		<Box id = "CharacterNamePanel" parent = "MainPanel" x = "45.400" y = "106.600" width = "640.299"  texture = "NamePanel"></Box>
+		<Box id= "Character" parent = "MainPanel" x = "193.298" y = "147.700" width = "344.994" height = "345.000" texture = ""></Box>
+		<Button id = "PlayButton" parent = "MainPanel" x = "179.000" y = "524.000" width = "370.000" height = "65.000" texture = "WideBlueButton"></Button>
+		<Button id = "ExitButton" parent = "MainPanel" x = "179.000" y = "596.000" width = "370.000" height = "65.000" texture = "WideRedButton"></Button>
 
-		<Button id = "LeftButton" parent = "MainPanel" x = "66.700" y = "315.793" width = "81.895" height = "71.000" texture = "BlankButton"></Button>
-		<Button id = "RightButton" parent = "MainPanel" x = "573.287" y = "326.893" width = "82.495" height = "71.000" texture = "BlankButton"></Button>
+		<Button id = "LeftButton" parent = "MainPanel" x = "66.700" y = "315.000" width = "85.000" texture = "BlankButton"></Button>
+		<Button id = "RightButton" parent = "MainPanel" x = "573.287" y = "315.000" width = "85.000" texture = "BlankButton"></Button>
 	</Layer>
 
 	<Layer>
 
-		<Switch id = "TutorialSwitch" parent = "MainPanel" x = "386.300" y = "458.088" width = "90.000" height = "45.000" texture = "BasicSwitch"></Switch>
+		<Switch id = "TutorialSwitch" parent = "MainPanel" x = "386.300" y = "458.088" height = "45.000" texture = "BasicSwitch"></Switch>
 		<TextBox id = "TutorialText" parent = "TutorialSwitch" align = "Center" x = "-152.900" y = "0.000" width = "167.300" height = "44.700">
 			<text>Tutorial</text>
 		</TextBox>
 
-		<Box id= "LeftArrow" parent = "LeftButton" x = "17.700" y = "12.899" width = "43" height = "43" texture = "LeftArrow"></Box>
-		<Box id= "RightArrow" parent = "RightButton" x = "17.700" y = "12.899" width = "43" height = "43" texture = "RightArrow"></Box>
+		<Box id= "LeftArrow" parent = "LeftButton" x = "24.000" y = "14.000" height = "53" texture = "LeftArrow"></Box>
+		<Box id= "RightArrow" parent = "RightButton" x = "24.000" y = "14.000" height = "53" texture = "RightArrow"></Box>
 
-		<TextBox id = "CharacterName" parent = "CharacterNamePanel" align = "Center" x = "2.400" y = "8.000" width = "638.800" height = "55.700" >
+		<TextBox id = "CharacterName" parent = "CharacterNamePanel" align = "Center" x = "0.0" y = "5.000" width = "638.800" height = "45.000" >
 			<text></text>
 		</TextBox>
 		
-		<TextBox id = "PlayText" parent = "PlayButton" align = "Center" x = "0.000" y = "0.000" width = "495.000" height = "60.000" >
+		<TextBox id = "PlayText" parent = "PlayButton" align = "Center" x = "0.000" y = "0.000" width = "370.000" height = "60.000" >
 			<text>PLAY</text>
 		</TextBox>
 
-		<TextBox id = "ExitText" parent = "ExitButton" align = "Center" x = "0.000" y = "0.000" width = "495.000" height = "60.000" >
+		<TextBox id = "ExitText" parent = "ExitButton" align = "Center" x = "0.000" y = "0.000" width = "370.000" height = "60.000" >
 			<text>EXIT</text>
 		</TextBox>
 	</Layer>

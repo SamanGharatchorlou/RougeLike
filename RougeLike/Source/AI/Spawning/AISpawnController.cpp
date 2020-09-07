@@ -22,7 +22,7 @@ std::vector<Enemy*> AISpawnController::getNewLevelSpawns(const AIPathMap* map)
 	}
 
 
-	for (int i = 0; i < map->level() + 3; i++)
+	for (int i = 0; i < map->level() + 2; i++)
 	{
 		EnemyType type = i % 2 == 0 ? EnemyType::Orc : EnemyType::Devil;
 		SpawnDataList spawnData = spawnRandomQuad(type, EnemyState::Idle, map);
@@ -35,8 +35,8 @@ std::vector<Enemy*> AISpawnController::getNewLevelSpawns(const AIPathMap* map)
 
 SpawnDataList AISpawnController::spawnRandomQuad(EnemyType type, EnemyState::Type state, const AIPathMap* map)
 {
-	int xRandom = randomNumberBetween(2, 8);
-	int yRandom = randomNumberBetween(2, 8);
+	int xRandom = randomNumberBetween(2, 7);
+	int yRandom = randomNumberBetween(2, 7);
 	Quadrilateral formation(VectorF(), xRandom, yRandom, 40.0f);
 	setRandomPosition(formation, map);
 
@@ -60,9 +60,9 @@ void AISpawnController::returnEnemy(Enemy* enemy)
 }
 
 
-void AISpawnController::loadSpawnPool(int poolSize)
+void AISpawnController::loadSpawnPool()
 {
-	mFactory.loadPools(poolSize);
+	mFactory.loadPools();
 }
 
 

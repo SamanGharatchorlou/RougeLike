@@ -8,9 +8,11 @@ class AudioManager
 public:
 	static AudioManager* Get();
 
+	void init();
 	void load();
 	void unload();
 
+	void setSource(Actor* listener, float attenuationDistance);
 	void slowUpdate();
 
 	Audio* getAudio(const BasicString& label) const;
@@ -18,8 +20,8 @@ public:
 
 	// Playback
 	void playMusic(const BasicString& label);
-	void playSound(const BasicString& label, void* sourceId);
-	void loopSoundGroup(const BasicString& label, void* sourceId);
+	void playSound(const BasicString& label, void* sourceId, VectorF source = VectorF(-1.0f, -1.0f));
+	void loopSound(const BasicString& label, void* sourceId, VectorF source);
 
 	void pause(const BasicString& label, void* sourceId);
 	void resume(const BasicString& label, void* sourceId);
@@ -27,6 +29,7 @@ public:
 	void fadeOutSound(const BasicString& label, void* sourceId);
 
 	bool isPlaying(const BasicString& label, void* sourced);
+	bool isActive(const BasicString& label, void* sourced);
 
 	// volume
 	void setSoundVolume(float volume);

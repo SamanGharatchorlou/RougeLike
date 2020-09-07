@@ -18,7 +18,7 @@
 #include "Game/Camera/Camera.h"
 
 
-void ScreenBuilder::populateScreen(Screen* screen)
+void ScreenBuilder::populateScreen(Screen* screen) const
 {
 	ScreenType type = screen->type();
 
@@ -38,7 +38,7 @@ void ScreenBuilder::populateScreen(Screen* screen)
 }
 
 
-ScreenLayers ScreenBuilder::buildUIScreen(const ScreenAttributes& screenAttributes)
+ScreenLayers ScreenBuilder::buildUIScreen(const ScreenAttributes& screenAttributes) const
 {
 	ScreenLayers screenLayers = buildScreenLayers(screenAttributes);
 
@@ -52,7 +52,7 @@ ScreenLayers ScreenBuilder::buildUIScreen(const ScreenAttributes& screenAttribut
 
 
 // --- Build screen layers --- //
-ScreenLayers ScreenBuilder::buildScreenLayers(const ScreenAttributes& screenAttributes)
+ScreenLayers ScreenBuilder::buildScreenLayers(const ScreenAttributes& screenAttributes) const
 {
 	ScreenLayers screenLayers;
 
@@ -172,8 +172,8 @@ void ScreenBuilder::buildSlider(UISlider* slider, const StringMap& attributes) c
 
 
 // --- Fill element data --- //
-void ScreenBuilder::setChildren(const ScreenLayers& screenLayers, Elements& parents)
-{
+void ScreenBuilder::setChildren(const ScreenLayers& screenLayers, Elements& parents) const
+{ 
 	Elements elements = screenLayers.elementList();
 
 	for (UIElement* parent : parents)
@@ -190,18 +190,53 @@ void ScreenBuilder::setChildren(const ScreenLayers& screenLayers, Elements& pare
 	}
 }
 
-void ScreenBuilder::formatElements(ScreenLayers& screenLayers)
+void ScreenBuilder::formatElements(ScreenLayers& screenLayers) const
 {
 	Elements elements = screenLayers.elementList();
 	for (UIElement* element : elements)
 	{
+		autoSizeRect(element);
 		repositionRelativeToParent(element);
 		reformatText(element);
 	}
 }
 
+void ScreenBuilder::autoSizeRect(UIElement* element) const
+{
+	RectF rect = element->rect();
 
-void ScreenBuilder::reformatText(UIElement* element)
+	if (rect.Width() < 0)
+	{
+		UIBox* box = static_cast<UIBox*>(element);
+
+		VectorF textureSize = box->texture()->originalDimentions;
+		float ratioXY = textureSize.x / textureSize.y;
+
+		float width = rect.Height() * ratioXY;
+
+		VectorF position(rect.TopLeft());
+		VectorF size(width, rect.Height());
+
+		element->setRect(RectF(position, size));
+	}
+	else if (rect.Height() < 0)
+	{
+		UIBox* box = static_cast<UIBox*>(element);
+
+		VectorF textureSize = box->texture()->originalDimentions;
+		float ratioYX = textureSize.y / textureSize.x;
+
+		float height = rect.Width() * ratioYX;
+
+		VectorF position(rect.TopLeft());
+		VectorF size(rect.Width(), height);
+
+		element->setRect(RectF(position, size));
+	}
+}
+
+
+void ScreenBuilder::reformatText(UIElement* element) const
 {
 	// set text sizes
 	if (element->type() == UIElement::Type::TextBox)
@@ -232,7 +267,7 @@ void ScreenBuilder::repositionRelativeToParent(UIElement* element) const
 }
 
 
-Elements ScreenBuilder::setParents(ScreenLayers& layers, const ScreenAttributes& screenAttributes)
+Elements ScreenBuilder::setParents(ScreenLayers& layers, const ScreenAttributes& screenAttributes) const
 {
 	Elements parents;
 

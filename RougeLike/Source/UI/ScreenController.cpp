@@ -7,6 +7,7 @@
 
 // temp
 #include "Game/GameController.h"
+#include "Audio/AudioManager.h"
 
 
 
@@ -36,6 +37,8 @@ void ScreenController::clearScreenStack()
 		popScreen();
 		processScreenChanges();
 	}
+
+	mPersistingScreen = nullptr;
 }
 
 
@@ -43,6 +46,7 @@ void ScreenController::addScreen(ScreenType type)
 {
 	Screen* screen = getPoolScreen(type);
 	mScreens.addState(screen);
+
 }
 
 
@@ -63,6 +67,13 @@ void ScreenController::replaceScreen(ScreenType type)
 }
 
 
+void ScreenController::popScreen()
+{
+	mScreens.popState();
+	AudioManager::Get()->playSound("CloseMenu", nullptr);
+}
+
+
 Screen* ScreenController::getPoolScreen(ScreenType type)
 {
 	Screen* screen = mUI->mScreenPool.getObject(type);
@@ -77,19 +88,22 @@ Screen* ScreenController::getPoolScreen(ScreenType type)
 }
 
 
-void ScreenController::openPopup(const BasicString& textFile)
+void ScreenController::openPopup(const BasicString& popupInfo)
 {
 	if (mEnablePopups)
 	{
 		Screen* screen = mUI->mScreenPool.screenRef(ScreenType::Popup);
 		PopupScreen* popup = static_cast<PopupScreen*>(screen);
-		popup->setMainText(textFile);
+
+		XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Menus, popupInfo));
+		popup->build(parser.rootNode());
+
+		//popup->setMainText(textFile);
 
 		addScreen(ScreenType::Popup);
 		addSystemState(SystemStates::PauseState);
 	}
 }
-
 
 
 void ScreenController::quitGame()

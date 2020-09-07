@@ -5,7 +5,7 @@
 
 
 
-EnemyAttack::EnemyAttack() : mHasAttacked(false), mHitCounter(0)
+EnemyAttack::EnemyAttack() : mHasAttacked(false), mDidHit(false)
 { 
 }
 
@@ -16,11 +16,16 @@ void EnemyAttack::enter()
 
 void EnemyAttack::init()
 {
+	mEnemy->collider()->setDidHit(false);
+
 	if (mEnemy->hasTarget())
 	{
+		VectorF attackPosition = mEnemy->target()->position();
 		mStartPosition = mEnemy->position();
-		mAttackPosition = mEnemy->target()->position();
-		mEnemy->physics()->facePoint(mAttackPosition);
+		mDirection = (attackPosition - mStartPosition).normalise();
+		mEndPosition = mStartPosition + mDirection * mEnemy->getAttributeValue(AttributeType::TackleDistance);
+
+		mEnemy->physics()->facePoint(attackPosition);
 		mEnemy->animator().selectAnimation(Action::Idle);
 	}
 	else
@@ -32,28 +37,29 @@ void EnemyAttack::init()
 
 void EnemyAttack::fastUpdate(float dt)
 {
+	VectorF velocity = mDirection * mEnemy->getAttributeValue(AttributeType::TackleMovementSpeed);
 	if (mHasAttacked)
 	{
-		VectorF direction = mStartPosition - mEnemy->position();
-		VectorF velocity = direction.normalise() * mEnemy->getAttributeValue(AttributeType::TackleMovementSpeed) / 1.5f;
-		mEnemy->move(velocity, dt);
+		// Flip direction and reduce speed
+		velocity /= -1.5f;
 	}
-	else
-	{
-		VectorF direction = mAttackPosition - mEnemy->position();
-		VectorF velocity = direction.normalise() * mEnemy->getAttributeValue(AttributeType::TackleMovementSpeed);
-		mEnemy->move(velocity, dt);
-	}
+
+	mEnemy->move(velocity, dt);
+
+	if (mEnemy->collider()->didHit())
+		mDidHit = true;
 }
 
 
 void EnemyAttack::slowUpdate(float dt)
 {
+	if (mEnemy->collider()->didHit())
+		printf("enemyHit\n");
 	// Return to starting position
 	updateHasAttackedStatus();
 
 	// End attack
-	if (attackComplete() == true)
+	if (mHasAttacked && attackComplete())
 		mEnemy->popState();
 }
 
@@ -63,8 +69,9 @@ void EnemyAttack::render()
 	mEnemy->renderCharacter();
 
 #if DRAW_ENEMY_TARGET_PATH
-	VectorF targetPosition = mHasAttacked ? startingPosition : attackTargetPosition;
-	debugDrawLine(mEnemy->position(), targetPosition, RenderColour::Red);
+	debugDrawPoint(mStartPosition, 10.0f, RenderColour::Blue);
+	debugDrawLine(mStartPosition, mEndPosition, RenderColour::Green);
+	debugDrawPoint(mEndPosition, 10.0f, RenderColour::Red);
 #endif
 }
 
@@ -73,20 +80,11 @@ void EnemyAttack::render()
 
 void EnemyAttack::updateHasAttackedStatus()
 {
-	if (mEnemy->collider()->didHit() || mHitCounter > 0)
-		mHitCounter++;
-
 	if (!mHasAttacked)
 	{
-		// Maximum attack distance
-		float distanceTravelled = distance(mStartPosition, mEnemy->position());
-		if (distanceTravelled >= mEnemy->getAttributeValue(AttributeType::TackleDistance))
-			mHasAttacked = true;
-
-		if (mHitCounter >= 5)
-			mHasAttacked = true;
-
-		if (distance(mAttackPosition, mEnemy->position()) < 5.0f)
+		VectorF currentDirection = (mEndPosition - mEnemy->position());
+		bool hasPassedTarget = !((currentDirection.x > 0 == mDirection.x > 0) && (currentDirection.y > 0 == mDirection.y > 0));
+		if (hasPassedTarget)
 			mHasAttacked = true;
 	}
 }
@@ -94,16 +92,15 @@ void EnemyAttack::updateHasAttackedStatus()
 
 bool EnemyAttack::attackComplete() const
 {
-	float smallDistance = 5.0f;
-	return distance(mStartPosition, mEnemy->position()) < smallDistance ? mHasAttacked : false;
+	VectorF currentDirection = (mStartPosition - mEnemy->position());
+	bool hasPassedTarget = !((currentDirection.x > 0 == -mDirection.x > 0) && (currentDirection.y > 0 == -mDirection.y > 0));
+	return hasPassedTarget;
 }
 
 
 void EnemyAttack::resume()
 {
-	mHasAttacked = false;
-	mHitCounter = 0;
-	mEnemy->collider()->setDidHit(false);
+	exit();
 	init();
 }
 
@@ -112,5 +109,6 @@ void EnemyAttack::resume()
 void EnemyAttack::exit()
 {
 	mHasAttacked = false;
-	mHitCounter = 0;
+	mDidHit = false;
+	mEnemy->collider()->setDidHit(false);
 }

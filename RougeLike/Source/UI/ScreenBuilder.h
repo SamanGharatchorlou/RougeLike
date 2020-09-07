@@ -19,27 +19,27 @@ struct TexturePacket
 class ScreenBuilder
 {
 public:
-	void populateScreen(Screen* screen);
+	void populateScreen(Screen* screen) const;
 
 	TexturePacket getButtonTextures(const BasicString& buttonType) const;
 
 
 private:
 
-	ScreenLayers buildUIScreen(const ScreenAttributes& screenAttributes);
-	ScreenLayers buildScreenLayers(const ScreenAttributes& screenAttributes);
+	ScreenLayers buildUIScreen(const ScreenAttributes& screenAttributes) const;
+	ScreenLayers buildScreenLayers(const ScreenAttributes& screenAttributes) const;
 	ScreenLayer buildLayer(const LayerAttributes& attributes) const;
 	UIElement* buildElement(const StringMap& attributes) const;
-	Elements setParents(ScreenLayers& layers, const ScreenAttributes& screenAttributes);
+	Elements setParents(ScreenLayers& layers, const ScreenAttributes& screenAttributes) const;
 
-	void setChildren(const ScreenLayers& screenLayers, Elements& parents);
-	void formatElements(ScreenLayers& screenLayers);
+	void setChildren(const ScreenLayers& screenLayers, Elements& parents) const;
+	void formatElements(ScreenLayers& screenLayers) const;
+	void autoSizeRect(UIElement* element) const;
 	void repositionRelativeToParent(UIElement* element) const;
-	void reformatText(UIElement* element);
+	void reformatText(UIElement* element) const;
 
 
 private:
 	Texture* getTexture(const StringMap& attributes) const;
-
 	void buildSlider(UISlider* slider, const StringMap& attributes) const;
 };

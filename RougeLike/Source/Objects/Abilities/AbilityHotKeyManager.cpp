@@ -60,7 +60,7 @@ void AbilityHotKeyManager::init(Screen* screen)
 {
 	mGameScreen = static_cast<GameScreen*>(screen);
 
-	ScreenBuilder builder;
+	const ScreenBuilder builder;
 	TexturePacket buttonTextures = builder.getButtonTextures("TrafficLightSquareButton");
 	mStateButtons[AbilityState::Idle] = buttonTextures.defaultTexture; // Green
 	mStateButtons[AbilityState::Selected] = buttonTextures.selected; // Blue
@@ -79,3 +79,8 @@ Button::State AbilityHotKeyManager::state(Ability* ability, const InputManager* 
 	return input->state(hotKey(ability)->mKey);
 }
 
+
+void AbilityHotKeyManager::setCursorTexture(Texture* texture)
+{
+	mGameScreen->setCursorTexture(texture);
+}

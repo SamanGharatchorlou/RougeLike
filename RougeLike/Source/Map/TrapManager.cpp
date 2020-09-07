@@ -6,18 +6,14 @@
 
 #include "Objects/Pools/EffectPool.h"
 
+#include "Audio/AudioManager.h"
 
 
-void TrapManager::init(Actor* actor, EffectPool* effectPool, const TrapDataMap* trapData) 
-{ 
-	mActor = actor; 
-	mTrapData = trapData; 
-	mEffectPool = effectPool;
-}
-
-
-void TrapManager::clear()
+TrapManager::~TrapManager()
 {
+	if (mPersistingTraps.size() > 0)
+		AudioManager::Get()->stop("Fire", this);
+
 	mUntriggeredTraps.clear();
 	mTriggeredTraps.clear();
 	mPersistingTraps.clear();
@@ -25,6 +21,14 @@ void TrapManager::clear()
 	mEffectPool = nullptr;
 	mActor = nullptr;
 	mTrapData = nullptr;
+}
+
+
+void TrapManager::init(Actor* actor, EffectPool* effectPool, const TrapDataMap* trapData) 
+{ 
+	mActor = actor; 
+	mTrapData = trapData; 
+	mEffectPool = effectPool;
 }
 
 
@@ -52,7 +56,14 @@ void TrapManager::triggerTrap(Index index)
 		if (animator.activeAimation()->currentFrame() == 0)
 		{
 			Trap trap(index, mTrapData->at(tile->decorType()));
-			mUntriggeredTraps.push(trap);
+
+			if (!mUntriggeredTraps.contains(trap))
+			{
+				mUntriggeredTraps.push(trap);
+
+				VectorF position = mMap->tile(index)->rect().Center();
+				AudioManager::Get()->playSound("TimerClick", nullptr, position); // Click trigger sound
+			}
 		}
 	}
 	else if (tile->has(DecorType::GratingTrigger))
@@ -63,6 +74,8 @@ void TrapManager::triggerTrap(Index index)
 		{
 			animator.activeAimation()->nextFrame();
 			triggerAll(DecorType::Grating);
+
+			AudioManager::Get()->playSound("StoneTrigger", nullptr); // Click trigger sound
 		}
 	}
 }
@@ -70,6 +83,7 @@ void TrapManager::triggerTrap(Index index)
 
 void TrapManager::triggerAll(DecorType type)
 {
+	VectorF triggerPosition;
 	for (unsigned int y = 0; y < mMap->yCount(); y++)
 	{
 		for (unsigned int x = 0; x < mMap->xCount(); x++)
@@ -83,8 +97,15 @@ void TrapManager::triggerAll(DecorType type)
 
 				tile->animation(0).start();
 			}
+
+			if (tile->is(DecorType::GratingTrigger))
+			{
+				triggerPosition = tile->rect().Center();
+			}
 		}
 	}
+
+	AudioManager::Get()->loopSound("Fire", this, triggerPosition);
 }
 
 
@@ -116,24 +137,24 @@ void TrapManager::processCollisions(Index index)
 void TrapManager::pause()
 {
 	for (UniqueQueue<Trap>::iterator iter = mTriggeredTraps.begin(); iter != mTriggeredTraps.end(); iter++)
-	{
 		iter->pause();
-	}
+
 	for (UniqueQueue<Trap>::iterator iter = mUntriggeredTraps.begin(); iter != mUntriggeredTraps.end(); iter++)
-	{
 		iter->pause();
-	}
+
+	if(mPersistingTraps.size() > 0)
+		AudioManager::Get()->pause("Fire", this);
 }
 void TrapManager::resume()
 {
 	for (UniqueQueue<Trap>::iterator iter = mTriggeredTraps.begin(); iter != mTriggeredTraps.end(); iter++)
-	{
 		iter->resume();
-	}
+
 	for (UniqueQueue<Trap>::iterator iter = mUntriggeredTraps.begin(); iter != mUntriggeredTraps.end(); iter++)
-	{
 		iter->resume();
-	}
+
+	if(mPersistingTraps.size() > 0)
+		AudioManager::Get()->resume("Fire", this);
 }
 
 
@@ -157,6 +178,13 @@ void TrapManager::updateTriggerTraps()
 				trap.reset();
 
 				mTriggeredTraps.push(trap);
+
+				VectorF position = mapTile(trap)->rect().Center();
+
+				AudioManager* audio = AudioManager::Get();
+				if(audio->isPlaying("TimerClick", nullptr))
+					audio->stop("TimerClick", nullptr);
+				audio->playSound("SpikeTrapTrigger", tile, position);
 			}
 		}
 	}
@@ -177,6 +205,9 @@ void TrapManager::updateResetTraps()
 			{
 				animator.activeAimation()->nextFrame();
 				mTriggeredTraps.popFront();
+
+				VectorF position = mapTile(trap)->rect().Center();
+				AudioManager::Get()->playSound("SpikeTrapReset", tile, position);
 			}
 		}
 	}

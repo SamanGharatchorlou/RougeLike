@@ -11,6 +11,7 @@ void SettingsScreen::init()
 	linkSlider(ScreenItem::Music, "MusicSlider");
 	linkSlider(ScreenItem::Sound, "SoundSlider");
 	linkButton(ScreenItem::Close, "CloseButton");
+	linkButton(ScreenItem::Back, "BackButton");
 
 	AudioManager* audio = AudioManager::Get();
 
@@ -25,10 +26,20 @@ void SettingsScreen::init()
 void SettingsScreen::slowUpdate()
 {
 	AudioManager* audio = AudioManager::Get();
-	audio->setMusicVolume(slider(ScreenItem::Music)->getValue());
-	audio->setSoundVolume(slider(ScreenItem::Sound)->getValue());
 
-	if (released(ScreenItem::Close))
+	UISlider* soundSlider = slider(ScreenItem::Sound);
+	if (soundSlider->isActive())
+	{
+		audio->setSoundVolume(slider(ScreenItem::Sound)->getValue());
+	}
+
+	UISlider* musicSlider = slider(ScreenItem::Music);
+	if (musicSlider->isActive())
+	{
+		audio->setMusicVolume(slider(ScreenItem::Music)->getValue());
+	}
+
+	if (released(ScreenItem::Close) || released(ScreenItem::Back))
 	{
 		mController->popScreen();
 	}

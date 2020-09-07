@@ -85,6 +85,7 @@ enum class ScreenItem
 	Sound,
 	Mute,
 	Close,
+	Back,
 
 	// Game over
 	Continue

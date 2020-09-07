@@ -1,29 +1,38 @@
 #include "pch.h"
 #include "ChargeAbility.h"
 
-#include "Objects/Pools/EffectPool.h"
-#include "Actors/Player/Player.h"
-
+#include "Audio/AudioManager.h"
+#include "Input/InputManager.h"
 #include "Game/Camera/Camera.h"
 
+#include "Objects/Pools/EffectPool.h"
 #include "Collisions/Colliders/QuadCollider.h"
-#include "Audio/AudioManager.h"
-
+#include "Actors/Player/Player.h"
 #include "Objects/Properties/Attributes/Health.h"
 
 
-void ChargeAbility::activate(VectorF position)
+ChargeAbility::ChargeAbility() : mDistanceTravelled(0.0f) 
+{
+	mSelectionCollider.init(&mSelectionQuad);
+};
+
+void ChargeAbility::handleInput(const InputManager* input)
+{
+	VectorF cameraPosition = Camera::Get()->rect().TopLeft();
+	VectorF cursorPos = input->cursorPosition() + cameraPosition;
+
+	VectorF dir = (mCaster->position() - cursorPos);
+	mChargeTarget = mCaster->position() + dir * 1000.0f; // any random point far along in this direction
+	
+	updateSelectionQuad();
+}
+
+
+void ChargeAbility::activate()
 {
 	mDistanceTravelled = 0.0f;
 
-	// set charge target, only use direction() after this!
-	VectorF dir = (mCaster->position() - position).normalise();
-	mChargeTarget = mCaster->position() + dir * 1000.0f; // any random point far in this direction
-	mRect.SetCenter(mCaster->position());
-
-	float ratio = 0.6f;
-	setScaledQuad(ratio);
-	setQuadCollider();
+	updateQuad();
 
 	mAnimator.selectAnimation(Action::Active);
 	mWallCollisions.setActor(mCaster);
@@ -33,31 +42,36 @@ void ChargeAbility::activate(VectorF position)
 
 void ChargeAbility::fastUpdate(float dt)
 {
-	VectorF velocity = direction() * mProperties.at(PropertyType::Force);
+	VectorF velocity = direction() * mProperties.at(PropertyType::Velocity);
 	velocity = mWallCollisions.allowedVelocity(mCaster->currentMap(), velocity, dt);
 
 	if(mTimer.getSeconds() < mProperties.at(PropertyType::Time))
 	{
 		mCaster->physics()->move(velocity, dt);
-		mQuad.translate(velocity * dt);
 	}
 	else
 	{
 		setCharging(false);
 	}
+
+	updateQuad();
 }
 
 
 void ChargeAbility::slowUpdate(float dt)
 {
 	mAnimator.slowUpdate(dt);
-	mRect.SetCenter(mCaster->position());
 }
 
 
 void ChargeAbility::render()
 {
-	if (mState == AbilityState::Running)
+	if (mState == AbilityState::Selected)
+	{
+		Quad2D<float> travelQuad = Camera::Get()->toCameraCoords(mSelectionQuad);
+		renderQuadOutline(travelQuad, mSelectHighlight);
+	}
+	else if (mState == AbilityState::Running)
 	{
 #if DRAW_ABILITY_RECTS
 		debugDrawRect(mRect, RenderColour::Yellow);
@@ -135,21 +149,31 @@ double ChargeAbility::rotation() const
 }
 
 
-// replace regular collider with quad collider
-void ChargeAbility::setQuadCollider()
+void ChargeAbility::updateQuad()
 {
-	delete mCollider;
-	mCollider = new QuadCollider(&mQuad);
+	mRect.SetCenter(mCaster->position());
+
+	RectF scaledRect = mRect;
+	scaledRect.SetSize(mRect.Size() * 0.6f);
+	scaledRect.SetCenter(mRect.Center());
+
+	mQuad = Quad2D<float>(scaledRect);
+	mQuad.rotate(rotation(), scaledRect.Center());
 }
 
 
-void ChargeAbility::setScaledQuad(float scale)
+void ChargeAbility::updateSelectionQuad()
 {
-	RectF scaledRect = mRect;
-	scaledRect.SetSize(mRect.Size() * scale);
-	scaledRect.SetCenter(mRect.Center());
-	mQuad = Quad2D<float>(scaledRect);
-	mQuad.rotate(rotation(), scaledRect.Center());
+	mRect.SetCenter(mCaster->position());
+
+	RectF rect = mRect;
+	float travelDistance = mProperties.at(PropertyType::Velocity) * mProperties.at(PropertyType::Time);
+	VectorF size(travelDistance, rect.Height() * 0.6f);
+	rect.SetSize(size);
+	rect.SetLeftCenter(mCaster->position());
+
+	mSelectionQuad = Quad2D<float>(rect);
+	mSelectionQuad.rotate(rotation(), mRect.Center());
 }
 
 

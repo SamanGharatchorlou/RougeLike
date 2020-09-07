@@ -1,26 +1,31 @@
 #include "pch.h"
 #include "SlashAbility.h"
 
-#include "Actors/Actor.h"
-
+#include "Game/Camera/Camera.h"
+#include "Audio/AudioManager.h"
+#include "Input/InputManager.h"
 #include "Objects/Pools/EffectPool.h"
 
-#include "Game/Camera/Camera.h"
+#include "Actors/Actor.h"
 #include "Collisions/Colliders/QuadCollider.h"
 
-#include "Audio/AudioManager.h"
 
 
-void SlashAbility::activate(VectorF posision)
+
+void SlashAbility::handleInput(const InputManager* input)
 {
-	mTargetDirection = (mCaster->position() - posision).normalise();
+	VectorF cameraPosition = Camera::Get()->rect().TopLeft();
+	VectorF cursorPos = input->cursorPosition() + cameraPosition;
+	mTargetDirection = (mCaster->position() - cursorPos).normalise();
+
+	updateQuad();
+}
+
+
+void SlashAbility::activate()
+{
 	mAnimator.startAnimation(Action::Active);
 
-	// replace regular collider with quad collider
-	delete mCollider;
-	mCollider = new QuadCollider(&mQuad);
-
-	mRect.SetLeftCenter(mCaster->position());
 	slashOnce();
 
 	mActivateCollisions = true;
@@ -35,8 +40,7 @@ void SlashAbility::applyEffects(Actor* actor, EffectPool* effectPool)
 
 void SlashAbility::fastUpdate(float dt)
 {
-	mRect.SetLeftCenter(mCaster->rect().RightCenter());
-	setQuadRect();
+	updateQuad();
 }
 
 
@@ -58,7 +62,21 @@ void SlashAbility::slowUpdate(float dt)
 
 void SlashAbility::render()
 {
-	if (mState == AbilityState::Running)
+	if (mState == AbilityState::Selected)
+	{
+		Quad2D<float> largeQuad = Camera::Get()->toCameraCoords(mQuad);
+		renderQuadOutline(largeQuad, mSelectHighlight);
+
+		RectF rect = mRect;
+		rect.SetSize(mRect.Size() / 2.0f);
+		rect.SetLeftCenter(mCaster->rect().RightCenter());
+
+		Quad2D<float> smallerQuad = Quad2D<float>(rect);
+		smallerQuad.rotate(getRotation(mTargetDirection) + 90, mCaster->position());
+		smallerQuad = Camera::Get()->toCameraCoords(smallerQuad);
+		renderQuadOutline(smallerQuad, mSelectHighlight);
+	}
+	else if (mState == AbilityState::Running)
 	{
 #if DRAW_ABILITY_RECTS
 		debugDrawRect(mRect, RenderColour::Yellow);
@@ -73,13 +91,11 @@ void SlashAbility::render()
 
 		mAnimator.render(renderRect, getRotation(mTargetDirection) + 90, aboutPoint);
 	}
-
 }
 
 
 void SlashAbility::exit()
 {
-	mRect.SetSize(mRect.Size() / 2.0f);
 	mSlashCount = 0;
 }
 
@@ -91,23 +107,27 @@ void SlashAbility::slashOnce()
 	{
 		mSlashCount++;
 
-		if (mSlashCount == 2)
-		{
-			mRect.SetSize(mRect.Size() * 2.0f);
-			mRect.SetLeftCenter(mCaster->rect().RightCenter());
-		}
+		VectorF size = mRect.Size();
+		if (mSlashCount == 1)
+			size /= 2.0f;
+		else if (mSlashCount == 2)
+			size *= 2.0f;
+
+		mRect.SetSize(size);
+		mRect.SetLeftCenter(mCaster->rect().RightCenter());
 
 		const BasicString slashAudio = "Slash" + BasicString(mSlashCount);
 		AudioManager::Get()->playSound(slashAudio, mCaster);
 
-		setQuadRect();
+		updateQuad();
 		mHitList.clear();
 	}
 }
 
 
-void SlashAbility::setQuadRect()
+void SlashAbility::updateQuad()
 {
+	mRect.SetLeftCenter(mCaster->rect().RightCenter());
 	mQuad = Quad2D<float>(mRect);
 	mQuad.rotate(getRotation(mTargetDirection) + 90, mCaster->position());
 }

@@ -34,8 +34,6 @@ public:
 	UIElement(Data& data);
 	virtual ~UIElement() { };
 
-	virtual void handleInput(const InputManager* input) { }
-
 	void fill(const StringMap& attributes);
 
 	const BasicString& id() const { return mId; }

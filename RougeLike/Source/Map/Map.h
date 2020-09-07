@@ -22,7 +22,6 @@ class Map : public MapBase<MapTile>
 public:
 	Map();
 	Map(Vector2D<int> mapIndexSize);
-	~Map() { };
 
 	void initTrapManager(Actor* actor, EffectPool* effectPool, const TrapDataMap* trapData);
 	void setInfo(MapType type, int level) { mType = type; mLevel = level; }
@@ -43,7 +42,6 @@ public:
 	void deferredRender();
 
 	void setSize(Vector2D<int> size);
-	void clearData();
 
 	// Getters
 	VectorF tileSize() const;

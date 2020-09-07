@@ -63,4 +63,6 @@ private:
 	Weapon* mWeapon;
 
 	bool mControlOverride;
+
+	TimerF mStepTimer;
 };

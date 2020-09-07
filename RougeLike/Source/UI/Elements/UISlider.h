@@ -15,7 +15,7 @@ public:
 	void setComponents(Texture* container, UIButton* slider, UIBox* bar);
 	void disableInput() { mSelectable = false; }
 
-	void handleInput(const InputManager* input) override;
+	bool handleInput(const InputManager* input);
 
 	void setCursorOffset(float cursorPosition);
 
@@ -23,6 +23,8 @@ public:
 	void setSliderValue(float value);
 	
 	float getValue() const;
+
+	bool isActive() const;
 
 	virtual void render() override;
 

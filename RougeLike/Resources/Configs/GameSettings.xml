@@ -4,6 +4,8 @@
 		<Width>1024</Width>
 		<Height>768</Height>
 		<AudioChannels>8</AudioChannels>
+		<MusicVolume>0</MusicVolume>
+		<SoundVolume>100</SoundVolume>
 	</Game>
 	<Tutorial>OFF</Tutorial>
 </Settings>

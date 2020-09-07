@@ -3,7 +3,7 @@
 	<Properties>
 		<!-- Physics -->
 		<Force>500</Force>
-		<MaxVelocity>70</MaxVelocity>
+		<MaxVelocity>80</MaxVelocity>
 
 		<!-- General Attributes -->
 		<Health>120</Health>
@@ -14,8 +14,8 @@
 
 		<!-- Attack -->
 		<AttackSpeed>1.25</AttackSpeed>
-		<TackleDistance>60</TackleDistance>
-		<TackleMovementSpeed>250</TackleMovementSpeed>
+		<TackleDistance>75</TackleDistance>
+		<TackleMovementSpeed>200</TackleMovementSpeed>
 
 		<!-- Patrol -->
 		<SightRange>1000</SightRange>

@@ -114,13 +114,6 @@ void Map::deferredRender()
 }
 
 
-void Map::clearData()
-{
-	mData.clear();
-	mTraps.clear();
-}
-
-
 // --- Getters --- //
 VectorF Map::tileSize() const
 {

@@ -9,10 +9,12 @@ public:
 	virtual bool load(const BasicString& filePath) = 0;
 
 	virtual void play(int channel) = 0;
-	virtual void pause(int channel) { };
+	virtual void pause(int channel) = 0;
+	virtual void resume(int channel) = 0;
 	virtual void stop(int channel) = 0;
 
 	virtual void playNext(int channel) = 0;
+	virtual bool isPlaying(int channel) const = 0;
 
 #if PRINT_PLAY_AUDIO
 	BasicString mFilePath;
@@ -32,7 +34,11 @@ public:
 	void play(int channel) override;
 	void playNext(int channel) override { play(channel); }
 
+	void resume(int channel) override;
+	void pause(int channel) override;
 	void stop(int channel) override;
+
+	bool isPlaying(int channel) const override;
 
 private:
 	Mix_Chunk *mChunk;
@@ -51,8 +57,11 @@ public:
 	void play(int channel) override;
 	void playNext(int channel) override { play(channel); }
 
+	void resume(int channel) override { DebugPrint(Warning, "UNIMPLEMENTED\n"); }
 	void pause(int channel) override;
 	void stop(int channel) override;
+
+	bool isPlaying(int channel) const override;
 
 private:
 	Mix_Music *mMusic;
@@ -71,7 +80,11 @@ public:
 	void play(int channel) override;
 	void playNext(int channel) override;
 
+	void resume(int channel) override;
+	void pause(int channel) override;
 	void stop(int channel) override;
+
+	bool isPlaying(int channel) const override;
 
 private:
 	std::vector<Audio*> group;

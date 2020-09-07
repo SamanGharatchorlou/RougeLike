@@ -26,7 +26,7 @@ public:
 	void updateStates();
 	HotKey* hotKey(Ability* ability);
 
-
+	void setCursorTexture(Texture* texture);
 
 private:
 	GameScreen* mGameScreen;
