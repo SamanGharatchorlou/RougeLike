@@ -21,5 +21,8 @@ public:
 
 
 private:
-	GameData* mGameData;
+	GameData* mGameData;	
+	
+	BasicString mSelectedCharacter;
+	BasicString mSelectedWeapon;
 };

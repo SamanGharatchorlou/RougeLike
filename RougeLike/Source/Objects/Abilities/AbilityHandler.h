@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Events/LocalDispatcher.h"
 
 class Ability;
 class Actor;
@@ -37,8 +36,6 @@ private:
 
 
 private:
-	LocalDispatcher mEvents;
-	
 	std::vector<Actor*>* mTargets;
 	EffectPool* mEffects;
 

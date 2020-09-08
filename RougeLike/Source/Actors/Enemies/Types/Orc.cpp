@@ -50,3 +50,9 @@ bool Orc::canAttck() const
 
 	return true;
 }
+
+
+bool Orc::isAttacking() const
+{
+	return state() == EnemyState::Charge || state() == EnemyState::PreAttack;
+}

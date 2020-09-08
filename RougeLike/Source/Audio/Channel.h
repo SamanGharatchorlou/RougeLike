@@ -18,6 +18,9 @@ public:
 	Channel();
 	void init(int index) { mIndex = index; }
 
+	void setAudio(Audio* audio) { mAudio = audio; }
+	const Audio* audio() const { return mAudio; }
+
 	void play();
 	void loop();
 	void playNext();
@@ -30,11 +33,10 @@ public:
 	bool hasPlayingState() const;
 	bool isAudioRunning() const;
 
-	bool has(Audio* audio, void* sourceId) const;
-	bool isPlaying(Audio* audio, void* sourceId) const;
+	bool has(Audio* audio, uintptr_t id) const;
+	bool isPlaying(Audio* audio, uintptr_t id) const;
 
 	bool attenuate() const;
-	void setVolume(float volume) { mVolume = volume; }
 
 	bool canFree() const;
 	void free();
@@ -44,15 +46,16 @@ public:
 
 public:
 	State mState;
-	Audio* mAudio;
-	void* mID;
 	VectorF mSource;
+	uintptr_t mID;
 
 	// 0 - 1 independant of game sound volume
 	float mVolume;
+
 
 	State mPrePauseState;
 
 private:
 	int mIndex;
+	Audio* mAudio;
 };

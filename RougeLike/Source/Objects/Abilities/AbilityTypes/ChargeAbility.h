@@ -24,7 +24,6 @@ public:
 	AbilityType type() const override { return AbilityType::Charge; }
 
 
-
 private:
 	void applyEffects(Actor* actor, EffectPool* effectPool) override;
 
@@ -42,7 +41,6 @@ private:
 private:
 	TimerF mTimer;
 	VectorF mChargeTarget;
-	float mDistanceTravelled;
 
 	WallCollisionTracker mWallCollisions;
 

@@ -15,6 +15,7 @@ public:
 
 	void setRect(RectF rect) { cameraRect = rect; }
 
+	void addTrauma(float trauma);
 	void handleEvent(EventData& data) override;
 
 	VectorF offset();
@@ -24,13 +25,15 @@ public:
 	float trauma() const { return mTrauma; }
 	bool hasTrauma() const { return mTrauma != 0; }
 
-
+	float reductionRate() const { return mTraumaReduction; }
 
 
 private:
 	float mTrauma;
 	float mMaxTrauma;
 	float mTraumaReduction;
+
+
 
 	RectF cameraRect;
 };

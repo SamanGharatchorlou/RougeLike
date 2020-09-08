@@ -26,7 +26,7 @@ void Channel::free()
 {
 	mState = Free;
 	mAudio = nullptr;
-	mID = nullptr;
+	mID = NULL;
 	mSource = VectorF(-1.0f, -1.0f);
 	mVolume = 1.0f;
 }
@@ -48,12 +48,18 @@ void Channel::loop()
 {
 	mState = Looping;
 	mAudio->play(mIndex);
+#if PRINT_PLAYING_AUDIO
+	DebugPrint(Log, "Looping audio: %s\n", mAudio->name().c_str());
+#endif
 }
 
 void Channel::play()
 {
 	mState = Playing;
 	mAudio->play(mIndex);
+#if PRINT_PLAYING_AUDIO
+	DebugPrint(Log, "Playing audio: %s\n", mAudio->name().c_str());
+#endif
 }
 
 void Channel::stop()
@@ -81,14 +87,14 @@ bool Channel::isAudioRunning() const
 }
 
 
-bool Channel::isPlaying(Audio* audio, void* sourceId) const
+bool Channel::isPlaying(Audio* audio, uintptr_t id) const
 {
-	return hasPlayingState() && has(audio, sourceId);
+	return hasPlayingState() && has(audio, id);
 }
 
-bool Channel::has(Audio* audio, void* sourceId) const
+bool Channel::has(Audio* audio, uintptr_t id) const
 {
-	return mID == sourceId && mAudio == audio;
+	return mID == id && mAudio == audio;
 }
 
 bool Channel::canFree() const

@@ -16,5 +16,6 @@ public:
 	void attack() override;
 
 	bool canAttck() const override;
+	bool isAttacking() const override;
 
 };

@@ -94,6 +94,7 @@ void CharacterSelectionScreen::readCharacters()
 
 void CharacterSelectionScreen::updateCharacter()
 {
+	mCharacterSelected = true;
 	mSelectedCharacter = mCharacters.at(mCharacterIndex).first;
 	mSelectedWeapon = mCharacters.at(mCharacterIndex).second;
 

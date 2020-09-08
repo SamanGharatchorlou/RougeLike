@@ -66,11 +66,17 @@ void Camera::fastUpdate(float dt)
 		mRect = mRect.Translate(0.0f, translation.y);
 	}
 
-	// TODO: ???? fastupdate is in sloupdate?
+
 	if (shakeyCam.hasTrauma())
 	{
-		//shakeyCam.setRect(mRect);
-		//shakeyCam.fastUpdate(dt);
+		mActiveRect = shakeyCam.rect();
+
+		shakeyCam.setRect(mRect);
+		shakeyCam.fastUpdate(dt);
+	}
+	else
+	{
+		mActiveRect = &mRect;
 	}
 }
 
@@ -78,24 +84,14 @@ void Camera::fastUpdate(float dt)
 
 void Camera::slowUpdate(float dt)
 {
+#if PRINT_SHAKEYCAM_VALUES
 	if (shakeyCam.hasTrauma())
 	{
-		mActiveRect = shakeyCam.rect();
-
-		shakeyCam.setRect(mRect);
-		shakeyCam.fastUpdate(dt);
-
-
-#if PRINT_SHAKEYCAM_VALUES
 		DebugPrint(Log, "Trauma %.3f | Offset = %.3f, %.3f\n",
 			shakeyCam.trauma(),
 			shakeyCam.offset().x, shakeyCam.offset().y);
+	}
 #endif
-	}
-	else
-	{
-		mActiveRect = &mRect;
-	}
 }
 
 

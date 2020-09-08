@@ -70,7 +70,7 @@ void AIPathingController::updatePaths(const std::vector<Enemy*>& enemies, float 
 	minimumFrameCount = 15;
 #endif
 
-	float pathingLimit = calculatePathingLimit(minimumFrameCount, dt);
+	int pathingLimit = calculatePathingLimit(minimumFrameCount, dt);
 
 	// split the list up into sections and calculate a single section per frame
 	Vector2D<int> range = getCalculationIndexRange(enemies);

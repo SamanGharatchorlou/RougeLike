@@ -5,7 +5,6 @@
 #include "Graphics/TextureManager.h"
 
 #include "UIEventHandler.h"
-
 #include "Screens/PopupScreen.h"
 
 

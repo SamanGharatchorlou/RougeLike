@@ -5,8 +5,9 @@
 
 class Actor;
 
+// 14 seems to be more than enough mixes channels
+int constexpr mixerChannels = 14;
 float constexpr maxVolume = (float)MIX_MAX_VOLUME;
-
 
 
 
@@ -15,6 +16,8 @@ class SoundController
 public:
 	SoundController();
 
+	void clear();
+
 	void init();
 	void attenuationDistance(float maxDistance) { mAttenuationDistance = maxDistance * maxDistance; }
 	void setListener(Actor* listener) { mListener = listener; }
@@ -22,17 +25,17 @@ public:
 	void slowUpdate();
 
 	void playMusic(Audio* audio);
-	void playSound(Audio* audio, void* sourceId, VectorF source);
-	void loopSound(Audio* audio, void* sourceId, VectorF source);
+	void playSound(Audio* audio, uintptr_t id, VectorF source);
+	void loopSound(Audio* audio, uintptr_t id, VectorF source);
 
-	void pauseSound(Audio* audio, void* sourceId);
-	void resumeSound(Audio* audio, void* sourceId);
-	void stopSound(Audio* audio, void* sourceId);
+	void pauseSound(Audio* audio, uintptr_t id);
+	void resumeSound(Audio* audio, uintptr_t id);
+	void stopSound(Audio* audio, uintptr_t id);
 
-	void fadeOut(Audio* audio, void* sourceId);
+	void fadeOut(Audio* audio, uintptr_t id);
 
-	bool hasActiveAudio(Audio* audio, void* souceId);
-	bool isPlaying(Audio* audio, void* souceId);
+	bool hasActiveAudio(Audio* audio, uintptr_t id);
+	bool isPlaying(Audio* audio, uintptr_t id);
 
 	void setSoundVolume(float volume);
 	float getSoundVolume() const { return soundVolume; }
@@ -46,8 +49,7 @@ private:
 	float attenuation(Channel& channel);
 
 private:
-
-	Channel channels[MIX_CHANNELS];
+	Channel channels[mixerChannels];
 
 	float soundVolume;
 	float musicVolume;

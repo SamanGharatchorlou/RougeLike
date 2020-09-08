@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "LoadingManager.h"
 
+#include "Graphics/Renderer.h"
 #include "UI/UIManager.h"
 #include "UI/Screens/LoadingScreen.h"
 #include "UI/Elements/UISlider.h"

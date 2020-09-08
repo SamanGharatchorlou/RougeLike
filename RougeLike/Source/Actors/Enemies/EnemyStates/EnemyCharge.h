@@ -16,7 +16,7 @@ public:
 	void exit() override;
 	void resume() override;
 
-	const Type type() const { return Type::PreAttack; }
+	const Type type() const { return Type::Charge; }
 
 
 private:

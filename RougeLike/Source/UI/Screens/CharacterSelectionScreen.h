@@ -10,7 +10,7 @@ using CharacterInfo = std::pair<BasicString, BasicString>;
 class CharacterSelectionScreen : public Screen
 {
 public:
-	CharacterSelectionScreen() : mTutorialFileState(UISwitch::Off), mCharacterIndex(0) { }
+	CharacterSelectionScreen() : mTutorialFileState(UISwitch::Off), mCharacterIndex(0), mCharacterSelected(false) { }
 
 	void init() override;
 	void handleInput(const InputManager* input) override;
@@ -22,6 +22,8 @@ public:
 
 	ScreenType type() override { return ScreenType::CharacterSelection; }
 
+	bool characterSelected() const { return mCharacterSelected; }
+
 
 private:
 	void enterGame();
@@ -30,6 +32,7 @@ private:
 
 
 private:
+	bool mCharacterSelected;
 	BasicString mSelectedCharacter;
 	BasicString mSelectedWeapon;
 

@@ -6,6 +6,7 @@ enum class EffectType
 
 	Armor,
 	Heal,
+	Invunerability,
 
 	Blink,
 

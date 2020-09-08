@@ -1,11 +1,10 @@
 #pragma once
 
 #include "CameraShake.h"
-#include "Utilities/Quad2D.h"
+
 
 class Camera
 {
-
 public:
 	static Camera* Get();
 

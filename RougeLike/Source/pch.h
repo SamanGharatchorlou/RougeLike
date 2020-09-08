@@ -61,6 +61,7 @@ namespace fs = std::experimental::filesystem;
 #include "Utilities/BasicString.h"
 #include "Utilities/Vector2D.h"
 #include "Utilities/Rect.h"
+#include "Utilities/Quad2D.h"
 #include "Utilities/RenderColour.h"
 #include "Utilities/Helpers.h"
 #include "Utilities/Grid.h"
@@ -76,6 +77,6 @@ namespace fs = std::experimental::filesystem;
 // File accessors
 #include "System/Files/XMLParser.h"
 #include "System/Files/FileManager.h"
-
-// Globals
-#include "Graphics/Renderer.h"
+//
+//// Globals
+//#include "Graphics/Renderer.h"

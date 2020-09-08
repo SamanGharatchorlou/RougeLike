@@ -2,7 +2,7 @@
 #include "ScoreManager.h"
 
 
-ScoreManager::ScoreManager() : mScore(0), mMapLevel(0), updateUI(true)
+ScoreManager::ScoreManager() : mScore(0), mMapLevel(0), updateUI(false)
 {
 
 }
@@ -12,7 +12,7 @@ void ScoreManager::reset()
 {
 	mScore = 0;
 	mMapLevel = 0;
-	updateUI = true;
+	updateUI = false;
 }
 
 

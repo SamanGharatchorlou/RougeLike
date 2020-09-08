@@ -1,22 +1,18 @@
 #include "pch.h"
 #include "GameState.h"
 
-// TODO: clean up these includes
+#include "Graphics/Renderer.h"
 #include "Game/Data/GameData.h"
+#include "Game/Environment.h"
 
 #include "Audio/AudioManager.h"
 #include "Graphics/RenderManager.h"
-#include "Input/InputManager.h"
 #include "Managers/ScoreManager.h"
-#include "UI/UIManager.h"
-
-#include "Game/Environment.h"
-#include "Map/Map.h"
-#include "Game/Camera/Camera.h"
-
 #include "Actors/ActorManager.h"
 #include "Actors/Player/Player.h"
-#include "Actors/Enemies/EnemyManager.h"
+
+#include "Map/Map.h"
+#include "Game/Camera/Camera.h"
 
 
 GameState::GameState(GameData* gameData) : mGameData(gameData) { }
@@ -102,7 +98,7 @@ void GameState::initCamera()
 	camera->setPosition(cameraPosition);
 
 	// TODO: fix these values
-	camera->initShakeyCam(100.0f, 80.0f);
+	camera->initShakeyCam(140.0f, 100.0f);
 
 	RectF* playerRect = &mGameData->environment->actors()->player()->get()->rectRef();
 	camera->follow(playerRect);

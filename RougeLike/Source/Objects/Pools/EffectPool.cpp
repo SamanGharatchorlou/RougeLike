@@ -8,6 +8,7 @@
 #include "Objects/Effects/EffectTypes/BlinkEffect.h"
 #include "Objects/Effects/EffectTypes/HealEffect.h"
 #include "Objects/Effects/EffectTypes/StunEffect.h"
+#include "Objects/Effects/EffectTypes/InvunerabilityEffect.h"
 
 
 Effect* EffectPool::createNewObject(EffectType type) const
@@ -43,6 +44,11 @@ Effect* EffectPool::createNewObject(EffectType type) const
 	case EffectType::KnockbackStun:
 		effect = new KnockbackStunEffect;
 		break;
+
+	case EffectType::Invunerability:
+		effect = new InvunerabilityEffect;
+		break;
+
 	case EffectType::Count:
 	case EffectType::None:
 	default:

@@ -31,6 +31,8 @@ private:
 	bool inAttackRange() const;
 	bool inChaseRange() const;
 
+	VectorF targetPosition() const;
+
 
 private:
 	Path mPath;

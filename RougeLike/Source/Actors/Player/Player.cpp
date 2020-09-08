@@ -12,6 +12,9 @@
 #include "PlayerStates/PlayerAttackState.h"
 #include "PlayerStates/PlayerDeadState.h"
 
+// TEMP
+#include "Objects/Pools/EffectPool.h"
+
 #if DRAW_PLAYER_RECTS
 #include "Debug/DebugDraw.h"
 #endif
@@ -24,7 +27,15 @@ Player::Player() :
 	mControlOverride(false),
 	mStateMachine(new PlayerNullState)
 {
+}
+
+void Player::init()
+{
 	mStepTimer.start();
+
+	mHP = static_cast<Health*>(getAttribute(AttributeType::Health));
+	// Dont want this to trigger before the game screen
+	mHP->changedHandled();
 }
 
 
@@ -70,7 +81,7 @@ void Player::slowUpdate(float dt)
 
 	handleHealthChanges(health);
 
-	if(!health->isDead() && mCollider.gotHit())
+	if(health->canTakeDamage() && mCollider.gotHit())
 	{
 		handleHit(audio);
 	}
@@ -81,6 +92,7 @@ void Player::clear()
 {
 	mWeapon = nullptr;
 	mControlOverride = false;
+	mHP = nullptr;
 	Actor::clear();
 
 	if (mStateMachine.size() > 1)
@@ -120,11 +132,15 @@ void Player::render()
 		mWeapon->render();
 
 		RectF renderRect = Camera::Get()->toCameraCoords(rect());
+
 		const float flashTime = 0.1f;
 		if (mColourModTimer.isStarted() && mColourModTimer.getSeconds() < flashTime)
 		{
-			RenderColour colourMod = RenderColour(225, 0, 0);
-			mAnimator.render(renderRect, mPhysics.flip(), colourMod);
+			mAnimator.render(renderRect, mPhysics.flip(), RenderColour(RenderColour::TakeDamage));
+		}
+		else if (!mHP->canTakeDamage())
+		{
+			mAnimator.render(renderRect, mPhysics.flip(), RenderColour(RenderColour::Invunerable));
 		}
 		else
 		{
@@ -253,7 +269,27 @@ void Player::handleHit(AudioManager* audio)
 	TraumaEvent* trauma = new TraumaEvent(60);
 	mEvents.push(EventPacket(trauma));
 
+	PropertyMap map;
+	map[PropertyType::Time] = 0.75f;
+	Effect* effect = mEffects.pool()->getObject(EffectType::Invunerability);
+	effect->fill(map);
+	addEffect(effect);
+
 	mColourModTimer.restart();
+}
+
+
+void Player::addEffect(Effect* effect)
+{
+	Health* health = static_cast<Health*>(getAttribute(AttributeType::Health));
+	if (health->canTakeDamage())
+	{
+		Actor::addEffect(effect);
+	}
+	else
+	{
+		mEffects.returnEffect(effect);
+	}
 }
 
 

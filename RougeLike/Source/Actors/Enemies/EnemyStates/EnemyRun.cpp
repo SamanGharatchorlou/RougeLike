@@ -77,10 +77,31 @@ void EnemyRun::exit()
 }
 
 
+VectorF EnemyRun::targetPosition() const
+{
+	const AIPathing* pathing = mEnemy->pathing();
+
+	RectF targetRect = mEnemy->target()->rect();
+	VectorF points[5] { targetRect.Center(), targetRect.BotLeft(), targetRect.BotRight(), targetRect.TopRight(), targetRect.TopLeft() };
+	
+	int i = 0;
+	bool isValidFloorTile = false;
+
+	while (!isValidFloorTile && i < 5)
+	{
+		Index targetIndex = pathing->index(points[i++]);
+		isValidFloorTile = targetIndex.isPositive() && pathing->map()->floorCollisionTile(targetIndex);
+	}
+
+	return isValidFloorTile ? points[i - 1] : points[0];
+}
+
+
 // Generate a new path
 void EnemyRun::updatePath(int pathLimit)
 {
-	mPath = mEnemy->pathing()->findPath(mEnemy->position(), mEnemy->target()->rect().Center(), pathLimit);
+	VectorF endPosition = targetPosition();
+	mPath = mEnemy->pathing()->findPath(mEnemy->position(), endPosition, pathLimit);
 
 #if DRAW_AI_PATH
 	mEnemy->mDebugger.setPath(mPath);

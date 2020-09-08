@@ -16,7 +16,10 @@ public:
 	virtual void playNext(int channel) = 0;
 	virtual bool isPlaying(int channel) const = 0;
 
-#if PRINT_PLAY_AUDIO
+	virtual uintptr_t id() const { return reinterpret_cast<uintptr_t>(this); }
+
+#if DEBUG_CHECK
+	const BasicString name() const { return FileManager::Get()->getItemName(mFilePath); }
 	BasicString mFilePath;
 #endif
 };

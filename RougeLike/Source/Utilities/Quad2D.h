@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Vector2D.h"
-#include "Rect.h"
+#include "Helpers.h"
 
 template<class T>
 class Quad2D

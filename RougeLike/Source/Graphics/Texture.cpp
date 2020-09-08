@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Texture.h"
+#include "Renderer.h"
 
 Texture::Texture() : texture(nullptr), renderer(nullptr) { }
 

@@ -30,15 +30,5 @@
 		</Info>
 	</AttackingEffects>
 
-	<Animator>
-		<ID>Soldier</ID>
-		<FrameTime>0.04</FrameTime>
-		<FrameSize x = "900" y ="900"></FrameSize>
-		<Animations>
-			<Idle>16</Idle>
-			<Run>12</Run>
-		</Animations>
-	</Animator>
-
 	<LevellingInfo>SoldierLevelUp</InfoLevelling>
 </Data>

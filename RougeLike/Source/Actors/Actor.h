@@ -61,8 +61,7 @@ public:
 
 	virtual void resetColliders() = 0;
 
-
-	void addEffect(Effect* effect);
+	virtual void addEffect(Effect* effect);
 	void setVisibility(bool visibility) { mVisibility = visibility; }
 
 

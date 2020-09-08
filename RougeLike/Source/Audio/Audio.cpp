@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Audio.h"
 
-// --- Sound --- //
 
+// --- Sound --- //
 Sound::~Sound()
 {
 	Mix_FreeChunk(mChunk);
@@ -20,7 +20,7 @@ bool Sound::load(const BasicString& filePath)
 	}
 	else
 	{
-#if PRINT_PLAY_AUDIO
+#if DEBUG_CHECK
 		mFilePath = filePath;
 #endif
 		return true;
@@ -30,12 +30,7 @@ bool Sound::load(const BasicString& filePath)
 void Sound::play(int channel)
 {
 	Mix_PlayChannel(channel, mChunk, 0);
-
-#if PRINT_PLAY_AUDIO
-	DebugPrint(Log, "Playing sound %s\n", mFilePath.c_str());
-#endif
 }
-
 
 void Sound::stop(int channel)
 {
@@ -77,7 +72,7 @@ bool Music::load(const BasicString& filePath)
 	}
 	else
 	{
-#if PRINT_PLAY_AUDIO
+#if DEBUG_CHECK
 		mFilePath = filePath;
 #endif
 		return true;
@@ -146,7 +141,6 @@ bool AudioGroup::load(const BasicString& directoryPath)
 		if (audio->load(audioFilePaths[i]))
 		{
 			group.push_back(audio);
-
 		}
 		else
 		{
@@ -154,6 +148,11 @@ bool AudioGroup::load(const BasicString& directoryPath)
 				FileManager::Get()->getItemName(audioFilePaths[i]), groupName.c_str(), directoryPath.c_str(), Mix_GetError());
 		}
 	}
+
+#if DEBUG_CHECK
+	if(group.size() > 0)
+		mFilePath = audioFilePaths[0];
+#endif
 
 	DebugPrint(Log, "Successfully loaded %d/%d audio files into group '%s'\n", group.size(), audioFilePaths.size(), groupName.c_str());
 	return (bool)group.size();

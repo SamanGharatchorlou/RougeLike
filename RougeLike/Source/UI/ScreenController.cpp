@@ -98,8 +98,6 @@ void ScreenController::openPopup(const BasicString& popupInfo)
 		XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Menus, popupInfo));
 		popup->build(parser.rootNode());
 
-		//popup->setMainText(textFile);
-
 		addScreen(ScreenType::Popup);
 		addSystemState(SystemStates::PauseState);
 	}

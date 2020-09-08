@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "PauseState.h"
 
+#include "Graphics/Renderer.h"
 #include "Game/Data/GameData.h"
 
 #include "Graphics/TextureManager.h"

@@ -127,15 +127,13 @@ float AudioManager::musicVolume() const
 }
 
 
-void AudioManager::playSound(const BasicString& label, void* sourceId, VectorF source)
+void AudioManager::playSound(const BasicString& label, const void* sourceId, VectorF source)
 {
 	Audio* audio = getAudio(label);
 
 	if (audio)
-		mSoundController.playSound(audio, sourceId, source);
+		mSoundController.playSound(audio, reinterpret_cast<uintptr_t>(sourceId), source);
 }
-
-
 
 void AudioManager::playMusic(const BasicString& label)
 {
@@ -146,55 +144,55 @@ void AudioManager::playMusic(const BasicString& label)
 }
 
 
-void AudioManager::loopSound(const BasicString& label, void* sourceId, VectorF source)
+void AudioManager::loopSound(const BasicString& label, const void* sourceId, VectorF source)
 {
 	Audio* audio = getAudio(label);
 
 	if (audio)
-		mSoundController.loopSound(audio, sourceId, source);
+		mSoundController.loopSound(audio, reinterpret_cast<uintptr_t>(sourceId), source);
 }
 
 
-void AudioManager::stop(const BasicString& label, void* sourceId)
+void AudioManager::stop(const BasicString& label, const void* sourceId)
 {
 	Audio* audio = getAudio(label);
 
 	if (audio)
-		mSoundController.stopSound(audio, sourceId);
+		mSoundController.stopSound(audio, reinterpret_cast<uintptr_t>(sourceId));
 }
 
-void AudioManager::fadeOutSound(const BasicString& label, void* sourceId)
+void AudioManager::fadeOutSound(const BasicString& label, const void* sourceId)
 {
 	Audio* audio = getAudio(label);
 
 	if (audio)
-		mSoundController.fadeOut(audio, sourceId);
+		mSoundController.fadeOut(audio, reinterpret_cast<uintptr_t>(sourceId));
 }
 
 
 
-void AudioManager::pause(const BasicString& label, void* sourceId)
+void AudioManager::pause(const BasicString& label, const void* sourceId)
 {
 	Audio* audio = getAudio(label);
 
 	if (audio)
-		mSoundController.pauseSound(audio, sourceId);
+		mSoundController.pauseSound(audio, reinterpret_cast<uintptr_t>(sourceId));
 }
 
-void AudioManager::resume(const BasicString& label, void* sourceId)
+void AudioManager::resume(const BasicString& label, const void* sourceId)
 {
 	Audio* audio = getAudio(label);
 
 	if (audio)
-		mSoundController.resumeSound(audio, sourceId);
+		mSoundController.resumeSound(audio, reinterpret_cast<uintptr_t>(sourceId));
 }
 
-bool AudioManager::isPlaying(const BasicString& label, void* sourceId)
+bool AudioManager::isPlaying(const BasicString& label, const void* sourceId)
 {
 	Audio* audio = getAudio(label);
 
 	if (audio)
-		return mSoundController.isPlaying(audio, sourceId);
+		return mSoundController.isPlaying(audio, reinterpret_cast<uintptr_t>(sourceId));
 	else
 	{
 		DebugPrint(Warning, "No audio with label '%s' found, cannot check if playing\n", label.c_str());
@@ -202,12 +200,12 @@ bool AudioManager::isPlaying(const BasicString& label, void* sourceId)
 	}
 }
 
-bool AudioManager::isActive(const BasicString& label, void* sourceId)
+bool AudioManager::isActive(const BasicString& label, const void* sourceId)
 {
 	Audio* audio = getAudio(label);
 
 	if (audio)
-		return mSoundController.hasActiveAudio(audio, sourceId);
+		return mSoundController.hasActiveAudio(audio, reinterpret_cast<uintptr_t>(sourceId));
 	else
 	{
 		DebugPrint(Warning, "No audio with label '%s' found, cannot check if active\n", label.c_str());

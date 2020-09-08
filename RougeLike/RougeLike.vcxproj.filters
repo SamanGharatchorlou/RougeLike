@@ -169,6 +169,7 @@
     <ClCompile Include="Source\UI\Screens\GameOverScreen.cpp" />
     <ClCompile Include="Source\Actors\Player\PlayerStates\PlayerDeadState.cpp" />
     <ClCompile Include="Source\Audio\Channel.cpp" />
+    <ClCompile Include="Source\Objects\Effects\EffectTypes\InvunerabilityEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -371,6 +372,7 @@
     <ClInclude Include="Source\UI\Screens\GameOverScreen.h" />
     <ClInclude Include="Source\Actors\Player\PlayerStates\PlayerDeadState.h" />
     <ClInclude Include="Source\Audio\Channel.h" />
+    <ClInclude Include="Source\Objects\Effects\EffectTypes\InvunerabilityEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

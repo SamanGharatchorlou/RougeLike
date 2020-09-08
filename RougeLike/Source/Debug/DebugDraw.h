@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Utilities/RenderColour.h"
-#include "Utilities/Quad2D.h"
 
 void debugDrawPoint(VectorF point, float size, RenderColour colour);
 void debugDrawLine(VectorF pointA, VectorF pointB, RenderColour colour);

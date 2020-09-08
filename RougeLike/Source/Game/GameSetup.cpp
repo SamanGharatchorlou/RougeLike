@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "GameSetup.h"
 
+#include "Graphics/Renderer.h"
 #include "System/Window.h"
-
 #include "Audio/AudioManager.h"
+
 
 GameSetup::GameSetup() : title(""), audioChannels(0) 
 {
@@ -101,14 +102,13 @@ void GameSetup::initAudio()
 }
 
 
-
-
 Window* GameSetup::createWindow()
 {
 	Window* window = new Window;
 	window->init(title, screenSize);
 	return window;
 }
+
 
 bool GameSetup::initRenderer(Window* window)
 {

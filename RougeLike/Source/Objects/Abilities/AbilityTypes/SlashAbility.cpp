@@ -109,18 +109,24 @@ void SlashAbility::slashOnce()
 
 		VectorF size = mRect.Size();
 		if (mSlashCount == 1)
+		{
+			AudioManager::Get()->playSound("Slash1", mCaster);
 			size /= 2.0f;
+			Camera::Get()->getShake()->addTrauma(50);
+		}
 		else if (mSlashCount == 2)
+		{
+			AudioManager::Get()->playSound("Slash2", mCaster);
 			size *= 2.0f;
+			Camera::Get()->getShake()->addTrauma(80);
+		}
 
 		mRect.SetSize(size);
 		mRect.SetLeftCenter(mCaster->rect().RightCenter());
 
-		const BasicString slashAudio = "Slash" + BasicString(mSlashCount);
-		AudioManager::Get()->playSound(slashAudio, mCaster);
-
 		updateQuad();
 		mHitList.clear();
+
 	}
 }
 

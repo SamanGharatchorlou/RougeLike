@@ -41,6 +41,12 @@ RenderColour::RenderColour(Colour colour)
 	case RenderColour::White:
 		r = 255; g = 255; b = 255;
 		break;
+	case RenderColour::TakeDamage:
+		r = 215; g = 0; b = 0;
+		break;
+	case RenderColour::Invunerable:
+		r = 50; g = 50; b = 50;
+		break;
 	default:
 		r = 0; g = 0; b = 0;
 		DebugPrint(Warning, "Render colour has not been defined\n");

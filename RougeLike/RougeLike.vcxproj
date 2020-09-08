@@ -36,6 +36,7 @@
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\BasicAttackAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\SlashAbility.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\ArmorEffect.cpp" />
+    <ClCompile Include="Source\Objects\Effects\EffectTypes\InvunerabilityEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\KnockbackStunEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\SlowEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\StunEffect.cpp" />
@@ -213,6 +214,7 @@
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\BasicAttackAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\SlashAbility.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\ArmorEffect.h" />
+    <ClInclude Include="Source\Objects\Effects\EffectTypes\InvunerabilityEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\KnockbackStunEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\SlowEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\StunEffect.h" />

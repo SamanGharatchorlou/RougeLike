@@ -147,16 +147,19 @@ void PlayerManager::render()
 void PlayerManager::selectCharacter(const BasicString& characterConfig)
 { 
 	XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Player, "Player"));
+
+	// Animation
 	XMLParser animationParser(FileManager::Get()->findFile(FileManager::Config_Player, characterConfig + "Anim"));
 	XMLNode animationNode = animationParser.rootChild("Animator");
-
 	mPlayer.setCharacter(parser.rootNode(), animationNode);
 
+	// Weapon
 	BasicString weapontype = parser.rootChild("WeaponType").value();
 	mPlayer.setWeaponType(mWeaponStash.getWeapon(weapontype));
+	mPlayer.init();
 
+	// Levelling
 	mLevelling.init(parser.rootChild("LevellingInfo"), mPlayer.rect());
-
 #if UNLOCK_ALL_ABILITIES
 	mLevelling.unlockAllAbilities(this);
 #endif

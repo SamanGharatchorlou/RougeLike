@@ -2,15 +2,10 @@
 
 #include "Weapons/Weapon.h"
 #include "Weapons/WeaponData.h"
-
-// temp
-#include "Utilities/Quad2D.h"
 #include "Collisions/Colliders/QuadCollider.h"
-
 
 class MeleeWeaponData;
 class Collider;
-
 
 
 class MeleeWeapon : public Weapon

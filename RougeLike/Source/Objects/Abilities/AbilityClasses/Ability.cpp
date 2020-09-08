@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Ability.h"
 
+#include "Graphics/Renderer.h"
 #include "Actors/Actor.h"
 #include "Objects/Pools/EffectPool.h"
 #include "Objects/Effects/EffectTypes/Effect.h"

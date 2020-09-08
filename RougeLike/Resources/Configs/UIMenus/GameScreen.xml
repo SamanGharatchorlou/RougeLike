@@ -2,8 +2,8 @@
 <screen>
 
 	<Layer>
-		<Slider id = "HealthSlider" x = "261.065" y = "20.500" width = "512.500" height = "35.000" slider = "HealthSlider"></Slider>
-		<Slider id = "LevelSlider" x = "112.565" y = "64.000" width = "839.000" height = "27.500" slider = "LevelSlider"></Slider>
+		<Slider id = "HealthSlider" x = "230.000" y = "20.500" width = "500.000" height = "35.000" slider = "HealthSlider"></Slider>
+		<Slider id = "LevelSlider" x = "112.565" y = "68.000" width = "839.000" height = "27.500" slider = "LevelSlider"></Slider>
 		<TextBox id = "ExpText" parent = "LevelSlider" x = "-60.500" y = "-6.500" width = "58.000" height = "36.500">
 			<text>Exp:</text>
 		</TextBox>
@@ -12,17 +12,17 @@
 
 	<!-- Map level -->
 	<Layer>
-		<TextBox id = "MapLevel str" x = "810.450" y = "17.025" width = "137.000" height = "40.000">
+		<TextBox id = "MapLevel str" x = "800.000" y = "15.000" width = "137.000" height = "40.000">
 			<text>Map Level:</text>
 		</TextBox>
-		<TextBox id = "MapLevel val" parent = "MapLevel str" x = "141.500" y = "0.000" width = "75.500" height = "40.000">
+		<TextBox id = "MapLevel val" parent = "MapLevel str" x = "145.500" y = "-5.000" width = "75.500" height = "45.000">
 			<text>0</text>
 		</TextBox>
 	</Layer>
 		
 	<Layer>
 		<!-- Score -->
-		<TextBox id = "Score str" x = "26.025" y = "12.025" width = "200.000" height = "45.000">
+		<TextBox id = "Score str" x = "26.025" y = "10.000" width = "200.000" height = "45.000">
 			<text>Score:</text>
 		</TextBox>  
 		<TextBox id = "Score val" parent = "Score str" x = "115.000" y = "0.000" width = "92.000" height = "45.000">

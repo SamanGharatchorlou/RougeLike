@@ -1,6 +1,7 @@
  #include "pch.h"
 #include "PreGameState.h"
 
+#include "Graphics/Renderer.h"
 #include "Game/Data/GameData.h"
 
 #include "Input/InputManager.h"
@@ -29,23 +30,25 @@ void PreGameState::init()
 
 void PreGameState::slowUpdate(float dt)
 {
-	if (mGameData->uiManager->getActiveScreen()->released(ScreenItem::Play) || mGameData->inputManager->isReleased(Button::Enter))
+	Screen* screen = mGameData->uiManager->getActiveScreen();
+
+	if (screen->type() == ScreenType::CharacterSelection)
 	{
-		CharacterSelectionScreen* selectionScreen = static_cast<CharacterSelectionScreen*>(mGameData->uiManager->getActiveScreen());
-
-		PlayerManager* player = mGameData->environment->actors()->player();
-
-#if DEBUG_CHECK
-		if (selectionScreen->selectedCharacter().empty())
-			DebugPrint(Warning, "No character has been selected\n");
-
-		if (selectionScreen->selectedWeapon().empty())
-			DebugPrint(Warning, "No weapon has been selected\n");
-#endif
-
-		player->selectCharacter(selectionScreen->selectedCharacter());
-		player->selectWeapon(selectionScreen->selectedWeapon());
+		CharacterSelectionScreen* selectionScreen = static_cast<CharacterSelectionScreen*>(screen);
+		if(selectionScreen->characterSelected())
+		{
+			mSelectedCharacter = selectionScreen->selectedCharacter();
+			mSelectedWeapon = selectionScreen->selectedWeapon();
+		}
 	}
+}
+
+
+void PreGameState::exit()
+{
+	PlayerManager* player = mGameData->environment->actors()->player();
+	player->selectCharacter(mSelectedCharacter);
+	player->selectWeapon(mSelectedWeapon);
 }
 
 
@@ -61,27 +64,4 @@ void PreGameState::render()
 
 	// update window surface
 	SDL_RenderPresent(renderer);
-}
-
-
-void PreGameState::exit()
-{
-	CharacterSelectionScreen* selectionScreen = static_cast<CharacterSelectionScreen*>(mGameData->uiManager->screen(ScreenType::CharacterSelection));
-	
-	if (selectionScreen)
-	{
-		PlayerManager* player = mGameData->environment->actors()->player();
-
-	#if DEBUG_CHECK
-		if (selectionScreen->selectedCharacter().empty())
-			DebugPrint(Warning, "No character has been selected\n");
-
-		if (selectionScreen->selectedWeapon().empty())
-			DebugPrint(Warning, "No weapon has been selected\n");
-	#endif
-
-		player->selectCharacter(selectionScreen->selectedCharacter());
-		player->selectWeapon(selectionScreen->selectedWeapon());
-
-	}
 }

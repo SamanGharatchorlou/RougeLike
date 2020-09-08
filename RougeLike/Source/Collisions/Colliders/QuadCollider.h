@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Collider.h"
-#include "Utilities/Quad2D.h"
 
 
 class QuadCollider : public Collider

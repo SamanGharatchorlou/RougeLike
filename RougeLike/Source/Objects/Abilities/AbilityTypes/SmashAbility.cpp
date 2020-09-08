@@ -84,7 +84,6 @@ void SmashAbility::slowUpdate(float dt)
 	velocity = mWallCollisions.allowedVelocity(mCaster->currentMap(), velocity * 5.0f, dt);
 	bool hitWall = velocity.x == 0.0f || velocity.y == 0.0f;
 
-
 	// Begin explosion
 	if (!mReachedTarget && (hasPassedTarget || hitWall))
 	{
@@ -93,6 +92,7 @@ void SmashAbility::slowUpdate(float dt)
 		mRect.SetCenter(mTargetPosition);
 
 		mAnimator.start();
+		Camera::Get()->getShake()->addTrauma(140);
 
 		// Final explosion uses mRect not the hammer rect for collision detection
 		mQuad = Quad2D<float>(mRect);

@@ -37,6 +37,8 @@ public:
 
 	void setInvulnerablity(bool invulnerable) { mInvulnerable = invulnerable; }
 
+	bool canTakeDamage() const { return !mInvulnerable && !isDead(); }
+
 	bool hasChanged() const { return mChanged; }
 	void changedHandled() { mChanged = false; }
 

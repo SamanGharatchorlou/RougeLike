@@ -3,7 +3,6 @@
 #include "AbilityStates.h"
 #include "Animations/Animator.h"
 #include "Objects/Abilities/Cooldown.h"
-#include "Utilities/Quad2D.h"
 
 class Actor;
 class EffectPool;

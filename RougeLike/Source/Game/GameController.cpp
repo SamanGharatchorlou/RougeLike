@@ -2,6 +2,7 @@
 #include "GameController.h"
 
 #include <SDL_thread.h>
+#include "Graphics/Renderer.h"
 
 #include "Game/Data/LoadingManager.h"
 #include "Game/GameSetup.h"
@@ -114,6 +115,7 @@ void GameController::restartGame()
 	DebugPrint(Log, "--- Begin game restart ---\n");
 
 	GameSetup::setTutorial("OFF");
+	AudioManager::Get()->resetController();
 
 	// Remove all states
 	while (mGameStateMachine.size() > 1)

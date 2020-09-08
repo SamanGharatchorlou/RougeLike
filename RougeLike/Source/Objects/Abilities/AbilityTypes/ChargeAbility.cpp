@@ -11,7 +11,7 @@
 #include "Objects/Properties/Attributes/Health.h"
 
 
-ChargeAbility::ChargeAbility() : mDistanceTravelled(0.0f) 
+ChargeAbility::ChargeAbility()
 {
 	mSelectionCollider.init(&mSelectionQuad);
 };
@@ -30,13 +30,13 @@ void ChargeAbility::handleInput(const InputManager* input)
 
 void ChargeAbility::activate()
 {
-	mDistanceTravelled = 0.0f;
-
 	updateQuad();
 
 	mAnimator.selectAnimation(Action::Active);
 	mWallCollisions.setActor(mCaster);
 	setCharging(true);
+
+	Camera::Get()->getShake()->addTrauma(90);
 }
 
 
@@ -61,6 +61,13 @@ void ChargeAbility::fastUpdate(float dt)
 void ChargeAbility::slowUpdate(float dt)
 {
 	mAnimator.slowUpdate(dt);
+
+	if (mTimer.getSeconds() < mProperties.at(PropertyType::Time) * 0.7f)
+	{
+		CameraShake* shakeyCam = Camera::Get()->getShake();
+		float maintenanceTrauma = shakeyCam->reductionRate() * dt;
+		shakeyCam->addTrauma(maintenanceTrauma);
+	}
 }
 
 
@@ -102,7 +109,7 @@ void ChargeAbility::applyEffects(Actor* actor, EffectPool* effectPool)
 
 void ChargeAbility::exit()
 {
-	mDistanceTravelled = 0.0f;
+	mTimer.stop();
 	mHitList.clear();
 }
 

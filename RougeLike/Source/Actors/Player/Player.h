@@ -20,6 +20,7 @@ public:
 	Player();
 	~Player() { };
 
+	void init();
 	void setWeaponType(Weapon* weapon);
 	void handleInput(const InputManager* input);
 	void fastUpdate(float dt);
@@ -45,6 +46,9 @@ public:
 	void resetColliders() override;
 
 
+	void addEffect(Effect* effect) override;
+
+
 private:
 	void updateMovementSound(AudioManager* audio);
 	void setMovementAnimation();
@@ -61,6 +65,8 @@ private:
 	int mMapLevel;
 
 	Weapon* mWeapon;
+
+	Health* mHP;
 
 	bool mControlOverride;
 

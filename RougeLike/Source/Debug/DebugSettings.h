@@ -4,30 +4,30 @@
 
 #if DEBUG_CHECK
 
-#define MEMORY_TRACKING 0 // 1 = default, 2 = verbose
+#define MEMORY_TRACKING 1 // 1 = default, 2 = (very)verbose
 #define IGNORE_UNKNOWNS 0
 
 // Camera
 #define CAMERA_IGNORE_BOUNDARIES 0
 #define PRINT_SHAKEYCAM_VALUES 0
-#define SET_GAME_SCALE 0 // 
+#define SET_GAME_SCALE 0
 constexpr float game_scale = 0.5f;
 
 
 // Framerate
-#define FRAMERATE_CAP 0 // Use the FPS cap you want
+#define FRAMERATE_CAP 120 // Use the FPS cap you want
 #define PRINT_FRAMERATE_EVERY 0 // Print at the rate you specify in milliseconds i.e. 500 = print every 0.5 seconds
 
 // Player
 #define DRAW_PLAYER_RECT 0
 #define DRAW_PLAYER_WEAPON_RECT 0
 #define IGNORE_WALLS 0
-#define IGNORED_BY_ENEMIES 0
-#define INVUNERABLE 1
+#define IGNORED_BY_ENEMIES 1
+#define INVUNERABLE 0
 
 
 // Abilities
-#define UNLOCK_ALL_ABILITIES 0
+#define UNLOCK_ALL_ABILITIES 1
 #define NO_ABILITY_COOLDOWNS 0
 #define DRAW_ABILITY_RECTS 0
 
@@ -47,7 +47,7 @@ constexpr float game_scale = 0.5f;
 #define DRAW_AI_PATH 0
 #define DRAW_AI_PATH_COSTMAP 0
 
-#define LABEL_ENEMY_STATES 1
+#define LABEL_ENEMY_STATES 0
 #define LABEL_ENEMY_HEALTH 0
 #define DRAW_PLAYER_ENEMY_DISTANCE 0
 
@@ -65,15 +65,17 @@ constexpr float game_scale = 0.5f;
 
 
 // Collisions
-#define TRACK_COLLISIONS 1
+#define TRACK_COLLISIONS 0
 
 
 // Audio
-#define PRINT_PLAY_AUDIO 0
+#define PRINT_PLAYING_AUDIO 0
+#define PRINT_FULL_AUDIO_CHANNELS 1
 
 #else
-#define PRINT_FRAMERATE_EVERY 1000 // Print at the rate you specify in milliseconds i.e. 500 = print every 0.5 seconds
-
+// A cap needs to be set, the framerate can be so high that dt can be 0, this can
+// mess somethings up... like the wall collisions, also that's just unnecessary
+#define FRAMERATE_CAP 120 // Use the FPS cap you want
+#define PRINT_FRAMERATE_EVERY 3000 // Print at the rate you specify in milliseconds i.e. 500 = print every 0.5 seconds
 #define MEMORY_TRACKING 0
-
 #endif

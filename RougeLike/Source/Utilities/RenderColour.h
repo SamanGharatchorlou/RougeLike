@@ -14,7 +14,10 @@ struct RenderColour
 		Yellow,
 		LightGrey,
 		Black,
-		White
+		White,
+
+		TakeDamage,
+		Invunerable
 	};
 
 	RenderColour() : r(0), g(0), b(0), a(alphaMax) { }

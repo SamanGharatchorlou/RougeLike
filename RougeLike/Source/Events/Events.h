@@ -191,9 +191,9 @@ struct UpdateTextBoxEvent : public EventData
 
 struct TraumaEvent : public EventData
 {
-	TraumaEvent(int trauma) : EventData(Event::Trauma), mTrauma(trauma) { }
+	TraumaEvent(float trauma) : EventData(Event::Trauma), mTrauma(trauma) { }
 
-	const int mTrauma;
+	const float mTrauma;
 };
 
 

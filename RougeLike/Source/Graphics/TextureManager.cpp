@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "TextureManager.h"
+
+#include "Renderer.h"
+#include "Texture.h"
 #include "Game/Data/LoadingManager.h"
 
-#include "Texture.h"
 
 
 TextureManager::TextureManager()
