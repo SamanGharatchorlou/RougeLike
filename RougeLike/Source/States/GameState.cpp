@@ -30,7 +30,7 @@ void GameState::init()
 
 	// Start Audio
 	AudioManager* audio = AudioManager::Get();
-	audio->playMusic("Ludumdum");
+	audio->fadeIn("Game", nullptr, 1500);
 	audio->setSource(mGameData->environment->actors()->player()->get(), Camera::Get()->size().x);
 }
 
@@ -74,10 +74,18 @@ void GameState::render()
 void GameState::resume() 
 {
 	mGameData->environment->resume();
+
+	AudioManager* audio = AudioManager::Get();
+	audio->fadeIn("Game", nullptr, 750);
+	//audio->resume("Game", nullptr);
 }
+
 void GameState::pause()
 {
 	mGameData->environment->pause();
+
+	AudioManager* audio = AudioManager::Get();
+	audio->fadeOut("Game", nullptr, 150);
 }
 
 
@@ -85,6 +93,9 @@ void GameState::exit()
 {
 	mGameData->environment->clear();
 	mGameData->scoreManager->reset();
+
+	AudioManager* audio = AudioManager::Get();
+	audio->fadeOut("Game", nullptr, 150);
 }
 
 

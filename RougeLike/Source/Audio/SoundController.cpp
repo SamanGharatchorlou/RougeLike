@@ -23,8 +23,12 @@ void SoundController::clear()
 	setMusicVolume(musicVolume);
 	for (int i = 0; i < mixerChannels; i++)
 	{
-		channels[i].free();
-		updateMixerVolume(channels[i]);
+		Channel& channel = channels[i];
+		if (channel.audio())
+			channel.stop();
+
+		channel.free();
+		updateMixerVolume(channel);
 	}
 
 	float vol = getMusicVolume();
@@ -52,17 +56,6 @@ void SoundController::slowUpdate()
 		if (sound.hasPlayingState() && sound.attenuate())
 		{
 			sound.mVolume = attenuation(sound);
-		}
-
-		if (sound.mState == Channel::FadingOut)
-		{
-			float volume = sound.mVolume * 0.98;
-			sound.mVolume = volume;
-
-			if (sound.mVolume < 0.02f)
-			{
-				sound.stop();
-			}
 		}
 		else if (sound.mState == Channel::Looping)
 		{
@@ -145,13 +138,7 @@ bool SoundController::hasActiveAudio(Audio* audio, uintptr_t id)
 }
 
 
-void SoundController::playMusic(Audio* music)
-{
-	music->play(-1);
-}
-
-
-void SoundController::playSound(Audio* audio, uintptr_t id, VectorF position)
+void SoundController::play(Audio* audio, uintptr_t id, VectorF position)
 {
 	// Check if the source is already playing this sound
 	for (int i = 0; i < mixerChannels; i++)
@@ -183,7 +170,7 @@ void SoundController::playSound(Audio* audio, uintptr_t id, VectorF position)
 }
 
 
-void SoundController::loopSound(Audio* audio, uintptr_t id, VectorF position)
+void SoundController::loop(Audio* audio, uintptr_t id, VectorF position)
 {
 	// Check if the source is already playing this sound
 	for (int i = 0; i < mixerChannels; i++)
@@ -262,20 +249,51 @@ void SoundController::stopSound(Audio* audio, uintptr_t id)
 }
 
 
-void SoundController::fadeOut(Audio* audio, uintptr_t id)
+void SoundController::fadeOut(Audio* audio, uintptr_t id, int ms)
 {
 	for (int i = 0; i < mixerChannels; i++)
 	{
 		Channel& channel = channels[i];
 		if (channel.isPlaying(audio, id))
 		{
-			channel.mState = Channel::FadingOut;
+			channel.fadeOut(ms);
+			return;
+		}
+	}
+
+	DebugPrint(Warning, "Could not fade out audio\n");
+}
+
+void SoundController::fadeIn(Audio* audio, uintptr_t id, int ms, VectorF position)
+{
+	// Check if the source is already playing this sound
+	for (int i = 0; i < mixerChannels; i++)
+	{
+		Channel& channel = channels[i];
+		if (channel.isPlaying(audio, id))
+		{
+			channel.fadeIn(ms);
+			channel.mSource = position;
+			return;
+		}
+	}
+
+	// Find free channel
+	for (int i = 0; i < mixerChannels; i++)
+	{
+		Channel& channel = channels[i];
+		if (channel.mState == Channel::Free)
+		{
+			channel.setAudio(audio);
+			channel.mID = id;
+			channel.mSource = position;
+			channel.fadeIn(ms);
 			return;
 		}
 	}
 
 
-	DebugPrint(Warning, "Could not fade out audio\n");
+	DebugPrint(Warning, "Could not fade in audio\n");
 }
 
 
@@ -283,6 +301,7 @@ void SoundController::setSoundVolume(float volume)
 { 
 	soundVolume = volume;
 }
+
 
 void SoundController::setMusicVolume(float volume)
 {

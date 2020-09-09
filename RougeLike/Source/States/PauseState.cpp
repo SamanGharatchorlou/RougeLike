@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "PauseState.h"
 
+#include "Audio/AudioManager.h"
 #include "Graphics/Renderer.h"
 #include "Game/Data/GameData.h"
 
@@ -16,6 +17,9 @@ PauseState::PauseState(GameData* gameData) : mGameData(gameData) { }
 void PauseState::init() 
 {
 	mGameData->uiManager->setCursorTexture(TextureManager::Get()->getTexture("UICursor", FileManager::Image_UI));
+
+	AudioManager* audio = AudioManager::Get();
+	audio->fadeIn("Menu", nullptr, 750);
 }
 
 
@@ -43,4 +47,11 @@ void PauseState::render()
 
 	// update window surface
 	SDL_RenderPresent(renderer);
+}
+
+
+void PauseState::exit()
+{
+	AudioManager* audio = AudioManager::Get();
+	audio->fadeOut("Menu", nullptr, 150);
 }

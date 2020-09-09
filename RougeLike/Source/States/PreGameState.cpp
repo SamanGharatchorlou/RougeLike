@@ -4,6 +4,7 @@
 #include "Graphics/Renderer.h"
 #include "Game/Data/GameData.h"
 
+#include "Audio/AudioManager.h"
 #include "Input/InputManager.h"
 #include "UI/UIManager.h"
 #include "Graphics/TextureManager.h"
@@ -25,6 +26,10 @@ void PreGameState::init()
 	UI->controller()->addScreen(ScreenType::CharacterSelection);
 
 	UI->setCursorTexture(TextureManager::Get()->getTexture("UICursor", FileManager::Image_UI));
+
+	AudioManager* audio = AudioManager::Get();
+	if(!audio->isPlaying("Menu", nullptr))
+		audio->fadeIn("Menu", nullptr, 1000);
 }
 
 

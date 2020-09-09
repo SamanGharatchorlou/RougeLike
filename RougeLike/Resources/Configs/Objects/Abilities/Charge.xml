@@ -5,10 +5,10 @@
 		<MaxSize>200</MaxSize>
 		<Cooldown>3</Cooldown>
 
-		<Damage>50</Damage>
+		<Damage>80</Damage>
 
 		<KnockbackForce>750</KnockbackForce>
-		<KnockbackDistance>150</KnockbackDistance>
+		<KnockbackDistance>200</KnockbackDistance>
 		<StunTime>3</StunTime>
 
 		<Velocity>600</Velocity>

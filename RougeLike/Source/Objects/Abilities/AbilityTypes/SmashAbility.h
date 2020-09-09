@@ -31,6 +31,8 @@ public:
 
 
 private:
+	void explode();
+
 	void applyEffects(Actor* actor, EffectPool* effectPool);
 	void applyHammerEffects(Actor* actor, EffectPool* effectPool);
 	void applyExplosionEffects(Actor* actor, EffectPool* effectPool);

@@ -11,6 +11,8 @@
 #include "Objects/Pools/EffectPool.h"
 #include "Collisions/Colliders/QuadCollider.h"
 
+#include "Audio/AudioManager.h"
+
 
 // TODO: fix the placement of this i.e. its position on the map, now that its large its hard to place
 SmashAbility::SmashAbility(Texture* hammerTexture, RectF hammerRect) : mHammerTexture(hammerTexture), mHammerRect(hammerRect) { }
@@ -57,6 +59,8 @@ void SmashAbility::activate()
 	mProperties.addXYPosition(mCaster->position());
 
 	mActivateCollisions = true;
+
+	AudioManager::Get()->play("HammerThrow", mCaster);
 }
 
 
@@ -75,28 +79,18 @@ void SmashAbility::slowUpdate(float dt)
 {
 	mAnimator.slowUpdate(dt);
 
-	// has the direction to the target changed i.e. passed it?
 	VectorF currentDirection = (mTargetPosition - mHammerRect.Center()).normalise();
 	bool hasPassedTarget = !((currentDirection.x > 0 == mHammerDirection.x > 0) && (currentDirection.y > 0 == mHammerDirection.y > 0));
 
 	VectorF velocity = mHammerDirection * mProperties[PropertyType::Velocity] * dt;
 	// increase the velocity here so we can look ahead a little
 	velocity = mWallCollisions.allowedVelocity(mCaster->currentMap(), velocity * 5.0f, dt);
-	bool hitWall = velocity.x == 0.0f || velocity.y == 0.0f;
+	// BUG: if the framerate is high dt can be 0?? this will end it early
+	bool hitWall = (velocity.x == 0.0f || velocity.y == 0.0f) && dt != 0.0f;
 
-	// Begin explosion
 	if (!mReachedTarget && (hasPassedTarget || hitWall))
 	{
-		mReachedTarget = true;
-		mTargetPosition = mHammerRect.Center();
-		mRect.SetCenter(mTargetPosition);
-
-		mAnimator.start();
-		Camera::Get()->getShake()->addTrauma(140);
-
-		// Final explosion uses mRect not the hammer rect for collision detection
-		mQuad = Quad2D<float>(mRect);
-		mHitList.clear();
+		explode();
 	}
 
 	// Completed one animation loop 
@@ -105,6 +99,23 @@ void SmashAbility::slowUpdate(float dt)
 		mCompleted = true;
 		mAnimator.stop();
 	}
+}
+
+
+void SmashAbility::explode()
+{
+	mReachedTarget = true;
+	mTargetPosition = mHammerRect.Center();
+	mRect.SetCenter(mTargetPosition);
+
+	mAnimator.start();
+	Camera::Get()->getShake()->addTrauma(140);
+
+	// Final explosion uses mRect not the hammer rect for collision detection
+	mQuad = Quad2D<float>(mRect);
+	mHitList.clear();
+
+	AudioManager::Get()->play("Explosion", mCaster);
 }
 
 
@@ -154,9 +165,14 @@ void SmashAbility::exit()
 void SmashAbility::applyEffects(Actor* actor, EffectPool* effectPool)
 {
 	if (!mReachedTarget)
+	{
 		applyHammerEffects(actor, effectPool);
+		AudioManager::Get()->play("HitEnemy", mCaster);
+	}
 	else
+	{
 		applyExplosionEffects(actor, effectPool);
+	}
 }
 
 

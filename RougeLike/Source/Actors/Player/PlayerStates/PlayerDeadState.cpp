@@ -15,7 +15,7 @@ void PlayerDeadState::init()
 	mPlayer->animator().selectAnimation(Action::Dead);
 	mPlayer->overrideControl(true);
 
-	AudioManager::Get()->playSound("GameOver", mPlayer);
+	AudioManager::Get()->play("GameOver", mPlayer);
 
 }
 
@@ -30,12 +30,8 @@ void PlayerDeadState::slowUpdate(float dt)
 		mPlayer->animator().pause();
 		mDeathTimer.start();
 
-		AudioManager::Get()->playSound("Body Fall", mPlayer);
+		AudioManager::Get()->play("Body Fall", mPlayer);
 	}
-
-	//if (mPlayer->animator().currentFrame() > mPlayer->animator().frameCount() / 2 && !AudioManager::Get()->isPlaying("Body Fall", mPlayer))
-	//{
-	//}
 }
 
 

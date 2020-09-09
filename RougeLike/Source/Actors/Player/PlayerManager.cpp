@@ -48,9 +48,9 @@ void PlayerManager::addExp(int exp)
 
 	if (didLevelUp && mLevelling.level() == 2)
 	{
-		OpenPopupEvent* eventPtr = new OpenPopupEvent("LevelUp");
-		EventPacket event(eventPtr);
-		mEvents.push(event);
+		//OpenPopupEvent* eventPtr = new OpenPopupEvent("LevelUp");
+		//EventPacket event(eventPtr);
+		//mEvents.push(event);
 	}
 }
 

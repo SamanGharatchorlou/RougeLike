@@ -3,7 +3,7 @@
 #include "LoadingBar.h"
 
 class UIManager;
-
+class Audio;
 
 // Implementing this means the loading time will probably increase by around 10%-15%
 // This was from very quick testing, may vary.
@@ -38,4 +38,6 @@ private:
 	uintmax_t mLoadedFileSizes;
 
 	UIManager* mUI;
+
+	Audio* mAudio;
 };

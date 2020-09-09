@@ -250,7 +250,7 @@ void Player::updateMovementSound(AudioManager* audio)
 	{
 		if (mStepTimer.getMilliseconds() > 400)
 		{
-			audio->playSound("PlayerWalk2", this, VectorF(-1, -1));
+			audio->play("PlayerWalk2", this, VectorF(-1, -1));
 			mStepTimer.restart();
 		}
 	}
@@ -264,7 +264,7 @@ void Player::updateMovementSound(AudioManager* audio)
 
 void Player::handleHit(AudioManager* audio)
 {
-	audio->playSound("PlayerHurt", this);
+	audio->play("PlayerHurt", this);
 
 	TraumaEvent* trauma = new TraumaEvent(60);
 	mEvents.push(EventPacket(trauma));

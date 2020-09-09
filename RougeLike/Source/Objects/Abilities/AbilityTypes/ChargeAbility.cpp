@@ -104,6 +104,8 @@ void ChargeAbility::applyEffects(Actor* actor, EffectPool* effectPool)
 
 	applyEffect(EffectType::Damage, actor, effectPool);
 	applyEffect(EffectType::KnockbackStun, actor, effectPool);
+
+	AudioManager::Get()->play("HitEnemy", mCaster);
 }
 
 
@@ -133,13 +135,13 @@ void ChargeAbility::setCharging(bool isCharging)
 	{
 		mTimer.start();
 		mAnimator.start();
-		AudioManager::Get()->playSound("ChargeAbility", mCaster);
+		AudioManager::Get()->play("ChargeAbility", mCaster);
 	}
 	else
 	{
 		mTimer.stop();
 		mAnimator.stop();
-		AudioManager::Get()->fadeOutSound("ChargeAbility", mCaster);
+		AudioManager::Get()->fadeOut("ChargeAbility", mCaster, 500);
 	}
 }
 

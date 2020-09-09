@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "PauseScreen.h"
 
-#include "Audio/AudioManager.h"
 #include "UI/ScreenController.h"
 #include "Input/InputManager.h"
 #include "UI/Elements/UIButton.h"

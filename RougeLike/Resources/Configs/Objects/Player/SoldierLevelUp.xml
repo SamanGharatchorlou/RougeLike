@@ -2,7 +2,7 @@
 <LevelUp>
 	<WidthMultiplier>2.75</WidthMultiplier>
 	<RenderOffsetRatio x ="0" y = "0.05"></RenderOffsetRatio>
-	<RequiredExp>500</RequiredExp>
+	<RequiredExp>100</RequiredExp>
 
 	<Animator>
 		<ID>LevelUp</ID>

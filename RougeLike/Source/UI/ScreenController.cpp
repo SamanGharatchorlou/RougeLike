@@ -46,7 +46,9 @@ void ScreenController::addScreen(ScreenType type)
 {
 	Screen* screen = getPoolScreen(type);
 	mScreens.addState(screen);
-
+#if !DISABLE_UI_AUDIO
+	AudioManager::Get()->play("CloseMenu", nullptr);
+#endif
 }
 
 
@@ -70,7 +72,9 @@ void ScreenController::replaceScreen(ScreenType type)
 void ScreenController::popScreen()
 {
 	mScreens.popState();
-	AudioManager::Get()->playSound("CloseMenu", nullptr);
+#if !DISABLE_UI_AUDIO
+	AudioManager::Get()->play("CloseMenu", nullptr);
+#endif
 }
 
 
@@ -93,13 +97,21 @@ void ScreenController::openPopup(const BasicString& popupInfo)
 	if (mEnablePopups)
 	{
 		Screen* screen = mUI->mScreenPool.screenRef(ScreenType::Popup);
-		PopupScreen* popup = static_cast<PopupScreen*>(screen);
 
-		XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Menus, popupInfo));
-		popup->build(parser.rootNode());
+		if (screen)
+		{
+			PopupScreen* popup = static_cast<PopupScreen*>(screen);
 
-		addScreen(ScreenType::Popup);
-		addSystemState(SystemStates::PauseState);
+			XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Menus, popupInfo));
+			popup->build(parser.rootNode());
+
+			addScreen(ScreenType::Popup);
+			addSystemState(SystemStates::PauseState);
+		}
+		else
+		{
+			DebugPrint(Warning, "Popup screen already in use, cannot make another\n");
+		}
 	}
 }
 

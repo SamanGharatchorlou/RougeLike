@@ -22,12 +22,12 @@ constexpr float game_scale = 0.5f;
 #define DRAW_PLAYER_RECT 0
 #define DRAW_PLAYER_WEAPON_RECT 0
 #define IGNORE_WALLS 0
-#define IGNORED_BY_ENEMIES 1
+#define IGNORED_BY_ENEMIES 0
 #define INVUNERABLE 0
 
 
 // Abilities
-#define UNLOCK_ALL_ABILITIES 1
+#define UNLOCK_ALL_ABILITIES 0
 #define NO_ABILITY_COOLDOWNS 0
 #define DRAW_ABILITY_RECTS 0
 
@@ -69,6 +69,7 @@ constexpr float game_scale = 0.5f;
 
 
 // Audio
+#define DISABLE_UI_AUDIO 0
 #define PRINT_PLAYING_AUDIO 0
 #define PRINT_FULL_AUDIO_CHANNELS 1
 

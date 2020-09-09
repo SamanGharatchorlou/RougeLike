@@ -50,7 +50,6 @@ void GameController::load()
 
 	SDL_Thread* threadID = SDL_CreateThread(renderLoadingBar, "LoadingBar", nullptr);
 
-	//mGameData.init(this);
 	mGameData.setupObservers();
 	mGameData.load();
 

@@ -53,6 +53,17 @@ void Sound::resume(int channel)
 }
 
 
+void Sound::fadeIn(int channel, int ms)
+{
+	Mix_FadeInChannel(channel, mChunk, 0, ms);
+}
+
+void Sound::fadeOut(int channel, int ms)
+{
+	Mix_FadeOutChannel(channel, ms);
+}
+
+
 // --- Music --- //
 
 Music::~Music()
@@ -82,26 +93,22 @@ bool Music::load(const BasicString& filePath)
 
 void Music::play(int channel)
 {
-	if (!Mix_PlayingMusic())
-	{
-		Mix_PlayMusic(mMusic, -1);
+	Mix_PlayMusic(mMusic, -1);
+
 #if PRINT_PLAY_AUDIO
-		DebugPrint(Log, "Playing music %s\n", mFilePath.c_str());
+	DebugPrint(Log, "Playing music %s\n", mFilePath.c_str());
 #endif
-	}
-	else if (Mix_PausedMusic() == 1)
-	{
-		Mix_ResumeMusic();
-	}
+}
+
+void Music::resume(int channel)
+{
+	Mix_ResumeMusic();
 }
 
 
 void Music::pause(int channel)
 {
-	if (Mix_PlayingMusic() == 1)
-	{
-		Mix_PauseMusic();
-	}
+	Mix_PauseMusic();
 }
 
 
@@ -115,10 +122,20 @@ bool Music::isPlaying(int channel) const
 	return Mix_PlayingMusic();
 }
 
+void Music::fadeIn(int channel, int ms)
+{
+	Mix_FadeInMusic(mMusic, -1, ms);
+}
+
+void Music::fadeOut(int channel, int ms)
+{
+	Mix_FadeOutMusic(ms);
+}
+
 
 
 // --- Audio Group --- //
-AudioGroup::~AudioGroup()
+SoundGroup::~SoundGroup()
 {
 	for (int i = 0; i < group.size(); i++)
 	{
@@ -129,7 +146,7 @@ AudioGroup::~AudioGroup()
 
 
 
-bool AudioGroup::load(const BasicString& directoryPath)
+bool SoundGroup::load(const BasicString& directoryPath)
 {
 	BasicString groupName = FileManager::Get()->getItemName( directoryPath);
 	std::vector<BasicString> audioFilePaths = FileManager::Get()->fullPathsInFolder(directoryPath);
@@ -159,36 +176,47 @@ bool AudioGroup::load(const BasicString& directoryPath)
 }
 
 
-void AudioGroup::play(int channel)
+void SoundGroup::play(int channel)
 {
 	int randomNumber = randomNumberBetween(0, group.size());
 	group[randomNumber]->play(channel);
 }
 
 
-void AudioGroup::playNext(int channel)
+void SoundGroup::playNext(int channel)
 {
 	playingIndex = playingIndex + 1 >= group.size() ? 0 : playingIndex + 1;
 	group[playingIndex]->play(channel);
 }
 
-void AudioGroup::stop(int channel)
+void SoundGroup::stop(int channel)
 {
 	playingIndex = 0;
 	Mix_HaltChannel(channel);
 }
 
-bool AudioGroup::isPlaying(int channel) const
+bool SoundGroup::isPlaying(int channel) const
 {
 	return group[playingIndex]->isPlaying(channel);
 }
 
-void AudioGroup::pause(int channel)
+void SoundGroup::pause(int channel)
 {
 	group[playingIndex]->pause(channel);
 }
 
-void AudioGroup::resume(int channel)
+void SoundGroup::resume(int channel)
 {
 	group[playingIndex]->resume(channel);
+}
+
+void SoundGroup::fadeIn(int channel, int ms)
+{
+	int randomNumber = randomNumberBetween(0, group.size());
+	group[randomNumber]->fadeIn(channel, ms);
+}
+
+void SoundGroup::fadeOut(int channel, int ms)
+{
+	group[playingIndex]->fadeOut(channel, ms);
 }

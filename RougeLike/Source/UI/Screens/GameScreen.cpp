@@ -24,7 +24,6 @@ GameScreen::GameScreen()
 }
 
 
-
 void GameScreen::init()
 {
 	linkSlider(ScreenItem::Health, "HealthSlider");
@@ -46,11 +45,6 @@ void GameScreen::init()
 
 void GameScreen::handleInput(const InputManager* input)
 {
-	if (input->isPressed(Button::Esc))
-	{
-		mController->quitGame();
-	}
-
 	if (input->isReleased(Button::Pause))
 	{
 		mController->addScreen(ScreenType::Pause);

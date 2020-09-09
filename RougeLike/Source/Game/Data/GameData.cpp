@@ -48,6 +48,7 @@ void GameData::init(GameController* gameController)
 void GameData::preLoad()
 {
 	TextureManager::Get()->preLoad();
+	AudioManager::Get()->preLoad();
 
 	uiManager->preLoad();
 	uiManager->initCursor(inputManager->getCursor());

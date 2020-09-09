@@ -51,11 +51,15 @@ void Screen::updateInputs(const InputManager* input)
 {
 	if (updateButtons(input) || updateSliders(input) || updateSwitches(input))
 	{
-		AudioManager::Get()->playSound("ButtonClick", nullptr);
+#if !DISABLE_UI_AUDIO
+		AudioManager::Get()->play("ButtonClick", nullptr);
+#endif
 	}
 	else if(input->isCursorPressed(Cursor::Left))
 	{
-		AudioManager::Get()->playSound("MouseClick", nullptr);
+#if !DISABLE_UI_AUDIO
+		AudioManager::Get()->play("MouseClick", nullptr);
+#endif
 	}
 }
 

@@ -10,8 +10,7 @@ public:
 		Free,
 		Playing,
 		Looping,
-		Paused,
-		FadingOut
+		Paused
 	};
 
 public:
@@ -24,12 +23,15 @@ public:
 	void play();
 	void loop();
 	void playNext();
-	void stop();
 
+	void stop();
 	void resume();
 	void pause();
-	bool isPaused() const;
 
+	void fadeIn(int ms);
+	void fadeOut(int ms);
+
+	bool isPaused() const;
 	bool hasPlayingState() const;
 	bool isAudioRunning() const;
 

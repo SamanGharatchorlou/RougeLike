@@ -120,10 +120,25 @@ void Levelling::levelUp(PlayerManager* player)
 	mRequiredExp = mRequiredExp * 3;
 
 	mAnimator.start();
-	AudioManager::Get()->playSound("LevelUp", player);
+	AudioManager::Get()->play("LevelUp", player);
 
-	if(mLockedAbilities.size() > 0)
-		player->addAbility(mLockedAbilities.popFront());
+	if (mLockedAbilities.size() > 0)
+	{
+		AbilityType type = mLockedAbilities.popFront();
+		player->addAbility(type);
+
+		// FIX ME: Right now opening a bunch of popups as soon as the game starts breaks the game
+		// this is becuase we can only have 1 popup at the time and it auto adds a pause state
+		// pressing ok pops the latest state, the issue is when the game starts the adding of
+		// the game state overrites the adding of a pause state so the popup pops te game state... I think
+#if UNLOCK_ALL_ABILITIES
+		BasicString abilityName;
+		type >> abilityName;
+		OpenPopupEvent* eventPtr = new OpenPopupEvent(abilityName);
+		EventPacket event(eventPtr);
+		player->events().push(event);
+#endif
+	}
 }
 
 

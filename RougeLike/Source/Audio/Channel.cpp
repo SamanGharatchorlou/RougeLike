@@ -12,7 +12,7 @@ Channel::Channel() : mIndex(-1)
 
 bool Channel::hasPlayingState() const
 {
-	return mState == Playing || mState == Looping || mState == FadingOut;
+	return mState == Playing || mState == Looping;
 }
 
 
@@ -61,6 +61,27 @@ void Channel::play()
 	DebugPrint(Log, "Playing audio: %s\n", mAudio->name().c_str());
 #endif
 }
+
+
+void Channel::fadeIn(int ms)
+{
+	mState = Playing;
+	mAudio->fadeIn(mIndex, ms);
+#if PRINT_PLAYING_AUDIO
+	DebugPrint(Log, "Fading in audio: %s\n", mAudio->name().c_str());
+#endif
+}
+
+
+void Channel::fadeOut(int ms)
+{
+	mState = Playing;
+	mAudio->fadeOut(mIndex, ms);
+#if PRINT_PLAYING_AUDIO
+	DebugPrint(Log, "Fading out audio: %s\n", mAudio->name().c_str());
+#endif
+}
+
 
 void Channel::stop()
 {

@@ -15,7 +15,7 @@
 		<TextBox id = "MapLevel str" x = "800.000" y = "15.000" width = "137.000" height = "40.000">
 			<text>Map Level:</text>
 		</TextBox>
-		<TextBox id = "MapLevel val" parent = "MapLevel str" x = "145.500" y = "-5.000" width = "75.500" height = "45.000">
+		<TextBox id = "MapLevel val" parent = "MapLevel str" x = "135.500" y = "-5.000" width = "75.500" height = "45.000">
 			<text>0</text>
 		</TextBox>
 	</Layer>

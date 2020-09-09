@@ -38,6 +38,17 @@ void AudioManager::setSource(Actor* listener, float attenuationDistance)
 }
 
 // -- Audio Loading -- //
+void AudioManager::preLoad()
+{
+	// Loading bar music
+	BasicString fileName = "Menu";
+	BasicString path = FileManager::Get()->findFile(FileManager::Audio_Music, fileName);
+
+	Audio *audio = new Music;
+	loadAudio(audio, fileName, path);
+}
+
+
 void AudioManager::load()
 {
 	DebugPrint(Log, "\n--- Loading Audio ---\n");
@@ -127,29 +138,20 @@ float AudioManager::musicVolume() const
 }
 
 
-void AudioManager::playSound(const BasicString& label, const void* sourceId, VectorF source)
+void AudioManager::play(const BasicString& label, const void* sourceId, VectorF source)
 {
 	Audio* audio = getAudio(label);
 
 	if (audio)
-		mSoundController.playSound(audio, reinterpret_cast<uintptr_t>(sourceId), source);
+		mSoundController.play(audio, reinterpret_cast<uintptr_t>(sourceId), source);
 }
 
-void AudioManager::playMusic(const BasicString& label)
+void AudioManager::loop(const BasicString& label, const void* sourceId, VectorF source)
 {
 	Audio* audio = getAudio(label);
 
 	if (audio)
-		mSoundController.playMusic(audio);
-}
-
-
-void AudioManager::loopSound(const BasicString& label, const void* sourceId, VectorF source)
-{
-	Audio* audio = getAudio(label);
-
-	if (audio)
-		mSoundController.loopSound(audio, reinterpret_cast<uintptr_t>(sourceId), source);
+		mSoundController.loop(audio, reinterpret_cast<uintptr_t>(sourceId), source);
 }
 
 
@@ -161,14 +163,21 @@ void AudioManager::stop(const BasicString& label, const void* sourceId)
 		mSoundController.stopSound(audio, reinterpret_cast<uintptr_t>(sourceId));
 }
 
-void AudioManager::fadeOutSound(const BasicString& label, const void* sourceId)
+void AudioManager::fadeOut(const BasicString& label, const void* sourceId, int ms)
 {
 	Audio* audio = getAudio(label);
 
 	if (audio)
-		mSoundController.fadeOut(audio, reinterpret_cast<uintptr_t>(sourceId));
+		mSoundController.fadeOut(audio, reinterpret_cast<uintptr_t>(sourceId), ms);
 }
 
+void AudioManager::fadeIn(const BasicString& label, const void* sourceId, int ms, VectorF source)
+{
+	Audio* audio = getAudio(label);
+
+	if (audio)
+		mSoundController.fadeIn(audio, reinterpret_cast<uintptr_t>(sourceId), ms, source);
+}
 
 
 void AudioManager::pause(const BasicString& label, const void* sourceId)
@@ -222,8 +231,13 @@ int AudioManager::loadAllMusic(FileManager::Folder folder)
 
 	for (const BasicString& path : paths)
 	{
-		Audio *audio = new Music;
-		fails += !loadAudio(audio, fm->getItemName(path), path);
+		const BasicString name = fm->getItemName(path);
+		// Dont double load pre loaded music
+		if (mAudioBank.count(name) == 0)
+		{
+			Audio *audio = new Music;
+			fails += !loadAudio(audio, fm->getItemName(path), path);
+		}
 	}
 
 	return fails;
@@ -254,7 +268,7 @@ int AudioManager::loadAllSoundGroups(FileManager::Folder folder)
 
 	for (const BasicString& folderPath : folderPaths)
 	{
-		Audio* soundGroup =  new AudioGroup;
+		Audio* soundGroup =  new SoundGroup;
 		fails += !loadAudio(soundGroup,	fm->getItemName(folderPath), folderPath);
 	}
 

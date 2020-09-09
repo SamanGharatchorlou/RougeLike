@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "LoadingManager.h"
 
+#include "Audio/AudioManager.h"
+#include "Audio/Audio.h"
+
 #include "Graphics/Renderer.h"
 #include "UI/UIManager.h"
 #include "UI/Screens/LoadingScreen.h"
@@ -16,6 +19,8 @@ LoadingManager* LoadingManager::Get()
 
 void LoadingManager::init(UIManager* UI)
 {
+	AudioManager::Get()->fadeIn("Menu", nullptr, 1000);
+
 	mUI = UI;
 
 	CountToBeLoadedFiles();
