@@ -11,7 +11,7 @@
 			<Column spacing="3"></Column>
 			<Torch type = "TorchBowl" spacing ="3"></Torch>
 			<Water width="3" height="2" spacing="2"></Water>
-			<SpikeTrap rate="15"></SpikeTrap>
+			<SpikeTrap rate="12"></SpikeTrap>
 		</Dungeon>
 
 		<Corridor>
@@ -19,6 +19,7 @@
 			<Torch type = "TorchHandle" spacing ="3"></Torch>
 			<FireGratingTrap></FireGratingTrap>
 			<GratingTrigger x = "13" y = "6"></GratingTrigger>
+			<GratingTrigger x = "13" y = "7"></GratingTrigger>
 		</Corridor>
 	</Decor>
 

@@ -53,9 +53,9 @@ void GameController::load()
 	mGameData.setupObservers();
 	mGameData.load();
 
-	mGameData.uiManager->controller()->popScreen();
-
 	SDL_WaitThread(threadID, nullptr);
+
+	mGameData.uiManager->controller()->popScreen();
 }
 
 

@@ -124,7 +124,7 @@ void Text::autoSizeWrap(VectorF size)
 
 	TTF_SizeText(mFont.get(), mText.c_str(), &width, &height);
 
-	int numberOfLines = ceilf((float)width / size.x);
+	int numberOfLines = (int)ceilf((float)width / size.x);
 	int currentHeight = numberOfLines * height;
 
 
@@ -132,7 +132,7 @@ void Text::autoSizeWrap(VectorF size)
 	{
 		while (currentHeight >= targetHeight)
 		{
-			numberOfLines = ceilf((float)width / size.x);
+			numberOfLines = (int)ceilf((float)width / size.x);
 			currentHeight = numberOfLines * height;
 
 			if (currentHeight > targetHeight * 2.0f)

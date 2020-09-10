@@ -66,7 +66,7 @@ public:
 
 private:	
 	
-	void triggerAll(DecorType type);
+	void triggerAll(DecorType type, VectorF triggerPosition);
 	void triggerTrap(Index index);
 
 	void resolveCollision(Trap& trap);

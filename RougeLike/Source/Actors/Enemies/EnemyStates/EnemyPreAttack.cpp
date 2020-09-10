@@ -12,7 +12,7 @@ void EnemyPreAttack::init()
 
 	float attackWaitTime = 100.0f / mEnemy->getAttributeValue(AttributeType::AttackSpeed);
 	float range = attackWaitTime / 4.0f;
-	mAttackWaitTime = randomNumberBetween(attackWaitTime - range, attackWaitTime + range) / 100.0f;
+	mAttackWaitTime = (float)randomNumberBetween((int)(attackWaitTime - range), (int)(attackWaitTime + range)) / 100.0f;
 }
 
 

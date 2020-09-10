@@ -120,9 +120,7 @@ MeleeWeapon* Player::weapon()
 
 void Player::render()
 {
-#if DRAW_PLAYER_RECT
-	debugDrawRect(rect(), RenderColour(RenderColour::Green));
-#endif
+
 #if TRACK_COLLISIONS
 	collider()->renderCollider();
 #endif
@@ -150,6 +148,10 @@ void Player::render()
 
 		mEffects.render();
 	}
+#if DRAW_PLAYER_RECT
+	debugDrawRectOutline(rect(), RenderColour(RenderColour::Green), true);
+	debugDrawRectOutline(collider()->scaledRect(), RenderColour(RenderColour::Blue), true);
+#endif
 }
 
 
@@ -188,7 +190,7 @@ void Player::updateMapInfo()
 {
 	const Map* map = currentMap();
 
-#if DEBUG_CHECK // break points might break this
+#if DEBUG_CHECK // using break points might break this
 	if (!map)
 		return;
 #endif
@@ -238,8 +240,11 @@ void Player::handleStates(float dt)
 
 void Player::setMovementAnimation()
 {
-	Action action = mPhysics.isMoving() ? Action::Run : Action::Idle;
-	mAnimator.selectAnimation(action);
+	if (mHP->canTakeDamage())
+	{
+		Action action = mPhysics.isMoving() ? Action::Run : Action::Idle;
+		mAnimator.selectAnimation(action);
+	}
 }
 
 
@@ -250,7 +255,7 @@ void Player::updateMovementSound(AudioManager* audio)
 	{
 		if (mStepTimer.getMilliseconds() > 400)
 		{
-			audio->play("PlayerWalk2", this, VectorF(-1, -1));
+			audio->play("PlayerWalk2", this);
 			mStepTimer.restart();
 		}
 	}
@@ -270,12 +275,14 @@ void Player::handleHit(AudioManager* audio)
 	mEvents.push(EventPacket(trauma));
 
 	PropertyMap map;
-	map[PropertyType::Time] = 0.75f;
+	map[PropertyType::Time] = mAnimator.animationTime(Action::Hurt);
 	Effect* effect = mEffects.pool()->getObject(EffectType::Invunerability);
 	effect->fill(map);
 	addEffect(effect);
 
 	mColourModTimer.restart();
+
+	mAnimator.selectAnimation(Action::Hurt);
 }
 
 

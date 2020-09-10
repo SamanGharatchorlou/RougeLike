@@ -78,6 +78,9 @@ public:
 	void addAnimation(Animator animation);
 	Animator& animation(int index) { return mAnimations[index]; }
 
+	// HACK: for animation tile populator grating trigger hack
+	std::vector<Animator>& animations() { return mAnimations; }
+
 	void render(RectF rect);
 
 	void setDeferredRendering(bool deferr) { mDeferredRendering = deferr; }

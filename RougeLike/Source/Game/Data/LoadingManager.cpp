@@ -26,6 +26,7 @@ void LoadingManager::init(UIManager* UI)
 	CountToBeLoadedFiles();
 
 	mUI->controller()->addScreen(ScreenType::LoadingScreen);
+	mUI->controller()->processScreenChanges();
 }
 
 

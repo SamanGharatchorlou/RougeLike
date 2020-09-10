@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Player>
 	<Animator>
-		<ID>Soldier</ID>
+		<ID>King</ID>
 		<FrameTime>0.04</FrameTime>
 		<FrameSize x = "900" y ="900"></FrameSize>
 		<Animations>

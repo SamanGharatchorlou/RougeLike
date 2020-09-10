@@ -21,7 +21,7 @@ void MapDecorator::addGrating(Grid<MapTile>& data, const DecorMap& decorMap)
 {
 	if (decorMap.contains(DecorType::Grating))
 	{
-		for (int x = 0; x < data.xCount(); x++)
+		for (int x = 0; x < data.xCount() - 1; x++)
 		{
 			for (int y = 0; y < data.yCount(); y++)
 			{
@@ -124,7 +124,6 @@ void MapDecorator::addColumns(Grid<MapTile>& data, const DecorMap& decorMap)
 					data[index].add(column); // Lower
 					data[down].add(column); // Base
 
-					//x += columnWidth - 1;
 					break;
 				}
 			}
@@ -201,9 +200,11 @@ void MapDecorator::addTiggers(Grid<MapTile>& data, const DecorMap& decorMap)
 	DecorType trigger = DecorType::GratingTrigger;
 	if (decorMap.contains(trigger))
 	{
-		const StringMap& attributes = decorMap.at(trigger);
-		Index index = attributes.getVector("x", "y").toInt();
-		data[index].set(trigger);
+		Index upperTrigger(13, 6);
+		Index lowerTirgger(13, 7);
+
+		data[upperTrigger].set(trigger);
+		data[lowerTirgger].set(trigger);
 	}
 }
 

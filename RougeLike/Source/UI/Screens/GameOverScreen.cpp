@@ -32,6 +32,6 @@ void GameOverScreen::slowUpdate()
 void GameOverScreen::setTextBox(const BasicString& textBoxName, int value)
 {
 	UITextBox* textBox = findTextBox(textBoxName);
-	textBox->setText(textBoxName + ": " + BasicString(value));
+	textBox->setText(textBoxName + ": " + BasicString((float)value));
 	textBox->align();
 }

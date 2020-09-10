@@ -1,46 +1,23 @@
 #include "pch.h"
 #include "Helpers.h"
 
-
-// x' = x cos - y sin
-// y' = x sin + y cos
-VectorF rotateVector(VectorF vector, float dTheta)
-{
-	VectorF outVector;
-	float radians = toRadians(dTheta);
-
-	outVector.x = vector.x * cos(radians) - vector.y * sin(radians);
-	outVector.y = (vector.x * sin(radians) + vector.y * cos(radians));
-
-	return outVector;
-}
-
-
 VectorF rotateVector(VectorF vector, float dTheta, VectorF about)
 {
 	double radians = toRadians(dTheta);
 	double cosine = cos(radians);
 	double sine = sin(radians);
 
-	VectorF originPoint = about - vector;
-
-	VectorF outVector;
-	outVector.x = (originPoint.x * cosine) - (originPoint.y * sine);
-	outVector.y = (originPoint.x * sine) + (originPoint.y * cosine);
-
-	return outVector + vector;
+	return rotateVector(vector, about, sine, cosine);
 }
-
 
 VectorF rotateVector(VectorF vector, VectorF about, double sine, double cosine)
 {
 	VectorF originPoint = vector - about;
 
-	VectorF outVector;
-	outVector.x = (originPoint.x * cosine) - (originPoint.y * sine);
-	outVector.y = (originPoint.x * sine) + (originPoint.y * cosine);
+	float x = (originPoint.x * cosine) - (originPoint.y * sine);
+	float y = (originPoint.x * sine) + (originPoint.y * cosine);
 
-	return outVector + about;
+	return VectorF(x, y) + about;
 }
 
 
@@ -138,7 +115,7 @@ int toInt(const BasicString& string)
 
 float toFloat(const BasicString& string)
 {
-	return atof(string.c_str());
+	return (float)atof(string.c_str());
 }
 
 SDL_Rect toSDLRect(const RectF& rect)

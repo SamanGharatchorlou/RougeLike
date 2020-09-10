@@ -90,6 +90,9 @@ public:
 
 	Texture* texture() const { return mAnimations[mActiveIndex].mTexture; }
 
+	const Animation* getAnimation(Action action) const;
+	float animationTime(Action action) const;
+
 	bool hasAnimations() const { return (bool)mAnimations.size(); }
 	void selectAnimation(Action state);
 	void startAnimation(Action state);

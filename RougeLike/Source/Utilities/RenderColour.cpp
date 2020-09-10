@@ -45,7 +45,7 @@ RenderColour::RenderColour(Colour colour)
 		r = 215; g = 0; b = 0;
 		break;
 	case RenderColour::Invunerable:
-		r = 50; g = 50; b = 50;
+		r = 65; g = 65; b = 65;
 		break;
 	default:
 		r = 0; g = 0; b = 0;

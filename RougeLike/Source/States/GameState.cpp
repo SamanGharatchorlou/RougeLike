@@ -77,7 +77,6 @@ void GameState::resume()
 
 	AudioManager* audio = AudioManager::Get();
 	audio->fadeIn("Game", nullptr, 750);
-	//audio->resume("Game", nullptr);
 }
 
 void GameState::pause()

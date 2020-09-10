@@ -35,6 +35,8 @@ private:
 	void populateMapData(Map* map);
 	void addMapDecor(Map* map);
 
+	void setMapLevelSpikeRate(DecorMap& decorMap, int mapLevel);
+
 private:
 	EffectPool* mEffectPool;
 	Actor* mPlayer;

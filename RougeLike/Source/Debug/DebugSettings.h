@@ -19,10 +19,10 @@ constexpr float game_scale = 0.5f;
 #define PRINT_FRAMERATE_EVERY 0 // Print at the rate you specify in milliseconds i.e. 500 = print every 0.5 seconds
 
 // Player
-#define DRAW_PLAYER_RECT 0
-#define DRAW_PLAYER_WEAPON_RECT 0
+#define DRAW_PLAYER_RECT 1
+#define DRAW_PLAYER_WEAPON_RECT 1
 #define IGNORE_WALLS 0
-#define IGNORED_BY_ENEMIES 0
+#define IGNORED_BY_ENEMIES 1
 #define INVUNERABLE 0
 
 
@@ -58,8 +58,8 @@ constexpr float game_scale = 0.5f;
 #define MAX_SPAWN_COUNT 1
 
 // UI
-#define UI_EDITOR 1
-#define DRAW_UI_RECTS 1
+#define UI_EDITOR 0
+#define DRAW_UI_RECTS 0
 
 #define DEBUG_CURSOR 0
 

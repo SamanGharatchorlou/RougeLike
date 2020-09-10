@@ -12,7 +12,7 @@
 		<MaxVelocity>500</MaxVelocity>
 	</Properties>
 
-	<MaxSize>80</MaxSize>
+	<MaxSize>100</MaxSize>
 	<ColliderScale x = "0.32" y = "0.57"></ColliderScale>
 	<Icon>SoldierIcon</Icon>
 	<WeaponType>Melee</WeaponType>

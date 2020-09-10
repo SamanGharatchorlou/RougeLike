@@ -42,7 +42,7 @@ void TextFileReader::readText(BasicString& outText)
 int TextFileReader::fileLength()
 {
 	mFile.seekg(0, mFile.end);
-	int length = mFile.tellg();
+	int length = (int)mFile.tellg();
 
 	mFile.seekg(0, mFile.beg);
 	return length;

@@ -6,8 +6,8 @@
 	<Properties>
 		<Texture>Sword</Texture>
 		<MaxSize>75</MaxSize>
-		<OffsetX>13</OffsetX>
-		<OffsetY>25</OffsetY>
+		<OffsetX>14</OffsetX>
+		<OffsetY>31</OffsetY>
 
 		<SwingSpeed>1500</SwingSpeed>
 		<SwingAngle>120</SwingAngle>

@@ -33,7 +33,7 @@ void AttributeMap::fill(const XMLNode& node)
 	for (StringMap::const_iterator iter = map.begin(); iter != map.end(); iter++)
 	{
 		BasicString name = iter->first;
-		float value = atof(iter->second.c_str());
+		float value = (float)atof(iter->second.c_str());
 
 		Attribute* attribute = getNewAttribute(name);
 		attribute->init(value);

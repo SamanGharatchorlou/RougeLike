@@ -23,7 +23,8 @@ void AnimationTilePopulator::addAnimations(Grid<MapTile>& data)
 	{
 		for (int y = 0; y < data.yCount(); y++)
 		{
-			MapTile& tile = data[Index(x, y)];
+			Index index(x, y);
+			MapTile& tile = data[index];
 			DecorType type = tile.decorType();
 
 			if (type > DecorType::ANIMATION)
@@ -65,6 +66,12 @@ void AnimationTilePopulator::addAnimations(Grid<MapTile>& data)
 				}
 			}
 		}
+	}
+
+	// HACK
+	if (data[Index(13, 7)].has(DecorType::GratingTrigger))
+	{
+		data[Index(13, 7)].animations().clear();
 	}
 }
 

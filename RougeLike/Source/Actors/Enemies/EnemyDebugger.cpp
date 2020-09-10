@@ -68,16 +68,19 @@ void EnemyDebugger::drawRects()
 
 void EnemyDebugger::drawTargetDistance()
 {
-	VectorF targetPosition = mEnemy->target()->position();
-	VectorF enemyPosition = mEnemy->position();
-	debugDrawLine(targetPosition, enemyPosition, RenderColour::Red);
+	if (mEnemy->hasTarget())
+	{
+		VectorF targetPosition = mEnemy->target()->position();
+		VectorF enemyPosition = mEnemy->position();
+		debugDrawLine(targetPosition, enemyPosition, RenderColour::Red);
 
-	int ptSize = 20;
-	VectorF position = (targetPosition + enemyPosition) / 2.0f;
-	RenderColour colour = RenderColour::Green;
-	float playerDistance = distance(targetPosition, enemyPosition);
-	const BasicString playerDistanceString(playerDistance, 2);
-	debugRenderText(playerDistanceString, ptSize, position, colour);
+		int ptSize = 20;
+		VectorF position = (targetPosition + enemyPosition) / 2.0f;
+		RenderColour colour = RenderColour::Green;
+		float playerDistance = distance(targetPosition, enemyPosition);
+		const BasicString playerDistanceString(playerDistance, 2);
+		debugRenderText(playerDistanceString, ptSize, position, colour);
+	}
 }
 
 

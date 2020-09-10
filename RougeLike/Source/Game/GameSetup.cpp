@@ -127,7 +127,6 @@ void GameSetup::readSettings()
 	int width = settings.getInt("Width");
 	int height = settings.getInt("Height");
 	screenSize = Vector2D<int>(width, height);
-	audioChannels = settings.getInt("AudioChannels");
 
 	AudioManager* audio = AudioManager::Get();
 	audio->setMusicVolume(settings.getFloat("MusicVolume") / 100.0f);

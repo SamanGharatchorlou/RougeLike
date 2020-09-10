@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LevelUp>
-	<WidthMultiplier>2.75</WidthMultiplier>
+	<WidthMultiplier>3</WidthMultiplier>
 	<RenderOffsetRatio x ="0" y = "0.05"></RenderOffsetRatio>
-	<RequiredExp>100</RequiredExp>
+	<RequiredExp>400</RequiredExp>
 
 	<Animator>
 		<ID>LevelUp</ID>

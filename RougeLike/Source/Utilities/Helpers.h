@@ -1,6 +1,6 @@
 #pragma once
 
-constexpr float pi = 3.14f;
+constexpr float pi = 3.14159;
 
 
 template<typename T>
@@ -67,8 +67,7 @@ int randomNumberBetween(int min, int max);
 
 
 float getRotation(VectorF direction);
-VectorF rotateVector(VectorF vector, float dTheta);
-VectorF rotateVector(VectorF vector, float dTheta, VectorF about);
+VectorF rotateVector(VectorF vector, float dTheta, VectorF about = VectorF(0.0f, 0.0f));
 VectorF rotateVector(VectorF vector, VectorF about, double sine, double cosine);
 
 VectorF closestRectSide(VectorF point, RectF rect);

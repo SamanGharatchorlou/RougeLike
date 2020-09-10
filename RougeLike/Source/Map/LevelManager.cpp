@@ -191,6 +191,9 @@ Map* LevelManager::map(VectorF position) const
 		if (map->isValidPosition(position))
 			return map;
 	}
+
+	DebugPrint(Warning, "No map was found for position %f,%f\n", position.x, position.y);
+	return nullptr;
 }
 
 

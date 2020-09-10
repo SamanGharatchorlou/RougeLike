@@ -64,7 +64,7 @@ void Levelling::buildAnimator(const XMLNode& node, RectF rect)
 	mAnimator.selectAnimation(Action::Active);
 
 	// size
-	float targetWidth = rect.Width() * atof(node.child("WidthMultiplier").value().c_str());
+	float targetWidth = rect.Width() * (float)atof(node.child("WidthMultiplier").value().c_str());
 	float targetHeight = targetWidth * mAnimator.frameSize().y / mAnimator.frameSize().x;
 	VectorF size = VectorF(targetWidth, targetHeight);
 	mRect.SetSize(size);

@@ -50,7 +50,7 @@ void FrameRateController::resetCapTimer()
 void FrameRateController::capFrameRate()
 {
 	//If frame finished early
-	int frameTicks = capTimer.getMilliseconds();
+	int frameTicks = (int)capTimer.getMilliseconds();
 	if (frameTicks < (1000 / FRAMERATE_CAP))
 	{
 		//Wait remaining time

@@ -20,10 +20,10 @@ void ScoreManager::slowUpdate()
 {
 	if (updateUI)
 	{
-		UpdateTextBoxEvent scoreEvent("Score val", mScore);
+		UpdateTextBoxEvent scoreEvent("Score val", BasicString((float)mScore));
 		notify(scoreEvent);
 
-		UpdateTextBoxEvent mapLevelEvent("MapLevel val", mMapLevel);
+		UpdateTextBoxEvent mapLevelEvent("MapLevel val", BasicString((float)mMapLevel));
 		notify(mapLevelEvent);
 	}
 
@@ -49,7 +49,7 @@ void ScoreManager::handleEvent(EventData& data)
 		MapLevelEvent mapLevelEvent = static_cast<MapLevelEvent&>(data);
 		mMapLevel = mapLevelEvent.mMapLevel;
 
-		UpdateTextBoxEvent event = UpdateTextBoxEvent("MapLevel val", BasicString(mMapLevel));
+		UpdateTextBoxEvent event = UpdateTextBoxEvent("MapLevel val", BasicString((float)mMapLevel));
 		notify(event);
 		break;
 	}

@@ -5,12 +5,12 @@
 
 	<Properties>
 		<Texture>Mace</Texture>
-		<MaxSize>70</MaxSize>
-		<OffsetX>8</OffsetX>
-		<OffsetY>23</OffsetY>
+		<MaxSize>85</MaxSize>
+		<OffsetX>14</OffsetX>
+		<OffsetY>31</OffsetY>
 
 		<SwingSpeed>700</SwingSpeed>
-		<SwingAngle>250</SwingAngle>
+		<SwingAngle>240</SwingAngle>
 	</Properties>
 
 	<AttackingEffects>

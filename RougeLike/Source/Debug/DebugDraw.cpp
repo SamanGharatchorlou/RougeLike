@@ -29,11 +29,15 @@ void debugDrawLine(VectorF pointA, VectorF pointB, RenderColour colour)
 }
 
 
-void debugDrawRectOutline(RectF rect, RenderColour colour)
+void debugDrawRectOutline(RectF rect, RenderColour colour, bool translateToCameraCoords)
 {
 	SDL_SetRenderDrawColor(Renderer::Get()->sdlRenderer(), colour.r, colour.g, colour.b, colour.a);
 
-	//RectF rectb = Camera::Get()->toCameraCoords(rect);
+	if (translateToCameraCoords)
+	{
+		rect = Camera::Get()->toCameraCoords(rect);
+	}
+
 	SDL_Rect renderQuadb = { static_cast<int>(rect.x1),
 					static_cast<int>(rect.y1),
 					static_cast<int>(rect.Width()),
@@ -86,7 +90,10 @@ void debugDrawQuad(Quad2D<float> quad, RenderColour colour)
 	for (unsigned int i = 0; i < quad.sides(); i++)
 	{
 		int j = i + 1 >= quad.sides() ? 0 : i + 1;
-		SDL_RenderDrawLine(Renderer::Get()->sdlRenderer(), quad[i].x, quad[i].y, quad[j].x, quad[j].y);
+
+		Vector2D<int> pointA = quad.at(i).toInt();
+		Vector2D<int> pointB = quad.at(j).toInt();
+		SDL_RenderDrawLine(Renderer::Get()->sdlRenderer(), pointA.x, pointA.y, pointB.x, pointB.y);
 	}
 }
 

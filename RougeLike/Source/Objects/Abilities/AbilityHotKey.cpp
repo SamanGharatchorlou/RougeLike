@@ -33,7 +33,7 @@ Elements HotKey::getComponents()
 
 UIBox* HotKey::creatIconBG() const
 {
-	VectorF position(75.0f * mID, 600.0f);
+	VectorF position(40.0f * mID, 600.0f);
 	VectorF size(75.0f, 75.0f);
 	RectF rect(position, size);
 

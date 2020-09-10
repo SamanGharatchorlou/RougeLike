@@ -93,6 +93,8 @@ void renderQuadOutline(const Quad2D<float>& quad, RenderColour colour)
 	for (unsigned int i = 0; i < quad.sides(); i++)
 	{
 		int j = i + 1 >= quad.sides() ? 0 : i + 1;
-		SDL_RenderDrawLine(Renderer::Get()->sdlRenderer(), quad.at(i).x, quad.at(i).y, quad.at(j).x, quad.at(j).y);
+		Vector2D<int> pointA = quad.at(i).toInt();
+		Vector2D<int> pointB = quad.at(j).toInt();
+		SDL_RenderDrawLine(Renderer::Get()->sdlRenderer(), pointA.x, pointA.y, pointB.x, pointB.y);
 	}
 }

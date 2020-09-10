@@ -188,19 +188,32 @@ void Animator::selectAnimation(Action state)
 }
 
 
-//Animator::Animation* Animator::getAnimation(Action action)
-//{
-//	for (int i = 0; i < mAnimations.size(); i++)
-//	{
-//		if (mAnimations[i].mState == action)
-//		{
-//			return &mAnimations[i];
-//		}
-//	}
-//
-//	DebugPrint(Warning, "No animation with action %d\n", action);
-//	return nullptr;	
-//}
+const Animator::Animation* Animator::getAnimation(Action action) const
+{
+	for (int i = 0; i < mAnimations.size(); i++)
+	{
+		if (mAnimations[i].mState == action)
+		{
+			return &mAnimations[i];
+		}
+	}
+
+	DebugPrint(Warning, "No animation with action %d\n", action);
+	return nullptr;	
+}
+
+float Animator::animationTime(Action action) const
+{
+	float time = -1.0f;
+	const Animation* animation = getAnimation(action);
+
+	if (animation)
+		time = animation->mFrameCount * mFrameTime;
+	else
+		DebugPrint(Warning, "No animation with action %d\n", action);
+
+	return time;	
+}
 
 
 void Animator::startAnimation(Action state)

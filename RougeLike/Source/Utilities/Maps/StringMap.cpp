@@ -15,7 +15,7 @@ void StringMap::fill(const XMLNode& node)
 
 float StringMap::getFloat(const BasicString& key) const
 {
-	return atof(mData.at(key).c_str());
+	return (float)atof(mData.at(key).c_str());
 }
 
 

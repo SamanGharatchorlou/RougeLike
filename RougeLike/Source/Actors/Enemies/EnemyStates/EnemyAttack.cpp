@@ -53,8 +53,6 @@ void EnemyAttack::fastUpdate(float dt)
 
 void EnemyAttack::slowUpdate(float dt)
 {
-	if (mEnemy->collider()->didHit())
-		printf("enemyHit\n");
 	// Return to starting position
 	updateHasAttackedStatus();
 

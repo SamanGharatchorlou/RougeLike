@@ -147,7 +147,22 @@ void MapBuilder::buildMapStructure(Map* map, MapType type)
 
 void MapBuilder::addMapDecor(Map* map)
 {
-	const DecorMap& decorMap = mSpecs.getDecor(map);
+	DecorMap decorMap = mSpecs.getDecor(map);
+
+	if (decorMap.contains(DecorType::Spikes))
+	{
+		setMapLevelSpikeRate(decorMap, map->level());
+	}
+
 	MapDecorator decorator;
 	decorator.addDecor(map, decorMap);
+}
+
+
+
+void MapBuilder::setMapLevelSpikeRate(DecorMap& decorMap, int mapLevel)
+{
+	int baseRate = decorMap[DecorType::Spikes].getInt("rate");
+	int spikeRate = baseRate + randomNumberBetween(0, mapLevel * 2);
+	decorMap[DecorType::Spikes]["rate"] = BasicString((float)spikeRate);
 }

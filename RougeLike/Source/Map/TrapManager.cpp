@@ -68,22 +68,28 @@ void TrapManager::triggerTrap(Index index)
 	}
 	else if (tile->has(DecorType::GratingTrigger))
 	{
-		Animator& animator = tile->animation(0);
-
-		if (animator.activeAimation()->currentFrame() == 0)
+		if (tile->animations().size() > 0)
 		{
-			animator.activeAimation()->nextFrame();
-			triggerAll(DecorType::Grating);
+			Animator& animator = tile->animation(0);
 
+			if (animator.activeAimation()->currentFrame() == 0)
+			{
+				animator.activeAimation()->nextFrame();
+				AudioManager::Get()->play("StoneTrigger", nullptr); // Click trigger sound
+			}
+		}
+
+		if (mPersistingTraps.size() == 0)
+		{
+			triggerAll(DecorType::Grating, tile->rect().Center());
 			AudioManager::Get()->play("StoneTrigger", nullptr); // Click trigger sound
 		}
 	}
 }
 
 
-void TrapManager::triggerAll(DecorType type)
+void TrapManager::triggerAll(DecorType type, VectorF triggerPosition)
 {
-	VectorF triggerPosition;
 	for (unsigned int y = 0; y < mMap->yCount(); y++)
 	{
 		for (unsigned int x = 0; x < mMap->xCount(); x++)
@@ -96,11 +102,6 @@ void TrapManager::triggerAll(DecorType type)
 				mPersistingTraps.push_back(trap);
 
 				tile->animation(0).start();
-			}
-
-			if (tile->is(DecorType::GratingTrigger))
-			{
-				triggerPosition = tile->rect().Center();
 			}
 		}
 	}

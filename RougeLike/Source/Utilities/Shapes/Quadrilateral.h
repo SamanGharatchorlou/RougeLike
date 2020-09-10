@@ -14,7 +14,8 @@ public:
 		{
 			for (int x = 0; x < xPoints; x++)
 			{
-				VectorF position = topLeft + (VectorF(x, y) * pointSpacing);
+				VectorF point = Vector2D<int>(x, y).toFloat();
+				VectorF position = topLeft + (point * pointSpacing);
 				mPoints.push_back(position);
 			}
 		}
