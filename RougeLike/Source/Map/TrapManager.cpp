@@ -187,7 +187,7 @@ void TrapManager::updateTriggerTraps()
 			{
 				animator.activeAimation()->nextFrame();
 
-				Trap& trap = mUntriggeredTraps.popFront();
+				Trap& trap = mUntriggeredTraps.pop();
 				trap.reset();
 
 				mTriggeredTraps.push(trap);
@@ -218,7 +218,7 @@ void TrapManager::updateResetTraps()
 			if (animator.activeAimation()->currentFrame() == 1)
 			{
 				animator.activeAimation()->nextFrame();
-				mTriggeredTraps.popFront();
+				mTriggeredTraps.pop();
 
 				VectorF position = mapTile(trap)->rect().Center();
 				AudioManager::Get()->play("SpikeTrapReset", tile, position);

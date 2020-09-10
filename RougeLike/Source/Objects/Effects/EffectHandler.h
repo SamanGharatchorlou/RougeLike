@@ -5,6 +5,8 @@ class EffectPool;
 
 class EffectHandler
 {
+	friend class EffectManager;
+
 public:
 	EffectHandler() { }
 

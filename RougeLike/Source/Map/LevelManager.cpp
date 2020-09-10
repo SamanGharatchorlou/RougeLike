@@ -30,7 +30,7 @@ void LevelManager::clear()
 {
 	while (mMaps.size() > 0)
 	{
-		delete mMaps.popFront();
+		delete mMaps.pop();
 	}
 
 	mBuilder.clear();
@@ -134,8 +134,8 @@ void LevelManager::closeLevel()
 	{
 		if (camera->rect().LeftPoint() > lastMap(MapType::None)->getFirstRect().LeftPoint())
 		{
-			delete mMaps.popFront();
-			delete mMaps.popFront();
+			delete mMaps.pop();
+			delete mMaps.pop();
 			setCameraBoundaries(camera);
 			
 			LevelUpdatedEvent event(LevelUpdatedEvent::Removed);

@@ -5,7 +5,7 @@
 
 Effect* EffectCollider::popEffect()
 {
-	return mEffects.popFront();
+	return mEffects.pop();
 }
 
 
@@ -14,7 +14,7 @@ void EffectCollider::addNewEffects(UniqueQueue<Effect*>& effects)
 {
 	while (effects.size() > 0)
 	{
-		Effect* effect = effects.popFront();
+		Effect* effect = effects.pop();
 		mEffects.push(effect);
 	}
 }

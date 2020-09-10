@@ -5,11 +5,11 @@
 	</Layer>
 
 	<Layer>
-		<TextBox id = "Title" parent = "MainPanel" align = "Center" x = "157.500" y = "4.600" width = "300.500" height = "40.000" >
+		<TextBox id = "Title" parent = "MainPanel" align = "Center" x = "150.000" y = "4.600" width = "300.000" height = "40.000" >
 			<text>Popup</text>
 		</TextBox>
 
-		<Button id = "OkButton" parent = "MainPanel" x = "142.500" y = "217.500" width = "322.500" height = "48.000" texture = "WideGreenButton"></Button>
+		<Button id = "OkButton" parent = "MainPanel" x = "160.000" y = "225.000" width = "280.000" height = "50.000" texture = "WideBlueButton"></Button>
 	</Layer>
 
 	<Layer>
@@ -17,7 +17,7 @@
 			<text r = "0" g = "0" b = "0" ></text>
 		</TextBox>
 
-		<TextBox id = "ButtonText" parent = "OkButton" font = "MenuFont" align = "Center" x = "0.000" y = "7.500" width = "322.500" height = "28.000">
+		<TextBox id = "ButtonText" parent = "OkButton" font = "MenuFont" align = "Center" x = "0.000" y = "7.500" width = "280.000" height = "28.000">
 			<text>OK</text>
 		</TextBox>
 	</Layer>

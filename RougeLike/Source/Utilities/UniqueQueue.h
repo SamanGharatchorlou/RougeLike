@@ -1,94 +1,20 @@
 #pragma once
 
-#include <deque>
-
+#include "Queue.h"
 
 template <class T>
-class UniqueQueue
+class UniqueQueue : public Queue<T>
 {
 public:
-	// Iterator
-	using iterator = typename std::deque<T>::iterator;
-	iterator begin() { return mQueue.begin(); }
-	iterator end() { return mQueue.end(); }
+	// QUESTION: why can i only access mQueue by Queue<T>::mQueue?
+	void push(T value) override
+	{
+		for (typename std::deque<T>::iterator iter = Queue<T>::mQueue.begin(); iter != Queue<T>::mQueue.end(); iter++)
+		{
+			if (*iter == value)
+				return;
+		}
 
-	// Const Iterator	
-	using const_iterator = typename std::deque<T>::const_iterator;
-	const_iterator begin() const { return mQueue.begin(); }
-	const_iterator end() const { return mQueue.end(); }
-
-	// reverse
-	using const_rIterator = typename std::deque<T>::const_reverse_iterator;
-	const_rIterator rbegin() const { return mQueue.rbegin(); }
-	const_rIterator rend() const { return mQueue.rend(); }
-
-
-public:
-	T& front() { return mQueue.front(); }
-	const T& front() const { return mQueue.front(); }
-
-	T& back() { return mQueue.back(); }
-	const T& back() const { return mQueue.back(); }
-
-	T& get(int i);
-
-	T& popFront();
-
-	void clear() { mQueue.clear(); }
-
-	void push(T value);
-
-	bool contains(const T& value) const;
-	int size() const { return mQueue.size(); }
-
-private:
-	std::deque<T> mQueue;
+		Queue<T>::mQueue.push_back(value);
+	}
 };
-
-
-template <class T>
-T& UniqueQueue<T>::popFront()
-{
-	T& value = front();
-	mQueue.pop_front();
-	return value;
-}
-
-
-template <class T>
-void UniqueQueue<T>::push(T value)
-{
-	for (typename std::deque<T>::iterator iter = mQueue.begin(); iter != mQueue.end(); iter++)
-	{
-		if (*iter == value)
-			return;
-	}
-
-	mQueue.push_back(value);
-}
-
-
-template <class T>
-bool UniqueQueue<T>::contains(const T& value) const
-{
-	for (typename std::deque<T>::const_iterator iter = mQueue.begin(); iter != mQueue.end(); iter++)
-	{
-		if (*iter == value)
-			return true;
-	}
-
-	return false;
-}
-
-
-template <class T>
-T& UniqueQueue<T>::get(int index)
-{
-	for (typename std::deque<T>::iterator iter = mQueue.begin(); iter != mQueue.end(); iter++)
-	{
-		if (index == 0)
-			return *iter;
-
-		index--;
-	}
-}

@@ -58,8 +58,8 @@ constexpr float game_scale = 0.5f;
 #define MAX_SPAWN_COUNT 1
 
 // UI
-#define UI_EDITOR 0
-#define DRAW_UI_RECTS 0
+#define UI_EDITOR 1
+#define DRAW_UI_RECTS 1
 
 #define DEBUG_CURSOR 0
 

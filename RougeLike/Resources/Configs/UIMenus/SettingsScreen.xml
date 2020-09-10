@@ -29,7 +29,7 @@
 
 
 		<!-- Back -->
-		<Button id = "BackButton" parent = "MainPanel" x = "100.000" y = "500.000" width = "300.000" height = "55.000" texture = "WideBlueButton"></Button>
+		<Button id = "BackButton" parent = "MainPanel" x = "100.000" y = "480.000" width = "300.000" height = "55.000" texture = "WideBlueButton"></Button>
 		<TextBox id = "BackText" parent = "BackButton" align = "Center" x = "0.000" y = "5.000" width = "300.000" height = "40.000" >
 			<text r = "255" g = "255" b = "255" >BACK</text>
 		</TextBox>

@@ -124,7 +124,7 @@ void Levelling::levelUp(PlayerManager* player)
 
 	if (mLockedAbilities.size() > 0)
 	{
-		AbilityType type = mLockedAbilities.popFront();
+		AbilityType type = mLockedAbilities.pop();
 		player->addAbility(type);
 
 		// FIX ME: Right now opening a bunch of popups as soon as the game starts breaks the game

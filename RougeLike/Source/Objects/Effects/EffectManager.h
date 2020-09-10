@@ -4,7 +4,7 @@
 
 class EffectPool;
 class Effect;
-
+enum class EffectType;
 
 class EffectManager
 {
@@ -21,6 +21,7 @@ public:
 	void addEffect(Effect* effect);
 	void returnEffect(Effect* effect);
 
+	bool hasEffect(EffectType type) const;
 
 private:
 	EffectPool* mPool;

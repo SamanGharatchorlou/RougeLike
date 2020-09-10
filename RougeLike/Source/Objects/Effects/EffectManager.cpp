@@ -48,3 +48,17 @@ void EffectManager::returnEffect(Effect* effect)
 {
 	mPool->returnObject(effect, effect->type());
 }
+
+
+bool EffectManager::hasEffect(EffectType type) const
+{
+	const std::vector<Effect*>& effects = mHandler.mEffects;
+
+	for (int i = 0; i < effects.size(); i++)
+	{
+		if (effects[i]->type() == type)
+			return true;
+	}
+
+	return false
+}
