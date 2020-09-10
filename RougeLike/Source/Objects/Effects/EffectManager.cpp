@@ -60,5 +60,5 @@ bool EffectManager::hasEffect(EffectType type) const
 			return true;
 	}
 
-	return false
+	return false;
 }
