@@ -12,7 +12,12 @@ GameSetup::GameSetup() : title(""), audioChannels(0)
 }
 
 
-Window* GameSetup::initSDL()
+void GameSetup::initFileSystem()
+{
+	FileManager::Get()->init();
+}
+
+Window* GameSetup::initSDLWindow()
 {
 	Window* window = nullptr;
 	readSettings();

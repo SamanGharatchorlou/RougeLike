@@ -25,7 +25,9 @@
 GameController::GameController() : quit(false), mGameStateMachine(new NullState)
 {
 	GameSetup setup;
-	Window* window = setup.initSDL();
+	setup.initFileSystem();
+
+	Window* window = setup.initSDLWindow();
 	mGameData.setWindow(window);
 }
 

@@ -3,7 +3,7 @@
 		<Title>RougeLike</Title>
 		<Width>1024</Width>
 		<Height>768</Height>
-		<MusicVolume>0</MusicVolume>
+		<MusicVolume>50</MusicVolume>
 		<SoundVolume>50</SoundVolume>
 	</Game>
 	<Tutorial>OFF</Tutorial>

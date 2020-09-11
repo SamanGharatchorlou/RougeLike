@@ -12,7 +12,6 @@ public:
 
 	virtual void init() override = 0;
 	virtual void handleInput() override { }
-	virtual void handleInput(const InputManager* input) = 0;
 	virtual void fastUpdate(float dt) override = 0;
 	virtual void slowUpdate(float dt) override =0;
 	virtual void render() override = 0;

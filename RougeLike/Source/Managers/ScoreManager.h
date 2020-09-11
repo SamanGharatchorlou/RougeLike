@@ -3,7 +3,7 @@
 #include "Events/Observer.h"
 #include "Events/Dispatcher.h"
 
-// TODO: fix this
+
 class ScoreManager : public Observer, public Dispatcher
 {
 public:
@@ -25,4 +25,6 @@ private:
 	int mKills;
 
 	bool updateUI;
+
+	bool mNewLevelPopuped;
 };

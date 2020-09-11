@@ -7,7 +7,7 @@
 
 void EnemyPreAttack::init()
 {
-	mEnemy->animator().selectAnimation(Action::Idle);
+	mEnemy->animator().selectAnimation(Animation::Idle);
 	timer.restart();
 
 	float attackWaitTime = 100.0f / mEnemy->getAttributeValue(AttributeType::AttackSpeed);

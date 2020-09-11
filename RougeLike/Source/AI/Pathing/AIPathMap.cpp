@@ -135,6 +135,8 @@ Vector2D<int> AIPathMap::yTileFloorRange(Index index) const
 const PathTile* AIPathMap::randomFloorTile(int xPointPercentage) const
 {
 	int xTileIndex = (int)((xCount() * xPointPercentage) / 100);
+	int max = xCount() - 1;
+	xTileIndex = clamp(xTileIndex, 0, max);
 
 	std::vector<Index> floorIndexes;
 	for (int y = 0; y < yCount(); y++)
@@ -145,7 +147,7 @@ const PathTile* AIPathMap::randomFloorTile(int xPointPercentage) const
 	}
 
 	// TODO: -1 -> we dont want to include the 'hidden' floor under the parralax walls?
-	int randomIndex = randomNumberBetween(0, floorIndexes.size());
+	int randomIndex = randomNumberBetween(0, floorIndexes.size() - 1);
 	Index index(floorIndexes[randomIndex]);
 	return tile(index);
 }
@@ -153,18 +155,6 @@ const PathTile* AIPathMap::randomFloorTile(int xPointPercentage) const
 
 const PathTile* AIPathMap::randomFloorTile() const
 {
-	int randomXTileIndex = randomNumberBetween(0, xCount());
-
-	std::vector<Index> floorIndexes;
-	for (int y = 0; y < yCount(); y++)
-	{
-		Index index(randomXTileIndex, y);
-		if (tile(index)->is(CollisionTile::Floor))
-			floorIndexes.push_back(index);
-	}
-
-	// TODO: -1 -> we dont want to include the 'hidden' floor under the parralax walls?
-	int randomIndex = randomNumberBetween(0, floorIndexes.size());
-	Index index(floorIndexes[randomIndex]);
-	return tile(index);
+	int randomX = randomNumberBetween(0, 101);
+	return randomFloorTile(randomX);
 }

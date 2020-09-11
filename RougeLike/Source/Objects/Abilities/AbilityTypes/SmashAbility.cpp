@@ -14,7 +14,6 @@
 #include "Audio/AudioManager.h"
 
 
-// TODO: fix the placement of this i.e. its position on the map, now that its large its hard to place
 SmashAbility::SmashAbility(Texture* hammerTexture, RectF hammerRect) : mHammerTexture(hammerTexture), mHammerRect(hammerRect) { }
 
 
@@ -45,7 +44,7 @@ void SmashAbility::init()
 void SmashAbility::activate()
 {
 	// Splash animation
-	mAnimator.selectAnimation(Action::Active);
+	mAnimator.selectAnimation(Animation::Active);
 	mRect.SetCenter(mTargetPosition);
 
 	// Hammer logic

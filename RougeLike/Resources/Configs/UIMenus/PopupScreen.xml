@@ -5,7 +5,7 @@
 	</Layer>
 
 	<Layer>
-		<TextBox id = "Title" parent = "MainPanel" align = "Center" x = "150.000" y = "4.600" width = "300.000" height = "40.000" >
+		<TextBox id = "Title" parent = "MainPanel" align = "Center" x = "150.000" y = "5.000" width = "300.000" height = "40.000" >
 			<text>Popup</text>
 		</TextBox>
 

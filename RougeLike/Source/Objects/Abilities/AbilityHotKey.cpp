@@ -33,9 +33,9 @@ Elements HotKey::getComponents()
 
 UIBox* HotKey::creatIconBG() const
 {
-	VectorF position(40.0f * mID, 600.0f);
+	VectorF position(75.0f * mID, 600.0f);
 	VectorF size(75.0f, 75.0f);
-	RectF rect(position, size);
+	RectF rect(position - VectorF(25.0f, 0.0f), size);
 
 	const TextureManager* textures = TextureManager::Get();
 	const BasicString& id = mAbility->name() + "IconBG";

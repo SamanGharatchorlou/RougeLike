@@ -7,7 +7,7 @@
 
 void EnemyRun::init()
 {
-	mEnemy->animator().selectAnimation(Action::Run);
+	mEnemy->animator().selectAnimation(Animation::Run);
 	updatePath(-1);
 }
 
@@ -64,7 +64,7 @@ void EnemyRun::render()
 
 void EnemyRun::resume()
 {
-	mEnemy->animator().selectAnimation(Action::Run);
+	mEnemy->animator().selectAnimation(Animation::Run);
 	mPath.empty();
 }
 

@@ -3,7 +3,7 @@
 
 	<Layer>
 		<Slider id = "HealthSlider" x = "230.000" y = "20.500" width = "500.000" height = "35.000" slider = "HealthSlider"></Slider>
-		<Slider id = "LevelSlider" x = "112.565" y = "68.000" width = "839.000" height = "27.500" slider = "LevelSlider"></Slider>
+		<Slider id = "LevelSlider" x = "112.565" y = "68.000" width = "839.000" height = "35.000" slider = "LevelSlider"></Slider>
 		<TextBox id = "ExpText" parent = "LevelSlider" x = "-60.500" y = "-6.500" width = "58.000" height = "36.500">
 			<text>Exp:</text>
 		</TextBox>

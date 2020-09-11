@@ -5,6 +5,7 @@
 class EnemyHit : public EnemyState
 {
 public:
+	EnemyHit() : mColourMod(RenderColour(RenderColour::None)) { }
 	void init() override;
 	void handleInput() override { }
 	void fastUpdate(float dt) override { };

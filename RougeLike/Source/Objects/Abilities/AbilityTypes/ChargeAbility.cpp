@@ -32,7 +32,7 @@ void ChargeAbility::activate()
 {
 	updateQuad();
 
-	mAnimator.selectAnimation(Action::Active);
+	mAnimator.selectAnimation(Animation::Active);
 	mWallCollisions.setActor(mCaster);
 	setCharging(true);
 

@@ -1,13 +1,12 @@
 #pragma once
 
 #include "EnemyState.h"
-
 #include "Collisions/WallCollisionTracker.h"
 
 class EnemyCharge : public EnemyState
 {
 public:
-	void enter() override;
+	EnemyCharge() : mEndAttack(false), mStunned(false) { }
 	void init() override;
 	void handleInput() override { }
 	void fastUpdate(float dt) override;
@@ -20,6 +19,7 @@ public:
 
 
 private:
+	void initProperties();
 	void updateHasAttackedStatus();
 
 
@@ -29,8 +29,6 @@ private:
 
 	VectorF mDirection;
 	VectorF mStartPosition;
-
-	int mHitCounter;
 
 	WallCollisionTracker mWallCollisions;
 };

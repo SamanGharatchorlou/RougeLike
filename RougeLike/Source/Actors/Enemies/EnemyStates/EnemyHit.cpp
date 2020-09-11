@@ -10,7 +10,7 @@
 void EnemyHit::init()
 {
 	mTimer.start();
-	mEnemy->animator().selectAnimation(Action::Hurt);
+	mEnemy->animator().selectAnimation(Animation::Hurt);
 	mEnemy->animator().activeAimation()->reset();
 	if(mEnemy->hasTarget())
 		mEnemy->physics()->facePoint(mEnemy->target()->position());

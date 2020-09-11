@@ -46,7 +46,6 @@ Screen* UIManager::screen(ScreenType type)
 
 void UIManager::clearScreens()
 {
-	// TODO: make sure all screens have been returned first?
 	mController.clearScreenStack();
 	mScreenPool.freeAll();
 }
@@ -98,7 +97,7 @@ void UIManager::render()
 void UIManager::handleEvent(EventData& data)
 {
 	UIEventHandler eventHandler;
-	eventHandler.handleEvent(mController.getActiveScreen(), data);
+	eventHandler.handleEvent(&mController, data);
 }
 
 

@@ -26,9 +26,7 @@ struct EnemyState : public State
 
 	EnemyState() : mEnemy(nullptr) { }
 
-	// TODO: replace init with enter!
 	void set(Enemy* enemy) { mEnemy = enemy; }
-	virtual void enter() { }
 	virtual void render();
 
 	virtual const Type type() const = 0;

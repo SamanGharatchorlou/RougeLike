@@ -2,10 +2,6 @@
 
 #include "Events/Dispatcher.h"
 
-#if DEBUG_CHECK
-#include "Debug/DebugDraw.h"
-#endif
-
 class AIPathMap;
 class Enemy;
 class Map;
@@ -43,15 +39,14 @@ private:
 
 private:
 	std::vector<AIPathMap*> mPathMaps;
-
-	Timer<float> updateTimer;
-	int pathUpdateRequests;
-	int pathUpdateStaggerCounter;
-
-	int mPathLimit;
+	
 	
 	Vector2D<int> mCalculationIndexRange;
 
+	// A* algorithm only builds a path upto this limit
+	int mPathLimit;
+
+	// Split the enemy pathing calculations across frames
 	int mListSplit;
 	int mSegmentLength;
 	int mSegmentIndex;

@@ -13,7 +13,7 @@ FileManager* FileManager::Get()
 }
 
 
-FileManager::FileManager()
+void FileManager::init()
 {
 	folderPaths[None] = ".";
 	folderPaths[Root] = pathToString(fs::current_path()) + "\\Resources\\";

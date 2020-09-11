@@ -8,7 +8,7 @@
 
 void EnemyPatrol::init()
 {
-	mEnemy->animator().selectAnimation(Action::Walk);
+	mEnemy->animator().selectAnimation(Animation::Walk);
 	setPatrolPoint();
 }
 
@@ -37,7 +37,7 @@ void EnemyPatrol::render()
 
 void EnemyPatrol::resume()
 {
-	mEnemy->animator().selectAnimation(Action::Walk);
+	mEnemy->animator().selectAnimation(Animation::Walk);
 	setPatrolPoint();
 }
 

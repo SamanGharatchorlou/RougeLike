@@ -264,7 +264,6 @@ EnemyState* Enemy::getNewState(EnemyState::Type type)
 {
 	EnemyState* state = mStatePool->getObject(type);
 	state->set(this);
-	state->enter();
 
 	return state;
 }

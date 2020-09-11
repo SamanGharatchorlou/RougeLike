@@ -6,7 +6,7 @@
 class EnemyIdle : public EnemyState
 {
 public:
-	EnemyIdle();
+	EnemyIdle() : mTime(-1.0f) { }
 
 	void setTime(float time);
 
@@ -26,6 +26,6 @@ private:
 
 
 private:
-	Timer<float> mTimer;
+	TimerF mTimer;
 	float mTime;
 };

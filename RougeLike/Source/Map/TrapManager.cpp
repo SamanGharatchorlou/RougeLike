@@ -3,10 +3,9 @@
 
 #include "Map/Map.h"
 #include "Actors/Actor.h"
+#include "Audio/AudioManager.h"
 
 #include "Objects/Pools/EffectPool.h"
-
-#include "Audio/AudioManager.h"
 
 
 TrapManager::~TrapManager()

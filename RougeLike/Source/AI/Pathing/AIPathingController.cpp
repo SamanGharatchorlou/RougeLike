@@ -1,46 +1,53 @@
 #include "pch.h"
 #include "AIPathingController.h"
 
+#include "Map/Map.h"
 #include "AIPathMap.h"
 
 #include "Actors/Enemies/Enemy.h"
 #include "Actors/Enemies/EnemyStates/EnemyRun.h"
 
-#include "Map/Map.h"
-
-#include "Debug/FrameRateController.h"
 
 #if DRAW_AI_PATH_COSTMAP
+#include "Debug/DebugDraw.h"
 #include "Game/Camera/Camera.h"
 #include "UI/Elements/UITextBox.h"
 #endif
 
 
-AIPathingController::AIPathingController() : pathUpdateRequests(0), pathUpdateStaggerCounter(0), mPathLimit(-1)
+AIPathingController::AIPathingController() : mPathLimit(-1)
 {
-	updateTimer.start();
-
-	// Split enemy list calculations over 5 frames, for now this is more than enough
 	// IMPROVEMENT: dynamically adjust this according to framerate drops
-	mListSplit = 5;
+#if _DEBUG
+	mListSplit = 6;
+#else
+	mListSplit = 2;
+#endif
 
-	mSegmentLength = 10;
+	mSegmentLength = 200;
 	mSegmentIndex = 0;
 }
 
+
 void AIPathingController::clear() 
 { 
-	mPathMaps.clear();  // TODO: delte
-	updateTimer.stop();
-	pathUpdateRequests = 0;
-	pathUpdateStaggerCounter = 0;
+	for (int i = 0; i < mPathMaps.size(); i++)
+	{
+		AIPathMap* pathMap = mPathMaps[i];
+		if (pathMap)
+		{
+			delete pathMap;
+			pathMap = nullptr;	
+		}
+	}
+	mPathMaps.clear();
 }
 
 
 void AIPathingController::addMap(const Map* map)
 {
 	AIPathMap* pathMap = new AIPathMap;
-	pathMap->build(map, 4, 4);
+	pathMap->build(map, 2, 2);
 	mPathMaps.push_back(pathMap);
 }
 
@@ -104,8 +111,7 @@ Vector2D<int> AIPathingController::getCalculationIndexRange(const std::vector<En
 	int end = start + mSegmentLength;
 	end = clamp(end, end, (int)enemies.size());
 
-	if ( start < 0	|| start >= end ||
-		 end < 0	|| end > enemies.size())
+	if ( start >= end || end > enemies.size())
 	{
 		mSegmentLength = enemies.size() / mListSplit;
 
@@ -178,7 +184,7 @@ void AIPathingController::updateAIPathCostMap(const std::vector<Enemy*>& enemies
 		if (index.isPositive()) // == if valid
 		{
 			CostMap& costMap = findPathMap(enemy->pathing()->map())->costMapRef();
-			costMap[index] += 5;
+			costMap[index] += 6;
 
 			// Immediate surrounding tiles
 			Index surroundingIndexsLayer1[8]{
@@ -198,7 +204,7 @@ void AIPathingController::updateAIPathCostMap(const std::vector<Enemy*>& enemies
 			{
 				if (isValid(surroundingIndexsLayer1[i], costMap))
 				{
-					costMap[surroundingIndexsLayer1[i]] += 1;
+					costMap[surroundingIndexsLayer1[i]] += 2;
 				}
 			}
 		}

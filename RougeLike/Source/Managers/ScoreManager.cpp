@@ -2,7 +2,7 @@
 #include "ScoreManager.h"
 
 
-ScoreManager::ScoreManager() : mScore(0), mMapLevel(0), updateUI(false)
+ScoreManager::ScoreManager() : mScore(0), mMapLevel(0), updateUI(false), mNewLevelPopuped(false)
 {
 
 }
@@ -51,6 +51,18 @@ void ScoreManager::handleEvent(EventData& data)
 
 		UpdateTextBoxEvent event = UpdateTextBoxEvent("MapLevel val", BasicString((float)mMapLevel));
 		notify(event);
+
+		// Open level 1 popup
+		if (!mNewLevelPopuped)
+		{
+			if (mMapLevel == 1)
+			{
+				OpenPopupEvent newLevel("NewLevel");
+				notify(newLevel);
+				mNewLevelPopuped = true;
+			}
+		}
+
 		break;
 	}
 	case Event::PlayerDead:

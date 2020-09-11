@@ -8,7 +8,9 @@ class GameSetup
 {
 public:
 	GameSetup();
-	Window* initSDL();
+
+	void initFileSystem();
+	Window* initSDLWindow();
 
 	void static closeSubSystems();
 	void static setTutorial(const BasicString& mode);

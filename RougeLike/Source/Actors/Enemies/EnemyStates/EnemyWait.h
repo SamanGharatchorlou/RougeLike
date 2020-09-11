@@ -24,5 +24,5 @@ public:
 
 private:
 	float mWaitTime;
-	Timer<float> timer;
+	TimerF timer;
 };

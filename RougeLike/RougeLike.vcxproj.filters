@@ -170,6 +170,7 @@
     <ClCompile Include="Source\Actors\Player\PlayerStates\PlayerDeadState.cpp" />
     <ClCompile Include="Source\Audio\Channel.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\InvunerabilityEffect.cpp" />
+    <ClCompile Include="Source\Animations\Animation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -373,6 +374,7 @@
     <ClInclude Include="Source\Actors\Player\PlayerStates\PlayerDeadState.h" />
     <ClInclude Include="Source\Audio\Channel.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\InvunerabilityEffect.h" />
+    <ClInclude Include="Source\Animations\Animation.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

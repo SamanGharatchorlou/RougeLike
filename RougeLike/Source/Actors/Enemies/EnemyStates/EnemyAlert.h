@@ -1,10 +1,6 @@
 #pragma once
 
-#include "States/State.h"
-
 #include "EnemyState.h"
-
-class Enemy;
 
 class EnemyAlert : public EnemyState
 {

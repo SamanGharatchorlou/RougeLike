@@ -39,8 +39,9 @@ public:
 
 
 public:
-	// TODO: replace constructor code with init function
 	static FileManager* Get();
+
+	void init();
 	void free();
 
 	BasicString generatePath(const Folder folder) const;
@@ -72,8 +73,8 @@ private:
 
 
 private:
-	FileManager();
-	~FileManager() {};
+	FileManager() { };
+	~FileManager() { };
 
 
 private:

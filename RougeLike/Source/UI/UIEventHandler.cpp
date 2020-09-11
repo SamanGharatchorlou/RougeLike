@@ -14,35 +14,34 @@
 #include "Elements/UISlider.h"
 
 
-// TODO: replace with screencontroller
-void UIEventHandler::handleEvent(Screen* activeScreen, EventData& data)
+void UIEventHandler::handleEvent(ScreenController* controller, EventData& data)
 {
 	switch (data.eventType)
 	{
 	case Event::UpdateTextBox:
 	{
-		updateTextBox(activeScreen, static_cast<UpdateTextBoxEvent&>(data));
+		updateTextBox(controller->getActiveScreen(), static_cast<UpdateTextBoxEvent&>(data));
 		break;
 	}
 	case Event::SetUIBar:
 	{
-		setUIbar(activeScreen, static_cast<SetUIBarEvent&>(data));
+		setUIbar(controller->getActiveScreen(), static_cast<SetUIBarEvent&>(data));
 		break;
 	}
 	case Event::SetTextColour:
 	{
-		setTextColour(activeScreen, static_cast<SetTextColourEvent&>(data));
+		setTextColour(controller->getActiveScreen(), static_cast<SetTextColourEvent&>(data));
 		break;
 	}
 	case Event::SetUISlider:
 	{
-		setSliderValue(activeScreen, static_cast<SetUISlider&>(data));
+		setSliderValue(controller->getActiveScreen(), static_cast<SetUISlider&>(data));
 		break;
 	}
 	case Event::OpenPopup:
 	{
 		OpenPopupEvent& eventData = static_cast<OpenPopupEvent&>(data);
-		activeScreen->controller()->openPopup(eventData.mInfoID);
+		controller->openPopup(eventData.mInfoID);
 		break;
 	}
 	case Event::PlayerDead:
@@ -50,15 +49,15 @@ void UIEventHandler::handleEvent(Screen* activeScreen, EventData& data)
 		PlayerDeadEvent& eventData = static_cast<PlayerDeadEvent&>(data);
 		if (eventData.mMapLevel >= 0)
 		{
-			Screen* screen = activeScreen->controller()->ui()->screen(ScreenType::GameOver);
+			Screen* screen = controller->ui()->screen(ScreenType::GameOver);
 			GameOverScreen* gameOver = static_cast<GameOverScreen*>(screen);
 
 			gameOver->mScore = eventData.mScore;
 			gameOver->mKills = eventData.mKills;
 			gameOver->mMapLevel = eventData.mMapLevel;
 
-			activeScreen->controller()->addSystemState(SystemStates::PauseState);
-			activeScreen->controller()->addScreen(ScreenType::GameOver);
+			controller->addSystemState(SystemStates::PauseState);
+			controller->addScreen(ScreenType::GameOver);
 		}
 		break;
 	}
@@ -66,12 +65,12 @@ void UIEventHandler::handleEvent(Screen* activeScreen, EventData& data)
 #if UI_EDITOR
 	case Event::MoveUIElement:
 	{
-		moveElement(activeScreen, static_cast<EditUIRectEvent&>(data));
+		moveElement(controller->getActiveScreen(), static_cast<EditUIRectEvent&>(data));
 		break;
 	}
 	case Event::ChangeUIElementSize:
 	{
-		setElementSize(activeScreen, static_cast<EditUIRectEvent&>(data));
+		setElementSize(controller->getActiveScreen(), static_cast<EditUIRectEvent&>(data));
 		break;
 	}
 #endif

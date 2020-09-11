@@ -4,144 +4,10 @@
 #include "Graphics/Texture.h"
 
 
-Action stringToAction(const BasicString& action)
-{
-	if (action == "Idle")
-		return Action::Idle;	
-	else if (action == "Walk")
-		return Action::Walk;
-	else if (action == "Run")
-		return Action::Run;
-	else if (action == "Attack")
-		return Action::Attack;
-	else if (action == "Alert")
-		return Action::Alert;
-	else if (action == "Hurt")
-		return Action::Hurt;
-	else if (action == "Dead")
-		return Action::Dead;
-	else if (action == "Active")
-		return Action::Active;
-	else
-	{
-		DebugPrint(Warning, "No action matched the string '%s'\n", action.c_str());
-		return Action::None;
-	}
-}
-
-
-// --- Animation --- //
-Animator::Animation::Animation(const AnimationData& data) : 
-	mTexture(data.texture), mTileDimentions(data.tileDimentions), 
-	mState(data.action), mFrameCount(data.frameCount),
-	mLoops(0) { }
-
-
-void Animator::Animation::reset()
-{
-	mIndex = Index(0, 0);
-	mLoops = 0;
-}
-
-void Animator::Animation::render(RectF rect, SDL_RendererFlip flip) const
-{
-	RectF tileRect = subTileRect(rect);
-	RectF renderRect = autoSize(rect);
-
-	mTexture->renderSubTexture(renderRect, tileRect, flip);
-}
-
-
-void Animator::Animation::render(RectF rect, SDL_RendererFlip flip, Uint8 alpha) const
-{
-	RectF tileRect = subTileRect(rect);
-	// TODO: does this auto size work correctly and should I always use it?
-	//RectF renderRect = autoSize(rect);
-
-	mTexture->renderSubTexture(rect, tileRect, flip, alpha);
-}
-
-void Animator::Animation::render(RectF rect, SDL_RendererFlip flip, RenderColour colourMod) const
-{
-	RectF tileRect = subTileRect(rect);
-	// TODO: does this auto size work correctly and should I always use it?
-	//RectF renderRect = autoSize(rect);
-
-	mTexture->renderSubTexture(rect, tileRect, flip, colourMod);
-}
-
-
-// NOTE: is the sub texture size correct??? the height seems off?
-void Animator::Animation::render(RectF rect, double rotation, VectorF aboutPoint) const
-{
-	RectF tileRect = subTileRect(rect);
-	RectF renderRect = autoSize(rect);
-
-	mTexture->renderSubTexture(renderRect, tileRect, rotation, aboutPoint);
-}
-
-
-// Resize and reposition texture to keep fixed ratio and center within rect
-RectF Animator::Animation::autoSize(RectF rect) const
-{
-	VectorF size = mTileDimentions;
-	VectorF theSize = realiseSize(size, std::max(rect.Width(), rect.Height()));
-	VectorF offset = (rect.Size() - theSize) / 2.0f;
-	return RectF(rect.TopLeft() + offset, theSize);
-}
-
-
-RectF Animator::Animation::subTileRect(RectF rect) const
-{
-#if DEBUG_CHECK
-	VectorF requestSize = (mIndex + 1).toFloat() * mTileDimentions;
-	VectorF objectSize = mTexture->originalDimentions;
-
-	if (requestSize.x > objectSize.x || requestSize.y > objectSize.y)
-		DebugPrint(Error, "Index(%d,%d) out of bounds\n", mIndex.x, mIndex.y);
-#endif
-
-	VectorF size = mTileDimentions;
-	VectorF position = mTileDimentions * mIndex;
-	return RectF(position, size);
-}
-
-
-void Animator::Animation::nextFrame()
-{
-	Index bounaries = (mTexture->originalDimentions / mTileDimentions).toInt();
-	mIndex += Index(1, 0);
-
-	Index yIncrement(0, 0);
-	if (mIndex.x >= bounaries.x)
-	{
-		mIndex.x = 0;
-		yIncrement += Index(0, 1);
-	}
-
-	mIndex += yIncrement;
-
-	if (mIndex.y >= bounaries.y)
-	{
-		mIndex.y = 0;
-		mIndex.x = 0;
-		mLoops++;
-	}
-}
-
-
-int Animator::Animation::currentFrame() const
-{
-	Index bounaries = (mTexture->originalDimentions / mTileDimentions).toInt();
-	return (mIndex.y * bounaries.x) + mIndex.x;
-}
-
-
-// --- Animator --- //
 Animator::Animator() : mActiveIndex(0), speedFactor(1.0f), mFrameTime(0.0f) { }
 
 
-void Animator::addAnimation(const AnimationData& data)
+void Animator::addAnimation(const Animation::Data& data)
 {
 	Animation animation(data);
 	mAnimations.push_back(animation);
@@ -172,7 +38,7 @@ void Animator::render(RectF rect, double rotation, VectorF aboutPoint) const
 }
 
 
-void Animator::selectAnimation(Action state)
+void Animator::selectAnimation(Animation::Action state)
 {
 	for (int i = 0; i < mAnimations.size(); i++)
 	{
@@ -188,7 +54,7 @@ void Animator::selectAnimation(Action state)
 }
 
 
-const Animator::Animation* Animator::getAnimation(Action action) const
+const Animation* Animator::getAnimation(Animation::Action action) const
 {
 	for (int i = 0; i < mAnimations.size(); i++)
 	{
@@ -202,7 +68,7 @@ const Animator::Animation* Animator::getAnimation(Action action) const
 	return nullptr;	
 }
 
-float Animator::animationTime(Action action) const
+float Animator::animationTime(Animation::Action action) const
 {
 	float time = -1.0f;
 	const Animation* animation = getAnimation(action);
@@ -216,7 +82,7 @@ float Animator::animationTime(Action action) const
 }
 
 
-void Animator::startAnimation(Action state)
+void Animator::startAnimation(Animation::Action state)
 {
 	selectAnimation(state);
 	start();

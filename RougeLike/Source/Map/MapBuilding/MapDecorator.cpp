@@ -254,7 +254,7 @@ bool MapDecorator::canAddWallDecor(const Grid<MapTile>& data, DecorType decor, I
 		Index wallIndex(i, index.y);
 		bool validIndex = isValid(wallIndex, data);
 
-		if (!isValid(wallIndex, data)) // Assume end of map is just another wall TODO: restrict this range? i.e. can only up to index +/-2 out of range
+		if (!isValid(wallIndex, data))
 			continue;
 
 		// needs to be a facing wall i.e. render::lower or something, although this works well for columns...by fluke

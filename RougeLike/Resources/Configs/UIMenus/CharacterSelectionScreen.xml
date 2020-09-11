@@ -4,13 +4,13 @@
 
 
 	<Layer>
-		<Box id = "Background" x = "0" y = "0" width = "1024" height = "768" texture = "bg" fitting = "clip"></Box>
+		<Box id = "Background" x = "0.000" y = "0.000" width = "1024.000" height = "768.000" texture = "bg" fitting = "clip"></Box>
 	</Layer>
 
 
 
 	<Layer>
-		<Box id = "MainPanel" x = "148.000" y = "35" width = "728.800" height = "714.200" texture = "Main panel"></Box>
+		<Box id = "MainPanel" x = "148.000" y = "30.000" width = "728.800" height = "714.200" texture = "Main panel"></Box>
 	</Layer>
 
 
@@ -22,12 +22,12 @@
 	</Layer>
 
 	<Layer>
-		<Box id = "CharacterNamePanel" parent = "MainPanel" x = "45.400" y = "106.600" width = "640.299"  texture = "NamePanel"></Box>
+		<Box id = "CharacterNamePanel" parent = "MainPanel" x = "45.400" y = "106.000" width = "640.000"  texture = "NamePanel"></Box>
 		<Box id= "Character" parent = "MainPanel" x = "193.298" y = "147.700" width = "344.994" height = "345.000" texture = ""></Box>
+
 		<Button id = "PlayButton" parent = "MainPanel" x = "179.000" y = "524.000" width = "370.000" height = "65.000" texture = "WideBlueButton"></Button>
 		<Button id = "ExitButton" parent = "MainPanel" x = "179.000" y = "596.000" width = "370.000" height = "65.000" texture = "WideRedButton"></Button>
 
-		<Box id = "MainPanel" x = "148.000" y = "35" width = "728.800" height = "714.200" texture = "MP"></Box>
 		<Button id = "LeftButton" parent = "MainPanel" x = "66.700" y = "315.000" width = "85.000" texture = "BlankButton"></Button>
 		<Button id = "RightButton" parent = "MainPanel" x = "573.287" y = "315.000" width = "85.000" texture = "BlankButton"></Button>
 	</Layer>

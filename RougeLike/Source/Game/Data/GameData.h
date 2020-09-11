@@ -11,7 +11,6 @@ class ScoreManager;
 
 struct GameData
 {
-	// TODO: move this logic somewhere else?
 	void setWindow(Window* newWindow);
 	void init(GameController* gameController);
 	void preLoad();

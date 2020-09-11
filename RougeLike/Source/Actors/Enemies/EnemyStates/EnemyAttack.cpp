@@ -4,19 +4,9 @@
 #include "Actors/Enemies/Enemy.h"
 
 
-
-EnemyAttack::EnemyAttack() : mHasAttacked(false), mDidHit(false)
-{ 
-}
-
-void EnemyAttack::enter()
-{
-	mEnemy->collider()->setDidHit(false);
-}
-
 void EnemyAttack::init()
 {
-	mEnemy->collider()->setDidHit(false);
+	initProperties();
 
 	if (mEnemy->hasTarget())
 	{
@@ -26,12 +16,23 @@ void EnemyAttack::init()
 		mEndPosition = mStartPosition + mDirection * mEnemy->getAttributeValue(AttributeType::TackleDistance);
 
 		mEnemy->physics()->facePoint(attackPosition);
-		mEnemy->animator().selectAnimation(Action::Idle);
+		mEnemy->animator().selectAnimation(Animation::Idle);
 	}
 	else
 	{
-		mEnemy->popState();
+		mHasAttacked = true;
 	}
+}
+
+void EnemyAttack::initProperties()
+{
+	mHasAttacked = false;
+	mDidHit = false;
+	mEnemy->collider()->setDidHit(false);
+
+	mStartPosition.zero();
+	mEndPosition.zero();
+	mDirection.zero();
 }
 
 
@@ -98,7 +99,6 @@ bool EnemyAttack::attackComplete() const
 
 void EnemyAttack::resume()
 {
-	exit();
 	init();
 }
 
@@ -106,7 +106,5 @@ void EnemyAttack::resume()
 
 void EnemyAttack::exit()
 {
-	mHasAttacked = false;
-	mDidHit = false;
-	mEnemy->collider()->setDidHit(false);
+	initProperties();
 }

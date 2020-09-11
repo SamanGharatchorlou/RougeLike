@@ -2,12 +2,10 @@
 
 #include "EnemyState.h"
 
-class Enemy;
-
 class EnemyDead : public EnemyState
 {
 public:
-	EnemyDead();
+	EnemyDead() : mAlpha(alphaMax) { }
 
 	void init() override;
 	void handleInput() override { }

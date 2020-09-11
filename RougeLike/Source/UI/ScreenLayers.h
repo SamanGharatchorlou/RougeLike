@@ -8,7 +8,6 @@ using LayerAttributes = std::vector<StringMap>;
 using ScreenAttributes = std::vector<LayerAttributes>;
 
 
-// TODO fix whats by reference and whats by value here
 struct ScreenLayer
 {
 	ScreenLayer(const BasicString& name) : id(name) { }

@@ -2,15 +2,11 @@
 
 #include "EnemyState.h"
 
-class Enemy;
-
-
 class EnemyAttack : public EnemyState
 {
 public:
-	EnemyAttack();
+	EnemyAttack() : mHasAttacked(false), mDidHit(false) { }
 
-	void enter() override;
 	void init() override;
 	void handleInput() override { }
 	void slowUpdate(float dt) override;
@@ -25,6 +21,7 @@ public:
 
 
 private:
+	void initProperties();
 	void updateHasAttackedStatus();
 	bool attackComplete() const;
 

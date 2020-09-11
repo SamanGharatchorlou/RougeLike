@@ -24,7 +24,7 @@ void SlashAbility::handleInput(const InputManager* input)
 
 void SlashAbility::activate()
 {
-	mAnimator.startAnimation(Action::Active);
+	mAnimator.startAnimation(Animation::Active);
 
 	slashOnce();
 

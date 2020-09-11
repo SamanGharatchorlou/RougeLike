@@ -242,7 +242,7 @@ void Player::setMovementAnimation()
 {
 	if (mHP->canTakeDamage())
 	{
-		Action action = mPhysics.isMoving() ? Action::Run : Action::Idle;
+		Animation::Action action = mPhysics.isMoving() ? Animation::Run : Animation::Idle;
 		mAnimator.selectAnimation(action);
 	}
 }
@@ -250,8 +250,8 @@ void Player::setMovementAnimation()
 
 void Player::updateMovementSound(AudioManager* audio)
 {
-	Action currentAction = mAnimator.currentAction();
-	if (currentAction == Action::Run)
+	Animation::Action currentAction = mAnimator.currentAction();
+	if (currentAction == Animation::Run)
 	{
 		if (mStepTimer.getMilliseconds() > 400)
 		{
@@ -259,7 +259,7 @@ void Player::updateMovementSound(AudioManager* audio)
 			mStepTimer.restart();
 		}
 	}
-	else if (currentAction == Action::Idle)
+	else if (currentAction == Animation::Idle)
 	{
 		if (audio->isPlaying("PlayerWalk2", this))
 			audio->stop("PlayerWalk2", this);
@@ -275,14 +275,14 @@ void Player::handleHit(AudioManager* audio)
 	mEvents.push(EventPacket(trauma));
 
 	PropertyMap map;
-	map[PropertyType::Time] = mAnimator.animationTime(Action::Hurt);
+	map[PropertyType::Time] = mAnimator.animationTime(Animation::Hurt);
 	Effect* effect = mEffects.pool()->getObject(EffectType::Invunerability);
 	effect->fill(map);
 	addEffect(effect);
 
 	mColourModTimer.restart();
 
-	mAnimator.selectAnimation(Action::Hurt);
+	mAnimator.selectAnimation(Animation::Hurt);
 }
 
 

@@ -4,9 +4,6 @@
 #include "Actors/Enemies/Enemy.h"
 
 
-EnemyIdle::EnemyIdle() : mTime(-1.0f) { }
-
-
 void EnemyIdle::setTime(float time)
 {
 	mTime = time;
@@ -16,7 +13,7 @@ void EnemyIdle::setTime(float time)
 
 void EnemyIdle::init()
 {
-	mEnemy->animator().selectAnimation(Action::Idle);
+	mEnemy->animator().selectAnimation(Animation::Idle);
 	mEnemy->physics()->setFlip(static_cast<SDL_RendererFlip>(randomNumberBetween(0, 2)));
 }
 
@@ -50,7 +47,8 @@ void EnemyIdle::render()
 	mEnemy->renderCharacter();
 }
 
+
 void EnemyIdle::resume()
 {
-	mEnemy->animator().selectAnimation(Action::Idle);
+	mEnemy->animator().selectAnimation(Animation::Idle);
 }

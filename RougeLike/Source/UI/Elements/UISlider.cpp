@@ -183,7 +183,7 @@ RectF UISlider::defaultBarSubRect() const
 
 RectF UISlider::defaultBarRect() const
 {
-	VectorF size = mRect.Size() * VectorF(0.975f, 0.85f);
+	VectorF size = mRect.Size() * VectorF(0.98f, 0.8f);
 	RectF barRect = RectF(VectorF(), size);
 	barRect.SetCenter(mRect.Center());
 	return barRect;

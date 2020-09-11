@@ -6,7 +6,7 @@
 class EnemyPreAttack : public EnemyState
 {
 public:
-	void enter() override { }
+	EnemyPreAttack() : mAttackWaitTime(-1.0f) { }
 	void init() override;
 	void handleInput() override { }
 	void fastUpdate(float dt) override { };
@@ -22,7 +22,7 @@ private:
 
 
 private:
-	Timer<float> timer;
+	TimerF timer;
 	float mAttackWaitTime;
 };
 

@@ -30,5 +30,5 @@
 		</Info>
 	</AttackingEffects>
 
-	<LevellingInfo>SoldierLevelUp</InfoLevelling>
+	<LevellingInfo>LevelUp</InfoLevelling>
 </Data>

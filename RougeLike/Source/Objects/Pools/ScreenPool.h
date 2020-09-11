@@ -5,7 +5,6 @@
 
 enum class ScreenType;
 
-// TODO: overrite get new object function so it doesnt create new screens?
 class ScreenPool : public ObjectPool<Screen, ScreenType>
 {
 public:

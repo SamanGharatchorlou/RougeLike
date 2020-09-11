@@ -3,18 +3,11 @@
 
 #include "Actors/Enemies/Enemy.h"
 
-void EnemyCharge::enter()
-{
-	mWallCollisions.setActor(mEnemy);
-	mEnemy->collider()->setDidHit(false);
-
-	mEndAttack = false;
-	mStunned = false;
-}
-
 
 void EnemyCharge::init()
 {
+	initProperties();
+
 	if (mEnemy->hasTarget())
 	{
 		VectorF target = mEnemy->target()->position();
@@ -22,7 +15,7 @@ void EnemyCharge::init()
 		mDirection = (target - mStartPosition).normalise();
 
 		mEnemy->physics()->facePoint(target);
-		mEnemy->animator().selectAnimation(Action::Attack);
+		mEnemy->animator().selectAnimation(Animation::Attack);
 	}
 	else
 	{
@@ -38,11 +31,12 @@ void EnemyCharge::fastUpdate(float dt)
 	velocity = mWallCollisions.allowedVelocity(mEnemy->currentMap(), velocity, dt);
 
 	if (velocity.x == 0.0f || velocity.y == 0.0f)
-	{
 		mStunned = true;
-	}
 
 	mEnemy->move(velocity, dt);
+
+	if (mEnemy->collider()->didHit())
+		mEndAttack = true;
 }
 
 
@@ -70,11 +64,34 @@ void EnemyCharge::render()
 }
 
 
+void EnemyCharge::resume()
+{
+	init();
+}
+
+
+void EnemyCharge::exit()
+{
+	initProperties();
+}
+
+
+// -- Private Functions -- //
+
+void EnemyCharge::initProperties()
+{
+	mWallCollisions.setActor(mEnemy);
+	mEnemy->collider()->setDidHit(false);
+
+	mEndAttack = false;
+	mStunned = false;
+
+	mStartPosition.zero();
+	mDirection.zero();
+}
+
 void EnemyCharge::updateHasAttackedStatus()
 {
-	if (mEnemy->collider()->didHit() || mHitCounter > 0)
-		mHitCounter++;
-
 	if (!mEndAttack)
 	{
 		// Maximum attack distance
@@ -83,23 +100,5 @@ void EnemyCharge::updateHasAttackedStatus()
 		{
 			mEndAttack = true;
 		}
-
-		if (mHitCounter >= 5)
-			mEndAttack = true;
 	}
-}
-
-
-
-void EnemyCharge::resume()
-{
-	mEndAttack = true;
-}
-
-
-void EnemyCharge::exit()
-{
-	mEndAttack = false;
-	mStunned = false;
-	mHitCounter = 0;
 }

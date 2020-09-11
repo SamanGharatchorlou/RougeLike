@@ -27,6 +27,7 @@
     <ClCompile Include="Source\Actors\Enemies\EnemyDebugger.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyStun.cpp" />
     <ClCompile Include="Source\AI\Spawning\AISpawnController.cpp" />
+    <ClCompile Include="Source\Animations\Animation.cpp" />
     <ClCompile Include="Source\Audio\Channel.cpp" />
     <ClCompile Include="Source\Collisions\Colliders\QuadCollider.cpp" />
     <ClCompile Include="Source\Map\TrapManager.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="Source\Actors\Enemies\EnemyDebugger.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyStun.h" />
     <ClInclude Include="Source\AI\Spawning\AISpawnController.h" />
+    <ClInclude Include="Source\Animations\Animation.h" />
     <ClInclude Include="Source\Audio\Channel.h" />
     <ClInclude Include="Source\Collisions\Colliders\QuadCollider.h" />
     <ClInclude Include="Source\Map\TrapManager.h" />

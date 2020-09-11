@@ -179,36 +179,6 @@ VectorF Map::midPoint() const
 }
 
 
-Vector2D<int> Map::yTileFloorRange(VectorF position) const
-{
-	ASSERT(Warning, tile(position)->is(CollisionTile::Floor), "Not a floor tile, cannot get yTile floor range");
-
-	Index currentIndex = index(position);
-
-	Index bottomIndex(currentIndex);
-	while (true)
-	{
-		Index increment(0, 1);
-		if(!tile(bottomIndex + increment)->is(CollisionTile::Floor))
-			break;
-
-		bottomIndex += increment;
-	}
-
-	Index topIndex(currentIndex);
-	while (true)
-	{
-		Index increment(0, -1);
-		if (!tile(topIndex + increment)->is(CollisionTile::Floor))
-			break;
-
-		topIndex += increment;
-	}
-
-	return Vector2D<int>(topIndex.y, bottomIndex.y);
-}
-
-
 const MapTile* Map::randomFloorTile(int xPointPercentage) const
 {
 	int xTileIndex = (int)((xCount() * xPointPercentage) / 100);
@@ -222,7 +192,7 @@ const MapTile* Map::randomFloorTile(int xPointPercentage) const
 	}
 
 	// TODO: -1 -> we dont want to include the 'hidden' floor under the parralax walls?
-	int randomIndex = randomNumberBetween(0, floorIndexes.size());
+	int randomIndex = randomNumberBetween(0, floorIndexes.size() - 1);
 	Index index(floorIndexes[randomIndex]);
 	return tile(index);
 }
@@ -230,20 +200,8 @@ const MapTile* Map::randomFloorTile(int xPointPercentage) const
 
 const MapTile* Map::randomFloorTile() const
 {
-	int randomXTileIndex = randomNumberBetween(0, xCount());
-
-	std::vector<Index> floorIndexes;
-	for (int y = 0; y < yCount(); y++)
-	{
-		Index index(randomXTileIndex, y);
-		if (tile(index)->is(CollisionTile::Floor))
-			floorIndexes.push_back(index);
-	}
-
-	// TODO: -1 -> we dont want to include the 'hidden' floor under the parralax walls?
-	int randomIndex = randomNumberBetween(0, floorIndexes.size());
-	Index index(floorIndexes[randomIndex]);
-	return tile(index);
+	int randomX = randomNumberBetween(0, 101);
+	return randomFloorTile(randomX);
 }
 
 

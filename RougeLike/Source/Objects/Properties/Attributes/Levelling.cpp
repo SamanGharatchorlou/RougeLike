@@ -61,7 +61,7 @@ void Levelling::buildAnimator(const XMLNode& node, RectF rect)
 {
 	AnimationReader reader;
 	mAnimator = reader.buildAnimator(node.child("Animator"));
-	mAnimator.selectAnimation(Action::Active);
+	mAnimator.selectAnimation(Animation::Active);
 
 	// size
 	float targetWidth = rect.Width() * (float)atof(node.child("WidthMultiplier").value().c_str());
@@ -131,7 +131,7 @@ void Levelling::levelUp(PlayerManager* player)
 		// this is becuase we can only have 1 popup at the time and it auto adds a pause state
 		// pressing ok pops the latest state, the issue is when the game starts the adding of
 		// the game state overrites the adding of a pause state so the popup pops te game state... I think
-#if UNLOCK_ALL_ABILITIES
+#if !UNLOCK_ALL_ABILITIES
 		BasicString abilityName;
 		type >> abilityName;
 		OpenPopupEvent* eventPtr = new OpenPopupEvent(abilityName);

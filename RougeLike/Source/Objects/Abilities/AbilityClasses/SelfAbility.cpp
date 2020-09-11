@@ -11,7 +11,7 @@ void SelfAbility::init()
 
 bool SelfAbility::activateOn(Actor* actor, EffectPool* effectPool)
 {
-	mAnimator.startAnimation(Action::Active);
+	mAnimator.startAnimation(Animation::Active);
 	applyEffects(mCaster, effectPool);
 	playAudio();
 	return false;

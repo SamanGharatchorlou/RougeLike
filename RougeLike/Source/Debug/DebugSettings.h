@@ -1,6 +1,6 @@
 #pragma once
 
-#define DEBUG_CHECK 1
+#define DEBUG_CHECK _DEBUG
 
 #if DEBUG_CHECK
 
@@ -19,15 +19,15 @@ constexpr float game_scale = 0.5f;
 #define PRINT_FRAMERATE_EVERY 0 // Print at the rate you specify in milliseconds i.e. 500 = print every 0.5 seconds
 
 // Player
-#define DRAW_PLAYER_RECT 1
-#define DRAW_PLAYER_WEAPON_RECT 1
+#define DRAW_PLAYER_RECT 0
+#define DRAW_PLAYER_WEAPON_RECT 0
 #define IGNORE_WALLS 0
-#define IGNORED_BY_ENEMIES 1
+#define IGNORED_BY_ENEMIES 0
 #define INVUNERABLE 0
 
 
 // Abilities
-#define UNLOCK_ALL_ABILITIES 0
+#define UNLOCK_ALL_ABILITIES 1
 #define NO_ABILITY_COOLDOWNS 0
 #define DRAW_ABILITY_RECTS 0
 
@@ -44,7 +44,7 @@ constexpr float game_scale = 0.5f;
 #define RENDER_SURFACE_TYPES (LABEL_SURFACE_RENDER_TYPES ||  LABEL_SURFACE_COLLISION_TYPES || LABEL_SURFACE_DECOR_TYPES || LABEL_TILE_INDEX)
 
 // Enemy / AI
-#define DRAW_AI_PATH 0
+#define DRAW_AI_PATH 1
 #define DRAW_AI_PATH_COSTMAP 0
 
 #define LABEL_ENEMY_STATES 0

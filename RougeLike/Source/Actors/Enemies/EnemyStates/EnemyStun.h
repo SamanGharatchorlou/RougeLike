@@ -28,5 +28,5 @@ private:
 	RectF mStunRect;
 	Animator mStunAnimation;
 
-	Timer<float> timer;
+	TimerF timer;
 };

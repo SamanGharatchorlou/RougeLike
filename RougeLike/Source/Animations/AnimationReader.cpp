@@ -32,9 +32,9 @@ Animator AnimationReader::buildAnimator(XMLNode animationNode) const
 
 			int frames = toInt(node.value());
 
-			Action action = stringToAction(node.name());
+			Animation::Action action = stringToAction(node.name());
 
-			AnimationData data(texture, frameSize, frames, action);
+			Animation::Data data(texture, frameSize, frames, action);
 			animator.addAnimation(data);
 
 			node = node.next();

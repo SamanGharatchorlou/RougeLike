@@ -2,21 +2,14 @@
 #include "EnemyDead.h"
 
 #include "Actors/Enemies/Enemy.h"
-
 #include "Game/Camera/Camera.h"
-#include "Graphics/Texture.h"
-
-
-
-EnemyDead::EnemyDead() :  mAlpha(alphaMax) { }
-
 
 
 void EnemyDead::init()
 {
 	mAlpha = alphaMax;
 
-	mEnemy->animator().selectAnimation(Action::Dead);
+	mEnemy->animator().selectAnimation(Animation::Dead);
 
 	int score = (int)mEnemy->getAttributeValue(AttributeType::Score);
 	int exp = (int)mEnemy->getAttributeValue(AttributeType::Experience);

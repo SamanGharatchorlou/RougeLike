@@ -19,7 +19,7 @@ std::vector<Enemy*> AISpawnController::getNewLevelSpawns(const AIPathMap* map)
 		VectorF position = map->randomFloorTile(xPoint)->rect().Center();
 		Point patrolPoint(position);
 
-		SpawnDataList spawnData = mSpawnData.buildSpawnData(patrolPoint, EnemyType::Orc, EnemyState::Patrol);
+		SpawnDataList spawnData = mSpawnData.buildSpawnData(patrolPoint, EnemyType::Devil, EnemyState::Patrol);
 		merge(spawnDataList, spawnData);
 	}
 

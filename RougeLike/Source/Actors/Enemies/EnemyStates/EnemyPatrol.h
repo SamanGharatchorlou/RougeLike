@@ -2,8 +2,6 @@
 
 #include "EnemyState.h"
 
-class Map;
-
 class EnemyPatrol : public EnemyState
 {
 public:
@@ -24,12 +22,7 @@ private:
 	bool hasReachedPositionTarget() const;
 	bool canSeeAttackTarget() const;
 
-
-	//bool canMove(VectorF velocity, float dt);
-
-
 private:
 	VectorF mPositionTarget;
-	//Index mIndexTarget;
 };
 

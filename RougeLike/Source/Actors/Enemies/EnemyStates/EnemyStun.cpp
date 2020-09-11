@@ -9,13 +9,13 @@
 void EnemyStun::init()
 {
 	timer.restart();
-	mEnemy->animator().selectAnimation(Action::Idle);
+	mEnemy->animator().selectAnimation(Animation::Idle);
 
 	XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Abilities, "Stun"));
 	AnimationReader reader;
 	mStunAnimation = reader.buildAnimator(parser.rootChild("Animator"));
 
-	mStunAnimation.startAnimation(Action::Active);
+	mStunAnimation.startAnimation(Animation::Active);
 
 	VectorF size = realiseSize(mStunAnimation.frameSize(), mEnemy->rect().Width());
 	mStunRect.SetSize(size);

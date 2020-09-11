@@ -44,9 +44,6 @@ void TextureManager::unload()
 void TextureManager::preLoad()
 {
 	loadAllTexturesIn(FileManager::PreLoadFiles);
-
-	//mTextures[FileManager::Image_UI] = mTextures[FileManager::PreLoadFiles];
-	//mTextures[FileManager::PreLoadFiles] = TextureMap();
 }
 
 

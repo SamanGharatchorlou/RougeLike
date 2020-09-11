@@ -61,7 +61,6 @@ public:
 	const Vector2D<int> index(RectF rect) const;
 	const Vector2D<int> index(const MapTile* tile) const;
 
-	Vector2D<int> yTileFloorRange(VectorF position) const;// TODO can remove
 	const MapTile* randomFloorTile(int xPointPercentage) const;
 	const MapTile* randomFloorTile() const;
 

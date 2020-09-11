@@ -12,7 +12,7 @@ PlayerDeadState::PlayerDeadState(Player* player) : mPlayer(player) { }
 
 void PlayerDeadState::init()
 {
-	mPlayer->animator().selectAnimation(Action::Dead);
+	mPlayer->animator().selectAnimation(Animation::Dead);
 	mPlayer->overrideControl(true);
 
 	AudioManager::Get()->play("GameOver", mPlayer);

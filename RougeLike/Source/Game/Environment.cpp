@@ -34,7 +34,7 @@ void Environment::init(GameData* gameData)
 	mActors.init(gameData);
 }
 
-// TODO load all pools first
+
 void Environment::load()
 {
 	DebugPrint(Log, "\n--- Loading Environment ---\n\n");
