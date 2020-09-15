@@ -2,10 +2,10 @@
 <Ability>
 
 	<Properties>
-		<Damage>50</Damage>
+		<Damage>60</Damage>
 		<Range>700</Range>
 		<MaxSize>150</MaxSize>
-		<Cooldown>1</Cooldown>
+		<Cooldown>3</Cooldown>
 
 		<Velocity>400</Velocity>		
 		<KnockbackForce>400</KnockbackForce>

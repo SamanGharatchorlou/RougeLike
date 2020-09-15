@@ -1,6 +1,6 @@
 #pragma once
 
-#define DEBUG_CHECK _DEBUG
+#define DEBUG_CHECK 1
 
 #if DEBUG_CHECK
 
@@ -44,7 +44,7 @@ constexpr float game_scale = 0.5f;
 #define RENDER_SURFACE_TYPES (LABEL_SURFACE_RENDER_TYPES ||  LABEL_SURFACE_COLLISION_TYPES || LABEL_SURFACE_DECOR_TYPES || LABEL_TILE_INDEX)
 
 // Enemy / AI
-#define DRAW_AI_PATH 1
+#define DRAW_AI_PATH 0
 #define DRAW_AI_PATH_COSTMAP 0
 
 #define LABEL_ENEMY_STATES 0
@@ -77,6 +77,6 @@ constexpr float game_scale = 0.5f;
 // A cap needs to be set, the framerate can be so high that dt can be 0, this can
 // mess somethings up... like the wall collisions, also that's just unnecessary
 #define FRAMERATE_CAP 120 // Use the FPS cap you want
-#define PRINT_FRAMERATE_EVERY 3000 // Print at the rate you specify in milliseconds i.e. 500 = print every 0.5 seconds
+#define PRINT_FRAMERATE_EVERY 0 // Print at the rate you specify in milliseconds i.e. 500 = print every 0.5 seconds
 #define MEMORY_TRACKING 0
 #endif

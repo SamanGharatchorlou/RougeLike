@@ -14,10 +14,10 @@
 	</Properties>
 
 	<AttackingEffects>
-		<Cooldown>0.5</Cooldown>
+		<Cooldown>0.35</Cooldown>
 		<Damage>60</Damage>
 		<KnockbackForce>200</KnockbackForce>
-		<KnockbackDistance>50</KnockbackDistance>
+		<KnockbackDistance>65</KnockbackDistance>
 	</AttackingEffects>
 
 	<Audio>

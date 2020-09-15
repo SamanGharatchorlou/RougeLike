@@ -55,7 +55,6 @@ void AbilityHotKeyManager::addToScreen(HotKey& hotKey)
 }
 
 
-
 void AbilityHotKeyManager::init(Screen* screen)
 {
 	mGameScreen = static_cast<GameScreen*>(screen);
@@ -73,6 +72,7 @@ void AbilityHotKeyManager::clear()
 	mGameScreen = nullptr;
 	mHotKeys.clear();
 }
+
 
 Button::State AbilityHotKeyManager::state(Ability* ability, const InputManager* input)
 {

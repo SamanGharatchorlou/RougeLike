@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "AbilityHandler.h"
 
+#include "Audio/AudioManager.h"
 #include "AbilityActivator.h"
 #include "AbilityClasses/Ability.h"
 
@@ -37,24 +38,6 @@ void AbilityHandler::handleInput(const InputManager* input)
 		if (ability->state() == AbilityState::Selected)
 		{
 			ability->handleInput(input);
-			if (ability->initiate(input))
-			{
-				ability->setState(AbilityState::Activate);
-
-				if (ability->targetType() == AbilityTarget::Self)
-				{
-					ability->activateOn(nullptr, mEffects);
-				}
-			}
-
-			if (doesCollide(ability))
-			{
-				ability->setSelectHighligh(RenderColour::Green);
-			}
-			else
-			{
-				ability->setSelectHighligh(RenderColour::LightGrey);
-			}
 
 		}
 	}
@@ -66,7 +49,20 @@ void AbilityHandler::fastUpdate(float dt)
 	for (int i = 0; i < mAbilities.size(); i++)
 	{
 		Ability* ability = mAbilities[i];
-		if (ability->state() == AbilityState::Running)
+
+		if (ability->state() == AbilityState::Selected)
+		{
+			if (doesCollide(ability))
+			{
+				ability->setSelectHighligh(RenderColour::Green);
+			}
+			else
+			{
+				ability->setSelectHighligh(RenderColour::LightGrey);
+			}
+		}
+
+		else if (ability->state() == AbilityState::Running)
 		{
 			ability->fastUpdate(dt);
 
@@ -108,6 +104,10 @@ void AbilityHandler::handleState(Ability* ability, float dt)
 	case AbilityState::Activate:
 	{
 		ability->activate();
+
+		if (ability->targetType() == AbilityTarget::Self)
+			ability->activateOn(nullptr, mEffects);
+
 		ability->setState(AbilityState::Running);
 		break;
 	}
@@ -125,6 +125,9 @@ void AbilityHandler::handleState(Ability* ability, float dt)
 		if (ability->cooldown().hasCompleted())
 		{
 			ability->setState(AbilityState::Finished);
+
+			if(ability->type() != AbilityType::Attack)
+				AudioManager::Get()->play("AbilityCooled", ability);	
 		}
 		break;
 	}

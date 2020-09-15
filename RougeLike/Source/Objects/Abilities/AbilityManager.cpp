@@ -10,6 +10,7 @@
 #include "Actors/ActorManager.h"
 
 // TEMP
+#include "Audio/AudioManager.h"
 #include "Graphics/TextureManager.h"
 
 
@@ -51,20 +52,33 @@ void AbilityManager::handleInput(const InputManager* input)
 
 			const Button& button = input->getButton(hotKey->mKey);
 
-			if (ability->state() == AbilityState::Idle && button.isPressed())
+			if (button.isPressed())
 			{
-				ability->setState(AbilityState::Selected);
+				if (ability->state() == AbilityState::Idle)
+				{
+					ability->setState(AbilityState::Selected);
+				}
+				else
+				{
+					AudioManager::Get()->play("InvalidAbility", mCaster);
+				}
 			}
+
 
 			if (ability->state() == AbilityState::Selected && !button.isHeld())
 			{
-				ability->setState(AbilityState::Idle);
+				ability->setState(AbilityState::Activate);
 			}
 		}
 	}
 
+	handleBasicAbility(input);
 	mHandler.handleInput(input);
+}
 
+
+void AbilityManager::handleBasicAbility(const InputManager* input)
+{
 	if (input->isCursorPressed(Cursor::Left))
 	{
 		Ability* basicAttack = mHandler.get(AbilityType::Attack);
@@ -73,17 +87,6 @@ void AbilityManager::handleInput(const InputManager* input)
 			basicAttack->activate();
 			basicAttack->setState(AbilityState::Running);
 		}
-	}
-
-	// TEMP
-	TextureManager* texture = TextureManager::Get();
-	if (inSelectionMode())
-	{
-		mHotKeys.setCursorTexture(texture->getTexture("GameCursorGreen", FileManager::Image_UI));
-	}
-	else
-	{
-		mHotKeys.setCursorTexture(texture->getTexture("GameCursor", FileManager::Image_UI));
 	}
 }
 
@@ -112,6 +115,7 @@ void AbilityManager::slowUpdate(float dt)
 	}
 
 	mHotKeys.updateStates();
+	updateCursor();
 }
 
 
@@ -172,3 +176,17 @@ void AbilityManager::addAbility(AbilityType abilityType)
 	}
 }
 
+// -- Private Functions --
+
+void AbilityManager::updateCursor()
+{
+	TextureManager* texture = TextureManager::Get();
+	if (inSelectionMode())
+	{
+		mHotKeys.setCursorTexture(texture->getTexture("GameCursorGreen", FileManager::Image_UI));
+	}
+	else
+	{
+		mHotKeys.setCursorTexture(texture->getTexture("GameCursor", FileManager::Image_UI));
+	}
+}

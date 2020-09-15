@@ -62,6 +62,8 @@ private:
 };
 
 
+
+
 template <typename T>
 bool Camera::inView(const Rect<T>& object) const
 {

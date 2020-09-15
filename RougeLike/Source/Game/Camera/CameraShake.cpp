@@ -23,10 +23,33 @@ void CameraShake::init(float maxTrauma, float traumaReduction)
 	mTraumaReduction = traumaReduction;
 }
 
+void CameraShake::enable(RectF cameraRect, RectF boundaries)
+{
+	mCameraRect = cameraRect;
+	mBoundaries = boundaries;
+}
+
 
 void CameraShake::fastUpdate(float dt)
 {
-	cameraRect = cameraRect.Translate(offset());
+	VectorF translation = offset();
+
+#if !CAMERA_IGNORE_BOUNDARIES
+	if (mCameraRect.LeftPoint() + translation.x >= mBoundaries.x1 &&
+		mCameraRect.RightPoint() + translation.x <= mBoundaries.x2)
+#endif
+	{
+		mCameraRect = mCameraRect.Translate(translation.x, 0.0f);
+	}
+
+
+#if !CAMERA_IGNORE_BOUNDARIES
+	if (mCameraRect.TopPoint() + translation.y >= mBoundaries.y1 &&
+		mCameraRect.BotPoint() + translation.y <= mBoundaries.y2)
+#endif
+	{
+		mCameraRect = mCameraRect.Translate(0.0f, translation.y);
+	}
 
 	// dampen trauma;
 	mTrauma -= mTraumaReduction * dt;

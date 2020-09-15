@@ -13,14 +13,14 @@ public:
 	void init(float maxTrauma, float traumaReduction);
 	void fastUpdate(float dt);
 
-	void setRect(RectF rect) { cameraRect = rect; }
+	void enable(RectF cameraRect, RectF boundaires);
 
 	void addTrauma(float trauma);
 	void handleEvent(EventData& data) override;
 
 	VectorF offset();
 
-	RectF* rect() { return &cameraRect; }
+	RectF* rect() { return &mCameraRect; }
 
 	float trauma() const { return mTrauma; }
 	bool hasTrauma() const { return mTrauma != 0; }
@@ -33,7 +33,6 @@ private:
 	float mMaxTrauma;
 	float mTraumaReduction;
 
-
-
-	RectF cameraRect;
+	RectF mBoundaries;
+	RectF mCameraRect;
 };
