@@ -1,6 +1,6 @@
 #pragma once
 
-#define DEBUG_CHECK 1
+#define DEBUG_CHECK _DEBUG
 
 #if DEBUG_CHECK
 
