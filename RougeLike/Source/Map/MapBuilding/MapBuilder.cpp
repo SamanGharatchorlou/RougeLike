@@ -21,7 +21,7 @@ void MapBuilder::init(Environment* environment)
 
 void MapBuilder::load()
 {
-	BasicString path = FileManager::Get()->findFile(FileManager::Config_Map, "Environment");
+	BasicString path = FileManager::Get()->findFile(FileManager::Configs, "Environment");
 	XMLParser parser(path);
 	mSpecs.set(parser.rootNode());
 	mSpecs.readTrapData();
