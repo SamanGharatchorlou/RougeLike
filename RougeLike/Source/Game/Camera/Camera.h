@@ -67,10 +67,16 @@ private:
 template <typename T>
 bool Camera::inView(const Rect<T>& object) const
 {
-	if (object.RightPoint() < (T)mRect.LeftPoint()	||
-		object.LeftPoint()	> (T)mRect.RightPoint() ||
-		object.BotPoint()	< (T)mRect.TopPoint()	||
-		object.TopPoint()	> (T)mRect.BotPoint())
+	// Pretend the camera is wider than it actually is as when running fast sometimes
+	// there's a white flicker on the right. This would happen for any 
+	// direction but given the game it mostly happens to the right
+	RectF cameraRect = mRect;
+	cameraRect.SetWidth(cameraRect.Width() * 1.05f);
+
+	if (object.RightPoint() < (T)cameraRect.LeftPoint()	 ||
+		object.LeftPoint()	> (T)cameraRect.RightPoint() ||
+		object.BotPoint()	< (T)cameraRect.TopPoint()	 ||
+		object.TopPoint()	> (T)cameraRect.BotPoint())
 	{
 		return false;
 	}
@@ -82,9 +88,9 @@ bool Camera::inView(const Rect<T>& object) const
 template <typename T>
 bool Camera::inView(const Vector2D<T>& object) const
 {
-	if (object.x < (T)mRect.LeftPoint() ||
+	if (object.x < (T)mRect.LeftPoint()  ||
 		object.x > (T)mRect.RightPoint() ||
-		object.y < (T)mRect.TopPoint() ||
+		object.y < (T)mRect.TopPoint()   ||
 		object.y > (T)mRect.BotPoint()
 		)
 	{
