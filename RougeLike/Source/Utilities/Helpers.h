@@ -1,6 +1,6 @@
 #pragma once
 
-constexpr float pi = 3.14159;
+constexpr float pi = 3.14159f;
 
 
 template<typename T>

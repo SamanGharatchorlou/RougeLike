@@ -37,12 +37,21 @@ public:
 	T& pop();
 	virtual void push(T value) { mQueue.push_back(value); }
 
+	void concat(const Queue<T>& otherQueue);
+
 	bool contains(const T& value) const;
 	int size() const { return mQueue.size(); }
 
 protected:
 	std::deque<T> mQueue;
 };
+
+
+template <class T>
+void Queue<T>::concat(const Queue<T>& otherQueue)
+{
+	mQueue.insert(mQueue.end(), otherQueue.begin(), otherQueue.end());
+}
 
 
 template <class T>

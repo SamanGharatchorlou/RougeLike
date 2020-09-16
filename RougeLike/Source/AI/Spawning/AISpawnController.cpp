@@ -2,36 +2,63 @@
 #include "AISpawnController.h"
 
 #include "AI/Pathing/AIPathMap.h"
+#include "Actors/Enemies/EnemyManager.h"
 
 #include "Utilities/Shapes/Point.h"
 #include "Utilities/Shapes/Quadrilateral.h"
 
+AISpawnController::AISpawnController() { }
 
-std::vector<Enemy*> AISpawnController::getNewLevelSpawns(const AIPathMap* map)
+void AISpawnController::init()
 {
-	SpawnDataList spawnDataList;
+	mFactory.initSpawnInfo();
+}
+
+
+void AISpawnController::spawnUnspawnedEnemies(EnemyManager* enemyManager)
+{
+	if (mSpawnList.hasData())
+	{
+		int counter = 0;
+		while (mSpawnList.hasData() && counter < mSpawnList.mSpawnsPerFrame)
+		{
+			counter++;
+
+			const SpawnData data = mSpawnList.mData.pop();
+			Enemy* enemy = mFactory.buildEnemy(data, mSpawnList.mMap);
+			enemyManager->spawnEnemy(enemy);
+		}
+	}
+}
+
+
+void AISpawnController::initSpawningEnemies(const AIPathMap* map)
+{
+	mSpawnList.init(map);
 
 	// spawn patrollers
 	int spacing = getPatrollerSpacing(map->level());
-	
 	for (unsigned int xPoint = 5; xPoint <= 95; xPoint += spacing)
 	{
 		VectorF position = map->randomFloorTile(xPoint)->rect().Center();
 		Point patrolPoint(position);
-
-		SpawnDataList spawnData = mSpawnData.buildSpawnData(patrolPoint, EnemyType::Devil, EnemyState::Patrol);
-		merge(spawnDataList, spawnData);
+		mSpawnList.add(mSpawnData.buildSpawnData(patrolPoint, EnemyType::Devil, EnemyState::Patrol));
 	}
 
-
-	for (int i = 0; i < map->level() + 1; i++)
+	// spawn formations
+	int formationCount = clamp(map->level() + 1, 0, 8);
+	for (int i = 0; i < formationCount; i++)
 	{
 		EnemyType type = i % 2 == 0 ? EnemyType::Orc : EnemyType::Devil;
-		SpawnDataList spawnData = spawnRandomQuad(type, EnemyState::Idle, map);
-		merge(spawnDataList, spawnData);
+		mSpawnList.add(spawnRandomQuad(type, EnemyState::Idle, map));
 	}
 
-	return mFactory.buildEnemies(spawnDataList, map);
+	mFactory.topUpPool(mSpawnList);
+
+	// Running at max speed we have ~4s before we see any enemies
+	// Spawning everything over 100 frames seem safe enough while
+	// reducing the load per frame to remove the jank across levels
+	mSpawnList.setSpawnPerFrames(100);
 }
 
 
@@ -61,9 +88,9 @@ void AISpawnController::clear()
 
 // -- Private Functions -- //
 
-SpawnDataList AISpawnController::spawnRandomQuad(EnemyType type, EnemyState::Type state, const AIPathMap* map)
+Queue<SpawnData> AISpawnController::spawnRandomQuad(EnemyType type, EnemyState::Type state, const AIPathMap* map)
 {
-	Vector2D<int> formationSize = getRandomFormationSize(map->level());
+	Vector2D<int> formationSize = mSpawnData.getRandomFormationSize(map->level());
 	Quadrilateral formation(VectorF(), formationSize.x, formationSize.y, 40.0f);
 	setRandomPosition(formation, map);
 
@@ -93,14 +120,3 @@ int AISpawnController::getPatrollerSpacing(int mapLevel) const
 	return spacing;
 }
 
-
-Vector2D<int> AISpawnController::getRandomFormationSize(int mapLevel) const
-{
-	int minimun = 2;
-	int maximum = 5 + mapLevel;
-
-	int xRandom = randomNumberBetween(minimun, maximum);
-	int yRandom = randomNumberBetween(minimun, maximum);
-
-	return Vector2D<int>(xRandom, yRandom);
-}

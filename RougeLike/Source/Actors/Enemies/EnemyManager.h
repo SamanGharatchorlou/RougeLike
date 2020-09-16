@@ -44,9 +44,9 @@ public:
 	unsigned int size() const { return mActiveEnemies.size(); }
 
 
+	void spawnEnemy(Enemy* enemy);
 private:
-	void spawnEnemies(const std::vector<Enemy*>& enemies);
-	void addActiveEnemy(Enemy* enemy);
+	//void spawnEnemies(const std::vector<Enemy*>& enemies);
 
 	void clearDead();
 	void wipeEnemies(std::vector<Enemy*>& enemies);

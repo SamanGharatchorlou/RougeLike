@@ -43,6 +43,7 @@ void EnemyManager::loadPools()
 void EnemyManager::init(Environment* environment)
 {
 	mEnvironment = environment;
+	mSpawning.init();
 }
 
 
@@ -61,9 +62,7 @@ void EnemyManager::openNewMapLevel()
 	mPathing.addMap(map);
 
 	const AIPathMap* aiPathMap = mPathing.pathMap(map);
-	std::vector<Enemy*> enemiesToSpawn = mSpawning.getNewLevelSpawns(aiPathMap);
-
-	spawnEnemies(enemiesToSpawn);
+	mSpawning.initSpawningEnemies(aiPathMap);
 }
 
 
@@ -103,6 +102,8 @@ void EnemyManager::slowUpdate(float dt)
 	clearDead();
 
 	mPathing.updatePaths(mActiveEnemies, dt);
+
+	mSpawning.spawnUnspawnedEnemies(this);
 }
 
 
@@ -179,21 +180,34 @@ std::vector<Collider*> EnemyManager::attackingColliders() const
 
 // --- Private Functions --- //
 
-void EnemyManager::spawnEnemies(const std::vector<Enemy*>& enemies)
-{
-	for (int i = 0; i < enemies.size(); i++)
-	{
-#if LIMIT_ENEMY_SPAWNS
-		if (mActiveEnemies.size() >= MAX_SPAWN_COUNT)
-			mSpawning.returnEnemy(enemies[i]);
-		else
-#endif
-			addActiveEnemy(enemies[i]);
-	}
-}
+//void EnemyManager::spawnEnemies(const std::vector<Enemy*>& enemies)
+//{
+//	for (int i = 0; i < enemies.size(); i++)
+//	{
+//#if LIMIT_ENEMY_SPAWNS
+//		if (mActiveEnemies.size() >= MAX_SPAWN_COUNT)
+//			mSpawning.returnEnemy(enemies[i]);
+//		else
+//#endif
+//			addActiveEnemy(enemies[i]);
+//	}
+//}
+//
+//void EnemyManager::spawnEnemy(Enemy* enemy)
+//{
+//	for (int i = 0; i < enemies.size(); i++)
+//	{
+//#if LIMIT_ENEMY_SPAWNS
+//		if (mActiveEnemies.size() >= MAX_SPAWN_COUNT)
+//			mSpawning.returnEnemy(enemies[i]);
+//		else
+//#endif
+//			addActiveEnemy(enemies[i]);
+//	}
+//}
 
 
-void EnemyManager::addActiveEnemy(Enemy* enemy)
+void EnemyManager::spawnEnemy(Enemy* enemy)
 {
 	enemy->set(mEnvironment);
 #if !IGNORED_BY_ENEMIES

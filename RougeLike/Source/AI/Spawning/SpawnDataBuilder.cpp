@@ -6,15 +6,15 @@
 
 
 
-SpawnDataList SpawnDataBuilder::buildSpawnData(Formation& formation, EnemyType type, EnemyState::Type state)
+Queue<SpawnData> SpawnDataBuilder::buildSpawnData(Formation& formation, EnemyType type, EnemyState::Type state)
 {
-	SpawnDataList spawnList;
+	Queue<SpawnData> spawnList;
 	const PointList& formationPosition = formation.points();
 
 	for (int i = 0; i < formationPosition.size(); i++)
 	{
 		SpawnData data(type, state, formationPosition.at(i));
-		spawnList.push_back(data);
+		spawnList.push(data);
 	}
 
 	return spawnList;
@@ -29,22 +29,19 @@ void SpawnDataBuilder::setRandomPosition(Formation& formation, const AIPathMap* 
 	}
 }
 
-std::vector<SpawnData> SpawnDataBuilder::buildFormationDataList(const Formation& formation, EnemyState::Type state, EnemyType type) const
+Queue<SpawnData> SpawnDataBuilder::buildFormationDataList(const Formation& formation, EnemyState::Type state, EnemyType type) const
 {
-	SpawnDataList spawnList;
+	Queue<SpawnData> spawnList;
 	const PointList& formationPosition = formation.points();
 
 	for (int i = 0; i < formationPosition.size(); i++)
 	{
 		SpawnData data(type, state, formationPosition.at(i));
-		spawnList.push_back(data);
+		spawnList.push(data);
 	}
 
 	return spawnList;
 }
-
-
-
 
 
 bool SpawnDataBuilder::validFormation(const Formation& formation, const AIPathMap* map)
@@ -58,4 +55,16 @@ bool SpawnDataBuilder::validFormation(const Formation& formation, const AIPathMa
 	}
 
 	return true;
+}
+
+
+Vector2D<int> SpawnDataBuilder::getRandomFormationSize(int mapLevel) const
+{
+	int minimun = 2;
+	int maximum = clamp(5 + mapLevel, minimun, 10);
+
+	int xRandom = randomNumberBetween(minimun, maximum);
+	int yRandom = randomNumberBetween(minimun, maximum);
+
+	return Vector2D<int>(xRandom, yRandom);
 }

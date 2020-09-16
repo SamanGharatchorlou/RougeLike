@@ -4,26 +4,35 @@
 #include "EnemyFactory.h"
 
 class Map;
+class EnemyManager;
 
 class AISpawnController
 {
 public:
+	AISpawnController();
 	~AISpawnController();
 
-	std::vector<Enemy*> getNewLevelSpawns(const AIPathMap* map);
+	void init();
+
+	void initSpawningEnemies(const AIPathMap* map);
 	void returnEnemy(Enemy* enemy);
+
+	void spawnUnspawnedEnemies(EnemyManager* enemyManager);
 
 	void loadSpawnPool();
 	void clear();
 
+
 private:
 	void setRandomPosition(Formation& formation, const AIPathMap* map);
-	SpawnDataList spawnRandomQuad(EnemyType type, EnemyState::Type state, const AIPathMap* map);
+	Queue<SpawnData> spawnRandomQuad(EnemyType type, EnemyState::Type state, const AIPathMap* map);
 
 	int getPatrollerSpacing(int mapLevel) const;
-	Vector2D<int> getRandomFormationSize(int mapLevel) const;
+
 
 private:
 	SpawnDataBuilder mSpawnData;
 	EnemyFactory mFactory;
+
+	SpawnDataList mSpawnList;
 };

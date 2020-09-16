@@ -11,23 +11,27 @@ class Ability;
 class EnemyFactory
 {
 public:
+	EnemyFactory() { };
 	~EnemyFactory();
 
+	void initSpawnInfo();
 	void loadPools();
 	void clear();
 
-	std::vector<Enemy*> buildEnemies(const std::vector<SpawnData>& data, const AIPathMap* aiPathMap);
+	Enemy* buildEnemy(const SpawnData& dataList, const AIPathMap* aiPathMap);
 	void returnEnemy(Enemy* enemy);
 
+	void topUpPool(const SpawnDataList& data);
 
 private:
-	Enemy* buildEnemy(const SpawnData& data, const XMLNode enemyNode, const AIPathMap* aiPathMap);
-	Enemy* buildEnemy(const SpawnData& data, const XMLNode baseNode, const XMLNode animationNode, const AIPathMap* aiPathMap);
-	void setupParserMap(std::unordered_map<BasicString, XMLParser>& parserMap, const std::vector<SpawnData>& dataList) const;
+	Enemy* setEnemyData(Enemy* enemy, const SpawnData& data, const XMLNode baseNode, const XMLNode animationNode, const AIPathMap* aiPathMap);
 
 	Ability* buildBasicAttack(Enemy* enemy, const XMLNode enemyNode);
+
 
 private:
 	EnemyPool mPool;
 	EnemyStatePool mStatePool;
+
+	std::unordered_map<BasicString, XMLParser> mSpawnInfo;
 };

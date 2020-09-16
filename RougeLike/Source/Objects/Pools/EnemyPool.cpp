@@ -5,6 +5,13 @@
 #include "Actors/Enemies/Types/Orc.h"
 
 
+
+int EnemyPool::size(EnemyType type)
+{
+	return mPool[type].size();
+}
+
+
 Enemy* EnemyPool::createNewObject(EnemyType type) const
 {
 	Enemy* enemy = nullptr;
