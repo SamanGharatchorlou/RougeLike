@@ -30,26 +30,15 @@ void EnemyFactory::initSpawnInfo()
 
 void EnemyFactory::loadPools()
 {
-	std::vector<EnemyType> enemyTypes;
-	for (EnemyType type = EnemyType::None + 1; type < EnemyType::Count; type = type + 1)
-	{
-		enemyTypes.push_back(type);
-	}
-	mPool.load(enemyTypes, 25);
-
-
 	std::vector<EnemyState::Type> enemyStates;
 	for (EnemyState::Type state = EnemyState::Type::None + 1; state < EnemyState::Type::Count; state = state + 1)
 	{
 		enemyStates.push_back(state);
 	}
-	mStatePool.load(enemyStates, 50);
+	mStatePool.load(enemyStates, 100);
 
-	// Need lots of these states
-	mStatePool.addNewObjects(EnemyState::Wait, 200);
-	mStatePool.addNewObjects(EnemyState::Idle, 200);
-	mStatePool.addNewObjects(EnemyState::Run, 200);
-	mStatePool.addNewObjects(EnemyState::Patrol, 100);
+	// The enemy pool is dynamically increased as required by the topUpPool function
+	// Some of the more frequently used enemy states also follow this logic
 }
 
 void EnemyFactory::clear()
@@ -75,6 +64,7 @@ void EnemyFactory::returnEnemy(Enemy* enemy)
 
 void EnemyFactory::topUpPool(const SpawnDataList& data)
 {
+	int totalCount = 0;
 	for (std::unordered_map<EnemyType, int>::const_iterator iter = data.mTypeCount.begin(); iter != data.mTypeCount.end(); iter++)
 	{
 		int currentSize = mPool.size(iter->first);
@@ -83,6 +73,19 @@ void EnemyFactory::topUpPool(const SpawnDataList& data)
 			int difference = iter->second - currentSize;
 			mPool.addNewObjects(iter->first, difference);
 		}
+
+		totalCount += iter->second;
+	}
+
+	// These states are frequently required so keep these topped up too
+	int stateCounts = mStatePool.size(EnemyState::Idle);
+	if (stateCounts < totalCount)
+	{
+		int difference = totalCount - stateCounts;
+		mStatePool.addNewObjects(EnemyState::Wait,	difference);
+		mStatePool.addNewObjects(EnemyState::Idle,	difference);
+		mStatePool.addNewObjects(EnemyState::Run,	difference);
+		mStatePool.addNewObjects(EnemyState::Patrol,difference);
 	}
 }
 
