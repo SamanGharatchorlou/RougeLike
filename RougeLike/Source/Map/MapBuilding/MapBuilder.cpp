@@ -9,7 +9,14 @@
 #include "Game/Environment.h"
 
 
-MapBuilder::MapBuilder() : mEffectPool(nullptr), mPlayer(nullptr), mMapLevel(0) { }
+MapBuilder::MapBuilder() : mEffectPool(nullptr), mPlayer(nullptr)
+{
+#if STARTING_LEVEL
+	mMapLevel = STARTING_LEVEL;
+#else
+	mMapLevel = 0;
+#endif
+}
 
 
 void MapBuilder::init(Environment* environment)

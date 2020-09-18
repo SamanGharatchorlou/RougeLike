@@ -19,7 +19,7 @@ void PauseState::init()
 	mGameData->uiManager->setCursorTexture(TextureManager::Get()->getTexture("UICursor", FileManager::Image_UI));
 
 	AudioManager* audio = AudioManager::Get();
-	audio->fadeIn("Menu", nullptr, 750);
+	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::FadeIn, "Menu", nullptr, 750));
 }
 
 
@@ -52,6 +52,5 @@ void PauseState::render()
 
 void PauseState::exit()
 {
-	AudioManager* audio = AudioManager::Get();
-	audio->fadeOut("Menu", nullptr, 150);
+	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::FadeOut, "Menu", nullptr, 150));
 }

@@ -36,10 +36,10 @@ public:
 	void resume() { mTraps.resume(); }
 
 	// Rendering
-	void renderFloor();
-	void renderLowerLayer();
-	void renderUpperLayer();
-	void deferredRender();
+	void renderFloor() const;
+	void renderLowerLayer() const;
+	void renderUpperLayer() const;
+	void deferredRender() const;
 
 	void setSize(Vector2D<int> size);
 
@@ -69,7 +69,7 @@ public:
 
 
 private:
-	void render(MapTile* tile, Camera* camera);
+	void render(const MapTile* tile, const Camera* camera) const;
 
 
 private:

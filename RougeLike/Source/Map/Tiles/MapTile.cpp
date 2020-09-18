@@ -85,7 +85,8 @@ void MapTile::slowUpdate(float dt)
 	}
 }
 
-void MapTile::render(RectF rect) 
+
+void MapTile::render(RectF rect) const
 {
 #if DEBUG_CHECK
 	if(mTexture)
@@ -94,11 +95,6 @@ void MapTile::render(RectF rect)
 
 	for (int i = 0; i < mAnimations.size(); i++)
 	{
-		if (has(DecorType::GratingTrigger))
-		{
-			int a = 4;
-		}
-
 		if (mDeferredRendering)
 			return;
 
@@ -110,7 +106,7 @@ void MapTile::render(RectF rect)
 }
 
 
-void MapTile::deferredRender(RectF rect)
+void MapTile::deferredRender(RectF rect) const
 {
 	for (int i = 0; i < mAnimations.size(); i++)
 	{

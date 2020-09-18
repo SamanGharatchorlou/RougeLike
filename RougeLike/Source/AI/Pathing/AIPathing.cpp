@@ -8,17 +8,18 @@ AIPathing::AIPathing(const AIPathMap* map) : mMap(map) { }
 
 std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition, int pathLimit) const
 {
-	Index startingIndex = mMap->index(startPosition);
-	Index endIndex = mMap->index(endPosition);
+	Index startingIndex = mMap->index_fast(startPosition);
+	Index endIndex = mMap->index_fast(endPosition);
 
-	if (startingIndex.isNegative() || endIndex.isNegative() ||
-		startingIndex == endIndex || 
-		!mMap->floorCollisionTile(endIndex))
+	if (startingIndex.hasNegative() || !mMap->inBounds(endIndex) ||
+		startingIndex == endIndex || !mMap->floorCollisionTile(endIndex))
+	{
 		return Path();
+	}
 
 	// Lowest to highest path cost queue
 	std::priority_queue<TileCost, std::vector<TileCost>, GreaterThanByCost> frontier;
-	frontier.push(TileCost(tile(startingIndex), 0));
+	frontier.push(TileCost(startingIndex, 0));
 
 	Grid<Index> cameFrom(mMap->yCount(), mMap->xCount(), Index(-1,-1));
 	Grid<int> cost(mMap->yCount(), mMap->xCount(), 0);
@@ -33,33 +34,25 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 
 	while (!frontier.empty())
 	{
-		const PathTile* currentTile = frontier.top().first;
-		const PathTile* neighbours[4] = {
-			mMap->offsetTile(currentTile, 0, -1),
-			mMap->offsetTile(currentTile, 1, 0),
-			mMap->offsetTile(currentTile, 0, 1),
-			mMap->offsetTile(currentTile, -1, 0) };
+		const Index index = frontier.top().first;
+		const Index neighbours[4] = {
+									index + Index(0,-1), index + Index( 1, 0),
+									index + Index(0, 1), index + Index(-1, 0) };
 
 		// Search all neighbours
 		for (unsigned int i = 0; i < 4; i++)
 		{
-			const PathTile* nextTile = *(neighbours + i);
-
-			// valid tile
-			if (nextTile && nextTile->is(CollisionTile::Floor))
+			const Index nextIndex = *(neighbours + i);
+			if (mMap->inBounds(nextIndex) && mMap->floorCollisionTile(nextIndex))
 			{
-				Index nextIndex = mMap->index(nextTile);
-				Index currentIndex = mMap->index(currentTile);
+				int newCost = cost[index] + globalCostMap.get(nextIndex); // replace 1 with the floor type
 
-				int newCost = cost[currentIndex] + globalCostMap.get(nextIndex); // replace 1 with the floor type
-
-				if (mMap->inBounds(nextIndex) &&
-					(cameFrom.get(nextIndex).isNegative() || newCost < cost[nextIndex]))
+				if (cameFrom.get(nextIndex).isNegative() || newCost < cost[nextIndex])
 				{
 					int priority = newCost + heuristic(endIndex, nextIndex);
-					frontier.push(TileCost(nextTile, priority));
+					frontier.push(TileCost(nextIndex, priority));
 
-					cameFrom[nextIndex] = currentIndex;
+					cameFrom[nextIndex] = index;
 					cost[nextIndex] = newCost;
 
 					if (nextIndex == endIndex)
@@ -78,10 +71,7 @@ std::stack<Index> AIPathing::findPath(VectorF startPosition, VectorF endPosition
 			pathCount++;
 			if (pathCount >= pathLimit)
 			{
-				TileCost lastTile = frontier.top();
-				const PathTile* tile = lastTile.first;
-				Index index = mMap->index(tile);
-
+				Index index = frontier.top().first;
 				return getPath(startingIndex, index, cameFrom);
 			}
 		}

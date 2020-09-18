@@ -17,6 +17,7 @@ void FrameRateController::start()
 	frameTimer.start();
 
 #if FRAMERATE_CAP
+	frameRateCap = FRAMERATE_CAP;
 	capTimer.start();
 #endif
 #if PRINT_FRAMERATE_EVERY
@@ -41,7 +42,6 @@ void FrameRateController::update()
 }
 
 
-#if FRAMERATE_CAP
 void FrameRateController::resetCapTimer()
 {
 	capTimer.restart();
@@ -51,13 +51,12 @@ void FrameRateController::capFrameRate()
 {
 	//If frame finished early
 	int frameTicks = (int)capTimer.getMilliseconds();
-	if (frameTicks < (1000 / FRAMERATE_CAP))
+	if (frameTicks < (1000 / frameRateCap))
 	{
 		//Wait remaining time
-		SDL_Delay((1000 / FRAMERATE_CAP) - frameTicks);
+		SDL_Delay((1000 / (int)frameRateCap) - frameTicks);
 	}
 }
-#endif
 
 
 #if PRINT_FRAMERATE_EVERY

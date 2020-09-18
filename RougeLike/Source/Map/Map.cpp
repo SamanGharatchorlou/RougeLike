@@ -51,15 +51,39 @@ void Map::slowUpdate(float dt)
 }
 
 
-void Map::renderLowerLayer()
+void Map::renderFloor() const
 {
-	Camera* camera = Camera::Get();
+	const Camera* camera = Camera::Get();
+	for (unsigned int y = 0; y < yCount(); y++)
+	{
+		for (unsigned int x = 0; x < xCount(); x++)
+		{
+			Index index(x, y);
+			const MapTile& tile = mData.get(index);
+
+			// Includes water, floor & column base
+			RenderTile tileType = tile.renderType();
+			if (tileType < RenderTile::WATERS)
+			{
+				render(&tile, camera);
+
+				if (y == 7 && x == 2)
+					int a = 4;
+			}
+		}
+	}
+}
+
+
+void Map::renderLowerLayer() const
+{
+	const Camera* camera = Camera::Get();
 	for (unsigned int x = 0; x < xCount(); x++)
 	{
 		for (unsigned int y = 0; y < yCount(); y++)
 		{
 			Index index(x, y);
-			MapTile tile = mData[index];
+			const MapTile& tile = mData.get(index);
 
 			if(tile.is(CollisionTile::Floor))
 				break;
@@ -70,16 +94,16 @@ void Map::renderLowerLayer()
 }
 
 
-void Map::renderUpperLayer()
+void Map::renderUpperLayer() const
 {
-	Camera* camera = Camera::Get();
-
+	const Camera* camera = Camera::Get();
 	for (unsigned int x = 0; x < xCount(); x++)
 	{
+		// We break at the floor so go from the screen bottom to top
 		for (unsigned int y = yCount() - 1; y > 0; y--)
 		{
 			Index index(x, y);
-			MapTile tile = mData[index];
+			const MapTile& tile = mData.get(index);
 
 			if (tile.renderType() < RenderTile::Wall)
 				break;
@@ -91,19 +115,18 @@ void Map::renderUpperLayer()
 #if RENDER_SURFACE_TYPES
 	renderSurfaceTypes(mData);
 #endif
-	int a = 4;
 #if MAP_BOUNDARIES
 	renderMapBoundaries(this);
 #endif
 }
 
-void Map::deferredRender()
+void Map::deferredRender() const
 {
 	Camera* camera = Camera::Get();
 
 	for (int i = 0; i < mDeferredRendering.size(); i++)
 	{
-		MapTile* tile = mDeferredRendering[i];	
+		const MapTile* tile = mDeferredRendering[i];	
 		RectF tileRect = tile->rect();
 		if (camera->inView(tileRect))
 		{
@@ -228,26 +251,9 @@ bool Map::isValidPosition(VectorF position) const
 
 
 // --- Private Function --- //
-void Map::renderFloor()
-{
-	Camera* camera = Camera::Get();
 
-	for (unsigned int y = 0; y < yCount(); y++)
-	{
-		for (unsigned int x = 0; x < xCount(); x++)
-		{
-			Index index(x, y);
-			MapTile tile = mData[index];
 
-			if (tile.has(CollisionTile::Floor | CollisionTile::Water))
-			{
-				render(&tile, camera);
-			}
-		}
-	}
-}
-
-void Map::render(MapTile* tile, Camera* camera)
+void Map::render(const MapTile* tile, const Camera* camera) const
 {
 	RectF tileRect = tile->rect();
 	if (camera->inView(tileRect))

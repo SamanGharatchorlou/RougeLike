@@ -11,6 +11,8 @@ class Actor;
 class Enemy;
 class Collider;
 
+#include "Debug/PerformanceProfiler.h"
+
 
 class EnemyManager
 {
@@ -36,7 +38,6 @@ public:
 	// Event handling
 	LocalDispatcher& events() { return mEvents; }
 
-
 	std::vector<Enemy*>& getActiveEnemies() { return mActiveEnemies; }
 	std::vector<Actor*> getActiveEnemyActors() const;
 	std::vector<Collider*> attackingColliders() const;
@@ -46,8 +47,6 @@ public:
 
 	void spawnEnemy(Enemy* enemy);
 private:
-	//void spawnEnemies(const std::vector<Enemy*>& enemies);
-
 	void clearDead();
 	void wipeEnemies(std::vector<Enemy*>& enemies);
 	void wipeEnemy(Enemy*& enemy);
@@ -63,4 +62,9 @@ private:
 	LocalDispatcher mEvents;
 
 	std::vector<Enemy*> mActiveEnemies;
+
+	PerformanceProfiler profiler1;
+	PerformanceProfiler profiler2;
+
+	TimerF displayTimer;
 };

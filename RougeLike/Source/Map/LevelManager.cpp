@@ -7,10 +7,15 @@
 
 
 
+
 void LevelManager::init(Environment* environment)
 {
 	mLevel = 0;
 	mBuilder.init(environment);
+
+#if PERFORMANCE_PROFILER
+	profiler.name = "Maps";
+#endif
 }
 
 
@@ -93,6 +98,7 @@ void LevelManager::slowUpdate(float dt)
 	UniqueQueue<Map*>::iterator iter;
 	for (iter = mMaps.begin(); iter != mMaps.end(); iter++)
 	{
+
 		Map* map = *iter;
 		map->slowUpdate(dt);
 	}
@@ -148,18 +154,30 @@ void LevelManager::closeLevel()
 
 void LevelManager::renderFloor()
 {
+#if PERFORMANCE_PROFILER
+	profiler.start();
+#endif
+
 	UniqueQueue<Map*>::iterator iter;
 	for (iter = mMaps.begin(); iter != mMaps.end(); iter++)
 	{
 		Map* map = *iter;
 		map->renderFloor();
 	}
+
+#if PERFORMANCE_PROFILER
+	profiler.setTime();
+#endif
 }
 
 
 
 void LevelManager::renderLowDepth()
 {
+#if PERFORMANCE_PROFILER
+	profiler.start();
+#endif
+
 	UniqueQueue<Map*>::iterator iter;
 	for (iter = mMaps.begin(); iter != mMaps.end(); iter++)
 	{
@@ -167,17 +185,32 @@ void LevelManager::renderLowDepth()
 		map->renderLowerLayer();
 		map->deferredRender();
 	}
+
+#if PERFORMANCE_PROFILER
+	profiler.addTime();
+#endif
 }
 
 
 void LevelManager::renderHighDepth()
 {
+#if PERFORMANCE_PROFILER
+	profiler.start();
+#endif
+
 	UniqueQueue<Map*>::iterator iter;
 	for (iter = mMaps.begin(); iter != mMaps.end(); iter++)
 	{
 		Map* map = *iter;
 		map->renderUpperLayer();
 	}
+
+#if PERFORMANCE_PROFILER
+	profiler.addTime();
+	profiler.saveToAverage();
+
+	//profiler.displayAverageTimeEvery(5.0);
+#endif
 }
 
 

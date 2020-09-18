@@ -126,8 +126,8 @@ void AbilityHandler::handleState(Ability* ability, float dt)
 		{
 			ability->setState(AbilityState::Finished);
 
-			if(ability->type() != AbilityType::Attack)
-				AudioManager::Get()->play("AbilityCooled", ability);	
+			if(ability->type() != AbilityType::BasicAttack)
+				AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, "AbilityCooled", ability));
 		}
 		break;
 	}

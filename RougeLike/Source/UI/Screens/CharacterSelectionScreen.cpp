@@ -123,5 +123,5 @@ void CharacterSelectionScreen::enterGame()
 		GameSetup::setTutorial(mode);
 	}
 	mController->enablePopups((bool)tutorialState);
-	AudioManager::Get()->play("StartGame", mController);
+	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, "StartGame", mController));
 }

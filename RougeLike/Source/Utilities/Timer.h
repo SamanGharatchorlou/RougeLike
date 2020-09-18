@@ -1,5 +1,12 @@
 #pragma once
 
+enum class TimeState
+{
+	Stopped,
+	Running,
+	Paused
+};
+
 template <typename T>
 class Timer
 {
@@ -10,37 +17,27 @@ public:
 		Start
 	};
 
-private:
-	enum State
-	{
-		kStopped,
-		kRunning,
-		kPaused
-	};
-
 public:
 	Timer(Command startingState = Stop);
 
-	// Timer Controls
+	// Controls
 	void start();
 	void pause();
 	void resume();
 	void stop();
 	void restart();
 
-	// Get time passed
 	T getMilliseconds() const;
 	T getSeconds() const { return getMilliseconds() / 1000; }
 
-	// Timer State
-	bool isPaused() const { return state == kPaused; }
-	bool isStarted() const { return state == kRunning || state == kPaused; }
+	bool isPaused() const { return state == TimeState::Paused; }
+	bool isStarted() const { return state == TimeState::Running || state == TimeState::Paused; }
 
 private:
 	T startTicks;
 	T pauseTicks;
 
-	State state;
+	TimeState state;
 };
 
 using TimerF = Timer<float>;
@@ -51,12 +48,12 @@ Timer<T>::Timer(Command startingState) : startTicks(0), pauseTicks(0)
 {
 	if (startingState == Start)
 	{
-		state = kRunning;
+		state = TimeState::Running;
 		start();
 	}
 	else
 	{
-		state = kStopped;
+		state = TimeState::Stopped;
 	}
 }
 
@@ -64,7 +61,7 @@ Timer<T>::Timer(Command startingState) : startTicks(0), pauseTicks(0)
 template <typename T>
 inline void Timer<T>::start() 
 {
-	state = kRunning;
+	state = TimeState::Running;
 
 	startTicks = static_cast<T>(SDL_GetTicks());
 }
@@ -73,9 +70,9 @@ inline void Timer<T>::start()
 template <typename T>
 inline void Timer<T>::pause()
 {
-	if(state == kRunning)
+	if(state == TimeState::Running)
 	{
-		state = kPaused;
+		state = TimeState::Paused;
 
 		pauseTicks = SDL_GetTicks() - startTicks;
 		startTicks = 0;
@@ -86,9 +83,9 @@ inline void Timer<T>::pause()
 template <typename T>
 inline void Timer<T>::resume()
 {
-	if(state == kPaused)
+	if(state == TimeState::Paused)
 	{
-		state = kRunning;
+		state = TimeState::Running;
 
 		startTicks = SDL_GetTicks() - pauseTicks;
 		pauseTicks = 0;
@@ -99,9 +96,9 @@ inline void Timer<T>::resume()
 template <typename T>
 inline void Timer<T>::stop()
 {
-	if(state == kRunning || state == kPaused)
+	if(state == TimeState::Running || state == TimeState::Paused)
 	{
-		state = kStopped;
+		state = TimeState::Stopped;
 
 		startTicks = 0; 
 		pauseTicks = 0;
@@ -112,7 +109,7 @@ inline void Timer<T>::stop()
 template <typename T>
 inline void Timer<T>::restart()
 { 
-	state = kRunning;
+	state = TimeState::Running;
 
 	pauseTicks = 0;
 	startTicks = static_cast<T>(SDL_GetTicks());
@@ -122,10 +119,10 @@ inline void Timer<T>::restart()
 template <typename T>
 inline T Timer<T>::getMilliseconds() const
 {
-	if (state == kRunning)
+	if (state == TimeState::Running)
 		return SDL_GetTicks() - startTicks;
 
-	else if (state == kPaused)
+	else if (state == TimeState::Paused)
 		return pauseTicks;
 
 	else

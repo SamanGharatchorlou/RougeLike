@@ -29,7 +29,7 @@ void PreGameState::init()
 
 	AudioManager* audio = AudioManager::Get();
 	if(!audio->isPlaying("Menu", nullptr))
-		audio->fadeIn("Menu", nullptr, 1000);
+		audio->pushEvent(AudioEvent(AudioEvent::FadeIn, "Menu", nullptr, 1000));
 }
 
 

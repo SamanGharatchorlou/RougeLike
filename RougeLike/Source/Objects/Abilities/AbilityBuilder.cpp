@@ -25,7 +25,7 @@ Ability* AbilityBuilder::build(AbilityType type, Actor* caster) const
 
 		ability->setCaster(caster);
 
-		if(FileManager::Get()->exists(FileManager::Config_Abilities, id))
+		if(type > AbilityType::BasicAttack && type < AbilityType::Count)
 		{
 			XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Abilities, id));
 
@@ -53,7 +53,7 @@ Ability* AbilityBuilder::createNewAbility(AbilityType type) const
 		ability = new HealAbility;
 		break;
 
-	case AbilityType::Attack:
+	case AbilityType::BasicAttack:
 		ability = new BasicAttackAbility;
 		break;
 

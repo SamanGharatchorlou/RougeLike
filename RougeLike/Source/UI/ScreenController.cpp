@@ -47,7 +47,7 @@ void ScreenController::addScreen(ScreenType type)
 	Screen* screen = getPoolScreen(type);
 	mScreens.addState(screen);
 #if !DISABLE_UI_AUDIO
-	AudioManager::Get()->play("CloseMenu", nullptr);
+	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, "CloseMenu", nullptr));
 #endif
 }
 
@@ -73,7 +73,7 @@ void ScreenController::popScreen()
 {
 	mScreens.popState();
 #if !DISABLE_UI_AUDIO
-	AudioManager::Get()->play("CloseMenu", nullptr);
+	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, "CloseMenu", nullptr));
 #endif
 }
 

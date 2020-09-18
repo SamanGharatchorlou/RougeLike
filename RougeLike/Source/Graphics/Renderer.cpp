@@ -4,6 +4,11 @@
 #include "Game/Camera/Camera.h"
 
 
+Renderer::Renderer() { 
+	//mLoadingSemaphor = SDL_CreateSemaphore(1);
+	mLoadingLock = NULL;
+}
+
 Renderer* Renderer::Get()
 {
 	static Renderer sInstance;
@@ -11,15 +16,17 @@ Renderer* Renderer::Get()
 }
 
 
-void Renderer::Open()
+void Renderer::lock()
 {
-	SDL_SemWait(mLoadingSemaphor);
+	SDL_AtomicLock(&mLoadingLock);
+	//SDL_SemWait(mLoadingSemaphor);
 }
 
 
-void Renderer::Close()
+void Renderer::unlock()
 {
-	SDL_SemPost(mLoadingSemaphor);
+	SDL_AtomicUnlock(&mLoadingLock);
+	//SDL_SemPost(mLoadingSemaphor);
 }
 
 

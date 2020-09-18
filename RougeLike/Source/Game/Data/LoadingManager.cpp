@@ -19,7 +19,7 @@ LoadingManager* LoadingManager::Get()
 
 void LoadingManager::init(UIManager* UI)
 {
-	AudioManager::Get()->fadeIn("Menu", nullptr, 1000);
+	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::FadeIn, "Menu", nullptr, 1000));
 
 	mUI = UI;
 
@@ -44,7 +44,7 @@ void LoadingManager::update()
 void LoadingManager::render()
 {
 	Renderer* renderer = Renderer::Get();
-	renderer->Open();
+	renderer->lock();
 
 	// Clear screen
 	SDL_SetRenderDrawColor(renderer->sdlRenderer(), 0, 0, 0, 255);
@@ -54,7 +54,7 @@ void LoadingManager::render()
 
 	// Update window surface
 	SDL_RenderPresent(renderer->sdlRenderer());
-	renderer->Close();
+	renderer->unlock();
 }
 
 

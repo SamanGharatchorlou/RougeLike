@@ -92,8 +92,6 @@ void Camera::slowUpdate(float dt)
 	{
 		mActiveRect = &mRect;
 	}
-
-
 }
 
 

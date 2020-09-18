@@ -61,9 +61,9 @@ void Font::setText(const BasicString& text)
 				SDL_DestroyTexture(mTexture);
 
 			//Create texture from surface pixels
-			mRenderer->Open();
+			mRenderer->lock();
 			mTexture = SDL_CreateTextureFromSurface(mRenderer->sdlRenderer(), textSurface);
-			mRenderer->Close();
+			mRenderer->unlock();
 
 			if (mTexture == nullptr)
 				DebugPrint(Warning, "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
@@ -100,9 +100,9 @@ void Font::setWrappedText(const BasicString& text, int width)
 				SDL_DestroyTexture(mTexture);
 
 			//Create texture from surface pixels
-			mRenderer->Open();
+			mRenderer->lock();
 			mTexture = SDL_CreateTextureFromSurface(mRenderer->sdlRenderer(), textSurface);
-			mRenderer->Close();
+			mRenderer->unlock();
 
 			if (mTexture == nullptr)
 				DebugPrint(Warning, "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());

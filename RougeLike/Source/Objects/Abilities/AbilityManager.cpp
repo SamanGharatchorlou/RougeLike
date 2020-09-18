@@ -9,7 +9,6 @@
 #include "Actors/Actor.h"
 #include "Actors/ActorManager.h"
 
-// TEMP
 #include "Audio/AudioManager.h"
 #include "Graphics/TextureManager.h"
 
@@ -25,7 +24,7 @@ void AbilityManager::init(Actor* caster, Screen* screen, EffectPool* effectPool,
 	mHotKeys.init(screen);
 	mHandler.init(effectPool, targets);
 	
-	Ability* ability = mBuilder.build(AbilityType::Attack, mCaster);			
+	Ability* ability = mBuilder.build(AbilityType::BasicAttack, mCaster);
 	ability->setState(AbilityState::Idle);
 	mHandler.add(ability);
 }
@@ -60,12 +59,11 @@ void AbilityManager::handleInput(const InputManager* input)
 				}
 				else
 				{
-					AudioManager::Get()->play("InvalidAbility", mCaster);
+					AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, "InvalidAbility", mCaster));
 				}
 			}
 
-
-			if (ability->state() == AbilityState::Selected && !button.isHeld())
+			if ( ability->state() == AbilityState::Selected && (input->isCursorReleased(Cursor::Left) || !button.isHeld()) )
 			{
 				ability->setState(AbilityState::Activate);
 			}
@@ -74,6 +72,13 @@ void AbilityManager::handleInput(const InputManager* input)
 
 	handleBasicAbility(input);
 	mHandler.handleInput(input);
+
+
+	Cursor::Mode mode = input->getCursor()->mode();
+	if ((inSelectionMode() && mode == Cursor::Game_Red) || (!inSelectionMode() && mode == Cursor::Game_Green))
+	{
+		mUpdateCursor = true;
+	}
 }
 
 
@@ -81,7 +86,7 @@ void AbilityManager::handleBasicAbility(const InputManager* input)
 {
 	if (input->isCursorPressed(Cursor::Left))
 	{
-		Ability* basicAttack = mHandler.get(AbilityType::Attack);
+		Ability* basicAttack = mHandler.get(AbilityType::BasicAttack);
 		if (basicAttack->state() == AbilityState::Idle && !inSelectionMode())
 		{
 			basicAttack->activate();
@@ -115,7 +120,11 @@ void AbilityManager::slowUpdate(float dt)
 	}
 
 	mHotKeys.updateStates();
-	updateCursor();
+	if (mUpdateCursor)
+	{
+		updateCursor();
+		mUpdateCursor = false;
+	}
 }
 
 

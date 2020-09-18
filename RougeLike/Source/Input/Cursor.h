@@ -14,11 +14,22 @@ public:
 		Count
 	};
 
+	enum Mode
+	{
+		None,
+		Menu,
+		Game_Red,
+		Game_Green
+	};
+
 public:
 	Cursor();
 	void render();
 
 	void setTexture(Texture* texture) { mTexture = texture; }
+
+	Mode mode() const { return mMode; }
+	void setMode(Mode mode) { mMode = mode; }
 
 	VectorF size() const { return mRect.Size(); }
 	void setSize(VectorF size) { mRect.SetSize(size); }
@@ -54,4 +65,5 @@ private:
 	Button mButtons[2];
 
 	bool mVisibility;
+	Mode mMode;
 };

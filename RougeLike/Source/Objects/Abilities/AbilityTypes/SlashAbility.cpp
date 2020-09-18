@@ -110,13 +110,13 @@ void SlashAbility::slashOnce()
 		VectorF size = mRect.Size();
 		if (mSlashCount == 1)
 		{
-			AudioManager::Get()->play("Slash1", mCaster);
+			AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, "Slash1", mCaster));
 			size /= 2.0f;
 			Camera::Get()->getShake()->addTrauma(50);
 		}
 		else if (mSlashCount == 2)
 		{
-			AudioManager::Get()->play("Slash2", mCaster);
+			AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, "Slash2", mCaster));
 			size *= 2.0f;
 			Camera::Get()->getShake()->addTrauma(80);
 		}

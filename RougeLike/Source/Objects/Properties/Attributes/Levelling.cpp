@@ -120,7 +120,7 @@ void Levelling::levelUp(PlayerManager* player)
 	mRequiredExp = mRequiredExp * 3;
 
 	mAnimator.start();
-	AudioManager::Get()->play("LevelUp", player);
+	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, "LevelUp", player));
 
 	if (mLockedAbilities.size() > 0)
 	{

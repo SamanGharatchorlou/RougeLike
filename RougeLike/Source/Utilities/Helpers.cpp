@@ -120,10 +120,8 @@ float toFloat(const BasicString& string)
 
 SDL_Rect toSDLRect(const RectF& rect)
 {
-	SDL_Rect sdlRect = { static_cast<int>(rect.x1 + 0.5f),
+	return SDL_Rect {	static_cast<int>(rect.x1 + 0.5f),
 						static_cast<int>(rect.y1 + 0.5f),
 						static_cast<int>(rect.Width() + 0.5f),
 						static_cast<int>(rect.Height() + 0.5f) };
-
-	return sdlRect;
 }

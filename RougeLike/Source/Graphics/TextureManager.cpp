@@ -115,7 +115,7 @@ bool TextureManager::loadTexture(TextureMap& textureMap, const BasicString& file
 	FileManager* fm = FileManager::Get();
 	Texture *texture = new Texture;
 
-	Renderer::Get()->Open();
+	Renderer::Get()->lock();
 	if (texture->loadFromFile(filePath))
 	{
 		BasicString label = fm->getItemName(filePath);
@@ -133,7 +133,7 @@ bool TextureManager::loadTexture(TextureMap& textureMap, const BasicString& file
 		success = false;
 	}
 
-	Renderer::Get()->Close();
+	Renderer::Get()->unlock();
 	return success;
 }
 

@@ -50,7 +50,6 @@ void ActorManager::fastUpdate(float dt)
 
 void ActorManager::slowUpdate(float dt)
 {
-	// TEMP
 	updateActiveEnemyActors();
 
 	mPlayer.slowUpdate(dt);
@@ -63,15 +62,15 @@ void ActorManager::slowUpdate(float dt)
 
 	// Reset colliders at the end of the frame
 #if !TRACK_COLLISIONS // Need to keep the hit data until after rendering
-	mPlayer.resetColliders();
-	mEnemies.resetColliders();
+	resetColliders();
 #endif
 }
 
 
 void ActorManager::resetColliders()
 {
-
+	mPlayer.resetColliders();
+	mEnemies.resetColliders();
 }
 
 
@@ -81,8 +80,7 @@ void ActorManager::render()
 	mPlayer.render();
 
 #if TRACK_COLLISIONS // Need to keep the hit data until after rendering
-	mPlayer.resetColliders();
-	mEnemies.resetColliders();
+	resetColliders();
 #endif
 }
 

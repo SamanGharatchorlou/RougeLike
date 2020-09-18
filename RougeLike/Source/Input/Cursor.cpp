@@ -7,7 +7,7 @@
 #endif
 
 
-Cursor::Cursor() : mTexture(nullptr), mMoving(false), mVisibility(false) { }
+Cursor::Cursor() : mTexture(nullptr), mMoving(false), mVisibility(false), mMode(Cursor::None) { }
 
 
 void Cursor::render()

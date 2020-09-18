@@ -34,8 +34,8 @@ public:
 	void fadeIn(Audio* audio, uintptr_t id, int ms, VectorF source);
 	void fadeOut(Audio* audio, uintptr_t id, int ms);
 
-	bool hasActiveAudio(Audio* audio, uintptr_t id);
-	bool isPlaying(Audio* audio, uintptr_t id);
+	bool hasActiveAudio(Audio* audio, uintptr_t id) const;
+	bool isPlaying(Audio* audio, uintptr_t id) const;
 
 	void setSoundVolume(float volume);
 	float getSoundVolume() const { return soundVolume; }

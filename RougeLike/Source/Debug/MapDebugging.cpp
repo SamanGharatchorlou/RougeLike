@@ -83,6 +83,18 @@ void renderRenderTypes(const MapTile& tile, RectF& tileRect, VectorF& offset, in
 	}
 
 	// Floor
+	if (tile.has(RenderTile::Floor_1))
+	{
+		debugRenderText("Floor_1", fontSize, tileRect.TopCenter(), colour);
+		tileRect = tileRect.Translate(offset);
+	}
+
+	if (tile.has(RenderTile::Floor_2))
+	{
+		debugRenderText("Floor_2", fontSize, tileRect.TopCenter(), colour);
+		tileRect = tileRect.Translate(offset);
+	}
+
 	if (tile.has(RenderTile::Floor))
 	{
 		debugRenderText("Floor", fontSize, tileRect.TopCenter(), colour);
@@ -239,6 +251,12 @@ void renderRenderTypes(const MapTile& tile, RectF& tileRect, VectorF& offset, in
 	}
 
 	// Column parts
+	if (tile.has(RenderTile::Column_Top))
+	{
+		debugRenderText("column top", fontSize, tileRect.TopCenter(), colour);
+		tileRect = tileRect.Translate(offset);
+	}
+
 	if (tile.has(RenderTile::Column_Upper))
 	{
 		debugRenderText("column upper", fontSize, tileRect.TopCenter(), colour);

@@ -71,8 +71,18 @@ const Index AIPathMap::index(VectorF position) const
 	VectorF shiftedPosition = position - mapTopLeft;
 
 	// Get the index relative to this map
+	Vector2D<int> relativeIndex = (shiftedPosition / tileSize()).toInt();
+	return isValidIndex(relativeIndex) ? relativeIndex : Index(-1, -1);
+}
+
+const Index AIPathMap::index_fast(VectorF position) const
+{
+	VectorF mapTopLeft = mData.get(Index(0, 0)).rect().TopLeft();
+	VectorF shiftedPosition = position - mapTopLeft;
+
+	// Get the index relative to this map
 	VectorF relativeIndex = shiftedPosition / tileSize();
-	return isValidPosition(position) ? relativeIndex.toInt() : Index(-1, -1);
+	return relativeIndex.toInt();
 }
 
 
@@ -80,6 +90,16 @@ const Index AIPathMap::index(const PathTile* tile) const
 {
 	VectorF position(tile->rect().TopLeft());
 	return index(position);
+}
+
+const Index AIPathMap::index_fast(const PathTile* tile) const
+{
+	VectorF mapTopLeft = mData.get(Index(0, 0)).rect().TopLeft();
+	VectorF shiftedPosition = tile->rect().TopLeft() - mapTopLeft;
+
+	// Get the index relative to this map
+	VectorF relativeIndex = shiftedPosition / tileSize();
+	return relativeIndex.toInt();
 }
 
 
@@ -100,12 +120,8 @@ const PathTile* AIPathMap::offsetTile(const PathTile* target, int xOffset, int y
 }
 
 
-
 Vector2D<int> AIPathMap::yTileFloorRange(Index index) const
 {
-	// This assert is annoying, turn it off
-	//ASSERT(Warning, tile(index)->is(CollisionTile::Floor), "Not a floor tile, cannot get yTile floor range");
-
 	Index bottomIndex(index);
 	while (true)
 	{

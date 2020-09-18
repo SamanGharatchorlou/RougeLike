@@ -4,8 +4,8 @@
 class AIPathMap;
 class PathTile;
 
-using TileCost = std::pair<const PathTile*, int>;
-using Index = Vector2D<int>;
+//using TileCost = std::pair<const PathTile*, int>;
+using TileCost = std::pair<Index, int>;
 using Path = std::stack<Index>;
 
 class AIPathing

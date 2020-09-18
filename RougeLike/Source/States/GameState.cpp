@@ -5,6 +5,7 @@
 #include "Game/Data/GameData.h"
 #include "Game/Environment.h"
 
+#include "Input/InputManager.h"
 #include "Audio/AudioManager.h"
 #include "Graphics/RenderManager.h"
 #include "Managers/ScoreManager.h"
@@ -30,7 +31,7 @@ void GameState::init()
 
 	// Start Audio
 	AudioManager* audio = AudioManager::Get();
-	audio->fadeIn("Game", nullptr, 1500);
+	audio->pushEvent(AudioEvent(AudioEvent::FadeIn, "Game", nullptr, 1500));
 	audio->setSource(mGameData->environment->actors()->player()->get(), Camera::Get()->size().x);
 }
 
@@ -53,6 +54,9 @@ void GameState::slowUpdate(float dt)
 	Camera::Get()->slowUpdate(dt);
 	mGameData->environment->slowUpdate(dt);
 	mGameData->scoreManager->slowUpdate();
+
+	Cursor* cursor = mGameData->inputManager->getCursor();
+	cursor->mode();
 }
 
 
@@ -74,17 +78,13 @@ void GameState::render()
 void GameState::resume() 
 {
 	mGameData->environment->resume();
-
-	AudioManager* audio = AudioManager::Get();
-	audio->fadeIn("Game", nullptr, 750);
+	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::FadeIn, "Game", nullptr, 750));
 }
 
 void GameState::pause()
 {
 	mGameData->environment->pause();
-
-	AudioManager* audio = AudioManager::Get();
-	audio->fadeOut("Game", nullptr, 150);
+	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::FadeOut, "Game", nullptr, 150));
 }
 
 
@@ -92,9 +92,7 @@ void GameState::exit()
 {
 	mGameData->environment->clear();
 	mGameData->scoreManager->reset();
-
-	AudioManager* audio = AudioManager::Get();
-	audio->fadeOut("Game", nullptr, 150);
+	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::FadeOut, "Game", nullptr, 150));
 }
 
 

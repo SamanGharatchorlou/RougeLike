@@ -8,6 +8,8 @@
 #include "Map/MapBuilding/MapGenerator.h"
 #include "Map/Map.h"
 
+#include <thread>
+
 
 Environment::~Environment()
 {

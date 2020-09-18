@@ -59,7 +59,7 @@ void SmashAbility::activate()
 
 	mActivateCollisions = true;
 
-	AudioManager::Get()->play("HammerThrow", mCaster);
+	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, "HammerThrow", mCaster));
 }
 
 
@@ -114,7 +114,7 @@ void SmashAbility::explode()
 	mQuad = Quad2D<float>(mRect);
 	mHitList.clear();
 
-	AudioManager::Get()->play("Explosion", mCaster);
+	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, "Explosion", mCaster));
 }
 
 
@@ -166,7 +166,7 @@ void SmashAbility::applyEffects(Actor* actor, EffectPool* effectPool)
 	if (!mReachedTarget)
 	{
 		applyHammerEffects(actor, effectPool);
-		AudioManager::Get()->play("HitEnemy", mCaster);
+		AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, "HitEnemy", mCaster));
 	}
 	else
 	{

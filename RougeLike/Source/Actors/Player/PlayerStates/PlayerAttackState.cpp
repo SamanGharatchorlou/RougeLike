@@ -20,7 +20,8 @@ PlayerAttackState::PlayerAttackState(Player* player)
 void PlayerAttackState::init()
 {
 	mWeapon->attack();
-	AudioManager::Get()->play(mWeapon->missSoundLabel(), mWeapon);
+
+	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, mWeapon->missSoundLabel(), mWeapon));
 }
 
 
@@ -37,8 +38,8 @@ void PlayerAttackState::slowUpdate(float dt)
 	AudioManager* audio = AudioManager::Get();
 	if (mWeapon->getCollider()->didHit() && !audio->isPlaying(mWeapon->hitSoundLabel(), mWeapon))
 	{
-		audio->stop(mWeapon->missSoundLabel(), mWeapon);
-		audio->play(mWeapon->hitSoundLabel(), mWeapon);
+		AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Stop, mWeapon->missSoundLabel(), mWeapon));
+		AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, mWeapon->hitSoundLabel(), mWeapon));
 	}
 }
 

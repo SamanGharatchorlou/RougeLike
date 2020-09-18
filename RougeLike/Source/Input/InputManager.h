@@ -27,6 +27,8 @@ public:
 
 	// Cursor
 	Cursor* getCursor() { return &mCursor; }
+	const Cursor* getCursor() const { return &mCursor; }
+
 	VectorF cursorPosition() const { return mCursor.position(); }
 
 	void setCursorSize(VectorF size);

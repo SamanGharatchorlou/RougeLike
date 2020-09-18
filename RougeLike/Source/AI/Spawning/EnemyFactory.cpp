@@ -126,7 +126,7 @@ Enemy* EnemyFactory::setEnemyData(Enemy* enemy, const SpawnData& data, const XML
 Ability* EnemyFactory::buildBasicAttack(Enemy* enemy, const XMLNode enemyNode)
 {
 	AbilityBuilder abilityBuilder;
-	Ability* basicAttack = abilityBuilder.build(AbilityType::Attack, enemy);
+	Ability* basicAttack = abilityBuilder.build(AbilityType::BasicAttack, enemy);
 
 	XMLNode abilityNode = enemyNode.child("BasicAttack");
 	PropertyMap nodeProperties(abilityNode);

@@ -11,7 +11,7 @@
 TrapManager::~TrapManager()
 {
 	if (AudioManager::Get()->isPlaying("Fire", this))
-		AudioManager::Get()->stop("Fire", this);
+		AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Stop, "Fire", this));
 
 	mUntriggeredTraps.clear();
 	mTriggeredTraps.clear();
@@ -33,9 +33,10 @@ void TrapManager::init(Actor* actor, EffectPool* effectPool, const TrapDataMap* 
 
 void TrapManager::slowUpdate()
 {
-	if (mMap->isValidPosition(mActor->position()))
+	VectorF position = mActor->position();
+	if (mMap->isValidPosition(position))
 	{
-		Index index = mMap->index(mActor->position());
+		Index index = mMap->index(position);
 		processCollisions(index);
 		triggerTrap(index);
 	}
@@ -61,7 +62,7 @@ void TrapManager::triggerTrap(Index index)
 				mUntriggeredTraps.push(trap);
 
 				VectorF position = mMap->tile(index)->rect().Center();
-				AudioManager::Get()->play("TimerClick", nullptr, position); // Click trigger sound
+				AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, "TimerClick", nullptr));
 			}
 		}
 	}
@@ -74,14 +75,14 @@ void TrapManager::triggerTrap(Index index)
 			if (animator.activeAimation()->currentFrame() == 0)
 			{
 				animator.activeAimation()->nextFrame();
-				AudioManager::Get()->play("StoneTrigger", nullptr); // Click trigger sound
+				AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, "StoneTrigger", nullptr));
 			}
 		}
 
 		if (mPersistingTraps.size() == 0)
 		{
 			triggerAll(DecorType::Grating, tile->rect().Center());
-			AudioManager::Get()->play("StoneTrigger", nullptr); // Click trigger sound
+			AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, "StoneTrigger", nullptr));
 		}
 	}
 }
@@ -105,7 +106,7 @@ void TrapManager::triggerAll(DecorType type, VectorF triggerPosition)
 		}
 	}
 
-	AudioManager::Get()->play("Fire", this, triggerPosition);
+	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Loop, "Fire", this, triggerPosition));
 }
 
 
@@ -139,10 +140,10 @@ void TrapManager::pause()
 	AudioManager* audio = AudioManager::Get();
 
 	if (audio->isPlaying("TimerClick", nullptr))
-		audio->pause("TimerClick", nullptr);
+		audio->pushEvent(AudioEvent(AudioEvent::Pause, "TimerClick", nullptr));
 
 	if (audio->isPlaying("Fire", this))
-		audio->pause("Fire", this);
+		audio->pushEvent(AudioEvent(AudioEvent::Pause, "Fire", this));
 
 	for (UniqueQueue<Trap>::iterator iter = mTriggeredTraps.begin(); iter != mTriggeredTraps.end(); iter++)
 	{
@@ -158,10 +159,10 @@ void TrapManager::resume()
 	AudioManager* audio = AudioManager::Get();
 
 	if (audio->isPlaying("TimerClick", nullptr))
-		audio->resume("TimerClick", nullptr);
+		audio->pushEvent(AudioEvent(AudioEvent::Resume, "TimerClick", nullptr));
 
 	if (audio->isPlaying("Fire", this))
-		audio->resume("Fire", this);
+		audio->pushEvent(AudioEvent(AudioEvent::Resume, "Fire", this));
 
 	for (UniqueQueue<Trap>::iterator iter = mTriggeredTraps.begin(); iter != mTriggeredTraps.end(); iter++)
 		iter->resume();
@@ -196,8 +197,9 @@ void TrapManager::updateTriggerTraps()
 
 				AudioManager* audio = AudioManager::Get();
 				if(audio->isPlaying("TimerClick", nullptr))
-					audio->stop("TimerClick", nullptr);
-				audio->play("SpikeTrapTrigger", tile, position);
+					audio->pushEvent(AudioEvent(AudioEvent::Stop, "TimerClick", nullptr));
+
+				audio->pushEvent(AudioEvent(AudioEvent::Play, "SpikeTrapTrigger", tile, position));
 			}
 		}
 	}
@@ -221,7 +223,7 @@ void TrapManager::updateResetTraps()
 				mTriggeredTraps.pop();
 
 				VectorF position = mapTile(trap)->rect().Center();
-				AudioManager::Get()->play("SpikeTrapReset", tile, position);
+				AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, "SpikeTrapReset", tile, position));
 			}
 		}
 	}

@@ -3,6 +3,10 @@
 #include "Events/Dispatcher.h"
 #include "MapBuilding/MapBuilder.h"
 
+#if PERFORMANCE_PROFILER
+#include "Debug/PerformanceProfiler.h"
+#endif
+
 class Environment;
 class Map;
 class Camera;
@@ -56,4 +60,8 @@ private:
 	UniqueQueue<Map*> mMaps;
 
 	int mLevel;
+
+#if PERFORMANCE_PROFILER
+	PerformanceProfiler profiler;
+#endif
 };

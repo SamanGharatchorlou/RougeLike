@@ -15,6 +15,10 @@ public:
 	const Index index(VectorF position) const;
 	const Index index(const PathTile* tile) const;
 
+	// Warning: No bounds checking
+	const Index index_fast(VectorF position) const;
+	const Index index_fast(const PathTile* tile) const;
+
 	const PathTile* tile(Index index) const { return &mData.get(index); };
 	const PathTile* tile(VectorF position) const { return &mData.get(index(position)); };
 

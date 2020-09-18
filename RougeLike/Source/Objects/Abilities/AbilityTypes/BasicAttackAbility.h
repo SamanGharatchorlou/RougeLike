@@ -13,7 +13,7 @@ public:
 	void slowUpdate(float dt) override;
 	void exit() override;
 
-	AbilityType type() const override { return AbilityType::Attack; }
+	AbilityType type() const override { return AbilityType::BasicAttack; }
 
 private:
 	void applyEffects(Actor* actor, EffectPool* effectPool);

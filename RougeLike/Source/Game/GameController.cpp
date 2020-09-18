@@ -1,17 +1,15 @@
 #include "pch.h"
 #include "GameController.h"
 
-#include <SDL_thread.h>
+#include <thread>
 #include "Graphics/Renderer.h"
 
 #include "Game/Data/LoadingManager.h"
 #include "Game/GameSetup.h"
-#include "Debug/FrameRateController.h"
 
 #include "States/PreGameState.h"
 #include "States/GameState.h"
 #include "States/PauseState.h"
-
 
 // GameData
 #include "System/Window.h"
@@ -50,12 +48,12 @@ void GameController::load()
 
 	loader->init(mGameData.uiManager);
 
-	SDL_Thread* threadID = SDL_CreateThread(renderLoadingBar, "LoadingBar", nullptr);
+	std::thread loadingThread(renderLoadingBar);
 
 	mGameData.setupObservers();
 	mGameData.load();
 
-	SDL_WaitThread(threadID, nullptr);
+	loadingThread.join();
 
 	mGameData.uiManager->controller()->popScreen();
 }
@@ -66,8 +64,7 @@ void GameController::run()
 	// add first game state
 	addState(SystemStates::PreGameState);
 
-	FrameRateController frameTimer;
-	frameTimer.start();
+	mFrameTimer.start();
 
 	SDL_Event event;
 
@@ -75,16 +72,16 @@ void GameController::run()
 	while (quit == false)
 	{
 #if FRAMERATE_CAP
-		frameTimer.resetCapTimer();
+		mFrameTimer.resetCapTimer();
 #endif
 
 		handleInput(event);
-		updateLoops(frameTimer.delta());
+		updateLoops(mFrameTimer.delta());
 
 		stateChanges();
 		render();
 
-		frameTimer.update();
+		mFrameTimer.update();
 	}
 
 	endGame();
@@ -159,6 +156,10 @@ void GameController::handleInput(SDL_Event& event)
 
 void GameController::updateLoops(float dt)
 {
+	//std::thread audioThread(updateAudio);
+
+	AudioManager::Get()->slowUpdate();
+
 	// Fast update runs updateLoopRepeats number of times per frame
 	float updateLoopRepeats = 10;
 	for (int i = 0; i < updateLoopRepeats; i++)
@@ -166,8 +167,10 @@ void GameController::updateLoops(float dt)
 
 	mGameStateMachine.getActiveState().slowUpdate(dt);
 
-	AudioManager::Get()->slowUpdate();
 	mGameData.uiManager->update();
+
+	//audioThread.join();
+	AudioManager::Get()->handleEvents();
 }
 
 
@@ -188,12 +191,12 @@ void GameController::stateChanges()
 void GameController::addState(SystemStates state)
 {
 	mGameStateMachine.addState(getNewGameState(state));
+	
 }
 
 
 void GameController::replaceState(SystemStates state)
 {
-
 	mGameStateMachine.replaceState(getNewGameState(state));
 }
 
@@ -201,6 +204,7 @@ void GameController::replaceState(SystemStates state)
 void GameController::popState()
 {
 	mGameStateMachine.popState();
+	mFrameTimer.resetAverage();
 }
 
 
@@ -229,19 +233,37 @@ State* GameController::getNewGameState(SystemStates state)
 }
 
 
-
-
-static int renderLoadingBar(void *ptr)
+void renderLoadingBar()
 {
 	DebugPrint(Log, " -------------------------- starting loader thread -------------------------- \n");
 	LoadingManager* loading = LoadingManager::Get();
 
+#if DEBUG_CHECK
+	TimerF time(TimerF::Start);
+#endif
+	
+	TimerF timer;
+	timer.start();
+	float renderFPS = 5;
+
 	while (!loading->end())
 	{
 		loading->update();
-		loading->render();
+
+		// Dont want to hog the renderer too much as its used for loading textures, fonts etc
+		if (timer.getMilliseconds() > (1000 / renderFPS))
+		{
+			loading->render();
+			timer.restart();
+		}
 	}
 
+	DebugPrint(Log, "\n\nloading time taken: %fs\n", timer.getSeconds());
 	DebugPrint(Log, " -------------------------- exiting loader thread -------------------------- \n");
-	return 0;
+}
+
+
+void updateAudio()
+{
+	AudioManager::Get()->slowUpdate();
 }

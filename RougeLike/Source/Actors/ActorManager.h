@@ -22,6 +22,7 @@ public:
 	void handleInput(const InputManager* input);
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
+
 	void render();
 
 	PlayerManager* player() { return &mPlayer; }

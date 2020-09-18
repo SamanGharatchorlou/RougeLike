@@ -9,8 +9,8 @@
 
 // temp
 #include "Map/Map.h"
-#include "Objects/Abilities/AbilityBuilder.h"
-#include "Objects/Abilities/AbilityClasses/AbilityStates.h"
+//#include "Objects/Abilities/AbilityBuilder.h"
+//#include "Objects/Abilities/AbilityClasses/AbilityStates.h"
 
 
 EnemyManager::EnemyManager() : mEnvironment(nullptr) { }
@@ -38,23 +38,6 @@ void EnemyManager::loadPools()
 {
 	mSpawning.loadSpawnPool();
 }
-
-
-void EnemyManager::init(Environment* environment)
-{
-	mEnvironment = environment;
-	mSpawning.init();
-}
-
-
-void EnemyManager::fastUpdate(float dt)
-{
-	for (int i = 0; i < mActiveEnemies.size(); i++)
-	{
-		mActiveEnemies[i]->fastUpdate(dt);
-	}
-}
-
 
 void EnemyManager::openNewMapLevel()
 {
@@ -85,6 +68,22 @@ void EnemyManager::closeLastMapLevel()
 }
 
 
+void EnemyManager::init(Environment* environment)
+{
+	mEnvironment = environment;
+	mSpawning.init();
+}
+
+
+void EnemyManager::fastUpdate(float dt)
+{
+	for (int i = 0; i < mActiveEnemies.size(); i++)
+	{
+		mActiveEnemies[i]->fastUpdate(dt);
+	}
+}
+
+
 void EnemyManager::slowUpdate(float dt)
 {
 	for (std::vector<Enemy*>::iterator iter = mActiveEnemies.begin(); iter != mActiveEnemies.end(); iter++)
@@ -100,9 +99,7 @@ void EnemyManager::slowUpdate(float dt)
 	}
 
 	clearDead();
-
 	mPathing.updatePaths(mActiveEnemies, dt);
-
 	mSpawning.spawnUnspawnedEnemies(this);
 }
 
@@ -179,33 +176,6 @@ std::vector<Collider*> EnemyManager::attackingColliders() const
 
 
 // --- Private Functions --- //
-
-//void EnemyManager::spawnEnemies(const std::vector<Enemy*>& enemies)
-//{
-//	for (int i = 0; i < enemies.size(); i++)
-//	{
-//#if LIMIT_ENEMY_SPAWNS
-//		if (mActiveEnemies.size() >= MAX_SPAWN_COUNT)
-//			mSpawning.returnEnemy(enemies[i]);
-//		else
-//#endif
-//			addActiveEnemy(enemies[i]);
-//	}
-//}
-//
-//void EnemyManager::spawnEnemy(Enemy* enemy)
-//{
-//	for (int i = 0; i < enemies.size(); i++)
-//	{
-//#if LIMIT_ENEMY_SPAWNS
-//		if (mActiveEnemies.size() >= MAX_SPAWN_COUNT)
-//			mSpawning.returnEnemy(enemies[i]);
-//		else
-//#endif
-//			addActiveEnemy(enemies[i]);
-//	}
-//}
-
 
 void EnemyManager::spawnEnemy(Enemy* enemy)
 {

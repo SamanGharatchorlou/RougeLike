@@ -81,11 +81,11 @@ public:
 	// HACK: for animation tile populator grating trigger hack
 	std::vector<Animator>& animations() { return mAnimations; }
 
-	void render(RectF rect);
+	void render(RectF rect) const;
 
 	void setDeferredRendering(bool deferr) { mDeferredRendering = deferr; }
 	bool deferRender() const { return mDeferredRendering; }
-	void deferredRender(RectF rect);
+	void deferredRender(RectF rect) const;
 
 private:
 	Texture* mTexture;

@@ -172,7 +172,7 @@ void PlayerManager::selectWeapon(const BasicString& weaponName)
 	mPlayer.selectWeapon(weaponData);
 
 	// Add weapon properties to basic attack ability
-	Ability* basicAttack = mAbilities.get(AbilityType::Attack);
+	Ability* basicAttack = mAbilities.get(AbilityType::BasicAttack);
 	basicAttack->properties().merge(weaponData->effectData);
 	basicAttack->cooldown().set(basicAttack->properties().at(PropertyType::Cooldown));
 }

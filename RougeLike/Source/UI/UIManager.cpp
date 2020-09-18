@@ -109,7 +109,20 @@ void UIManager::initCursor(Cursor* cursor)
 
 void UIManager::setCursorTexture(Texture* texture) 
 { 
-	if (TextureManager::Get()->getTextureName(texture) == "GameCursor")
+	const BasicString& textureName = TextureManager::Get()->getTextureName(texture);
+	
+	// Set cursor mode
+	if (textureName == "GameCursor")
+		mCursor->setMode(Cursor::Game_Red);
+	else if (textureName == "GameCursorGreen")
+		mCursor->setMode(Cursor::Game_Green);
+	else if (textureName == "UICursor")
+		mCursor->setMode(Cursor::Menu);
+	else
+		DebugPrint(Warning, "No cursor mode has been linked to texture %s\n", textureName.c_str());
+
+	// Texture offset, the cursor point is in different places...
+	if (textureName == "GameCursor")
 		mCursor->setCursorOffsetPoint(VectorF());
 	else
 		mCursor->setCursorOffsetPoint(mCursor->size() / -2.0f);

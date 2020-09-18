@@ -29,7 +29,6 @@ private:
 	void addFileToLoad(const BasicString& filePath);
 
 
-
 private:
 	LoadingManager() : mUI(nullptr), mTotalFileSizes(0), mLoadedFileSizes(0) { }
 	~LoadingManager() { }

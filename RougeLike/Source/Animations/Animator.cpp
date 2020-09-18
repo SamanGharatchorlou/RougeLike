@@ -4,7 +4,7 @@
 #include "Graphics/Texture.h"
 
 
-Animator::Animator() : mActiveIndex(0), speedFactor(1.0f), mFrameTime(0.0f) { }
+Animator::Animator() : mActiveIndex(0), speedFactor(1.0f), mFrameTime(0.0f), mState(TimeState::Stopped) { }
 
 
 void Animator::addAnimation(const Animation::Data& data)
@@ -15,25 +15,25 @@ void Animator::addAnimation(const Animation::Data& data)
 
 void Animator::render(RectF rect, SDL_RendererFlip flip) const
 {
-	if(timer.isStarted())
+	if(isStarted())
 		mAnimations[mActiveIndex].render(rect, flip);
 }
 
 void Animator::render(RectF rect, SDL_RendererFlip flip, Uint8 alpha) const
 {
-	if (timer.isStarted())
+	if (isStarted())
 		mAnimations[mActiveIndex].render(rect, flip, alpha);
 }
 
 void Animator::render(RectF rect, SDL_RendererFlip flip, RenderColour colourMod) const
 {
-	if (timer.isStarted())
+	if (isStarted())
 		mAnimations[mActiveIndex].render(rect, flip, colourMod);
 }
 
 void Animator::render(RectF rect, double rotation, VectorF aboutPoint) const
 {
-	if (timer.isStarted())
+	if (isStarted())
 		mAnimations[mActiveIndex].render(rect, rotation, aboutPoint);
 }
 
@@ -90,28 +90,32 @@ void Animator::startAnimation(Animation::Action state)
 
 void Animator::stop()
 {
-	timer.stop();
+	mTime = 0.0f;
+	mState = TimeState::Stopped;
 	mAnimations[mActiveIndex].reset();
 }
 
 
 void Animator::slowUpdate(float dt)
 {
-	if (timer.getSeconds() >= mFrameTime / speedFactor)
+	if (mState == TimeState::Running)
+		mTime += dt;
+
+	if (mTime >= mFrameTime / speedFactor)
 	{
 		mAnimations[mActiveIndex].nextFrame();
-		timer.restart();
+		mTime = 0.0f;
 	}
 }
 
 
 void Animator::clear()
 {
+	stop();
 	mAnimations.clear();
 	mActiveIndex = 0;
 	speedFactor = 1.0f;
 	mFrameTime = -1.0f;
-	timer.stop();
 }
 
 
@@ -122,6 +126,7 @@ void Animator::reset()
 		mAnimations[i].reset();
 	}
 
+	mTime = 0.0f;
 	speedFactor = 1.0f;
-	timer.stop();
+	mState = TimeState::Stopped;
 }

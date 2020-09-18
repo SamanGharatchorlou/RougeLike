@@ -9,12 +9,12 @@ public:
 
 	float delta() const { return dt; }
 	void start();
+	void resetAverage() { /*totalFrameTime = 0.0f; totalFrames = 0;*/ }
 	void update();
 
-#if FRAMERATE_CAP
+	void setFrameCap(float cap) { frameRateCap = cap; }
 	void resetCapTimer();
 	void capFrameRate();
-#endif
 
 #if PRINT_FRAMERATE_EVERY
 	void printfFrameRate();
@@ -25,6 +25,8 @@ private:
 	TimerF frameTimer;
 	float dt;
 
+	TimerF capTimer;
+	float frameRateCap;
 
 	// --- debugging --- //
 #if PRINT_FRAMERATE_EVERY
@@ -34,9 +36,7 @@ private:
 	int totalFrames = 0;
 #endif
 
-#if FRAMERATE_CAP
-	TimerF capTimer;
-#endif
+
 #if PRINT_FRAMERATE_EVERY
 	TimerF fpsTimer;
 #endif

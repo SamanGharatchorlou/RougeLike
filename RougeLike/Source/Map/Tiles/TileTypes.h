@@ -14,34 +14,36 @@ enum class RenderTile : Uint64
 {
 	None,
 
-	Floor_1 = 1 << 0,
-	Floor_2 = 1 << 1,
+	Floor = 1 << 0,
+	Floor_1 = Floor << 1,
+	Floor_2 = Floor << 2,
 
-	Floor = 1 << 2,
+	Floor_ColumnBase = Floor << 3,
 
-	Floor_ColumnBase = Floor << 1,
+	Floor_Right = Floor << 4,
+	Floor_Left = Floor << 5,
+	Floor_Top = Floor << 6,
+	Floor_Bottom = Floor << 7,
 
-	Floor_Right = Floor << 2,
-	Floor_Left = Floor << 3,
-	Floor_Top = Floor << 4,
-	Floor_Bottom = Floor << 5,
+	Floor_Top_Right = Floor << 8,
+	Floor_Top_Left = Floor << 9,
+	Floor_Bottom_Right = Floor << 10,
+	Floor_Bottom_Left = Floor << 11,
 
-	Floor_Top_Right = Floor << 6,
-	Floor_Top_Left = Floor << 7,
-	Floor_Bottom_Right = Floor << 8,
-	Floor_Bottom_Left = Floor << 9,
+	Floor_Grating = Floor << 12,
+	Floor_Grating_Top = Floor << 13,
 
-	Floor_Grating = Floor << 10,
-	Floor_Grating_Top = Floor << 11,
+	FLOORS = Floor << 14,
 
-	Water = Floor << 12,
-
+	Water = FLOORS << 1,
 	Water_Middle = Water << 1,
 	Water_Left = Water << 2,
 	Water_Top = Water << 3,
 	Water_Top_Left = Water << 4,
 
-	Wall = Water << 5,
+	WATERS = Water << 5,
+
+	Wall = WATERS << 1,
 
 	// Sides
 	Left = Wall << 1,
@@ -70,11 +72,14 @@ enum class RenderTile : Uint64
 	Point_Top_Right = Wall << 15,
 	Point_Top_Left = Wall << 16,
 
-	Column = Wall << 17,
+	WALLS = Wall << 17,
 
-	Column_Lower = Column << 18,
-	Column_Upper = Column << 19,
-	Column_Top = Column << 20,
+	Column = WALLS << 1,
+	Column_Lower = Column << 1,
+	Column_Upper = Column << 2,
+	Column_Top = Column << 3,
+
+	COLUMNS = Column << 4
 };
 
 

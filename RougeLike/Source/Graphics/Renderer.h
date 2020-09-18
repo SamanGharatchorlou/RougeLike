@@ -7,8 +7,10 @@ public:
 	static Renderer* Get();
 
 	// Only used while loading for thread safety
-	void Open();
-	void Close();
+	void lock();
+	void unlock();
+
+
 
 	void free() { SDL_DestroyRenderer(mRenderer); }
 
@@ -22,11 +24,12 @@ public:
 	void setScale(float scale);
 
 private:
-	Renderer() { mLoadingSemaphor = SDL_CreateSemaphore(1); }
+	Renderer();// { mLoadingSemaphor = SDL_CreateSemaphore(1); }
 	~Renderer() { }
 
 	SDL_Renderer* mRenderer;
 
 	// For loading only
-	SDL_sem* mLoadingSemaphor;
+	//SDL_sem* mLoadingSemaphor;
+	SDL_SpinLock mLoadingLock;
 };

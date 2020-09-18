@@ -57,12 +57,10 @@ void SoundController::slowUpdate()
 		{
 			sound.mVolume = attenuation(sound);
 		}
-		else if (sound.mState == Channel::Looping)
+
+		if (sound.mState == Channel::Looping && !sound.isAudioRunning())
 		{
-			if (!sound.isAudioRunning())
-			{
-				sound.playNext();
-			}
+			sound.playNext();
 		}
 
 		// Free up channels after audio has stopped playing
@@ -114,7 +112,7 @@ void SoundController::slowUpdate()
 }
 
 
-bool SoundController::isPlaying(Audio* audio, uintptr_t id)
+bool SoundController::isPlaying(Audio* audio, uintptr_t id) const
 {
 	for (int i = 0; i < mixerChannels; i++)
 	{
@@ -126,7 +124,7 @@ bool SoundController::isPlaying(Audio* audio, uintptr_t id)
 }
 
 
-bool SoundController::hasActiveAudio(Audio* audio, uintptr_t id)
+bool SoundController::hasActiveAudio(Audio* audio, uintptr_t id) const
 {
 	for (int i = 0; i < mixerChannels; i++)
 	{
@@ -245,7 +243,7 @@ void SoundController::stopSound(Audio* audio, uintptr_t id)
 		}
 	}
 
-	DebugPrint(Warning, "Could not stop audio,\n");
+	DebugPrint(Warning, "Could not stop audio\n");
 }
 
 

@@ -255,21 +255,21 @@ void Player::updateMovementSound(AudioManager* audio)
 	{
 		if (mStepTimer.getMilliseconds() > 400)
 		{
-			audio->play("PlayerWalk2", this);
+			audio->pushEvent(AudioEvent(AudioEvent::Play, "PlayerWalk2", this));
 			mStepTimer.restart();
 		}
 	}
 	else if (currentAction == Animation::Idle)
 	{
 		if (audio->isPlaying("PlayerWalk2", this))
-			audio->stop("PlayerWalk2", this);
+			audio->pushEvent(AudioEvent(AudioEvent::Stop, "PlayerWalk2", this));
 	}
 }
 
 
 void Player::handleHit(AudioManager* audio)
 {
-	audio->play("PlayerHurt", this);
+	audio->pushEvent(AudioEvent(AudioEvent::Play, "PlayerHurt", this));
 
 	TraumaEvent* trauma = new TraumaEvent(60);
 	mEvents.push(EventPacket(trauma));
@@ -314,8 +314,8 @@ void Player::handleHealthChanges(Health* health)
 
 		if (health->isDead() && !mControlOverride)
 		{
-			mStateMachine.addState(new PlayerDeadState(this)); 
-			AudioManager::Get()->stop("PlayerWalk2", this);
+			mStateMachine.addState(new PlayerDeadState(this));
+			AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Stop, "PlayerWalk2", this));
 		}
 
 		health->changedHandled();

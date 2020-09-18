@@ -171,6 +171,7 @@
     <ClCompile Include="Source\Audio\Channel.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\InvunerabilityEffect.cpp" />
     <ClCompile Include="Source\Animations\Animation.cpp" />
+    <ClCompile Include="Source\Debug\PerformanceProfiler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -375,6 +376,7 @@
     <ClInclude Include="Source\Audio\Channel.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\InvunerabilityEffect.h" />
     <ClInclude Include="Source\Animations\Animation.h" />
+    <ClInclude Include="Source\Debug\PerformanceProfiler.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libFLAC-8.dll" />

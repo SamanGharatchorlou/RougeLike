@@ -36,10 +36,12 @@ public:
 
 	void setSpeedFactor(float speed) { speedFactor = speed; }
 
-	void start() { timer.start(); }
-	void pause() { timer.pause(); }
+	void start() { mState = TimeState::Running; }
+	void pause() { mState = TimeState::Paused; }
 	void stop();
-	bool isRunning() const { return !timer.isPaused() && timer.isStarted(); }
+
+	bool isRunning() const { return mState == TimeState::Running; }
+	bool isStarted() const { return mState == TimeState::Running || mState == TimeState::Paused; }
 
 	int loops() const { return mAnimations[mActiveIndex].mLoops; }
 
@@ -57,5 +59,7 @@ private:
 
 	float speedFactor;
 	float mFrameTime;
-	TimerF timer;
+
+	TimeState mState;
+	float mTime;
 };

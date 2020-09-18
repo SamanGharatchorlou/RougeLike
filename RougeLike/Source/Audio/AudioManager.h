@@ -2,6 +2,35 @@
 
 #include "SoundController.h"
 
+struct AudioEvent
+{
+	enum Action
+	{
+		Play,
+		Loop,
+		Pause,
+		Resume,
+		Stop,
+		FadeIn,
+		FadeOut,
+	};
+
+	AudioEvent(Action _action, const BasicString _label, const void* _id)								: action(_action), label(_label), id(reinterpret_cast<const uintptr_t>(_id)), source(VectorF(-1.0f, -1.0f)), time(-1) { }
+	AudioEvent(Action _action, const BasicString _label, const void* _id, VectorF _source)				: action(_action), label(_label), id(reinterpret_cast<const uintptr_t>(_id)), source(_source),				 time(-1) { }
+	AudioEvent(Action _action, const BasicString _label, const void* _id, int _time)					: action(_action), label(_label), id(reinterpret_cast<const uintptr_t>(_id)), source(VectorF(-1.0f, -1.0f)), time(_time) { }
+	AudioEvent(Action _action, const BasicString _label, const void* _id, VectorF _source, int _time)	: action(_action), label(_label), id(reinterpret_cast<const uintptr_t>(_id)), source(_source),				 time(_time) { }
+
+	const Action action;
+	const BasicString label;
+	const uintptr_t id;
+	const VectorF source;
+	const int time;
+
+	Audio* audio;
+};
+
+
+
 
 class AudioManager
 {
@@ -17,23 +46,15 @@ public:
 
 	void setSource(Actor* listener, float attenuationDistance);
 	void slowUpdate();
+	void handleEvents();
 
 	Audio* getAudio(const BasicString& label) const;
 	BasicString getLabel(Audio* audio) const;
 
-	// Controls
-	void play(const BasicString& label, const void* sourceId, VectorF source = VectorF(-1.0f, -1.0f));
-	void loop(const BasicString& label, const void* sourceId, VectorF source = VectorF(-1.0f, -1.0f));
+	void pushEvent(AudioEvent event);
 
-	void pause(const BasicString& label, const void* sourceId);
-	void resume(const BasicString& label, const void* sourceId);
-	void stop(const BasicString& label, const void* sourceId);
-
-	void fadeIn(const BasicString& label, const void* sourceId, int ms, VectorF source = VectorF(-1.0f, -1.0f));
-	void fadeOut(const BasicString& label, const void* sourceId, int ms);
-
-	bool isPlaying(const BasicString& label, const void* sourced);
-	bool isActive(const BasicString& label, const void* sourced);
+	bool isPlaying(const BasicString& label, const void* sourced) const;
+	bool isActive(const BasicString& label, const void* sourced) const;
 
 	// volume
 	void setSoundVolume(float volume);
@@ -61,4 +82,8 @@ private:
 	SoundController mSoundController;
 
 	std::unordered_map<BasicString, Audio*> mAudioBank;
+
+
+
+	Queue<AudioEvent> mEvents;
 };

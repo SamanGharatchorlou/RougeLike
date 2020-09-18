@@ -9,6 +9,7 @@
 class Actor;
 class InputManager;
 class Screen;
+class Cursor;
 enum class AbilityState;
 
 
@@ -46,4 +47,6 @@ private:
 	AbilityBuilder mBuilder;
 	AbilityHotKeyManager mHotKeys;
 	AbilityHandler mHandler;
+
+	bool mUpdateCursor;
 };

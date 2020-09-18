@@ -6,6 +6,8 @@ class AIPathMap;
 class Enemy;
 class Map;
 
+using EnemyList = std::vector<Enemy*>;
+
 class AIPathingController : public Dispatcher
 {
 public:
@@ -18,9 +20,9 @@ public:
 
 	void clearCostMaps();
 
-	void updatePaths(const std::vector<Enemy*>& enemies, float dt);
+	void updatePaths(const EnemyList& enemies, float dt);
 
-	void updateAIPathCostMap(const std::vector<Enemy*>& enemies);
+	void updateAIPathCostMap(const EnemyList& enemies);
 
 	AIPathMap* pathMap(const Map* map);
 	AIPathMap* findPathMap(const AIPathMap* pathMap);
@@ -34,12 +36,11 @@ public:
 
 private:
 	int calculatePathingLimit(int minimunFrameCount, float dt);
-	Vector2D<int> getCalculationIndexRange(const std::vector<Enemy*>& enemies);
+	Vector2D<int> getCalculationIndexRange(const EnemyList& enemies);
 
 
 private:
 	std::vector<AIPathMap*> mPathMaps;
-	
 	
 	Vector2D<int> mCalculationIndexRange;
 
@@ -51,3 +52,4 @@ private:
 	int mSegmentLength;
 	int mSegmentIndex;
 };
+

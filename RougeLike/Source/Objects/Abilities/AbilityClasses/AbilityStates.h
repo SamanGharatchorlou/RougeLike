@@ -6,7 +6,7 @@
 enum class AbilityType
 {
 	None,
-	Attack,
+	BasicAttack,
 	Heal,
 	Armor,
 	Blink,
@@ -28,7 +28,7 @@ inline AbilityType operator +(AbilityType a, T b)
 
 inline void operator >>(AbilityType a, BasicString& str)
 {
-	if (a == AbilityType::Attack)
+	if (a == AbilityType::BasicAttack)
 		str = "BasicAttack";
 	else if (a == AbilityType::Heal)
 		str = "Heal";
@@ -51,7 +51,7 @@ inline void operator >>(AbilityType a, BasicString& str)
 inline void operator <<(AbilityType& a, const BasicString& str)
 {
 	if (str == "BasicAttack")
-		a = AbilityType::Attack;
+		a = AbilityType::BasicAttack;
 	else if (str == "Heal")
 		a = AbilityType::Heal;
 	else if (str == "Blink")

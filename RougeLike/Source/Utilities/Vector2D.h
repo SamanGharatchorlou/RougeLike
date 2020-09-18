@@ -184,6 +184,11 @@ public:
 		return (x < 0.0f && y < 0.0f) ? true : false;
 	}
 
+	inline bool hasNegative() const
+	{
+		return (x < 0.0f || y < 0.0f) ? true : false;
+	}
+
 	inline T area() const
 	{
 		return x * y;

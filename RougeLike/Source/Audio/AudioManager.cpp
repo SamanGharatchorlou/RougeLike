@@ -86,6 +86,55 @@ void AudioManager::slowUpdate()
 }
 
 
+void AudioManager::handleEvents()
+{
+	while (mEvents.size() > 0)
+	{
+		const AudioEvent event = mEvents.front();
+
+		switch (event.action)
+		{
+		case AudioEvent::Play:
+			mSoundController.play(event.audio, event.id, event.source);
+			break;
+		case AudioEvent::Loop:
+			mSoundController.loop(event.audio, event.id, event.source);
+			break;
+		case AudioEvent::Pause:
+			mSoundController.pauseSound(event.audio, event.id);
+			break;
+		case AudioEvent::Resume:
+			mSoundController.resumeSound(event.audio, event.id);
+			break;
+		case AudioEvent::Stop:
+			mSoundController.stopSound(event.audio, event.id);
+			break;
+		case AudioEvent::FadeIn:
+			mSoundController.fadeIn(event.audio, event.id, event.time, event.source);
+			break;
+		case AudioEvent::FadeOut:
+			mSoundController.fadeOut(event.audio, event.id, event.time);
+			break;
+		default:
+			break;
+		}
+
+		mEvents.pop();
+	}
+}
+
+
+void AudioManager::pushEvent(AudioEvent event)
+{
+	Audio* audio = getAudio(event.label);
+
+	if (audio)
+	{
+		event.audio = audio;
+		mEvents.push(event);
+	}
+}
+
 
 Audio* AudioManager::getAudio(const BasicString& label) const
 {
@@ -137,66 +186,7 @@ float AudioManager::musicVolume() const
 	return mSoundController.getMusicVolume();
 }
 
-
-void AudioManager::play(const BasicString& label, const void* sourceId, VectorF source)
-{
-	Audio* audio = getAudio(label);
-
-	if (audio)
-		mSoundController.play(audio, reinterpret_cast<uintptr_t>(sourceId), source);
-}
-
-void AudioManager::loop(const BasicString& label, const void* sourceId, VectorF source)
-{
-	Audio* audio = getAudio(label);
-
-	if (audio)
-		mSoundController.loop(audio, reinterpret_cast<uintptr_t>(sourceId), source);
-}
-
-
-void AudioManager::stop(const BasicString& label, const void* sourceId)
-{
-	Audio* audio = getAudio(label);
-
-	if (audio)
-		mSoundController.stopSound(audio, reinterpret_cast<uintptr_t>(sourceId));
-}
-
-void AudioManager::fadeOut(const BasicString& label, const void* sourceId, int ms)
-{
-	Audio* audio = getAudio(label);
-
-	if (audio)
-		mSoundController.fadeOut(audio, reinterpret_cast<uintptr_t>(sourceId), ms);
-}
-
-void AudioManager::fadeIn(const BasicString& label, const void* sourceId, int ms, VectorF source)
-{
-	Audio* audio = getAudio(label);
-
-	if (audio)
-		mSoundController.fadeIn(audio, reinterpret_cast<uintptr_t>(sourceId), ms, source);
-}
-
-
-void AudioManager::pause(const BasicString& label, const void* sourceId)
-{
-	Audio* audio = getAudio(label);
-
-	if (audio)
-		mSoundController.pauseSound(audio, reinterpret_cast<uintptr_t>(sourceId));
-}
-
-void AudioManager::resume(const BasicString& label, const void* sourceId)
-{
-	Audio* audio = getAudio(label);
-
-	if (audio)
-		mSoundController.resumeSound(audio, reinterpret_cast<uintptr_t>(sourceId));
-}
-
-bool AudioManager::isPlaying(const BasicString& label, const void* sourceId)
+bool AudioManager::isPlaying(const BasicString& label, const void* sourceId) const
 {
 	Audio* audio = getAudio(label);
 
@@ -209,7 +199,7 @@ bool AudioManager::isPlaying(const BasicString& label, const void* sourceId)
 	}
 }
 
-bool AudioManager::isActive(const BasicString& label, const void* sourceId)
+bool AudioManager::isActive(const BasicString& label, const void* sourceId) const
 {
 	Audio* audio = getAudio(label);
 

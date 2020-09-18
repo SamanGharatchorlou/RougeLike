@@ -30,6 +30,7 @@
     <ClCompile Include="Source\Animations\Animation.cpp" />
     <ClCompile Include="Source\Audio\Channel.cpp" />
     <ClCompile Include="Source\Collisions\Colliders\QuadCollider.cpp" />
+    <ClCompile Include="Source\Debug\PerformanceProfiler.cpp" />
     <ClCompile Include="Source\Map\TrapManager.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityClasses\MeleeAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHandler.cpp" />
@@ -209,6 +210,7 @@
     <ClInclude Include="Source\Animations\Animation.h" />
     <ClInclude Include="Source\Audio\Channel.h" />
     <ClInclude Include="Source\Collisions\Colliders\QuadCollider.h" />
+    <ClInclude Include="Source\Debug\PerformanceProfiler.h" />
     <ClInclude Include="Source\Map\TrapManager.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityClasses\MeleeAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityHandler.h" />

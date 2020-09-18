@@ -67,7 +67,7 @@ AIPathMap* AIPathingController::popMap()
 }
 
 
-void AIPathingController::updatePaths(const std::vector<Enemy*>& enemies, float dt)
+void AIPathingController::updatePaths(const EnemyList& enemies, float dt)
 {
 	updateAIPathCostMap(enemies);
 
@@ -99,7 +99,7 @@ void AIPathingController::updatePaths(const std::vector<Enemy*>& enemies, float 
 }
 
 
-Vector2D<int> AIPathingController::getCalculationIndexRange(const std::vector<Enemy*>& enemies)
+Vector2D<int> AIPathingController::getCalculationIndexRange(const EnemyList& enemies)
 {
 	if (mSegmentLength * mSegmentIndex >= enemies.size())
 	{
@@ -170,7 +170,7 @@ void AIPathingController::clearCostMaps()
 }
 
 
-void AIPathingController::updateAIPathCostMap(const std::vector<Enemy*>& enemies)
+void AIPathingController::updateAIPathCostMap(const EnemyList& enemies)
 {
 	TimerF timer;
 	timer.start();

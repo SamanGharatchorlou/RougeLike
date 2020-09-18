@@ -3,6 +3,7 @@
 #include "Game/Data/GameData.h"
 #include "States/State.h"
 #include "States/StateMachine.h"
+#include "Debug/FrameRateController.h"
 
 class AudioManager;
 
@@ -57,10 +58,14 @@ private:
 	bool quit;
 	bool restart;
 
+	FrameRateController mFrameTimer;
+
 #if FRAMERATE_CAP || PRINT_FRAMERATE_EVERY
 	Timer<float> fpsTimer;
 	Timer<float> capTimer;
 #endif
 };
 
-static int renderLoadingBar(void *ptr);
+
+void renderLoadingBar();
+void updateAudio();
