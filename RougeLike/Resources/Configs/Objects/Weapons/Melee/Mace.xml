@@ -6,18 +6,18 @@
 	<Properties>
 		<Texture>Mace</Texture>
 		<MaxSize>85</MaxSize>
-		<OffsetX>14</OffsetX>
+		<OffsetX>12</OffsetX>
 		<OffsetY>31</OffsetY>
 
-		<SwingSpeed>700</SwingSpeed>
-		<SwingAngle>240</SwingAngle>
+		<SwingSpeed>600</SwingSpeed>
+		<SwingAngle>220</SwingAngle>
 	</Properties>
 
 	<AttackingEffects>
-		<Cooldown>0.35</Cooldown>
+		<Cooldown>0.375</Cooldown>
 		<Damage>60</Damage>
-		<KnockbackForce>200</KnockbackForce>
-		<KnockbackDistance>65</KnockbackDistance>
+		<KnockbackForce>500</KnockbackForce>
+		<KnockbackDistance>60</KnockbackDistance>
 	</AttackingEffects>
 
 	<Audio>

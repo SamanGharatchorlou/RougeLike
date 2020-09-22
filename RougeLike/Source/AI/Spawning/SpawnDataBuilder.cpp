@@ -60,11 +60,11 @@ bool SpawnDataBuilder::validFormation(const Formation& formation, const AIPathMa
 
 Vector2D<int> SpawnDataBuilder::getRandomFormationSize(int mapLevel) const
 {
-	int minimun = 2;
-	int maximum = clamp(5 + mapLevel, minimun, 10);
+	int min = 2 + (mapLevel / 3);
+	int max = 6 + (mapLevel / 3);
 
-	int xRandom = randomNumberBetween(minimun, maximum);
-	int yRandom = randomNumberBetween(minimun, maximum);
+	int xRandom = randomNumberBetween(min, max);
+	int yRandom = randomNumberBetween(min, max);
 
 	return Vector2D<int>(xRandom, yRandom);
 }

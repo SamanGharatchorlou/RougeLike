@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "Game/GameController.h"
 
+//
+#pragma comment(lib, "SDL2_image")
+
 
 int main(int argc, char* args[])
 {

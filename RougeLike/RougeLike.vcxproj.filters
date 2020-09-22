@@ -398,4 +398,7 @@
     <None Include="SDL2_ttf.dll" />
     <None Include="zlib1.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Source\CMakeLists.txt" />
+  </ItemGroup>
 </Project>

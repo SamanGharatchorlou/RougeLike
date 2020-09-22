@@ -99,9 +99,8 @@ bool EnemyAttack::attackComplete() const
 
 void EnemyAttack::resume()
 {
-	init();
+	mHasAttacked = true;
 }
-
 
 
 void EnemyAttack::exit()

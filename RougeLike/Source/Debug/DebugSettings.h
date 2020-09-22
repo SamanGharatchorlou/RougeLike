@@ -78,9 +78,9 @@ constexpr float game_scale = 0.5f;
 #define PRINT_FULL_AUDIO_CHANNELS 1
 
 #else
-// A cap needs to be set, the framerate can be so high that dt can be 0, this can
-// mess somethings up... like the wall collisions, also that's just unnecessary
+// A cap needs to be set, the framerate can be so high that dt can be 0, this can mess 
+// somethings up... like the wall collisions, which is a good 'problem' to have i guess
 #define FRAMERATE_CAP 240 // Use the FPS cap you want
-#define PRINT_FRAMERATE_EVERY 0 // Print at the rate you specify in milliseconds i.e. 500 = print every 0.5 seconds
+#define PRINT_FRAMERATE_EVERY 0 // Print at the rate you specify in milliseconds
 
 #endif

@@ -14,8 +14,8 @@
 	</Properties>
 
 	<AttackingEffects>
-		<Cooldown>0.15</Cooldown>
-		<Damage>40</Damage>
+		<Cooldown>0.175</Cooldown>
+		<Damage>35</Damage>
 		<KnockbackForce>200</KnockbackForce>
 		<KnockbackDistance>15</KnockbackDistance>
 	</AttackingEffects>

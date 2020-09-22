@@ -111,11 +111,12 @@ void Animator::slowUpdate(float dt)
 
 void Animator::clear()
 {
-	stop();
 	mAnimations.clear();
 	mActiveIndex = 0;
 	speedFactor = 1.0f;
 	mFrameTime = -1.0f;
+	mTime = 0.0f;
+	mState = TimeState::Stopped;
 }
 
 

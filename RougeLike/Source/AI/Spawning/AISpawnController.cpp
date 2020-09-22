@@ -49,7 +49,8 @@ void AISpawnController::initSpawningEnemies(const AIPathMap* map)
 	int formationCount = clamp(map->level() + 1, 0, 8);
 	for (int i = 0; i < formationCount; i++)
 	{
-		EnemyType type = i % 2 == 0 ? EnemyType::Devil : EnemyType::Devil;
+		bool spawnOrc = map->level() > 1 && i % 2 == 0;
+		EnemyType type = spawnOrc ? EnemyType::Orc : EnemyType::Devil;
 		mSpawnList.add(spawnRandomQuad(type, EnemyState::Idle, map));
 	}
 
@@ -57,7 +58,7 @@ void AISpawnController::initSpawningEnemies(const AIPathMap* map)
 
 	// Running at max speed we have ~4s before we see any enemies
 	// Spawn everything across a number of frames, reducing the load per frame removing the jank* across levels
-	// *Optimisations using the profiler removed the jank, but may as well leave this here now anyway
+	// *Optimisations using the profiler have removed this jank, but may as well leave this here now anyway
 	mSpawnList.setSpawnPerFrames(10);
 }
 

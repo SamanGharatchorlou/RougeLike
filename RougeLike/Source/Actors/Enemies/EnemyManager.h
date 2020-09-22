@@ -63,8 +63,5 @@ private:
 
 	std::vector<Enemy*> mActiveEnemies;
 
-	PerformanceProfiler profiler1;
-	PerformanceProfiler profiler2;
-
 	TimerF displayTimer;
 };

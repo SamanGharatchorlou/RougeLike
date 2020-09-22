@@ -66,7 +66,7 @@ void EnemyCharge::render()
 
 void EnemyCharge::resume()
 {
-	init();
+	mEndAttack = true;
 }
 
 
