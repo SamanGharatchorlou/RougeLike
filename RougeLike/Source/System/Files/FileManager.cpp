@@ -245,6 +245,59 @@ std::vector<BasicString> FileManager::allFilesInFolder(const fs::path& directory
 	return fileNameList;
 }
 
+// Stores all folders the contains at least 1 immeditate file
+void FileManager::AllFoldersContainingFiles(const fs::path& directoryPath, std::unordered_set<BasicString>& folderList) const
+{
+	for (const auto& path : fs::directory_iterator(directoryPath))
+	{
+		if (containsFile(directoryPath))
+		{
+			folderList.insert(pathToString(directoryPath));
+		}
+
+		if (fs::is_directory(path))
+		{
+			AllFoldersContainingFiles(path, folderList);
+		}
+	}
+}
+
+
+void FileManager::AllFolders(const fs::path& directoryPath, std::unordered_set<BasicString>& folderList) const
+{
+	for (const auto& path : fs::directory_iterator(directoryPath))
+	{
+		if (fs::is_directory(path))
+		{
+			folderList.insert(pathToString(path));
+			AllFolders(path, folderList);
+		}
+	}
+}
+
+
+bool FileManager::containsFile(const fs::path& directoryPath) const
+{
+	for (const auto& path : fs::directory_iterator(directoryPath))
+	{
+		if (!fs::is_directory(path))
+			return true;
+	}
+
+	return false;
+}
+
+bool FileManager::containsDirectory(const fs::path& directoryPath) const
+{
+	for (const auto& path : fs::directory_iterator(directoryPath))
+	{
+		if (fs::is_directory(path))
+			return true;
+	}
+
+	return false;
+}
+
 
 std::vector<BasicString> FileManager::foldersInFolder(const Folder folder) const
 {
@@ -273,6 +326,19 @@ void FileManager::addFilesToList(std::vector<BasicString>& fileList, const fs::p
 			fileList.push_back(pathToString(path.path()));
 	}
 }
+
+
+void FileManager::addFoldersToList(std::vector<BasicString>& folderList, const fs::path& directoryPath) const
+{
+	for (const auto& path : fs::directory_iterator(directoryPath))
+	{
+		if (fs::is_directory(path))
+			addFoldersToList(folderList, path);
+		else
+			folderList.push_back(pathToString(path.path()));
+	}
+}
+
 
 void FileManager::outFilePath(BasicString& outValue, const fs::path& directoryPath, const BasicString& name) const
 {

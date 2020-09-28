@@ -3,14 +3,15 @@
 #if UI_EDITOR
 #include "Input/Button.h"
 
-class Screen;
+class ScreenController;
 class InputManager;
 
 
 class UIEditor
 {
 public:
-	void setScreen(Screen* activeScreen);
+	UIEditor() : mController(nullptr) { }
+	void init(ScreenController* controller) { mController = controller; }
 	void handleInput(const InputManager* input);
 
 	BasicString selectElement(const InputManager* input);
@@ -25,7 +26,7 @@ private:
 
 
 private:
-	Screen* mScreen;
+	ScreenController* mController;
 	BasicString mElementID;
 
 	float movementSpeed = 2.5f; // pixels moved per press

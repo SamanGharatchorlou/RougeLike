@@ -1,12 +1,20 @@
 #include "pch.h"
 #include "GameSetup.h"
 
+#include <Windows.h>
+
+
 #include "Graphics/Renderer.h"
 #include "System/Window.h"
 #include "Audio/AudioManager.h"
 
 
-GameSetup::GameSetup() : title(""), audioChannels(0) 
+#if OUTPUT_NSIS_FOLDER_INFO
+#include "Utilities/NSISFileOutput.h"
+#endif
+
+
+GameSetup::GameSetup() : title("")
 {
 	srand((unsigned int)time(NULL)); // random seed
 }
@@ -19,6 +27,17 @@ void GameSetup::initFileSystem()
 
 Window* GameSetup::initSDLWindow()
 {
+	HWND windowHandle = GetConsoleWindow();
+#if HIDE_CONSOLE
+	ShowWindow(windowHandle, SW_HIDE);
+#else
+	ShowWindow(windowHandle, SW_SHOW);
+#endif
+
+#if OUTPUT_NSIS_FOLDER_INFO
+	OutputNSISFolderInfo();
+#endif
+
 	Window* window = nullptr;
 	readSettings();
 

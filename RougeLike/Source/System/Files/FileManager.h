@@ -58,6 +58,9 @@ public:
 
 	std::vector<BasicString> allFilesInFolder(const Folder folder) const;
 	std::vector<BasicString> allFilesInFolder(const fs::path& directory) const;
+
+	void AllFolders(const fs::path& directoryPath, std::unordered_set<BasicString>& folderList) const;
+	void AllFoldersContainingFiles(const fs::path& directoryPath, std::unordered_set<BasicString>& folderList) const;
 	std::vector<BasicString> foldersInFolder(const Folder folder) const;
 
 	Folder getFolderIndex(const BasicString& directory);
@@ -67,6 +70,10 @@ private:
 	fs::path fsPath(const Folder folder) const;
 
 	void addFilesToList(std::vector<BasicString>& fileList, const fs::path& directoryPath) const;
+	void addFoldersToList(std::vector<BasicString>& folderList, const fs::path& directoryPath) const;
+
+	bool containsFile(const fs::path& directoryPath) const;
+	bool containsDirectory(const fs::path& directoryPath) const;
 
 	void outFolderPath(BasicString& outValue, const fs::path& directoryPath, const BasicString& name) const;
 	void outFilePath(BasicString& outValue, const fs::path& directoryPath, const BasicString& name) const;

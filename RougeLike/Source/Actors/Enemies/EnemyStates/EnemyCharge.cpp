@@ -58,8 +58,8 @@ void EnemyCharge::render()
 	mEnemy->renderCharacter();
 
 #if DRAW_ENEMY_TARGET_PATH
-	VectorF targetPosition = mHasAttacked ? startingPosition : attackTargetPosition;
-	debugDrawLine(mEnemy->position(), targetPosition, RenderColour::Red);
+	VectorF target = mStartPosition + (mDirection * mEnemy->getAttributeValue(AttributeType::TackleDistance));
+	debugDrawLine(mEnemy->position(), target, RenderColour::Red);
 #endif
 }
 

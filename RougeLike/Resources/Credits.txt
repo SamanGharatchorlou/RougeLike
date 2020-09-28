@@ -1,0 +1,77 @@
+CODE CREDITS
+
+- XML Parsing code -
+To read xml files I used 'RapidXml' from http://rapidxml.sourceforge.net/
+The author of RapidXml is Marcin Kalicinski
+
+
+- Memory Tracking code -
+For debuging and tracking memory I used 'MemTrack: Tracking Memory Allocations in C++'
+http://www.almostinfinite.com/memtrack.html
+
+All other code in this game other than what's mentioned above was written by me (Saman Gharatchorlou) in C++ on Visual Studio using the SDL2 library. https://www.libsdl.org/.
+
+
+GAME ASSET CREDITS
+
+- UI -
+Menu components: MEDIEVAL GAME INTERFACE from CraftPixi - https://craftpix.net/
+Menu components: FANTASY GAME INTERFACE from CraftPixi - https://craftpix.net/
+Icons from various packs incl. Barbarian, Knight, Mage, Priest : RPG SKILL ICONS FOR xxxx from CraftPixi - https://craftpix.net/
+Character Selection Screen Background: SKY 2D GAME BACKGROUNDS - https://craftpix.net/
+
+
+- Character Animations -
+All character animations from CraftPixi - https://craftpix.net/
+
+
+- Cursors -
+Cursors [RPG, RTS, MMO, TPS] [Pack 01] - Wenrexa
+https://wenrexa.itch.io/cursor-pack-mouse-crystal
+
+
+- Stun status effect animation -
+GameDev Market - Pro License
+NINE STATUS ANIMATED STATUS EFFECTS FOR 2D GAME DEVELOPMENT - RobertBrooks
+Creater GameDev Market page: https://www.gamedevmarket.net/member/robert-brooks/
+
+
+- Weapon Images -
+GameDev Market - Pro License
+2D WEAPON PACK - tomomazo
+Creater GameDev Market page: https://www.gamedevmarket.net/member/tomomazo/
+
+
+- Effect Animations -
+GameDev Market - Pro License
+25 SPRITE EFFECTS - bestgamekits
+Creater GameDev Market page: https://www.gamedevmarket.net/member/best-game-kits/
+Includes: ability animations, explosions, fire trap etc.
+
+
+- Map Tiles -
+GameDev Market - Pro License
+THE DUNGEON – TOP DOWN TILESET - pzUH
+Creater GameDev Market page: https://www.gamedevmarket.net/member/gameart2d-com/
+
+
+- Music -
+Menu and in level background music. Both tracks are from the 'Abstraction - Music Loop Bundle'. 
+Menu - 	   Ludum Dara 28 - Track 6 
+In level - Ludum Dara 28 - Track 1
+Bandcamp page (http://abstractionmusic.bandcamp.com/) or home page (http://www.abstractionmusic.com/).
+
+
+
+- Sounds -
+GameDev Market - Pro License
+MEDIEVAL COMBAT SOUNDS - estudiocafofo
+Creater GameDev Market page: https://www.gamedevmarket.net/member/estudio-cafofo/
+Includes: all combat sound effects, weapons, traps, walking etc.
+
+GameDev Market - Pro License
+MAGIC SPELLS SOUND EFFECTS - estudiocafofo
+Creater GameDev Market page: https://www.gamedevmarket.net/member/estudio-cafofo/
+Includes: all magic sound effects, abilities etc.
+
+

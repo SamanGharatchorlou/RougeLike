@@ -107,7 +107,7 @@ void EnemyManager::slowUpdate(float dt)
 void EnemyManager::render()
 {
 #if DRAW_AI_PATH_COSTMAP
-	mAIController.drawCostMap();
+	mPathing.drawCostMap();
 #endif
 
 	for (Enemy* enemy : mActiveEnemies)

@@ -234,16 +234,18 @@ void AIPathingController::drawCostMap()
 	char text[3];
 	Camera* camera = Camera::Get();
 
-	for (int y = 0; y < mPathMaps[0].yCount(); y++)
+	const AIPathMap* map = mPathMaps[0];
+
+	for (int y = 0; y < map->yCount(); y++)
 	{
-		for (int x = 0; x < mPathMaps[0].xCount(); x++)
+		for (int x = 0; x < map->xCount(); x++)
 		{
 			Index index(x, y);
-			VectorF position = mPathMaps[0][index].rect().TopLeft();
+			VectorF position = map->get(index).rect().TopLeft();
 
-			if (camera->inView(position) && mPathMaps[0][index].has(CollisionTile::Floor))
+			if (camera->inView(position) && map->get(index).has(CollisionTile::Floor))
 			{
-				_itoa_s(mPathMaps[0].costMap().get(index), text, 10);
+				_itoa_s(map->costMap().get(index), text, 10);
 				debugRenderText(text, ptSize, position, colour);
 			}
 		}

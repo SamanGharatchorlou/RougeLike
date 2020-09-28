@@ -17,6 +17,9 @@ UIManager::~UIManager()
 void UIManager::init(GameController* gameController)
 {
 	mController.init(gameController, this);
+#if UI_EDITOR
+	mEditor.init(&mController);
+#endif
 }
 
 
@@ -66,10 +69,6 @@ void UIManager::update()
 {
 	mController.processScreenChanges();
 	mController.getActiveScreen()->slowUpdate();
-
-#if UI_EDITOR
-	mEditor.setScreen(mController.getActiveScreen());
-#endif
 }
 
 

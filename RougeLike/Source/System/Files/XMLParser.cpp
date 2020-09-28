@@ -18,10 +18,7 @@ void XMLParser::parseXML(const BasicString& filePath)
 
 void XMLParser::saveToFile(std::ofstream& file)
 {
-	printf("parser tut node value %s\n", rootChild("Tutorial").value().c_str());
-
-	std::cout << xmlFile;
-
+	DebugPrint(Log, "Saveing xml to file %s\n", xmlFile.value());
 	file << xmlFile;
 }
 

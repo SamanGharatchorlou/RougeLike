@@ -141,6 +141,9 @@ void GameController::handleInput(SDL_Event& event)
 
 	while (SDL_PollEvent(&event))
 	{
+		if (event.type == SDL_QUIT)
+			quit = true;
+
 		mGameData.inputManager->processInputEvent(event);
 	}
 
@@ -156,8 +159,6 @@ void GameController::handleInput(SDL_Event& event)
 
 void GameController::updateLoops(float dt)
 {
-	//std::thread audioThread(updateAudio);
-
 	AudioManager::Get()->slowUpdate();
 
 	// Fast update runs updateLoopRepeats number of times per frame
@@ -169,7 +170,6 @@ void GameController::updateLoops(float dt)
 
 	mGameData.uiManager->update();
 
-	//audioThread.join();
 	AudioManager::Get()->handleEvents();
 }
 

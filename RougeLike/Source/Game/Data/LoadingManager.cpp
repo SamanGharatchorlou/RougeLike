@@ -20,11 +20,11 @@ LoadingManager* LoadingManager::Get()
 void LoadingManager::init(UIManager* UI)
 {
 	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::FadeIn, "Menu", nullptr, 1000));
-
-	mUI = UI;
+	AudioManager::Get()->handleEvents();
 
 	CountToBeLoadedFiles();
 
+	mUI = UI;
 	mUI->controller()->addScreen(ScreenType::LoadingScreen);
 	mUI->controller()->processScreenChanges();
 }

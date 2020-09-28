@@ -111,6 +111,14 @@ void BasicString::clear()
 }
 
 
+
+const char* BasicString::findSubString(const BasicString& subString) const
+{
+	const char* value = strstr(mBuffer, subString.c_str());
+	return strstr(mBuffer, subString.c_str());
+}
+
+
 // --- Private Functions --- //
 void BasicString::assignTerminated(const char* string)
 {

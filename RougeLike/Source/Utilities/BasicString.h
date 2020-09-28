@@ -27,9 +27,10 @@ public:
 
 	char*& buffer() { return mBuffer; }
 
-
 	BasicString& operator = (const char* string);
 	BasicString& operator = (const BasicString& string);
+
+	const char* findSubString(const BasicString& subString) const;
 
 
 

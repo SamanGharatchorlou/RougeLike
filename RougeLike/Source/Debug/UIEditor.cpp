@@ -2,6 +2,7 @@
 #include "UIEditor.h"
 
 #if UI_EDITOR
+#include "UI/ScreenController.h"
 #include "UI/Screens/Screen.h"
 #include "UI/ScreenLayers.h"
 
@@ -11,16 +12,6 @@
 #include "UI/Elements/UIElement.h"
 
 #include "UI/UIEventHandler.h"
-
-
-void UIEditor::setScreen(Screen* activeScreen)
-{
-	if (mScreen != activeScreen)
-	{
-		mElementID.clear();
-		mScreen = activeScreen;
-	}
-}
 
 
 void UIEditor::handleInput(const InputManager* input)
@@ -63,7 +54,7 @@ void UIEditor::handleEvent(const InputManager* input, VectorF movement)
 		event.setEventType(Event::MoveUIElement);
 
 	UIEventHandler eventHandler;
-	eventHandler.handleEvent(mScreen, event);
+	eventHandler.handleEvent(mController, event);
 }
 
 
@@ -71,7 +62,7 @@ void UIEditor::render()
 {
 	if (!mElementID.empty())
 	{
-		UIElement* element = mScreen->find(mElementID);
+		UIElement* element = mController->getActiveScreen()->find(mElementID);
 		if (element)
 			debugDrawRectOutline(element->rect(), RenderColour::Red);
 		else
@@ -82,7 +73,7 @@ void UIEditor::render()
 
 void UIEditor::printPosition()
 {
-	UIElement* element = mScreen->find(mElementID);
+	UIElement* element = mController->getActiveScreen()->find(mElementID);
 	RectF rect = element->rect();
 
 	const UIElement* parent = element->parent();
@@ -117,7 +108,7 @@ VectorF UIEditor::moveElement(const InputManager* input, Button::Key key, Vector
 BasicString UIEditor::selectElement(const InputManager* input)
 {
 	BasicString elementID("");
-	Elements elementList = mScreen->layers().elementList();
+	Elements elementList = mController->getActiveScreen()->layers().elementList();
 	for (UIElement* element : elementList)
 	{
 		Collider collider(&element->rect());

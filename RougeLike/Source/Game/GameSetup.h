@@ -29,6 +29,5 @@ private:
 private:
 	BasicString title;
 	Vector2D<int> screenSize;
-	int audioChannels;
 };
 

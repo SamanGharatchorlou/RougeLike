@@ -15,6 +15,9 @@
 #include "Graphics/TextureManager.h"
 #include "Graphics/Texture.h"
 
+#if SET_GAME_SCALE
+#include "Graphics/Renderer.h"
+#endif
 
 
 GameScreen::GameScreen()
@@ -45,7 +48,7 @@ void GameScreen::init()
 
 void GameScreen::handleInput(const InputManager* input)
 {
-	if (input->isReleased(Button::Pause))
+	if (input->isReleased(Button::Pause) || input->isReleased(Button::Esc))
 	{
 		mController->addScreen(ScreenType::Pause);
 		mController->addSystemState(SystemStates::PauseState);

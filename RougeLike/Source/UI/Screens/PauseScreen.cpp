@@ -20,7 +20,7 @@ void PauseScreen::init()
 
 void PauseScreen::handleInput(const InputManager* input) 
 {
-	if (input->isReleased(Button::Pause))
+	if (input->isReleased(Button::Pause) || input->isReleased(Button::Esc))
 	{
 		popScreenState();
 	}

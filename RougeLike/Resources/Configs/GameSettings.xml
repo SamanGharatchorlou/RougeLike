@@ -1,11 +1,11 @@
 <Settings>
 	<Game>
-		<Title>RougeLike</Title>
+		<Title>DUNGEON DASH</Title>
 		<Width>1024</Width>
 		<Height>768</Height>
 		<MusicVolume>25</MusicVolume>
 		<SoundVolume>50</SoundVolume>
 	</Game>
-	<Tutorial>OFF</Tutorial>
+	<Tutorial>ON</Tutorial>
 </Settings>
 
