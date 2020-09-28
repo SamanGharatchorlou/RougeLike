@@ -1,4 +1,4 @@
-echo OFF
+@echo OFF
 
 set ROOT="C:\Users\Saman\RougeLike"
 

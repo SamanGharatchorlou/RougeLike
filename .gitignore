@@ -4,3 +4,7 @@ Debug
 RougeLike/RougeLike.vcxproj
 RougeLike/RougeLike.vcxproj.filters
 RougeLike/RougeLike.vcxproj.user
+Installer/DungeonDashInstaller
+Installer/Resources
+Installer/*.exe
+Installer/zlib1.dll
