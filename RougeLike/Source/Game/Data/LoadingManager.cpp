@@ -8,6 +8,7 @@
 #include "UI/UIManager.h"
 #include "UI/Screens/LoadingScreen.h"
 #include "UI/Elements/UISlider.h"
+#include "UI/Elements/UITextBox.h"
 
 
 LoadingManager* LoadingManager::Get()
@@ -55,6 +56,18 @@ void LoadingManager::render()
 	// Update window surface
 	SDL_RenderPresent(renderer->sdlRenderer());
 	renderer->unlock();
+}
+
+
+void LoadingManager::earlyExit() 
+{ 
+	mEarlyExit = true;
+
+	Screen* screen = mUI->getActiveScreen();
+
+	UITextBox* text = screen->findTextBox("LoadingText");
+	text->setText("Exiting Game...");
+	text->align();
 }
 
 

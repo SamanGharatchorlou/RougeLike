@@ -14,6 +14,8 @@
 #include "Game/Environment.h"
 #include "Game/Camera/Camera.h"
 
+#include "LoadingManager.h"
+
 
 void GameData::setWindow(Window* newWindow)
 {
@@ -54,10 +56,34 @@ void GameData::preLoad()
 	uiManager->initCursor(inputManager->getCursor());
 }
 
+bool GameData::endLoading()
+{
+	LoadingManager* loader = LoadingManager::Get();
+
+	if (loader->shouldEarlyExit())
+	{
+		loader->setLoadingAssets(false);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 void GameData::load()
 {
+	LoadingManager* loader = LoadingManager::Get();
+	loader->setLoadingAssets(true);
+
+	if (endLoading())
+		return;
+
 	// Texture Manager
 	TextureManager::Get()->load();
+
+	if (endLoading())
+		return;
 
 	// Set camera before UIManager
 	Camera::Get()->setViewport(window->size().toFloat());
@@ -69,14 +95,21 @@ void GameData::load()
 	// Audio
 	AudioManager::Get()->load();
 
+	if (endLoading())
+		return;
+
 	// UI
-	//uiManager->setupScreens();
 	uiManager->load();
 	uiManager->initCursor(inputManager->getCursor());
+
+	if (endLoading())
+		return;
 
 	// Map Level
 	environment->init(this);
 	environment->load();
+
+	loader->setLoadingAssets(false);
 }
 
 

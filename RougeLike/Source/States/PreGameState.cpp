@@ -52,8 +52,12 @@ void PreGameState::slowUpdate(float dt)
 void PreGameState::exit()
 {
 	PlayerManager* player = mGameData->environment->actors()->player();
-	player->selectCharacter(mSelectedCharacter);
-	player->selectWeapon(mSelectedWeapon);
+
+	if(!mSelectedCharacter.empty())
+		player->selectCharacter(mSelectedCharacter);
+
+	if(!mSelectedWeapon.empty())
+		player->selectWeapon(mSelectedWeapon);
 }
 
 

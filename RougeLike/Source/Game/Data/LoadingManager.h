@@ -17,7 +17,11 @@ public:
 	void successfullyLoaded(const BasicString& filePath);
 	float loadedPercentage();
 
-	bool end() const { return (mTotalFileSizes > 0) && (mLoadedFileSizes >= mTotalFileSizes); }
+	void earlyExit();
+	bool shouldEarlyExit() const { return mEarlyExit; }
+
+	void setLoadingAssets(bool isLoading) { mLoadingAssets = isLoading; }
+	bool isLoadingAssets() const { return mLoadingAssets; }
 
 	void update();
 	void render();
@@ -30,7 +34,7 @@ private:
 
 
 private:
-	LoadingManager() : mUI(nullptr), mTotalFileSizes(0), mLoadedFileSizes(0) { }
+	LoadingManager() : mUI(nullptr), mTotalFileSizes(0), mLoadedFileSizes(0), mEarlyExit(false), mLoadingAssets(false) { }
 	~LoadingManager() { }
 
 	uintmax_t mTotalFileSizes;
@@ -39,4 +43,7 @@ private:
 	UIManager* mUI;
 
 	Audio* mAudio;
+
+	bool mEarlyExit;
+	bool mLoadingAssets;
 };

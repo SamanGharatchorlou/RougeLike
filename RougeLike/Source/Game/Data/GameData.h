@@ -18,6 +18,8 @@ struct GameData
 	void setupObservers();
 	void free();
 
+	bool endLoading();
+
 	Window* window = nullptr;
 
 	InputManager* inputManager = nullptr;

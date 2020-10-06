@@ -67,5 +67,5 @@ private:
 };
 
 
+void loadGameAssets(GameData* data);
 void renderLoadingBar();
-void updateAudio();

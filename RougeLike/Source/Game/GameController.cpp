@@ -47,15 +47,37 @@ void GameController::load()
 	LoadingManager* loader = LoadingManager::Get();
 
 	loader->init(mGameData.uiManager);
-
-	std::thread loadingThread(renderLoadingBar);
-
 	mGameData.setupObservers();
-	mGameData.load();
 
-	loadingThread.join();
+	std::thread assetLoader(loadGameAssets, &mGameData);
+	std::thread loadingscreen(renderLoadingBar);
+
+	SDL_Event events;
+
+	while (loader->isLoadingAssets())
+	{
+		while (SDL_PollEvent(&events))
+		{
+			if (events.type == SDL_QUIT)
+			{
+				DebugPrint(Warning, "Early exitting loading, closing application\n");
+				LoadingManager::Get()->earlyExit();
+				quitGame();
+				break;
+			}
+		}
+	}
+
+	assetLoader.join();
+	loadingscreen.join();
 
 	mGameData.uiManager->controller()->popScreen();
+}
+
+
+void loadGameAssets(GameData* data)
+{
+	data->load();
 }
 
 
@@ -237,18 +259,18 @@ void renderLoadingBar()
 {
 	DebugPrint(Log, " -------------------------- starting loader thread -------------------------- \n");
 	LoadingManager* loading = LoadingManager::Get();
-
-#if DEBUG_CHECK
-	TimerF time(TimerF::Start);
-#endif
 	
 	TimerF timer;
 	timer.start();
-	float renderFPS = 5;
+	float renderFPS = 20;
 
-	while (!loading->end())
+
+	while (loading->isLoadingAssets())
 	{
-		loading->update();
+		if (!loading->shouldEarlyExit())
+		{
+			loading->update();
+		}
 
 		// Dont want to hog the renderer too much as its used for loading textures, fonts etc
 		if (timer.getMilliseconds() > (1000 / renderFPS))
@@ -262,8 +284,3 @@ void renderLoadingBar()
 	DebugPrint(Log, " -------------------------- exiting loader thread -------------------------- \n");
 }
 
-
-void updateAudio()
-{
-	AudioManager::Get()->slowUpdate();
-}

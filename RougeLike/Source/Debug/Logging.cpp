@@ -2,7 +2,7 @@
 #include "Logging.h"
 
 #if DEBUG_CHECK
-static constexpr PriorityLevel LogLevel = PriorityLevel::Log;
+static constexpr PriorityLevel LogLevel = PriorityLevel::Warning;
 #else
 static constexpr PriorityLevel LogLevel = PriorityLevel::None;
 #endif
