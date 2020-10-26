@@ -8,3 +8,4 @@ Installer/DungeonDashInstaller
 Installer/Resources
 Installer/*.exe
 Installer/zlib1.dll
+Installer/*.bat

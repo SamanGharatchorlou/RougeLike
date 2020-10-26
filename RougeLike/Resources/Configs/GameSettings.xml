@@ -6,6 +6,6 @@
 		<MusicVolume>25</MusicVolume>
 		<SoundVolume>50</SoundVolume>
 	</Game>
-	<Tutorial>ON</Tutorial>
+	<Tutorial>OFF</Tutorial>
 </Settings>
 

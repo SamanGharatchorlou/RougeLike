@@ -26,3 +26,12 @@ echo Compiling NSIS script 'DungeonDashInstallerScript'...
 
 echo.
 echo Dungeon Dash Installer generated.
+
+if exist "%~dp0DungeonDash Installer.exe" (
+	copy "%~dp0DungeonDash Installer.exe" "%~dp0DungeonDashInstaller\DungeonDash Installer.exe"
+	echo github installer updated.
+)
+
+
+PAUSE
+

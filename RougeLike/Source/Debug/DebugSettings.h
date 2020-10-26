@@ -23,11 +23,11 @@ constexpr float game_scale = 0.5f;
 #define DRAW_PLAYER_WEAPON_RECT 0
 #define IGNORE_WALLS 0
 #define IGNORED_BY_ENEMIES 0
-#define INVUNERABLE 0
+#define INVUNERABLE 1
 
 
 // Abilities
-#define UNLOCK_ALL_ABILITIES 0
+#define UNLOCK_ALL_ABILITIES 1
 #define NO_ABILITY_COOLDOWNS 0
 #define DRAW_ABILITY_RECTS 0
 
@@ -77,6 +77,8 @@ constexpr float game_scale = 0.5f;
 
 // NSIS Installer
 #define OUTPUT_NSIS_FOLDER_INFO 0
+
+// branh commit test
 
 #else
 // A cap needs to be set, the framerate can be so high that dt can be 0, this can mess 
