@@ -2,6 +2,7 @@
 #include "Server.h"
 
 
+
 Server::Server() : mSocket(INVALID_SOCKET), mFlags(0)
 {
 
@@ -17,6 +18,18 @@ void Server::open()
 	{
 		DebugPrint(Warning, "WSAStartup failed %d\n", WSAGetLastError());
 	}
+
+
+
+	char hostName[255];
+	gethostname(hostName, 255);
+
+	hostent *host_entry = gethostbyname(hostName);
+
+	char* localIP;
+	localIP = inet_ntoa(*(in_addr*)*host_entry->h_addr_list);
+
+
 
 	int addrFamily = AF_INET;
 	int type = SOCK_DGRAM;
@@ -57,7 +70,7 @@ void Server::receiveMessage(BasicString& outMessage, BasicString* senderInfo)
 	SOCKADDR_IN from;
 	int fromSize = sizeof(from);
 
-	int bytesReceived = recvfrom(mSocket, buffer, SOCKET_BUFFER_SIZE, mFlags, (SOCKADDR*)&from, &fromSize);
+ 	int bytesReceived = recvfrom(mSocket, buffer, SOCKET_BUFFER_SIZE, mFlags, (SOCKADDR*)&from, &fromSize);
 
 	if (bytesReceived == SOCKET_ERROR)
 	{
