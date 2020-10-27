@@ -27,11 +27,11 @@ BasicString::BasicString(const BasicString& string) : BasicString(string.c_str()
 
 BasicString::BasicString(const char* string, unsigned int length)
 {
-	mLength = length;
+	mLength = strlen(string);
 	mCap = length + 1;
 	mBuffer = new char[mCap];
-	mBuffer[mLength] = '\0';
-	memcpy(mBuffer, string, length);
+
+	memcpy(mBuffer, string, mLength + 1);
 }
 
 BasicString::BasicString(float number)
@@ -72,11 +72,30 @@ BasicString::~BasicString()
 	eliminate();
 }
 
+
 void BasicString::eliminate()
 {
 	mLength = 0;
 	mCap = 0;
 	mBuffer = nullptr;
+}
+
+
+
+void BasicString::set(const char* string)
+{
+	int strLength = strlen(string);
+
+	if (strLength < mCap)
+	{
+		assignTerminated(string);
+		mBuffer[strLength + 1] = '\0';
+	}
+	else
+	{
+		resizeBuffer(strLength + 1);
+		set(string);
+	}
 }
 
 
@@ -98,7 +117,7 @@ BasicString& BasicString::concat(const char* string)
 	}
 	else
 	{
-		increaseBufferSize(mLength + strlen(string));
+		resizeBuffer(mLength + strlen(string) + 1);
 		return concat(string);
 	}
 }
@@ -127,7 +146,7 @@ void BasicString::assignTerminated(const char* string)
 }
 
 
-void BasicString::newBufferSize(unsigned int size)
+void BasicString::setNewBuffer(int size)
 {
 	delete[] mBuffer;
 	eliminate();
@@ -137,9 +156,9 @@ void BasicString::newBufferSize(unsigned int size)
 }
 
 
-void BasicString::increaseBufferSize(int size)
+void BasicString::resizeBuffer(int size)
 {
-	mCap = size + 1;
+	mCap = size;
 
 	char* tempBuffer = new char[mCap];
 	memcpy(tempBuffer, mBuffer, mLength + 1);
@@ -154,7 +173,7 @@ BasicString& BasicString::operator = (const char* string)
 {
 	unsigned int length = strlen(string);
 	if (length >= mCap)
-		newBufferSize(length);
+		setNewBuffer(length);
 
 	assignTerminated(string);
 	return *this;
@@ -164,7 +183,7 @@ BasicString& BasicString::operator = (const BasicString& basicString)
 {
 	unsigned int length = basicString.length();
 	if (length >= mCap)
-		newBufferSize(length);
+		setNewBuffer(length);
 
 	assignTerminated(basicString.c_str());
 	return *this;

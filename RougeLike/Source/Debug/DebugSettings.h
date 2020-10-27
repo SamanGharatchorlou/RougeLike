@@ -84,5 +84,6 @@ constexpr float game_scale = 0.5f;
 #define FRAMERATE_CAP 240 // Use the FPS cap you want
 #define PRINT_FRAMERATE_EVERY 0 // Print at the rate you specify in milliseconds
 #define HIDE_CONSOLE 1
+#define UNLOCK_ALL_ABILITIES 1
 
 #endif

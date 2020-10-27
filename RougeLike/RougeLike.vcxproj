@@ -32,6 +32,8 @@
     <ClCompile Include="Source\Collisions\Colliders\QuadCollider.cpp" />
     <ClCompile Include="Source\Debug\PerformanceProfiler.cpp" />
     <ClCompile Include="Source\Map\TrapManager.cpp" />
+    <ClCompile Include="Source\Networking\Client.cpp" />
+    <ClCompile Include="Source\Networking\Server.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityClasses\MeleeAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHandler.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHotKey.cpp" />
@@ -213,6 +215,8 @@
     <ClInclude Include="Source\Collisions\Colliders\QuadCollider.h" />
     <ClInclude Include="Source\Debug\PerformanceProfiler.h" />
     <ClInclude Include="Source\Map\TrapManager.h" />
+    <ClInclude Include="Source\Networking\Client.h" />
+    <ClInclude Include="Source\Networking\Server.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityClasses\MeleeAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityHandler.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityHotKey.h" />

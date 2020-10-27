@@ -173,6 +173,8 @@
     <ClCompile Include="Source\Animations\Animation.cpp" />
     <ClCompile Include="Source\Debug\PerformanceProfiler.cpp" />
     <ClCompile Include="Source\Utilities\NSISFileOutput.cpp" />
+    <ClCompile Include="Source\Networking\Client.cpp" />
+    <ClCompile Include="Source\Networking\Server.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -379,6 +381,8 @@
     <ClInclude Include="Source\Animations\Animation.h" />
     <ClInclude Include="Source\Debug\PerformanceProfiler.h" />
     <ClInclude Include="Source\Utilities\NSISFileOutput.h" />
+    <ClInclude Include="Source\Networking\Server.h" />
+    <ClInclude Include="Source\Networking\Client.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="zlib1.dll" />

@@ -15,10 +15,14 @@ public:
 
 	const char* c_str() const { return mBuffer; }
 
+	void set(const char* string);
+
 	BasicString substr(int start, int length) const;
 
 	int length() const { return mLength; }
+	int bufferLength() const { return mCap; }
 	bool empty() const { return mLength == 0; }
+	void calculateLength() { mLength = strlen(mBuffer); }
 
 	BasicString& concat(const char* string);
 
@@ -35,8 +39,8 @@ public:
 
 
 private:
-	void newBufferSize(unsigned int size);
-	void increaseBufferSize(int size);
+	void setNewBuffer(int size);
+	void resizeBuffer(int size);
 	
 	void assignTerminated(const char* string);
 

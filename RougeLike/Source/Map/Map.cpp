@@ -66,9 +66,6 @@ void Map::renderFloor() const
 			if (tileType < RenderTile::WATERS)
 			{
 				render(&tile, camera);
-
-				if (y == 7 && x == 2)
-					int a = 4;
 			}
 		}
 	}
