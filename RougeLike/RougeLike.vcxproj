@@ -9,14 +9,6 @@
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|x64">
-      <Configuration>Debug</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|x64">
-      <Configuration>Release</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyCharge.cpp" />
@@ -181,7 +173,6 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">pch.h</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\States\GameState.cpp" />
     <ClCompile Include="Source\States\PauseState.cpp" />
@@ -431,19 +422,6 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
@@ -455,24 +433,14 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)SDL2\SDL2_mixer-2.0.4\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)SDL2\SDL2-2.0.10\include;$(ProjectDir)SDL2\SDL2_ttf-2.0.15\include;$(ProjectDir)SDL2\SDL2_image-2.0.4\include;$(ProjectDir)SDL2\rapidxml\Include</IncludePath>
-    <LibraryPath>$(ProjectDir)SDL2\SDL2-2.0.10\lib\x86;$(ProjectDir)SDL2\SDL2_ttf-2.0.15\lib\x86;$(ProjectDir)SDL2\SDL2_mixer-2.0.4\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)\SDL2\SDL2-2.0.10\include;$(ProjectDir)\SDL2\SDL2_ttf-2.0.15\include;$(ProjectDir)\SDL2\SDL2_mixer-2.0.4\include;$(ProjectDir)\SDL2\SDL2_image-2.0.4\include;$(ProjectDir)\SDL2\rapidxml\Include</IncludePath>
+    <LibraryPath>$(ProjectDir)\SDL2\SDL2-2.0.10\lib\x86;$(ProjectDir)\SDL2\SDL2_ttf-2.0.15\lib\x86;$(ProjectDir)\SDL2\SDL2_mixer-2.0.4\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)SDL2\SDL2-2.0.10\include;$(ProjectDir)SDL2\SDL2_ttf-2.0.15\include;$(ProjectDir)SDL2\SDL2_mixer-2.0.4\include;$(ProjectDir)SDL2\SDL2_image-2.0.4\include;$(ProjectDir)SDL2\rapidxml\Include</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(ProjectDir)SDL2\SDL2-2.0.10\lib\x86;$(ProjectDir)SDL2\SDL2_ttf-2.0.15\lib\x86;$(ProjectDir)SDL2\SDL2_mixer-2.0.4\lib\x86</LibraryPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\rapidxml\Includes;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\Source;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2-2.0.10\include;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2_ttf-2.0.15\include;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2_mixer-2.0.4\include;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2_image-2.0.5\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2_ttf-2.0.15\lib\x86;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2_mixer-2.0.4\lib\x86;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2_image-2.0.5\lib\x86;C:\Users\Saman Gharatchorlou\Documents\Saman\RougeLike\RougeLike\RougeLike\SDL2\SDL2-2.0.10\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)\SDL2\SDL2-2.0.10\include;$(ProjectDir)\SDL2\SDL2_ttf-2.0.15\include;$(ProjectDir)\SDL2\SDL2_mixer-2.0.4\include;$(ProjectDir)\SDL2\SDL2_image-2.0.4\include;$(ProjectDir)\SDL2\rapidxml\Include</IncludePath>
+    <LibraryPath>$(ProjectDir)\SDL2\SDL2-2.0.10\lib\x86;$(ProjectDir)\SDL2\SDL2_ttf-2.0.15\lib\x86;$(ProjectDir)\SDL2\SDL2_mixer-2.0.4\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -488,21 +456,7 @@
     <Link>
       <AdditionalDependencies>SDL2main.lib;SDL2.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>C:\Users\Saman\RougeLike\RougeLike\SDL2\SDL2_image-2.0.4\lib\x86;C:\Users\Saman\RougeLike\RougeLike\SDL2\SDL2_ttf-2.0.15\lib\x86;C:\Users\Saman\RougeLike\RougeLike\SDL2\SDL2-2.0.10\lib\x86;C:\Users\Saman\RougeLike\RougeLike\SDL2\SDL2_mixer-2.0.4\lib\x86</AdditionalLibraryDirectories>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-    </ClCompile>
-    <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>$(ProjectDir)\SDL2\SDL2_image-2.0.4\lib\x86</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -524,21 +478,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>SDL2main.lib;SDL2.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>C:\Users\Saman\RougeLike\RougeLike\SDL2\SDL2_image-2.0.4\lib\x86</AdditionalLibraryDirectories>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-    </ClCompile>
-    <Link>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(ProjectDir)\SDL2\SDL2_image-2.0.4\lib\x86</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
