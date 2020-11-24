@@ -18,6 +18,14 @@ void Server::open()
 		DebugPrint(Warning, "WSAStartup failed %d\n", WSAGetLastError());
 	}
 
+	char hostName[255];
+	gethostname(hostName, 255);
+
+	hostent *host_entry = gethostbyname(hostName);
+
+	char* localIP;
+	localIP = inet_ntoa(*(in_addr*)*host_entry->h_addr_list);
+
 	int addrFamily = AF_INET;
 	int type = SOCK_DGRAM;
 	int protocol = IPPROTO_UDP;
