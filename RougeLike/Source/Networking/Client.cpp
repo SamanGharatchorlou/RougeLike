@@ -2,6 +2,8 @@
 #include "Client.h"
 #include "Debug/NetworkDebugging.h"
 
+#include "NetworkUtility.h"
+
 Client::Client() : mSocket(INVALID_SOCKET), mFlags(0) { }
 
 
@@ -21,48 +23,38 @@ void Client::open()
 		{
 			BasicString hostName("", 255);
 			hostName.getInput("enter host name: ");
-			hostName = "LAPTOP-45AOTVEA";
+			hostName = "LfAPTOP-45AOTVEA";
 
-			hostent *host_entry = gethostbyname(hostName.c_str());
+			hostent* hostData = gethostbyname(hostName.c_str());
 
-			if (!host_entry)
+			if (!hostData)
 			{
 				DebugPrint(Warning, "no host data for host name '%s', error: %d\n", hostName.c_str(), WSAGetLastError());
 
 				BasicString ipAddress("", 255);
 				ipAddress.getInput("Enter host ip address: ");
 
-				int size = ipAddress.length();
-				hostent *hostData = gethostbyaddr(ipAddress.c_str(), size, AF_INET);
+				hostData = Networking::getHostByAddress(ipAddress);
 
-				if (hostData)
-				{
-					BasicString hostIPAddress = Networking::getDataIPAddress(host_entry);
-					DebugPrint(Log, "connecting to host at ip: %s\n", hostIPAddress.c_str());
-				}
-				else
-				{
-					DebugPrint(Warning, "no host data at ip address '%s', error: %d\n", ipAddress.c_str(), WSAGetLastError());
-				}
+				if (!hostData)
+					DebugPrint(Warning, "Unable to connect to a host, clien open failed\n");
 			}
-			else
+
+			if(hostData)
 			{
 				mServerAddress.sin_family = AF_INET;
 				mServerAddress.sin_port = htons(9999);
-				mServerAddress.sin_addr = *(in_addr*)*host_entry->h_addr_list;
+				mServerAddress.sin_addr = *(in_addr*)*hostData->h_addr_list;
 
 #if DEBUG_CHECK
-				BasicString hostIPAddress = Networking::getDataIPAddress(host_entry);
-				DebugPrint(Log, "connecting to host at ip: %s\n", hostIPAddress.c_str());
+				BasicString hostIPAddress = Networking::getDataIPAddress(hostData);
+				DebugPrint(Log, "Connecting to host at ip: %s\n", hostIPAddress.c_str());
 #endif
 			}
-
-
-
 		}
 		else
 		{
-			DebugPrint(Warning, "socket failed %d\n", WSAGetLastError());
+			DebugPrint(Warning, "Socket failed %d\n", WSAGetLastError());
 		}
 	}
 	else

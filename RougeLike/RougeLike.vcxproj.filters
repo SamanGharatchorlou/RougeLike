@@ -176,6 +176,7 @@
     <ClCompile Include="Source\Networking\Client.cpp" />
     <ClCompile Include="Source\Networking\Server.cpp" />
     <ClCompile Include="Source\Debug\NetworkDebugging.cpp" />
+    <ClCompile Include="Source\Networking\NetworkUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -385,6 +386,7 @@
     <ClInclude Include="Source\Networking\Server.h" />
     <ClInclude Include="Source\Networking\Client.h" />
     <ClInclude Include="Source\Debug\NetworkDebugging.h" />
+    <ClInclude Include="Source\Networking\NetworkUtility.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="zlib1.dll" />
