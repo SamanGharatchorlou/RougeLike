@@ -17,6 +17,14 @@ void Client::open()
 		int protocol = IPPROTO_UDP;
 		mSocket = socket(addrFamily, type, protocol);
 
+		sockaddr_in addr;
+		int addrsize = sizeof(addr);
+		int result = getpeername(mSocket, (sockaddr*)&addr, &addrsize);
+		printf("Result = %d\n", result);
+		char* ip = inet_ntoa(addr.sin_addr);
+		int port = addr.sin_port;
+		printf("IP: %s ... PORT: %d\n", ip, port);
+
 		if (mSocket != INVALID_SOCKET)
 		{
 			mServerAddress.sin_family = AF_INET;

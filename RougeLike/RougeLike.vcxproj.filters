@@ -175,6 +175,7 @@
     <ClCompile Include="Source\Utilities\NSISFileOutput.cpp" />
     <ClCompile Include="Source\Networking\Client.cpp" />
     <ClCompile Include="Source\Networking\Server.cpp" />
+    <ClCompile Include="Source\Debug\NetworkDebugging.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -383,6 +384,7 @@
     <ClInclude Include="Source\Utilities\NSISFileOutput.h" />
     <ClInclude Include="Source\Networking\Server.h" />
     <ClInclude Include="Source\Networking\Client.h" />
+    <ClInclude Include="Source\Debug\NetworkDebugging.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="zlib1.dll" />

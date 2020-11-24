@@ -1,5 +1,10 @@
 #include "pch.h"
+
+
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
+
 #include "Game/GameController.h"
+
 
 #pragma comment(lib, "SDL2_image")
 
@@ -8,7 +13,6 @@
 
 #include "Networking/Client.h"
 #include "Networking/Server.h"
-
 
 
 int main(int argc, char* args[])

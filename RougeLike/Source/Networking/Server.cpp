@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Server.h"
 
+#include "Debug/NetworkDebugging.h"
 
 
 Server::Server() : mSocket(INVALID_SOCKET), mFlags(0)
@@ -17,19 +18,8 @@ void Server::open()
 	if (WSAStartup(winsockVersion, &winsockData))
 	{
 		DebugPrint(Warning, "WSAStartup failed %d\n", WSAGetLastError());
+		return;
 	}
-
-
-
-	char hostName[255];
-	gethostname(hostName, 255);
-
-	hostent *host_entry = gethostbyname(hostName);
-
-	char* localIP;
-	localIP = inet_ntoa(*(in_addr*)*host_entry->h_addr_list);
-
-
 
 	int addrFamily = AF_INET;
 	int type = SOCK_DGRAM;
@@ -39,6 +29,7 @@ void Server::open()
 	if (mSocket == INVALID_SOCKET)
 	{
 		DebugPrint(Warning, "socket failed %d\n", WSAGetLastError());
+		return;
 	}
 
 	SOCKADDR_IN localAddress;
@@ -51,7 +42,19 @@ void Server::open()
 	if (result)
 	{
 		DebugPrint(Warning, "bind failed %d\n", WSAGetLastError());
+		return;
 	}
+
+#if DEBUG_CHECK
+	BasicString hostName = Networking::getHostName();
+	BasicString hostIP = Networking::getHostIPAddress();
+	DebugPrint(Log, "Host Name: '%s'\n", hostName.c_str());
+	DebugPrint(Log, "Host IP  : '%s'\n", hostIP.c_str());
+	DebugPrint(Log, "Server opened\n");
+
+	BasicString string = Networking::getHostFromIP();
+#endif
+	
 }
 
 
