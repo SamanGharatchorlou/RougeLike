@@ -138,6 +138,19 @@ const char* BasicString::findSubString(const BasicString& subString) const
 }
 
 
+void BasicString::getInput(const BasicString& message)
+{
+	printf("%s", message.c_str());
+	
+	clear();
+
+	std::cin.get(mBuffer, mCap);
+	std::cin.ignore();
+
+	calculateLength();
+}
+
+
 // --- Private Functions --- //
 void BasicString::assignTerminated(const char* string)
 {

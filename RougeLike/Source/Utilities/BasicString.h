@@ -36,7 +36,7 @@ public:
 
 	const char* findSubString(const BasicString& subString) const;
 
-
+	void getInput(const BasicString& message);
 
 private:
 	void setNewBuffer(int size);

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Client.h"
-
+#include "Debug/NetworkDebugging.h"
 
 Client::Client() : mSocket(INVALID_SOCKET), mFlags(0) { }
 
@@ -17,46 +17,48 @@ void Client::open()
 		int protocol = IPPROTO_UDP;
 		mSocket = socket(addrFamily, type, protocol);
 
-		sockaddr_in addr;
-		int addrsize = sizeof(addr);
-		int result = getpeername(mSocket, (sockaddr*)&addr, &addrsize);
-		printf("Result = %d\n", result);
-		char* ip = inet_ntoa(addr.sin_addr);
-		int port = addr.sin_port;
-		printf("IP: %s ... PORT: %d\n", ip, port);
-
 		if (mSocket != INVALID_SOCKET)
 		{
-			BasicString bufferName("", 255);
-
-			gethostname(bufferName.buffer(), 255);
-
-			//if (!GetComputerName(bufferName.c_str(), 255))
-			//	printError(TEXT("GetComputerName"));
-			//_tprintf(TEXT("\nComputer name:      %s"), infoBuf);
-
-
 			BasicString hostName("", 255);
-			printf("enter host name: ");
-			std::cin.get(hostName.buffer(), hostName.bufferLength());
-			std::cin.ignore();
-
-			hostName = "DESKTOP-6152CHS";
+			hostName.getInput("enter host name: ");
+			hostName = "LAPTOP-45AOTVEA";
 
 			hostent *host_entry = gethostbyname(hostName.c_str());
 
-			if(!host_entry)
-				DebugPrint(Warning, "not host entry value, error: %d\n", WSAGetLastError());
+			if (!host_entry)
+			{
+				DebugPrint(Warning, "no host data for host name '%s', error: %d\n", hostName.c_str(), WSAGetLastError());
 
-			mServerAddress.sin_family = AF_INET;
-			mServerAddress.sin_port = htons(9999);
-			mServerAddress.sin_addr = *(in_addr*)*host_entry->h_addr_list;
+				BasicString ipAddress("", 255);
+				ipAddress.getInput("Enter host ip address: ");
+
+				int size = ipAddress.length();
+				hostent *hostData = gethostbyaddr(ipAddress.c_str(), size, AF_INET);
+
+				if (hostData)
+				{
+					BasicString hostIPAddress = Networking::getDataIPAddress(host_entry);
+					DebugPrint(Log, "connecting to host at ip: %s\n", hostIPAddress.c_str());
+				}
+				else
+				{
+					DebugPrint(Warning, "no host data at ip address '%s', error: %d\n", ipAddress.c_str(), WSAGetLastError());
+				}
+			}
+			else
+			{
+				mServerAddress.sin_family = AF_INET;
+				mServerAddress.sin_port = htons(9999);
+				mServerAddress.sin_addr = *(in_addr*)*host_entry->h_addr_list;
 
 #if DEBUG_CHECK
-			char* localIP;
-			localIP = inet_ntoa(*(in_addr*)*host_entry->h_addr_list);
-			DebugPrint(Log, "connecting to host at ip: %s\n", localIP);
+				BasicString hostIPAddress = Networking::getDataIPAddress(host_entry);
+				DebugPrint(Log, "connecting to host at ip: %s\n", hostIPAddress.c_str());
 #endif
+			}
+
+
+
 		}
 		else
 		{
