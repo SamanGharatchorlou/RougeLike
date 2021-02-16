@@ -28,6 +28,49 @@ void NetworkManager::sendMessages()
 }
 
 
+int NetworkManager::handleNetworkInput()
+{
+	if (mServer)
+	{
+		if (mServer->mInputs.size() > 0)
+		{
+			const BasicString& inputString = mServer->mInputs.pop();
+
+			if (inputString == BasicString("a"))
+			{
+				mMovement = 1;
+			}
+
+			if (inputString == BasicString("d"))
+			{
+				mMovement = 2;
+			}
+
+			if (inputString == BasicString("w"))
+			{
+				mMovement = 3;
+			}
+
+			if (inputString == BasicString("s"))
+			{
+				mMovement = 4;
+			}
+
+			if (inputString == BasicString("q"))
+			{
+				mMovement == 0;
+			}
+		}
+
+		return mMovement;
+	}
+	else
+	{
+		return -1;
+	}
+}
+
+
 void listening(Server* server)
 {
 	printf("listening\n");
@@ -41,6 +84,14 @@ void listening(Server* server)
 		if (!message.empty())
 		{
 			DebugPrint(Log, "%s\n", message.c_str());
+
+
+			if (message == BasicString("a") || message == BasicString("d") || 
+				message == BasicString("w") || message == BasicString("s") ||
+				message == BasicString("q"))
+			{
+				server->mInputs.push(message);
+			}
 		}
 	}
 }

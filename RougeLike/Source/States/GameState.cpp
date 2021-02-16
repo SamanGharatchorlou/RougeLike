@@ -52,6 +52,45 @@ void GameState::init()
 void GameState::handleInput()
 {
 	mGameData->environment->handleInput(mGameData->inputManager);
+
+	int movement = mGameData->network->handleNetworkInput();
+	if (movement > -1)
+	{
+		PlayerManager* player = mGameData->environment->actors()->player();
+
+		VectorF position = player->position();
+
+		float x = 0.0f;
+		float y = 0.0f;
+		float speed = 1.0f / 60.0f;
+
+		if (movement == 1)
+		{
+			x = speed;
+		}
+
+		if (movement == 2)
+		{
+			x = -speed;
+		}
+
+		if (movement = 3)
+		{
+			y = speed;
+		}
+
+		if (movement = 4)
+		{
+			y = -speed;
+		}
+
+		position += VectorF(x, y);
+
+		player->setPosition(position);
+	}
+
+
+
 }
 
 

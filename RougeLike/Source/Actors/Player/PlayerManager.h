@@ -43,6 +43,9 @@ public:
 	void addExp(int exp);
 
 
+	// test
+	VectorF position() { return mPlayer.rectRef().Center(); }
+
 private:
 	Player mPlayer;
 	Levelling mLevelling;

@@ -163,6 +163,8 @@ void GameController::handleInput(SDL_Event& event)
 		mGameData.inputManager->processInputEvent(event);
 	}
 
+
+
 	mGameData.uiManager->handleInput(mGameData.inputManager);
 	mGameStateMachine.getActiveState().handleInput();
 

@@ -21,6 +21,8 @@ public:
 	void receiveMessage(BasicString& outMessage, BasicString* senderInfo);
 
 
+	Queue<BasicString> mInputs;
+
 private:
 	SOCKET mSocket;
 	int mFlags;

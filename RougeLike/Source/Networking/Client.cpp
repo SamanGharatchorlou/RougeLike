@@ -22,8 +22,9 @@ void Client::open()
 		if (mSocket != INVALID_SOCKET)
 		{
 			BasicString hostName("", 255);
-			hostName.getInput("enter host name: ");
-			hostName = "LfAPTOP-45AOTVEA";
+			printf("entering host name 'DESKTOP-6152CHS' for you\n");
+			//hostName.getInput("enter host name: ");
+			hostName = "DESKTOP-6152CHS";
 
 			hostent* hostData = gethostbyname(hostName.c_str());
 
