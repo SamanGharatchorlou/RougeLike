@@ -44,7 +44,7 @@ public:
 
 
 	// test
-	VectorF position() { return mPlayer.rectRef().Center(); }
+	VectorF position() { return mPlayer.rectRef().LeftCenter(); }
 
 private:
 	Player mPlayer;

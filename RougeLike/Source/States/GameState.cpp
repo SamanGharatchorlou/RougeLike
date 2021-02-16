@@ -62,26 +62,26 @@ void GameState::handleInput()
 
 		float x = 0.0f;
 		float y = 0.0f;
-		float speed = 1.0f / 60.0f;
+		float speed = 1.0f;
 
 		if (movement == 1)
-		{
-			x = speed;
-		}
-
-		if (movement == 2)
 		{
 			x = -speed;
 		}
 
-		if (movement = 3)
+		if (movement == 2)
 		{
-			y = speed;
+			x = speed;
 		}
 
-		if (movement = 4)
+		if (movement == 3)
 		{
 			y = -speed;
+		}
+
+		if (movement == 4)
+		{
+			y = speed;
 		}
 
 		position += VectorF(x, y);

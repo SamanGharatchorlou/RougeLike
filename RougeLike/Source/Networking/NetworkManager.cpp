@@ -4,9 +4,9 @@
 
 void NetworkManager::listenForMessages()
 {
-	//std::thread listener(listening, mServer);
+	std::thread listener(listening, mServer);
 
-	mThread = new std::thread(listening, mServer); //&listener;
+	mThread = &listener;
 
 	mThread->detach();
 }
@@ -34,7 +34,8 @@ int NetworkManager::handleNetworkInput()
 	{
 		if (mServer->mInputs.size() > 0)
 		{
-			const BasicString& inputString = mServer->mInputs.pop();
+			//
+			const BasicString inputString = mServer->mInputs.pop();
 
 			if (inputString == BasicString("a"))
 			{
@@ -60,7 +61,11 @@ int NetworkManager::handleNetworkInput()
 			{
 				mMovement == 0;
 			}
+
+
+			//mServer->mInputs.pop();
 		}
+
 
 		return mMovement;
 	}
@@ -90,7 +95,8 @@ void listening(Server* server)
 				message == BasicString("w") || message == BasicString("s") ||
 				message == BasicString("q"))
 			{
-				server->mInputs.push(message);
+				printf("adding message %s\n", message);
+				server->mInputs.push(BasicString(message));
 			}
 		}
 	}

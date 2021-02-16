@@ -53,7 +53,8 @@ void Queue<T>::concat(const Queue<T>& otherQueue)
 	mQueue.insert(mQueue.end(), otherQueue.begin(), otherQueue.end());
 }
 
-
+// TODO: Warning this function is broken with the BasicString class because
+//		 the string deletes itself when it goes out of scope (use get then pop)
 template <class T>
 T& Queue<T>::pop()
 {

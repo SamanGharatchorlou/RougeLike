@@ -30,6 +30,7 @@ void Client::open()
 
 			if (!hostData)
 			{
+				// Warning: Error code 11001 may be triggered here, removing firewalls fixes this issue. A very legit fix...
 				DebugPrint(Warning, "No host data for host name '%s', error: %d\n", hostName.c_str(), WSAGetLastError());
 
 				BasicString ipAddress("", 255);
