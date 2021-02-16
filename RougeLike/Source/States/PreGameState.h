@@ -19,6 +19,7 @@ public:
 
 	void resume() { };
 
+	void testFunction();
 
 private:
 	GameData* mGameData;	

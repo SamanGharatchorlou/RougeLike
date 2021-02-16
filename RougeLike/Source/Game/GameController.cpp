@@ -75,12 +75,6 @@ void GameController::load()
 }
 
 
-void loadGameAssets(GameData* data)
-{
-	data->load();
-}
-
-
 void GameController::run()
 {
 	// add first game state
@@ -254,6 +248,14 @@ State* GameController::getNewGameState(SystemStates state)
 	return systemState;
 }
 
+
+
+// --- Loader Threads --- //
+
+void loadGameAssets(GameData* data)
+{
+	data->load();
+}
 
 void renderLoadingBar()
 {

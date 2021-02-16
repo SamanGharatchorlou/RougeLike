@@ -15,6 +15,9 @@
 #include "Actors/Player/PlayerManager.h"
 
 
+#include "Networking/NetworkManager.h"
+
+
 PreGameState::PreGameState(GameData* gameData) : mGameData(gameData) { }
 
 
@@ -45,6 +48,62 @@ void PreGameState::slowUpdate(float dt)
 			mSelectedCharacter = selectionScreen->selectedCharacter();
 			mSelectedWeapon = selectionScreen->selectedWeapon();
 		}
+
+		if (!mGameData->network->mSetupComplete && mGameData->inputManager->isPressed(Button::Key::E))
+		{
+			testFunction();
+		}
+	}
+}
+
+
+void PreGameState::testFunction()
+{
+	DebugPrint(Log, "Enter connection type ('client' or 'server')\n");
+
+
+	char connectionType[100];
+	gets_s(connectionType, 100);
+
+	if (strcmp(connectionType, "server") == 0)
+	{
+		Server* server = new Server;
+		server->open();
+
+		mGameData->network->mServer = server;
+		mGameData->network->mSetupComplete = true;
+		//// now need to run this....
+		//while (true)
+		//{
+		//	BasicString message("", 1024);
+		//	BasicString senderInfo("", 1024);
+
+		//	server.receiveMessage(message, nullptr);
+
+		//	if (!message.empty())
+		//	{
+		//		DebugPrint(Log, "%s\n", message.c_str());
+		//	}
+		//}
+	}
+	else
+	{
+		Client* client = new Client;
+		client->open();
+
+		mGameData->network->mClient = client;
+		mGameData->network->mSetupComplete = true;
+
+		//while (true)
+		//{
+		//	BasicString message("", 1024);
+		//	std::cin.get(message.buffer(), message.bufferLength());
+
+		//	message.calculateLength();
+		//	client.sendMessage(message);
+
+		//	std::cin.ignore();
+		//}
 	}
 }
 

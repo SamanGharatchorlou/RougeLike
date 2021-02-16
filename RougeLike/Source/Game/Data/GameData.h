@@ -8,6 +8,8 @@ class UIManager;
 class Environment;
 class ScoreManager;
 
+class NetworkManager;
+
 
 struct GameData
 {
@@ -28,4 +30,6 @@ struct GameData
 	ScoreManager* scoreManager = nullptr;
 
 	Environment* environment = nullptr;
+
+	NetworkManager* network = nullptr;
 };

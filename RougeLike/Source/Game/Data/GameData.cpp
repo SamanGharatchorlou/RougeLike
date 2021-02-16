@@ -16,6 +16,8 @@
 
 #include "LoadingManager.h"
 
+#include "Networking/NetworkManager.h"
+
 
 void GameData::setWindow(Window* newWindow)
 {
@@ -44,6 +46,8 @@ void GameData::init(GameController* gameController)
 
 	// Map Level
 	environment = new Environment;
+
+	network = new NetworkManager;
 }
 
 

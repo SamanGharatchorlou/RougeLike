@@ -17,20 +17,18 @@
 
 int main(int argc, char* args[])
 {
-	//GameController GameApp;
+	GameController GameApp;
 
-	//GameApp.init();
-	//GameApp.preLoad();
-	//GameApp.load();
+	GameApp.init();
+	GameApp.preLoad();
+	GameApp.load();
+	                                                                                                                                          
+	GameApp.run();
 
-	//GameApp.run();
+	GameApp.free();
 
-	//GameApp.free();
+	PRINT_MEMORY;
 
-	//PRINT_MEMORY;
-
-
-	std::cout << "Hello World!\n";
 
 	char connectionType[100];
 

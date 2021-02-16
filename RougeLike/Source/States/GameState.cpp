@@ -16,6 +16,9 @@
 #include "Game/Camera/Camera.h"
 
 
+#include "Networking/NetworkManager.h"
+
+
 GameState::GameState(GameData* gameData) : mGameData(gameData) { }
 
 
@@ -33,6 +36,16 @@ void GameState::init()
 	AudioManager* audio = AudioManager::Get();
 	audio->pushEvent(AudioEvent(AudioEvent::FadeIn, "Game", nullptr, 1500));
 	audio->setSource(mGameData->environment->actors()->player()->get(), Camera::Get()->size().x);
+
+	// open network threads
+	if (mGameData->network->mServer)
+	{
+		mGameData->network->listenForMessages();
+	}
+	else if (mGameData->network->mClient)
+	{
+		mGameData->network->sendMessages();
+	}
 }
 
 

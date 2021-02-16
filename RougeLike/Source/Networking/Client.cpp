@@ -29,7 +29,7 @@ void Client::open()
 
 			if (!hostData)
 			{
-				DebugPrint(Warning, "no host data for host name '%s', error: %d\n", hostName.c_str(), WSAGetLastError());
+				DebugPrint(Warning, "No host data for host name '%s', error: %d\n", hostName.c_str(), WSAGetLastError());
 
 				BasicString ipAddress("", 255);
 				ipAddress.getInput("Enter host ip address: ");
