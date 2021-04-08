@@ -35,4 +35,8 @@ private:
 	EnemyFactory mFactory;
 
 	SpawnDataList mSpawnList;
+
+#if LIMIT_ENEMY_SPAWNS
+	int current_spawn_count;
+#endif
 };

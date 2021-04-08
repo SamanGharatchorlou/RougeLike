@@ -72,6 +72,9 @@ void EnemyManager::init(Environment* environment)
 {
 	mEnvironment = environment;
 	mSpawning.init();
+
+	profiler.name = "Pathing";
+	profiler.averageResetTime = 5.0f;
 }
 
 
@@ -99,7 +102,19 @@ void EnemyManager::slowUpdate(float dt)
 	}
 
 	clearDead();
+
+	TimerF timer(TimerF::Start);
+
+	profiler.restart();
+
 	mPathing.updatePaths(mActiveEnemies, dt);
+
+	profiler.saveToAverage();
+
+	profiler.displayAverageTimeEvery(2.0f);
+
+	//printf("path update time %.3f\n", timer.getSeconds());
+
 	mSpawning.spawnUnspawnedEnemies(this);
 }
 

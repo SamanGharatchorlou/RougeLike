@@ -53,3 +53,4 @@ private:
 	int mSegmentIndex;
 };
 
+void updateEnemyPath(EnemyList enemies);

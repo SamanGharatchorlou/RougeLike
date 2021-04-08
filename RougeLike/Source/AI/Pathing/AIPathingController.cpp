@@ -15,6 +15,9 @@
 #endif
 
 
+#include <thread>
+
+
 AIPathingController::AIPathingController() : mPathLimit(-1)
 {
 	// IMPROVEMENT: dynamically adjust this according to framerate drops
@@ -71,18 +74,38 @@ void AIPathingController::updatePaths(const EnemyList& enemies, float dt)
 {
 	updateAIPathCostMap(enemies);
 
-	// dynamically adjust the length of the A* pathing calculation
-	int minimumFrameCount = 60;
-#if DEBUG_CHECK
-	minimumFrameCount = 15;
-#endif
+	// split into two lists
+	int segment = enemies.size() / 4;
 
-	int pathingLimit = calculatePathingLimit(minimumFrameCount, dt);
+	const int threads = 4;
+	EnemyList lists[threads];
 
-	// split the list up into sections and calculate a single section per frame
-	Vector2D<int> range = getCalculationIndexRange(enemies);
-	   
-	for (int i = range.x; i < range.y; i++)
+	for (int i = 0; i < threads; i++)
+	{
+		EnemyList list;
+		for (int j = segment * i; j < segment * (i + 1); j++)
+		{
+			list.push_back(enemies[j]);
+		}
+
+		lists[i] = list;
+	}
+
+	std::thread thread1(updateEnemyPath, lists[0]);
+	std::thread thread2(updateEnemyPath, lists[1]);
+	std::thread thread3(updateEnemyPath, lists[2]);
+	std::thread thread4(updateEnemyPath, lists[3]);
+
+	thread1.join();
+	thread2.join();
+	thread3.join();
+	thread4.join();
+}
+
+
+void updateEnemyPath(EnemyList enemies)
+{
+	for (int i = 0; i < enemies.size(); i++)
 	{
 		Enemy* enemy = enemies[i];
 		if (enemy->state() == EnemyState::Run)
@@ -92,7 +115,7 @@ void AIPathingController::updatePaths(const EnemyList& enemies, float dt)
 			// No need to update anything if its about to attack
 			if (enemy->hasTarget() && !runState.canAttack())
 			{
-				runState.updatePath(pathingLimit);
+				runState.updatePath(-1);
 			}
 		}
 	}

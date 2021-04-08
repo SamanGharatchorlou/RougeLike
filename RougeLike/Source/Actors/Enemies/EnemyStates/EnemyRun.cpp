@@ -44,6 +44,8 @@ void EnemyRun::slowUpdate(float dt)
 			}
 			else // Not in attack range and no path left
 			{
+				// Or no valid path was found, try again 
+				//mEnemy->addState(EnemyState::Wait);
 				updatePath(-1);
 			}
 		}
@@ -106,10 +108,6 @@ void EnemyRun::updatePath(int pathLimit)
 #if DRAW_AI_PATH
 	mEnemy->mDebugger.setPath(mPath);
 #endif
-
-	// No valid path was found, wait a bit then try again 
-	if (mPath.size() == 0)
-		mEnemy->addState(EnemyState::Wait);
 }
 
 
@@ -128,8 +126,6 @@ bool EnemyRun::inAttackRange() const
 {
 	VectorF position = mEnemy->rect().Center();
 	VectorF nearestTargetSide = closestRectSide(position, mEnemy->target()->scaledRect());
-
-	float dis = mEnemy->getAttributeValue(AttributeType::TackleDistance);
 
 	return distance(position, nearestTargetSide) < (mEnemy->getAttributeValue(AttributeType::TackleDistance) * 0.8f);
 }

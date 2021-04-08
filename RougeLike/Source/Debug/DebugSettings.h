@@ -36,7 +36,7 @@ constexpr float game_scale = 0.5f;
 
 
 // Map
-#define STARTING_LEVEL 0
+#define STARTING_LEVEL 10
 #define MAP_BOUNDARIES 0
 #define LABEL_TILE_INDEX 0
 #define LABEL_SURFACE_RENDER_TYPES 0
@@ -46,6 +46,7 @@ constexpr float game_scale = 0.5f;
 
 
 // Enemy / AI
+#define DISABLE_PATHING_OPTIMISATIONS 1
 #define DRAW_AI_PATH 0
 #define DRAW_AI_PATH_COSTMAP 0
 
@@ -55,8 +56,8 @@ constexpr float game_scale = 0.5f;
 #define DRAW_ENEMY_RECTS 0
 #define DRAW_ENEMY_TARGET_PATH 0
 
-#define LIMIT_ENEMY_SPAWNS 0
-#define MAX_SPAWN_COUNT 1
+#define LIMIT_ENEMY_SPAWNS 1
+#define MAX_SPAWN_COUNT 20
 
 
 // UI

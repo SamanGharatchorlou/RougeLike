@@ -7,7 +7,12 @@
 #include "Utilities/Shapes/Point.h"
 #include "Utilities/Shapes/Quadrilateral.h"
 
-AISpawnController::AISpawnController() { }
+AISpawnController::AISpawnController() 
+{
+#if LIMIT_ENEMY_SPAWNS
+	current_spawn_count = 0;
+#endif
+}
 
 void AISpawnController::init()
 {
@@ -22,11 +27,20 @@ void AISpawnController::spawnUnspawnedEnemies(EnemyManager* enemyManager)
 		int counter = 0;
 		while (mSpawnList.hasData() && counter < mSpawnList.mSpawnsPerFrame)
 		{
+#if LIMIT_ENEMY_SPAWNS
+			if (current_spawn_count >= MAX_SPAWN_COUNT)
+				return;
+#endif
+
 			counter++;
 
 			const SpawnData data = mSpawnList.mData.pop();
 			Enemy* enemy = mFactory.buildEnemy(data, mSpawnList.mMap);
 			enemyManager->spawnEnemy(enemy);
+
+#if LIMIT_ENEMY_SPAWNS
+			current_spawn_count++;
+#endif
 		}
 	}
 }
@@ -66,6 +80,13 @@ void AISpawnController::initSpawningEnemies(const AIPathMap* map)
 void AISpawnController::returnEnemy(Enemy* enemy)
 {
 	mFactory.returnEnemy(enemy);
+
+#if LIMIT_ENEMY_SPAWNS
+	current_spawn_count--;
+
+	if (current_spawn_count < 0)
+		DebugPrint(Warning, "current spawn count(%d) is < 0, there is an issue with the LIMIT_ENEMY_SPAWNS defines blocking spawns", current_spawn_count);
+#endif
 }
 
 
