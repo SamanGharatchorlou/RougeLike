@@ -4,12 +4,12 @@
 #if DEBUG_CHECK
 static constexpr PriorityLevel LogLevel = PriorityLevel::Log;
 #else
-static constexpr PriorityLevel LogLevel = PriorityLevel::None;
+static constexpr PriorityLevel LogLevel = PriorityLevel::Profiling;
 #endif
 
 void DebugPrint(int priority, const char* format, ...)
 {
-#if DEBUG_CHECK
+//#if DEBUG_CHECK
 	if (priority <= LogLevel)
 	{
 		va_list arg;
@@ -18,7 +18,7 @@ void DebugPrint(int priority, const char* format, ...)
 		vfprintf(stdout, format, arg);
 		va_end(arg);
 	}
-#endif // DEBUG_CHECK
+//#endif // DEBUG_CHECK
 }
 
 

@@ -28,6 +28,9 @@ public:
 	const Collider* getOtherCollider() const { return mOtherCollider; }
 	Collider* getOtherCollider() { return mOtherCollider; }
 
+	virtual float xMin() const;
+	virtual float xMax() const;
+
 #if TRACK_COLLISIONS
 	virtual void renderCollider();	
 #endif

@@ -6,6 +6,8 @@
 #include "AbilityClasses/Ability.h"
 
 #include "Actors/Actor.h"
+
+#include "Collisions/CollisionOptimisations.h"
 #include "Collisions/Colliders/QuadCollider.h"
 #include "Collisions/Colliders/Collider.h"
 
@@ -15,6 +17,10 @@ void AbilityHandler::init(EffectPool* effectPool, std::vector<Actor*>* targets)
 {
 	mTargets = targets;
 	mEffects = effectPool;
+
+	profilerA.name = "BroadPhase";
+	profilerB.name = "Collision";
+	//profiler.averageResetTime = 20.0f;
 }
 
 
@@ -61,14 +67,13 @@ void AbilityHandler::fastUpdate(float dt)
 				ability->setSelectHighligh(RenderColour::LightGrey);
 			}
 		}
-
 		else if (ability->state() == AbilityState::Running)
 		{
 			ability->fastUpdate(dt);
 
 			if (ability->shouldActivateCollisions())
 			{
-				activateCollisions(ability);
+				activateCollisions(ability);				
 			}
 		}
 	}
@@ -84,6 +89,12 @@ void AbilityHandler::slowUpdate(float dt)
 
 		if (ability->state() == AbilityState::Running)
 			ability->slowUpdate(dt);
+	}
+
+	if (mTargets && mTargets->size() > 1)
+	{
+		profilerA.displayAverageTimeEvery(2.0f);
+		//profilerB.displayAverageTimeEvery(2.0f);
 	}
 }
 
@@ -178,20 +189,46 @@ void AbilityHandler::add(Ability* ability)
 }
 
 
-void AbilityHandler::activateCollisions(Ability* ability) const
+void AbilityHandler::activateCollisions(Ability* ability)
 {
 	// Apply effect to all enemies caught in area
 	Collider* abilityCollider = ability->collider();
 
-	for (int i = 0; i < mTargets->size(); i++)
+	bool usingBroadPhase = true;
+	if (usingBroadPhase)
 	{
-		Collider* targetCollider = mTargets->at(i)->collider();
-		if (abilityCollider->doesIntersect(targetCollider))
+		profilerA.restart();
+		std::vector<int> overlapIndexes = broadPhaseIndexes(abilityCollider, mTargets);
+		profilerA.saveToAverage();
+
+		profilerB.restart();
+		for (int i = 0; i < overlapIndexes.size(); i++)
 		{
-			if (ability->activateOn(mTargets->at(i), mEffects))
+			int index = overlapIndexes[i];
+			Collider* targetCollider = mTargets->at(index)->collider();
+			if (abilityCollider->doesIntersect(targetCollider))
 			{
-				abilityCollider->setDidHit(true);
-				targetCollider->setGotHit(true);
+				if (ability->activateOn(mTargets->at(index), mEffects))
+				{
+					abilityCollider->setDidHit(true);
+					targetCollider->setGotHit(true);
+				}
+			}
+		}
+		profilerB.saveToAverage();
+	}
+	else
+	{
+		for (int i = 0; i < mTargets->size(); i++)
+		{
+			Collider* targetCollider = mTargets->at(i)->collider();
+			if (abilityCollider->doesIntersect(targetCollider))
+			{
+				if (ability->activateOn(mTargets->at(i), mEffects))
+				{
+					abilityCollider->setDidHit(true);
+					targetCollider->setGotHit(true);
+				}
 			}
 		}
 	}
@@ -203,12 +240,30 @@ bool AbilityHandler::doesCollide(Ability* ability) const
 	// Apply effect to all enemies caught in area
 	const Collider* abilityCollider = ability->selectionCollider();
 
-	for (int i = 0; i < mTargets->size(); i++)
+	bool usingBroadPhase = true;
+	if (usingBroadPhase)
 	{
-		Collider* targetCollider = mTargets->at(i)->collider();
-		if (abilityCollider->doesIntersect(targetCollider))
+		std::vector<int> overlapIndexes = broadPhaseIndexes(abilityCollider, mTargets);
+
+		for (int i = 0; i < overlapIndexes.size(); i++)
 		{
-			return true;
+			int index = overlapIndexes[i];
+			Collider* targetCollider = mTargets->at(index)->collider();
+			if (abilityCollider->doesIntersect(targetCollider))
+			{
+				return true;
+			}
+		}
+	}
+	else
+	{
+		for (int i = 0; i < mTargets->size(); i++)
+		{
+			Collider* targetCollider = mTargets->at(i)->collider();
+			if (abilityCollider->doesIntersect(targetCollider))
+			{
+				return true;
+			}
 		}
 	}
 

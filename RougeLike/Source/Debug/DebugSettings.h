@@ -22,13 +22,13 @@ constexpr float game_scale = 0.5f;
 #define DRAW_PLAYER_RECT 0
 #define DRAW_PLAYER_WEAPON_RECT 0
 #define IGNORE_WALLS 0
-#define IGNORED_BY_ENEMIES 0
+#define IGNORED_BY_ENEMIES 1
 #define INVUNERABLE 1
 
 
 // Abilities
 #define UNLOCK_ALL_ABILITIES 1
-#define NO_ABILITY_COOLDOWNS 0
+#define NO_ABILITY_COOLDOWNS 1
 #define DRAW_ABILITY_RECTS 0
 
 // Collectables
@@ -56,8 +56,8 @@ constexpr float game_scale = 0.5f;
 #define DRAW_ENEMY_RECTS 0
 #define DRAW_ENEMY_TARGET_PATH 0
 
-#define LIMIT_ENEMY_SPAWNS 1
-#define MAX_SPAWN_COUNT 20
+#define LIMIT_ENEMY_SPAWNS 0
+#define MAX_SPAWN_COUNT 40
 
 
 // UI
@@ -72,6 +72,7 @@ constexpr float game_scale = 0.5f;
 
 
 // Audio
+#define MUTE_AUDIO 1
 #define DISABLE_UI_AUDIO 0
 #define PRINT_PLAYING_AUDIO 0
 #define PRINT_FULL_AUDIO_CHANNELS 0
@@ -84,7 +85,11 @@ constexpr float game_scale = 0.5f;
 // somethings up... like the wall collisions, which is a good 'problem' to have i guess
 #define FRAMERATE_CAP 240 // Use the FPS cap you want
 #define PRINT_FRAMERATE_EVERY 0 // Print at the rate you specify in milliseconds
-#define HIDE_CONSOLE 1
+#define HIDE_CONSOLE 0
 #define UNLOCK_ALL_ABILITIES 1
 
+
+#define STARTING_LEVEL 0
+
+#define IGNORED_BY_ENEMIES 0
 #endif

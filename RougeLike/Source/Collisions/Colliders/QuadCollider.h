@@ -13,6 +13,11 @@ public:
 
 	bool doesIntersect(Collider* collider) const override;
 
+	const Quad2D<float>& getQuad() const { return *mQuad;}
+
+	float xMin() const override;
+	float xMax() const override;
+
 #if TRACK_COLLISIONS
 	void renderCollider() override;
 #endif

@@ -111,7 +111,7 @@ void EnemyManager::slowUpdate(float dt)
 
 	profiler.saveToAverage();
 
-	profiler.displayAverageTimeEvery(2.0f);
+	//profiler.displayAverageTimeEvery(2.0f);
 
 	//printf("path update time %.3f\n", timer.getSeconds());
 

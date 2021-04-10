@@ -19,7 +19,14 @@ public:
 	{
 		if (displayTimer.getSeconds() > seconds)
 		{
-			DebugPrint(Log, "Profiler %s average time %fms\n", name.c_str(), totalTime / count);
+			if (count == 0)
+			{
+				DebugPrint(Profiling, "Profiler %s: no average time saved\n", name.c_str());
+			}
+			else
+			{
+				DebugPrint(Profiling, "Profiler %s average time %fms (%d)\n", name.c_str(), totalTime / count, count);
+			}
 			displayTimer.restart();
 		}
 
