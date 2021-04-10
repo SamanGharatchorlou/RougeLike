@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Debug/PerformanceProfiler.h"
+
 
 class Ability;
 class Actor;
@@ -28,10 +30,13 @@ public:
 	void slowUpdate(float dt);
 	void render();
 
+	
+	PerformanceProfiler profilerA;
+	PerformanceProfiler profilerB;
 
 private:
 	bool doesCollide(Ability* ability) const;
-	void activateCollisions(Ability* ability) const;
+	void activateCollisions(Ability* ability); // const; removes for profiling
 	void handleState(Ability* ability, float dt);
 
 

@@ -1,25 +1,15 @@
 #include "pch.h"
 #include "Actors/Enemies/EnemyManager.h"
 
+#include "Map/Map.h"
 #include "Game/Environment.h"
 #include "Game/Camera/Camera.h"
 
 #include "Enemy.h"
 #include "Actors/Enemies/EnemyStates/EnemyAttack.h"
 
-// temp
-#include "Map/Map.h"
 
-
-EnemyManager::EnemyManager() : mEnvironment(nullptr)
-#if DEBUG_CHECK
-, profiler("Enemy")
-#endif
-{
-#if DEBUG_CHECK
-	profiler.clearAverageTimeEvery(5.0f);
-#endif
-}
+EnemyManager::EnemyManager() : mEnvironment(nullptr) { }
 
 
 EnemyManager::~EnemyManager()
@@ -105,20 +95,7 @@ void EnemyManager::slowUpdate(float dt)
 	}
 
 	clearDead();
-
-	TimerF timer(TimerF::Start);
-
-#if DEBUG_CHECK
-	profiler.restart();
-#endif
-
 	mPathing.updatePaths(mActiveEnemies, dt);
-
-#if DEBUG_CHECK
-	profiler.saveToAverage();
-	//profiler.displayAverageTimeEvery(2.0f);
-#endif
-
 	mSpawning.spawnUnspawnedEnemies(this);
 }
 

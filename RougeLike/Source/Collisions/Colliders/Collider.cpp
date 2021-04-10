@@ -77,6 +77,23 @@ bool Collider::contains(VectorF position)
 }
 
 
+bool test1DOverlap(float minA, float maxA, float minB, float maxB)
+{
+	return maxA > minB && minA < maxB;
+}
+
+
+float Collider::xMax() const
+{
+	return scaledRect().RightPoint();
+}
+
+float Collider::xMin() const
+{
+	return scaledRect().LeftPoint();
+}
+
+
 #if TRACK_COLLISIONS
 void Collider::renderCollider()
 {
@@ -84,7 +101,7 @@ void Collider::renderCollider()
 	{
 		debugDrawRect(scaledRect(), RenderColour::Blue);
 	}
-	else if(gotHit())
+	else if (gotHit())
 	{
 		debugDrawRect(scaledRect(), RenderColour::Red);
 	}
@@ -94,9 +111,3 @@ void Collider::renderCollider()
 	}
 }
 #endif
-
-
-bool test1DOverlap(float minA, float maxA, float minB, float maxB)
-{
-	return maxA > minB && minA < maxB;
-}

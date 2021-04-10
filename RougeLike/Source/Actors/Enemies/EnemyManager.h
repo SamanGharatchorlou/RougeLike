@@ -11,9 +11,6 @@ class Actor;
 class Enemy;
 class Collider;
 
-#include "Debug/PerformanceProfiler.h"
-
-
 class EnemyManager
 {
 public:
@@ -62,8 +59,4 @@ private:
 	LocalDispatcher mEvents;
 
 	std::vector<Enemy*> mActiveEnemies;
-
-#if DEBUG_CHECK
-	PerformanceProfiler profiler;
-#endif
 };

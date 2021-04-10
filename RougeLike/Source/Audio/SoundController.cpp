@@ -297,12 +297,18 @@ void SoundController::fadeIn(Audio* audio, uintptr_t id, int ms, VectorF positio
 
 void SoundController::setSoundVolume(float volume)
 { 
+#if MUTE_AUDIO
+	volume = 0;
+#endif
 	soundVolume = volume;
 }
 
 
 void SoundController::setMusicVolume(float volume)
 {
+#if MUTE_AUDIO
+	volume = 0;
+#endif
 	musicVolume = volume <= 0.05 ? 0 : volume;
 	float mixVolume = maxVolume * musicVolume;
 	Mix_VolumeMusic((int)mixVolume);

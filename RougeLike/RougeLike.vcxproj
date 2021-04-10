@@ -22,6 +22,7 @@
     <ClCompile Include="Source\Animations\Animation.cpp" />
     <ClCompile Include="Source\Audio\Channel.cpp" />
     <ClCompile Include="Source\Collisions\Colliders\QuadCollider.cpp" />
+    <ClCompile Include="Source\Collisions\CollisionOptimisations.cpp" />
     <ClCompile Include="Source\Debug\NetworkDebugging.cpp" />
     <ClCompile Include="Source\Debug\PerformanceProfiler.cpp" />
     <ClCompile Include="Source\Map\TrapManager.cpp" />
@@ -207,6 +208,7 @@
     <ClInclude Include="Source\Animations\Animation.h" />
     <ClInclude Include="Source\Audio\Channel.h" />
     <ClInclude Include="Source\Collisions\Colliders\QuadCollider.h" />
+    <ClInclude Include="Source\Collisions\CollisionOptimisations.h" />
     <ClInclude Include="Source\Debug\NetworkDebugging.h" />
     <ClInclude Include="Source\Debug\PerformanceProfiler.h" />
     <ClInclude Include="Source\Map\TrapManager.h" />

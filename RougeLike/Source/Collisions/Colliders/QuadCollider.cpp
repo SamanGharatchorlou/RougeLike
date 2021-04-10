@@ -58,6 +58,18 @@ bool QuadCollider::doesIntersect(Collider* collider) const
 }
 
 
+float QuadCollider::xMin() const
+{
+	return mQuad->xMin();
+}
+
+
+float QuadCollider::xMax() const
+{
+	return mQuad->xMax();
+}
+
+
 
 #if TRACK_COLLISIONS
 void QuadCollider::renderCollider()

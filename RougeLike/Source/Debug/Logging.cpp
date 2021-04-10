@@ -18,7 +18,7 @@ void DebugPrint(int priority, const char* format, ...)
 		vfprintf(stdout, format, arg);
 		va_end(arg);
 	}
-#endif // DEBUG_CHECK
+#endif
 }
 
 

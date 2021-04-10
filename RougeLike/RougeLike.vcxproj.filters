@@ -178,6 +178,7 @@
     <ClCompile Include="Source\Debug\NetworkDebugging.cpp" />
     <ClCompile Include="Source\Networking\NetworkUtility.cpp" />
     <ClCompile Include="Source\Networking\NetworkManager.cpp" />
+    <ClCompile Include="Source\Collisions\CollisionOptimisations.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -389,6 +390,7 @@
     <ClInclude Include="Source\Debug\NetworkDebugging.h" />
     <ClInclude Include="Source\Networking\NetworkUtility.h" />
     <ClInclude Include="Source\Networking\NetworkManager.h" />
+    <ClInclude Include="Source\Collisions\CollisionOptimisations.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="zlib1.dll" />
