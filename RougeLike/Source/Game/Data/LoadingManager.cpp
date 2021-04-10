@@ -30,6 +30,16 @@ void LoadingManager::init(UIManager* UI)
 	mUI->controller()->processScreenChanges();
 }
 
+void LoadingManager::exit()
+{
+	mTotalFileSizes = 0;
+	mLoadedFileSizes = 0;
+
+	mUI = nullptr;
+	mEarlyExit = false;
+	mLoadingAssets = false;
+}
+
 
 void LoadingManager::update()
 {

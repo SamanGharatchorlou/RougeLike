@@ -13,6 +13,7 @@ public:
 	static LoadingManager* Get();
 
 	void init(UIManager* UI);
+	void exit();
 
 	void successfullyLoaded(const BasicString& filePath);
 	float loadedPercentage();
@@ -41,8 +42,6 @@ private:
 	uintmax_t mLoadedFileSizes;
 
 	UIManager* mUI;
-
-	Audio* mAudio;
 
 	bool mEarlyExit;
 	bool mLoadingAssets;

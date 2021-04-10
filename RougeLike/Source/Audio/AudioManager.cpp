@@ -69,12 +69,15 @@ void AudioManager::load()
 
 void AudioManager::unload()
 {
+	mSoundController.clear();
+
 	for (std::pair<BasicString, Audio*> audio : mAudioBank)
 	{
 		delete audio.second;
 	}
 
 	mAudioBank.clear();
+	mEvents.clear();
 
 	DebugPrint(Log, "Audio manager unloaded\n");
 }

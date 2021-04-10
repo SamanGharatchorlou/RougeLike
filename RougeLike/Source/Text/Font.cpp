@@ -49,30 +49,13 @@ void Font::setText(const BasicString& text)
 	{
 		//Render text surface
 		SDL_Surface* textSurface = TTF_RenderText_Blended(mFont, text.c_str(), colour);
-
-		// For size of the text: int textSize = textSurface->h * textSurface->pitch;
 		if (!textSurface)
 		{
 			DebugPrint(Warning, "Unable to render text surface for text: %s! SDL_ttf Error: %s\n", text.c_str(), TTF_GetError());
 		}
 		else
 		{
-			if (mTexture)
-				SDL_DestroyTexture(mTexture);
-
-			//Create texture from surface pixels
-			mRenderer->lock();
-			mTexture = SDL_CreateTextureFromSurface(mRenderer->sdlRenderer(), textSurface);
-			mRenderer->unlock();
-
-			if (mTexture == nullptr)
-				DebugPrint(Warning, "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
-			else
-				mSize = Vector2D<int>(textSurface->w, textSurface->h);
-
-			// loaded surface no longer needed
-			SDL_FreeSurface(textSurface);
-			textSurface = nullptr;
+			renderTextSurface(textSurface);
 		}
 	}
 	else
@@ -83,35 +66,22 @@ void Font::setText(const BasicString& text)
 }
 
 
+
+
+
 void Font::setWrappedText(const BasicString& text, int width)
 {
 	if (mFont != nullptr && !text.empty())
 	{
 		SDL_Surface* textSurface = TTF_RenderText_Blended_Wrapped(mFont, text.c_str(), colour, width);
 
-		// For size of the text: int textSize = textSurface->h * textSurface->pitch;
 		if (!textSurface)
 		{
-			DebugPrint(Warning, "Unable to render text surface for text: %s! SDL_ttf Error: %s\n", text.c_str(), TTF_GetError());
+			DebugPrint(Warning, "Unable to render wrapped text surface for text: %s! SDL_ttf Error: %s\n", text.c_str(), TTF_GetError());
 		}
 		else
 		{
-			if (mTexture)
-				SDL_DestroyTexture(mTexture);
-
-			//Create texture from surface pixels
-			mRenderer->lock();
-			mTexture = SDL_CreateTextureFromSurface(mRenderer->sdlRenderer(), textSurface);
-			mRenderer->unlock();
-
-			if (mTexture == nullptr)
-				DebugPrint(Warning, "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
-			else
-				mSize = Vector2D<int>(textSurface->w, textSurface->h);
-
-			// loaded surface no longer needed
-			SDL_FreeSurface(textSurface);
-			textSurface = nullptr;
+			renderTextSurface(textSurface);
 		}
 	}
 	else
@@ -130,4 +100,26 @@ void Font::render(const VectorF position) const
 							mSize.x, mSize.y };
 
 	SDL_RenderCopyEx(mRenderer->sdlRenderer(), mTexture, nullptr, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
+}
+
+
+// -- Private Functions -- //
+void Font::renderTextSurface(SDL_Surface* textSurface)
+{
+	if (mTexture)
+		SDL_DestroyTexture(mTexture);
+
+	//Create texture from surface pixels
+	mRenderer->lock();
+	mTexture = SDL_CreateTextureFromSurface(mRenderer->sdlRenderer(), textSurface);
+	mRenderer->unlock();
+
+	if (mTexture == nullptr)
+		DebugPrint(Warning, "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+	else
+		mSize = Vector2D<int>(textSurface->w, textSurface->h);
+
+	// loaded surface no longer needed
+	SDL_FreeSurface(textSurface);
+	textSurface = nullptr;
 }

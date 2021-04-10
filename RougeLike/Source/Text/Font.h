@@ -28,6 +28,10 @@ public:
 	const BasicString name() const { return mFontName; }
 
 private:
+	void renderTextSurface(SDL_Surface* textSurface);
+
+
+private:
 	Renderer* mRenderer;
 	SDL_Texture* mTexture;
 

@@ -4,6 +4,8 @@
 
 #if DEBUG_CHECK
 
+#define ENABLE_LOGGING 1
+
 #define MEMORY_TRACKING 0 // 1 = default, 2 = (very)verbose
 #define IGNORE_UNKNOWNS 0
 
@@ -84,7 +86,8 @@ constexpr float game_scale = 0.5f;
 // somethings up... like the wall collisions, which is a good 'problem' to have i guess
 #define FRAMERATE_CAP 240 // Use the FPS cap you want
 #define PRINT_FRAMERATE_EVERY 0 // Print at the rate you specify in milliseconds
-#define HIDE_CONSOLE 1
+#define HIDE_CONSOLE 0
 #define UNLOCK_ALL_ABILITIES 1
+#define ENABLE_LOGGING 1
 
 #endif

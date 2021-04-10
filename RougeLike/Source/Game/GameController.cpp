@@ -71,6 +71,8 @@ void GameController::load()
 	assetLoader.join();
 	loadingscreen.join();
 
+	loader->exit();
+
 	mGameData.uiManager->controller()->popScreen();
 }
 

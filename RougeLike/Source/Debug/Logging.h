@@ -5,8 +5,8 @@ enum PriorityLevel
 	None = -1,
 	Error,		// stop program
 	Warning,	// something failed
-	Log,		// basic info
-	Debug		// custom debugging
+	Profile,	// used when profiling
+	Log			// basic info
 };
 
 

@@ -63,5 +63,7 @@ private:
 
 	std::vector<Enemy*> mActiveEnemies;
 
+#if DEBUG_CHECK
 	PerformanceProfiler profiler;
+#endif
 };

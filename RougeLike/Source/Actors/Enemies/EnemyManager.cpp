@@ -9,11 +9,17 @@
 
 // temp
 #include "Map/Map.h"
-//#include "Objects/Abilities/AbilityBuilder.h"
-//#include "Objects/Abilities/AbilityClasses/AbilityStates.h"
 
 
-EnemyManager::EnemyManager() : mEnvironment(nullptr) { }
+EnemyManager::EnemyManager() : mEnvironment(nullptr)
+#if DEBUG_CHECK
+, profiler("Enemy")
+#endif
+{
+#if DEBUG_CHECK
+	profiler.clearAverageTimeEvery(5.0f);
+#endif
+}
 
 
 EnemyManager::~EnemyManager()
@@ -72,9 +78,6 @@ void EnemyManager::init(Environment* environment)
 {
 	mEnvironment = environment;
 	mSpawning.init();
-
-	profiler.name = "Pathing";
-	profiler.averageResetTime = 5.0f;
 }
 
 
@@ -105,15 +108,16 @@ void EnemyManager::slowUpdate(float dt)
 
 	TimerF timer(TimerF::Start);
 
+#if DEBUG_CHECK
 	profiler.restart();
+#endif
 
 	mPathing.updatePaths(mActiveEnemies, dt);
 
+#if DEBUG_CHECK
 	profiler.saveToAverage();
-
-	profiler.displayAverageTimeEvery(2.0f);
-
-	//printf("path update time %.3f\n", timer.getSeconds());
+	//profiler.displayAverageTimeEvery(2.0f);
+#endif
 
 	mSpawning.spawnUnspawnedEnemies(this);
 }

@@ -15,7 +15,7 @@ bool Sound::load(const BasicString& filePath)
 
 	if (!mChunk)
 	{
-		DebugPrint(Warning, "Failed to load sound audio file %s. SDL_mixer Error: %s\n", filePath, Mix_GetError());
+		DebugPrint(Warning, "Failed to load sound audio file %s. SDL_mixer Error: %s\n", filePath.c_str(), Mix_GetError());
 		return false;
 	}
 	else

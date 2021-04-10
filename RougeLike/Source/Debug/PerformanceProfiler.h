@@ -4,47 +4,30 @@
 class PerformanceProfiler
 {
 public:
-	PerformanceProfiler() : time(0.0f), totalTime(0.0f), count(0), averageResetTime(-1.0f)
-	{ 
-		displayTimer.start();
-		averageResetTimer.start();
-	}
+	PerformanceProfiler(BasicString name);
 
-	void restart()
-	{
-		timer.restart();
-	}
+	void start() { mTimer.start(); }
+	void restart() { mTimer.restart(); }
 
-	void displayAverageTimeEvery(float seconds)
-	{
-		if (displayTimer.getSeconds() > seconds)
-		{
-			DebugPrint(Log, "Profiler %s average time %fms\n", name.c_str(), totalTime / count);
-			displayTimer.restart();
-		}
+	void displayTimeSeconds();
+	void displayTimeMilliSeconds();
 
-		if (averageResetTime > 0.0f && averageResetTimer.getSeconds() > averageResetTime)
-		{
-			totalTime = 0.0f;
-			count = 0;
-			averageResetTimer.restart();
-		}
-	}
+	void displayAverageTimeSeconds();
+	void displayAverageTimeMilliSeconds();
+	void displayAverageTimeEvery(float seconds);
 
-	void saveToAverage()
-	{
-		totalTime += timer.getMilliseconds();
-		count++;
-	}
+	void clearAverageTimeEvery(float seconds) { averageResetTime = seconds; }
+	void saveToAverage();
 
-	BasicString name;
-	TimerF timer;
-	float time;
 
-	float totalTime;
-	int count;
+private:
+	const BasicString mName;
+	TimerF mTimer;
 
-	TimerF displayTimer;
+	float mTotalTime;
+	int mCount;
+
+	TimerF mDisplayTimer;
 
 	float averageResetTime;
 	TimerF averageResetTimer;

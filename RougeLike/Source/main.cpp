@@ -4,7 +4,7 @@
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 
 #include "Game/GameController.h"
-
+#include "Debug/PerformanceProfiler.h"
 
 #pragma comment(lib, "SDL2_image")
 
@@ -17,15 +17,46 @@
 
 int main(int argc, char* args[])
 {
-	GameController GameApp;
+	int loops = 5;
+	PerformanceProfiler profiler("Loading");
+	for (int i = 0; i < loops; i++)
+	{
+		GameController GameApp;
 
-	GameApp.init();
-	GameApp.preLoad();
-	GameApp.load();
-	                                                                                                                                          
-	GameApp.run();
+		profiler.restart();
 
-	GameApp.free();
+		GameApp.init();
+		GameApp.preLoad();
+
+		profiler.restart();
+
+		GameApp.load();
+
+		profiler.saveToAverage();
+		profiler.displayTimeSeconds();
+
+		//GameApp.run();
+
+		GameApp.free();
+	}
+
+	profiler.displayAverageTimeSeconds();
+
+	//GameController GameApp;
+
+	//GameApp.init();
+	//GameApp.preLoad();
+
+	//PerformanceProfiler profiler("Loading");
+	//profiler.start();
+
+	//GameApp.load();
+
+	//profiler.displayTimeSeconds();
+	//                                                                                                                                          
+	//GameApp.run();
+
+	//GameApp.free();
 
 	PRINT_MEMORY;
 
