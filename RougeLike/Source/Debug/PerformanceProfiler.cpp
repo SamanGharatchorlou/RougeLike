@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "PerformanceProfiler.h"
 
-PerformanceProfiler::PerformanceProfiler(BasicString name) : mName(name), mTotalTime(0.0f), mCount(0), averageResetTime(-1.0f)
+PerformanceProfiler::PerformanceProfiler() : mTotalTime(0.0f), mCount(0), averageResetTime(-1.0f)
 {
 	mDisplayTimer.start();
 	averageResetTimer.start();
@@ -11,7 +11,8 @@ void PerformanceProfiler::displayAverageTimeEvery(float seconds)
 {
 	if (mDisplayTimer.getSeconds() > seconds)
 	{
-		DebugPrint(Profile, "Profiler %s average time %fms\n", mName.c_str(), mTotalTime / mCount);
+		if(mCount > 0)
+			DebugPrint(Profile, "Profiler %s average time %fms\n", mName.c_str(), mTotalTime / mCount);
 		mDisplayTimer.restart();
 	}
 

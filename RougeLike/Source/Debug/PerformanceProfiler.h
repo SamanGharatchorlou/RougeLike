@@ -4,7 +4,7 @@
 class PerformanceProfiler
 {
 public:
-	PerformanceProfiler(BasicString name);
+	PerformanceProfiler();
 
 	void start() { mTimer.start(); }
 	void restart() { mTimer.restart(); }
@@ -19,9 +19,11 @@ public:
 	void clearAverageTimeEvery(float seconds) { averageResetTime = seconds; }
 	void saveToAverage();
 
+public:
+	BasicString mName;
+
 
 private:
-	const BasicString mName;
 	TimerF mTimer;
 
 	float mTotalTime;
