@@ -20,7 +20,7 @@ LoadingManager* LoadingManager::Get()
 
 void LoadingManager::init(UIManager* UI)
 {
-	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::FadeIn, "Menu", nullptr, 1000));
+	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::FadeInMusic, "Menu", nullptr, 1000));
 	AudioManager::Get()->handleEvents();
 
 	CountToBeLoadedFiles();
