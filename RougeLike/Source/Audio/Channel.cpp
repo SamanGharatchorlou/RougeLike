@@ -49,7 +49,7 @@ void Channel::loop()
 	mState = Looping;
 	mAudio->play(mIndex);
 #if PRINT_PLAYING_AUDIO
-	DebugPrint(Log, "%d(%f) Looping audio: %s\n", mIndex, mVolume, mAudio->name().c_str());
+	DebugPrint(Log, "%d: Looping audio: %s\n", mIndex, mAudio->name().c_str());
 #endif
 }
 
@@ -58,7 +58,7 @@ void Channel::play()
 	mState = Playing;
 	mAudio->play(mIndex);
 #if PRINT_PLAYING_AUDIO
-	DebugPrint(Log, "%d(%f) Playing audio: %s\n", mIndex, mVolume, mAudio->name().c_str());
+	DebugPrint(Log, "%d: Playing audio: %s\n", mIndex, mAudio->name().c_str());
 #endif
 }
 
@@ -68,7 +68,7 @@ void Channel::fadeIn(int ms)
 	mState = Playing;
 	mAudio->fadeIn(mIndex, ms);
 #if PRINT_PLAYING_AUDIO
-	DebugPrint(Log, "%d(%f) Fading in audio: %s\n", mIndex, mVolume, mAudio->name().c_str());
+	DebugPrint(Log, "%d: Fading in audio: %s\n", mIndex, mAudio->name().c_str());
 #endif
 }
 
@@ -78,7 +78,7 @@ void Channel::fadeOut(int ms)
 	mState = Playing;
 	mAudio->fadeOut(mIndex, ms);
 #if PRINT_PLAYING_AUDIO
-	DebugPrint(Log, "%d(%f) Fading out audio: %s\n", mIndex, mVolume, mAudio->name().c_str());
+	DebugPrint(Log, "%d: Fading out audio: %s\n", mIndex, mAudio->name().c_str());
 #endif
 }
 

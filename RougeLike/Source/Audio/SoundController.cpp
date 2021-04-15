@@ -321,6 +321,20 @@ void SoundController::fadeInMusic(Audio* audio, uintptr_t id, int ms)
 		}
 	}
 
+	// Find free channel
+	for (int i = 0; i < mixerChannels; i++)
+	{
+		Channel& channel = channels[i];
+		if (channel.mState == Channel::Free)
+		{
+			channel.setAudio(audio);
+			channel.mID = id;
+			channel.mSource = VectorF(-1.0f, -1.0f);
+			channel.fadeIn(ms);
+			return;
+		}
+	}
+
 	DebugPrint(Warning, "Could not fade in audio\n");
 }
 
