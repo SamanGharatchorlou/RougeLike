@@ -115,6 +115,9 @@ void AudioManager::handleEvents()
 		case AudioEvent::FadeIn:
 			mSoundController.fadeIn(event.audio, event.id, event.time, event.source);
 			break;
+		case AudioEvent::FadeInMusic:
+			mSoundController.fadeInMusic(event.audio, event.id, event.time);
+			break;
 		case AudioEvent::FadeOut:
 			mSoundController.fadeOut(event.audio, event.id, event.time);
 			break;

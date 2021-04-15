@@ -164,7 +164,7 @@ void SoundController::play(Audio* audio, uintptr_t id, VectorF position)
 		}
 	}
 
-	DebugPrint(Warning, "No available channels to play audio\n");
+	DebugPrint(Warning, " -------------- No available channels to play audio --------------\n");
 }
 
 
@@ -290,6 +290,43 @@ void SoundController::fadeIn(Audio* audio, uintptr_t id, int ms, VectorF positio
 		}
 	}
 
+	DebugPrint(Warning, "Could not fade in audio\n");
+}
+
+
+void SoundController::fadeInMusic(Audio* audio, uintptr_t id, int ms)
+{
+	// Check if the music is already playing
+	for (int i = 0; i < mixerChannels; i++)
+	{
+		Channel& channel = channels[i];
+		if (channel.mState == Channel::Playing)
+		{
+			// If music is already playing we have to stop and free that first, cant rely on fadeout
+			// We can't have two playing at a time, that makes the 'paused'/fading out music think its still playing
+			// as it seems to use the state of the most recent music command i.e. we just started playing a second one
+			if (channel.type() == AudioType::Music)
+			{
+				channel.stop();
+				channel.free();
+				DebugPrint(Log, "Stopped channel %d music before fading in new music\n");
+			}
+		}
+	}
+
+	// Find free channel
+	for (int i = 0; i < mixerChannels; i++)
+	{
+		Channel& channel = channels[i];
+		if (channel.mState == Channel::Free)
+		{
+			channel.setAudio(audio);
+			channel.mID = id;
+			channel.mSource = VectorF(-1.0f, -1.0f);
+			channel.fadeIn(ms);
+			return;
+		}
+	}
 
 	DebugPrint(Warning, "Could not fade in audio\n");
 }

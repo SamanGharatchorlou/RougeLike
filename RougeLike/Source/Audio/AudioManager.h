@@ -12,6 +12,7 @@ struct AudioEvent
 		Resume,
 		Stop,
 		FadeIn,
+		FadeInMusic,
 		FadeOut,
 	};
 

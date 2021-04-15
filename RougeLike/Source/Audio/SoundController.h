@@ -6,7 +6,7 @@
 class Actor;
 
 // 14 seems to be more than enough mixer channels
-int constexpr mixerChannels = 14;
+int constexpr mixerChannels = 8;
 float constexpr maxVolume = (float)MIX_MAX_VOLUME;
 
 
@@ -32,6 +32,7 @@ public:
 	void stopSound(Audio* audio, uintptr_t id);
 
 	void fadeIn(Audio* audio, uintptr_t id, int ms, VectorF source);
+	void fadeInMusic(Audio* audio, uintptr_t id, int ms);
 	void fadeOut(Audio* audio, uintptr_t id, int ms);
 
 	bool hasActiveAudio(Audio* audio, uintptr_t id) const;

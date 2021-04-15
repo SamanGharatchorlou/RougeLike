@@ -1,6 +1,7 @@
 #pragma once
 
 class Audio;
+enum class AudioType;
 
 class Channel
 {
@@ -46,6 +47,8 @@ public:
 	void setIndex(int index) { mIndex = index; }
 	int index() const { return mIndex; }
 
+	AudioType type();
+
 public:
 	State mState;
 	VectorF mSource;
@@ -53,7 +56,6 @@ public:
 
 	// 0 - 1 independant of game sound volume
 	float mVolume;
-
 
 	State mPrePauseState;
 

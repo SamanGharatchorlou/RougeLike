@@ -1,5 +1,10 @@
 #pragma once
 
+enum class AudioType
+{
+	Sound,
+	Music
+};
 
 
 class Audio
@@ -22,7 +27,9 @@ public:
 
 	virtual uintptr_t id() const { return reinterpret_cast<uintptr_t>(this); }
 
-#if DEBUG_CHECK
+	virtual AudioType type() const = 0;
+
+#if PRINT_PLAYING_AUDIO
 	const BasicString name() const { return FileManager::Get()->getItemName(mFilePath); }
 	BasicString mFilePath;
 #endif
@@ -50,6 +57,8 @@ public:
 
 	bool isPlaying(int channel) const override;
 
+	AudioType type() const override { return AudioType::Sound; }
+
 private:
 	Mix_Chunk *mChunk;
 };
@@ -74,6 +83,8 @@ public:
 	void stop(int channel) override;
 
 	bool isPlaying(int channel) const override;
+
+	AudioType type() const override { return AudioType::Sound; }
 
 private:
 	std::vector<Audio*> group;
@@ -101,7 +112,9 @@ public:
 
 	bool isPlaying(int channel) const override;
 
-private:
+	AudioType type() const override { return AudioType::Music; }
+
+public:
 	Mix_Music *mMusic;
 };
 
