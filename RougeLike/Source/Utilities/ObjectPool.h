@@ -73,8 +73,8 @@ K* ObjectPool<K, T>::getObject(T type)
 		}
 		else
 		{
-			addNewObjects(type, 1);
-			DebugPrint(Warning, "Not enough objects in the pool, size increased by 1\n");
+			addNewObjects(type, 10);
+			DebugPrint(Warning, "Not enough objects in the pool, size increased by 10\n");
 			return getObject(type);
 		}
 	}
