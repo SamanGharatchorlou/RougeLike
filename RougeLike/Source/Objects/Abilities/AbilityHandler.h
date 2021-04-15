@@ -1,14 +1,10 @@
 #pragma once
 
-#include "Debug/PerformanceProfiler.h"
-
-
 class Ability;
 class Actor;
 class EffectPool;
 class InputManager;
 enum class AbilityType;
-enum class AbilityState;
 
 
 class AbilityHandler
@@ -29,10 +25,6 @@ public:
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
 	void render();
-
-	
-	PerformanceProfiler profilerA;
-	PerformanceProfiler profilerB;
 
 private:
 	bool doesCollide(Ability* ability) const;
