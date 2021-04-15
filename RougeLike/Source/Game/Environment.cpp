@@ -44,11 +44,20 @@ void Environment::load()
 	DebugPrint(Log, "\n Loading pools\n");
 
 	std::vector<EffectType> types;
+	types.reserve((int)EffectType::Count);
 	for (EffectType type = EffectType::None + 1; type < EffectType::Count; type = type + 1)
 	{
 		types.push_back(type);
 	}
 	mEffectPool.load(types, 25);
+
+	// Some of these types we will be using a lot, so add more now
+	types.clear();
+	for (EffectType type = EffectType::Damage; type < EffectType::Count; type = type + 1)
+	{
+		types.push_back(type);
+	}
+	mEffectPool.load(types, 50);
 	
 	mActors.loadPools();
 
