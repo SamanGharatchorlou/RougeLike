@@ -31,5 +31,5 @@ void HealAbility::applyEffects(Actor* actor, EffectPool* effectPool)
 
 void HealAbility::playAudio() 
 {
-	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, "HealAbility", mCaster));
+	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, "Heal", mCaster));
 }
