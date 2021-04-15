@@ -106,7 +106,8 @@ void TrapManager::triggerAll(DecorType type, VectorF triggerPosition)
 		}
 	}
 
-	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Loop, "Fire", this, triggerPosition));
+	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, "Fire", this, triggerPosition));
+	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::FadeOut, "Fire", this, 4000));
 }
 
 
