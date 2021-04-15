@@ -1,5 +1,6 @@
 #pragma once
 
+class Actor;
 
 class Collider
 {
@@ -48,3 +49,5 @@ protected:
 
 
 bool test1DOverlap(float minA, float maxA, float minB, float maxB);
+
+std::vector<int> broadPhaseIndexes(const Collider* collider, const std::vector<Actor*>* targets);
