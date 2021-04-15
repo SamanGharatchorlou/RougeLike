@@ -34,7 +34,8 @@ void GameState::init()
 
 	// Start Audio
 	AudioManager* audio = AudioManager::Get();
-	audio->pushEvent(AudioEvent(AudioEvent::FadeIn, "Game", nullptr, 1500));
+
+	audio->pushEvent(AudioEvent(AudioEvent::FadeInMusic, "Game", nullptr, 1500));
 	audio->setSource(mGameData->environment->actors()->player()->get(), Camera::Get()->size().x);
 
 	// open network threads
@@ -130,7 +131,7 @@ void GameState::render()
 void GameState::resume() 
 {
 	mGameData->environment->resume();
-	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::FadeIn, "Game", nullptr, 750));
+	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::FadeInMusic, "Game", nullptr, 750));
 }
 
 void GameState::pause()
@@ -158,7 +159,7 @@ void GameState::initCamera()
 	camera->setPosition(cameraPosition);
 
 	// TODO: fix these values
-	camera->initShakeyCam(140.0f, 100.0f);
+	camera->initShakeyCam(100.0f, 80.0f);
 
 	RectF* playerRect = &mGameData->environment->actors()->player()->get()->rectRef();
 	camera->follow(playerRect);

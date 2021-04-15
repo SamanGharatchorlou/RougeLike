@@ -32,7 +32,7 @@ void PreGameState::init()
 
 	AudioManager* audio = AudioManager::Get();
 	if(!audio->isPlaying("Menu", nullptr))
-		audio->pushEvent(AudioEvent(AudioEvent::FadeIn, "Menu", nullptr, 1000));
+		audio->pushEvent(AudioEvent(AudioEvent::FadeInMusic, "Menu", nullptr, 1000));
 }
 
 
@@ -110,6 +110,8 @@ void PreGameState::testFunction()
 
 void PreGameState::exit()
 {
+	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::FadeOut, "Menu", nullptr, 150));
+
 	PlayerManager* player = mGameData->environment->actors()->player();
 
 	if(!mSelectedCharacter.empty())
