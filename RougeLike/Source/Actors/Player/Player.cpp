@@ -112,9 +112,9 @@ void Player::selectWeapon(WeaponData* weaponData)
 }
 
 
-MeleeWeapon* Player::weapon()
+Weapon* Player::weapon()
 {
-	return static_cast<MeleeWeapon*>(mWeapon);
+	return mWeapon;
 }
 
 
@@ -175,14 +175,16 @@ void Player::attack()
 
 Collider* Player::attackingCollider()
 {
-	return weapon()->getCollider();
+	return mWeapon->getCollider();
 }
 
 
 void Player::resetColliders()
 {
 	mCollider.reset();
-	weapon()->getCollider()->reset();
+
+	if(mWeapon->getCollider())
+		mWeapon->getCollider()->reset();
 }
 
 

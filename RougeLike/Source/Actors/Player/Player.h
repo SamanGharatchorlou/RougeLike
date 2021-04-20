@@ -14,7 +14,7 @@ class AudioManager;
 
 class Player : public Actor
 {
-	friend class PlayerCollisions;
+	friend class PlayerManager;
 
 public:
 	Player();
@@ -31,8 +31,7 @@ public:
 
 	void move(float dt);
 
-	MeleeWeapon*	weapon();
-
+	Weapon* weapon();
 	void selectWeapon(WeaponData* weapon);
 
 	void overrideControl(bool removeControl);
