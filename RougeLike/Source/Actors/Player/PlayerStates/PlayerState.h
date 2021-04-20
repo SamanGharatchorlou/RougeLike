@@ -2,9 +2,6 @@
 
 #include "States/State.h"
 
-class InputManager;
-class Player;
-
 class PlayerState : public State
 {
 public:
@@ -26,7 +23,6 @@ struct PlayerNullState : public PlayerState
 {
 	void init() override { }
 	void handleInput() override { }
-	void handleInput(const InputManager* input) { };
 	void slowUpdate(float /*dt*/) override { /* do nothing */ }
 	void fastUpdate(float /*dt*/) override { /* do nothing */ }
 	void render() override { }
