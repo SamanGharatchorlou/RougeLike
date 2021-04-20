@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Player>
+	<Animator>
+		<ID>Mage</ID>
+		<FrameTime>0.04</FrameTime>
+		<FrameSize x = "520" y ="420"></FrameSize>
+		<Animations>
+			<Idle>12</Idle>
+			<Run>12</Run>
+			<Dead>12</Dead>
+			<Hurt>12</Hurt>
+		</Animations>
+	</Animator>
+</Player>

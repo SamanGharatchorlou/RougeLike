@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Magic>
+	<Icon>Coment</Icon>
+
+	<Properties>
+		<Animation>CometAnim</Animation>
+		<MaxSize>75</MaxSize>
+	</Properties>
+
+	<AttackingEffects>
+		<Cooldown>0.175</Cooldown>
+		<Damage>35</Damage>
+		<Velocity>10</Velocity>
+		<KnockbackForce>50</KnockbackForce>
+		<KnockbackDistance>5</KnockbackDistance>
+	</AttackingEffects>
+
+	<Audio>
+		<Hit>ShortSwordHit</Hit>
+		<Miss>ShortSwordSwoosh</Miss>
+	</Audio>
+</Magic>

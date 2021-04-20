@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <Characters>
-	<King>Sword</King>
-	<Girl>Mace</Girl>
+	<PlayerCharacter>
+		<Name>King</Name>
+		<WeaponType>Melee</WeaponType>
+		<WeaponName>Sword</WeaponName>
+	</PlayerCharacter>
+
+	<PlayerCharacter>
+		<Name>Girl</Name>
+		<WeaponType>Melee</WeaponType>
+		<WeaponName>Mace</WeaponName>
+	</PlayerCharacter>
+
+	<PlayerCharacter>
+		<Name>Mage</Name>
+		<WeaponType>Magic</WeaponType>
+		<WeaponName>Comet</WeaponName>
+	</PlayerCharacter>
 </Character>

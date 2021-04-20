@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Magic>
+	<Animator>
+		<ID>Comet</ID>
+		<FrameTime>0.1</FrameTime>
+		<FrameSize x = "1021" y ="639"></FrameSize>
+		<Animations>
+			<Active>3</Active>
+		</Animations>
+	</Animator>
+</Magic>

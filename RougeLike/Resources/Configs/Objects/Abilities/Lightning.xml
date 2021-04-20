@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Ability>
+	<Properties>
+		<Range>500</Range>
+		<MaxSize>300</MaxSize>
+		<Cooldown>1</Cooldown>
+
+		<Damage>200</Damage>
+
+		<StunTime>3</StunTime>
+		<Time>1.0</Time>
+	</Properties>
+
+	<Icon>LightningIcon</Icon>
+
+	<Animator>
+		<ID>Lightning</ID>
+		<FrameTime>0.1</FrameTime>
+		<FrameSize x = "128" y ="128"></FrameSize>
+		<Animations>
+			<Active>8</Active>
+		</Animations>
+	</Animator>
+</Ability>
