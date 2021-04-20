@@ -36,7 +36,7 @@ void Collectable::render(RectF cameraRect) const
 // --- Weapon pickup --- //
 void WeaponCollectable::activate(PlayerManager* Player)
 {
-	Player->selectWeapon(mID);
+	//Player->selectWeapon(mID);
 }
 
 
