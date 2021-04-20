@@ -2,10 +2,8 @@
 
 #include "PlayerState.h"
 
-class InputManager;
-class MeleeWeapon;
+class Weapon;
 class Player;
-
 
 class PlayerAttackState : public PlayerState
 {
@@ -22,5 +20,5 @@ public:
 	bool finished() override;
 
 private:
-	MeleeWeapon* mWeapon;
+	Weapon* mWeapon;
 };
