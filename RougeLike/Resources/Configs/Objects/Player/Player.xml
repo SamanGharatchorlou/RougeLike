@@ -14,7 +14,6 @@
 
 	<MaxSize>100</MaxSize>
 	<ColliderScale x = "0.32" y = "0.57"></ColliderScale>
-	<Icon>SoldierIcon</Icon>
 	<WeaponType>Melee</WeaponType>
 
 	<AttackingEffects>
@@ -29,6 +28,4 @@
 			<KnockbackDistance>15</KnockbackDistance>
 		</Info>
 	</AttackingEffects>
-
-	<LevellingInfo>LevelUp</InfoLevelling>
 </Data>

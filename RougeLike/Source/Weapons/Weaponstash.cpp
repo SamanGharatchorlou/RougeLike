@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "WeaponStash.h"
 
-#include "Graphics/TextureManager.h"
+#include "Magic/MagicWeapon.h"
 #include "Melee/MeleeWeapon.h"
 
 
 
-WeaponStash::WeaponStash() : meleeWeapon(nullptr) { }
+WeaponStash::WeaponStash() { }
 WeaponStash::~WeaponStash() { clear(); }
 
 
@@ -29,9 +29,6 @@ void WeaponStash::load()
 			mData[weaponName] = weaponData;
 		}
 	}
-
-
-	meleeWeapon = new MeleeWeapon;
 }
 
 
@@ -45,12 +42,21 @@ void WeaponStash::clear()
 	}
 
 	mData.clear();
+}
 
-	if (meleeWeapon)
-	{
-		delete meleeWeapon;
-		meleeWeapon = nullptr;
-	}
+
+Weapon* WeaponStash::getNewWeapon(WeaponType type) const
+{
+	Weapon* newWeapon = nullptr;
+
+	if (type == WeaponType::Melee)
+		newWeapon = new MeleeWeapon;
+	else if (type == WeaponType::Ranged)
+		newWeapon = new MagicWeapon;
+	else
+		DebugPrint(Warning, "Invalid Weapon type %d\n", (int)type);
+
+	return newWeapon;
 }
 
 
@@ -64,18 +70,6 @@ WeaponData* WeaponStash::getData(const BasicString& weaponName)
 }
 
 
-Weapon* WeaponStash::getWeapon(const BasicString& weaponType) const
-{
-	if (weaponType == "Melee")
-		return meleeWeapon;
-	else
-	{
-		DebugPrint(Warning, "Weapon type '%s' not recognised\n", weaponType);
-		return nullptr;	
-	}
-}
-
-
 
 // -- Private Functions -- //
 
@@ -84,6 +78,8 @@ WeaponData* WeaponStash::createNewData(const XMLNode weaponNode, const WeaponRaw
 	WeaponData* data = nullptr;
 	if (weaponNode.name() == "Melee")
 		data = new MeleeWeaponData;
+	else if (weaponNode.name() == "Magic")
+		data = new MagicWeaponData;
 
 	if (data)
 		data->fillData(rawData);
@@ -97,9 +93,8 @@ WeaponData* WeaponStash::createNewData(const XMLNode weaponNode, const WeaponRaw
 WeaponRawData WeaponStash::getRawData(const XMLNode weaponNode) const
 {
 	WeaponRawData data;
-	data.properties.fill(	weaponNode.child("Properties"));
-	data.audio.fill(		weaponNode.child("Audio"));
-	data.effectData.fill(	weaponNode.child("AttackingEffects"));
-	data.texture = TextureManager::Get()->getTexture(data.properties["Texture"], FileManager::Image_Weapons);
+	data.properties.fill(weaponNode.child("Properties"));
+	data.audio.fill(weaponNode.child("Audio"));
+	data.effectData.fill(weaponNode.child("AttackingEffects"));
 	return data;
 }

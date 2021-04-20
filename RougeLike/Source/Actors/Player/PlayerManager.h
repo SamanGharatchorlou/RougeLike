@@ -7,7 +7,7 @@
 #include "Events/LocalDispatcher.h"
 #include "Objects/Properties/Attributes/Levelling.h"
 #include "Collisions/WallCollisionTracker.h"
-
+#include "Character.h"
 
 class Environment;
 class Screen;
@@ -36,8 +36,8 @@ public:
 	void resetColliders();
 
 	void setPosition(VectorF position);
-	void selectCharacter(const BasicString& characterConfig);
-	void selectWeapon(const BasicString& weaponName);
+	void selectCharacter(const Character& character);
+	void selectWeapon(const Character& character);
 
 	void addAbility(AbilityType ability);
 	void addExp(int exp);

@@ -18,6 +18,8 @@ public:
 	virtual void slowUpdate(float dt) { };
 	virtual void render() = 0;
 
+	virtual Collider* getCollider() = 0;
+
 	virtual const BasicString& hitSoundLabel() = 0;
 	virtual const BasicString& missSoundLabel() = 0;
 

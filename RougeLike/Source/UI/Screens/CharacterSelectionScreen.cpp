@@ -14,6 +14,9 @@
 #include "UI/Elements/UITextBox.h"
 #include "UI/Elements/UISwitch.h"
 
+#include "Weapons/WeaponData.h"
+#include "Actors/Player/Character.h"
+
 
 void CharacterSelectionScreen::init()
 {
@@ -83,29 +86,38 @@ void CharacterSelectionScreen::slowUpdate()
 void CharacterSelectionScreen::readCharacters()
 {
 	XMLParser characterParser(FileManager::Get()->findFile(FileManager::Configs, "Characters"));
-	XMLNode characterNode = characterParser.rootNode().child();
+	XMLNode characterNode = characterParser.rootNode().child("PlayerCharacter");
 	while (characterNode)
 	{
-		CharacterInfo info(characterNode.name(), characterNode.value());
-		mCharacters.push_back(info);
+		Character character;
+		character.mName = characterNode.child("Name").value();
+		character.mWeaponName = characterNode.child("WeaponName").value();
+
+		BasicString weaponType = characterNode.child("WeaponType").value();
+
+		if (weaponType == "Melee")
+			character.mWeaponType = WeaponType::Melee;
+		else if (weaponType == "Magic")
+			character.mWeaponType = WeaponType::Magic;
+		else
+			DebugPrint(Warning, "No valid weapon type was found for type %s. Check the %s file\n", 
+				weaponType.c_str(), FileManager::Get()->findFile(FileManager::Configs, "Characters").c_str());
+
+		mCharacters.push_back(character);
 		characterNode = characterNode.next();
 	}
 }
 
 void CharacterSelectionScreen::updateCharacter()
 {
-	mCharacterSelected = true;
-	mSelectedCharacter = mCharacters.at(mCharacterIndex).first;
-	mSelectedWeapon = mCharacters.at(mCharacterIndex).second;
-
 	const TextureManager* textures = TextureManager::Get();
-	Texture* texture = TextureManager::Get()->getTexture(mSelectedCharacter + "Icon", FileManager::Image_UI);
+	Texture* texture = TextureManager::Get()->getTexture(selectedCharacter().mName + "Icon", FileManager::Image_UI);
 
 	UIBox* character = static_cast<UIBox*>(find("Character"));
 	character->setTexture(texture);
 
 	UITextBox* textBox = static_cast<UITextBox*>(find("CharacterName"));
-	BasicString textString = mSelectedCharacter + " - " + mSelectedWeapon;
+	BasicString textString = selectedCharacter().mName + " - " + selectedCharacter().mWeaponName;
 	textBox->setText(textString);
 	textBox->align();
 }
@@ -124,4 +136,11 @@ void CharacterSelectionScreen::enterGame()
 	}
 	mController->enablePopups((bool)tutorialState);
 	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, "StartGame", mController));
+}
+
+
+
+const Character& CharacterSelectionScreen::selectedCharacter() const 
+{ 
+	return mCharacters.at(mCharacterIndex);
 }

@@ -12,7 +12,7 @@ public:
 	Levelling();
 	~Levelling();
 
-	void init(const XMLNode& levelNode, RectF rect);
+	void init(VectorF size);
 	void reset();
 
 	void slowUpdate(float dt);
@@ -31,7 +31,7 @@ public:
 
 
 private:
-	void buildAnimator(const XMLNode& node, RectF rect);
+	void buildAnimator(const XMLNode& node, VectorF size);
 	void levelUp(PlayerManager* player);
 
 

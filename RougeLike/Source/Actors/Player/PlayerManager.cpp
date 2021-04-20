@@ -45,13 +45,6 @@ void PlayerManager::addExp(int exp)
 	SetUISlider* sliderEventPtr = new SetUISlider("LevelSlider", mLevelling.expProgress());
 	EventPacket sliderEvent(sliderEventPtr);
 	mEvents.push(sliderEvent);
-
-	if (didLevelUp && mLevelling.level() == 2)
-	{
-		//OpenPopupEvent* eventPtr = new OpenPopupEvent("LevelUp");
-		//EventPacket event(eventPtr);
-		//mEvents.push(event);
-	}
 }
 
 void PlayerManager::setPosition(VectorF position)
@@ -144,31 +137,37 @@ void PlayerManager::render()
 }
 
 
-void PlayerManager::selectCharacter(const BasicString& characterConfig)
+void PlayerManager::selectCharacter(const Character& character)
 { 
 	XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Player, "Player"));
 
 	// Animation
-	XMLParser animationParser(FileManager::Get()->findFile(FileManager::Config_Player, characterConfig + "Anim"));
+	XMLParser animationParser(FileManager::Get()->findFile(FileManager::Config_Player, character.mName + "Anim"));
 	XMLNode animationNode = animationParser.rootChild("Animator");
 	mPlayer.setCharacter(parser.rootNode(), animationNode);
 
-	// Weapon
-	BasicString weapontype = parser.rootChild("WeaponType").value();
-	mPlayer.setWeaponType(mWeaponStash.getWeapon(weapontype));
-	mPlayer.init();
+	selectWeapon(character);
 
-	// Levelling
-	mLevelling.init(parser.rootChild("LevellingInfo"), mPlayer.rect());
+	mPlayer.init();
+	mLevelling.init(mPlayer.rect().Size());
+
 #if UNLOCK_ALL_ABILITIES
 	mLevelling.unlockAllAbilities(this);
 #endif
 }
 
 
-void PlayerManager::selectWeapon(const BasicString& weaponName)
+void PlayerManager::selectWeapon(const Character& character)
 {
-	WeaponData* weaponData = mWeaponStash.getData(weaponName);
+	if (mPlayer.mWeapon)
+	{
+		delete mPlayer.mWeapon;
+		mPlayer.mWeapon = nullptr;
+	}
+
+	mPlayer.mWeapon = mWeaponStash.getNewWeapon(character.mWeaponType);
+
+	WeaponData* weaponData = mWeaponStash.getData(character.mWeaponName);
 	mPlayer.selectWeapon(weaponData);
 
 	// Add weapon properties to basic attack ability

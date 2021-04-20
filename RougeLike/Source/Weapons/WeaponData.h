@@ -1,8 +1,16 @@
 #pragma once
 
 #include "Utilities/Maps/EffectMap.h"
+#include "Animations/Animator.h"
 
 class Texture;
+
+enum class WeaponType
+{
+	Melee,
+	Ranged,
+	Magic
+};
 
 
 struct WeaponRawData
@@ -17,25 +25,24 @@ struct WeaponRawData
 class WeaponData
 {
 public:
-	WeaponData() : texture(nullptr), maxDimention(0.0f) { }
+	WeaponData() :  maxDimention(0.0f) { }
 	virtual ~WeaponData() { }
 
 	void fillData(const WeaponRawData& data);
-	virtual void copy(const WeaponData* data);
+	void copyBaseData(const WeaponData* data);
+	virtual void copy(const WeaponData* data) = 0;
 
 	const BasicString& audioHit() const { return audio.at("Hit"); }
 	const BasicString& audioMiss() const { return audio.at("Miss"); }
 
 
 private:
+	void populateBaseProperties(const StringMap& properties);
 	virtual void fillProperties(const StringMap& properties) = 0;
 
 
 public:
-	Texture* texture;
-
 	float maxDimention;
-	VectorF offset;
 
 	StringMap audio;
 	PropertyMap effectData;
@@ -46,14 +53,31 @@ public:
 class MeleeWeaponData : public WeaponData
 {
 public:
-	MeleeWeaponData() : swingAngle(0.0f), swingSpeed(0.0f) { }
+	MeleeWeaponData() : texture(nullptr), swingAngle(0.0f), swingSpeed(0.0f) { }
 	void copy(const WeaponData* data) override;
 
 public:
+	Texture* texture;
+	VectorF offset;
+
 	float swingAngle;
 	float swingSpeed;
 
 
 private:
 	void fillProperties(const StringMap& properties) override;
+};
+
+
+class MagicWeaponData : public WeaponData
+{
+public:
+	MagicWeaponData() { }
+	void copy(const WeaponData* data) override;
+
+private:
+	void fillProperties(const StringMap& properties) override;
+
+public:
+	Animator animator;
 };

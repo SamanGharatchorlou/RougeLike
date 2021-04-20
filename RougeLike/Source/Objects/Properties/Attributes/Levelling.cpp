@@ -13,10 +13,10 @@
 Levelling::Levelling() : mLevel(1), mCurrentExp(0), mRequiredExp(0) { }
 Levelling::~Levelling() { reset(); }
 
-void Levelling::init(const XMLNode& levelNode, RectF rect)
+void Levelling::init(VectorF size)
 {
-	const BasicString& levelInfoFile = levelNode.value();
-	XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Player, levelInfoFile));
+	// const BasicString& levelInfoFile = levelNode.value();
+	XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Player, "LevelUp"));
 
 	XMLNode requiredExpNode = parser.rootChild("RequiredExp");
 	mRequiredExp = atoi(requiredExpNode.value().c_str());
@@ -39,7 +39,7 @@ void Levelling::init(const XMLNode& levelNode, RectF rect)
 		ability = ability.next();
 	}
 
-	buildAnimator(parser.rootNode(), rect);
+	buildAnimator(parser.rootNode(), size);
 }
 
 
@@ -57,22 +57,22 @@ void Levelling::reset()
 }
 
 
-void Levelling::buildAnimator(const XMLNode& node, RectF rect)
+void Levelling::buildAnimator(const XMLNode& node, VectorF size)
 {
 	AnimationReader reader;
 	mAnimator = reader.buildAnimator(node.child("Animator"));
 	mAnimator.selectAnimation(Animation::Active);
 
 	// size
-	float targetWidth = rect.Width() * (float)atof(node.child("WidthMultiplier").value().c_str());
+	float targetWidth = size.x * (float)atof(node.child("WidthMultiplier").value().c_str());
 	float targetHeight = targetWidth * mAnimator.frameSize().y / mAnimator.frameSize().x;
-	VectorF size = VectorF(targetWidth, targetHeight);
-	mRect.SetSize(size);
+	VectorF newSize = VectorF(targetWidth, targetHeight);
+	mRect.SetSize(newSize);
 
 	// render offset
 	XMLNode renderOffsetNode = node.child("RenderOffsetRatio");
 	StringMap offsetData = renderOffsetNode.attributes();
-	mRenderOffset = offsetData.getVector("x", "y") * size;
+	mRenderOffset = offsetData.getVector("x", "y") * newSize;
 }
 
 

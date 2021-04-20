@@ -27,7 +27,7 @@ public:
 	void updateAimDirection(VectorF cursorPosition) override;
 
 	VectorF& offset();
-	Collider* getCollider() { return &mCollider; }
+	Collider* getCollider() override { return &mCollider; }
 
 	void flipSide() { mSwingDirection *= -1; }
 

@@ -5,6 +5,7 @@
 class Weapon;
 class MeleeWeapon;
 
+
 class WeaponStash
 {
 public:
@@ -14,10 +15,9 @@ public:
 	void load();
 	void clear();
 
-	MeleeWeapon* getMeleeWeapon() const { return meleeWeapon; }
-	Weapon* getWeapon(const BasicString& weaponType) const;
-
 	WeaponData* getData(const BasicString& weaponName);
+
+	Weapon* getNewWeapon(WeaponType type) const;
 
 
 private:
@@ -26,6 +26,4 @@ private:
 
 private:
 	std::unordered_map<BasicString, WeaponData*> mData;
-
-	MeleeWeapon* meleeWeapon;
 };

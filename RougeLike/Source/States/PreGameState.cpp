@@ -36,25 +36,7 @@ void PreGameState::init()
 }
 
 
-void PreGameState::slowUpdate(float dt)
-{
-	Screen* screen = mGameData->uiManager->getActiveScreen();
-
-	if (screen->type() == ScreenType::CharacterSelection)
-	{
-		CharacterSelectionScreen* selectionScreen = static_cast<CharacterSelectionScreen*>(screen);
-		if(selectionScreen->characterSelected())
-		{
-			mSelectedCharacter = selectionScreen->selectedCharacter();
-			mSelectedWeapon = selectionScreen->selectedWeapon();
-		}
-
-		if (!mGameData->network->mSetupComplete && mGameData->inputManager->isPressed(Button::Key::E))
-		{
-			testFunction();
-		}
-	}
-}
+void PreGameState::slowUpdate(float dt) { }
 
 
 void PreGameState::testFunction()
@@ -112,13 +94,13 @@ void PreGameState::exit()
 {
 	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::FadeOut, "Menu", nullptr, 150));
 
+	Screen* screen = mGameData->uiManager->getActiveScreen();
+	CharacterSelectionScreen* selectionScreen = dynamic_cast<CharacterSelectionScreen*>(screen);
+	if (!selectionScreen)
+		DebugPrint(Error, "Selection screen is no active, cannot select a character\n");
+
 	PlayerManager* player = mGameData->environment->actors()->player();
-
-	if(!mSelectedCharacter.empty())
-		player->selectCharacter(mSelectedCharacter);
-
-	if(!mSelectedWeapon.empty())
-		player->selectWeapon(mSelectedWeapon);
+	player->selectCharacter(selectionScreen->selectedCharacter());
 }
 
 
