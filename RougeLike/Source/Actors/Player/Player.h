@@ -21,7 +21,6 @@ public:
 	~Player() { };
 
 	void init();
-	void setWeaponType(Weapon* weapon);
 	void handleInput(const InputManager* input);
 	void fastUpdate(float dt);
 	void slowUpdate(float dt);
@@ -31,19 +30,19 @@ public:
 
 	void move(float dt);
 
+	void attack();
 	Weapon* weapon();
-	void selectWeapon(WeaponData* weapon);
 
 	void overrideControl(bool removeControl);
 	bool userHasControl() { return !mControlOverride; }
 
 	void updateMapInfo();
 
-	void attack() override;
+	void meleeAttack() override; // HACK - can I remove this actor virtual function 
+
 	bool isAttacking() const override;
 	Collider* attackingCollider() override;
 	void resetColliders() override;
-
 
 	void addEffect(Effect* effect) override;
 

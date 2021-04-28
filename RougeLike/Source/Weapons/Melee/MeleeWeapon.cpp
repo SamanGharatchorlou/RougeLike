@@ -4,7 +4,7 @@
 #include "Game/Camera/Camera.h"
 #include "Graphics/Texture.h"
 
-#include "Weapons/WeaponData.h"
+#include "Objects/Pools/EffectPool.h"
 
 #if DEBUG_CHECK
 #include "Debug/DebugDraw.h"
@@ -27,6 +27,24 @@ void MeleeWeapon::equipt(const WeaponData* data)
 	mCollider.init(&mQuad);
 
 	mAboutPoint = VectorF(rect().Width() / 2.0f, rect().Height() * 0.85f);
+}
+
+
+std::vector<Effect*> MeleeWeapon::getEffects(EffectPool* effectPool)
+{
+	std::vector<Effect*> effects;
+
+	mMeleeData.effectData.addXYPosition(mRect.Center());
+
+	effects.push_back(effectPool->getObject(EffectType::Damage));
+	effects.push_back(effectPool->getObject(EffectType::Displacement));
+
+	for (Effect* effect : effects)
+	{
+		effect->fill(mMeleeData.effectData);
+	}
+
+	return effects;
 }
 
 
@@ -92,6 +110,8 @@ void MeleeWeapon::render()
 // Audio
 const BasicString& MeleeWeapon::missSoundLabel() { return mMeleeData.audioMiss(); };
 const BasicString& MeleeWeapon::hitSoundLabel() { return mMeleeData.audioHit(); };
+
+
 
 
 /// --- Private Functions --- ///

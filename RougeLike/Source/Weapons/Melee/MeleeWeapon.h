@@ -3,10 +3,10 @@
 #include "Weapons/Weapon.h"
 #include "Weapons/WeaponData.h"
 #include "Collisions/Colliders/QuadCollider.h"
+#include "Objects/Effects/EffectTypes/Effect.h"
 
-class MeleeWeaponData;
 class Collider;
-
+class EffectPool;
 
 class MeleeWeapon : public Weapon
 {
@@ -30,6 +30,10 @@ public:
 	Collider* getCollider() override { return &mCollider; }
 
 	void flipSide() { mSwingDirection *= -1; }
+
+
+	const WeaponData* getData() override { return &mMeleeData; }
+	std::vector<Effect*> getEffects(EffectPool* effectPool) override;
 
 
 private:

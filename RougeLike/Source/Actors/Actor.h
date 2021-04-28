@@ -55,9 +55,11 @@ public:
 	RectF		scaledRect() const;
 
 	// Attacking
-	virtual void attack() = 0;
+	virtual void meleeAttack() = 0;
 	virtual bool isAttacking() const = 0;
 	virtual Collider* attackingCollider() = 0;
+
+	virtual void rangedAttack() { }
 
 	virtual void resetColliders() = 0;
 
@@ -80,7 +82,7 @@ protected:
 
 	LocalDispatcher mEvents;
 
-	bool mVisibility;
-
 	TimerF mColourModTimer;
+
+	bool mVisibility;
 };

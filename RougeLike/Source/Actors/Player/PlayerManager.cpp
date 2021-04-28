@@ -2,6 +2,7 @@
 #include "PlayerManager.h"
 
 #include "Game/Camera/Camera.h"
+#include "Input/InputManager.h"
 #include "Game/Environment.h"
 #include "UI/UIManager.h"
 
@@ -20,6 +21,10 @@ void PlayerManager::init(Environment* environment, Screen* gameScreen)
 
 	mPlayer.set(environment);
 	mAbilities.init(&mPlayer, gameScreen, environment->effectPool(), environment->actors()->activeEnemyActors());
+
+	mWeaponCollisions.init(environment->effectPool());
+	mWeaponCollisions.linkTargets(environment->actors()->activeEnemyActors());
+	
 	mEvents.clear();
 }
 
@@ -59,6 +64,13 @@ void PlayerManager::handleInput(const InputManager* input)
 	{
 		mPlayer.handleInput(input);
 		mAbilities.handleInput(input);
+
+		if (input->isCursorPressed(Cursor::Left))
+		{
+			mWeaponCollisions.beginAttack();
+			mPlayer.attack();
+		}
+
 	}
 }
 
@@ -67,6 +79,8 @@ void PlayerManager::fastUpdate(float dt)
 	mPlayer.fastUpdate(dt);
 
 	mAbilities.fastUpdate(dt);
+
+	mWeaponCollisions.checkCollisions();
 
 	if (mPlayer.userHasControl())
 	{
@@ -165,13 +179,10 @@ void PlayerManager::selectWeapon(const Character& character)
 		mPlayer.mWeapon = nullptr;
 	}
 
-	mPlayer.mWeapon = mWeaponStash.getNewWeapon(character.mWeaponType);
-
 	WeaponData* weaponData = mWeaponStash.getData(character.mWeaponName);
-	mPlayer.selectWeapon(weaponData);
+	Weapon* weapon = mWeaponStash.getNewWeapon(weaponData->type);
+	weapon->equipt(weaponData);
+	mPlayer.mWeapon = weapon;
 
-	// Add weapon properties to basic attack ability
-	Ability* basicAttack = mAbilities.get(AbilityType::BasicAttack);
-	basicAttack->properties().merge(weaponData->effectData);
-	basicAttack->cooldown().set(basicAttack->properties().at(PropertyType::Cooldown));
+	mWeaponCollisions.linkWeapon(weapon);
 }

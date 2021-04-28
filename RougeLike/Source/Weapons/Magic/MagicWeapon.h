@@ -24,6 +24,9 @@ public:
 	Collider* getCollider() override { return nullptr; }
 	VectorF& offset() { return mOffset; }
 
+	const WeaponData* getData() override { return &mData; }
+
+	std::vector<Effect*> getEffects(EffectPool* effectPool);
 
 private:
 	MagicWeaponData mData;

@@ -2,6 +2,7 @@
 
 
 class WeaponData;
+class EffectPool;
 class Effect;
 class Collider;
 
@@ -36,6 +37,10 @@ public:
 	virtual void updateAimDirection(VectorF cursorPosition) = 0;
 
 	virtual void equipt(const WeaponData* data) = 0;
+
+	virtual const WeaponData* getData() = 0;
+
+	virtual std::vector<Effect*> getEffects(EffectPool* effectPool) = 0;
 
 
 protected:

@@ -29,6 +29,24 @@ void MagicWeapon::attack()
 }
 
 
+std::vector<Effect*> MagicWeapon::getEffects(EffectPool* effectPool)
+{
+	std::vector<Effect*> effects;
+
+	//mMeleeData.effectData.addXYPosition(mRect.Center());
+
+	//effects.push_back(effectPool->getObject(EffectType::Damage));
+	//effects.push_back(effectPool->getObject(EffectType::Displacement));
+
+	//for (Effect* effect : effects)
+	//{
+	//	effect->fill(mMeleeData.effectData);
+	//}
+
+	return effects;
+}
+
+
 void MagicWeapon::fastUpdate(float dt)
 {
 	for (Queue<MagicProjectile>::iterator iter = mActiveProjectiles.begin(); iter != mActiveProjectiles.end(); iter++)

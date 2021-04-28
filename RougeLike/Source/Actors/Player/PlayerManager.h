@@ -7,6 +7,7 @@
 #include "Events/LocalDispatcher.h"
 #include "Objects/Properties/Attributes/Levelling.h"
 #include "Collisions/WallCollisionTracker.h"
+#include "Collisions/WeaponCollisionTracker.h"
 #include "Character.h"
 
 class Environment;
@@ -52,6 +53,7 @@ private:
 	AbilityManager mAbilities;
 
 	WallCollisionTracker mWallCollisions;
+	WeaponCollisionTracker mWeaponCollisions;
 
 	WeaponStash mWeaponStash;
 

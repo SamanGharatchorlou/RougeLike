@@ -45,6 +45,12 @@ void Player::handleInput(const InputManager* input)
 	updateCursorPosition(input->cursorPosition());
 }
 
+void Player::attack()
+{
+	mWeapon->attack();
+	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, mWeapon->missSoundLabel(), mWeapon));
+}
+
 
 void Player::move(float dt)
 {
@@ -60,6 +66,8 @@ void Player::fastUpdate(float dt)
 	Actor::fastUpdate(dt);
 
 	mWeapon->setPosition(rect().Center());
+	mWeapon->fastUpdate(dt);
+
 	mStateMachine.getActiveState().fastUpdate(dt);
  }
 
@@ -67,12 +75,19 @@ void Player::fastUpdate(float dt)
 void Player::slowUpdate(float dt)
 {
 	Actor::slowUpdate(dt);
-	handleStates(dt);
-	updateMapInfo();
+
+	mWeapon->slowUpdate(dt);
 
 	AudioManager* audio = AudioManager::Get();
-	Health* health = static_cast<Health*>(getAttribute(AttributeType::Health));
+	if (mWeapon->getCollider()->didHit() && !audio->isPlaying(mWeapon->hitSoundLabel(), mWeapon))
+	{
+		audio->pushEvent(AudioEvent(AudioEvent::Stop, mWeapon->missSoundLabel(), mWeapon));
+		audio->pushEvent(AudioEvent(AudioEvent::Play, mWeapon->hitSoundLabel(), mWeapon));
+	}
 
+	updateMapInfo();
+
+	Health* health = static_cast<Health*>(getAttribute(AttributeType::Health));
 	if (!health->isDead())
 	{
 		setMovementAnimation();
@@ -100,18 +115,6 @@ void Player::clear()
 }
 
 
-void Player::setWeaponType(Weapon* weapon) 
-{ 
-	mWeapon = weapon; 
-}
-
-
-void Player::selectWeapon(WeaponData* weaponData)
-{
-	mWeapon->equipt(weaponData);
-}
-
-
 Weapon* Player::weapon()
 {
 	return mWeapon;
@@ -120,7 +123,6 @@ Weapon* Player::weapon()
 
 void Player::render()
 {
-
 #if TRACK_COLLISIONS
 	collider()->renderCollider();
 #endif
@@ -168,10 +170,12 @@ bool Player::isAttacking() const
 	return mWeapon->isAttacking();
 }
 
-void Player::attack()
+void Player::meleeAttack()
 {
-	mStateMachine.addState(new PlayerAttackState(this));
+	//mStateMachine.addState(new PlayerAttackState(this));
 }
+
+
 
 Collider* Player::attackingCollider()
 {
@@ -191,14 +195,7 @@ void Player::resetColliders()
 void Player::updateMapInfo()
 {
 	const Map* map = currentMap();
-
-#if DEBUG_CHECK // using break points might break this
-	if (!map)
-		return;
-#endif
-
 	int level = map->level();
-
 	if (mMapLevel != level)
 	{
 		mMapLevel = level;
