@@ -21,10 +21,12 @@ public:
 
 	AbilityTarget targetType() const override { return AbilityTarget::Ranged; }
 
+	virtual bool requiresTarget() const { return false; }
 
 protected:
 	Texture* mRangeCircle;
 };
+
 
 
 class TargetAreaRangedAbility : public RangedAbility
@@ -34,7 +36,6 @@ public:
 
 	virtual bool isValidTarget(VectorF target, const Map* map) const override;
 	virtual void baseExit() override;
-
 
 private:
 	virtual void applyEffects(Actor* actor, EffectPool* effectPool) = 0;

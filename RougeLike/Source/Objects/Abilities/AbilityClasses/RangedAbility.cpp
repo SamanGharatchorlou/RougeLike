@@ -11,6 +11,7 @@
 #include "Map/Map.h"
 
 
+// --- Ranged Ability --- //
 bool RangedAbility::initiate(const InputManager* input) const
 {
 	return input->isCursorReleased(Cursor::Left);
@@ -41,8 +42,7 @@ EventPacket RangedAbility::renderRangeCircleEvent()
 }
 
 
-
-
+// --- Target Area Ranged Ability --- //
 bool TargetAreaRangedAbility::activateOn(Actor* target, EffectPool* effectPool)
 {
 	if (mHitList.count(target) == 0)
