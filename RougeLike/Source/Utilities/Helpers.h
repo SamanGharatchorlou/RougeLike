@@ -34,6 +34,12 @@ T toRadians(const T degrees)
 	return degrees * static_cast<T>(pi / 180.0f);
 }
 
+template<typename T>
+T toDegrees(const T radians)
+{
+	return radians * static_cast<T>(180.0f / pi);
+}
+
 
 template<typename T, typename K>
 float distanceSquared(Vector2D<T> pointA, Vector2D<K> pointB)
