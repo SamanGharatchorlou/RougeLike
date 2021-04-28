@@ -23,11 +23,11 @@ void EnemyPreAttack::slowUpdate(float dt)
 
 	if (timer.getSeconds() > mAttackWaitTime)
 	{
-		Ability* basicAttack = mEnemy->abilities().get(AbilityType::BasicAttack);
-		if (basicAttack->state() == AbilityState::Idle)
+		Ability* MeleeAttack = mEnemy->abilities().get(AbilityType::MeleeAttack);
+		if (MeleeAttack->state() == AbilityState::Idle)
 		{
-			basicAttack->activate();
-			basicAttack->setState(AbilityState::Running);
+			MeleeAttack->activate();
+			MeleeAttack->setState(AbilityState::Running);
 		}
 	}
 }
