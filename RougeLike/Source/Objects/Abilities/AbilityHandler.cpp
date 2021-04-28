@@ -2,11 +2,11 @@
 #include "AbilityHandler.h"
 
 #include "Audio/AudioManager.h"
-#include "AbilityActivator.h"
 #include "AbilityClasses/Ability.h"
 
 #include "Actors/Actor.h"
 #include "Collisions/Colliders/QuadCollider.h"
+#include "AbilityClasses/RangedAbility.h"
 
 
 
@@ -103,7 +103,9 @@ void AbilityHandler::handleState(Ability* ability, float dt)
 		ability->activate();
 
 		if (ability->targetType() == AbilityTarget::Self)
+		{
 			ability->activateOn(nullptr, mEffects);
+		}
 
 		ability->setState(AbilityState::Running);
 		break;
@@ -123,7 +125,7 @@ void AbilityHandler::handleState(Ability* ability, float dt)
 		{
 			ability->setState(AbilityState::Finished);
 
-			if(ability->type() != AbilityType::BasicAttack)
+			if(ability->type() != AbilityType::MeleeAttack)
 				AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, "AbilityCooled", ability));
 		}
 		break;
@@ -202,9 +204,8 @@ bool AbilityHandler::doesCollide(Ability* ability) const
 	// Apply effect to all enemies caught in area
 	const Collider* abilityCollider = ability->selectionCollider();
 
-	bool usingBroadPhase = true;
-	std::vector<int> overlapIndexes = broadPhaseIndexes(abilityCollider, mTargets);
 
+	std::vector<int> overlapIndexes = broadPhaseIndexes(abilityCollider, mTargets);
 	for (int i = 0; i < overlapIndexes.size(); i++)
 	{
 		int index = overlapIndexes[i];

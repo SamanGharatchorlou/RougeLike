@@ -28,7 +28,7 @@ public:
 
 private:
 	bool doesCollide(Ability* ability) const;
-	void activateCollisions(Ability* ability); // const; removes for profiling
+	void activateCollisions(Ability* ability); // const; removed for profiling
 	void handleState(Ability* ability, float dt);
 
 
