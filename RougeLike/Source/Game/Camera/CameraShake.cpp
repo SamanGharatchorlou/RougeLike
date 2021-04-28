@@ -63,7 +63,7 @@ void CameraShake::handleEvent(EventData& data)
 	{
 		TraumaEvent eventData = static_cast<TraumaEvent&>(data);
 
-		mTrauma += eventData.mTrauma;
+		mTrauma += eventData.mTrauma * 0.75f ;
 		mTrauma = clamp(mTrauma, 0.0f, mMaxTrauma);
 	}
 }
