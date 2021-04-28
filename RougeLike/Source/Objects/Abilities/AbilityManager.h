@@ -36,7 +36,6 @@ public:
 
 
 private:
-	void handleBasicAbility(const InputManager* input);
 	void updateCursor();
 
 

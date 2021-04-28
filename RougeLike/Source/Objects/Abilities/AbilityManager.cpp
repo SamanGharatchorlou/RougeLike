@@ -20,13 +20,8 @@ AbilityManager::~AbilityManager() { clear(); }
 void AbilityManager::init(Actor* caster, Screen* screen, EffectPool* effectPool, std::vector<Actor*>* targets)
 {
 	mCaster = caster;
-
 	mHotKeys.init(screen);
 	mHandler.init(effectPool, targets);
-	
-	Ability* ability = mBuilder.build(AbilityType::BasicAttack, mCaster);
-	ability->setState(AbilityState::Idle);
-	mHandler.add(ability);
 }
 
 void AbilityManager::clear()
@@ -47,8 +42,6 @@ void AbilityManager::handleInput(const InputManager* input)
 
 		if (hotKey)
 		{
-			Button::State buttonState = input->state(hotKey->mKey);
-
 			const Button& button = input->getButton(hotKey->mKey);
 
 			if (button.isPressed())
@@ -70,28 +63,12 @@ void AbilityManager::handleInput(const InputManager* input)
 		}
 	}
 
-	handleBasicAbility(input);
 	mHandler.handleInput(input);
-
 
 	Cursor::Mode mode = input->getCursor()->mode();
 	if ((inSelectionMode() && mode == Cursor::Game_Red) || (!inSelectionMode() && mode == Cursor::Game_Green))
 	{
 		mUpdateCursor = true;
-	}
-}
-
-
-void AbilityManager::handleBasicAbility(const InputManager* input)
-{
-	if (input->isCursorPressed(Cursor::Left))
-	{
-		Ability* basicAttack = mHandler.get(AbilityType::BasicAttack);
-		if (basicAttack->state() == AbilityState::Idle && !inSelectionMode())
-		{
-			basicAttack->activate();
-			basicAttack->setState(AbilityState::Running);
-		}
 	}
 }
 
