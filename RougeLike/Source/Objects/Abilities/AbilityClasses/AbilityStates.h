@@ -6,7 +6,12 @@
 enum class AbilityType
 {
 	None,
-	BasicAttack,
+
+	// Basic Attack Types
+	MeleeAttack,
+	RangeAttack,
+
+	// abilities
 	Heal,
 	Armor,
 	Blink,
@@ -14,6 +19,8 @@ enum class AbilityType
 	Smash,
 	Charge,
 	Slash,
+	Lightning,
+
 	Count
 };
 
@@ -27,31 +34,48 @@ inline AbilityType operator +(AbilityType a, T b)
 
 
 inline void operator >>(AbilityType a, BasicString& str)
-{
-	if (a == AbilityType::BasicAttack)
-		str = "BasicAttack";
-	else if (a == AbilityType::Heal)
+{ 
+	switch (a)
+	{
+	case AbilityType::MeleeAttack:
+		str = "MeleeAttack";
+		break;
+	case AbilityType::Heal:
 		str = "Heal";
-	else if (a == AbilityType::Blink)
+		break;
+	case AbilityType::Blink:
 		str = "Blink";
-	else if (a == AbilityType::Armor)
+		break;
+	case AbilityType::Armor:
 		str = "Armor";
-	else if (a == AbilityType::Spikes)
+		break;
+	case AbilityType::Spikes:
 		str = "Spikes";
-	else if (a == AbilityType::Smash)
+		break;
+	case AbilityType::Smash:
 		str = "Smash";
-	else if (a == AbilityType::Charge)
+		break;
+	case AbilityType::Charge:
 		str = "Charge";
-	else if (a == AbilityType::Slash)
+		break;
+	case AbilityType::Slash:
 		str = "Slash";
-	else
+		break;
+	case AbilityType::Lightning:
+		str = "Lightning";
+		break;
+	default:
 		DebugPrint(Warning, "No ability to string conversion defined for ability type %d\n", a);
+		break;
+	}
 }
 
 inline void operator <<(AbilityType& a, const BasicString& str)
 {
-	if (str == "BasicAttack")
-		a = AbilityType::BasicAttack;
+	if (str == "MeleeAttack")
+		a = AbilityType::MeleeAttack;
+	else if (str == "RangeAttack")
+		a = AbilityType::RangeAttack;
 	else if (str == "Heal")
 		a = AbilityType::Heal;
 	else if (str == "Blink")
@@ -66,6 +90,8 @@ inline void operator <<(AbilityType& a, const BasicString& str)
 		a = AbilityType::Charge;
 	else if (str == "Slash")
 		a = AbilityType::Slash;
+	else if (str == "Lightning")
+		a = AbilityType::Lightning;
 	else
 		DebugPrint(Warning, "No string to ability conversion defined for string '%s'\n", str);
 }

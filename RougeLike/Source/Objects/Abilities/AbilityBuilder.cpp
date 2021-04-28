@@ -7,12 +7,13 @@
 
 // Abilities
 #include "AbilityClasses/AbilityStates.h"
-#include "Objects/Abilities/AbilityTypes/BasicAttackAbility.h"
+#include "Objects/Abilities/AbilityTypes/MeleeAttackAbility.h"
 #include "Objects/Abilities/AbilityTypes/HealAbility.h"
 #include "Objects/Abilities/AbilityTypes/ArmorAbility.h"
 #include "Objects/Abilities/AbilityTypes/SmashAbility.h"
 #include "Objects/Abilities/AbilityTypes/ChargeAbility.h"
 #include "Objects/Abilities/AbilityTypes/SlashAbility.h"
+#include "Objects/Abilities/AbilityTypes/LightningAbility.h"
 
 
 Ability* AbilityBuilder::build(AbilityType type, Actor* caster) const
@@ -25,7 +26,7 @@ Ability* AbilityBuilder::build(AbilityType type, Actor* caster) const
 
 		ability->setCaster(caster);
 
-		if(type > AbilityType::BasicAttack && type < AbilityType::Count)
+		if(type > AbilityType::MeleeAttack && type < AbilityType::Count)
 		{
 			XMLParser parser(FileManager::Get()->findFile(FileManager::Config_Abilities, id));
 
@@ -53,8 +54,8 @@ Ability* AbilityBuilder::createNewAbility(AbilityType type) const
 		ability = new HealAbility;
 		break;
 
-	case AbilityType::BasicAttack:
-		ability = new BasicAttackAbility;
+	case AbilityType::MeleeAttack:
+		ability = new MeleeAttackAbility;
 		break;
 
 	case AbilityType::Smash:
@@ -81,6 +82,11 @@ Ability* AbilityBuilder::createNewAbility(AbilityType type) const
 	case AbilityType::Slash:
 	{
 		ability = new SlashAbility;
+		break;
+	}
+	case AbilityType::Lightning:
+	{
+		ability = new LightningAbility;
 		break;
 	}
 
