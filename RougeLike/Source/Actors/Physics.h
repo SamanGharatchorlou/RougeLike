@@ -95,8 +95,4 @@ private:
 	float mMass;
 
 	SDL_RendererFlip mFlip;
-
-
-	// temp
-	bool yes = false;
 };
