@@ -20,9 +20,7 @@ void WeaponStash::load()
 		XMLParser parser(filePath);
 		XMLNode root = parser.rootNode();
 
-		BasicString weaponName = files->getItemName(filePath);
-		WeaponRawData rawData = getRawData(root);
-		WeaponData* weaponData = createNewData(root, rawData);
+		WeaponData* weaponData = createNewData(root);
 		if (weaponData)
 		{
 			BasicString weaponName = files->getItemName(filePath);
@@ -73,12 +71,14 @@ WeaponData* WeaponStash::getData(const BasicString& weaponName)
 
 // -- Private Functions -- //
 
-WeaponData* WeaponStash::createNewData(const XMLNode weaponNode, const WeaponRawData& rawData) const
+WeaponData* WeaponStash::createNewData(const XMLNode weaponNode) const
 {
+	WeaponRawData rawData = getRawData(weaponNode);
+
 	WeaponData* data = nullptr;
-	if (weaponNode.name() == "Melee")
+	if (rawData.type == "Melee")
 		data = new MeleeWeaponData;
-	else if (weaponNode.name() == "Magic")
+	else if (rawData.type == "Magic")
 		data = new MagicWeaponData;
 
 	if (data)
@@ -93,6 +93,7 @@ WeaponData* WeaponStash::createNewData(const XMLNode weaponNode, const WeaponRaw
 WeaponRawData WeaponStash::getRawData(const XMLNode weaponNode) const
 {
 	WeaponRawData data;
+	data.type = weaponNode.child("Type").value();
 	data.properties.fill(weaponNode.child("Properties"));
 	data.audio.fill(weaponNode.child("Audio"));
 	data.effectData.fill(weaponNode.child("AttackingEffects"));
