@@ -14,18 +14,4 @@
 
 	<MaxSize>100</MaxSize>
 	<ColliderScale x = "0.32" y = "0.57"></ColliderScale>
-	<WeaponType>Melee</WeaponType>
-
-	<AttackingEffects>
-		<Types>
-			<Damage></Damage>
-			<Displacement></Displacement>
-		</Types>
-
-		<Info>
-			<Damage>40</Damage>
-			<KnockbackForce>200</KnockbackForce>
-			<KnockbackDistance>15</KnockbackDistance>
-		</Info>
-	</AttackingEffects>
 </Data>

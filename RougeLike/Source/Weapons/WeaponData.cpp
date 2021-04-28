@@ -18,6 +18,8 @@ created yet so cannot call its derived members version of the function.
 // --- Base Weapon Data --- //
 void WeaponData::fillData(const WeaponRawData& data)
 {
+
+
 	populateBaseProperties(data.properties);
 	fillProperties(data.properties);
 	effectData = data.effectData;

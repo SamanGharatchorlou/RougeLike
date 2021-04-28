@@ -7,6 +7,7 @@ class Texture;
 
 enum class WeaponType
 {
+	None,
 	Melee,
 	Ranged,
 	Magic
@@ -15,6 +16,7 @@ enum class WeaponType
 
 struct WeaponRawData
 {
+	BasicString type;
 	Texture* texture = nullptr;
 	StringMap properties;
 	StringMap audio;
@@ -25,7 +27,7 @@ struct WeaponRawData
 class WeaponData
 {
 public:
-	WeaponData() :  maxDimention(0.0f) { }
+	WeaponData() : type(WeaponType::None), maxDimention(0.0f) { }
 	virtual ~WeaponData() { }
 
 	void fillData(const WeaponRawData& data);
@@ -44,6 +46,7 @@ private:
 public:
 	float maxDimention;
 
+	WeaponType type;
 	StringMap audio;
 	PropertyMap effectData;
 };
@@ -53,7 +56,7 @@ public:
 class MeleeWeaponData : public WeaponData
 {
 public:
-	MeleeWeaponData() : texture(nullptr), swingAngle(0.0f), swingSpeed(0.0f) { }
+	MeleeWeaponData() : texture(nullptr), swingAngle(0.0f), swingSpeed(0.0f) { type = WeaponType::Melee; }
 	void copy(const WeaponData* data) override;
 
 public:
@@ -72,7 +75,7 @@ private:
 class MagicWeaponData : public WeaponData
 {
 public:
-	MagicWeaponData() { }
+	MagicWeaponData() { type = WeaponType::Magic; }
 	void copy(const WeaponData* data) override;
 
 private:

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Melee>
+<Weapon>
 
+	<Type>Melee</Type>
 	<Icon>Mace</Icon>
 
 	<Properties>
@@ -25,4 +26,4 @@
 		<Miss>HammerSwoosh</Miss>
 	</Audio>
 
-</Melee>
+</Weapon>

@@ -93,16 +93,6 @@ void CharacterSelectionScreen::readCharacters()
 		character.mName = characterNode.child("Name").value();
 		character.mWeaponName = characterNode.child("WeaponName").value();
 
-		BasicString weaponType = characterNode.child("WeaponType").value();
-
-		if (weaponType == "Melee")
-			character.mWeaponType = WeaponType::Melee;
-		else if (weaponType == "Magic")
-			character.mWeaponType = WeaponType::Magic;
-		else
-			DebugPrint(Warning, "No valid weapon type was found for type %s. Check the %s file\n", 
-				weaponType.c_str(), FileManager::Get()->findFile(FileManager::Configs, "Characters").c_str());
-
 		mCharacters.push_back(character);
 		characterNode = characterNode.next();
 	}

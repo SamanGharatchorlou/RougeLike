@@ -3,8 +3,6 @@
 #include "WeaponData.h"
 
 class Weapon;
-class MeleeWeapon;
-
 
 class WeaponStash
 {
@@ -22,7 +20,7 @@ public:
 
 private:
 	WeaponRawData getRawData(const XMLNode weaponNode) const;
-	WeaponData* createNewData(const XMLNode weaponNode, const WeaponRawData& rawData) const;
+	WeaponData* createNewData(const XMLNode weaponNode) const;
 
 private:
 	std::unordered_map<BasicString, WeaponData*> mData;

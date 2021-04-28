@@ -4,9 +4,6 @@
 #include "UI/Elements/UISwitch.h"
 #include "Actors/Player/Character.h"
 
-// Name + Weapon
-using CharacterInfo = std::pair<BasicString, BasicString>;
-
 
 class CharacterSelectionScreen : public Screen
 {

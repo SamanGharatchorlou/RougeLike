@@ -22,12 +22,12 @@
 		<ChaseRange>1000</ChaseRange>
 	</Properties>
 
-	<BasicAttack>
+	<MeleeAttack>
 		<Damage>10</Damage>
 		<KnockbackForce>600</KnockbackForce>
 		<KnockbackDistance>25</KnockbackDistance>
 		<Cooldown>2.2</Cooldown>
-	</BasicAttack>
+	</MeleeAttack>
 
 	<MaxSize>60</MaxSize>
 	<ColliderScale x = "0.6" y = "0.65"></ColliderScale>

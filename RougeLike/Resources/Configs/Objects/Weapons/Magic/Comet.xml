@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Magic>
+<Weapon>
+	<Type>Magic</Type>
 	<Icon>Coment</Icon>
 
 	<Properties>
@@ -19,4 +20,4 @@
 		<Hit>ShortSwordHit</Hit>
 		<Miss>ShortSwordSwoosh</Miss>
 	</Audio>
-</Magic>
+</Weapon>

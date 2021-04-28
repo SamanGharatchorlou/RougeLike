@@ -116,8 +116,8 @@ Enemy* EnemyFactory::setEnemyData(Enemy* enemy, const SpawnData& data, const XML
 	enemy->setStatePool(&mStatePool);
 	enemy->spawn(data.state, data.position, aiPathMap);
 
-	Ability* basicAttack = buildBasicAttack(enemy, baseNode);
-	enemy->abilities().add(basicAttack);
+	Ability* meleeAttack = buildBasicAttack(enemy, baseNode);
+	enemy->abilities().add(meleeAttack);
 
 	return enemy;
 }
@@ -126,13 +126,13 @@ Enemy* EnemyFactory::setEnemyData(Enemy* enemy, const SpawnData& data, const XML
 Ability* EnemyFactory::buildBasicAttack(Enemy* enemy, const XMLNode enemyNode)
 {
 	AbilityBuilder abilityBuilder;
-	Ability* basicAttack = abilityBuilder.build(AbilityType::BasicAttack, enemy);
+	Ability* meleeAttack = abilityBuilder.build(AbilityType::MeleeAttack, enemy);
 
-	XMLNode abilityNode = enemyNode.child("BasicAttack");
+	XMLNode abilityNode = enemyNode.child("MeleeAttack");
 	PropertyMap nodeProperties(abilityNode);
-	basicAttack->properties().merge(nodeProperties);
-	basicAttack->setState(AbilityState::Idle);
-	return basicAttack;
+	meleeAttack->properties().merge(nodeProperties);
+	meleeAttack->setState(AbilityState::Idle);
+	return meleeAttack;
 }
 
 

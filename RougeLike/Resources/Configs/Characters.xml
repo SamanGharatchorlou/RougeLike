@@ -3,19 +3,16 @@
 <Characters>
 	<PlayerCharacter>
 		<Name>King</Name>
-		<WeaponType>Melee</WeaponType>
 		<WeaponName>Sword</WeaponName>
 	</PlayerCharacter>
 
 	<PlayerCharacter>
 		<Name>Girl</Name>
-		<WeaponType>Melee</WeaponType>
 		<WeaponName>Mace</WeaponName>
 	</PlayerCharacter>
 
 	<PlayerCharacter>
 		<Name>Mage</Name>
-		<WeaponType>Magic</WeaponType>
 		<WeaponName>Comet</WeaponName>
 	</PlayerCharacter>
 </Character>
