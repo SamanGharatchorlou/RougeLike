@@ -13,7 +13,7 @@ public:
 
 	const EnemyType type() const override { return EnemyType::Orc; }
 
-	void attack() override;
+	void meleeAttack() override;
 
 	bool canAttck() const override;
 	bool isAttacking() const override;

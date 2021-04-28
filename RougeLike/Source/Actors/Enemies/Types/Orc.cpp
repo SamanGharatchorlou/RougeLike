@@ -7,7 +7,7 @@
 Orc::Orc() { }
 
 
-void Orc::attack()
+void Orc::meleeAttack()
 {
 	replaceState(EnemyState::Charge);
 }
