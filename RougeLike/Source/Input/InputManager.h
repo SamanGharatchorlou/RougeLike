@@ -36,25 +36,6 @@ public:
 	bool isCursorReleased(Cursor::ButtonType type) const;
 	bool isCursorHeld(Cursor::ButtonType type) const;
 
-	//// TESt
-	//void setButtonState(Button::Key key, Button::State state)
-	//{
-	//	for (Button& button : mButtons)
-	//	{
-
-
-	//		if (button.isKey(event.key.keysym.sym))
-	//		{
-	//			if (!button.isHeld())
-	//				button.setPressed(event.type == SDL_KEYDOWN);
-
-	//			button.setHeld(event.type == SDL_KEYDOWN);
-	//			button.setReleased(event.type == SDL_KEYUP);
-	//			break;
-	//		}
-	//	}
-	//}
-
 private:
 	void processMouseMovementEvent();
 	void processMouseButtonEvent(SDL_Event& event);
