@@ -27,8 +27,15 @@ void MeleeWeapon::equipt(const WeaponData* data)
 	mCollider.init(&mQuad);
 
 	mAboutPoint = VectorF(rect().Width() / 2.0f, rect().Height() * 0.85f);
+
+	mCooldown.set(mMeleeData.effectData.at(PropertyType::Cooldown));
+	mCooldown.begin();
 }
 
+bool MeleeWeapon::canAttack()
+{
+	return mCooldown.hasCompleted();
+}
 
 std::vector<Effect*> MeleeWeapon::getEffects(EffectPool* effectPool)
 {
@@ -58,6 +65,7 @@ void MeleeWeapon::attack()
 {
 	mAttacking = true;
 	mRotationSum = 0.0f;
+	mCooldown.begin();
 }
 
 

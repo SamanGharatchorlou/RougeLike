@@ -29,6 +29,7 @@ Player::Player() :
 {
 }
 
+
 void Player::init()
 {
 	mStepTimer.start();
@@ -45,10 +46,19 @@ void Player::handleInput(const InputManager* input)
 	updateCursorPosition(input->cursorPosition());
 }
 
-void Player::attack()
+
+bool Player::attack()
 {
-	mWeapon->attack();
-	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, mWeapon->missSoundLabel(), mWeapon));
+	if (mWeapon->canAttack())
+	{
+		mWeapon->attack();
+		AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, mWeapon->missSoundLabel(), mWeapon));
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 

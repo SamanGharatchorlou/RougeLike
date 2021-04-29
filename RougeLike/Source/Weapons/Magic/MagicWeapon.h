@@ -8,6 +8,7 @@
 class MagicWeapon : public Weapon
 {
 public:
+	bool canAttack() override { return true; }
 	void attack() override;
 
 	void fastUpdate(float dt) override;

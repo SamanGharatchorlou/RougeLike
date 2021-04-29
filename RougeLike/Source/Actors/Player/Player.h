@@ -30,7 +30,7 @@ public:
 
 	void move(float dt);
 
-	void attack();
+	bool attack();
 	Weapon* weapon();
 
 	void overrideControl(bool removeControl);

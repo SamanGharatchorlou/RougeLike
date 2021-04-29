@@ -67,8 +67,11 @@ void PlayerManager::handleInput(const InputManager* input)
 
 		if (input->isCursorPressed(Cursor::Left))
 		{
-			mWeaponCollisions.beginAttack();
-			mPlayer.attack();
+			bool didAttack = mPlayer.attack();
+			if (didAttack)
+			{
+				mWeaponCollisions.beginAttack();
+			}
 		}
 
 	}

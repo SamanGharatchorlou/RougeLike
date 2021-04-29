@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Objects/Abilities/Cooldown.h"
 
 class WeaponData;
 class EffectPool;
@@ -13,6 +14,7 @@ public:
 	Weapon() : mAttacking(false) { }
 	virtual ~Weapon() { };
 
+	virtual bool canAttack() = 0;
 	virtual void attack() = 0;
 
 	virtual void fastUpdate(float dt) = 0;
@@ -45,7 +47,8 @@ public:
 
 protected:
 	RectF mRect;
+	Cooldown mCooldown;
 
-	bool mAttacking;
 	VectorF mDirection;
+	bool mAttacking;
 };

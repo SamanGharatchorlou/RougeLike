@@ -14,6 +14,7 @@ public:
 	MeleeWeapon();
 	~MeleeWeapon();
 
+	bool canAttack() override;
 	void attack() override;
 
 	void fastUpdate(float dt) override;
