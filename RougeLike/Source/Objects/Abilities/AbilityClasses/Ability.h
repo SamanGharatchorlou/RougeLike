@@ -62,10 +62,6 @@ protected:
 
 
 protected:
-	bool mCompleted;
-	bool mActivateCollisions;
-	AbilityState mState;
-
 	Animator mAnimator;
 	Cooldown mCooldown;
 	PropertyMap mProperties;
@@ -76,6 +72,11 @@ protected:
 	Collider* mCollider;
 
 	RenderColour mSelectHighlight;
+
+	AbilityState mState;
+
+	bool mCompleted;
+	bool mActivateCollisions;
 };
 
 
