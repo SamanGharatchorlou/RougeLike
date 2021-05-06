@@ -53,8 +53,9 @@ void Queue<T>::concat(const Queue<T>& otherQueue)
 	mQueue.insert(mQueue.end(), otherQueue.begin(), otherQueue.end());
 }
 
-// TODO: Warning this function is broken with the BasicString class because
-//		 the string deletes itself when it goes out of scope (use get then pop)
+// TODO: Warning this function is broken with the BasicString class because the string deletes itself when it goes out of scope (use get then pop)
+// Really this applies to any class: if you have a value type i.e. not a pointer in the queue then pop() to get a reference it goes out of scope
+// so the reference you have is junk. Use std::move to get aound this.
 template <class T>
 T& Queue<T>::pop()
 {
@@ -66,7 +67,7 @@ T& Queue<T>::pop()
 template <class T>
 bool Queue<T>::contains(const T& value) const
 {
-	for (typename std::deque<T>::const_iterator iter = mQueue.begin(); iter != mQueue.end(); iter++)
+	for (Queue::const_iterator iter = mQueue.begin(); iter != mQueue.end(); iter++)
 	{
 		if (*iter == value)
 			return true;
@@ -79,11 +80,8 @@ bool Queue<T>::contains(const T& value) const
 template <class T>
 T& Queue<T>::get(int index)
 {
-	for (typename std::deque<T>::iterator iter = mQueue.begin(); iter != mQueue.end(); iter++)
-	{
-		if (index == 0)
-			return *iter;
+	ASSERT(Error, index < mQueue.size(), "Out of bounds access for Queue container\n");
 
-		index--;
-	}
+	Queue::iterator iter = mQueue.begin();
+	return *(iter + index);
 }
