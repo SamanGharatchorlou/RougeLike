@@ -33,7 +33,7 @@ public:
 private:
 	void explode();
 
-	void applyEffects(Actor* actor, EffectPool* effectPool);
+	void applyEffects(Actor* actor, EffectPool* effectPool) override;
 	void applyHammerEffects(Actor* actor, EffectPool* effectPool);
 	void applyExplosionEffects(Actor* actor, EffectPool* effectPool);
 

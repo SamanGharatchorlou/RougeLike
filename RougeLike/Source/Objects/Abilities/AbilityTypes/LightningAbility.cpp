@@ -173,7 +173,7 @@ void LightningAbility::renderBoltBetweenTargets(const Actor* actorA, const Actor
 		rect.SetSize(VectorF(length, length));
 		rect.SetLeftCenter(actorA->position());
 
-		double angle = getRotation(caster_target) - 90.0f;
+		double angle = getRotation(caster_target);
 		VectorF aboutPoint(0.0f, length / 2.0f);
 
 		rect = Camera::Get()->toCameraCoords(rect);

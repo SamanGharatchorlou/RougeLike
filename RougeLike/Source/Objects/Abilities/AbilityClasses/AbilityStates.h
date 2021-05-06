@@ -40,6 +40,9 @@ inline void operator >>(AbilityType a, BasicString& str)
 	case AbilityType::MeleeAttack:
 		str = "MeleeAttack";
 		break;
+	case AbilityType::RangeAttack:
+		str = "RangedAttack";
+		break;
 	case AbilityType::Heal:
 		str = "Heal";
 		break;

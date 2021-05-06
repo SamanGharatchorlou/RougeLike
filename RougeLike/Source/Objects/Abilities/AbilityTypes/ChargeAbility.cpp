@@ -154,7 +154,7 @@ VectorF ChargeAbility::direction() const
 
 double ChargeAbility::rotation() const
 {
-	return getRotation(direction()) - 90;
+	return getRotation(direction());
 }
 
 

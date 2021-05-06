@@ -72,7 +72,7 @@ void SlashAbility::render()
 		rect.SetLeftCenter(mCaster->rect().RightCenter());
 
 		Quad2D<float> smallerQuad = Quad2D<float>(rect);
-		smallerQuad.rotate(getRotation(mTargetDirection) + 90, mCaster->position());
+		smallerQuad.rotate(getRotation(mTargetDirection) + 180, mCaster->position());
 		smallerQuad = Camera::Get()->toCameraCoords(smallerQuad);
 		renderQuadOutline(smallerQuad, mSelectHighlight);
 	}
@@ -89,7 +89,7 @@ void SlashAbility::render()
 		RectF renderRect = Camera::Get()->toCameraCoords(mRect);
 		VectorF aboutPoint = VectorF(-mCaster->rect().Width(), mRect.Size().y) / 2.0f;
 
-		mAnimator.render(renderRect, getRotation(mTargetDirection) + 90, aboutPoint);
+		mAnimator.render(renderRect, getRotation(mTargetDirection) + 180, aboutPoint);
 	}
 }
 
@@ -135,5 +135,5 @@ void SlashAbility::updateQuad()
 {
 	mRect.SetLeftCenter(mCaster->rect().RightCenter());
 	mQuad = Quad2D<float>(mRect);
-	mQuad.rotate(getRotation(mTargetDirection) + 90, mCaster->position());
+	mQuad.rotate(getRotation(mTargetDirection) + 180, mCaster->position());
 }

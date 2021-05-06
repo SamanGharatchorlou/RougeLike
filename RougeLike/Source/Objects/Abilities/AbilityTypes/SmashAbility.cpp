@@ -52,7 +52,7 @@ void SmashAbility::activate()
 
 	// set quad
 	mQuad = Quad2D<float>(mHammerRect);
-	mQuad.rotate(getRotation(mHammerDirection), mHammerRect.Center());
+	mQuad.rotate(getRotation(mHammerDirection) + 90.0f, mHammerRect.Center());
 
 	// Set displacement source from the throw position
 	mProperties.addXYPosition(mCaster->position());
@@ -96,7 +96,7 @@ void SmashAbility::slowUpdate(float dt)
 	if (mAnimator.loops() > 0)
 	{
 		mCompleted = true;
-		mAnimator.stop();
+		mAnimator.stop(); // BaseExit calls animator.reset(), so we dont need to stop?
 	}
 }
 
@@ -136,7 +136,7 @@ void SmashAbility::render()
 		mCollider->renderCollider();
 #endif
 
-		RectF renderRect = mRect; Camera::Get()->toCameraCoords(mRect);
+		RectF renderRect = mRect;
 		renderRect.SetSize(mRect.Size() * 1.5f);
 		renderRect.SetCenter(mRect.Center());
 		renderRect = Camera::Get()->toCameraCoords(renderRect);
@@ -148,7 +148,7 @@ void SmashAbility::render()
 		{
 			RectF hammerRect = Camera::Get()->toCameraCoords(mHammerRect);
 			VectorF aboutPoint = hammerRect.Size() / 2.0f;
-			mHammerTexture->render(hammerRect, getRotation(mHammerDirection), aboutPoint);
+			mHammerTexture->render(hammerRect, getRotation(mHammerDirection) + 90.0f, aboutPoint);
 		}
 	}
 }
@@ -211,5 +211,5 @@ void SmashAbility::updateSelectionQuad()
 	rect.SetLeftCenter(mHammerRect.Center());
 
 	mSelectionQuad = Quad2D<float>(rect);
-	mSelectionQuad.rotate(getRotation(mHammerDirection) - 90, mHammerRect.Center());
+	mSelectionQuad.rotate(getRotation(mHammerDirection), mHammerRect.Center());
 }
