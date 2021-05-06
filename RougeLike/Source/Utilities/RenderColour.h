@@ -10,6 +10,7 @@ struct RenderColour
 		None,
 		Red,
 		Blue,
+		Purple,
 		Green,
 		Yellow,
 		LightGrey,

@@ -26,6 +26,9 @@ RenderColour::RenderColour(Colour colour)
 	case RenderColour::Blue:
 		r = 0; g = 0; b = 255;
 		break;
+	case RenderColour::Purple:
+		r = 128; g = 0; b = 128;
+		break;
 	case RenderColour::Green:
 		r = 0; g = 255; b = 0;
 		break;
