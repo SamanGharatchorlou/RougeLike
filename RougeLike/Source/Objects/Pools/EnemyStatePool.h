@@ -10,7 +10,7 @@ public:
 	void returnObject(EnemyState* object) { ObjectPool::returnObject(object, object->type()); }
 
 private:
-	EnemyState* createNewObject(EnemyState::Type type) const override;
+	EnemyState* createNewObjects(EnemyState::Type type, int count, int& outSize) const override;
 
 
 

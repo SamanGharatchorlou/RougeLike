@@ -10,6 +10,6 @@ enum class EffectType;
 class EffectPool : public ObjectPool<Effect, EffectType>
 {
 private:
-	Effect* createNewObject(EffectType type) const override;
+	Effect* createNewObjects(EffectType type, int count, int& outSize) const override;
 };
 

@@ -9,6 +9,6 @@ enum class CollectableType;
 class CollectablesPool : public ObjectPool<Collectable, CollectableType>
 {
 private:
-	Collectable* createNewObject(CollectableType type) const override;
+	Collectable* createNewObjects(CollectableType type, int count, int& outSize) const override;
 };
 

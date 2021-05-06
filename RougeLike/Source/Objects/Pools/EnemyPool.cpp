@@ -5,7 +5,7 @@
 #include "Actors/Enemies/Types/Orc.h"
 
 
-Enemy* EnemyPool::createNewObject(EnemyType type) const
+Enemy* EnemyPool::createNewObjects(EnemyType type, int count, int& outSize) const
 {
 	Enemy* enemy = nullptr;
 
@@ -13,16 +13,18 @@ Enemy* EnemyPool::createNewObject(EnemyType type) const
 	{
 	case EnemyType::Devil:
 	{
-		enemy = new Devil;
+		enemy = new Devil[count];
+		outSize = sizeof(Devil);
 		break;
 	}
 	case EnemyType::Orc:
 	{
-		enemy = new Orc;
+		enemy = new Orc[count];
+		outSize = sizeof(Orc);
 		break;
 	}
 	default:
-		DebugPrint(Warning, "Invalid enemy type %d\n", type);
+		DebugPrint(Warning, "Invalid enemy type %d, could not create %d objects\n", type, count);
 		break;
 	}
 

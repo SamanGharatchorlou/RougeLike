@@ -1,7 +1,7 @@
 #pragma once
 
 
-// Object are pulled from here then returned when finished with
+// Object are pulled/removed from the pool then must be returned when finished with
 template<class K, typename T>
 class ObjectPool
 {
@@ -9,7 +9,7 @@ public:
 	ObjectPool() { }
 	virtual ~ObjectPool() { freeAll(); }
 
-	void load(std::vector<T>& types, int count);
+	void load(const std::vector<T>& types, int count);
 	void freeAll();
 
 	void addNewObjects(T type, int count);
@@ -20,19 +20,18 @@ public:
 	int size(T type) { return mPool[type].size(); }
 
 private:
-	virtual K* createNewObject(T type) const = 0;
+	virtual K* createNewObjects(T type, int count, int& objectSize) const = 0;
 
 protected:
 	std::unordered_map<T, std::queue<K*>> mPool;
 
-#if DEBUG_CHECK
-	int objectCount = 0;
-#endif
+	// Keep a list of all the allocated blocks, for deleting.
+	std::vector<K*> mBlockHeads;
 };
 
 
 template<class K, typename T>
-void ObjectPool<K, T>::load(std::vector<T>& types, int count)
+void ObjectPool<K, T>::load(const std::vector<T>& types, int count)
 {
 	for (T type : types)
 	{
@@ -44,18 +43,23 @@ void ObjectPool<K, T>::load(std::vector<T>& types, int count)
 template<class K, typename T>
 void ObjectPool<K, T>::addNewObjects(T type, int count)
 {
-	std::queue<K*> queue = mPool[type];
+	// Move all the objects into a queue ready for use
+	std::queue<K*>& queue = mPool[type];
 
-	for (int i = 0; i < count; i++)
+	// we new[] blocks of derived classes and only have the base class pointers so we need the derived class size (objectSize)
+	int objectSize = 0;
+	K* objects = createNewObjects(type, count, objectSize);
+	mBlockHeads.push_back(objects);
+
+	if (objectSize > 0)
 	{
-		K* object = createNewObject(type);
-		queue.push(object);
-#if DEBUG_CHECK
-		objectCount++;
-#endif
+		for (int i = 0; i < count; i++)
+		{
+			// Shift the pointer across a 'objectSize' number of bytes so we're pointing at the correct block
+			char* pointer = (char*)objects + i * objectSize;
+			queue.push((K*)pointer);
+		}
 	}
-
-	mPool[type] = queue;
 }
 
 
@@ -94,28 +98,11 @@ void ObjectPool<K, T>::returnObject(K* object, T type)
 template<class K, typename T>
 void ObjectPool<K, T>::freeAll()
 {
-	typename std::unordered_map<T, std::queue<K*>>::iterator iter;
-
-	for (iter = mPool.begin(); iter != mPool.end(); iter++)
+	for (int i = 0; i < mBlockHeads.size(); i++)
 	{
-		std::queue<K*> queue = iter->second;
-		while (!queue.empty())
-		{
-			K* object = queue.front();
-			delete object;
-			queue.pop();
-#if DEBUG_CHECK
-			objectCount--;
-#endif
-		}
+		K* block = mBlockHeads[i];
+		delete[] block;
 	}
 
-	mPool.clear();
-
-#if DEBUG_CHECK
-	if (objectCount != 0)
-	{
-		DebugPrint(Warning, "Object Pool object count after free all != 0. There's probably %d objects left floating around undeleted!\n", objectCount);
-	}
-#endif
+	mBlockHeads.clear();
 }

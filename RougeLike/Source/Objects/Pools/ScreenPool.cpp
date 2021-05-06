@@ -5,41 +5,53 @@
 #include "UI/ScreenBuilder.h"
 
 
-Screen* ScreenPool::createNewObject(ScreenType type) const
+Screen* ScreenPool::createNewObjects(ScreenType type, int count, int& outSize) const
 {
 	Screen* screen = nullptr;
 
 	switch (type)
 	{
 	case ScreenType::LoadingScreen:
-		screen = new LoadingScreen;
+		screen = new LoadingScreen[count];
+		outSize = sizeof(LoadingScreen);
 		break;
 	case ScreenType::CharacterSelection:
-		screen = new CharacterSelectionScreen;
+		screen = new CharacterSelectionScreen[count];
+		outSize = sizeof(CharacterSelectionScreen);
 		break;
 	case ScreenType::Game:
-		screen = new GameScreen;
+		screen = new GameScreen[count];
+		outSize = sizeof(GameScreen);
 		break;	
 	case ScreenType::GameOver:
-		screen = new GameOverScreen;
+		screen = new GameOverScreen[count];
+		outSize = sizeof(GameOverScreen);
 		break;
 	case ScreenType::Pause:
-		screen = new PauseScreen;
+		screen = new PauseScreen[count];
+		outSize = sizeof(PauseScreen);
 		break;
 	case ScreenType::Settings:
-		screen = new SettingsScreen;
+		screen = new SettingsScreen[count];
+		outSize = sizeof(SettingsScreen);
 		break;
 	case ScreenType::Popup:
-		screen = new PopupScreen;
+		screen = new PopupScreen[count];
+		outSize = sizeof(PopupScreen);
 		break;	
 	case ScreenType::None:
 	default:
-		DebugPrint(Warning, "No create new screen defined for type %d\n", type);
+		DebugPrint(Warning, "Invalid screen type %d, could not create %d objects\n", type, count);
 		break;
 	}
 
+	// MOVE THIS? - doesnt really belong here... move into screen controller class
 	const ScreenBuilder builder;
-	builder.populateScreen(screen);
+	for (int i = 0; i < count; i++)
+	{
+		Screen* screenPtr = screen + i;
+		builder.populateScreen(screenPtr);
+	}
 
 	return screen;
 }

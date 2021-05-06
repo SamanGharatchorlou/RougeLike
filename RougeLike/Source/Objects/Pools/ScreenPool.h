@@ -11,5 +11,5 @@ public:
 	Screen* screenRef(ScreenType type) const;
 
 private:
-	Screen* createNewObject(ScreenType type) const override;
+	Screen* createNewObjects(ScreenType type, int count, int& outSize) const override;
 };

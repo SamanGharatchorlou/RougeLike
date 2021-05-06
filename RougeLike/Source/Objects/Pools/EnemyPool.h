@@ -9,5 +9,5 @@ enum class EnemyType;
 class EnemyPool : public ObjectPool<Enemy, EnemyType>
 {
 private:
-	Enemy* createNewObject(EnemyType type) const override;
+	Enemy* createNewObjects(EnemyType type, int count, int& outSize) const override;
 };
