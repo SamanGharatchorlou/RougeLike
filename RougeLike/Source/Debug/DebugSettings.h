@@ -21,8 +21,8 @@ constexpr float game_scale = 0.5f;
 #define PRINT_FRAMERATE_EVERY 0 // Print at the rate you specify in milliseconds i.e. 500 = print every 0.5 seconds
 
 // Player
-#define DRAW_PLAYER_RECT 0
-#define DRAW_PLAYER_WEAPON_RECT 0
+#define DRAW_PLAYER_RECT 1
+#define DRAW_PLAYER_WEAPON_RECT 1
 #define IGNORE_WALLS 0
 #define IGNORED_BY_ENEMIES 1
 #define INVUNERABLE 1
@@ -38,7 +38,7 @@ constexpr float game_scale = 0.5f;
 
 
 // Map
-#define STARTING_LEVEL 10
+#define STARTING_LEVEL 4
 #define MAP_BOUNDARIES 0
 #define LABEL_TILE_INDEX 0
 #define LABEL_SURFACE_RENDER_TYPES 0
@@ -77,7 +77,8 @@ constexpr float game_scale = 0.5f;
 #define MUTE_AUDIO 1
 #define DISABLE_UI_AUDIO 0
 #define PRINT_PLAYING_AUDIO 0
-#define PRINT_FULL_AUDIO_CHANNELS 0
+#define PRINT_FULL_AUDIO_CHANNELS 1
+#define AUDIO_LOGGING (PRINT_PLAYING_AUDIO || PRINT_FULL_AUDIO_CHANNELS)
 
 // NSIS Installer
 #define OUTPUT_NSIS_FOLDER_INFO 0
@@ -87,12 +88,18 @@ constexpr float game_scale = 0.5f;
 // somethings up... like the wall collisions, which is a good 'problem' to have i guess
 #define FRAMERATE_CAP 240 // Use the FPS cap you want
 #define PRINT_FRAMERATE_EVERY 0 // Print at the rate you specify in milliseconds
-#define HIDE_CONSOLE 0
+#define HIDE_CONSOLE 1
 #define UNLOCK_ALL_ABILITIES 1
-#define ENABLE_LOGGING 1
-
-
-#define STARTING_LEVEL 0
-
-#define IGNORED_BY_ENEMIES 0
+//#define NO_ABILITY_COOLDOWNS 1
+//#define ENABLE_LOGGING 1
+//#define INVUNERABLE 1
+//////
+//#define STARTING_LEVEL 9
+////#define IGNORED_BY_ENEMIES 0
+////
+////#define LIMIT_ENEMY_SPAWNS 1
+////#define MAX_SPAWN_COUNT 40
+//
+//#define PRINT_PLAYING_AUDIO 1
+//#define PRINT_FULL_AUDIO_CHANNELS 1
 #endif

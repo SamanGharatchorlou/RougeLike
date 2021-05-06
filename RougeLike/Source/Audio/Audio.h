@@ -29,7 +29,7 @@ public:
 
 	virtual AudioType type() const = 0;
 
-#if PRINT_PLAYING_AUDIO
+#if AUDIO_LOGGING
 	const BasicString name() const { return FileManager::Get()->getItemName(mFilePath); }
 	BasicString mFilePath;
 #endif

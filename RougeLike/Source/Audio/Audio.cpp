@@ -20,7 +20,7 @@ bool Sound::load(const BasicString& filePath)
 	}
 	else
 	{
-#if PRINT_PLAYING_AUDIO
+#if AUDIO_LOGGING
 		mFilePath = filePath;
 #endif
 		return true;
@@ -83,7 +83,7 @@ bool Music::load(const BasicString& filePath)
 	}
 	else
 	{
-#if PRINT_PLAYING_AUDIO
+#if AUDIO_LOGGING
 		mFilePath = filePath;
 #endif
 		return true;
@@ -166,7 +166,7 @@ bool SoundGroup::load(const BasicString& directoryPath)
 		}
 	}
 
-#if PRINT_PLAYING_AUDIO
+#if AUDIO_LOGGING
 	if(group.size() > 0)
 		mFilePath = audioFilePaths[0];
 #endif

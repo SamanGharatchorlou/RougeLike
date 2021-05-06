@@ -4,7 +4,7 @@
 #if DEBUG_CHECK
 static constexpr PriorityLevel LogLevel = PriorityLevel::Log;
 #else
-static constexpr PriorityLevel LogLevel = PriorityLevel::Profile;
+static constexpr PriorityLevel LogLevel = PriorityLevel::Log;
 #endif
 
 void DebugPrint(int priority, const char* format, ...)
