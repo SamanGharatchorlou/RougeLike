@@ -6,12 +6,14 @@
 	<Properties>
 		<Animation>CometAnim</Animation>
 		<MaxSize>75</MaxSize>
+		<ColliderScaleX>0.15</ColliderScaleX>
+		<ColliderScaleY>0.15</ColliderScaleY>
 	</Properties>
 
 	<AttackingEffects>
 		<Cooldown>0.175</Cooldown>
 		<Damage>35</Damage>
-		<Velocity>10</Velocity>
+		<Velocity>350</Velocity>
 		<KnockbackForce>50</KnockbackForce>
 		<KnockbackDistance>5</KnockbackDistance>
 	</AttackingEffects>

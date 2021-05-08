@@ -5,7 +5,6 @@
 		<Level>1</Level>
 		<Health>100</Health>
 		<Armor>0</Armor>
-		<AttackSpeed>10</AttackSpeed>
 
 		<!-- Physics -->
 		<Force>500</Force>
