@@ -9,6 +9,7 @@ enum class EffectType;
 class EffectManager
 {
 public:
+	EffectManager() : mPool(nullptr) { }
 	void init(EffectPool* pool) { mPool = pool; }
 	void clear();
 
