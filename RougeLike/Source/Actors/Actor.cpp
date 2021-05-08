@@ -12,7 +12,7 @@
 #include "Objects/Effects/EffectTypes/Effect.h"
 
 
-Actor::Actor() : mVisibility(true) { }
+Actor::Actor() : mEnvironment(nullptr), mVisibility(true) { }
 
 
 void Actor::setCharacter(const XMLNode actorNode, const XMLNode animationNode)
