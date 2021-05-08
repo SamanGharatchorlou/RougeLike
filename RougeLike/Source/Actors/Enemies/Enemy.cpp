@@ -235,7 +235,7 @@ EnemyState::Type Enemy::state() const
 
 
 // -- Attacking
-void Enemy::attack()
+void Enemy::meleeAttack()
 {
 	replaceState(EnemyState::Attack);
 }

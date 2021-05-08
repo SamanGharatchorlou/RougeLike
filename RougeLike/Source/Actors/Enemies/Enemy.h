@@ -69,7 +69,7 @@ public:
 	void			move(VectorF velocity, float dt) { mPhysics.move(velocity, dt); }
 
 	// Attacking
-	virtual void attack() override;
+	virtual void meleeAttack() override;
 	virtual bool canAttck() const { return true; }
 
 	bool isAttacking() const override;
