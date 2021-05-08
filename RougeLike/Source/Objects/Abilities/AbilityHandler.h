@@ -10,7 +10,7 @@ enum class AbilityType;
 class AbilityHandler
 {
 public:
-	AbilityHandler() { }
+	AbilityHandler() : mTargets(nullptr), mEffects(nullptr) { }
 
 	void init(EffectPool* effectPool, std::vector<Actor*>* targets);
 
