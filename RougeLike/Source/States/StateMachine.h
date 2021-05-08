@@ -34,9 +34,10 @@ private:
 
 
 template<class T>
-StateMachine<T>::StateMachine(T* nullState)
+StateMachine<T>::StateMachine(T* nullState) : newState(nullptr), isAdding(false), isRemoving(false), isReplacing(false)
 {
 	states.push(nullState);
+
 }
 
 
