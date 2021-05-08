@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Events/Dispatcher.h"
+#include "Debug/PerformanceProfiler.h"
 
 class AIPathMap;
 class Enemy;
@@ -18,8 +19,7 @@ public:
 	void addMap(const Map* map);
 	AIPathMap* popMap();
 
-	void clearCostMaps();
-
+	void updatePath(Enemy* enemy) const;
 	void updatePaths(const EnemyList& enemies, float dt);
 
 	void updateAIPathCostMap(const EnemyList& enemies);
@@ -35,15 +35,20 @@ public:
 
 
 private:
+
+	void clearCostMaps();
+
 	int calculatePathingLimit(int minimunFrameCount, float dt);
 	Vector2D<int> getCalculationIndexRange(const EnemyList& enemies);
 
+	PerformanceProfiler profiler;
 
 private:
 	std::vector<AIPathMap*> mPathMaps;
 	
 	Vector2D<int> mCalculationIndexRange;
 
+	// NOTE: below members not currently in use
 	// A* algorithm only builds a path upto this limit
 	int mPathLimit;
 
@@ -52,5 +57,7 @@ private:
 	int mSegmentLength;
 	int mSegmentIndex;
 };
+
+
 
 void updateEnemyPath(EnemyList enemies);

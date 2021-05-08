@@ -7,6 +7,8 @@
 #include "Actors/Enemies/Enemy.h"
 #include "Actors/Enemies/EnemyStates/EnemyRun.h"
 
+#include <algorithm>
+
 
 #if DRAW_AI_PATH_COSTMAP
 #include "Debug/DebugDraw.h"
@@ -29,6 +31,8 @@ AIPathingController::AIPathingController() : mPathLimit(-1)
 
 	mSegmentLength = 200;
 	mSegmentIndex = 0;
+
+	profiler.mName = "Cost map";
 }
 
 
@@ -54,6 +58,7 @@ void AIPathingController::addMap(const Map* map)
 	mPathMaps.push_back(pathMap);
 }
 
+
 AIPathMap* AIPathingController::popMap()
 {
 	AIPathMap* pathMap = mPathMaps[0];
@@ -70,42 +75,71 @@ AIPathMap* AIPathingController::popMap()
 }
 
 
+// NOTE: Function not currently used
 void AIPathingController::updatePaths(const EnemyList& enemies, float dt)
 {
+	profiler.restart();
 	updateAIPathCostMap(enemies);
+	profiler.saveToAverage();
 
-	// split into two lists
-	int segment = enemies.size() / 4;
-
-	const int threads = 4;
-	EnemyList lists[threads];
-
-	for (int i = 0; i < threads; i++)
+	bool multithread = false;
+	if (multithread)
 	{
-		EnemyList list;
-		for (int j = segment * i; j < segment * (i + 1); j++)
+
+		// split into two lists
+		const int threads = 4;
+		int segment = enemies.size() / threads;
+		EnemyList lists[threads];
+
+		for (int i = 0; i < threads; i++)
 		{
-			list.push_back(enemies[j]);
+			EnemyList list;
+			for (int j = segment * i; j < segment * (i + 1); j++)
+			{
+				list.push_back(enemies[j]);
+			}
+
+			lists[i] = list;
 		}
 
-		lists[i] = list;
+		ASSERT(Error, threads == 4, "If you change the number of threads, made sure you edit the below (or just make it variable)\n");
+		std::thread thread1(updateEnemyPath, lists[0]);
+		std::thread thread2(updateEnemyPath, lists[1]);
+		std::thread thread3(updateEnemyPath, lists[2]);
+		std::thread thread4(updateEnemyPath, lists[3]);
+
+		thread1.join();
+		thread2.join();
+		thread3.join();
+		thread4.join();
+	}
+	else
+	{
+		updateEnemyPath(enemies);
 	}
 
-	std::thread thread1(updateEnemyPath, lists[0]);
-	std::thread thread2(updateEnemyPath, lists[1]);
-	std::thread thread3(updateEnemyPath, lists[2]);
-	std::thread thread4(updateEnemyPath, lists[3]);
+	//profiler.displayAverageTimeEvery(2.0f);
+}
 
-	thread1.join();
-	thread2.join();
-	thread3.join();
-	thread4.join();
+void AIPathingController::updatePath(Enemy* enemy) const
+{
+	if (enemy->state() == EnemyState::Run)
+	{
+		EnemyRun& runState = static_cast<EnemyRun&>(enemy->getStateMachine()->getActiveState());
+
+		// No need to update anything if its about to attack
+		if (enemy->hasTarget() && !runState.canAttack())
+		{
+			runState.updatePath(-1);
+		}
+	}
 }
 
 
 void updateEnemyPath(EnemyList enemies)
 {
-	for (int i = 0; i < enemies.size(); i++)
+	const int count = enemies.size();
+	for (int i = 0; i < count; i++)
 	{
 		Enemy* enemy = enemies[i];
 		if (enemy->state() == EnemyState::Run)
@@ -193,10 +227,12 @@ void AIPathingController::clearCostMaps()
 }
 
 
+// For a given index populate the cost map with the following values (index = center = enemy position)
+//		2  2  2
+//		2  6  2	
+//		2  2  2
 void AIPathingController::updateAIPathCostMap(const EnemyList& enemies)
 {
-	TimerF timer;
-	timer.start();
 	clearCostMaps();
 
 	for (int i = 0; i < enemies.size(); i++)

@@ -59,4 +59,7 @@ private:
 	LocalDispatcher mEvents;
 
 	std::vector<Enemy*> mActiveEnemies;
+
 };
+
+void updateEnemies(EnemyList enemies, float dt, const AIPathingController* pathing);

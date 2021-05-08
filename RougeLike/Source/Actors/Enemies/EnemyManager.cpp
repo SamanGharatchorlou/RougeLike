@@ -8,6 +8,8 @@
 #include "Enemy.h"
 #include "Actors/Enemies/EnemyStates/EnemyAttack.h"
 
+#include <thread>
+
 
 EnemyManager::EnemyManager() : mEnvironment(nullptr) { }
 
@@ -82,21 +84,74 @@ void EnemyManager::fastUpdate(float dt)
 
 void EnemyManager::slowUpdate(float dt)
 {
-	for (std::vector<Enemy*>::iterator iter = mActiveEnemies.begin(); iter != mActiveEnemies.end(); iter++)
+	bool multithread = false;
+	if (multithread)
 	{
-		Enemy* enemy = *iter;
+		clearDead();
+		mPathing.updateAIPathCostMap(mActiveEnemies);
 
-		// Update enemies
-		enemy->slowUpdate(dt);
+		// split into two lists
+		const int threads = 4;
+		int segment = mActiveEnemies.size() / threads;
+		EnemyList lists[threads];
 
-		// Handle enemy messages
-		while (enemy->events().hasEvent())
-			mEvents.push(enemy->events().pop());
+		for (int i = 0; i < threads; i++)
+		{
+			EnemyList list;
+			for (int j = segment * i; j < segment * (i + 1); j++)
+			{
+				list.push_back(mActiveEnemies[j]);
+			}
+
+			lists[i] = list;
+		}
+
+		ASSERT(Error, threads == 4, "If you change the number of threads, made sure you edit the below (or just make it variable)\n");
+		std::thread thread1(updateEnemies, lists[0], dt, &mPathing);
+		std::thread thread2(updateEnemies, lists[1], dt, &mPathing);
+		std::thread thread3(updateEnemies, lists[2], dt, &mPathing);
+		std::thread thread4(updateEnemies, lists[3], dt, &mPathing);
+
+		thread1.join();
+		thread2.join();
+		thread3.join();
+		thread4.join();
+
+		DebugPrint(Log, "Enemy events not currently handled in multithreaded mode\n");
+
+		mSpawning.spawnUnspawnedEnemies(this);
 	}
+	else
+	{
+		clearDead();
+		mPathing.updateAIPathCostMap(mActiveEnemies);
 
-	clearDead();
-	mPathing.updatePaths(mActiveEnemies, dt);
-	mSpawning.spawnUnspawnedEnemies(this);
+		for (std::vector<Enemy*>::iterator iter = mActiveEnemies.begin(); iter != mActiveEnemies.end(); iter++)
+		{
+			Enemy* enemy = *iter;
+
+			// Update enemies
+			enemy->slowUpdate(dt);
+			mPathing.updatePath(enemy);
+
+			// Handle enemy messages
+			while (enemy->events().hasEvent())
+				mEvents.push(enemy->events().pop());
+		}
+
+		mSpawning.spawnUnspawnedEnemies(this);
+	}
+}
+
+
+
+void updateEnemies(EnemyList enemies, float dt, const AIPathingController* pathing)
+{
+	for (Enemy* enemy : enemies)
+	{
+		enemy->slowUpdate(dt);
+		pathing->updatePath(enemy);
+	}
 }
 
 
