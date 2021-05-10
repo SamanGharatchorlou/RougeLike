@@ -199,6 +199,11 @@ public:
 		return (x * x) + (y * y);
 	}
 
+	inline T magnitude() const
+	{
+		return std::sqrt((x * x) + (y * y));
+	}
+
 	inline T dotProduct(Vector2D<T> vector) const
 	{
 		return(x * vector.x + y * vector.y);

@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Player.h"
 
+#include "Game/Environment.h"
+
 #include "Game/Camera/Camera.h"
 #include "Input/InputManager.h"
 #include "Audio/AudioManager.h"
@@ -20,7 +22,6 @@
 #endif
 
 
-
 Player::Player() :
 	mWeapon(nullptr),
 	mMapLevel(0),
@@ -34,8 +35,8 @@ void Player::init()
 {
 	mStepTimer.start();
 
-	mHP = static_cast<Health*>(getAttribute(AttributeType::Health));
 	// Dont want this to trigger before the game screen
+	mHP = static_cast<Health*>(getAttribute(AttributeType::Health));
 	mHP->changedHandled();
 }
 
@@ -78,7 +79,21 @@ void Player::fastUpdate(float dt)
 	mWeapon->setPosition(rect().Center());
 	mWeapon->fastUpdate(dt);
 
-	mStateMachine.getActiveState().fastUpdate(dt);
+	// Handle
+	std::vector<Collider*> colliders = mWeapon->getColliders();
+
+	for (int i = 0; i < colliders.size(); i++)
+	{
+		VectorF position = colliders[i]->rect().Center();
+		const Map* map = getMap(position);
+
+		if (mWeaponWallCollisions.doesCollide(colliders[i]->scaledRect(), map))
+		{
+			colliders[i]->setDidHit(true);
+		}
+	}
+
+	mStateMachine.getActiveState().fastUpdate(dt); // dont need?
  }
 
 
@@ -89,11 +104,20 @@ void Player::slowUpdate(float dt)
 	mWeapon->slowUpdate(dt);
 
 	AudioManager* audio = AudioManager::Get();
-	if (mWeapon->getCollider()->didHit() && !audio->isPlaying(mWeapon->hitSoundLabel(), mWeapon))
+
+	std::vector<Collider*> colliders = mWeapon->getColliders();
+	for (int i = 0; i < colliders.size(); i++)
 	{
-		audio->pushEvent(AudioEvent(AudioEvent::Stop, mWeapon->missSoundLabel(), mWeapon));
-		audio->pushEvent(AudioEvent(AudioEvent::Play, mWeapon->hitSoundLabel(), mWeapon));
+		Collider* collider = colliders[i];
+
+		if (collider->didHit() && !audio->isPlaying(mWeapon->hitSoundLabel(), mWeapon))
+		{
+			audio->pushEvent(AudioEvent(AudioEvent::Stop, mWeapon->missSoundLabel(), mWeapon));
+			audio->pushEvent(AudioEvent(AudioEvent::Play, mWeapon->hitSoundLabel(), mWeapon));
+			break;
+		}
 	}
+
 
 	updateMapInfo();
 
@@ -128,6 +152,12 @@ void Player::clear()
 Weapon* Player::weapon()
 {
 	return mWeapon;
+}
+
+
+const Map* Player::getMap(VectorF position) const
+{
+	return mEnvironment->map(position);
 }
 
 
@@ -186,19 +216,16 @@ void Player::meleeAttack()
 }
 
 
-
-Collider* Player::attackingCollider()
-{
-	return mWeapon->getCollider();
-}
-
-
 void Player::resetColliders()
 {
 	mCollider.reset();
 
-	if(mWeapon->getCollider())
-		mWeapon->getCollider()->reset();
+	std::vector<Collider*> colliders = mWeapon->getColliders();
+	for (int i = 0; i < colliders.size(); i++)
+	{
+		Collider* collider = colliders[i];
+		collider->reset();
+	}
 }
 
 

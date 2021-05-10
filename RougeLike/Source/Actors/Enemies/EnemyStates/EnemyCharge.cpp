@@ -80,7 +80,7 @@ void EnemyCharge::exit()
 
 void EnemyCharge::initProperties()
 {
-	mWallCollisions.setActor(mEnemy);
+	mWallCollisions.setCollider(mEnemy->collider());
 	mEnemy->collider()->setDidHit(false);
 
 	mEndAttack = false;

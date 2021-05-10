@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyCharge.cpp" />
     <ClCompile Include="Source\Actors\Enemies\Types\Orc.cpp" />
+    <ClCompile Include="Source\Actors\Player\Character.cpp" />
     <ClCompile Include="Source\Actors\Player\PlayerStates\PlayerAttackState.cpp" />
     <ClCompile Include="Source\Actors\Player\PlayerStates\PlayerDeadState.cpp" />
     <ClCompile Include="Source\AI\Pathing\AIPathingController.cpp" />
@@ -22,6 +23,7 @@
     <ClCompile Include="Source\Animations\Animation.cpp" />
     <ClCompile Include="Source\Audio\Channel.cpp" />
     <ClCompile Include="Source\Collisions\Colliders\QuadCollider.cpp" />
+    <ClCompile Include="Source\Collisions\WeaponCollisionTracker.cpp" />
     <ClCompile Include="Source\Debug\NetworkDebugging.cpp" />
     <ClCompile Include="Source\Debug\PerformanceProfiler.cpp" />
     <ClCompile Include="Source\Map\TrapManager.cpp" />
@@ -32,7 +34,9 @@
     <ClCompile Include="Source\Objects\Abilities\AbilityClasses\MeleeAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHandler.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHotKey.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\BasicAttackAbility.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\MeleeAttackAbility.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\LightningAbility.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\RangedAttackAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\SlashAbility.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\ArmorEffect.cpp" />
     <ClCompile Include="Source\Objects\Effects\EffectTypes\InvunerabilityEffect.cpp" />
@@ -72,7 +76,6 @@
     <ClCompile Include="Source\Objects\Abilities\AbilityClasses\Ability.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityClasses\RangedAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityClasses\SelfAbility.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\AbilityActivator.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHotKeyManager.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityManager.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\ArmorAbility.cpp" />
@@ -131,6 +134,8 @@
     <ClCompile Include="Source\UI\Screens\CharacterSelectionScreen.cpp" />
     <ClCompile Include="Source\Utilities\Buffer.cpp" />
     <ClCompile Include="Source\Utilities\Shapes\Formation.cpp" />
+    <ClCompile Include="Source\Weapons\Magic\MagicProjectile.cpp" />
+    <ClCompile Include="Source\Weapons\Magic\MagicWeapon.cpp" />
     <ClCompile Include="Source\Weapons\Melee\MeleeWeapon.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyAlert.cpp" />
     <ClCompile Include="Source\Actors\Enemies\EnemyStates\EnemyAttack.cpp" />
@@ -197,6 +202,7 @@
   <ItemGroup>
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyCharge.h" />
     <ClInclude Include="Source\Actors\Enemies\Types\Orc.h" />
+    <ClInclude Include="Source\Actors\Player\Character.h" />
     <ClInclude Include="Source\Actors\Player\PlayerStates\PlayerAttackState.h" />
     <ClInclude Include="Source\Actors\Player\PlayerStates\PlayerDeadState.h" />
     <ClInclude Include="Source\Actors\Player\PlayerStates\PlayerState.h" />
@@ -207,6 +213,7 @@
     <ClInclude Include="Source\Animations\Animation.h" />
     <ClInclude Include="Source\Audio\Channel.h" />
     <ClInclude Include="Source\Collisions\Colliders\QuadCollider.h" />
+    <ClInclude Include="Source\Collisions\WeaponCollisionTracker.h" />
     <ClInclude Include="Source\Debug\NetworkDebugging.h" />
     <ClInclude Include="Source\Debug\PerformanceProfiler.h" />
     <ClInclude Include="Source\Map\TrapManager.h" />
@@ -217,8 +224,10 @@
     <ClInclude Include="Source\Objects\Abilities\AbilityClasses\MeleeAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityHandler.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityHotKey.h" />
-    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\BasicAttackAbility.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\MeleeAttackAbility.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\LightningAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\SlashAbility.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\RangedAttackAbility.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\ArmorEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\InvunerabilityEffect.h" />
     <ClInclude Include="Source\Objects\Effects\EffectTypes\KnockbackStunEffect.h" />
@@ -259,7 +268,6 @@
     <ClInclude Include="Source\Objects\Abilities\AbilityClasses\AbilityStates.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityClasses\RangedAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityClasses\SelfAbility.h" />
-    <ClInclude Include="Source\Objects\Abilities\AbilityActivator.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityManager.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityHotKeyManager.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\ArmorAbility.h" />
@@ -280,6 +288,7 @@
     <ClInclude Include="Source\UI\Screens\PopupScreen.h" />
     <ClInclude Include="Source\UI\ScreenController.h" />
     <ClInclude Include="Source\UI\ScreenTypes.h" />
+    <ClInclude Include="Source\Utilities\LinkedList.h" />
     <ClInclude Include="Source\Utilities\Maps\AttributeMap.h" />
     <ClInclude Include="Source\Utilities\Maps\DataMap.h" />
     <ClInclude Include="Source\Utilities\Maps\DecorMap.h" />
@@ -336,6 +345,8 @@
     <ClInclude Include="Source\Utilities\Queue.h" />
     <ClInclude Include="Source\Utilities\RingBuffer.h" />
     <ClInclude Include="Source\Utilities\UniqueQueue.h" />
+    <ClInclude Include="Source\Weapons\Magic\MagicProjectile.h" />
+    <ClInclude Include="Source\Weapons\Magic\MagicWeapon.h" />
     <ClInclude Include="Source\Weapons\Melee\MeleeWeapon.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyAlert.h" />
     <ClInclude Include="Source\Actors\Enemies\EnemyStates\EnemyAttack.h" />

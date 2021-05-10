@@ -14,6 +14,7 @@ public:
 	bool doesIntersect(Collider* collider) const override;
 
 	const Quad2D<float>& getQuad() const { return *mQuad;}
+	RectF scaledRect() const;
 
 	float xMin() const override;
 	float xMax() const override;

@@ -30,9 +30,9 @@ bool Orc::canAttck() const
 	// If we attack will we hit into a wall?
 	RectF phantonRect = scaledRect();
 	WallCollisionTracker collisions;
-	collisions.setRect(&phantonRect);
+	collisions.setCollider(&mCollider);
 
-	// Im a stupid orc and will only check if there's a wall between me and my target... not behind
+	// Im a stupid orc and will only check if there's a wall between me and my target... and not behind my target
 	float travelDistance = std::min(targetDistance, maxDistance);
 	float delta = 0.1f;
 

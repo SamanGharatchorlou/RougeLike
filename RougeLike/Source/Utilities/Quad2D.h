@@ -1,8 +1,10 @@
 #pragma once
 
 #include "Vector2D.h"
+#include "Rect.h"
 #include "Helpers.h"
 
+// TODO: this can be inlined, like vector
 template<class T>
 class Quad2D
 {
@@ -46,19 +48,87 @@ public:
 	Point normal0() const;
 	Point normal1() const;
 
+	T width() const;
+	T height() const;
+
+	void setSize(Vector2D<T> size);
+
+	void setCenter(Point center);
+	void setLeftCenter(Point leftCenter);
+
 	void translate(Vector2D<T> movement);
 
+	Point center() const;
 	Point rightCenter() const;
 	Point topCenter() const;
 	Point botCenter() const;
+	Point leftCenter() const;
 
-	Point Center() const;
+	Rect<T> getRect() const;
 
 
 private:
 	std::vector<Point> points;
 };
 
+template<class T>
+Rect<T> Quad2D<T>::getRect() const
+{
+	Rect<T> rect;
+	rect.SetSize(width(), height());
+	rect.SetCenter(center());
+	return rect;
+}
+
+
+template<class T>
+void Quad2D<T>::setSize(Vector2D<T> size) // relative to point 0
+{
+	Vector2D<T> widthDirection = (points[1] - points[0]).normalise();
+	Vector2D<T> heightDirection = (points[3] - points[0]).normalise();
+
+	// point 0 doesn't move
+
+	// set point 1
+	points[1] = points[0] + size.x * widthDirection;
+
+	// set point2
+	points[2] = points[1] + size.y * heightDirection;
+
+	// set point 3
+	points[3] = points[2] + size.x * widthDirection;
+}
+
+
+template<class T>
+T Quad2D<T>::width() const
+{
+	return (points[0] - points[1]).magnitude();
+}
+
+template<class T>
+T Quad2D<T>::height() const
+{
+	return (points[1] - points[2]).magnitude();
+}
+
+
+template<class T>
+void Quad2D<T>::setLeftCenter(Point newLeftCenter)
+{
+	Point currentLeftCenter = leftCenter();
+	Vector2D<T> offset = newLeftCenter - currentLeftCenter;
+	translate(offset);
+}
+
+
+template<class T>
+void Quad2D<T>::setCenter(Point newCenter)
+{
+	Point currentCenter = center();
+	Vector2D<T> offset = newCenter - currentCenter;
+	translate(offset);
+}
 
 
 template<class T>
@@ -72,7 +142,7 @@ void Quad2D<T>::translate(Vector2D<T> movement)
 
 
 template<class T>
-Vector2D<T> Quad2D<T>::Center() const
+Vector2D<T> Quad2D<T>::center() const
 {
 	Point sum;
 	for (int i = 0; i < sides(); i++)
@@ -84,12 +154,19 @@ Vector2D<T> Quad2D<T>::Center() const
 }
 
 
-
 template<class T>
 Vector2D<T> Quad2D<T>::rightCenter() const
 {
 	return (points.at(1) + points.at(2)) / 2.0;
 }
+
+
+template<class T>
+Vector2D<T> Quad2D<T>::leftCenter() const
+{
+	return (points.at(3) + points.at(0)) / 2.0;
+}
+
 
 template<class T>
 Vector2D<T> Quad2D<T>::topCenter() const

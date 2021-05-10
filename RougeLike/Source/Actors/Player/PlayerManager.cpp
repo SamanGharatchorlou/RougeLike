@@ -16,7 +16,7 @@ PlayerManager::~PlayerManager() { clear(); }
 
 void PlayerManager::init(Environment* environment, Screen* gameScreen)
 {
-	mWallCollisions.setActor(&mPlayer);
+	mWallCollisions.setCollider(&mPlayer.mCollider);
 	mWeaponStash.load();
 
 	mPlayer.set(environment);

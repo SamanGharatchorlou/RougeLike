@@ -1,14 +1,18 @@
 #pragma once
 
 #include "Animations/Animator.h"
-#include "Collisions/Colliders/EffectCollider.h"
+#include "Collisions/Colliders/Collider.h"
 
 class MagicWeaponData;
 
 class MagicProjectile
 {
+	friend class MagicWeapon;
+
 public:
-	MagicProjectile(const MagicWeaponData* data);
+	MagicProjectile();
+
+	void init(const MagicWeaponData* data);
 
 	void fire(VectorF position, VectorF direction);
 
@@ -16,12 +20,16 @@ public:
 
 	void render() const;
 
+	void reset();
+
 private:
 	Animator mAnimator;
 
-	EffectCollider mCollider;
+	Collider mCollider;
 	RectF mRect;
 
 	float mSpeed;
 	VectorF mDirection;
+
+	bool mDeactivated;
 };

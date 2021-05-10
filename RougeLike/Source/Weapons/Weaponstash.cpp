@@ -49,7 +49,7 @@ Weapon* WeaponStash::getNewWeapon(WeaponType type) const
 
 	if (type == WeaponType::Melee)
 		newWeapon = new MeleeWeapon;
-	else if (type == WeaponType::Ranged)
+	else if (type == WeaponType::Magic)
 		newWeapon = new MagicWeapon;
 	else
 		DebugPrint(Warning, "Invalid Weapon type %d\n", (int)type);

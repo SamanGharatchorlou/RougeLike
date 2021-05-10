@@ -3,17 +3,19 @@
 class Actor;
 class Map;
 class MapTile;
-
+class Collider;
 
 class WallCollisionTracker
 {
 public:
-	WallCollisionTracker() : mRect(nullptr), mActor(nullptr) { };
+	WallCollisionTracker() : mCollider(nullptr) { };
 
-	void setActor(const Actor* actor) { mActor = actor; mRect = nullptr; }
-	void setRect(const RectF* rect) { mRect = rect; mActor = nullptr; }
+	void setCollider(const Collider* collider) { mCollider = collider; }
+	//void setRect(const RectF* rect) { mRect = rect; }
 
 	VectorF allowedVelocity(const Map* map, VectorF velocity, float dt);
+
+	bool doesCollide(RectF rect, const Map* map) const;
 
 
 private:
@@ -29,8 +31,9 @@ private:
 	bool cannotMove(const MapTile* tile) const;
 
 private:
-	const RectF* mRect;
-	const Actor* mActor;
+	// NOTE: these have been hacked in, we only need one
+	const Collider* mCollider;
+	//const RectF* mRect;
 
 	RectF mWallScaledRect;
 };

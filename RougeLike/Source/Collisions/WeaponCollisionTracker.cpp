@@ -4,32 +4,43 @@
 #include "Weapons/Weapon.h"
 #include "Actors/Actor.h"
 
+
+WeaponCollisionTracker::WeaponCollisionTracker() : mEffectPool(nullptr), mWeapon(nullptr), mTargets(nullptr)
+{
+
+}
+
+
 void WeaponCollisionTracker::checkCollisions()
 {
 	if (mWeapon->isAttacking())
 	{
-		Collider* weaponCollider = mWeapon->getCollider();
-
-		std::vector<int> overlapIndexes = broadPhaseIndexes(weaponCollider, mTargets);
-		for (int i = 0; i < overlapIndexes.size(); i++)
+		std::vector<Collider*> colliders = mWeapon->getColliders();
+		for (int j = 0; j < colliders.size(); j++)
 		{
-			Actor* target = mTargets->at(overlapIndexes[i]);
-			Collider* targetCollider = target->collider();
-			if (weaponCollider->doesIntersect(targetCollider))
+			Collider* weaponCollider = colliders[j];
+
+			std::vector<int> overlapIndexes = broadPhaseIndexes(weaponCollider, mTargets);
+			for (int i = 0; i < overlapIndexes.size(); i++)
 			{
-				weaponCollider->setDidHit(true);
-				targetCollider->setGotHit(true);
-
-				if (!mHitTargets.contains(target))
+				Actor* target = mTargets->at(overlapIndexes[i]);
+				Collider* targetCollider = target->collider();
+				if (weaponCollider->doesIntersect(targetCollider))
 				{
-					std::vector<Effect*> effects = mWeapon->getEffects(mEffectPool);
-
-					for (Effect* effect : effects)
+					if (!mHitTargets.contains(target))
 					{
-						target->addEffect(effect);
-					}
+						weaponCollider->setDidHit(true);
+						targetCollider->setGotHit(true);
 
-					mHitTargets.push(target);
+						std::vector<Effect*> effects = mWeapon->getEffects(mEffectPool);
+
+						for (Effect* effect : effects)
+						{
+							target->addEffect(effect);
+						}
+
+						mHitTargets.push(target);
+					}
 				}
 			}
 		}

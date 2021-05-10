@@ -14,7 +14,23 @@
 #include "Audio/AudioManager.h"
 
 
-SmashAbility::SmashAbility(Texture* hammerTexture, RectF hammerRect) : mHammerTexture(hammerTexture), mHammerRect(hammerRect) { }
+SmashAbility::SmashAbility(Texture* hammerTexture, RectF hammerRect)
+{
+	mHammer.texture = hammerTexture;
+	float w = hammerRect.Width();
+	float h = hammerRect.Height();
+	mHammer.quad = Quad2D<float>(hammerRect);
+	mHammer.collider.init(&mHammer.quad);
+
+	mHammer.quad.rotate(45, mHammer.quad.center());
+
+	float wid = mHammer.quad.width();
+	float hig = mHammer.quad.height();
+
+
+	int a = 4;
+
+}
 
 
 void SmashAbility::handleInput(const InputManager* input)
@@ -23,7 +39,7 @@ void SmashAbility::handleInput(const InputManager* input)
 	VectorF cursorPos = input->cursorPosition() + cameraPosition;
 
 	mTargetPosition = cursorPos;
-	mHammerDirection = (mTargetPosition - mCaster->position()).normalise();
+	mHammer.direction = (mTargetPosition - mCaster->position()).normalise();
 
 	updateSelectionQuad();
 }
@@ -34,10 +50,10 @@ void SmashAbility::init()
 	Texture* rangeCircle = TextureManager::Get()->getTexture("RangeCircle", FileManager::Image_UI);
 	mRangeCircle = rangeCircle;
 
-	mCollider = new QuadCollider(&mQuad);
+	mCollider = new QuadCollider(&mHammer.quad);
 	mSelectionCollider.init(&mSelectionQuad);
 
-	mWallCollisions.setRect(&mHammerRect);
+	mWallCollisions.setCollider(&mHammer.collider);
 }
 
 
@@ -48,11 +64,11 @@ void SmashAbility::activate()
 	mRect.SetCenter(mTargetPosition);
 
 	// Hammer logic
-	mHammerRect.SetCenter(mCaster->position());
+	mHammer.quad.setCenter(mCaster->position());
 
 	// set quad
-	mQuad = Quad2D<float>(mHammerRect);
-	mQuad.rotate(getRotation(mHammerDirection) + 90.0f, mHammerRect.Center());
+	//mHammer.quad = Quad2D<float>(mHammer.rect);
+	mHammer.quad.rotate(getRotation(mHammer.direction) + 90.0f, mHammer.quad.center());
 
 	// Set displacement source from the throw position
 	mProperties.addXYPosition(mCaster->position());
@@ -67,9 +83,9 @@ void SmashAbility::fastUpdate(float dt)
 {
 	if (!mReachedTarget)
 	{
-		VectorF velocity = mHammerDirection * mProperties[PropertyType::Velocity] * dt;
-		mHammerRect = mHammerRect.Translate(velocity);
-		mQuad.translate(velocity);
+		VectorF velocity = mHammer.direction * mProperties[PropertyType::Velocity] * dt;
+		//mHammer.rect = mHammer.rect.Translate(velocity);
+		mHammer.quad.translate(velocity);
 	}
 }
 
@@ -78,10 +94,10 @@ void SmashAbility::slowUpdate(float dt)
 {
 	mAnimator.slowUpdate(dt);
 
-	VectorF currentDirection = (mTargetPosition - mHammerRect.Center()).normalise();
-	bool hasPassedTarget = !((currentDirection.x > 0 == mHammerDirection.x > 0) && (currentDirection.y > 0 == mHammerDirection.y > 0));
+	VectorF currentDirection = (mTargetPosition - mHammer.quad.center()).normalise();
+	bool hasPassedTarget = !((currentDirection.x > 0 == mHammer.direction.x > 0) && (currentDirection.y > 0 == mHammer.direction.y > 0));
 
-	VectorF velocity = mHammerDirection * mProperties[PropertyType::Velocity] * dt;
+	VectorF velocity = mHammer.direction * mProperties[PropertyType::Velocity] * dt;
 	// increase the velocity here so we can look ahead a little
 	velocity = mWallCollisions.allowedVelocity(mCaster->currentMap(), velocity * 5.0f, dt);
 	// BUG: if the framerate is high dt can be 0?? this will end it early
@@ -104,14 +120,14 @@ void SmashAbility::slowUpdate(float dt)
 void SmashAbility::explode()
 {
 	mReachedTarget = true;
-	mTargetPosition = mHammerRect.Center();
+	mTargetPosition = mHammer.quad.center();
 	mRect.SetCenter(mTargetPosition);
 
 	mAnimator.start();
 	Camera::Get()->getShake()->addTrauma(140);
 
 	// Final explosion uses mRect not the hammer rect for collision detection
-	mQuad = Quad2D<float>(mRect);
+	//mHammer.quad = Quad2D<float>(mRect);
 	mHitList.clear();
 
 	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, "Explosion", mCaster));
@@ -136,20 +152,29 @@ void SmashAbility::render()
 		mCollider->renderCollider();
 #endif
 
-		RectF renderRect = mRect;
-		renderRect.SetSize(mRect.Size() * 1.5f);
-		renderRect.SetCenter(mRect.Center());
-		renderRect = Camera::Get()->toCameraCoords(renderRect);
-
-		mAnimator.render(renderRect);
-
 		// while hammer is flying
 		if (!mReachedTarget)
 		{
-			RectF hammerRect = Camera::Get()->toCameraCoords(mHammerRect);
-			VectorF aboutPoint = hammerRect.Size() / 2.0f;
-			mHammerTexture->render(hammerRect, getRotation(mHammerDirection) + 90.0f, aboutPoint);
+			Quad2D<float> hammerQuad = Camera::Get()->toCameraCoords(mHammer.quad); // NOTE: is this not working?
+			//VectorF aboutPoint = hammerRect.Size() / 2.0f;
+
+			RectF hammerRect;
+			hammerRect.SetSize(hammerQuad.height(), hammerQuad.width());
+			hammerRect.SetCenter(hammerQuad.center());
+
+			mHammer.texture->render(hammerRect, getRotation(mHammer.direction) + 90.0f, hammerQuad.center());
 		}
+		else
+		{
+			RectF renderRect = mRect;
+			renderRect.SetSize(mRect.Size() * 1.5f);
+			renderRect.SetCenter(mRect.Center());
+			renderRect = Camera::Get()->toCameraCoords(renderRect);
+
+			mAnimator.render(renderRect);
+		}
+
+		printf("Hammer size %f, %f\n", mHammer.quad.width(), mHammer.quad.height());
 	}
 }
 
@@ -202,14 +227,15 @@ void SmashAbility::applyExplosionEffects(Actor* actor, EffectPool* effectPool)
 
 void SmashAbility::updateSelectionQuad()
 {
-	mHammerRect.SetCenter(mCaster->position());
-	RectF rect = mHammerRect;
+	//mHammer.quad.setCenter(mCaster->position());
 
-	float travelDistance = distance(mHammerRect.Center(), mTargetPosition);
-	VectorF size(travelDistance, rect.Height());
+	float travelDistance = distance(mCaster->position(), mTargetPosition);
+	VectorF size(travelDistance, mHammer.quad.height());
+
+	RectF rect;
 	rect.SetSize(size);
-	rect.SetLeftCenter(mHammerRect.Center());
+	rect.SetLeftCenter(mCaster->position());
 
 	mSelectionQuad = Quad2D<float>(rect);
-	mSelectionQuad.rotate(getRotation(mHammerDirection), mHammerRect.Center());
+	mSelectionQuad.rotate(getRotation(mHammer.direction), mCaster->position());
 }

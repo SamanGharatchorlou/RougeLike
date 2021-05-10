@@ -24,7 +24,7 @@ public:
 	bool contains(VectorF position);
 
 	const RectF rect() const { return *mRect; }
-	RectF scaledRect() const;
+	virtual RectF scaledRect() const;
 
 	const Collider* getOtherCollider() const { return mOtherCollider; }
 	Collider* getOtherCollider() { return mOtherCollider; }

@@ -18,8 +18,6 @@ created yet so cannot call its derived members version of the function.
 // --- Base Weapon Data --- //
 void WeaponData::fillData(const WeaponRawData& data)
 {
-
-
 	populateBaseProperties(data.properties);
 	fillProperties(data.properties);
 	effectData = data.effectData;
@@ -72,6 +70,8 @@ void MagicWeaponData::copy(const WeaponData* data)
 
 	const MagicWeaponData* magicData = static_cast<const MagicWeaponData*>(data);
 	animator = magicData->animator;
+
+	projectileColliderScale = magicData->projectileColliderScale;
 }
 
 
@@ -82,5 +82,7 @@ void MagicWeaponData::fillProperties(const StringMap& properties)
 
 	AnimationReader reader;
 	animator = reader.buildAnimator(animationNode);
+
+	projectileColliderScale = properties.getVector("ColliderScaleX", "ColliderScaleY");
 }
 

@@ -1,12 +1,15 @@
 #pragma once
 
+
 class Actor;
 class Weapon;
 class EffectPool;
 
+
 class WeaponCollisionTracker
 {
 public:
+	WeaponCollisionTracker();
 	void init(EffectPool* effectPool) { mEffectPool = effectPool; }
 	void linkTargets(std::vector<Actor*>* targets) { mTargets = targets; }
 	void linkWeapon(Weapon* weapon) { mWeapon = weapon; }
@@ -22,4 +25,5 @@ private:
 	Weapon* mWeapon;
 
 	Queue<Actor*> mHitTargets;
+
 };

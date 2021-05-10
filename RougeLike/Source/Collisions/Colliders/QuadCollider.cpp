@@ -58,6 +58,12 @@ bool QuadCollider::doesIntersect(Collider* collider) const
 }
 
 
+RectF QuadCollider::scaledRect() const
+{
+	return mQuad->getRect();
+}
+
+
 float QuadCollider::xMin() const
 {
 	return mQuad->xMin();

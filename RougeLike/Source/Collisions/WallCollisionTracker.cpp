@@ -5,6 +5,8 @@
 #include "Actors/Actor.h"
 
 
+
+
 VectorF WallCollisionTracker::allowedVelocity(const Map* map, VectorF velocity, float dt) 
 {
 	if (braodPhaseCollision(map, velocity, dt))
@@ -55,6 +57,23 @@ bool WallCollisionTracker::braodPhaseCollision(const Map* map, VectorF& velocity
 	for (int i = 0; i < 4; i++)
 	{
 		if (tiles[i] && tiles[i]->is(CollisionTile::Floor))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
+// Similar to a broad phase, however we don't really care about the velocity and predicting the next frame position
+// This is a simple version, i.e. is it on a wall now?
+bool WallCollisionTracker::doesCollide(RectF rect, const Map* map) const
+{
+	const MapTile* tiles[4] = { map->tile(rect.TopLeft()), map->tile(rect.TopRight()), map->tile(rect.BotRight()), map->tile(rect.BotLeft()) };
+	for (int i = 0; i < 4; i++)
+	{
+		if (tiles[i] && tiles[i]->is(CollisionTile::Wall))
 		{
 			return true;
 		}
@@ -123,17 +142,25 @@ RectF WallCollisionTracker::wallScaledRect() const
 {
 	RectF rect;
 
-	if (mActor)
-		rect = mActor->scaledRect();
-	else if(mRect)
-		rect = *mRect;
+	if (mCollider)
+	{
+		rect = mCollider->scaledRect();
+	}
+	//else if (mRect)
+	//{
+	//	rect = *mRect;
+	//}
 	else
-		DebugPrint(Error, "No rect or actor has been set to check wall collisions for, call setActor or setRect first\n");
+	{
+		DebugPrint(Error, "No collider has been set for wall collision tracking\n");
+	}
 
-	VectorF size = rect.Size();
+	// Because of the viewing angle reduce the height of the collider by a significant amount so it looks like,
+	// The characters top can move 'over' the wall, but their feet cant.
+	VectorF size = rect.Size() * VectorF(0.7f, 0.15f);
 	VectorF botCenter = rect.BotCenter();
 
-	rect.SetSize(VectorF(size.x * 0.7f, size.y * 0.15f));
+	rect.SetSize(size);
 	rect.SetBotCenter(botCenter);
 	return rect;
 }

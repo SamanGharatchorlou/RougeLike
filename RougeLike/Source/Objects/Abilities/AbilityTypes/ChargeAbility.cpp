@@ -33,7 +33,7 @@ void ChargeAbility::activate()
 	updateQuad();
 
 	mAnimator.selectAnimation(Animation::Active);
-	mWallCollisions.setActor(mCaster);
+	mWallCollisions.setCollider(mCaster->collider());
 	setCharging(true);
 
 	Camera::Get()->getShake()->addTrauma(90);
@@ -189,7 +189,7 @@ void ChargeAbility::updateSelectionQuad()
 RectF ChargeAbility::renderRectFrontToColliderFront(const RectF& renderRect)
 {
 	Quad2D<float> revertedQuad = mQuad;
-	revertedQuad.rotate(-rotation(), revertedQuad.Center());
+	revertedQuad.rotate(-rotation(), revertedQuad.center());
 
 	// render vs collider rect size difference
 	float edgeDistance = mRect.RightPoint() - revertedQuad.rightCenter().x;

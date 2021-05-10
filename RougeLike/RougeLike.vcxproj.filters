@@ -52,7 +52,6 @@
     <ClCompile Include="Source\Collisions\WallCollisionTracker.cpp" />
     <ClCompile Include="Source\UI\Elements\UISlider.cpp" />
     <ClCompile Include="Source\Animations\AnimationReader.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\AbilityActivator.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\SmashAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\HealAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\ChargeAbility.cpp" />
@@ -159,7 +158,6 @@
     <ClCompile Include="Source\Objects\Abilities\AbilityClasses\MeleeAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityClasses\SelfAbility.cpp" />
     <ClCompile Include="Source\Actors\Player\PlayerStates\PlayerAttackState.cpp" />
-    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\BasicAttackAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityHandler.cpp" />
     <ClCompile Include="Source\Map\TrapManager.cpp" />
     <ClCompile Include="Source\UI\Elements\UISwitch.cpp" />
@@ -178,6 +176,13 @@
     <ClCompile Include="Source\Debug\NetworkDebugging.cpp" />
     <ClCompile Include="Source\Networking\NetworkUtility.cpp" />
     <ClCompile Include="Source\Networking\NetworkManager.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\LightningAbility.cpp" />
+    <ClCompile Include="Source\Weapons\Magic\MagicProjectile.cpp" />
+    <ClCompile Include="Source\Weapons\Magic\MagicWeapon.cpp" />
+    <ClCompile Include="Source\Actors\Player\Character.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\MeleeAttackAbility.cpp" />
+    <ClCompile Include="Source\Objects\Abilities\AbilityTypes\RangedAttackAbility.cpp" />
+    <ClCompile Include="Source\Collisions\WeaponCollisionTracker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -247,7 +252,6 @@
     <ClInclude Include="Source\UI\Elements\UISlider.h" />
     <ClInclude Include="Source\Events\LocalDispatcher.h" />
     <ClInclude Include="Source\Animations\AnimationReader.h" />
-    <ClInclude Include="Source\Objects\Abilities\AbilityActivator.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\SmashAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\HealAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\ChargeAbility.h" />
@@ -371,7 +375,6 @@
     <ClInclude Include="Source\Objects\Abilities\AbilityClasses\SelfAbility.h" />
     <ClInclude Include="Source\Actors\Player\PlayerStates\PlayerAttackState.h" />
     <ClInclude Include="Source\Actors\Player\PlayerStates\PlayerState.h" />
-    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\BasicAttackAbility.h" />
     <ClInclude Include="Source\Objects\Abilities\AbilityHandler.h" />
     <ClInclude Include="Source\Map\TrapManager.h" />
     <ClInclude Include="Source\UI\Elements\UISwitch.h" />
@@ -389,6 +392,14 @@
     <ClInclude Include="Source\Debug\NetworkDebugging.h" />
     <ClInclude Include="Source\Networking\NetworkUtility.h" />
     <ClInclude Include="Source\Networking\NetworkManager.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\LightningAbility.h" />
+    <ClInclude Include="Source\Weapons\Magic\MagicWeapon.h" />
+    <ClInclude Include="Source\Weapons\Magic\MagicProjectile.h" />
+    <ClInclude Include="Source\Actors\Player\Character.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\MeleeAttackAbility.h" />
+    <ClInclude Include="Source\Objects\Abilities\AbilityTypes\RangedAttackAbility.h" />
+    <ClInclude Include="Source\Collisions\WeaponCollisionTracker.h" />
+    <ClInclude Include="Source\Utilities\LinkedList.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="zlib1.dll" />

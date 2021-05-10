@@ -97,10 +97,6 @@ void MeleeWeapon::updateAimDirection(VectorF cursorPosition)
 
 void MeleeWeapon::render()
 {
-	double rotation = getRotation(mDirection);
-	SDL_RendererFlip flip = (rotation >= 0.0f && rotation < 180.0f) ? SDL_FLIP_HORIZONTAL: SDL_FLIP_NONE;
-	mMeleeData.texture->render(Camera::Get()->toCameraCoords(rect()), rotation, mAboutPoint, flip);
-
 #if TRACK_COLLISIONS
 	mCollider.renderCollider();
 #endif
@@ -112,6 +108,10 @@ void MeleeWeapon::render()
 	debugDrawQuad(mQuad, RenderColour::Blue);
 #endif
 #endif
+
+	double rotation = getRotation(mDirection) + 90.0f;
+	SDL_RendererFlip flip = (rotation >= 0.0f && rotation < 180.0f) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
+	mMeleeData.texture->render(Camera::Get()->toCameraCoords(rect()), rotation, mAboutPoint, flip);
 }
 
 
@@ -119,6 +119,10 @@ void MeleeWeapon::render()
 const BasicString& MeleeWeapon::missSoundLabel() { return mMeleeData.audioMiss(); };
 const BasicString& MeleeWeapon::hitSoundLabel() { return mMeleeData.audioHit(); };
 
+std::vector<Collider*> MeleeWeapon::getColliders() 
+{ 
+	return std::vector<Collider*>{ &mCollider };
+}
 
 
 
@@ -139,7 +143,7 @@ void MeleeWeapon::updateQuadCollider()
 	VectorF about = weaponRect.TopCenter() + VectorF(0.0f, weaponRect.Height() * 0.85f);
 
 	mQuad = Quad2D<float>(weaponRect);
-	mQuad.rotate(getRotation(mDirection), about);
+	mQuad.rotate(getRotation(mDirection) + 90.0f, about);
 }
 
 

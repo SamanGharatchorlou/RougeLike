@@ -35,12 +35,12 @@ void PlayerAttackState::slowUpdate(float dt)
 {
 	mWeapon->slowUpdate(dt);
 
-	AudioManager* audio = AudioManager::Get();
-	if (mWeapon->getCollider()->didHit() && !audio->isPlaying(mWeapon->hitSoundLabel(), mWeapon))
-	{
-		AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Stop, mWeapon->missSoundLabel(), mWeapon));
-		AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, mWeapon->hitSoundLabel(), mWeapon));
-	}
+	//AudioManager* audio = AudioManager::Get();
+	//if (mWeapon->getCollider()->didHit() && !audio->isPlaying(mWeapon->hitSoundLabel(), mWeapon))
+	//{
+	//	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Stop, mWeapon->missSoundLabel(), mWeapon));
+	//	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, mWeapon->hitSoundLabel(), mWeapon));
+	//}
 }
 
 

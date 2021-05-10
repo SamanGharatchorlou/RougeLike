@@ -83,4 +83,5 @@ private:
 
 public:
 	Animator animator;
+	VectorF projectileColliderScale;
 };

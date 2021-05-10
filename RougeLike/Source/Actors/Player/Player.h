@@ -5,6 +5,8 @@
 #include "PlayerStates/PlayerState.h"
 #include "States/State.h"
 
+#include "Collisions/WallCollisionTracker.h"
+
 
 class Weapon;
 class WeaponData;
@@ -41,10 +43,12 @@ public:
 	void meleeAttack() override; // HACK - can I remove this actor virtual function 
 
 	bool isAttacking() const override;
-	Collider* attackingCollider() override;
+	Collider* attackingCollider() override { return nullptr; } // HACK - can I remove this actor virtual function 
 	void resetColliders() override;
 
 	void addEffect(Effect* effect) override;
+
+	const Map* getMap(VectorF position) const;
 
 
 private:
@@ -69,4 +73,7 @@ private:
 	bool mControlOverride;
 
 	TimerF mStepTimer;
+
+	WallCollisionTracker mWeaponWallCollisions;
+
 };
