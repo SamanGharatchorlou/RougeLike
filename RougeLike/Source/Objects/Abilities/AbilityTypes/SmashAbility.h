@@ -42,25 +42,16 @@ private:
 private:
 	struct Hammer
 	{
-		// NOTE: I replaced all the rect instances with a Quad, technically we dont need a rect
-		// a quad should be able to handle all these things correectly... but I broke it...
 		Texture* texture;
 		Quad2D<float> quad;
-		//RectF rect;
 		VectorF direction;
 		QuadCollider collider;
 	} mHammer;
 
-	//Texture* mHammerTexture;
-	//RectF mHammerRect;
-
 	bool mReachedTarget;
 	VectorF mTargetPosition;
-	//VectorF mHammerDirection;
 
 	WallCollisionTracker mWallCollisions;
-
-	
 
 	Quad2D<float> mSelectionQuad;
 	QuadCollider mSelectionCollider;

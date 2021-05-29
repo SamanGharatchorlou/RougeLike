@@ -84,7 +84,7 @@ void Player::fastUpdate(float dt)
 
 	for (int i = 0; i < colliders.size(); i++)
 	{
-		VectorF position = colliders[i]->rect().Center();
+		VectorF position = colliders[i]->center();
 		const Map* map = getMap(position);
 
 		if (mWeaponWallCollisions.doesCollide(colliders[i]->scaledRect(), map))

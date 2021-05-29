@@ -4,7 +4,7 @@
 #include "Rect.h"
 #include "Helpers.h"
 
-// TODO: this can be inlined, like vector
+// TODO: many of these functions can be inlined, like vector
 template<class T>
 class Quad2D
 {
@@ -12,28 +12,31 @@ public:
 	using Point = Vector2D<T>;
 
 public:
-	Quad2D() { }
-	Quad2D(Point point1, Point point2, Point point3, Point point4)
+	Quad2D() : mAboutPoint(-1,-1), mRotation(0) { }
+	Quad2D(Point point1, Point point2, Point point3, Point point4) : mAboutPoint(-1, -1), mRotation(0)
 	{
-		points.push_back(point1);
-		points.push_back(point2);
-		points.push_back(point3);
-		points.push_back(point4);
+		points = { point1, point2, point3, point4 };
 	}
 
-	Quad2D(const Rect<T>& rect)
+	Quad2D(const Rect<T>& rect) : mAboutPoint(-1, -1), mRotation(0)
 	{
-		points.reserve(sides());
-		points.push_back(rect.TopLeft());
-		points.push_back(rect.TopRight());
-		points.push_back(rect.BotRight());
-		points.push_back(rect.BotLeft());
+		points = { rect.TopLeft(), rect.TopRight(), rect.BotRight(), rect.BotLeft() };
 	}
 
 	Point& operator [] (int index) { return points[index]; }
 	Point at(int index) const { return points.at(index); }
 
+	// TODO: Does it make more sense to make the about point relative to the quad i.e. point(width,height)/2 = the center. not quad.center()
+	// This is how the render function works, maybe better to keep consistancy?
+	// This would also enable the setRotationAboutPoint function to work properly, as in this state it wont work really.
+	void resetRotation();
+	void resetRotation(Point aboutpoint);
 	void rotate(double degrees, Point aboutpoint);
+	void rotate(double degrees);
+	double rotation() const { return mRotation; }
+
+	void setRotationAboutPoint(Point aboutPoint) { mAboutPoint = aboutPoint; }
+	Point aboutPoint() const { return mAboutPoint; }
 
 	int sides() const { return 4; }
 
@@ -69,7 +72,15 @@ public:
 
 private:
 	std::vector<Point> points;
+
+	Point mAboutPoint;
+	double mRotation;
 };
+
+
+// typedefs
+typedef Quad2D<float> QuadF;
+
 
 template<class T>
 Rect<T> Quad2D<T>::getRect() const
@@ -82,20 +93,20 @@ Rect<T> Quad2D<T>::getRect() const
 
 
 template<class T>
-void Quad2D<T>::setSize(Vector2D<T> size) // relative to point 0
+void Quad2D<T>::setSize(Vector2D<T> size) // relative to point0
 {
 	Vector2D<T> widthDirection = (points[1] - points[0]).normalise();
 	Vector2D<T> heightDirection = (points[3] - points[0]).normalise();
 
-	// point 0 doesn't move
+	// point0 doesn't move
 
-	// set point 1
+	// set point1
 	points[1] = points[0] + size.x * widthDirection;
 
 	// set point2
 	points[2] = points[1] + size.y * heightDirection;
 
-	// set point 3
+	// set point3
 	points[3] = points[2] + size.x * widthDirection;
 }
 
@@ -222,18 +233,69 @@ Vector2D<T> Quad2D<T>::normal1() const
 }
 
 
-
 template<class T>
 void Quad2D<T>::rotate(double degrees, Point aboutpoint)
 {
-	double radians = toRadians(degrees);
-	double cosine = cos(radians);
-	double sine = sin(radians);
+	mRotation += degrees;
+	while(mRotation > 360)
+		mRotation -= 360;
+
+	double cosine = cos(toRadians(degrees));
+	double sine = sin(toRadians(degrees));
 
 	for (int i = 0; i < sides(); i++)
 	{
-		points[i] = rotateVector(points[i], aboutpoint, sine, cosine);;
+		points[i] = rotateVector(points[i], aboutpoint, sine, cosine);
 	}
+}
+
+
+template<class T>
+void Quad2D<T>::rotate(double degrees)
+{
+#if DEBUG_CHECK
+	if (mAboutPoint.isNegative())
+	{
+		DebugPrint(Warning, "Attempting to rotate quad %f degrees, without an about point set.\
+			Use setRotationAboutPoint() first or provide an about point\n", mRotation);
+	}
+#endif
+
+	mRotation += degrees;
+	while (mRotation > 360)
+		mRotation -= 360;
+
+	double cosine = cos(toRadians(degrees));
+	double sine = sin(toRadians(degrees));
+
+	for (int i = 0; i < sides(); i++)
+	{
+		points[i] = rotateVector(points[i], mAboutPoint, sine, cosine);
+	}
+}
+
+
+template<class T>
+void Quad2D<T>::resetRotation(Point aboutpoint)
+{
+	rotate(-mRotation, aboutpoint);
+	ASSERT(Warning, mRotation == 0, "Rotation is not 0 after rotation has been reset, rotation %f\n", mRotation);
+}
+
+
+template<class T>
+void Quad2D<T>::resetRotation()
+{
+#if DEBUG_CHECK
+	if (mAboutPoint.isNegative())
+	{
+		DebugPrint(Warning, "Attempting to reset rotation of quad without an about point set.\
+			Use setRotationAboutPoint() first or provide an about point\n");
+	}
+#endif
+
+	rotate(-mRotation, mAboutPoint);
+	ASSERT(Warning, mRotation == 0, "Rotation is not 0 after rotation has been reset, rotation %f\n", mRotation);
 }
 
 
@@ -249,6 +311,7 @@ T Quad2D<T>::xMin() const
 
 	return minX;
 }
+
 
 template<class T>
 T Quad2D<T>::xMax() const
@@ -276,6 +339,7 @@ T Quad2D<T>::yMin() const
 
 	return minY;
 }
+
 
 template<class T>
 T Quad2D<T>::yMax() const

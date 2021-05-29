@@ -17,19 +17,10 @@
 SmashAbility::SmashAbility(Texture* hammerTexture, RectF hammerRect)
 {
 	mHammer.texture = hammerTexture;
-	float w = hammerRect.Width();
-	float h = hammerRect.Height();
 	mHammer.quad = Quad2D<float>(hammerRect);
 	mHammer.collider.init(&mHammer.quad);
 
-	mHammer.quad.rotate(45, mHammer.quad.center());
-
-	float wid = mHammer.quad.width();
-	float hig = mHammer.quad.height();
-
-
-	int a = 4;
-
+	mHammer.quad.setRotationAboutPoint(mHammer.quad.center());
 }
 
 
@@ -67,7 +58,7 @@ void SmashAbility::activate()
 	mHammer.quad.setCenter(mCaster->position());
 
 	// set quad
-	//mHammer.quad = Quad2D<float>(mHammer.rect);
+	mHammer.quad.resetRotation(mHammer.quad.center());
 	mHammer.quad.rotate(getRotation(mHammer.direction) + 90.0f, mHammer.quad.center());
 
 	// Set displacement source from the throw position
@@ -84,7 +75,6 @@ void SmashAbility::fastUpdate(float dt)
 	if (!mReachedTarget)
 	{
 		VectorF velocity = mHammer.direction * mProperties[PropertyType::Velocity] * dt;
-		//mHammer.rect = mHammer.rect.Translate(velocity);
 		mHammer.quad.translate(velocity);
 	}
 }
@@ -112,11 +102,11 @@ void SmashAbility::slowUpdate(float dt)
 	if (mAnimator.loops() > 0)
 	{
 		mCompleted = true;
-		mAnimator.stop(); // BaseExit calls animator.reset(), so we dont need to stop?
 	}
 }
 
 
+// Final explosion uses mRect not the hammer rect for collision detection
 void SmashAbility::explode()
 {
 	mReachedTarget = true;
@@ -126,8 +116,6 @@ void SmashAbility::explode()
 	mAnimator.start();
 	Camera::Get()->getShake()->addTrauma(140);
 
-	// Final explosion uses mRect not the hammer rect for collision detection
-	//mHammer.quad = Quad2D<float>(mRect);
 	mHitList.clear();
 
 	AudioManager::Get()->pushEvent(AudioEvent(AudioEvent::Play, "Explosion", mCaster));
@@ -145,8 +133,8 @@ void SmashAbility::render()
 	{
 #if DRAW_ABILITY_RECTS
 		debugDrawRect(mRect, RenderColour::Yellow);
-		debugDrawRect(mHammerRect, RenderColour::Yellow);
-		debugDrawLine(mHammerRect.Center(), mTargetPosition, RenderColour::Black);
+		debugDrawQuad(mHammer.quad, RenderColour::Purple);
+		debugDrawLine(mHammer.quad.center(), mTargetPosition, RenderColour::Black);
 #endif
 #if TRACK_COLLISIONS
 		mCollider->renderCollider();
@@ -155,14 +143,8 @@ void SmashAbility::render()
 		// while hammer is flying
 		if (!mReachedTarget)
 		{
-			Quad2D<float> hammerQuad = Camera::Get()->toCameraCoords(mHammer.quad); // NOTE: is this not working?
-			//VectorF aboutPoint = hammerRect.Size() / 2.0f;
-
-			RectF hammerRect;
-			hammerRect.SetSize(hammerQuad.height(), hammerQuad.width());
-			hammerRect.SetCenter(hammerQuad.center());
-
-			mHammer.texture->render(hammerRect, getRotation(mHammer.direction) + 90.0f, hammerQuad.center());
+			Quad2D<float> hammerQuad = Camera::Get()->toCameraCoords(mHammer.quad);
+			mHammer.texture->render(hammerQuad);
 		}
 		else
 		{
@@ -173,8 +155,6 @@ void SmashAbility::render()
 
 			mAnimator.render(renderRect);
 		}
-
-		printf("Hammer size %f, %f\n", mHammer.quad.width(), mHammer.quad.height());
 	}
 }
 
@@ -206,6 +186,7 @@ void SmashAbility::applyHammerEffects(Actor* actor, EffectPool* effectPool)
 
 	applyEffect(EffectType::Damage, actor, effectPool);
 
+	// Hammer has a smaller knockback effect compared to the explosion
 	float distance = mProperties[PropertyType::KnockbackDistance];
 	mProperties[PropertyType::KnockbackDistance] = distance / 3.0f;
 
@@ -227,8 +208,6 @@ void SmashAbility::applyExplosionEffects(Actor* actor, EffectPool* effectPool)
 
 void SmashAbility::updateSelectionQuad()
 {
-	//mHammer.quad.setCenter(mCaster->position());
-
 	float travelDistance = distance(mCaster->position(), mTargetPosition);
 	VectorF size(travelDistance, mHammer.quad.height());
 

@@ -32,6 +32,8 @@ public:
 	virtual float xMin() const;
 	virtual float xMax() const;
 
+	virtual VectorF center() const { return mRect->Center(); }
+
 #if TRACK_COLLISIONS
 	virtual void renderCollider();	
 #endif

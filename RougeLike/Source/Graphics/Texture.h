@@ -20,6 +20,8 @@ public:
 	void renderSubTexture(const RectF& rect, const RectF& subRect, SDL_RendererFlip flip, Uint8 tempAlpha);
 	void renderSubTexture(const RectF& rect, const RectF& subRect, SDL_RendererFlip flip, RenderColour colourMod);
 
+	void render(const QuadF& quad) const;
+
 	const Uint8 alpha() const;
 
 public:

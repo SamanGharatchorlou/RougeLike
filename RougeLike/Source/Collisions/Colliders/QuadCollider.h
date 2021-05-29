@@ -19,6 +19,8 @@ public:
 	float xMin() const override;
 	float xMax() const override;
 
+	virtual VectorF center() const { return mQuad->center(); }
+
 #if TRACK_COLLISIONS
 	void renderCollider() override;
 #endif

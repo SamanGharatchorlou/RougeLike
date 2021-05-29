@@ -31,7 +31,7 @@ constexpr float game_scale = 0.5f;
 // Abilities
 #define UNLOCK_ALL_ABILITIES 1
 #define NO_ABILITY_COOLDOWNS 1
-#define DRAW_ABILITY_RECTS 0
+#define DRAW_ABILITY_RECTS 1
 
 // Collectables
 #define DRAW_COLLECTABLE_RECT 0
@@ -77,7 +77,7 @@ constexpr float game_scale = 0.5f;
 #define MUTE_AUDIO 1
 #define DISABLE_UI_AUDIO 0
 #define PRINT_PLAYING_AUDIO 0
-#define PRINT_FULL_AUDIO_CHANNELS 1
+#define PRINT_FULL_AUDIO_CHANNELS 0
 #define AUDIO_LOGGING (PRINT_PLAYING_AUDIO || PRINT_FULL_AUDIO_CHANNELS)
 
 // NSIS Installer

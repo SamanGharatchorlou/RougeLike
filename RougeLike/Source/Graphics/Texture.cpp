@@ -66,6 +66,14 @@ bool Texture::loadFromFile(const BasicString& filePath)
 }
 
 
+const Uint8 Texture::alpha() const
+{
+	Uint8 texAlpha;
+
+	SDL_GetTextureAlphaMod(texture, &texAlpha);
+
+	return texAlpha;
+}
 
 
 void Texture::render(const RectF& rect, SDL_RendererFlip flip) const
@@ -187,12 +195,12 @@ void Texture::renderSubTexture(const RectF& rect, const RectF& subRect, double r
 }
 
 
-const Uint8 Texture::alpha() const
+// Render quad with an aboutpoint set.
+void Texture::render(const QuadF& quad) const
 {
-	Uint8 texAlpha;
+	SDL_Rect renderQuad = toSDLRect(quad.getRect());
+	SDL_Point point = { (int)quad.aboutPoint().x, (int)quad.aboutPoint().y };
 
-	SDL_GetTextureAlphaMod(texture, &texAlpha);
+	SDL_RenderCopyEx(renderer, texture, nullptr, &renderQuad, quad.rotation(), &point, SDL_FLIP_NONE);
 
-	return texAlpha;
 }
-
