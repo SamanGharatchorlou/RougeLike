@@ -17,31 +17,6 @@
 
 int main(int argc, char* args[])
 {
-	//int loops = 5;
-	//PerformanceProfiler profiler("Loading");
-	//for (int i = 0; i < loops; i++)
-	//{
-	//	GameController GameApp;
-
-	//	profiler.restart();
-
-	//	GameApp.init();
-	//	GameApp.preLoad();
-
-	//	profiler.restart();
-
-	//	GameApp.load();
-
-	//	profiler.saveToAverage();
-	//	profiler.displayTimeSeconds();
-
-	//	//GameApp.run();
-
-	//	GameApp.free();
-	//}
-
-	//profiler.displayAverageTimeSeconds();
-
 	GameController GameApp;
 
 	GameApp.init();

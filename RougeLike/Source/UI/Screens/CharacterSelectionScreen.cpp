@@ -17,6 +17,10 @@
 #include "Weapons/WeaponData.h"
 #include "Actors/Player/Character.h"
 
+// TEST
+#include "Game/GameController.h"
+#include "States/PreGameState.h"
+
 
 void CharacterSelectionScreen::init()
 {
@@ -48,6 +52,15 @@ void CharacterSelectionScreen::handleInput(const InputManager* input)
 	{
 		updateCharacter();
 		enterGame();
+	}
+#endif
+
+#if NETWORK_TESTING
+	if (input->isPressed(Button::E))
+	{
+		State* state = &mController->mGameController->getStateMachine()->getActiveState();
+		PreGameState* preState = static_cast<PreGameState*>(state);
+		preState->testFunction();
 	}
 #endif
 }

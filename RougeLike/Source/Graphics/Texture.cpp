@@ -202,5 +202,4 @@ void Texture::render(const QuadF& quad) const
 	SDL_Point point = { (int)quad.aboutPoint().x, (int)quad.aboutPoint().y };
 
 	SDL_RenderCopyEx(renderer, texture, nullptr, &renderQuad, quad.rotation(), &point, SDL_FLIP_NONE);
-
 }

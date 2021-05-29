@@ -45,12 +45,15 @@ public:
 
 	void enablePopups(bool enable) { mEnablePopups = enable; }
 
+	// TEST
+	GameController* mGameController;
+
 private:
 	Screen* getPoolScreen(ScreenType type);
 
 
 private:
-	GameController* mGameController;
+	
 	UIManager* mUI;
 
 	StateMachine<Screen> mScreens;

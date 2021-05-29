@@ -83,6 +83,9 @@ constexpr float game_scale = 0.5f;
 // NSIS Installer
 #define OUTPUT_NSIS_FOLDER_INFO 0
 
+// Networking
+#define NETWORK_TESTING 1
+
 #else
 // A cap needs to be set, the framerate can be so high that dt can be 0, this can mess 
 // somethings up... like the wall collisions, which is a good 'problem' to have i guess

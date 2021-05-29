@@ -38,11 +38,10 @@ void PreGameState::init()
 
 void PreGameState::slowUpdate(float dt) { }
 
-
+#if NETWORK_TESTING
 void PreGameState::testFunction()
 {
 	DebugPrint(Log, "Enter connection type ('client' or 'server')\n");
-
 
 	char connectionType[100];
 	gets_s(connectionType, 100);
@@ -54,19 +53,19 @@ void PreGameState::testFunction()
 
 		mGameData->network->mServer = server;
 		mGameData->network->mSetupComplete = true;
-		//// now need to run this....
-		//while (true)
-		//{
-		//	BasicString message("", 1024);
-		//	BasicString senderInfo("", 1024);
+		// now need to run this....
+		while (true)
+		{
+			BasicString message("", 1024);
+			BasicString senderInfo("", 1024);
 
-		//	server.receiveMessage(message, nullptr);
+			server->receiveMessage(message, nullptr);
 
-		//	if (!message.empty())
-		//	{
-		//		DebugPrint(Log, "%s\n", message.c_str());
-		//	}
-		//}
+			if (!message.empty())
+			{
+				DebugPrint(Log, "%s\n", message.c_str());
+			}
+		}
 	}
 	else
 	{
@@ -76,19 +75,19 @@ void PreGameState::testFunction()
 		mGameData->network->mClient = client;
 		mGameData->network->mSetupComplete = true;
 
-		//while (true)
-		//{
-		//	BasicString message("", 1024);
-		//	std::cin.get(message.buffer(), message.bufferLength());
+		while (true)
+		{
+			BasicString message("", 1024);
+			std::cin.get(message.buffer(), message.bufferLength());
 
-		//	message.calculateLength();
-		//	client.sendMessage(message);
+			message.calculateLength();
+			client->sendMessage(message);
 
-		//	std::cin.ignore();
-		//}
+			std::cin.ignore();
+		}
 	}
 }
-
+#endif
 
 void PreGameState::exit()
 {

@@ -19,7 +19,9 @@ public:
 
 	void resume() { };
 
+#if NETWORK_TESTING
 	void testFunction();
+#endif
 
 private:
 	GameData* mGameData;	
