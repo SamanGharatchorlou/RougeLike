@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Client.h"
-#include "Debug/NetworkDebugging.h"
 
 #include "NetworkUtility.h"
 
@@ -9,11 +8,16 @@ Client::Client() : mSocket(INVALID_SOCKET), mFlags(0) { }
 
 void Client::open()
 {
+
 	WORD winsockVersion = 0x202;
 	WSADATA winsockData;
 
 	if (WSAStartup(winsockVersion, &winsockData) == 0)
 	{
+#if NETWORK_TESTING
+		Networking::displayInfo();
+#endif
+
 		int addrFamily = AF_INET;
 		int type = SOCK_DGRAM;
 		int protocol = IPPROTO_UDP;
@@ -47,21 +51,25 @@ void Client::open()
 				mServerAddress.sin_family = AF_INET;
 				mServerAddress.sin_port = htons(9999);
 				mServerAddress.sin_addr = *(in_addr*)*hostData->h_addr_list;
-
-#if DEBUG_CHECK
+#if NETWORK_TESTING
 				BasicString hostIPAddress = Networking::getDataIPAddress(hostData);
-				DebugPrint(Log, "Connecting to host at ip: %s\n", hostIPAddress.c_str());
+				DebugPrint(Log, "Connected to host at ip: %s\n", hostIPAddress.c_str());
 #endif
+
+				// Send data to server
+				sendMessage(Networking::getHostName());
 			}
 		}
 		else
 		{
 			DebugPrint(Warning, "Socket failed %d\n", WSAGetLastError());
+			return;
 		}
 	}
 	else
 	{
 		DebugPrint(Warning, "WSAStartup failed %d\n", WSAGetLastError());
+		return;
 	}
 }
 
@@ -80,5 +88,39 @@ void Client::sendMessage(const BasicString& message)
 	if (result)
 	{
 		DebugPrint(Warning, "sendto failed %d\n", WSAGetLastError());
+	}
+
+	sending = false;
+}
+
+void Client::receiveMessage(BasicString& outMessage, BasicString* senderInfo)
+{
+	constexpr int SOCKET_BUFFER_SIZE = 1024;
+	char buffer[SOCKET_BUFFER_SIZE];
+
+	SOCKADDR_IN from;
+	int fromSize = sizeof(from);
+
+	int bytesReceived = recvfrom(mSocket, buffer, SOCKET_BUFFER_SIZE, mFlags, (SOCKADDR*)&from, &fromSize);
+
+	if (bytesReceived == SOCKET_ERROR)
+	{
+		printf("recvfrom returned SOCKET_ERROR %d\n", WSAGetLastError());
+	}
+	else
+	{
+		if (senderInfo)
+		{
+			sprintf(senderInfo->buffer(), "%d.%d.%d.%d:%d",
+				from.sin_addr.S_un.S_un_b.s_b1,
+				from.sin_addr.S_un.S_un_b.s_b2,
+				from.sin_addr.S_un.S_un_b.s_b3,
+				from.sin_addr.S_un.S_un_b.s_b4,
+				from.sin_port);
+		}
+
+		outMessage.set(buffer);
+
+		sending = true;
 	}
 }

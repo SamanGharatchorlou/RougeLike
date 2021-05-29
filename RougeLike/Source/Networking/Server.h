@@ -18,12 +18,19 @@ public:
 	void open();
 	void close();
 
-	void receiveMessage(BasicString& outMessage, BasicString* senderInfo);
+	//void getClient
 
+	void receiveMessage(BasicString& outMessage, BasicString* senderInfo);
+	void sendMessage(const BasicString& message);
 
 	Queue<BasicString> mInputs;
+
+	bool sending = false;
 
 private:
 	SOCKET mSocket;
 	int mFlags;
+
+
+	SOCKADDR_IN mClientAddress;
 };

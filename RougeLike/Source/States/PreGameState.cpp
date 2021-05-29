@@ -56,14 +56,27 @@ void PreGameState::testFunction()
 		// now need to run this....
 		while (true)
 		{
-			BasicString message("", 1024);
-			BasicString senderInfo("", 1024);
-
-			server->receiveMessage(message, nullptr);
-
-			if (!message.empty())
+			if (!server->sending)
 			{
-				DebugPrint(Log, "%s\n", message.c_str());
+				BasicString message("", 1024);
+				BasicString senderInfo("", 1024);
+
+				server->receiveMessage(message, nullptr);
+
+				if (!message.empty())
+				{
+					DebugPrint(Log, "%s\n", message.c_str());
+				}
+			}
+			else
+			{
+				BasicString message("", 1024);
+				std::cin.get(message.buffer(), message.bufferLength());
+
+				message.calculateLength();
+				server->sendMessage(message);
+
+				std::cin.ignore();
 			}
 		}
 	}
@@ -77,13 +90,28 @@ void PreGameState::testFunction()
 
 		while (true)
 		{
-			BasicString message("", 1024);
-			std::cin.get(message.buffer(), message.bufferLength());
+			if (!client->sending)
+			{
+				BasicString message("", 1024);
+				BasicString senderInfo("", 1024);
 
-			message.calculateLength();
-			client->sendMessage(message);
+				client->receiveMessage(message, nullptr);
 
-			std::cin.ignore();
+				if (!message.empty())
+				{
+					DebugPrint(Log, "%s\n", message.c_str());
+				}
+			}
+			else
+			{
+				BasicString message("", 1024);
+				std::cin.get(message.buffer(), message.bufferLength());
+
+				message.calculateLength();
+				client->sendMessage(message);
+
+				std::cin.ignore();
+			}
 		}
 	}
 }

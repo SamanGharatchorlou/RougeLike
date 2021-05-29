@@ -15,10 +15,12 @@ public:
 
 	void open();
 
+	void receiveMessage(BasicString& outMessage, BasicString* senderInfo);
 	void sendMessage(const BasicString& message);
 
 	void close();
 
+	bool sending = true;
 
 private:
 	SOCKET mSocket;

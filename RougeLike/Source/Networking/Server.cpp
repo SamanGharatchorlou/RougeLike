@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Server.h"
 
-#include "Debug/NetworkDebugging.h"
+#include "NetworkUtility.h"
 
 
 Server::Server() : mSocket(INVALID_SOCKET), mFlags(0)
@@ -20,6 +20,9 @@ void Server::open()
 		DebugPrint(Warning, "WSAStartup failed %d\n", WSAGetLastError());
 		return;
 	}
+#if NETWORK_TESTING
+	Networking::displayInfo();
+#endif
 
 	int addrFamily = AF_INET;
 	int type = SOCK_DGRAM;
@@ -45,16 +48,9 @@ void Server::open()
 		return;
 	}
 
-#if DEBUG_CHECK
-	BasicString hostName = Networking::getHostName();
-	BasicString hostIP = Networking::getHostIPAddress();
-	DebugPrint(Log, "Host Name: '%s'\n", hostName.c_str());
-	DebugPrint(Log, "Host IP  : '%s'\n", hostIP.c_str());
+#if NETWORK_TESTING
 	DebugPrint(Log, "Server opened\n");
-
-	BasicString string = Networking::getHostFromIP();
 #endif
-	
 }
 
 
@@ -91,6 +87,22 @@ void Server::receiveMessage(BasicString& outMessage, BasicString* senderInfo)
 				from.sin_port);
 		}
 
+		mClientAddress = from;
+		sending = true;
+
 		outMessage.set(buffer);
 	}
+}
+
+
+void Server::sendMessage(const BasicString& message)
+{
+	int result = sendto(mSocket, message.c_str(), message.length() + 1, mFlags, (SOCKADDR*)&mClientAddress, sizeof(mClientAddress)) == SOCKET_ERROR;
+
+	if (result)
+	{
+		DebugPrint(Warning, "sendto failed %d\n", WSAGetLastError());
+	}
+
+	sending = false;
 }

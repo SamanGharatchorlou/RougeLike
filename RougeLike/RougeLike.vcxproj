@@ -24,7 +24,6 @@
     <ClCompile Include="Source\Audio\Channel.cpp" />
     <ClCompile Include="Source\Collisions\Colliders\QuadCollider.cpp" />
     <ClCompile Include="Source\Collisions\WeaponCollisionTracker.cpp" />
-    <ClCompile Include="Source\Debug\NetworkDebugging.cpp" />
     <ClCompile Include="Source\Debug\PerformanceProfiler.cpp" />
     <ClCompile Include="Source\Map\TrapManager.cpp" />
     <ClCompile Include="Source\Networking\Client.cpp" />
@@ -214,7 +213,6 @@
     <ClInclude Include="Source\Audio\Channel.h" />
     <ClInclude Include="Source\Collisions\Colliders\QuadCollider.h" />
     <ClInclude Include="Source\Collisions\WeaponCollisionTracker.h" />
-    <ClInclude Include="Source\Debug\NetworkDebugging.h" />
     <ClInclude Include="Source\Debug\PerformanceProfiler.h" />
     <ClInclude Include="Source\Map\TrapManager.h" />
     <ClInclude Include="Source\Networking\Client.h" />
