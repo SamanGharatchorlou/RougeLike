@@ -105,4 +105,5 @@ void ObjectPool<K, T>::freeAll()
 	}
 
 	mBlockHeads.clear();
+	mPool.clear();
 }
