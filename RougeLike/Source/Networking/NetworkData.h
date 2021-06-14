@@ -3,18 +3,27 @@
 #include "Input/Button.h"
 #include "Input/Cursor.h"
 
-struct NetworkData
-{
-	bool hasData = false;
-	int size = 0;
-	char buffer[256] = { 0 };
-};
+class InputManager;
 
 
 struct InputPacket
 {
-	bool hasData = false;
-	Button button;
+	InputPacket() { }
+	InputPacket(const InputManager* input);
+
+	//bool hasData = false;
+	Button buttons[4];
 	Cursor cursor;
-	//std::vector<Button> mInputs;
+};
+
+
+struct NetworkInputData
+{
+	NetworkInputData() : size(0) { }
+
+	void pack(const InputPacket& inputPacket);
+	InputPacket unpack() const;
+
+	int size;
+	char buffer[256] = { 0 };
 };

@@ -78,23 +78,6 @@ void Client::close()
 }
 
 
-void Client::sendMessage(InputPacket packet)
-{
-	int a = sizeof(packet);
-
-	const char* test = reinterpret_cast<const char*>(&packet);
-
-	int result = sendto(mSocket, test, a, mFlags, (SOCKADDR*)&mServerAddress, sizeof(mServerAddress)) == SOCKET_ERROR;
-
-	if (result)
-	{
-		DebugPrint(Warning, "sendto failed %d\n", WSAGetLastError());
-	}
-
-	sending = false;
-}
-
-
 void Client::sendMessage(const BasicString& message)
 {
 	int result = sendto(mSocket, message.c_str(), message.length() + 1, mFlags, (SOCKADDR*)&mServerAddress, sizeof(mServerAddress)) == SOCKET_ERROR;
@@ -107,7 +90,7 @@ void Client::sendMessage(const BasicString& message)
 	sending = false;
 }
 
-void Client::sendMessage(NetworkData& data)
+void Client::sendMessage(NetworkInputData& data)
 {
 	int result = sendto(mSocket, data.buffer, data.size, mFlags, (SOCKADDR*)&mServerAddress, sizeof(mServerAddress)) == SOCKET_ERROR;
 

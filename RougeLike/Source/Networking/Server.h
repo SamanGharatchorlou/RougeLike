@@ -22,11 +22,11 @@ public:
 
 	//void getClient
 
-	void receiveMessage(NetworkData& outMessage, BasicString* senderInfo);
+	void receiveMessage(NetworkInputData& outData, BasicString* senderInfo);
 	void receiveMessage(BasicString& outMessage, BasicString* senderInfo);
 	void sendMessage(const BasicString& message);
 
-	Queue<NetworkData> mData;
+	Queue<NetworkInputData> mInputData;
 
 	bool sending = false;
 

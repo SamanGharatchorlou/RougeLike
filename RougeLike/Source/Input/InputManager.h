@@ -39,7 +39,7 @@ public:
 
 	// Networking
 	// Any button currently being pressed, released or held
-	std::vector<Button> getActiveButtons() const;
+	std::queue<Button> getActiveButtons() const;
 
 	void setData(const InputPacket& inputData);
 

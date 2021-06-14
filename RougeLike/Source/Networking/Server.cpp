@@ -107,7 +107,7 @@ void Server::receiveMessage(BasicString& outMessage, BasicString* senderInfo)
 	}
 }
 
-void Server::receiveMessage(NetworkData& outMessage, BasicString* senderInfo)
+void Server::receiveMessage(NetworkInputData& outData, BasicString* senderInfo)
 {
 	constexpr int SOCKET_BUFFER_SIZE = 1024;
 	char buffer[SOCKET_BUFFER_SIZE] = { 0 };
@@ -136,27 +136,7 @@ void Server::receiveMessage(NetworkData& outMessage, BasicString* senderInfo)
 		mClientAddress = from;
 		sending = true;
 
-		//const InputPacket inputData = *reinterpret_cast<const InputPacket*>(buffer);
-		//if (inputData.cursor.isHeld(Cursor::Left))// input->isCursorPressed(Cursor::Left))
-		//{
-		//	printf("received attack data\n");
-		//}
-
-		//if (inputData.button.isHeld())
-		//{
-		//	printf("received button data\n");
-		//
-
-
-		memcpy(outMessage.buffer, &buffer, fromSize);
-		//if (!outMessage.empty())
-		//{
-		//	char* character = outMessage.buffer();
-
-		//	InputPacket data = *reinterpret_cast<InputPacket*>(character);
-
-		//	int a = 4;
-		//}
+		memcpy(outData.buffer, &buffer, bytesReceived);
 	}
 }
 

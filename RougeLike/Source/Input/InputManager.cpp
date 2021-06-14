@@ -90,10 +90,14 @@ InputManager createManager(const InputPacket& inputData)
 
 void InputManager::setData(const InputPacket& inputData)
 {
-	for (unsigned int i = 0; i < mButtons.size(); i++)
+	for(int i = 0; i < 4; i++)
 	{
-		if (mButtons[i].isKey(inputData.button.key()))
-			mButtons[i] = inputData.button;
+		Button button = inputData.buttons[i];
+		for (unsigned int i = 0; i < mButtons.size(); i++)
+		{
+			if (mButtons[i].isKey(button.key()))
+				mButtons[i] = button;
+		}
 	}
 
 	mCursor = inputData.cursor;
@@ -208,15 +212,15 @@ void InputManager::bindDefaultButtons()
 
 
 
-std::vector<Button> InputManager::getActiveButtons() const
+std::queue<Button> InputManager::getActiveButtons() const
 {
-	std::vector<Button> activeButtons;
+	std::queue<Button> activeButtons;
 
 	for (const Button& button : mButtons)
 	{
 		if (button.state() != Button::State::None)
 		{
-			activeButtons.push_back(button);
+			activeButtons.push(button);
 		}
 	}
 

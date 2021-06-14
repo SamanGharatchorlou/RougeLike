@@ -21,11 +21,10 @@ public:
 	void open();
 
 	void receiveMessage(BasicString& outMessage, BasicString* senderInfo);
+
 	void sendMessage(const BasicString& message);
+	void sendMessage(NetworkInputData& data);
 
-	void sendMessage(NetworkData& data);
-
-	void sendMessage(InputPacket data);
 
 	void close();
 

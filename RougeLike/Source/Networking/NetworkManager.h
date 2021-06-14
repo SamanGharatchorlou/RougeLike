@@ -28,9 +28,6 @@ public:
 
 	std::thread* mThread = nullptr;
 
-	// left = 1, right = 2, up = 3, down = 4 
-	int mMovement = 0;
-
 	int handleNetworkInput();
 
 	InputManager* input;
@@ -43,7 +40,7 @@ private:
 };
 
 
-InputPacket getClientInput(const InputManager* input);
+InputPacket generateInputPacket(const InputManager* input);
 
 void listening(Server* server);
 void sending(Client* client);
