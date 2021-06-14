@@ -16,6 +16,7 @@ public:
 	void exit() override { };
 
 	const Character& selectedCharacter() const;
+	const Character& nextCharacter() const;
 
 	ScreenType type() override { return ScreenType::CharacterSelection; }
 

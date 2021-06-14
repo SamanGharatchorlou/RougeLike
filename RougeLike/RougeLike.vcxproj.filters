@@ -182,6 +182,7 @@
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\MeleeAttackAbility.cpp" />
     <ClCompile Include="Source\Objects\Abilities\AbilityTypes\RangedAttackAbility.cpp" />
     <ClCompile Include="Source\Collisions\WeaponCollisionTracker.cpp" />
+    <ClCompile Include="Source\Networking\NetworkData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Graphics\Texture.h" />
@@ -398,6 +399,7 @@
     <ClInclude Include="Source\Objects\Abilities\AbilityTypes\RangedAttackAbility.h" />
     <ClInclude Include="Source\Collisions\WeaponCollisionTracker.h" />
     <ClInclude Include="Source\Utilities\LinkedList.h" />
+    <ClInclude Include="Source\Networking\NetworkData.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="zlib1.dll" />

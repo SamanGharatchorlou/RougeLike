@@ -26,6 +26,8 @@ void ActorManager::init(GameData* gameData)
 	mPlayer.init(gameData->environment, gameData->uiManager->screen(ScreenType::Game));
 	mEnemies.init(gameData->environment);
 
+	mNetworkPlayer.init(gameData->environment, gameData->uiManager->screen(ScreenType::Game));
+
 	mPlayerActor.push_back(mPlayer.get());
 }
 
@@ -45,6 +47,8 @@ void ActorManager::fastUpdate(float dt)
 {
 	mPlayer.fastUpdate(dt);
 	mEnemies.fastUpdate(dt);
+
+	mNetworkPlayer.fastUpdate(dt);
 }
 
 
@@ -55,6 +59,10 @@ void ActorManager::slowUpdate(float dt)
 	mPlayer.slowUpdate(dt);
 	while (mPlayer.events().hasEvent())
 		sendEvent(mPlayer.events().pop());
+
+	mNetworkPlayer.slowUpdate(dt);
+	while (mNetworkPlayer.events().hasEvent())
+		sendEvent(mNetworkPlayer.events().pop());
 	   
 	mEnemies.slowUpdate(dt);
 	while (mEnemies.events().hasEvent())
@@ -71,6 +79,8 @@ void ActorManager::resetColliders()
 {
 	mPlayer.resetColliders();
 	mEnemies.resetColliders();
+
+	mNetworkPlayer.resetColliders();
 }
 
 
@@ -78,6 +88,8 @@ void ActorManager::render()
 {
 	mEnemies.render();
 	mPlayer.render();
+
+	mNetworkPlayer.render();
 
 #if TRACK_COLLISIONS // Need to keep the hit data until after rendering
 	resetColliders();

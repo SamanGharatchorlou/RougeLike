@@ -10,7 +10,7 @@
 #include "UI/UIManager.h"
 #include "Managers/ScoreManager.h"
 #include "Actors/ActorManager.h"
-
+#include "Debug/FrameRateController.h"
 #include "Game/Environment.h"
 #include "Game/Camera/Camera.h"
 
@@ -48,6 +48,8 @@ void GameData::init(GameController* gameController)
 	environment = new Environment;
 
 	network = new NetworkManager;
+
+	frameRateController = new FrameRateController;
 }
 
 
@@ -142,7 +144,7 @@ void GameData::free()
 
 	delete scoreManager;
 	delete uiManager;
-
+	delete frameRateController;
 	delete inputManager;
 
 	AudioManager::Get()->unload();

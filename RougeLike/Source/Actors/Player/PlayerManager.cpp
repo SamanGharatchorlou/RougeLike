@@ -65,11 +65,12 @@ void PlayerManager::handleInput(const InputManager* input)
 		mPlayer.handleInput(input);
 		mAbilities.handleInput(input);
 
-		if (input->isCursorPressed(Cursor::Left))
+		if (input->isCursorHeld(Cursor::Left))
 		{
 			bool didAttack = mPlayer.attack();
 			if (didAttack)
 			{
+				printf("attack\n");
 				mWeaponCollisions.beginAttack();
 			}
 		}

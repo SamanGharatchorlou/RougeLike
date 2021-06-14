@@ -25,6 +25,7 @@ public:
 
 	void render();
 
+	PlayerManager* networkPlayer() { return &mNetworkPlayer; }
 	PlayerManager* player() { return &mPlayer; }
 	EnemyManager* enemies() { return &mEnemies; }
 
@@ -40,6 +41,7 @@ private:
 
 
 private:
+	PlayerManager mNetworkPlayer;
 	PlayerManager mPlayer;
 	EnemyManager mEnemies;
 

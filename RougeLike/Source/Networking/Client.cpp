@@ -55,9 +55,6 @@ void Client::open()
 				BasicString hostIPAddress = Networking::getDataIPAddress(hostData);
 				DebugPrint(Log, "Connected to host at ip: %s\n", hostIPAddress.c_str());
 #endif
-
-				// Send data to server
-				sendMessage(Networking::getHostName());
 			}
 		}
 		else
@@ -81,9 +78,38 @@ void Client::close()
 }
 
 
+void Client::sendMessage(InputPacket packet)
+{
+	int a = sizeof(packet);
+
+	const char* test = reinterpret_cast<const char*>(&packet);
+
+	int result = sendto(mSocket, test, a, mFlags, (SOCKADDR*)&mServerAddress, sizeof(mServerAddress)) == SOCKET_ERROR;
+
+	if (result)
+	{
+		DebugPrint(Warning, "sendto failed %d\n", WSAGetLastError());
+	}
+
+	sending = false;
+}
+
+
 void Client::sendMessage(const BasicString& message)
 {
 	int result = sendto(mSocket, message.c_str(), message.length() + 1, mFlags, (SOCKADDR*)&mServerAddress, sizeof(mServerAddress)) == SOCKET_ERROR;
+
+	if (result)
+	{
+		DebugPrint(Warning, "sendto failed %d\n", WSAGetLastError());
+	}
+
+	sending = false;
+}
+
+void Client::sendMessage(NetworkData& data)
+{
+	int result = sendto(mSocket, data.buffer, data.size, mFlags, (SOCKADDR*)&mServerAddress, sizeof(mServerAddress)) == SOCKET_ERROR;
 
 	if (result)
 	{

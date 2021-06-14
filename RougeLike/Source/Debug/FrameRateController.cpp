@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "FrameRateController.h"
 
-FrameRateController::FrameRateController() : dt(0.0f)
+FrameRateController::FrameRateController() : dt(0.0f), frameRateCap(0.0f), frameNumber(0)
 {
 #if PRINT_FRAMERATE_EVERY
 	float fpsSum = 0.0f;
@@ -35,6 +35,8 @@ void FrameRateController::update()
 #endif
 
 	frameTimer.restart();
+	frameNumber++;
+	//printf("framen number %ld\n", frameNumber);
 
 #if FRAMERATE_CAP
 	capFrameRate();

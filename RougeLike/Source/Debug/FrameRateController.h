@@ -1,5 +1,6 @@
 #pragma once
 
+// SGT: TODO remove all theDebugDraw include, its in the pch now
 #include "Debug/DebugDraw.h"
 
 class FrameRateController
@@ -9,12 +10,13 @@ public:
 
 	float delta() const { return dt; }
 	void start();
-	void resetAverage() { /*totalFrameTime = 0.0f; totalFrames = 0;*/ }
 	void update();
 
 	void setFrameCap(float cap) { frameRateCap = cap; }
 	void resetCapTimer();
 	void capFrameRate();
+
+	unsigned long frameCount() const { return frameNumber; }
 
 #if PRINT_FRAMERATE_EVERY
 	void printfFrameRate();
@@ -27,6 +29,8 @@ private:
 
 	TimerF capTimer;
 	float frameRateCap;
+
+	unsigned long frameNumber;
 
 	// --- debugging --- //
 #if PRINT_FRAMERATE_EVERY

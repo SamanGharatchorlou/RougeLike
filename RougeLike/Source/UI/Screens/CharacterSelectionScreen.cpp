@@ -147,3 +147,10 @@ const Character& CharacterSelectionScreen::selectedCharacter() const
 { 
 	return mCharacters.at(mCharacterIndex);
 }
+
+
+const Character& CharacterSelectionScreen::nextCharacter() const
+{
+	int index = mCharacterIndex + 1 >= mCharacters.size() ? 0 : mCharacterIndex + 1;
+	return mCharacters.at(index);
+}

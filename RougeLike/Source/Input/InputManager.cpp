@@ -3,6 +3,9 @@
 
 #include "Game/Camera/Camera.h"
 
+#include "Networking/NetworkData.h"
+
+
 void InputManager::init()
 {
 	bindDefaultButtons();
@@ -72,6 +75,28 @@ void InputManager::resetInputEvents()
 		else
 			button.setHeldFrames(0);
 	}
+}
+
+
+InputManager createManager(const InputPacket& inputData)
+{
+	InputManager manager;
+	manager.init();
+	manager.resetInputEvents();
+	manager.setData(inputData);
+	return manager;
+}
+
+
+void InputManager::setData(const InputPacket& inputData)
+{
+	for (unsigned int i = 0; i < mButtons.size(); i++)
+	{
+		if (mButtons[i].isKey(inputData.button.key()))
+			mButtons[i] = inputData.button;
+	}
+
+	mCursor = inputData.cursor;
 }
 
 
@@ -181,3 +206,19 @@ void InputManager::bindDefaultButtons()
 	mButtons.push_back(Button(Button::Key::Nine));
 }
 
+
+
+std::vector<Button> InputManager::getActiveButtons() const
+{
+	std::vector<Button> activeButtons;
+
+	for (const Button& button : mButtons)
+	{
+		if (button.state() != Button::State::None)
+		{
+			activeButtons.push_back(button);
+		}
+	}
+
+	return activeButtons;
+}

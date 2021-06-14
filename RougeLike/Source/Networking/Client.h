@@ -8,6 +8,11 @@
 
 #pragma comment (lib, "Ws2_32.lib")
 
+#include "NetworkData.h"
+
+class InputManager;
+class FrameRateController;
+
 class Client
 {
 public:
@@ -18,9 +23,16 @@ public:
 	void receiveMessage(BasicString& outMessage, BasicString* senderInfo);
 	void sendMessage(const BasicString& message);
 
+	void sendMessage(NetworkData& data);
+
+	void sendMessage(InputPacket data);
+
 	void close();
 
 	bool sending = true;
+
+	const InputManager* input;
+	FrameRateController* frameRateController;
 
 private:
 	SOCKET mSocket;

@@ -46,13 +46,9 @@ namespace fs = std::experimental::filesystem;
 
 // --- Custom ---
 
-// NEW operator override
+// I should change the name, this also includes some Release settings needed
 #include "Debug/DebugSettings.h"
-#if MEMORY_TRACKING
-#include "Debug/MemTrack.h"
-#else
-#define PRINT_MEMORY 0
-#endif
+
 
 // Include these first as they are be required in some of the below includes
 #include "Debug/Logging.h"
@@ -77,6 +73,19 @@ namespace fs = std::experimental::filesystem;
 // File accessors
 #include "System/Files/XMLParser.h"
 #include "System/Files/FileManager.h"
-//
-//// Globals
-//#include "Graphics/Renderer.h"
+
+
+// --- Debug Only Includes ---
+#if DEBUG_CHECK
+
+#include "Debug/DebugDraw.h"
+
+// NEW operator override
+#if MEMORY_TRACKING
+#include "Debug/MemTrack.h"
+#else
+#define PRINT_MEMORY 0
+#endif
+
+
+#endif

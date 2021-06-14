@@ -2,13 +2,23 @@
 
 #include <thread>
 
-#include "Networking/Client.h"
-#include "Networking/Server.h"
+#include "NetworkData.h"
 
+
+#include "Input/InputManager.h"
+
+class Client;
+class Server;
+
+class InputManager;
+class PlayerManager;
+class FrameRateController;
 
 class NetworkManager
 {
 public:
+	NetworkManager();
+
 	void listenForMessages();
 	void sendMessages();
 
@@ -23,7 +33,17 @@ public:
 
 	int handleNetworkInput();
 
+	InputManager* input;
+	FrameRateController* frameRateController;
+	PlayerManager* netoworkPlayer;
+
+private:
+	InputManager networkInput;
 
 };
 
+
+InputPacket getClientInput(const InputManager* input);
+
 void listening(Server* server);
+void sending(Client* client);

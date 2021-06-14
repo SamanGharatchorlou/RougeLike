@@ -1,9 +1,5 @@
 #pragma once
 
-#if DEBUG_CHECK
-#include "Debug/DebugDraw.h"
-#endif
-
 
 class Button
 {

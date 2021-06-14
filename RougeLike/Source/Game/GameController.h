@@ -5,6 +5,7 @@
 #include "States/StateMachine.h"
 #include "Debug/FrameRateController.h"
 
+class FrameRateController;
 class AudioManager;
 
 enum class SystemStates
@@ -58,7 +59,7 @@ private:
 	bool quit;
 	bool restart;
 
-	FrameRateController mFrameTimer;
+	FrameRateController* mFrameRateController;
 
 #if FRAMERATE_CAP || PRINT_FRAMERATE_EVERY
 	Timer<float> fpsTimer;

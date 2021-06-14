@@ -27,6 +27,7 @@
     <ClCompile Include="Source\Debug\PerformanceProfiler.cpp" />
     <ClCompile Include="Source\Map\TrapManager.cpp" />
     <ClCompile Include="Source\Networking\Client.cpp" />
+    <ClCompile Include="Source\Networking\NetworkData.cpp" />
     <ClCompile Include="Source\Networking\NetworkManager.cpp" />
     <ClCompile Include="Source\Networking\NetworkUtility.cpp" />
     <ClCompile Include="Source\Networking\Server.cpp" />
@@ -216,6 +217,7 @@
     <ClInclude Include="Source\Debug\PerformanceProfiler.h" />
     <ClInclude Include="Source\Map\TrapManager.h" />
     <ClInclude Include="Source\Networking\Client.h" />
+    <ClInclude Include="Source\Networking\NetworkData.h" />
     <ClInclude Include="Source\Networking\NetworkManager.h" />
     <ClInclude Include="Source\Networking\NetworkUtility.h" />
     <ClInclude Include="Source\Networking\Server.h" />

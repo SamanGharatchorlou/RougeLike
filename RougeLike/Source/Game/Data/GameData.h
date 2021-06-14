@@ -7,7 +7,7 @@ class RenderManager;
 class UIManager;
 class Environment;
 class ScoreManager;
-
+class FrameRateController;
 class NetworkManager;
 
 
@@ -28,7 +28,7 @@ struct GameData
 	RenderManager* renderManager = nullptr;
 	UIManager* uiManager = nullptr;
 	ScoreManager* scoreManager = nullptr;
-
+	FrameRateController* frameRateController = nullptr;
 	Environment* environment = nullptr;
 
 	NetworkManager* network = nullptr;

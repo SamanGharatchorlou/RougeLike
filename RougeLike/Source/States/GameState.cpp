@@ -29,6 +29,10 @@ void GameState::init()
 
 	mGameData->environment->actors()->player()->setPosition(playerPosition);
 
+
+	VectorF networkPlayerPosition = map->randomFloorTile(48)->rect().Center();
+	mGameData->environment->actors()->networkPlayer()->setPosition(networkPlayerPosition);
+
 	initCamera();
 	initRendering();
 
@@ -37,6 +41,10 @@ void GameState::init()
 
 	audio->pushEvent(AudioEvent(AudioEvent::FadeInMusic, "Game", nullptr, 1500));
 	audio->setSource(mGameData->environment->actors()->player()->get(), Camera::Get()->size().x);
+
+	mGameData->network->input = mGameData->inputManager;
+	mGameData->network->netoworkPlayer = mGameData->environment->actors()->networkPlayer();
+	mGameData->network->frameRateController = mGameData->frameRateController;
 
 	// open network threads
 	if (mGameData->network->mServer)
@@ -55,40 +63,40 @@ void GameState::handleInput()
 	mGameData->environment->handleInput(mGameData->inputManager);
 
 	int movement = mGameData->network->handleNetworkInput();
-	if (movement > -1)
-	{
-		PlayerManager* player = mGameData->environment->actors()->player();
+	//if (movement > -1)
+	//{
+	//	PlayerManager* player = mGameData->environment->actors()->player();
 
-		VectorF position = player->position();
+	//	VectorF position = player->position();
 
-		float x = 0.0f;
-		float y = 0.0f;
-		float speed = 1.0f;
+	//	float x = 0.0f;
+	//	float y = 0.0f;
+	//	float speed = 1.0f;
 
-		if (movement == 1)
-		{
-			x = -speed;
-		}
+	//	if (movement == 1)
+	//	{
+	//		x = -speed;
+	//	}
 
-		if (movement == 2)
-		{
-			x = speed;
-		}
+	//	if (movement == 2)
+	//	{
+	//		x = speed;
+	//	}
 
-		if (movement == 3)
-		{
-			y = -speed;
-		}
+	//	if (movement == 3)
+	//	{
+	//		y = -speed;
+	//	}
 
-		if (movement == 4)
-		{
-			y = speed;
-		}
+	//	if (movement == 4)
+	//	{
+	//		y = speed;
+	//	}
 
-		position += VectorF(x, y);
+	//	position += VectorF(x, y);
 
-		player->setPosition(position);
-	}
+	//	player->setPosition(position);
+	//}
 
 
 

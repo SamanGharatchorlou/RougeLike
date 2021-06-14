@@ -27,7 +27,7 @@ BasicString::BasicString(const BasicString& string) : BasicString(string.c_str()
 
 BasicString::BasicString(const char* string, unsigned int length)
 {
-	mLength = strlen(string);
+	mLength = length; //strlen(string);
 	mCap = length + 1;
 	mBuffer = new char[mCap];
 

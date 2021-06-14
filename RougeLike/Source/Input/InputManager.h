@@ -3,6 +3,7 @@
 #include "Button.h"
 #include "Cursor.h"
 
+struct InputPacket;
 
 class InputManager
 {
@@ -36,6 +37,12 @@ public:
 	bool isCursorReleased(Cursor::ButtonType type) const;
 	bool isCursorHeld(Cursor::ButtonType type) const;
 
+	// Networking
+	// Any button currently being pressed, released or held
+	std::vector<Button> getActiveButtons() const;
+
+	void setData(const InputPacket& inputData);
+
 private:
 	void processMouseMovementEvent();
 	void processMouseButtonEvent(SDL_Event& event);
@@ -48,3 +55,5 @@ private:
 	std::vector<Button> mButtons;
 	Cursor mCursor;
 };
+
+InputManager createManager(const InputPacket& inputData);

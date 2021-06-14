@@ -91,8 +91,75 @@ void Server::receiveMessage(BasicString& outMessage, BasicString* senderInfo)
 		sending = true;
 
 		outMessage.set(buffer);
+
+		BasicString outString(buffer, fromSize);
+
+		outMessage = outString;
+
+		if (!outMessage.empty())
+		{
+			char* character = outMessage.buffer();
+
+			InputPacket data = *reinterpret_cast<InputPacket*>(character);
+
+			int a = 4;
+		}
 	}
 }
+
+void Server::receiveMessage(NetworkData& outMessage, BasicString* senderInfo)
+{
+	constexpr int SOCKET_BUFFER_SIZE = 1024;
+	char buffer[SOCKET_BUFFER_SIZE] = { 0 };
+
+	SOCKADDR_IN from;
+	int fromSize = sizeof(from);
+
+	int bytesReceived = recvfrom(mSocket, buffer, SOCKET_BUFFER_SIZE, mFlags, (SOCKADDR*)&from, &fromSize);
+
+	if (bytesReceived == SOCKET_ERROR)
+	{
+		printf("recvfrom returned SOCKET_ERROR %d\n", WSAGetLastError());
+	}
+	else
+	{
+		if (senderInfo)
+		{
+			sprintf(senderInfo->buffer(), "%d.%d.%d.%d:%d",
+				from.sin_addr.S_un.S_un_b.s_b1,
+				from.sin_addr.S_un.S_un_b.s_b2,
+				from.sin_addr.S_un.S_un_b.s_b3,
+				from.sin_addr.S_un.S_un_b.s_b4,
+				from.sin_port);
+		}
+
+		mClientAddress = from;
+		sending = true;
+
+		//const InputPacket inputData = *reinterpret_cast<const InputPacket*>(buffer);
+		//if (inputData.cursor.isHeld(Cursor::Left))// input->isCursorPressed(Cursor::Left))
+		//{
+		//	printf("received attack data\n");
+		//}
+
+		//if (inputData.button.isHeld())
+		//{
+		//	printf("received button data\n");
+		//
+
+
+		memcpy(outMessage.buffer, &buffer, fromSize);
+		//if (!outMessage.empty())
+		//{
+		//	char* character = outMessage.buffer();
+
+		//	InputPacket data = *reinterpret_cast<InputPacket*>(character);
+
+		//	int a = 4;
+		//}
+	}
+}
+
 
 
 void Server::sendMessage(const BasicString& message)

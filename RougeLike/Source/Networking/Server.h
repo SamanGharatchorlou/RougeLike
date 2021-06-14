@@ -9,6 +9,8 @@
 
 #pragma comment (lib, "Ws2_32.lib")
 
+#include "NetworkData.h"
+
 
 class Server
 {
@@ -20,10 +22,11 @@ public:
 
 	//void getClient
 
+	void receiveMessage(NetworkData& outMessage, BasicString* senderInfo);
 	void receiveMessage(BasicString& outMessage, BasicString* senderInfo);
 	void sendMessage(const BasicString& message);
 
-	Queue<BasicString> mInputs;
+	Queue<NetworkData> mData;
 
 	bool sending = false;
 

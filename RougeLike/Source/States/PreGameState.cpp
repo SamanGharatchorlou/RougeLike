@@ -16,6 +16,8 @@
 
 
 #include "Networking/NetworkManager.h"
+#include "Networking/Server.h"
+#include "Networking/Client.h"	
 
 
 PreGameState::PreGameState(GameData* gameData) : mGameData(gameData) { }
@@ -54,31 +56,31 @@ void PreGameState::testFunction()
 		mGameData->network->mServer = server;
 		mGameData->network->mSetupComplete = true;
 		// now need to run this....
-		while (true)
-		{
-			if (!server->sending)
-			{
-				BasicString message("", 1024);
-				BasicString senderInfo("", 1024);
+		//while (true)
+		//{
+		//	if (!server->sending)
+		//	{
+		//		BasicString message("", 1024);
+		//		BasicString senderInfo("", 1024);
 
-				server->receiveMessage(message, nullptr);
+		//		server->receiveMessage(message, nullptr);
 
-				if (!message.empty())
-				{
-					DebugPrint(Log, "%s\n", message.c_str());
-				}
-			}
-			else
-			{
-				BasicString message("", 1024);
-				std::cin.get(message.buffer(), message.bufferLength());
+		//		if (!message.empty())
+		//		{
+		//			DebugPrint(Log, "%s\n", message.c_str());
+		//		}
+		//	}
+		//	else
+		//	{
+		//		BasicString message("", 1024);
+		//		std::cin.get(message.buffer(), message.bufferLength());
 
-				message.calculateLength();
-				server->sendMessage(message);
+		//		message.calculateLength();
+		//		server->sendMessage(message);
 
-				std::cin.ignore();
-			}
-		}
+		//		std::cin.ignore();
+		//	}
+		//}
 	}
 	else
 	{
@@ -88,31 +90,31 @@ void PreGameState::testFunction()
 		mGameData->network->mClient = client;
 		mGameData->network->mSetupComplete = true;
 
-		while (true)
-		{
-			if (!client->sending)
-			{
-				BasicString message("", 1024);
-				BasicString senderInfo("", 1024);
+		//while (true)
+		//{
+		//	if (!client->sending)
+		//	{
+		//		BasicString message("", 1024);
+		//		BasicString senderInfo("", 1024);
 
-				client->receiveMessage(message, nullptr);
+		//		client->receiveMessage(message, nullptr);
 
-				if (!message.empty())
-				{
-					DebugPrint(Log, "%s\n", message.c_str());
-				}
-			}
-			else
-			{
-				BasicString message("", 1024);
-				std::cin.get(message.buffer(), message.bufferLength());
+		//		if (!message.empty())
+		//		{
+		//			DebugPrint(Log, "%s\n", message.c_str());
+		//		}
+		//	}
+		//	else
+		//	{
+		//		BasicString message("", 1024);
+		//		std::cin.get(message.buffer(), message.bufferLength());
 
-				message.calculateLength();
-				client->sendMessage(message);
+		//		message.calculateLength();
+		//		client->sendMessage(message);
 
-				std::cin.ignore();
-			}
-		}
+		//		std::cin.ignore();
+		//	}
+		//}
 	}
 }
 #endif
@@ -128,6 +130,9 @@ void PreGameState::exit()
 
 	PlayerManager* player = mGameData->environment->actors()->player();
 	player->selectCharacter(selectionScreen->selectedCharacter());
+
+	PlayerManager* networkPlayer = mGameData->environment->actors()->networkPlayer();
+	networkPlayer->selectCharacter(selectionScreen->nextCharacter());
 }
 
 

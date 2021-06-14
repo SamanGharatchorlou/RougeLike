@@ -18,9 +18,10 @@
 #include "Graphics/RenderManager.h"
 #include "UI/UIManager.h"
 #include "Game/Environment.h"
+#include "Debug/FrameRateController.h"
 
 
-GameController::GameController() : quit(false), mGameStateMachine(new NullState)
+GameController::GameController() : quit(false), mGameStateMachine(new NullState), mFrameRateController(nullptr)
 {
 	GameSetup setup;
 	setup.initFileSystem();
@@ -68,6 +69,8 @@ void GameController::load()
 		}
 	}
 
+	mFrameRateController = mGameData.frameRateController;
+
 	assetLoader.join();
 	loadingscreen.join();
 
@@ -82,7 +85,7 @@ void GameController::run()
 	// add first game state
 	addState(SystemStates::PreGameState);
 
-	mFrameTimer.start();
+	mFrameRateController->start();
 
 	SDL_Event event;
 
@@ -90,16 +93,17 @@ void GameController::run()
 	while (quit == false)
 	{
 #if FRAMERATE_CAP
-		mFrameTimer.resetCapTimer();
+		mFrameRateController->resetCapTimer();
 #endif
 
 		handleInput(event);
-		updateLoops(mFrameTimer.delta());
+		updateLoops(mFrameRateController->delta());
 
 		stateChanges();
 		render();
 
-		mFrameTimer.update();
+		mFrameRateController->update();
+		//printf("Frame %d\n", mFrameRateController->frameCount());
 	}
 
 	endGame();
@@ -165,8 +169,6 @@ void GameController::handleInput(SDL_Event& event)
 		mGameData.inputManager->processInputEvent(event);
 	}
 
-
-
 	mGameData.uiManager->handleInput(mGameData.inputManager);
 	mGameStateMachine.getActiveState().handleInput();
 
@@ -224,7 +226,6 @@ void GameController::replaceState(SystemStates state)
 void GameController::popState()
 {
 	mGameStateMachine.popState();
-	mFrameTimer.resetAverage();
 }
 
 
