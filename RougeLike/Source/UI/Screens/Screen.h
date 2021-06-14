@@ -17,7 +17,7 @@ class InputManager;
 class Screen : public State
 {
 public:
-	Screen() { }
+	Screen() : mController(nullptr) { }
 	virtual ~Screen();
 
 	void add(const ScreenLayer& layer);

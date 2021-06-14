@@ -168,10 +168,12 @@ void PlayerManager::selectCharacter(const Character& character)
 
 	mPlayer.init();
 	mLevelling.init(mPlayer.rect().Size());
+}
 
-#if UNLOCK_ALL_ABILITIES
+
+void PlayerManager::unlockAllAbilities()
+{
 	mLevelling.unlockAllAbilities(this);
-#endif
 }
 
 

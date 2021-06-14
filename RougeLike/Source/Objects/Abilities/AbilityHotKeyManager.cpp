@@ -21,6 +21,9 @@ void AbilityHotKeyManager::addHotKey(Ability* ability)
 	int hotKeyNumber = mHotKeys.size() + 1;
 	HotKey hotKey(ability, hotKeyNumber);
 
+	if (hotKeyNumber > 5)
+		int a = 4;
+	printf("adding hot key %d\n", hotKeyNumber);
 	mHotKeys.push_back(hotKey);
 	addToScreen(hotKey);
 }

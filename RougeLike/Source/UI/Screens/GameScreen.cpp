@@ -22,13 +22,15 @@
 
 GameScreen::GameScreen()
 { 
-	ScreenLayer layer("HotKeys");
-	add(layer);
+	add(ScreenLayer("HotKeys"));
 }
 
 
 void GameScreen::init()
 {
+	ScreenLayer layer("HotKeys");
+	add(layer);
+
 	linkSlider(ScreenItem::Health, "HealthSlider");
 	linkSlider(ScreenItem::Exp, "LevelSlider");
 

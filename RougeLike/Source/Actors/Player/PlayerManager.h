@@ -43,6 +43,7 @@ public:
 	void addAbility(AbilityType ability);
 	void addExp(int exp);
 
+	void unlockAllAbilities();
 
 	// test
 	VectorF position() { return mPlayer.rectRef().LeftCenter(); }

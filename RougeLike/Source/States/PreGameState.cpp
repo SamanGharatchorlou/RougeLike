@@ -130,6 +130,9 @@ void PreGameState::exit()
 
 	PlayerManager* player = mGameData->environment->actors()->player();
 	player->selectCharacter(selectionScreen->selectedCharacter());
+#if UNLOCK_ALL_ABILITIES
+	player->unlockAllAbilities();
+#endif
 
 	PlayerManager* networkPlayer = mGameData->environment->actors()->networkPlayer();
 	networkPlayer->selectCharacter(selectionScreen->nextCharacter());
