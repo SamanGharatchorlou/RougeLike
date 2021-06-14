@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "EnemyDebugger.h"
 
-#if DEUBG_CHECK
+#if DEBUG_CHECK
 #include "Game/Environment.h"
 #include "AI/Pathing/AIPathMap.h"
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#if DEUBG_CHECK
+#if DEBUG_CHECK
 #include "EnemyStates/EnemyState.h"
 #include "EnemyStates/EnemyStateHeaders.h"
 #include "Map/Tiles/MapTile.h"
