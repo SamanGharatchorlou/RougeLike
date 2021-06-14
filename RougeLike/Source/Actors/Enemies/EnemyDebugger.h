@@ -1,5 +1,6 @@
 #pragma once
 
+#if DEUBG_CHECK
 #include "EnemyStates/EnemyState.h"
 #include "EnemyStates/EnemyStateHeaders.h"
 #include "Map/Tiles/MapTile.h"
@@ -46,3 +47,4 @@ const static std::unordered_map<EnemyState::Type, BasicString> enemyStateLookUpT
 	{ EnemyState::Exit, "Exit" }
 };
 
+#endif

@@ -77,8 +77,8 @@ namespace fs = std::experimental::filesystem;
 
 // --- Debug Only Includes ---
 #if DEBUG_CHECK
-
 #include "Debug/DebugDraw.h"
+#endif
 
 // NEW operator override
 #if MEMORY_TRACKING
@@ -87,5 +87,3 @@ namespace fs = std::experimental::filesystem;
 #define PRINT_MEMORY 0
 #endif
 
-
-#endif
