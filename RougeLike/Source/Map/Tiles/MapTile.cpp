@@ -118,3 +118,9 @@ void MapTile::deferredRender(RectF rect) const
 		mAnimations[i].render(rect);
 	}
 }
+
+
+void MapTile::fillRenderQueue(RectF rect)
+{
+    mTexture->addToRenderQueue(rect);
+}

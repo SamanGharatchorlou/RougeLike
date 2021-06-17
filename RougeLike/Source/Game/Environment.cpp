@@ -107,6 +107,15 @@ void Environment::renderTopLayer()
 }
 
 
+void Environment::fillRenderQueue()
+{
+    mLevelManager.fillRenderQueue_Floor();
+    mLevelManager.fillRenderQueue_LowDepth();
+    mActors.fillRenderQueue();
+    mLevelManager.fillRenderQueue_HighDepth();
+}
+
+
 void Environment::setCameraBoundaries()
 {
 	VectorF topLeft = mLevelManager.firstMap(MapType::None)->getFirstRect().TopLeft();

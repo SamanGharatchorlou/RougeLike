@@ -40,6 +40,10 @@ public:
 	void renderLowerLayer() const;
 	void renderUpperLayer() const;
 	void deferredRender() const;
+    
+    void fillRenderQueue_Floor();
+    void fillRenderQueue_LowDepth();
+    void fillRenderQueue_HighDepth();
 
 	void setSize(Vector2D<int> size);
 
@@ -70,7 +74,7 @@ public:
 
 private:
 	void render(const MapTile* tile, const Camera* camera) const;
-
+    void fillRenderQueue(const MapTile* tile, const Camera* camera);
 
 private:
 	MapType mType;

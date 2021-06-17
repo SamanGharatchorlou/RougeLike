@@ -28,6 +28,10 @@ public:
 	void renderFloor();
 	void renderLowDepth();
 	void renderHighDepth();
+    
+    fillRenderQueue_Floor();
+    fillRenderQueue_LowDepth();
+    fillRenderQueue_HighDepth();
 
 	int level() const { return mLevel; }
 	void incrementLevel() { mLevel++; }

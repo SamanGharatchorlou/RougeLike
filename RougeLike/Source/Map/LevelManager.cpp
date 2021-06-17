@@ -182,6 +182,42 @@ void LevelManager::renderHighDepth()
 }
 
 
+void LevelManager::fillRenderQueue_Floor()
+{
+    UniqueQueue<Map*>::iterator iter;
+    for (iter = mMaps.begin(); iter != mMaps.end(); iter++)
+    {
+        Map* map = *iter;
+        map->fillRenderQueue_Floor();
+    }
+}
+
+
+
+void LevelManager::fillRenderQueue_LowDepth()
+{
+    UniqueQueue<Map*>::iterator iter;
+    for (iter = mMaps.begin(); iter != mMaps.end(); iter++)
+    {
+        Map* map = *iter;
+        map->fillRenderQueue_LowDepth();
+        // map->deferredRender();
+    }
+}
+
+
+void LevelManager::fillRenderQueue_HighDepth()
+{
+    UniqueQueue<Map*>::iterator iter;
+    for (iter = mMaps.begin(); iter != mMaps.end(); iter++)
+    {
+        Map* map = *iter;
+        map->fillRenderQueue_HighDepth();
+    }
+
+}
+
+
 Map* LevelManager::map(VectorF position) const
 {
 	UniqueQueue<Map*>::const_iterator iter;

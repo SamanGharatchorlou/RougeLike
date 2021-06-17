@@ -5,6 +5,7 @@
 #include "UI/UIManager.h"
 #include "Graphics/Texture.h"
 
+#include "RenderQueue.h"
 
 RenderManager::RenderManager() 
 	: mEnvironment(nullptr), mUIManager(nullptr) { }
@@ -32,6 +33,16 @@ void RenderManager::render()
 	renderPackets(RenderLayer::Highest);
 
 	mRenderPackets.clear();
+}
+
+
+void RenderManager::fillRenderQueue()
+{
+    // runn equivilent fill render queue functions
+    mEnvironment->fillRenderQueue();
+    
+    
+    RenderQueue::Get()->fillingCompleted();
 }
 
 

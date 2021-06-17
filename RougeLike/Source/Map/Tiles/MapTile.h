@@ -82,6 +82,7 @@ public:
 	std::vector<Animator>& animations() { return mAnimations; }
 
 	void render(RectF rect) const;
+    void fillRenderQueue(RectF rect);
 
 	void setDeferredRendering(bool deferr) { mDeferredRendering = deferr; }
 	bool deferRender() const { return mDeferredRendering; }

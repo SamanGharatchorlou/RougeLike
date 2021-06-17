@@ -37,6 +37,7 @@ public:
 	void Set(UIManager* UI) { mUIManager = UI; }
 
 	void render();
+    void fillRenderQueue();
 
 	void AddRenderPacket(RenderPack renderPacket) { mRenderPackets.push_back(renderPacket); }
 
@@ -53,3 +54,7 @@ private:
 
 	std::vector<RenderPack> mRenderPackets;
 };
+
+
+// Pass in render objects to be rendered by a thread
+void render(Queue<RenderObject>& renderQueue);

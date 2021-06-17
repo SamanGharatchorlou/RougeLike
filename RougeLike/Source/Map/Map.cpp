@@ -134,6 +134,87 @@ void Map::deferredRender() const
 }
 
 
+
+// render queue
+
+void Map::fillRenderQueue_Floor() const
+{
+    const Camera* camera = Camera::Get();
+    for (unsigned int y = 0; y < yCount(); y++)
+    {
+        for (unsigned int x = 0; x < xCount(); x++)
+        {
+            Index index(x, y);
+            const MapTile& tile = mData.get(index);
+
+            // Includes water, floor & column base
+            RenderTile tileType = tile.renderType();
+            if (tileType < RenderTile::WATERS)
+            {
+                render(&tile, camera);
+            }
+        }
+    }
+}
+
+
+void Map::fillRenderQueue_LowDepth() const
+{
+    const Camera* camera = Camera::Get();
+    for (unsigned int x = 0; x < xCount(); x++)
+    {
+        for (unsigned int y = 0; y < yCount(); y++)
+        {
+            Index index(x, y);
+            const MapTile& tile = mData.get(index);
+
+            if(tile.is(CollisionTile::Floor))
+                break;
+
+            render(&tile, camera);
+        }
+    }
+}
+
+
+void Map::fillRenderQueue_HighDepth() const
+{
+    const Camera* camera = Camera::Get();
+    for (unsigned int x = 0; x < xCount(); x++)
+    {
+        // We break at the floor so go from the screen bottom to top
+        for (unsigned int y = yCount() - 1; y > 0; y--)
+        {
+            Index index(x, y);
+            const MapTile& tile = mData.get(index);
+
+            if (tile.renderType() < RenderTile::Wall)
+                break;
+
+            render(&tile, camera);
+        }
+    }
+
+#if RENDER_SURFACE_TYPES
+    renderSurfaceTypes(mData);
+#endif
+#if MAP_BOUNDARIES
+    renderMapBoundaries(this);
+#endif
+}
+
+
+void Map::fillRenderQueue(const MapTile* tile, const Camera* camera)
+{
+    RectF tileRect = tile->rect();
+    if (camera->inView(tileRect))
+    {
+        tileRect = camera->toCameraCoords(tileRect);
+        tile->render(tileRect);
+    }
+}
+
+
 // --- Getters --- //
 VectorF Map::tileSize() const
 {

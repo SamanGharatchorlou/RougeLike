@@ -31,6 +31,8 @@ public:
 	void renderFloor();
 	void renderBottomLayer();
 	void renderTopLayer();
+    
+    void fillRenderQueue();
 
 	Map* map(VectorF position) const { return mLevelManager.map(position); }
 	Map* firstMap(MapType type) const { return mLevelManager.firstMap(type); }
